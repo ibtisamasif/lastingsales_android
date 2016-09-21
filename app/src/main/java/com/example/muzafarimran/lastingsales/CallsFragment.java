@@ -36,7 +36,7 @@ public class CallsFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //TODO: move to async thread
-        Collections.sort(call_logs, comparing(Call::getType));
+//        Collections.sort(call_logs, comparing(Call::getType));
     }
 
     @Override
