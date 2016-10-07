@@ -61,52 +61,53 @@ public class ContactsAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, ViewGroup parent) {
 
-        Contact contact = (Contact) getItem(position);
-        if (contact.getTag() == "seperator"){
+                Contact contact = (Contact) getItem(position);
+                if (contact.getTag() == "seperator"){
 
-            String label = "";
-            switch (contact.getName()){
+                    String label = "";
+                    switch (contact.getName()){
 
-                case "Prospects":
-                    label = "Prospects ( "+this.prospectCount+" )";
-                    break;
+                        case "Prospects":
+                            label = "Prospects ( "+this.prospectCount+" )";
+                            break;
 
-                case "Leads":
-                    label = "Leads ( "+this.leadCount+" )";
-                    break;
+                        case "Leads":
+                            label = "Leads ( "+this.leadCount+" )";
+                            break;
 
-            }
+                    }
 
-            View view = mInflater.inflate(R.layout.section_seperator, parent, false);
-            TextView seperatorLabel = (TextView) view.findViewById(R.id.section_seperator);
-            seperatorLabel.setText(label);
+                    View view = mInflater.inflate(R.layout.section_seperator, parent, false);
+                    TextView seperatorLabel = (TextView) view.findViewById(R.id.section_seperator);
+                    seperatorLabel.setText(label);
 
-            return view;
-        }
+                    return view;
+                }
 
 
 
-        if (convertView == null) {
+                if (convertView == null) {
 
-            convertView = mInflater.inflate(R.layout.contacts_text_view, parent, false);
+                    convertView = mInflater.inflate(R.layout.contacts_text_view, parent, false);
 
-            holder = new ViewHolder();
+                    holder = new ViewHolder();
 
-            holder.name            = (TextView)  convertView.findViewById(R.id.contact_name);
-            holder.number          = (TextView)  convertView.findViewById(R.id.contact_number);
-            holder.image           = (ImageView) convertView.findViewById(R.id.call_icon);
-            holder.messages        = (TextView)  convertView.findViewById(R.id.messages);
-            holder.response_time   = (TextView)  convertView.findViewById(R.id.response_time);
-            holder.last_contact    = (TextView)  convertView.findViewById(R.id.last_contact);
-            holder.number_calls    = (TextView)  convertView.findViewById(R.id.number_calls);
-            holder.contact_details = (RelativeLayout) convertView.findViewById(R.id.contact_details);
+                    holder.name            = (TextView)  convertView.findViewById(R.id.contact_name);
+                    holder.number          = (TextView)  convertView.findViewById(R.id.contact_number);
+                    holder.image           = (ImageView) convertView.findViewById(R.id.call_icon);
+                    holder.messages        = (TextView)  convertView.findViewById(R.id.messages);
+                    holder.response_time   = (TextView)  convertView.findViewById(R.id.response_time);
+                    holder.last_contact    = (TextView)  convertView.findViewById(R.id.last_contact);
+                    holder.number_calls    = (TextView)  convertView.findViewById(R.id.number_calls);
+                    holder.contact_details = (RelativeLayout) convertView.findViewById(R.id.contact_details);
 
-            convertView.setTag(holder);
+                    convertView.setTag(holder);
 
-            holder.image.setOnClickListener(this.callClickListener);
-            holder.name.setOnClickListener(this.showContactDetaislsListener);
+                    holder.image.setOnClickListener(this.callClickListener);
+                    holder.name.setOnClickListener(this.showContactDetaislsListener);
+
 
         } else {
 
