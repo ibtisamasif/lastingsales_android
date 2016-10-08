@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by MUZAFAR IMRAN on 9/19/20
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 public class CallsAdapter extends BaseAdapter{
     private Context mContext;
     private LayoutInflater mInflater;
-    private ArrayList<Call> mCalls;
+    private List<Call> mCalls;
 
-    public CallsAdapter(Context c, ArrayList<Call> call_logs)
+    public CallsAdapter(Context c, List<Call> call_logs)
     {
         this.mContext = c;
         this.mCalls = call_logs;
