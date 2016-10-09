@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import static java.util.Comparator.comparing;
 
@@ -22,15 +23,15 @@ import static java.util.Comparator.comparing;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CallsFragment extends TabFragment {
-    ArrayList<Call> call_logs = new ArrayList<Call>()
-    {
-        {
-            add(new Call("Kashif Naeem", "03xx-yyzzxxx", "missed", "2 hours ago"));
-            add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-            add(new Call("Raza Ahmad", "0332-5404943", "incoming", "10 mins ago"));
-        }
-    };
+public class MissedCallsFragment extends TabFragment {
+
+    private List<Call> missedCalls = new ArrayList<>();
+
+
+    public void setList(List<Call> missedCalls){
+        this.missedCalls = missedCalls;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,11 +43,12 @@ public class CallsFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
         ListView listView = (ListView) view.findViewById(R.id.calls_list);
 //        ArrayAdapter adapter = new ArrayAdapter<String>(getContext(), R.layout.calls_text_view, call_logs);
 //        listView.setAdapter(adapter);
-        CallsAdapter adapter = new CallsAdapter(getContext(), call_logs);
+        CallsAdapter adapter = new CallsAdapter(getContext(), missedCalls);
         listView.setAdapter(adapter);
         return view;
     }

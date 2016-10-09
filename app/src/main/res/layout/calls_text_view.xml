@@ -18,10 +18,21 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
+        android:paddingLeft="10dp"
         android:textSize="10dp"
         android:layout_below="@id/call_name"
         android:id="@+id/call_time"/>
+
+    <ImageView
+        android:src="@drawable/call_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:textSize="10dp"
+        android:layout_toLeftOf="@id/call_time"
+
+
+        android:id="@+id/call_type_icon" />
 
     <ImageView
         android:src="@drawable/call_icon"

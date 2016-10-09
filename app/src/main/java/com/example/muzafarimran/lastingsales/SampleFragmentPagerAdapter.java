@@ -30,7 +30,7 @@ public  class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = new HomeFragment();
                 break;
             case 1:
-                fragment = new CallsFragment();
+                fragment = new CallTabsFragment();
                 break;
             case 2:
                 fragment = new ContactsFragment();
