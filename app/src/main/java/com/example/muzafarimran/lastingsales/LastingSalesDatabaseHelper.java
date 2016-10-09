@@ -32,7 +32,7 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
                     LastingSalesContract.User.COLUMN_NAME_CLIENT_ID + " INTEGER NOT NULL," +
                     LastingSalesContract.User.COLUMN_NAME_MANAGER_ID + " INTEGER," +
                     "FOREIGN KEY(" + LastingSalesContract.User.COLUMN_NAME_MANAGER_ID + ") REFERENCES " +
-                    LastingSalesContract.User.TABLE_NAME + "(" + LastingSalesContract.User._ID + ")," +
+                    LastingSalesContract.User.TABLE_NAME + "(" + LastingSalesContract.User._ID + ")" +
                     " );";
 
     // sql query to create table useranalytics
