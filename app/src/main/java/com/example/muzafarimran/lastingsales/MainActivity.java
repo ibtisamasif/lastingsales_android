@@ -7,10 +7,15 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
+    // database helper
+    LastingSalesDatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = new LastingSalesDatabaseHelper(getApplicationContext());
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
