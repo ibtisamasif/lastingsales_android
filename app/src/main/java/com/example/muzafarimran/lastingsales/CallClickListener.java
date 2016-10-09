@@ -19,9 +19,9 @@ public class CallClickListener implements View.OnClickListener {
     //private ArrayList<Contact> contacts = null;
     private Context context;
 
-    public CallClickListener(Context context/*, ArrayList<Contact> contacts*/) {
+    public CallClickListener(Context context) {
         this.context  = context;
-        /*this.contacts = contacts;*/
+
     }
 
 

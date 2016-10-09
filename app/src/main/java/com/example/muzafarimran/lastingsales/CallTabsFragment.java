@@ -28,7 +28,6 @@ public class CallTabsFragment extends TabFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         mainLayout = (LinearLayout) inflater.inflate(R.layout.fragment_call_tabs, container, false);
         tabs = (TabLayout) mainLayout.findViewById(R.id.call_types);
@@ -51,17 +50,28 @@ public class CallTabsFragment extends TabFragment{
         List<Call> incomingCalls = new ArrayList<>();
         List<Call> outgoingCalls = new ArrayList<>();
 
-        missedCalls.add(new Call("Kashif Naeem", "03xx-yyzzxxx", "missed", "2 hours ago"));
+        missedCalls.add(new Call("Unanswered Sales", "", "seperator", ""));
         missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
         missedCalls.add(new Call("Raza Ahmad", "0332-5404943", "missed", "10 mins ago"));
+        missedCalls.add(new Call("Kashif Naeem", "03xx-yyzzxxx", "missed", "2 hours ago"));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Unanswered Collegue", "", "seperator", ""));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
 
-        incomingCalls.add(new Call("Kashif klkj", "03xx-yyzzxxx", "incoming", "2 hours ago"));
-        incomingCalls.add(new Call("Salman lkj", "0323-4433108", "incoming", "1 min ago"));
-        incomingCalls.add(new Call("Raza klj", "0332-5404943", "incoming", "10 mins ago"));
+        missedCalls.add(new Call("History", "", "seperator", ""));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
 
-        outgoingCalls.add(new Call("hello", "03xx-yyzzxxx", "outgoing", "2 hours ago"));
-        outgoingCalls.add(new Call("hi", "0323-4433108", "outgoing", "1 min ago"));
-        outgoingCalls.add(new Call("some", "0332-5404943", "outgoing", "10 mins ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
 
 
         //tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
