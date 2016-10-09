@@ -53,15 +53,15 @@ public class CallTabsFragment extends TabFragment{
 
         missedCalls.add(new Call("Kashif Naeem", "03xx-yyzzxxx", "missed", "2 hours ago"));
         missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Raza Ahmad", "0332-5404943", "incoming", "10 mins ago"));
+        missedCalls.add(new Call("Raza Ahmad", "0332-5404943", "missed", "10 mins ago"));
 
-        incomingCalls.add(new Call("Kashif klkj", "03xx-yyzzxxx", "missed", "2 hours ago"));
-        incomingCalls.add(new Call("Salman lkj", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Kashif klkj", "03xx-yyzzxxx", "incoming", "2 hours ago"));
+        incomingCalls.add(new Call("Salman lkj", "0323-4433108", "incoming", "1 min ago"));
         incomingCalls.add(new Call("Raza klj", "0332-5404943", "incoming", "10 mins ago"));
 
-        outgoingCalls.add(new Call("hello", "03xx-yyzzxxx", "missed", "2 hours ago"));
-        outgoingCalls.add(new Call("hi", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("some", "0332-5404943", "incoming", "10 mins ago"));
+        outgoingCalls.add(new Call("hello", "03xx-yyzzxxx", "outgoing", "2 hours ago"));
+        outgoingCalls.add(new Call("hi", "0323-4433108", "outgoing", "1 min ago"));
+        outgoingCalls.add(new Call("some", "0332-5404943", "outgoing", "10 mins ago"));
 
 
         //tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
