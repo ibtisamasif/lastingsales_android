@@ -92,6 +92,7 @@ public class CallsAdapter extends BaseAdapter{
                 holder.name = (TextView) convertView.findViewById(R.id.call_name);
                 holder.time = (TextView) convertView.findViewById(R.id.call_time);
                 holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+                holder.missed_call_icon = (ImageView) convertView.findViewById(R.id.missed_call_icon);
 
                 holder.call_icon.setOnClickListener(this.callClickListener);
 
@@ -115,6 +116,7 @@ public class CallsAdapter extends BaseAdapter{
         TextView name;
         TextView time;
         ImageView call_icon;
+        ImageView missed_call_icon;
     }
 
     static class seperatorHolder{
