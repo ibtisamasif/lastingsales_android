@@ -8,11 +8,20 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     >
+
+    <ImageView
+        android:src="@drawable/user_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:id="@+id/user_avatar" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:textSize="15dp"
+        android:layout_toRightOf="@id/user_avatar"
         android:id="@+id/call_name" />
 
     <ImageView
@@ -20,6 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/call_name"
+        android:layout_toRightOf="@id/user_avatar"
+        android:paddingLeft="10dp"
         android:id="@+id/missed_call_icon" />
 
     <TextView
@@ -41,4 +52,7 @@
         android:layout_alignParentRight="true"
         android:scaleType="fitEnd"
         android:id="@+id/call_icon" />
+
+
+
 </RelativeLayout>
