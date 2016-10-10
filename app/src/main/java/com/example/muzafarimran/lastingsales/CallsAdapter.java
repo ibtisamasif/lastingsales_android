@@ -64,19 +64,19 @@ public class CallsAdapter extends BaseAdapter{
 
         if (isSeparator(position)){
 
-            seperatorHolder seperatorHolder = null;
+            seperatorHolder seperatorholder = null;
             if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.section_seperator, parent, false);
-                seperatorHolder = new seperatorHolder();
-                seperatorHolder.text = (TextView) convertView.findViewById(R.id.section_seperator);
+                seperatorholder = new seperatorHolder();
+                seperatorholder.text = (TextView) convertView.findViewById(R.id.section_seperator);
 
-                convertView.setTag(seperatorHolder);
+                convertView.setTag(seperatorholder);
 
             }else{
-                seperatorHolder = (seperatorHolder) convertView.getTag();
+                seperatorholder = (seperatorHolder) convertView.getTag();
             }
 
-            seperatorHolder.text.setText(mCalls.get(position).getName());
+            seperatorholder.text.setText(mCalls.get(position).getName());
 
 
         }

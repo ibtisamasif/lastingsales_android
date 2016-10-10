@@ -9,6 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="#5C82E5"
+        app:tabTextColor="#ffffff"
+        app:tabBackground="@drawable/secondleveltabcolors"
+        app:tabSelectedTextColor="#ffffff"
+        app:tabIndicatorColor="#00BAB5"
         app:tabGravity="fill"
         app:tabMode="fixed"
         />
