@@ -31,7 +31,7 @@ public class ContactsAdapter extends BaseAdapter {
     {
         this.mContext = c;
         this.mContacts = contacts;
-        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.callClickListener = new CallClickListener(c);
         this.showContactDetaislsListener = new showContactDetaislsListener();
 

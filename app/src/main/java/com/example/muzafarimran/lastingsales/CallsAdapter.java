@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,13 +25,17 @@ public class CallsAdapter extends BaseAdapter{
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
 
+    private showCallDetailsListener showcalldetailslistener = null;
+
 
     public CallsAdapter(Context c, List<Call> call_logs)
     {
         this.mContext = c;
         this.mCalls = call_logs;
         this.callClickListener = new CallClickListener(c);
-        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        this.showcalldetailslistener = new showCallDetailsListener();
     }
 
     @Override
@@ -92,9 +97,9 @@ public class CallsAdapter extends BaseAdapter{
                 holder.name = (TextView) convertView.findViewById(R.id.call_name);
                 holder.time = (TextView) convertView.findViewById(R.id.call_time);
                 holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
-                holder.missed_call_icon = (ImageView) convertView.findViewById(R.id.missed_call_icon);
 
                 holder.call_icon.setOnClickListener(this.callClickListener);
+                holder.name.setOnClickListener(this.showcalldetailslistener);
 
                 convertView.setTag(holder);
 
@@ -110,6 +115,28 @@ public class CallsAdapter extends BaseAdapter{
         }
 
         return convertView;
+    }
+
+    /*
+    * event handler for click on name
+    * */
+    public class showCallDetailsListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+
+            View view = mInflater.inflate(R.layout.call_detail_drop_down, null);
+
+            // fill in any details dynamically here
+            TextView textView = (TextView) view.findViewById(R.id.call_number);
+            textView.setText("03234433108");
+
+            // insert into main view
+            ViewGroup insertPoint = (ViewGroup) ((ViewGroup)v.getParent()).findViewById(R.id.call_row);
+            insertPoint.addView(view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        }
     }
 
     static class ViewHolder {
