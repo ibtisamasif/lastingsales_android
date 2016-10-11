@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales;
+package com.example.muzafarimran.lastingsales.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -77,17 +77,6 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
                     LastingSalesContract.User.TABLE_NAME + "(" + LastingSalesContract.User._ID + ")" +
                     " );";
 
-    // sql query to create table salescontactdetail
-    private static final String SQL_CREATE_TABLE_SALESCONTACTDETAIL =
-            "CREATE TABLE " + LastingSalesContract.SalesContactDetail.TABLE_NAME + " (" +
-                    LastingSalesContract.SalesContactDetail._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    LastingSalesContract.SalesContactDetail.COLUMN_NAME_CONTACT_ID + " INTEGER NOT NULL," +
-                    LastingSalesContract.SalesContactDetail.COLUMN_NAME_CLOSED_DATE + " TEXT," +
-                    LastingSalesContract.SalesContactDetail.COLUMN_NAME_CLOSING_REMARKS + " TEXT," +
-                    "FOREIGN KEY(" + LastingSalesContract.SalesContactDetail.COLUMN_NAME_CONTACT_ID + ") REFERENCES " +
-                    LastingSalesContract.Contact.TABLE_NAME + "(" + LastingSalesContract.Contact._ID + ")" +
-                    " );";
-
     // sql query to create table call
     private static final String SQL_CREATE_TABLE_CALL =
             "CREATE TABLE " + LastingSalesContract.Call.TABLE_NAME + " (" +
@@ -147,7 +136,6 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
         db.execSQL(SQL_CREATE_TABLE_USER);
         db.execSQL(SQL_CREATE_TABLE_USERANALYTICS);
         db.execSQL(SQL_CREATE_TABLE_CONTACT);
-        db.execSQL(SQL_CREATE_TABLE_SALESCONTACTDETAIL);
         db.execSQL(SQL_CREATE_TABLE_CALL);
         db.execSQL(SQL_CREATE_TABLE_NOTE);
         db.execSQL(SQL_CREATE_TABLE_FOLLOWUP);
@@ -161,7 +149,6 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
         db.execSQL(delete_table + LastingSalesContract.Followup.TABLE_NAME);
         db.execSQL(delete_table + LastingSalesContract.Note.TABLE_NAME);
         db.execSQL(delete_table + LastingSalesContract.Call.TABLE_NAME);
-        db.execSQL(delete_table + LastingSalesContract.SalesContactDetail.TABLE_NAME);
         db.execSQL(delete_table + LastingSalesContract.Contact.TABLE_NAME);
         db.execSQL(delete_table + LastingSalesContract.UserAnalytics.TABLE_NAME);
         db.execSQL(delete_table + LastingSalesContract.User.TABLE_NAME);
