@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales;
+package com.example.muzafarimran.lastingsales.db;
 
 import android.provider.BaseColumns;
 
@@ -6,9 +6,8 @@ import android.provider.BaseColumns;
 public class LastingSalesContract {
     private LastingSalesContract(){}
 
-    public static class Contact implements BaseColumns
-    {
-        public static final String TABLE_NAME = "contact" ;
+    public static class Contact implements BaseColumns {
+        public static final String TABLE_NAME = "contact";
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_EMAIL = "email";
         public static final String COLUMN_NAME_TYPE = "type";
@@ -22,14 +21,6 @@ public class LastingSalesContract {
         public static final String COLUMN_NAME_DELETED_AT = "deleted_at";
         public static final String COLUMN_NAME_USER_ID = "user_id";
         public static final String COLUMN_NAME_SALES_STATUS = "sales_status";
-
-    }
-    public static class SalesContactDetail implements BaseColumns
-    {
-        public static final String TABLE_NAME = "salescontactdetail";
-        public static final String COLUMN_NAME_CONTACT_ID = "contact_id";
-        public static final String COLUMN_NAME_CLOSED_DATE = "closed_date";
-        public static final String COLUMN_NAME_CLOSING_REMARKS = "closing_remarks";
     }
     public static class Call implements BaseColumns
     {
