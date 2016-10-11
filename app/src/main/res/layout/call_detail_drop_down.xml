@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="Details"
         android:drawableLeft="@drawable/show"
-        style="?android:attr/borderlessButtonStyle"
+
         android:layout_below="@id/call_number"
         />
 
