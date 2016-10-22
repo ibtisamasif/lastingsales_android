@@ -79,6 +79,12 @@ public class IndividualConatactCallAdapter extends BaseAdapter {
                         holder.call_icon.setImageResource(R.drawable.call_icon_incoming_ind);
 
                         break;
+
+                    case "outgoing":
+                        holder.call_icon.setImageResource(R.drawable.call_icon_out_going_ind);
+
+                        break;
+
                 }
 
 
