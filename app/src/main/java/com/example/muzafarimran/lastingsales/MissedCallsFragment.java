@@ -32,7 +32,7 @@ import static java.util.Comparator.comparing;
 public class MissedCallsFragment extends TabFragment {
 
     private List<Call> missedCalls = new ArrayList<>();
-    private  int missedCallsType = 0;
+    private int missedCallsType = 0;
 
 
     public void setList(List<Call> missedCalls){
@@ -89,7 +89,7 @@ public class MissedCallsFragment extends TabFragment {
 
 
                 listView = (ListView) view.findViewById(R.id.calls_list_contact_ind);
-                IndividualConatactCallAdapter indadapter = new IndividualConatactCallAdapter(getContext(), missedCalls);
+                IndividualConatactCallAdapter indadapter = new IndividualConatactCallAdapter(getContext(), missedCalls, "missed");
                 listView.setAdapter(indadapter);
 
                 break;

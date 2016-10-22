@@ -45,11 +45,14 @@ public class CallTabsFragment extends TabFragment{
         Bundle args = new Bundle();
 
         MissedCallsFragment mc = new MissedCallsFragment();
-        args.putInt("key", 1);
-        mc.setArguments(args);
-
         IncomingCallsFragment ic = new IncomingCallsFragment();
         OutgoingCallsFragment oc = new OutgoingCallsFragment();
+        args.putInt("key", 1);
+        mc.setArguments(args);
+        ic.setArguments(args);
+        oc.setArguments(args);
+
+
 
         List<Call> missedCalls = new ArrayList<>();
         List<Call> incomingCalls = new ArrayList<>();

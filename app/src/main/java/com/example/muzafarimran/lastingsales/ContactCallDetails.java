@@ -38,7 +38,8 @@ public class ContactCallDetails extends AppCompatActivity {
         SecondLevelFragmentPagerAdapter adp = new SecondLevelFragmentPagerAdapter(getSupportFragmentManager(), ContactCallDetails.this);
 
         MissedCallsFragment mc = new MissedCallsFragment();
-
+        IncomingCallsFragment ic = new IncomingCallsFragment();
+        OutgoingCallsFragment oc = new OutgoingCallsFragment();
         Bundle args = new Bundle();
 
         args.putInt("key", 2);
@@ -48,8 +49,9 @@ public class ContactCallDetails extends AppCompatActivity {
         args.putString("name","Salman");
         mc.setArguments(args);
 
-        IncomingCallsFragment ic = new IncomingCallsFragment();
-        OutgoingCallsFragment oc = new OutgoingCallsFragment();
+        ic.setArguments(args);
+
+        oc.setArguments(args);
 
         List<Call> missedCalls = new ArrayList<>();
         List<Call> incomingCalls = new ArrayList<>();
