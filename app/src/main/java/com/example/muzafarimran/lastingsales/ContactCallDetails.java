@@ -75,7 +75,28 @@ public class ContactCallDetails extends AppCompatActivity {
         incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
         incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
         incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
 
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
         outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
         outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
         outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
