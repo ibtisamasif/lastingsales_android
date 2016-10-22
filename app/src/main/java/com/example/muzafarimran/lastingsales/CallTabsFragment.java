@@ -41,8 +41,13 @@ public class CallTabsFragment extends TabFragment{
     private void setUpPager() {
 
         SecondLevelFragmentPagerAdapter adp = new SecondLevelFragmentPagerAdapter(getChildFragmentManager(), getActivity());
-        //NewsList n1 = new NewsList();
+
+        Bundle args = new Bundle();
+
         MissedCallsFragment mc = new MissedCallsFragment();
+        args.putInt("key", 1);
+        mc.setArguments(args);
+
         IncomingCallsFragment ic = new IncomingCallsFragment();
         OutgoingCallsFragment oc = new OutgoingCallsFragment();
 

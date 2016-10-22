@@ -1,10 +1,12 @@
 package com.example.muzafarimran.lastingsales;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,7 +19,7 @@ import java.util.List;
  */
 public class CallsAdapter extends BaseAdapter{
 
-    private Context mContext;
+    public Context mContext;
     private LayoutInflater mInflater;
     private List<Call> mCalls;
     private CallClickListener callClickListener = null;
@@ -25,7 +27,10 @@ public class CallsAdapter extends BaseAdapter{
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
 
+    View call_details = null; //TODO move to handler class below
+
     private showCallDetailsListener showcalldetailslistener = null;
+    public showDetailsListener detailsListener = null;
 
 
     public CallsAdapter(Context c, List<Call> call_logs)
@@ -36,6 +41,7 @@ public class CallsAdapter extends BaseAdapter{
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         this.showcalldetailslistener = new showCallDetailsListener();
+        this.detailsListener = new showDetailsListener();
     }
 
     @Override
@@ -105,9 +111,11 @@ public class CallsAdapter extends BaseAdapter{
 
             } else {
                 holder = (ViewHolder) convertView.getTag();
+                ((ViewGroup) holder.name.getParent()).removeView(call_details);
             }
 
             holder.name.setText(call.getName());
+            holder.name.setTag(position);
             holder.time.setText(call.getTime());
 
             holder.call_icon.setTag(mCalls.get(position).getNumber());
@@ -124,19 +132,51 @@ public class CallsAdapter extends BaseAdapter{
 
         @Override
         public void onClick(View v) {
+            //TODO this code needs to be optimized
+            if (call_details == null){
+                call_details = mInflater.inflate(R.layout.call_detail_drop_down, null);
 
+            }else {
+                if (call_details.getParent() != null){((ViewGroup) call_details.getParent()).removeView(call_details);}
 
-            View view = mInflater.inflate(R.layout.call_detail_drop_down, null);
+            }
 
+            String number = mCalls.get((int) v.getTag()).getNumber();
             // fill in any details dynamically here
-            TextView textView = (TextView) view.findViewById(R.id.call_number);
-            textView.setText("03234433108");
+            TextView textView = (TextView) call_details.findViewById(R.id.call_number);
+            Button cd = (Button) call_details.findViewById(R.id.call_details_btn);
+            cd.setTag(number);
+            cd.setOnClickListener(detailsListener);
+
+
+
+            textView.setText(number);
 
             // insert into main view
             ViewGroup insertPoint = (ViewGroup) ((ViewGroup)v.getParent()).findViewById(R.id.call_row);
-            insertPoint.addView(view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+            params.topMargin = 107;
+            insertPoint.addView(call_details, params);
+
+
 
         }
+    }
+
+    /*
+    * event handler for click on name
+    * */
+    public class showDetailsListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent myIntent = new Intent(mContext, ContactCallDetails.class);
+            myIntent.putExtra("number",(String) v.getTag());
+            mContext.startActivity(myIntent);
+        }
+
     }
 
     static class ViewHolder {

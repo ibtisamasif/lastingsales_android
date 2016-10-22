@@ -13,28 +13,47 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:textSize="20dp"
+        android:layout_marginBottom="10dp"
         android:id="@+id/call_number" />
 
     <Button
         android:id="@+id/call_details_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
         android:text="Details"
         android:drawableLeft="@drawable/show"
-
+        style="?android:attr/borderlessButtonStyle"
+        android:background="#5C82E5"
+        android:textColor="#ffffff"
         android:layout_below="@id/call_number"
+        android:radius="5dip"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="12dp"
         />
 
 
     <Button
         android:id="@+id/call_tag_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
         android:text="Tag"
         android:drawableLeft="@drawable/tag_icon"
         style="?android:attr/borderlessButtonStyle"
+        android:layout_marginLeft="10dp"
+        android:textColor="#ffffff"
+        android:background="#5C82E5"
         android:layout_below="@id/call_number"
         android:layout_toRightOf="@id/call_details_btn"
+        android:radius="5dip"
+        android:textSize="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+
         />
 
 
