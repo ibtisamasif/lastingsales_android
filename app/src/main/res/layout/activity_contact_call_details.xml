@@ -27,7 +27,9 @@
                 android:id="@+id/user_avatar_ind"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="7dp"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
