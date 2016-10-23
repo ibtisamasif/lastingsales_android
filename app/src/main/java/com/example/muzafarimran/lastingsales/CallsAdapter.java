@@ -117,7 +117,11 @@ public class CallsAdapter extends BaseAdapter{
 
             holder.name.setText(call.getName());
             holder.call_name_time.setTag(position);
-            holder.time.setText("Missed Call "+call.getTime());
+
+            String s1 = call.getType().substring(0, 1).toUpperCase();
+            s1 = s1 + call.getType().substring(1);
+
+            holder.time.setText(s1+" Call "+call.getTime());
 
             holder.call_icon.setTag(mCalls.get(position).getNumber());
 
@@ -158,7 +162,7 @@ public class CallsAdapter extends BaseAdapter{
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-            params.topMargin = 160;
+            params.topMargin = 180;
             insertPoint.addView(call_details, params);
 
 
@@ -179,6 +183,7 @@ public class CallsAdapter extends BaseAdapter{
         }
 
     }
+
 
     static class ViewHolder {
         TextView name;

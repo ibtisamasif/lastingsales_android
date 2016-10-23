@@ -33,11 +33,9 @@ public class ContactCallDetails extends AppCompatActivity {
 
         //TODO get name of the person if exists
         this.name = "Salman";
-
         setUpList();
 
     }
-
 
     private void setUpList() {
 
@@ -86,14 +84,17 @@ public class ContactCallDetails extends AppCompatActivity {
         ((TextView)(this.findViewById(R.id.call_numbe_ind))).setText(this.number);
 
 
-        ((TextView)(this.findViewById(R.id.contact_name_ind))).setText(this.name);
+        String contactName = this.name;
         ((ImageView)(this.findViewById(R.id.call_icon_ind))).setTag(this.number);
         ((ImageView)(this.findViewById(R.id.call_icon_ind))).setOnClickListener(callClickListener);
 
         //hide tag button if name is not stored
         if (this.name == null || (this.name).isEmpty()){
             ((Button)(this.findViewById(R.id.tag_button_ind))).setVisibility(View.GONE);
+            contactName = this.name;
         }
+
+        ((TextView)(this.findViewById(R.id.contact_name_ind))).setText(contactName);
 
 
         ListView listview = (ListView) this.findViewById(R.id.calls_list);
