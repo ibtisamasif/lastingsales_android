@@ -68,6 +68,15 @@
 
                 />
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/contact_bio_section_ind"
+            android:background="#18366c"
+            android:layout_below="@+id/call_numbe_ind"
+            android:layout_centerHorizontal="true"
+            >
+
         <Button
             android:id="@+id/tag_button_ind"
             android:layout_width="150dp"
@@ -105,10 +114,12 @@
             android:paddingRight="20dp"
 
             android:layout_marginTop="40dp"
-            android:layout_below="@+id/call_numbe_ind"
+
             android:layout_toRightOf="@+id/tag_button_ind"
             android:layout_marginLeft="10dp"
             />
+
+            </RelativeLayout>
 
 
     </RelativeLayout>

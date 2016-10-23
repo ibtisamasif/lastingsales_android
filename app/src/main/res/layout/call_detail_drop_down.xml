@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
+    android:paddingBottom="0dp"
     android:layout_marginTop="30dp"
 
     >
@@ -28,8 +29,8 @@
 
     <Button
         android:id="@+id/call_details_btn"
-        android:layout_width="125dp"
-        android:layout_height="25dp"
+        android:layout_width="120dp"
+        android:layout_height="27dp"
         android:text="Details"
         android:drawableLeft="@drawable/call_details_icon_white"
         style="?android:attr/borderlessButtonStyle"
@@ -47,8 +48,8 @@
 
     <Button
         android:id="@+id/call_tag_btn"
-        android:layout_width="125dp"
-        android:layout_height="25dp"
+        android:layout_width="120dp"
+        android:layout_height="27dp"
         android:text="Tag"
         android:drawableLeft="@drawable/tag_icon_white"
         style="?android:attr/borderlessButtonStyle"

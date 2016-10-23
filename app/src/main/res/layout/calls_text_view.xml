@@ -6,7 +6,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:paddingBottom="0dp"
     android:id="@+id/call_row"
     >
 
