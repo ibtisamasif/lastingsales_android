@@ -47,46 +47,13 @@ public class OutgoingCallsFragment extends Fragment {
 //        listView.setAdapter(adapter);
 
         //CallsAdapter adapter = null;
-        this.outgoingCallsType = (int)getArguments().getInt("key");
-
-        switch(this.outgoingCallsType) {
-            case 1 :
-                // all missed calls
-
-                view = inflater.inflate(R.layout.fragment_outgoing_calls, container, false);
-                listView = (ListView) view.findViewById(R.id.outgoing_calls_list);
-                CallsAdapter callsadapter = new CallsAdapter(getContext(), outgoingCalls);
-                listView.setAdapter(callsadapter);
 
 
-                break;
+        view = inflater.inflate(R.layout.fragment_outgoing_calls, container, false);
+        listView = (ListView) view.findViewById(R.id.outgoing_calls_list);
+        CallsAdapter callsadapter = new CallsAdapter(getContext(), outgoingCalls);
+        listView.setAdapter(callsadapter);
 
-            case 2 :
-                // missed calls for an individual
-
-                view = inflater.inflate(R.layout.list_view_contact_call_details, container, false);
-
-                CallClickListener callClickListener = new CallClickListener(getActivity());
-
-                ((TextView)(view.findViewById(R.id.call_numbe_ind))).setText((String)getArguments().getString("number"));
-                ((TextView)(view.findViewById(R.id.contact_name_ind))).setText((String)getArguments().getString("name"));
-                ((ImageView)(view.findViewById(R.id.call_icon_ind))).setTag((String)getArguments().getString("number"));
-                ((ImageView)(view.findViewById(R.id.call_icon_ind))).setOnClickListener(callClickListener);
-
-                //hide tag button if name is not stored
-                if (((String)getArguments().getString("name")) != null || !(((String)getArguments().getString("name")).isEmpty())){
-                    ((Button)(view.findViewById(R.id.tag_button_ind))).setVisibility(View.GONE);
-                }
-
-
-                listView = (ListView) view.findViewById(R.id.calls_list_contact_ind);
-                IndividualConatactCallAdapter indadapter = new IndividualConatactCallAdapter(getContext(), outgoingCalls, "outgoing");
-                listView.setAdapter(indadapter);
-
-                break;
-
-
-        }
 
         return view;
     }

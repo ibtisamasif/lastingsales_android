@@ -5,17 +5,22 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactCallDetails extends AppCompatActivity {
 
-    LinearLayout mainLayout;
-    TabLayout tabs;
-    ViewPager vpContactCalls;
     private String number = "";
+    private String name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,97 +28,78 @@ public class ContactCallDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_call_details);
 
-
         Intent intent = getIntent();
         this.number = intent.getStringExtra("number");
 
-        this.vpContactCalls = (ViewPager) findViewById(R.id.contact_call_detail_vp);
-        this.tabs = (TabLayout) findViewById(R.id.sliding_tabs_call_details);
-        setUpPager();
+        //TODO get name of the person if exists
+        this.name = "Salman";
+
+        setUpList();
+
     }
 
 
-    private void setUpPager() {
+    private void setUpList() {
 
-        SecondLevelFragmentPagerAdapter adp = new SecondLevelFragmentPagerAdapter(getSupportFragmentManager(), ContactCallDetails.this);
 
-        MissedCallsFragment mc = new MissedCallsFragment();
-        IncomingCallsFragment ic = new IncomingCallsFragment();
-        OutgoingCallsFragment oc = new OutgoingCallsFragment();
-        Bundle args = new Bundle();
-
-        args.putInt("key", 2);
-
-        //TODO replace the number and name with the ones from db
-        args.putString("number","03234433108");
-        args.putString("name","Salman");
-        mc.setArguments(args);
-
-        ic.setArguments(args);
-
-        oc.setArguments(args);
-
-        List<Call> missedCalls = new ArrayList<>();
-        List<Call> incomingCalls = new ArrayList<>();
-        List<Call> outgoingCalls = new ArrayList<>();
+        List<Call> allCalls = new ArrayList<>();
 
         //TODO get call history against the number and remove the data below
-        missedCalls.add(new Call("", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("abc", "0332-5404943", "missed", "10 mins ago"));
-        missedCalls.add(new Call("def", "03xx-yyzzxxx", "missed", "2 hours ago"));
-        missedCalls.add(new Call("ghi", "0323-4433108", "missed", "1 min ago"));
+        allCalls.add(new Call("", "0323-4433108", "missed", "1 min ago"));
+        allCalls.add(new Call("abc", "0332-5404943", "missed", "10 mins ago"));
+        allCalls.add(new Call("def", "03xx-yyzzxxx", "missed", "2 hours ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "missed", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "missed", "1 min ago"));
 
-        missedCalls.add(new Call("lmn", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("opq", "0323-4433108", "missed", "1 min ago"));
-
-
-        missedCalls.add(new Call("rst", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("uvw", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("xyz", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "incoming", "1 min ago"));
 
 
-        //tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-        mc.setList(missedCalls);
-        ic.setList(incomingCalls);
-        oc.setList(outgoingCalls);
+        allCalls.add(new Call("ghi", "0323-4433108", "incoming", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "incoming", "1 min ago"));
 
-        adp.addFrag(mc, "Missed");
-        adp.addFrag(ic,"Incoming");
-        adp.addFrag(oc,"Outgoing");
+        allCalls.add(new Call("ghi", "0323-4433108", "incoming", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "incoming", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "incoming", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "incoming", "1 min ago"));
 
-        this.vpContactCalls.setAdapter(adp);
-        tabs.setupWithViewPager(this.vpContactCalls);
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "missed", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "missed", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+        allCalls.add(new Call("ghi", "0323-4433108", "outgoing", "1 min ago"));
+
+
+        //View view = getLayoutInflater().inflate(R.layout.list_view_contact_call_details, null);
+
+        CallClickListener callClickListener = new CallClickListener(ContactCallDetails.this);
+
+        ((TextView)(this.findViewById(R.id.call_numbe_ind))).setText(this.number);
+
+
+        ((TextView)(this.findViewById(R.id.contact_name_ind))).setText(this.name);
+        ((ImageView)(this.findViewById(R.id.call_icon_ind))).setTag(this.number);
+        ((ImageView)(this.findViewById(R.id.call_icon_ind))).setOnClickListener(callClickListener);
+
+        //hide tag button if name is not stored
+        if (this.name == null || (this.name).isEmpty()){
+            ((Button)(this.findViewById(R.id.tag_button_ind))).setVisibility(View.GONE);
+        }
+
+
+        ListView listview = (ListView) this.findViewById(R.id.calls_list);
+        IndividualConatactCallAdapter indadapter = new IndividualConatactCallAdapter(ContactCallDetails.this, allCalls);
+        listview.setAdapter(indadapter);
+
     }
-
 
 }

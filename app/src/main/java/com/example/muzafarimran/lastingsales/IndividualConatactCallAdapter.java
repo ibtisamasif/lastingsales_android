@@ -21,16 +21,15 @@ public class IndividualConatactCallAdapter extends BaseAdapter {
         public Context mContext;
         private LayoutInflater mInflater;
         private List<Call> mCalls;
-        private String callsType = "";
 
-        public IndividualConatactCallAdapter(Context c, List<Call> call_logs, String callsType)
+
+        public IndividualConatactCallAdapter(Context c, List<Call> call_logs)
         {
             this.mContext = c;
             this.mCalls = call_logs;
            // this.callClickListener = new CallClickListener(c);
-            this.callsType = callsType;
-            this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+            this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         }
 
@@ -69,27 +68,6 @@ public class IndividualConatactCallAdapter extends BaseAdapter {
                 holder.time = (TextView) convertView.findViewById(R.id.call_time);
                 holder.call_icon = (ImageView) convertView.findViewById(R.id.ind_call_icon);
 
-                switch (this.callsType){
-                    case "missed":
-                        holder.call_icon.setImageResource(R.drawable.missed_call_icon_ind);
-
-                        break;
-
-                    case "incoming":
-                        holder.call_icon.setImageResource(R.drawable.call_icon_incoming_ind);
-
-                        break;
-
-                    case "outgoing":
-                        holder.call_icon.setImageResource(R.drawable.call_icon_out_going_ind);
-
-                        break;
-
-                }
-
-
-
-
                 convertView.setTag(holder);
 
             } else {
@@ -101,6 +79,24 @@ public class IndividualConatactCallAdapter extends BaseAdapter {
 
             //TODO calculate the time difference
             holder.time_passed.setText("04:00");
+
+            switch (call.getType()){
+                case "missed":
+                    holder.call_icon.setImageResource(R.drawable.missed_call_icon_ind);
+
+                    break;
+
+                case "incoming":
+                    holder.call_icon.setImageResource(R.drawable.call_icon_incoming_ind);
+
+                    break;
+
+                case "outgoing":
+                    holder.call_icon.setImageResource(R.drawable.call_icon_out_going_ind);
+
+                    break;
+
+            }
 
 
 

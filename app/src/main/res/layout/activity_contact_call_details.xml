@@ -1,31 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_weight="0.1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/sliding_tabs_call_details"
-        android:layout_width="match_parent"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="#5C82E5"
-        app:tabTextColor="#ffffff"
-        app:tabBackground="@drawable/secondleveltabcolors"
-        app:tabSelectedTextColor="#ffffff"
-        app:tabIndicatorColor="#00BAB5"
+        android:id="@+id/contact_bio_section"
+        android:background="#18366c"
+        android:padding="10dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        >
+        <ImageView
+            android:src="@drawable/user_avatar_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:id="@+id/user_avatar_ind"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-        app:tabGravity="fill"
-        app:tabMode="fixed"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            android:text="test_contact_name"
+            android:id="@+id/contact_name_ind"
+            android:textColor="#ffffff"
+            android:layout_above="@+id/call_numbe_ind"
+            android:layout_alignLeft="@+id/call_numbe_ind"
+            android:layout_alignStart="@+id/call_numbe_ind" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/contact_call_detail_vp"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            android:text="test_contact_number"
+            android:id="@+id/call_numbe_ind"
+            android:textColor="#ffffff"
+            android:layout_alignBottom="@+id/call_icon_ind"
+            android:layout_toRightOf="@+id/user_avatar_ind"
+            android:layout_toEndOf="@+id/user_avatar_ind" />
+        <Button
+            android:id="@+id/tag_button_ind"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:text="Tag"
+            android:drawableLeft="@drawable/show"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="#5C82E5"
+            android:textColor="#ffffff"
+            android:radius="5dip"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textSize="12dp"
+            android:layout_alignTop="@+id/call_tag_btn_id"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-</LinearLayout>
+
+        <Button
+            android:id="@+id/call_tag_btn_id"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:text="Follow Up"
+            android:drawableLeft="@drawable/tag_icon"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="#ffffff"
+            android:background="#5C82E5"
+            android:radius="5dip"
+            android:textSize="12dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+
+            android:layout_marginTop="40dp"
+            android:layout_below="@+id/call_numbe_ind"
+            android:layout_toRightOf="@+id/tag_button"
+            android:layout_marginLeft="10dp"
+            />
+
+        <ImageView
+            android:src="@drawable/make_call_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitEnd"
+            android:id="@+id/call_icon_ind"
+
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contact_bio_section"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/calls_list"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            >
+        </ListView>
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+
