@@ -118,10 +118,8 @@ public class CallsAdapter extends BaseAdapter{
             holder.name.setText(call.getName());
             holder.call_name_time.setTag(position);
 
-            String s1 = call.getType().substring(0, 1).toUpperCase();
-            s1 = s1 + call.getType().substring(1);
 
-            holder.time.setText(s1+" Call "+call.getTime());
+            holder.time.setText(call.getTime());
 
             holder.call_icon.setTag(mCalls.get(position).getNumber());
 
@@ -154,15 +152,14 @@ public class CallsAdapter extends BaseAdapter{
             cd.setOnClickListener(detailsListener);
 
 
-
             textView.setText(number);
 
             // insert into main view
             ViewGroup insertPoint = (ViewGroup) ((ViewGroup)v.getParent().getParent()).findViewById(R.id.call_row);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-            params.topMargin = 150;
+            params.topMargin = 120;
             insertPoint.addView(call_details, params);
 
 

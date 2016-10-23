@@ -16,39 +16,56 @@
         android:paddingTop="30dp"
         android:paddingBottom="30dp"
         >
-        <ImageView
-            android:src="@drawable/user_avatar_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:id="@+id/user_avatar_ind"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:textSize="15dp"
-            android:text="test_contact_name"
-            android:id="@+id/contact_name_ind"
-            android:textColor="#ffffff"
-            android:layout_above="@+id/call_numbe_ind"
-            android:layout_alignLeft="@+id/call_numbe_ind"
-            android:layout_alignStart="@+id/call_numbe_ind" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:textSize="15dp"
-            android:text="test_contact_number"
-            android:id="@+id/call_numbe_ind"
-            android:textColor="#ffffff"
-            android:layout_alignBottom="@+id/call_icon_ind"
-            android:layout_toRightOf="@+id/user_avatar_ind"
-            android:layout_toEndOf="@+id/user_avatar_ind" />
+
+            <ImageView
+                android:src="@drawable/user_avatar_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:id="@+id/user_avatar_ind"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:textSize="15dp"
+                android:text="test_contact_name"
+                android:id="@+id/contact_name_ind"
+                android:textColor="#ffffff"
+                android:layout_above="@+id/call_numbe_ind"
+                android:layout_alignLeft="@+id/call_numbe_ind"
+                android:layout_alignStart="@+id/call_numbe_ind" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:textSize="15dp"
+                android:text="test_contact_number"
+                android:id="@+id/call_numbe_ind"
+                android:textColor="#ffffff"
+                android:layout_alignBottom="@+id/call_icon_ind"
+                android:layout_toRightOf="@+id/user_avatar_ind"
+                android:layout_toEndOf="@+id/user_avatar_ind" />
+
+
+            <ImageView
+                android:src="@drawable/make_call_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitEnd"
+                android:id="@+id/call_icon_ind"
+                android:layout_marginTop="10dp"
+
+                />
+
         <Button
             android:id="@+id/tag_button_ind"
             android:layout_width="150dp"
@@ -91,16 +108,7 @@
             android:layout_marginLeft="10dp"
             />
 
-        <ImageView
-            android:src="@drawable/make_call_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:layout_alignParentRight="true"
-            android:scaleType="fitEnd"
-            android:id="@+id/call_icon_ind"
 
-            />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="wrap_content"
