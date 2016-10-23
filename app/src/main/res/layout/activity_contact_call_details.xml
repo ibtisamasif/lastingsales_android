@@ -17,6 +17,7 @@
         app:tabBackground="@drawable/secondleveltabcolors"
         app:tabSelectedTextColor="#ffffff"
         app:tabIndicatorColor="#00BAB5"
+
         app:tabGravity="fill"
         app:tabMode="fixed"/>
 

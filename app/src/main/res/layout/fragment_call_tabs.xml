@@ -7,7 +7,7 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/call_types"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
         android:background="#5C82E5"
         app:tabTextColor="#ffffff"

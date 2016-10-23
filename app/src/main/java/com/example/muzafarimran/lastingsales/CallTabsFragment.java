@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,23 @@ public class CallTabsFragment extends TabFragment{
         tabs = (TabLayout) mainLayout.findViewById(R.id.call_types);
         vpCalls = (ViewPager) mainLayout.findViewById(R.id.vp_call_types);
         setUpPager();
+
+
+        TextView tab = (TextView) inflater.inflate(R.layout.custom_tab, null);
+        TextView tab1 = (TextView) inflater.inflate(R.layout.custom_tab, null);
+        TextView tab2 = (TextView) inflater.inflate(R.layout.custom_tab, null);
+
+        tab.setText("Missed Call");
+        tab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_missed_second_level, 0, 0);
+        tabs.getTabAt(0).setCustomView(tab);
+
+        tab1.setText("Incoming Call");
+        tab1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_incoming_second_level, 0, 0);
+        tabs.getTabAt(1).setCustomView(tab1);
+
+        tab2.setText("Outgoing Call");
+        tab2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_outgoing_second_level, 0, 0);
+        tabs.getTabAt(2).setCustomView(tab2);
 
         return mainLayout;
 
