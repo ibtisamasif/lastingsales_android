@@ -51,7 +51,7 @@ public  class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position)
     {
-        return tabTitles[position];
+        return "";
     }
 }
 

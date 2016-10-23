@@ -103,20 +103,21 @@ public class CallsAdapter extends BaseAdapter{
                 holder.name = (TextView) convertView.findViewById(R.id.call_name);
                 holder.time = (TextView) convertView.findViewById(R.id.call_time);
                 holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+                holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_name_time);
 
                 holder.call_icon.setOnClickListener(this.callClickListener);
-                holder.name.setOnClickListener(this.showcalldetailslistener);
+                holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
 
                 convertView.setTag(holder);
 
             } else {
                 holder = (ViewHolder) convertView.getTag();
-                ((ViewGroup) holder.name.getParent()).removeView(call_details);
+                ((ViewGroup) holder.call_name_time.getParent().getParent()).removeView(call_details);
             }
 
             holder.name.setText(call.getName());
-            holder.name.setTag(position);
-            holder.time.setText(call.getTime());
+            holder.call_name_time.setTag(position);
+            holder.time.setText("Missed Call "+call.getTime());
 
             holder.call_icon.setTag(mCalls.get(position).getNumber());
 
@@ -153,11 +154,11 @@ public class CallsAdapter extends BaseAdapter{
             textView.setText(number);
 
             // insert into main view
-            ViewGroup insertPoint = (ViewGroup) ((ViewGroup)v.getParent()).findViewById(R.id.call_row);
+            ViewGroup insertPoint = (ViewGroup) ((ViewGroup)v.getParent().getParent()).findViewById(R.id.call_row);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-            params.topMargin = 107;
+            params.topMargin = 160;
             insertPoint.addView(call_details, params);
 
 
@@ -184,6 +185,7 @@ public class CallsAdapter extends BaseAdapter{
         TextView time;
         ImageView call_icon;
         ImageView missed_call_icon;
+        RelativeLayout call_name_time;
     }
 
     static class seperatorHolder{

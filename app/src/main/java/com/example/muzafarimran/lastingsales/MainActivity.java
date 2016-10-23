@@ -5,6 +5,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.example.muzafarimran.lastingsales.db.LastingSalesDatabaseHelper;
 
@@ -15,7 +17,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
 
         // create a new database instance and open connection
@@ -41,7 +49,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+
         tabLayout.setupWithViewPager(viewPager);
+
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.menu_icon_home);
+        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone);
+        tabLayout.getTabAt(2).setIcon(R.drawable.menu_icon_contact);
+        tabLayout.getTabAt(3).setIcon(R.drawable.menu_icon_menu);
+
     }
 }
 

@@ -10,57 +10,79 @@
     android:id="@+id/call_row"
     >
 
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_call_group"
+        android:layout_alignParentTop="true"
+        >
+
+
     <ImageView
-        android:src="@drawable/user_avatar"
+        android:src="@drawable/user_avatar_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:id="@+id/user_avatar" />
+        android:id="@+id/user_avatar"
+        />
 
+        <RelativeLayout
 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_call_group_name_time"
+            android:layout_centerVertical="true"
+            android:paddingLeft="15dp"
+            android:layout_toRightOf="@id/user_avatar"
+            >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
         android:textSize="15dp"
         android:text="name"
-        android:layout_toRightOf="@id/user_avatar"
-        android:id="@+id/call_name" />
+        android:id="@+id/call_name"
+
+
+        />
+
 
     <ImageView
         android:src="@drawable/missed_call_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/call_name"
-        android:layout_toRightOf="@id/user_avatar"
-        android:paddingLeft="10dp"
-        android:id="@+id/missed_call_icon" />
+        android:id="@+id/missed_call_icon"
+       android:layout_marginTop="5dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:textSize="10dp"
-        android:layout_below="@id/call_name"
-        android:text="time"
-        android:layout_toRightOf="@id/missed_call_icon"
-        android:id="@+id/call_time"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textSize="10dp"
+            android:layout_toRightOf="@id/missed_call_icon"
+            android:text="time"
+            android:id="@+id/call_time"
+            android:layout_below="@id/call_name" />
 
+
+</RelativeLayout>
 
 
 
     <ImageView
-        android:src="@drawable/call_icon"
+        android:src="@drawable/make_call_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dp"
         android:layout_alignParentRight="true"
         android:scaleType="fitEnd"
         android:id="@+id/call_icon"
+        android:layout_centerVertical="true"
 
         />
 
-
+    </RelativeLayout>
 
 </RelativeLayout>
