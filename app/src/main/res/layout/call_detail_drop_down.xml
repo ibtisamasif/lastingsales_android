@@ -18,7 +18,7 @@
 
     <Button
         android:id="@+id/call_details_btn"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="30dp"
         android:text="Details"
         android:drawableLeft="@drawable/call_details_icon_white"
@@ -37,7 +37,7 @@
 
     <Button
         android:id="@+id/call_tag_btn"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="30dp"
         android:text="Tag"
         android:drawableLeft="@drawable/tag_icon_white"

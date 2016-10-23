@@ -162,7 +162,7 @@ public class CallsAdapter extends BaseAdapter{
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-            params.topMargin = 180;
+            params.topMargin = 150;
             insertPoint.addView(call_details, params);
 
 
