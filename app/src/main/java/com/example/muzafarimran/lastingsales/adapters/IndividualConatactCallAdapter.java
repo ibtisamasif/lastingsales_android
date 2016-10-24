@@ -1,15 +1,15 @@
-package com.example.muzafarimran.lastingsales;
+package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
 import android.widget.ImageView;
-
 import android.widget.TextView;
+
+import com.example.muzafarimran.lastingsales.Call;
+import com.example.muzafarimran.lastingsales.R;
 
 import java.util.List;
 

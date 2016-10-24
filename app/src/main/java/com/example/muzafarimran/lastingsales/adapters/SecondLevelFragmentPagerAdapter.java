@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales;
+package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

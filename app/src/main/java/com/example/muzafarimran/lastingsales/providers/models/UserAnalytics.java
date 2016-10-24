@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.model;
+package com.example.muzafarimran.lastingsales.providers.models;
 
 public class UserAnalytics {
     private int id;

@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales;
+package com.example.muzafarimran.lastingsales.activities;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
@@ -6,19 +6,18 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Window;
-import android.view.WindowManager;
 
-import com.example.muzafarimran.lastingsales.db.LastingSalesDatabaseHelper;
+import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.providers.LastingSalesDatabaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 
     // database helper
     LastingSalesDatabaseHelper dbh;
 
-    @Override
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
         super.onCreate(savedInstanceState);
 
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         // create a new database instance and open connection
-        dbh = new LastingSalesDatabaseHelper(getApplicationContext());
+        dbh = LastingSalesDatabaseHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = dbh.getWritableDatabase();
 
 //        // Create a new map of values, where column names are the keys

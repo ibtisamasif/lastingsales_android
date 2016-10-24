@@ -1,9 +1,15 @@
-package com.example.muzafarimran.lastingsales;
+package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.example.muzafarimran.lastingsales.fragments.CallTabsFragment;
+import com.example.muzafarimran.lastingsales.fragments.ContactsFragment;
+import com.example.muzafarimran.lastingsales.fragments.HomeFragment;
+import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
+import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
 
 /**

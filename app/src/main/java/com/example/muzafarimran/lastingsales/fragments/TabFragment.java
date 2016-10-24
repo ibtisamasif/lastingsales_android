@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales;
+package com.example.muzafarimran.lastingsales.fragments;
 
 import android.Manifest;
 import android.content.Intent;

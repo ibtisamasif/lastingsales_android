@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales;
+package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.example.muzafarimran.lastingsales.Call;
+import com.example.muzafarimran.lastingsales.CallClickListener;
+import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
+import com.example.muzafarimran.lastingsales.R;
+
 import java.util.List;
 
 /**

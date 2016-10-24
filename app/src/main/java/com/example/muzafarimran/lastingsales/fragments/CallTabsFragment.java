@@ -1,8 +1,7 @@
-package com.example.muzafarimran.lastingsales;
+package com.example.muzafarimran.lastingsales.fragments;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -12,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.muzafarimran.lastingsales.Call;
+import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.adapters.SecondLevelFragmentPagerAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +22,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CallTabsFragment extends TabFragment{
+public class CallTabsFragment extends TabFragment {
 
     LinearLayout mainLayout;
     TabLayout tabs;

@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.model;
+package com.example.muzafarimran.lastingsales.providers.models;
 
 public class Followup {
     private int id;

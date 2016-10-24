@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales;
+package com.example.muzafarimran.lastingsales.fragments;
 
 
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
 
 /**
