@@ -27,7 +27,6 @@ public class IndividualConatactCallAdapter extends BaseAdapter {
         {
             this.mContext = c;
             this.mCalls = call_logs;
-           // this.callClickListener = new CallClickListener(c);
 
             this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

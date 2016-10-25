@@ -14,6 +14,7 @@ import com.example.muzafarimran.lastingsales.Contact;
 import com.example.muzafarimran.lastingsales.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lenovo 1 on 9/21/2016.
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class ContactsAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
-    private ArrayList<Contact> mContacts;
+    private List<Contact> mContacts;
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
@@ -32,7 +33,7 @@ public class ContactsAdapter extends BaseAdapter {
 
 
 
-    public ContactsAdapter(Context c, ArrayList<Contact> contacts)
+    public ContactsAdapter(Context c, List<Contact> contacts)
     {
         this.mContext = c;
         this.mContacts = contacts;

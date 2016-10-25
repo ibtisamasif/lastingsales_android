@@ -74,10 +74,28 @@ public class CallTabsFragment extends TabFragment {
         oc.setArguments(args);
 
 
-
         List<Call> missedCalls = new ArrayList<>();
         List<Call> incomingCalls = new ArrayList<>();
         List<Call> outgoingCalls = new ArrayList<>();
+
+        missedCalls.add(new Call("Unanswered Sales", "", "seperator", ""));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Raza Ahmad", "0332-5404943", "missed", "10 mins ago"));
+        missedCalls.add(new Call("Kashif Naeem", "03xx-yyzzxxx", "missed", "2 hours ago"));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Unanswered Collegue", "", "seperator", ""));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+
+
+        missedCalls.add(new Call("Unanswered Sales", "", "seperator", ""));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Raza Ahmad", "0332-5404943", "missed", "10 mins ago"));
+        missedCalls.add(new Call("Kashif Naeem", "03xx-yyzzxxx", "missed", "2 hours ago"));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Unanswered Collegue", "", "seperator", ""));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
 
         missedCalls.add(new Call("Unanswered Sales", "", "seperator", ""));
         missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
