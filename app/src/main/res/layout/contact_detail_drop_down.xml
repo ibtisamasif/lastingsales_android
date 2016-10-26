@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="#18366C"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/last_contact"
+        android:layout_marginBottom="10dp"
+
+        >
+
+        <ImageView
+            android:src="@drawable/last_contact_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:id="@+id/last_contact_icon"
+            android:layout_centerVertical="true"
+
+            />
+
+
+        <TextView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="#ffffff"
+            android:id="@+id/last_contact_label"
+            android:text="standard test text"
+            android:layout_toRightOf="@id/last_contact_icon"
+            android:layout_centerVertical="true"
+            />
+
+
+        <TextView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="12dp"
+            android:textColor="#ffffff"
+            android:text="standard test text"
+            android:id="@+id/last_contact_text"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitEnd"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/response_time"
+        android:layout_marginBottom="10dp"
+        >
+
+        <ImageView
+            android:src="@drawable/response_time_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:id="@+id/response_time_icon"
+            android:layout_centerVertical="true"
+
+            />
+
+
+        <TextView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="#ffffff"
+            android:id="@+id/response_time_label"
+            android:text="Response Time"
+            android:layout_toRightOf="@id/response_time_icon"
+            android:layout_centerVertical="true"
+            />
+
+
+        <TextView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="12dp"
+            android:textColor="#ffffff"
+            android:text="standard test text"
+            android:id="@+id/response_time_text"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitEnd"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/messages"
+        android:layout_marginBottom="10dp"
+        >
+
+        <ImageView
+            android:src="@drawable/messages_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:id="@+id/messages_icon"
+            android:layout_centerVertical="true"
+
+            />
+
+
+        <TextView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="#ffffff"
+            android:id="@+id/messages_label"
+            android:text="Response Time"
+            android:layout_toRightOf="@id/messages_icon"
+            android:layout_centerVertical="true"
+            />
+
+
+        <TextView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="12dp"
+            android:textColor="#ffffff"
+            android:text="standard test text"
+            android:id="@+id/messages_text"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitEnd"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/number_calls"
+        >
+
+        <ImageView
+            android:src="@drawable/number_calls_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:id="@+id/calls_icon"
+            android:layout_centerVertical="true"
+
+            />
+
+
+        <TextView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="#ffffff"
+            android:id="@+id/calls_label"
+            android:text="Response Time"
+            android:layout_toRightOf="@id/calls_icon"
+            android:layout_centerVertical="true"
+            />
+
+
+        <TextView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="12dp"
+            android:textColor="#ffffff"
+            android:text="standard test text"
+            android:id="@+id/calls_text"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitEnd"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

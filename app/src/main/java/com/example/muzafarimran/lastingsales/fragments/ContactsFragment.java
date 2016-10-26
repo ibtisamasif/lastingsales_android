@@ -97,6 +97,26 @@ public class ContactsFragment extends TabFragment {
         salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
         salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
 
+        personalContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        personalContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        personalContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        personalContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        personalContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+
+        collegueContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        collegueContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        collegueContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        collegueContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        collegueContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+
+        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+
         //tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         sc.setList(salesContacts);
         cc.setList(collegueContacts);
@@ -104,9 +124,9 @@ public class ContactsFragment extends TabFragment {
         uc.setList(untaggedContacts);
 
         adp.addFrag(sc, "SALES");
-        adp.addFrag(cc,"COLLEGUES");
-        adp.addFrag(pc,"PERSONAL");
-        adp.addFrag(uc,"UNTAGGED");
+        adp.addFrag(cc, "COLLEGUES");
+        adp.addFrag(pc, "PERSONAL");
+        adp.addFrag(uc, "UNTAGGED");
 
         vpConatcs.setAdapter(adp);
         tabs.setupWithViewPager(vpConatcs);

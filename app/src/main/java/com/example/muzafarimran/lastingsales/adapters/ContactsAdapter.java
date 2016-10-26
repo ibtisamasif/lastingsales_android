@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +32,8 @@ public class ContactsAdapter extends BaseAdapter {
     private CallClickListener callClickListener = null;
     private showContactDetaislsListener showContactDetaislsListener = null;
 
+    View contact_details = null;
+
 
 
     public ContactsAdapter(Context c, List<Contact> contacts)
@@ -40,7 +43,6 @@ public class ContactsAdapter extends BaseAdapter {
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.callClickListener = new CallClickListener(c);
         this.showContactDetaislsListener = new showContactDetaislsListener();
-
         this.prospectCount = contacts.indexOf(new Contact("Leads", null, "seperator", null, null, null, null)) - 1;
         this.leadCount     = contacts.size() - this.prospectCount - 2;
     }
@@ -81,49 +83,45 @@ public class ContactsAdapter extends BaseAdapter {
             seperatorViewHolder seperatorviewHolder = null;
             if (convertView == null){
 
-                convertView = mInflater.inflate(R.layout.section_seperator, parent, false);
+                convertView = mInflater.inflate(R.layout.section_seperator_two_text_views, parent, false);
                 seperatorviewHolder = new seperatorViewHolder();
-                seperatorviewHolder.text = (TextView) convertView.findViewById(R.id.section_seperator);
+
+                seperatorviewHolder.salesType = (TextView) convertView.findViewById(R.id.section_seperator_first_text);
+                seperatorviewHolder.salesTypeCount = (TextView) convertView.findViewById(R.id.section_seperator_second_text);
 
                 convertView.setTag(seperatorviewHolder);
 
             }else {
                 seperatorviewHolder = (seperatorViewHolder) convertView.getTag();
             }
-            String label = "";
-            switch (contact.getName()){
 
+            seperatorviewHolder.salesType.setText(contact.getName());
+            switch (contact.getName()){
                 case "Prospects":
-                    label = "Prospects ( "+this.prospectCount+" )";
-                    break;
+                       seperatorviewHolder.salesTypeCount.setText(Integer.toString(this.prospectCount));
+                        break;
 
                 case "Leads":
-                    label = "Leads ( "+this.leadCount+" )";
+                        seperatorviewHolder.salesTypeCount.setText(Integer.toString(this.leadCount));
                     break;
-
             }
-            seperatorviewHolder.text.setText(label);
 
         }else{
             ViewHolder holder = null;
             if (convertView == null) {
 
-                convertView = mInflater.inflate(R.layout.contacts_text_view, parent, false);
+                convertView = mInflater.inflate(R.layout.contact_row_view, parent, false);
 
                 holder = new ViewHolder();
 
-                holder.name            = (TextView)  convertView.findViewById(R.id.contact_name);
-                holder.number          = (TextView)  convertView.findViewById(R.id.contact_number);
-                holder.image           = (ImageView) convertView.findViewById(R.id.call_icon);
-                holder.messages        = (TextView)  convertView.findViewById(R.id.messages);
-                holder.response_time   = (TextView)  convertView.findViewById(R.id.response_time);
-                holder.last_contact    = (TextView)  convertView.findViewById(R.id.last_contact);
-                holder.number_calls    = (TextView)  convertView.findViewById(R.id.number_calls);
-                holder.contact_details = (RelativeLayout) convertView.findViewById(R.id.contact_details);
+                holder.name      = (TextView)  convertView.findViewById(R.id.contact_name);
+                holder.number    = (TextView)  convertView.findViewById(R.id.contact_number);
+                holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+
 
                 convertView.setTag(holder);
 
-                holder.image.setOnClickListener(this.callClickListener);
+                holder.call_icon.setOnClickListener(this.callClickListener);
                 holder.name.setOnClickListener(this.showContactDetaislsListener);
 
 
@@ -134,14 +132,11 @@ public class ContactsAdapter extends BaseAdapter {
 
 
             holder.name.setText(contact.getName());
+            holder.name.setTag(position);
             holder.number.setText(contact.getNumber());
-            holder.messages.setText(contact.getNumber_messages());
-            holder.response_time.setText(contact.getResponse_time());
-            holder.last_contact.setText(contact.getLast_contact());
-            holder.number_calls.setText(contact.getNumber_calls());
 
-            holder.image.setTag(mContacts.get(position).getNumber());
-            holder.name.setTag(holder.contact_details);
+            holder.call_icon.setTag(mContacts.get(position).getNumber());
+
         }
 
         return convertView;
@@ -154,9 +149,34 @@ public class ContactsAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View v) {
-            //System.out.println(((TextView)v).getText().toString());
-            RelativeLayout relativeLayout =((RelativeLayout)(v.getTag()));
-            relativeLayout.setVisibility(relativeLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            if (contact_details == null){
+                contact_details = mInflater.inflate(R.layout.contact_detail_drop_down, null);
+
+            }else {
+                if (contact_details.getParent() != null){((ViewGroup) contact_details.getParent()).removeView(contact_details);}
+
+            }
+
+            String number = mContacts.get((int) v.getTag()).getNumber();
+            // fill in any details dynamically here
+            TextView lastContactText = (TextView) contact_details.findViewById(R.id.last_contact_text);
+            TextView responseTimeText = (TextView) contact_details.findViewById(R.id.response_time_text);
+            TextView messagesText = (TextView) contact_details.findViewById(R.id.messages_text);
+            TextView numberCallsText = (TextView) contact_details.findViewById(R.id.calls_text);
+
+            //TODO get details from the database
+            lastContactText.setText("2 Days ago");
+            responseTimeText.setText("2 hours");
+            messagesText.setText("7");
+            numberCallsText.setText("4");
+
+            // insert into main view row
+            ViewGroup insertPoint = (ViewGroup) ((ViewGroup)v.getParent().getParent().getParent()).findViewById(R.id.contact_row);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+            params.topMargin = 140;
+            insertPoint.addView(contact_details, params);
         }
     }
 
@@ -166,19 +186,15 @@ public class ContactsAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView name;
         TextView number;
-        ImageView image;
-        TextView last_contact;
-        TextView response_time;
-        TextView messages;
-        TextView number_calls;
-        RelativeLayout contact_details;
+        ImageView call_icon;
     }
 
     /*
     * Hold references to seperator tab
     * */
     static class seperatorViewHolder{
-        TextView text;
+        TextView salesType;
+        TextView salesTypeCount;
     }
 
     private boolean isSeparator(int position) {
