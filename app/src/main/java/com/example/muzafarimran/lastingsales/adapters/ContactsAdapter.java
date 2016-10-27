@@ -19,6 +19,7 @@ import com.example.muzafarimran.lastingsales.Contact;
 import com.example.muzafarimran.lastingsales.R;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -89,6 +90,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         Contact contact = (Contact) getItem(position);
 
         if (isSeparator(position)){
+            //Toast.makeText(mContext,"sup", Toast.LENGTH_LONG ).show();
 
             seperatorViewHolder seperatorviewHolder = null;
             if (convertView == null){
@@ -174,10 +176,10 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
                 else
                 {
                     //Toast.makeText(mContext,"else", Toast.LENGTH_LONG ).show();
-                    List<Contact> filterResultsData = null;
+                    List<Contact> filterResultsData = new ArrayList<>();
                     //int length = charSequence.length();
                     for (int i = 0; i < mContacts.size(); i++){
-                        if (mContacts.get(i).getName().startsWith(((String) charSequence))){
+                        if (mContacts.get(i).getName().toLowerCase().startsWith(((String) charSequence).toLowerCase())){
                             filterResultsData.add(mContacts.get(i));
                         }
                     }
@@ -256,6 +258,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     }
 
     private boolean isSeparator(int position) {
-        return mContacts.get(position).getTag() == "seperator";
+        return filteredData.get(position).getTag() == "seperator";
     }
 }
