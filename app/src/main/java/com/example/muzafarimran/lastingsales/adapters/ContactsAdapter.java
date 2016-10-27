@@ -5,25 +5,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.Contact;
 import com.example.muzafarimran.lastingsales.R;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
  * Created by lenovo 1 on 9/21/2016.
  */
-public class ContactsAdapter extends BaseAdapter {
+public class ContactsAdapter extends BaseAdapter implements Filterable {
     private Context mContext;
     private LayoutInflater mInflater;
     private List<Contact> mContacts;
+    private List<Contact> filteredData;
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
@@ -36,15 +41,20 @@ public class ContactsAdapter extends BaseAdapter {
 
 
 
+
+
     public ContactsAdapter(Context c, List<Contact> contacts)
     {
         this.mContext = c;
         this.mContacts = contacts;
+        this.filteredData = contacts;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.callClickListener = new CallClickListener(c);
         this.showContactDetaislsListener = new showContactDetaislsListener();
         this.prospectCount = contacts.indexOf(new Contact("Leads", null, "seperator", null, null, null, null)) - 1;
         this.leadCount     = contacts.size() - this.prospectCount - 2;
+
+
     }
 
     @Override
@@ -57,13 +67,13 @@ public class ContactsAdapter extends BaseAdapter {
     @Override
     public int getCount()
     {
-        return mContacts.size();
+        return this.filteredData.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return mContacts.get(position);
+        return this.filteredData.get(position);
     }
 
     @Override
@@ -141,6 +151,54 @@ public class ContactsAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+
+    // for searching
+    //TODO this method needs to be moved from here
+
+    @Override
+    public Filter getFilter() {
+        return new Filter()
+        {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence)
+            {
+                FilterResults results = new Filter.FilterResults();
+
+                //If there's nothing to filter on, return the original data for your list
+                if(charSequence == null || charSequence.length() == 0) {
+
+                    results.values = mContacts;
+                    results.count = mContacts.size();
+                }
+                else
+                {
+                    //Toast.makeText(mContext,"else", Toast.LENGTH_LONG ).show();
+                    List<Contact> filterResultsData = null;
+                    //int length = charSequence.length();
+                    for (int i = 0; i < mContacts.size(); i++){
+                        if (mContacts.get(i).getName().startsWith(((String) charSequence))){
+                            filterResultsData.add(mContacts.get(i));
+                        }
+                    }
+
+                    results.values = filterResultsData;
+                    results.count = filterResultsData.size();
+                }
+
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults)
+            {
+                filteredData = ((List<Contact>)filterResults.values);
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+
 
     /*
     * event handler for click on name
