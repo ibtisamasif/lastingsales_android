@@ -3,8 +3,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/app_background"
     android:layout_weight="0.9"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,17 +22,34 @@
             android:orientation="vertical"
             android:layout_weight="0.5" >
 
+            <ImageView
+                android:src="@drawable/inactive_leads_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="0dp"
+                android:id="@+id/inactive_leads_icon"
+                android:layout_marginBottom="10dp"
+                />
+
             <TextView
                 android:id="@+id/inactive_leads"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Inactive Leads" />
+                android:text="Inactive Leads"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                />
 
             <TextView
                 android:id="@+id/inactive_leads_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="(2)" />
+                android:text="(2)"
+                android:textColor="#b7ccf6"
+
+
+                />
 
         </LinearLayout>
 
@@ -40,11 +60,24 @@
             android:orientation="vertical"
             android:layout_weight="0.5">
 
+            <ImageView
+                android:src="@drawable/untagged_contacts_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="0dp"
+                android:id="@+id/untagged_contacts_icon"
+                android:layout_marginBottom="10dp"
+                />
+
             <TextView
                 android:id="@+id/untagged_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Untagged Contacts" />
+                android:text="Untagged Contacts"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                />
 
             <TextView
                 android:id="@+id/untagged_contacts_val"
@@ -70,11 +103,25 @@
             android:gravity="center"
             android:layout_weight="0.5">
 
+            <ImageView
+                android:src="@drawable/follow_ups_today_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="0dp"
+                android:id="@+id/follow_ups_today_icon"
+                android:layout_marginBottom="10dp"
+
+                />
+
             <TextView
                 android:id="@+id/followups_today"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Follow-ups Today" />
+                android:text="Follow-ups Today"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -86,6 +133,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:text="Due" />
+
+
                 <TextView
                     android:id="@+id/followups_today_due"
                     android:layout_width="wrap_content"
@@ -116,11 +165,25 @@
             android:gravity="center"
             android:layout_weight="0.5">
 
+            <ImageView
+                android:src="@drawable/pending_prospects_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="0dp"
+                android:id="@+id/pending_prospects_icon"
+                android:layout_marginBottom="10dp"
+
+                />
+
             <TextView
                 android:id="@+id/pending_prospects"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pending Prospects" />
+                android:text="Pending Prospects"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                />
 
             <TextView
                 android:id="@+id/pending_prospects_val"
@@ -144,11 +207,24 @@
             android:orientation="vertical"
             android:gravity="center" >
 
+            <ImageView
+                android:src="@drawable/response_time_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="0dp"
+                android:id="@+id/response_time_icon"
+                android:layout_marginBottom="10dp"
+                />
+
             <TextView
                 android:id="@+id/avg_response_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Avg. Response Time" />
+                android:text="Avg. Response Time"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                />
 
             <TextView
                 android:id="@+id/avg_response_time_val"

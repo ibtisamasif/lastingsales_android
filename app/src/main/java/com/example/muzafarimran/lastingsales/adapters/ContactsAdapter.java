@@ -140,6 +140,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
             } else {
 
                 holder = (ViewHolder) convertView.getTag();
+                ((ViewGroup) holder.name.getParent().getParent().getParent()).removeView(contact_details);
             }
 
 
@@ -172,9 +173,8 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 
                     results.values = mContacts;
                     results.count = mContacts.size();
-                }
-                else
-                {
+
+                } else {
                     //Toast.makeText(mContext,"else", Toast.LENGTH_LONG ).show();
                     List<Contact> filterResultsData = new ArrayList<>();
                     //int length = charSequence.length();
