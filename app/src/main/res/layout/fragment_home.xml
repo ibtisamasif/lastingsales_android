@@ -84,7 +84,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="(3)" />
+                android:text="(3)"
+                android:textColor="#b7ccf6"
+                />
 
         </LinearLayout>
 
@@ -132,7 +134,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:text="Due" />
+                    android:text="Due"
+                    android:textColor="#b7ccf6"
+                    />
 
 
                 <TextView
@@ -140,19 +144,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:text="(1)" />
+                    android:text="(1)"
+                    android:textColor="#b7ccf6"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:text="Done" />
+                    android:text="Done"
+                    android:textColor="#b7ccf6"
+                    />
                 <TextView
                     android:id="@+id/followups_today_done"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:text="(2)" />
+                    android:text="(2)"
+                    android:textColor="#b7ccf6"
+                    />
 
             </LinearLayout>
 
@@ -189,7 +199,9 @@
                 android:id="@+id/pending_prospects_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="(4)" />
+                android:text="(4)"
+                android:textColor="#b7ccf6"
+                />
 
         </LinearLayout>
 
@@ -230,7 +242,9 @@
                 android:id="@+id/avg_response_time_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="(1 hour)" />
+                android:text="(1 hour)"
+                android:textColor="#b7ccf6"
+                />
 
         </LinearLayout>
 
