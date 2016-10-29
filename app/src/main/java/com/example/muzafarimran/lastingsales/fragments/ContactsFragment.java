@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 
 import com.example.muzafarimran.lastingsales.Contact;
@@ -31,6 +32,41 @@ public class ContactsFragment extends TabFragment {
     public ContactsFragment() {}
 
 
+    @Override
+    public void onResume() {
+        /*Toast.makeText(getActivity(), "Resume",
+                Toast.LENGTH_LONG).show();*/
+        //setUpPager();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+       /* Toast.makeText(getActivity(), "Pause",
+                Toast.LENGTH_LONG).show();*/
+        super.onPause();
+    }
+
+
+
+
+    @Override
+    public void onStop() {
+
+        /*Toast.makeText(getActivity(), "stop",
+                Toast.LENGTH_LONG).show();*/
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+
+       /* Toast.makeText(getActivity(), "destroy view",
+                Toast.LENGTH_LONG).show();*/
+        super.onDestroyView();
+    }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,13 +82,6 @@ public class ContactsFragment extends TabFragment {
         vpConatcs = (ViewPager) mainLayout.findViewById(R.id.vp_contacts_types);
         setUpPager();
 
-
-        /*View view = inflater.inflate(R.layout.fragment_contacts, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.contacts_list);
-
-
-        ContactsAdapter adapter = new ContactsAdapter(getContext(),contacts);
-        listView.setAdapter(adapter);*/
 
         return mainLayout;
     }

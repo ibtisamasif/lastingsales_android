@@ -45,7 +45,7 @@ public class CallTabsFragment extends TabFragment {
         setUpPager();
 
 
-        tab0 = (TextView) inflater.inflate(R.layout.custom_tab, null);
+        /*tab0 = (TextView) inflater.inflate(R.layout.custom_tab, null);
         tab1 = (TextView) inflater.inflate(R.layout.custom_tab, null);
         tab2 = (TextView) inflater.inflate(R.layout.custom_tab, null);
 
@@ -62,7 +62,7 @@ public class CallTabsFragment extends TabFragment {
 
         tab2.setText("Outgoing Call");
         tab2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_outgoing_second_level, 0, 0);
-        tabs.getTabAt(2).setCustomView(tab2);
+        tabs.getTabAt(2).setCustomView(tab2);*/
 
         //tabs.addOnTabSelectedListener(this.tabselectedlistener);
 

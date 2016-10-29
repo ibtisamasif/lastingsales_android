@@ -22,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     private tabSelectedListener tabselectedlistener = new tabSelectedListener();
     private Context context = this;
+/*
     Toolbar myToolbar = null;
+*/
     // database helper
     LastingSalesDatabaseHelper dbh;
     @Override
@@ -34,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        this.myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(this.myToolbar);
-        this.myToolbar.setMinimumHeight(350);
+       /* this.myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(this.myToolbar);*/
+        //this.myToolbar.setMinimumHeight(350);
 
         // create a new database instance and open connection
         dbh = LastingSalesDatabaseHelper.getInstance(getApplicationContext());
@@ -89,23 +91,23 @@ public class MainActivity extends AppCompatActivity {
 
                 case 1:
                     tab.setIcon(R.drawable.menu_icon_phone_selected_aqua);
-                    ((TextView)(myToolbar.findViewById(R.id.title))).setText("CALL LOGS");
+                    //((TextView)(myToolbar.findViewById(R.id.title))).setText("CALL LOGS");
                     break;
 
                 case 2:
                     tab.setIcon(R.drawable.menu_icon_contact_selected_aqua);
-                    ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
+                   // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                     break;
 
 
                 case 3:
                     tab.setIcon(R.drawable.menu_icon_menu_selected_aqua);
-                    ((TextView)(myToolbar.findViewById(R.id.title))).setText("MENU");
+                   // ((TextView)(myToolbar.findViewById(R.id.title))).setText("MENU");
                     break;
 
             }
 
-            if (tab.getPosition() != 0){
+           /* if (tab.getPosition() != 0){
                 myToolbar.findViewById(R.id.title).setVisibility(View.VISIBLE);
                 myToolbar.findViewById(R.id.lasting_sales_logo).setVisibility(View.GONE);
                 myToolbar.setMinimumHeight(100);
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 myToolbar.findViewById(R.id.lasting_sales_logo).setVisibility(View.VISIBLE);
                 myToolbar.findViewById(R.id.title).setVisibility(View.GONE);
                 myToolbar.setMinimumHeight(350);
-            }
+            }*/
 
         }
 
