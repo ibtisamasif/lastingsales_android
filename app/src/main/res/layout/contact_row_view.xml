@@ -8,6 +8,14 @@
     android:paddingBottom="0dp"
     android:id="@+id/contact_row"
     >
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_call_group_wrapper"
+        android:layout_alignParentTop="true"
+
+        >
 
     <RelativeLayout
 
@@ -21,7 +29,7 @@
 
 
         <ImageView
-            android:src="@drawable/user_avatar_icon"
+            android:src="@drawable/user_avatar_icon_gray_border"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="0dp"
@@ -59,7 +67,7 @@
 
 
         </RelativeLayout>
-
+</RelativeLayout>
 
 
         <ImageView

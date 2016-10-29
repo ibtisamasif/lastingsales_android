@@ -40,10 +40,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 
     View contact_details = null;
 
-
-
-
-
     public ContactsAdapter(Context c, List<Contact> contacts)
     {
         this.mContext = c;
@@ -129,23 +125,24 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
                 holder.name      = (TextView)  convertView.findViewById(R.id.contact_name);
                 holder.number    = (TextView)  convertView.findViewById(R.id.contact_number);
                 holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+                holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
 
 
                 convertView.setTag(holder);
 
                 holder.call_icon.setOnClickListener(this.callClickListener);
-                holder.name.setOnClickListener(this.showContactDetaislsListener);
+                holder.user_details_wrapper.setOnClickListener(this.showContactDetaislsListener);
 
 
             } else {
 
                 holder = (ViewHolder) convertView.getTag();
-                ((ViewGroup) holder.name.getParent().getParent().getParent()).removeView(contact_details);
+                ((ViewGroup) holder.user_details_wrapper.getParent()).removeView(contact_details);
             }
 
 
             holder.name.setText(contact.getName());
-            holder.name.setTag(position);
+            holder.user_details_wrapper.setTag(position);
             holder.number.setText(contact.getNumber());
 
             holder.call_icon.setTag(mContacts.get(position).getNumber());
@@ -161,25 +158,26 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public Filter getFilter() {
-        return new Filter()
-        {
+
+        return new Filter() {
+
             @Override
             protected FilterResults performFiltering(CharSequence charSequence)
             {
                 FilterResults results = new Filter.FilterResults();
 
-                //If there's nothing to filter on, return the original data for your list
+                //If there's nothing to filter on, return the original data for list
                 if(charSequence == null || charSequence.length() == 0) {
 
                     results.values = mContacts;
                     results.count = mContacts.size();
 
                 } else {
-                    //Toast.makeText(mContext,"else", Toast.LENGTH_LONG ).show();
+
                     List<Contact> filterResultsData = new ArrayList<>();
                     //int length = charSequence.length();
                     for (int i = 0; i < mContacts.size(); i++){
-                        if (mContacts.get(i).getName().toLowerCase().startsWith(((String) charSequence).toLowerCase())){
+                        if (mContacts.get(i).getTag().toLowerCase() != "seperator" && mContacts.get(i).getName().toLowerCase().startsWith(((String) charSequence).toLowerCase())){
                             filterResultsData.add(mContacts.get(i));
                         }
                     }
@@ -231,7 +229,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
             numberCallsText.setText("4");
 
             // insert into main view row
-            ViewGroup insertPoint = (ViewGroup) ((ViewGroup)v.getParent().getParent().getParent()).findViewById(R.id.contact_row);
+            ViewGroup insertPoint = (ViewGroup) ((ViewGroup)v.getParent()).findViewById(R.id.contact_row);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
@@ -247,6 +245,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         TextView name;
         TextView number;
         ImageView call_icon;
+        RelativeLayout user_details_wrapper;
     }
 
     /*

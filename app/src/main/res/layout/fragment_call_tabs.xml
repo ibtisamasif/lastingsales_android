@@ -9,14 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
-        android:background="#5C82E5"
-        app:tabTextColor="#ffffff"
+        android:background="#e3e3e3"
+        app:tabTextColor="#18366c"
         app:tabBackground="@drawable/secondleveltabcolors"
         app:tabSelectedTextColor="#ffffff"
-        app:tabIndicatorColor="#00BAB5"
+        app:tabIndicatorColor="@android:color/transparent"
         app:tabGravity="fill"
         app:tabMode="fixed"
-
+        android:layout_marginBottom="10dp"
         />
 
     <android.support.v4.view.ViewPager

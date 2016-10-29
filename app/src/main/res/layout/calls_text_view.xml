@@ -18,9 +18,18 @@
         android:layout_alignParentTop="true"
         >
 
+        <RelativeLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_call_group_wrapper"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            >
+
 
     <ImageView
-        android:src="@drawable/user_avatar_icon"
+        android:src="@drawable/user_avatar_icon_gray_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="0dp"
@@ -59,7 +68,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
+            android:paddingLeft="3dp"
             android:textSize="10dp"
             android:layout_toRightOf="@id/missed_call_icon"
             android:text="time"
@@ -68,6 +77,9 @@
 
 
 </RelativeLayout>
+
+
+        </RelativeLayout>
 
 
 

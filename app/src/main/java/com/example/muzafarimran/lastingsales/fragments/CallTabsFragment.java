@@ -27,6 +27,11 @@ public class CallTabsFragment extends TabFragment {
     LinearLayout mainLayout;
     TabLayout tabs;
     ViewPager vpCalls;
+   //private tabSelectedListener tabselectedlistener = new tabSelectedListener();
+
+    TextView tab0 = null;
+    TextView tab1 = null;
+    TextView tab2 = null;
 
 
     @Override
@@ -35,17 +40,21 @@ public class CallTabsFragment extends TabFragment {
 
         mainLayout = (LinearLayout) inflater.inflate(R.layout.fragment_call_tabs, container, false);
         tabs = (TabLayout) mainLayout.findViewById(R.id.call_types);
+
         vpCalls = (ViewPager) mainLayout.findViewById(R.id.vp_call_types);
         setUpPager();
 
 
-        TextView tab = (TextView) inflater.inflate(R.layout.custom_tab, null);
-        TextView tab1 = (TextView) inflater.inflate(R.layout.custom_tab, null);
-        TextView tab2 = (TextView) inflater.inflate(R.layout.custom_tab, null);
+        tab0 = (TextView) inflater.inflate(R.layout.custom_tab, null);
+        tab1 = (TextView) inflater.inflate(R.layout.custom_tab, null);
+        tab2 = (TextView) inflater.inflate(R.layout.custom_tab, null);
 
-        tab.setText("Missed Call");
-        tab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_missed_second_level, 0, 0);
-        tabs.getTabAt(0).setCustomView(tab);
+
+
+        tab0.setText("Missed Call");
+
+        tab0.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_missed_second_level, 0, 0);
+        tabs.getTabAt(0).setCustomView(tab0);
 
         tab1.setText("Incoming Call");
         tab1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_incoming_second_level, 0, 0);
@@ -54,6 +63,8 @@ public class CallTabsFragment extends TabFragment {
         tab2.setText("Outgoing Call");
         tab2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_outgoing_second_level, 0, 0);
         tabs.getTabAt(2).setCustomView(tab2);
+
+        //tabs.addOnTabSelectedListener(this.tabselectedlistener);
 
         return mainLayout;
 
@@ -127,11 +138,80 @@ public class CallTabsFragment extends TabFragment {
         oc.setList(outgoingCalls);
 
         adp.addFrag(mc, "Missed");
-        adp.addFrag(ic,"Incoming");
-        adp.addFrag(oc,"Outgoing");
+        adp.addFrag(ic, "Incoming");
+        adp.addFrag(oc, "Outgoing");
 
         vpCalls.setAdapter(adp);
         tabs.setupWithViewPager(vpCalls);
     }
+
+/*
+    public class tabSelectedListener implements TabLayout.OnTabSelectedListener {
+
+
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+
+
+            switch (tab.getPosition()) {
+
+                case 0:
+                    //((TextView) tab0.findViewById(R.id.tab)).setTextColor("#ffffff");
+                    tab0.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_missed_second_level_selected, 0, 0);
+                    tab.setCustomView(tab0);
+                    break;
+
+                case 1:
+                    tab1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_incoming_second_level_selected, 0, 0);
+                    tab.setCustomView(tab1);
+                    break;
+
+                case 2:
+                    tab2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_outgoing_second_level_selected, 0, 0);
+                    tab.setCustomView(tab2);
+                    break;
+
+
+            }
+
+
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+            switch (tab.getPosition()) {
+
+                case 0:
+
+                    //((TextView) tab0.findViewById(R.id.tab)).setTextColor("#ffffff");
+                    tab0.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_missed_second_level, 0, 0);
+                    tab.setCustomView(tab0);
+
+
+                    break;
+
+                case 1:
+                    tab1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_incoming_second_level, 0, 0);
+                    tab.setCustomView(tab1);
+                    break;
+
+                case 2:
+                    tab2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.menu_icon_outgoing_second_level, 0, 0);
+                    tab.setCustomView(tab2);
+                    break;
+
+
+            }
+
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+            //int position = tab.getPosition();
+        }
+
+    }*/
 
 }

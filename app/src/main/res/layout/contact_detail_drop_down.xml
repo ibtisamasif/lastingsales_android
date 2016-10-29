@@ -37,7 +37,7 @@
             android:textSize="12dp"
             android:textColor="#ffffff"
             android:id="@+id/last_contact_label"
-            android:text="standard test text"
+            android:text="Last Contact"
             android:layout_toRightOf="@id/last_contact_icon"
             android:layout_centerVertical="true"
             />
@@ -50,7 +50,7 @@
 
             android:textSize="12dp"
             android:textColor="#ffffff"
-            android:text="standard test text"
+            android:text="2 Days Ago"
             android:id="@+id/last_contact_text"
             android:layout_alignParentRight="true"
             android:scaleType="fitEnd"
@@ -92,12 +92,12 @@
 
         <TextView
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
 
             android:textSize="12dp"
             android:textColor="#ffffff"
-            android:text="standard test text"
+            android:text="2 Hours"
             android:id="@+id/response_time_text"
             android:layout_alignParentRight="true"
             android:scaleType="fitEnd"
@@ -132,7 +132,7 @@
             android:textSize="12dp"
             android:textColor="#ffffff"
             android:id="@+id/messages_label"
-            android:text="Response Time"
+            android:text="Messages"
             android:layout_toRightOf="@id/messages_icon"
             android:layout_centerVertical="true"
             />
@@ -140,12 +140,12 @@
 
         <TextView
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
 
             android:textSize="12dp"
             android:textColor="#ffffff"
-            android:text="standard test text"
+            android:text="7"
             android:id="@+id/messages_text"
             android:layout_alignParentRight="true"
             android:scaleType="fitEnd"
@@ -178,7 +178,7 @@
             android:textSize="12dp"
             android:textColor="#ffffff"
             android:id="@+id/calls_label"
-            android:text="Response Time"
+            android:text="Calls"
             android:layout_toRightOf="@id/calls_icon"
             android:layout_centerVertical="true"
             />
@@ -186,12 +186,12 @@
 
         <TextView
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
 
             android:textSize="12dp"
             android:textColor="#ffffff"
-            android:text="standard test text"
+            android:text="4"
             android:id="@+id/calls_text"
             android:layout_alignParentRight="true"
             android:scaleType="fitEnd"

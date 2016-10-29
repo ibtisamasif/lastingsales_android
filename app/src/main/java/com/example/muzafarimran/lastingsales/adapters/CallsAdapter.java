@@ -107,7 +107,7 @@ public class CallsAdapter extends BaseAdapter{
                 holder.name = (TextView) convertView.findViewById(R.id.call_name);
                 holder.time = (TextView) convertView.findViewById(R.id.call_time);
                 holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
-                holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_name_time);
+                holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
 
                 holder.call_icon.setOnClickListener(this.callClickListener);
                 holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
