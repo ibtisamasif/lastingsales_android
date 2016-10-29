@@ -49,7 +49,6 @@ public class ContactsFragment extends TabFragment {
 
 
 
-
     @Override
     public void onStop() {
 
