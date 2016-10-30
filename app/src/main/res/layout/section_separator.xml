@@ -6,6 +6,6 @@
     android:padding="5dp"
     android:textSize="12dp"
     android:textColor="#ffffff"
-    android:id="@+id/section_seperator"
+    android:id="@+id/section_separator"
     android:background="#18366C"
      />

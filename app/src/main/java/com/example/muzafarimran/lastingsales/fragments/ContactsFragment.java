@@ -9,10 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 
-import com.example.muzafarimran.lastingsales.Contact;
+import com.example.muzafarimran.lastingsales.providers.models.Contact;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.SecondLevelFragmentPagerAdapter;
 
@@ -81,7 +80,6 @@ public class ContactsFragment extends TabFragment {
         vpConatcs = (ViewPager) mainLayout.findViewById(R.id.vp_contacts_types);
         setUpPager();
 
-
         return mainLayout;
     }
 
@@ -89,77 +87,55 @@ public class ContactsFragment extends TabFragment {
 
         SecondLevelFragmentPagerAdapter adp = new SecondLevelFragmentPagerAdapter(getChildFragmentManager(), getActivity());
 
-
         SalesFragment sc    = new SalesFragment(); //sales contacts fragment
         CollegueFragment cc = new CollegueFragment();
-        PersonalFragment pc = new PersonalFragment();
+        NonbusinessFragment pc = new NonbusinessFragment();
         UntaggedFragment uc = new UntaggedFragment();
 
 
         List<Contact> salesContacts = new ArrayList<>();
-        List<Contact> personalContacts = new ArrayList<>();
-        List<Contact> collegueContacts = new ArrayList<>();
+        List<Contact> nonbusinessContacts = new ArrayList<>();
+        List<Contact> colleagueContacts = new ArrayList<>();
         List<Contact> untaggedContacts = new ArrayList<>();
 
-        //outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
+        // Dummy Data
+        salesContacts.add(new Contact("Prospects", null, "separator", null, null, null, null, null, null));
+        salesContacts.add(new Contact("Kashif Naeem", "kashif@haditelecom.com", "sales", "0301-3839383", null, null, null, null, "prospect"));
+        salesContacts.add(new Contact("Salman Bukhari", "sbukhari828@gmail.com", "sales", "0323-4433108", null, null, null, null, "prospect"));
 
-        salesContacts.add(new Contact("Prospects", null, "seperator", null, null, null, null));
-        salesContacts.add(new Contact("Kashif Naeem", "03xx-yyzzxxx", "prospect", "20","10", "20 mins", "2 days ago"));
-        salesContacts.add(new Contact("Salman Bukhari", "0323-4433108", "prospect", "30","40", "40 mins", "1 days ago"));
-        salesContacts.add(new Contact("Leads", null, "seperator", null, null, null, null));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        salesContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        salesContacts.add(new Contact("Leads", null, "separator", null, null, null, null, null, null));
+        salesContacts.add(new Contact("Raza Ahmad", "sra0nasir@gmail.com", "sales", "0332-5404943", null, null, null, null, "lead"));
+//TODO: add them later on
+//        salesContacts.add(new Contact("Closed - Won", null, "separator", null, null, null, null, null, null));
+//        salesContacts.add(new Contact("Grit Denker", "grit_denker1@gmail.com", "sales", "408-898-9146", null, null, null, null, "closed-won"));
+//        salesContacts.add(new Contact("Miryung Kim", "miryung_kim@gmail.com", "sales", "446-324-1779", null, null, null, null, "closed-won"));
+//
+//        salesContacts.add(new Contact("Closed-Lost", null, "separator", null, null, null, null, null, null));
+//        salesContacts.add(new Contact("Ken Adams", "ken_adams@hotmail.com", "sales", "418-198-9196", null, null, null, null, "closed-lost"));
+//        salesContacts.add(new Contact("Phoebe Buffay", "phoebe_buffay@gmail.com", "sales", "111-3130-1119", null, null, null, null, "closed-lost"));
 
-        personalContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        personalContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        personalContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        personalContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        personalContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        nonbusinessContacts.add(new Contact("Malcom X", "malcolmx@yahoo.com", "nonbusiness", "650-540-9865", null, null, null, null, null));
+        nonbusinessContacts.add(new Contact("Courtney Cox", "courtney_cox@live.com", "nonbusiness", "0332-5404943", null, null, null, null, null));
 
-        collegueContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        collegueContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        collegueContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        collegueContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        collegueContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        colleagueContacts.add(new Contact("John Snow", "johnsnow@yahoo.com", "colleague", "546-654-7135", null, null, null, null, null));
+        colleagueContacts.add(new Contact("Alastar Cook", "alastar_cook@ymail.com", "colleague", "615-736-5445", null, null, null, null, null));
 
-        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
-        untaggedContacts.add(new Contact("Raza Ahmad", "0332-5404943", "lead", "10","60", "30 mins", "5 days ago"));
+        untaggedContacts.add(new Contact("Rachel Greene", "rachel_greene@gmail.com", "untagged", "654-857-9332", null, null, null, null, null));
+        untaggedContacts.add(new Contact("Ted Mosby", "tedmosby1@yahoo.com", "untagged", "141-785-1233", null, null, null, null, null));
+        untaggedContacts.add(new Contact("Garfield Sobers", "garysobers@gmail.com", "untagged", "691-337-1285", null, null, null, null, null));
 
         //tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         sc.setList(salesContacts);
-        cc.setList(collegueContacts);
-        pc.setList(personalContacts);
+        cc.setList(colleagueContacts);
+        pc.setList(nonbusinessContacts);
         uc.setList(untaggedContacts);
 
         adp.addFrag(sc, "SALES");
-        adp.addFrag(cc, "COLLEGUES");
-        adp.addFrag(pc, "PERSONAL");
+        adp.addFrag(cc, "COLLEAGUES");
+        adp.addFrag(pc, "NON-BUSINESS");
         adp.addFrag(uc, "UNTAGGED");
 
         vpConatcs.setAdapter(adp);
         tabs.setupWithViewPager(vpConatcs);
     }
-
-
-
 }

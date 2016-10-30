@@ -79,19 +79,19 @@ public class CallsAdapter extends BaseAdapter{
 
         if (isSeparator(position)){
 
-            seperatorHolder seperatorholder = null;
+            separatorHolder separatorholder = null;
             if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.section_seperator, parent, false);
-                seperatorholder = new seperatorHolder();
-                seperatorholder.text = (TextView) convertView.findViewById(R.id.section_seperator);
+                convertView = mInflater.inflate(R.layout.section_separator, parent, false);
+                separatorholder = new separatorHolder();
+                separatorholder.text = (TextView) convertView.findViewById(R.id.section_separator);
 
-                convertView.setTag(seperatorholder);
+                convertView.setTag(separatorholder);
 
             }else{
-                seperatorholder = (seperatorHolder) convertView.getTag();
+                separatorholder = (separatorHolder) convertView.getTag();
             }
 
-            seperatorholder.text.setText(mCalls.get(position).getName());
+            separatorholder.text.setText(mCalls.get(position).getName());
 
 
         }
@@ -194,11 +194,11 @@ public class CallsAdapter extends BaseAdapter{
         RelativeLayout call_name_time;
     }
 
-    static class seperatorHolder{
+    static class separatorHolder{
         TextView text;
     }
 
     private boolean isSeparator(int position) {
-        return mCalls.get(position).getType() == "seperator";
+        return mCalls.get(position).getType() == "separator";
     }
 }

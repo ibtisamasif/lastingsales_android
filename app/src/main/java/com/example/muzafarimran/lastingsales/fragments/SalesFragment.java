@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.Call;
-import com.example.muzafarimran.lastingsales.Contact;
+import com.example.muzafarimran.lastingsales.providers.models.Contact;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.CallsAdapter;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;

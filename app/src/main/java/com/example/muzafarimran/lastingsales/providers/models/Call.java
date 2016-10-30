@@ -4,7 +4,6 @@ package com.example.muzafarimran.lastingsales.providers.models;
 public class Call {
     private int id;
     private String contact_number;
-    private int user_id;
     private int contact_id;
     private String type;
     private String duration;
@@ -12,12 +11,11 @@ public class Call {
     private String audio_path;
 
     // public constructor to create an object.
-    public Call(String contact_number, int user_id, int contact_id, String type, String duration,
+    public Call(String contact_number, int contact_id, String type, String duration,
                 String begin_time, String audio_path)
     {
         //TODO: Assign id here too
         this.contact_number = contact_number;
-        this.user_id = user_id;
         this.contact_id = contact_id;
         this.type = type;
         this.duration = duration;
@@ -33,10 +31,6 @@ public class Call {
 
     public void setContact_number(String contact_number) {
         this.contact_number = contact_number;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
     }
 
     public void setContact_id(int contact_id) {
@@ -66,10 +60,6 @@ public class Call {
 
     public String getContact_number() {
         return contact_number;
-    }
-
-    public int getUser_id() {
-        return user_id;
     }
 
     public int getContact_id() {

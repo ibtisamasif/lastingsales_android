@@ -1,4 +1,8 @@
 package com.example.muzafarimran.lastingsales.providers.models;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+import java.util.Objects;
 
 public class Contact {
     private int id;
@@ -13,13 +17,13 @@ public class Contact {
     private String created_at;
     private String updated_at;
     private String deleted_at;
-    private int user_id;
     private String sales_status;
+
+    public Contact(){}
 
     // public constructor to create an object.
     public Contact(String name, String email, String type, String phone1, String phone2,
-                   String description, String company, String address, int user_id,
-                   String sales_status)
+                   String description, String company, String address, String sales_status)
     {
         //TODO: Assign id here too
         this.name = name;
@@ -32,8 +36,51 @@ public class Contact {
         this.address = address;
         //TODO: find current date here
         this.created_at = "current_date";
-        this.user_id = user_id;
+        this.updated_at = "current_date";
+
+        this.deleted_at = null;
         this.sales_status = sales_status;
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @Override
+    public boolean equals(Object obj)
+    {
+        Contact c = (Contact) obj;
+
+        return (
+                Objects.equals(c.getId(), this.id) &&
+                Objects.equals(c.getName(), this.name) &&
+                Objects.equals(c.getEmail(), this.email) &&
+                Objects.equals(c.getType(), this.type) &&
+                Objects.equals(c.getPhone1(), this.phone1) &&
+                Objects.equals(c.getPhone2(), this.phone2) &&
+                Objects.equals(c.getCompany(), this.company) &&
+                Objects.equals(c.getDescription(), this.description) &&
+                Objects.equals(c.getAddress(), this.address) &&
+                Objects.equals(c.getCreated_at(), this.created_at) &&
+                Objects.equals(c.getUpdated_at(), this.updated_at) &&
+                Objects.equals(c.getDeleted_at(), this.deleted_at) &&
+                Objects.equals(c.getSales_status(), this.sales_status)
+        );
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id +
+                (this.name != null ? this.name.hashCode() : 0) +
+                (this.email != null ? this.email.hashCode() : 0) +
+                (this.type != null ? this.type.hashCode() : 0) +
+                (this.phone1 != null ? this.phone1.hashCode() : 0) +
+                (this.phone2 != null ? this.phone2.hashCode() : 0) +
+                (this.company != null ? this.company.hashCode() : 0) +
+                (this.description != null ? this.description.hashCode() : 0) +
+                (this.address != null ? this.address.hashCode() : 0) +
+                (this.created_at != null ? this.created_at.hashCode() : 0) +
+                (this.updated_at != null ? this.updated_at.hashCode() : 0) +
+                (this.deleted_at != null ? this.deleted_at.hashCode() : 0) +
+                (this.sales_status != null ? this.sales_status.hashCode() : 0)
+                ;
     }
 
     // setters for private member variables
@@ -83,10 +130,6 @@ public class Contact {
 
     public void setDeleted_at(String deleted_at) {
         this.deleted_at = deleted_at;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
     }
 
     public void setSales_status(String sales_status) {
@@ -140,10 +183,6 @@ public class Contact {
 
     public String getDeleted_at() {
         return deleted_at;
-    }
-
-    public int getUser_id() {
-        return user_id;
     }
 
     public String getSales_status() {

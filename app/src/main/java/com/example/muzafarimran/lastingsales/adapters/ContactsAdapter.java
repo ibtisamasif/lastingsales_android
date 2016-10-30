@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
-import com.example.muzafarimran.lastingsales.Contact;
+import com.example.muzafarimran.lastingsales.providers.models.Contact;
 import com.example.muzafarimran.lastingsales.R;
 
 
@@ -48,10 +48,9 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.callClickListener = new CallClickListener(c);
         this.showContactDetaislsListener = new showContactDetaislsListener();
-        this.prospectCount = contacts.indexOf(new Contact("Leads", null, "seperator", null, null, null, null)) - 1;
-        this.leadCount     = contacts.size() - this.prospectCount - 2;
-
-
+        //TODO: correct the counting mechanism
+        this.prospectCount = contacts.indexOf(new Contact("Leads", null, "separator", null, null, null, null, null, null)) - 1;
+        this.leadCount = contacts.size() - this.prospectCount - 2;
     }
 
     @Override
@@ -88,29 +87,29 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         if (isSeparator(position)){
             //Toast.makeText(mContext,"sup", Toast.LENGTH_LONG ).show();
 
-            seperatorViewHolder seperatorviewHolder = null;
+            separatorViewHolder separatorviewHolder = null;
             if (convertView == null){
 
-                convertView = mInflater.inflate(R.layout.section_seperator_two_text_views, parent, false);
-                seperatorviewHolder = new seperatorViewHolder();
+                convertView = mInflater.inflate(R.layout.section_separator_two_text_views, parent, false);
+                separatorviewHolder = new separatorViewHolder();
 
-                seperatorviewHolder.salesType = (TextView) convertView.findViewById(R.id.section_seperator_first_text);
-                seperatorviewHolder.salesTypeCount = (TextView) convertView.findViewById(R.id.section_seperator_second_text);
+                separatorviewHolder.salesType = (TextView) convertView.findViewById(R.id.section_separator_first_text);
+                separatorviewHolder.salesTypeCount = (TextView) convertView.findViewById(R.id.section_separator_second_text);
 
-                convertView.setTag(seperatorviewHolder);
+                convertView.setTag(separatorviewHolder);
 
             }else {
-                seperatorviewHolder = (seperatorViewHolder) convertView.getTag();
+                separatorviewHolder = (separatorViewHolder) convertView.getTag();
             }
 
-            seperatorviewHolder.salesType.setText(contact.getName());
+            separatorviewHolder.salesType.setText(contact.getName());
             switch (contact.getName()){
                 case "Prospects":
-                       seperatorviewHolder.salesTypeCount.setText(Integer.toString(this.prospectCount));
+                       separatorviewHolder.salesTypeCount.setText(Integer.toString(this.prospectCount));
                         break;
 
                 case "Leads":
-                        seperatorviewHolder.salesTypeCount.setText(Integer.toString(this.leadCount));
+                        separatorviewHolder.salesTypeCount.setText(Integer.toString(this.leadCount));
                     break;
             }
 
@@ -133,7 +132,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
                 holder.call_icon.setOnClickListener(this.callClickListener);
                 holder.user_details_wrapper.setOnClickListener(this.showContactDetaislsListener);
 
-
             } else {
 
                 holder = (ViewHolder) convertView.getTag();
@@ -143,9 +141,9 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 
             holder.name.setText(contact.getName());
             holder.user_details_wrapper.setTag(position);
-            holder.number.setText(contact.getNumber());
+            holder.number.setText(contact.getPhone1());
 
-            holder.call_icon.setTag(mContacts.get(position).getNumber());
+            holder.call_icon.setTag(mContacts.get(position).getPhone1());
 
         }
 
@@ -177,7 +175,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
                     List<Contact> filterResultsData = new ArrayList<>();
                     //int length = charSequence.length();
                     for (int i = 0; i < mContacts.size(); i++){
-                        if (mContacts.get(i).getTag().toLowerCase() != "seperator" && mContacts.get(i).getName().toLowerCase().startsWith(((String) charSequence).toLowerCase())){
+                        if (mContacts.get(i).getType().toLowerCase() != "separator" && mContacts.get(i).getName().toLowerCase().startsWith(((String) charSequence).toLowerCase())){
                             filterResultsData.add(mContacts.get(i));
                         }
                     }
@@ -215,7 +213,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 
             }
 
-            String number = mContacts.get((int) v.getTag()).getNumber();
+            String number = mContacts.get((int) v.getTag()).getPhone1();
             // fill in any details dynamically here
             TextView lastContactText = (TextView) contact_details.findViewById(R.id.last_contact_text);
             TextView responseTimeText = (TextView) contact_details.findViewById(R.id.response_time_text);
@@ -249,14 +247,14 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     }
 
     /*
-    * Hold references to seperator tab
+    * Hold references to separator tab
     * */
-    static class seperatorViewHolder{
+    static class separatorViewHolder{
         TextView salesType;
         TextView salesTypeCount;
     }
 
     private boolean isSeparator(int position) {
-        return filteredData.get(position).getTag() == "seperator";
+        return filteredData.get(position).getType() == "separator";
     }
 }

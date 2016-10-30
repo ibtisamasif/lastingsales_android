@@ -34,7 +34,6 @@ public class LastingSalesContract {
         public static final String COLUMN_NAME_CREATED_AT = "created_at";
         public static final String COLUMN_NAME_UPDATED_AT = "updated_at";
         public static final String COLUMN_NAME_DELETED_AT = "deleted_at";
-        public static final String COLUMN_NAME_USER_ID = "user_id";
         public static final String COLUMN_NAME_SALES_STATUS = "sales_status";
     }
     public static class Call implements BaseColumns
@@ -47,7 +46,6 @@ public class LastingSalesContract {
 
         public static final String TABLE_NAME = "call";
         public static final String COLUMN_NAME_CONTACT_NUMBER = "contact_number";
-        public static final String COLUMN_NAME_USER_ID = "user_id";
         public static final String COLUMN_NAME_CONTACT_ID = "contact_id";
         public static final String COLUMN_NAME_TYPE = "type";
         public static final String COLUMN_NAME_DURATION = "duration";
@@ -64,7 +62,6 @@ public class LastingSalesContract {
 
         public static final String TABLE_NAME = "note";
         public static final String COLUMN_NAME_TEXT = "text";
-        public static final String COLUMN_NAME_USER_ID = "user_id";
         public static final String COLUMN_NAME_CONTACT_ID = "contact_id";
         public static final String COLUMN_NAME_CREATED_AT = "created_at";
     }
@@ -78,9 +75,9 @@ public class LastingSalesContract {
 
         public static final String TABLE_NAME = "followup";
         public static final String COLUMN_NAME_TITLE = "title";
-        public static final String COLUMN_NAME_USER_ID = "user_id";
         public static final String COLUMN_NAME_CONTACT_ID = "contact_id";
         public static final String COLUMN_NAME_TIME = "time";
+        public static final String COLUMN_NAME_CREATED_AT = "created_at";
     }
 //    public static class User implements BaseColumns
 //    {

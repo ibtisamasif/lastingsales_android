@@ -3,16 +3,14 @@ package com.example.muzafarimran.lastingsales.providers.models;
 public class Note {
     private int id;
     private String text;
-    private int user_id;
     private int contact_id;
     private String created_at;
 
     // public constructor to create an object.
-    Note(String text, int user_id, int contact_id)
+    Note(String text, int contact_id)
     {
         //TODO: Assign id here too
         this.text = text;
-        this.user_id = user_id;
         this.contact_id = contact_id;
         //TODO: find current date here
         this.created_at = "current_date";
@@ -25,10 +23,6 @@ public class Note {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
     }
 
     public void setContact_id(int contact_id) {
@@ -46,10 +40,6 @@ public class Note {
 
     public String getText() {
         return text;
-    }
-
-    public int getUser_id() {
-        return user_id;
     }
 
     public int getContact_id() {
