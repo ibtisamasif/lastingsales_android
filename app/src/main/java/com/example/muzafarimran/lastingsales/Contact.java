@@ -52,7 +52,6 @@ public class Contact {
     public int hashCode() {
 
         int result = name.hashCode();
-       // result = 31 * result + number.hashCode();
         result = 31 * result + tag.hashCode();
         return result;
     }
