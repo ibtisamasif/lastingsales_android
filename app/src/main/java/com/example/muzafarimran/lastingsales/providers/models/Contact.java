@@ -2,6 +2,8 @@ package com.example.muzafarimran.lastingsales.providers.models;
 import android.annotation.TargetApi;
 import android.os.Build;
 
+import com.orm.dsl.Ignore;
+
 import java.util.Objects;
 
 public class Contact {
@@ -18,6 +20,7 @@ public class Contact {
     private String updated_at;
     private String deleted_at;
     private String sales_status;
+
 
     public Contact(){}
 

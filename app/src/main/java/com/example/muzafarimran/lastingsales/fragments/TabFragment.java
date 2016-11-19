@@ -17,12 +17,11 @@ public class TabFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    protected void dialNumber(String number){
+    protected void dialNumber(String number) {
 
-       if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 
-       }
-
+        }
 
 
         Intent intent = new Intent(Intent.ACTION_DIAL);

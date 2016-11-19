@@ -13,9 +13,10 @@ import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.activities.AddContactActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
+import com.example.muzafarimran.lastingsales.adapters.ContactssTabsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.Contact;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.SecondLevelFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,8 @@ public class ContactsFragment extends TabFragment {
 
     FloatingActionButton addContactCta = null;
 
-    public ContactsFragment() {}
+    public ContactsFragment() {
+    }
 
 
     @Override
@@ -50,7 +52,6 @@ public class ContactsFragment extends TabFragment {
                 Toast.LENGTH_LONG).show();*/
         super.onPause();
     }
-
 
 
     @Override
@@ -70,10 +71,10 @@ public class ContactsFragment extends TabFragment {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -94,9 +95,10 @@ public class ContactsFragment extends TabFragment {
 
     private void setUpPager() {
 
-        SecondLevelFragmentPagerAdapter adp = new SecondLevelFragmentPagerAdapter(getChildFragmentManager(), getActivity());
-
-        SalesFragment sc    = new SalesFragment(); //sales contacts fragment
+//        SecondLevelFragmentPagerAdapter adp = new SecondLevelFragmentPagerAdapter(getChildFragmentManager(), getActivity());
+        ContactssTabsFragmentPagerAdapter adp = new ContactssTabsFragmentPagerAdapter(getChildFragmentManager());
+/*
+        SalesFragment sc = new SalesFragment(); //sales contacts fragment
         CollegueFragment cc = new CollegueFragment();
         NonbusinessFragment pc = new NonbusinessFragment();
         UntaggedFragment uc = new UntaggedFragment();
@@ -133,18 +135,33 @@ public class ContactsFragment extends TabFragment {
         untaggedContacts.add(new Contact("Ted Mosby", "tedmosby1@yahoo.com", "untagged", "141-785-1233", null, null, null, null, null));
         untaggedContacts.add(new Contact("Garfield Sobers", "garysobers@gmail.com", "untagged", "691-337-1285", null, null, null, null, null));
 
+
+        ArrayList<LSContact> allContacts = (ArrayList<LSContact>) LSContact.listAll(LSContact.class);
+
+
+        ArrayList<LSContact> listOfSalesContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+        ArrayList<LSContact> listOfColleagueContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        ArrayList<LSContact> listOfPersonalContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
+
+
         //tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-        sc.setList(salesContacts);
-        cc.setList(colleagueContacts);
-        pc.setList(nonbusinessContacts);
-        uc.setList(untaggedContacts);
+        sc.setList(listOfSalesContacts);
+        cc.setList(listOfColleagueContacts);
+        pc.setList(listOfPersonalContacts);
+        uc.setList(allContacts);
+//
+//        //tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+//        sc.setList(salesContacts);
+//        cc.setList(colleagueContacts);
+//        pc.setList(nonbusinessContacts);
+//        uc.setList(untaggedContacts);
 
         adp.addFrag(sc, "SALES");
         adp.addFrag(cc, "COLLEAGUES");
         adp.addFrag(pc, "NON-BUSINESS");
         adp.addFrag(uc, "UNTAGGED");
 
-        vpConatcs.setAdapter(adp);
+      */  vpConatcs.setAdapter(adp);
         tabs.setupWithViewPager(vpConatcs);
     }
 

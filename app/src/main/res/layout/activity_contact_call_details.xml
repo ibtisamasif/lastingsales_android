@@ -79,7 +79,7 @@
             >
 
         <Button
-            android:id="@+id/tag_button_ind"
+            android:id="@+id/b_tag_individual_contact_call_screen"
             android:layout_width="150dp"
             android:layout_height="30dp"
             android:text="Tag"
@@ -99,7 +99,7 @@
 
 
         <Button
-            android:id="@+id/call_tag_btn_id"
+            android:id="@+id/b_followup_individual_contact_call_screen"
             android:layout_width="150dp"
             android:layout_height="30dp"
             android:text="Follow Up"
@@ -116,7 +116,7 @@
 
 
 
-            android:layout_toRightOf="@+id/tag_button_ind"
+            android:layout_toRightOf="@+id/b_tag_individual_contact_call_screen"
             android:layout_marginLeft="10dp"
             />
 

@@ -1,100 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/call_row"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:paddingBottom="0dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    android:paddingBottom="0dp"
-    android:id="@+id/call_row"
     >
 
     <RelativeLayout
 
+        android:id="@+id/user_call_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/user_call_group"
         android:layout_alignParentTop="true"
         >
 
         <RelativeLayout
 
+            android:id="@+id/user_call_group_wrapper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/user_call_group_wrapper"
             android:layout_alignParentTop="true"
             android:layout_weight="1"
             >
 
 
-    <ImageView
-        android:src="@drawable/user_avatar_icon_gray_border"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="0dp"
-        android:id="@+id/user_avatar"
-        />
+            <ImageView
+                android:id="@+id/user_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="0dp"
+                android:src="@drawable/user_avatar_icon_gray_border"
+                />
 
-        <RelativeLayout
+            <RelativeLayout
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/user_call_group_name_time"
-            android:layout_centerVertical="true"
-            android:paddingLeft="15dp"
-            android:layout_toRightOf="@id/user_avatar"
-            >
+                android:id="@+id/user_call_group_name_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/user_avatar"
+                android:paddingLeft="15dp"
+                >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:text="name"
-        android:id="@+id/call_name"
-
-
-        />
+                <TextView
+                    android:id="@+id/call_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textSize="15dp"
 
 
-    <ImageView
-        android:src="@drawable/missed_call_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/call_name"
-        android:id="@+id/missed_call_icon"
-       android:layout_marginTop="5dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="3dp"
-            android:textSize="10dp"
-            android:layout_toRightOf="@id/missed_call_icon"
-            android:text="time"
-            android:id="@+id/call_time"
-            android:layout_below="@id/call_name" />
+                    />
 
 
-</RelativeLayout>
+                <ImageView
+                    android:id="@+id/missed_call_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/call_name"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/missed_call_icon"/>
+
+                <TextView
+                    android:id="@+id/call_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/call_name"
+                    android:layout_toRightOf="@id/missed_call_icon"
+                    android:paddingLeft="3dp"
+                    android:text="time"
+                    android:textSize="10dp"/>
+
+
+            </RelativeLayout>
 
 
         </RelativeLayout>
 
 
+        <ImageView
+            android:id="@+id/call_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="10dp"
+            android:scaleType="fitEnd"
+            android:src="@drawable/make_call_icon"
 
-    <ImageView
-        android:src="@drawable/make_call_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:layout_alignParentRight="true"
-        android:scaleType="fitEnd"
-        android:id="@+id/call_icon"
-        android:layout_centerVertical="true"
-
-        />
+            />
 
     </RelativeLayout>
 
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rl_calls_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:paddingBottom="0dp"
+
+        >
+
+        <TextView
+            android:id="@+id/call_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:paddingLeft="52dp"
+            android:text="03234433108"
+            android:textSize="15dp"/>
+
+        <RelativeLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/call_number"
+            android:layout_centerHorizontal="true"
+
+            >
+
+            <Button
+                android:id="@+id/call_details_btn"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="120dp"
+                android:layout_height="27dp"
+                android:background="@drawable/btn_primary"
+                android:drawableLeft="@drawable/call_details_icon_white"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:radius="5dip"
+                android:text="Details"
+                android:textColor="#ffffff"
+                android:textSize="12dp"
+                />
+
+
+            <Button
+                android:id="@+id/call_tag_btn"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="120dp"
+                android:layout_height="27dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/call_details_btn"
+                android:background="@drawable/btn_primary"
+                android:drawableLeft="@drawable/tag_icon_white"
+                android:paddingBottom="5dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="25dp"
+                android:paddingTop="5dp"
+                android:radius="5dip"
+                android:text="Tag"
+                android:textColor="#ffffff"
+                android:textSize="12dp"
+
+                />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
 </RelativeLayout>

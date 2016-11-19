@@ -50,7 +50,7 @@
         android:layout_toRightOf="@+id/user_avatar_ind"
         android:layout_toEndOf="@+id/user_avatar_ind" />
     <Button
-        android:id="@+id/tag_button_ind"
+        android:id="@+id/b_tag_individual_contact_call_screen"
         android:layout_width="150dp"
         android:layout_height="30dp"
         android:text="Tag"

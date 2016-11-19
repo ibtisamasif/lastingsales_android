@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="10dp"
                 android:text="time"
-                android:id="@+id/contact_number"
+                android:id="@+id/contactNumber"
                 android:layout_below="@id/contact_name" />
 
 

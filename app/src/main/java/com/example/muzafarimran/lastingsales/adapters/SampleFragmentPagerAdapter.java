@@ -15,23 +15,20 @@ import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 /**
  * Created by MUZAFAR IMRAN on 9/18/2016.
  */
-public  class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     final int TAB_COUNT = 4;
     private String tabTitles[] = new String[]{"Home", "Calls", "Contacts", "More"};
     private Context context;
 
-    public SampleFragmentPagerAdapter(FragmentManager fm, Context context)
-    {
+    public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
     }
 
     @Override
-    public Fragment getItem(int position)
-    {
+    public Fragment getItem(int position) {
         TabFragment fragment = null;
-        switch (position)
-        {
+        switch (position) {
             case 0:
                 fragment = new HomeFragment();
                 break;
@@ -55,8 +52,7 @@ public  class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public CharSequence getPageTitle(int position)
-    {
+    public CharSequence getPageTitle(int position) {
         return "";
     }
 }

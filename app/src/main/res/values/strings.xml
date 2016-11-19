@@ -3,4 +3,27 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nameOfUser">Lorem Ipsum</string>
+    <string name="viewPublicProfile">View public profile</string>
+    <string name="followUps">Followups</string>
+    <string name="notifications">Notifications</string>
+    <string name="about">About</string>
+    <string name="popup_title_add_new_followup">Add new Followup</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="change">Change</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="note">Note</string>
+    <string name="select_contact">Select Contact</string>
+    <string name="number">Number</string>
+    <string name="name">Name</string>
+    <string name="followups_capital">FOLLOWUPS</string>
+    <string name="notes">Notes</string>
+    <string name="save">Save</string>
+    <string name="followup_capital">FOLLOW UP</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
+
+
 </resources>

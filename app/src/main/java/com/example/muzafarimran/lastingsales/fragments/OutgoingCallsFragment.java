@@ -3,17 +3,25 @@ package com.example.muzafarimran.lastingsales.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.Call;
+import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
+import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.CallsAdapter;
+import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.halfbit.tinybus.Bus;
+import de.halfbit.tinybus.Subscribe;
+import de.halfbit.tinybus.TinyBus;
 
 
 /**
@@ -21,40 +29,84 @@ import java.util.List;
  */
 public class OutgoingCallsFragment extends Fragment {
 
+    public static final String TAG = "OutgoingCallFragment";
+    private List<LSCall> outgoingCalls = new ArrayList<>();
+    CallsAdapter callsadapter;
+    ListView listView = null;
+    private Bus mBus;
+    private TinyBus bus;
 
-    private List<Call> outgoingCalls = new ArrayList<>();
-    private int outgoingCallsType = 0;
 
-
-    public void setList(List<Call> missedCalls){
-        this.outgoingCalls = missedCalls;
+    public static OutgoingCallsFragment newInstance(int page, String title) {
+        OutgoingCallsFragment fragmentFirst = new OutgoingCallsFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
     }
 
+    public void setList(List<LSCall> outgoingCalls) {
+        if (callsadapter != null) {
+            callsadapter.setList(outgoingCalls);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TODO: move to async thread
-//        Collections.sort(call_logs, comparing(Call::getType));
+        setRetainInstance(true);
+//        mBus = TinyBus.from(getActivity().getApplicationContext());
+        callsadapter = new CallsAdapter(getContext());
+        callsadapter.setList(outgoingCalls);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+//        mBus.register(this);
+
+        Log.d(TAG, "onStart() called");
+        bus = TinyBus.from(getActivity().getApplicationContext());
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+//        mBus.unregister(this);
+        bus.unregister(this);
+        Log.d(TAG, "onStop() called");
+
+        super.onStop();
+
+    }
+
+    @Subscribe
+    public void onOutgoingCallEventModel(OutgoingCallEventModel event) {
+        Log.d(TAG, "onOutgoingCallEvent() called with: event = [" + event + "]");
+        if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
+
+            List<LSCall> outgoingCalls = LSCall.getCallsByType(LSCall.CALL_TYPE_OUTGOING);
+            setList(outgoingCalls);
+        }
+        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        List<LSCall> outgoingCalls = LSCall.getCallsByType(LSCall.CALL_TYPE_OUTGOING);
+        setList(outgoingCalls);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_outgoing_calls, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.outgoing_calls_list);
-//        ArrayAdapter adapter = new ArrayAdapter<String>(getContext(), R.layout.calls_text_view, call_logs);
-//        listView.setAdapter(adapter);
-
-        //CallsAdapter adapter = null;
-
-
-        view = inflater.inflate(R.layout.fragment_outgoing_calls, container, false);
-        listView = (ListView) view.findViewById(R.id.outgoing_calls_list);
-        CallsAdapter callsadapter = new CallsAdapter(getContext(), outgoingCalls);
+        View view = null;
+        view = inflater.inflate(R.layout.fragment_incoming_calls, container, false);
+        listView = (ListView) view.findViewById(R.id.incoming_calls_list);
         listView.setAdapter(callsadapter);
-
 
         return view;
     }

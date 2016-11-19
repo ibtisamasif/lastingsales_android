@@ -12,6 +12,7 @@ import com.example.muzafarimran.lastingsales.Call;
 import com.example.muzafarimran.lastingsales.providers.models.Contact;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,33 @@ import java.util.List;
  */
 public class UntaggedFragment extends TabFragment {
 
-    private List<Contact> untaggedContacts = new ArrayList<>();
+    private List<LSContact> untaggedContacts = new ArrayList<>();
 
-    public void setList(List<Contact> untaggedContacts){ this.untaggedContacts = untaggedContacts; }
+
+
+    public static SalesFragment newInstance(int page, String title) {
+        SalesFragment fragmentFirst = new SalesFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
+    }
+
+
+
+    public void setList(List<LSContact> untaggedContacts) {
+        this.untaggedContacts = untaggedContacts;
+    }
 
     public UntaggedFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override

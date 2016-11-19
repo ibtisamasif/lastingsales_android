@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.muzafarimran.lastingsales.Call;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.SecondLevelFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.adapters.CallsTabsFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +27,18 @@ public class CallTabsFragment extends TabFragment {
     LinearLayout mainLayout;
     TabLayout tabs;
     ViewPager vpCalls;
-   //private tabSelectedListener tabselectedlistener = new tabSelectedListener();
+    //private tabSelectedListener tabselectedlistener = new tabSelectedListener();
 
     TextView tab0 = null;
     TextView tab1 = null;
     TextView tab2 = null;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,74 +78,7 @@ public class CallTabsFragment extends TabFragment {
 
     private void setUpPager() {
 
-        SecondLevelFragmentPagerAdapter adp = new SecondLevelFragmentPagerAdapter(getChildFragmentManager(), getActivity());
-
-        Bundle args = new Bundle();
-
-        MissedCallsFragment mc = new MissedCallsFragment();
-        IncomingCallsFragment ic = new IncomingCallsFragment();
-        OutgoingCallsFragment oc = new OutgoingCallsFragment();
-        args.putInt("key", 1);
-        mc.setArguments(args);
-        ic.setArguments(args);
-        oc.setArguments(args);
-
-
-        List<Call> missedCalls = new ArrayList<>();
-        List<Call> incomingCalls = new ArrayList<>();
-        List<Call> outgoingCalls = new ArrayList<>();
-
-        missedCalls.add(new Call("Unanswered Sales", "", "seperator", ""));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Raza Ahmad", "0332-5404943", "missed", "10 mins ago"));
-        missedCalls.add(new Call("Kashif Naeem", "03xx-yyzzxxx", "missed", "2 hours ago"));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Unanswered Collegue", "", "seperator", ""));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-
-
-        missedCalls.add(new Call("Unanswered Sales", "", "seperator", ""));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Raza Ahmad", "0332-5404943", "missed", "10 mins ago"));
-        missedCalls.add(new Call("Kashif Naeem", "03xx-yyzzxxx", "missed", "2 hours ago"));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Unanswered Collegue", "", "seperator", ""));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-
-        missedCalls.add(new Call("Unanswered Sales", "", "seperator", ""));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Raza Ahmad", "0332-5404943", "missed", "10 mins ago"));
-        missedCalls.add(new Call("Kashif Naeem", "03xx-yyzzxxx", "missed", "2 hours ago"));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Unanswered Collegue", "", "seperator", ""));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-
-        missedCalls.add(new Call("History", "", "seperator", ""));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        missedCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        incomingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-        outgoingCalls.add(new Call("Salman Bukhari", "0323-4433108", "missed", "1 min ago"));
-
-
-        //tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-        mc.setList(missedCalls);
-        ic.setList(incomingCalls);
-        oc.setList(outgoingCalls);
-
-        adp.addFrag(mc, "Missed");
-        adp.addFrag(ic, "Incoming");
-        adp.addFrag(oc, "Outgoing");
+        CallsTabsFragmentPagerAdapter adp = new CallsTabsFragmentPagerAdapter(getChildFragmentManager());
 
         vpCalls.setAdapter(adp);
         tabs.setupWithViewPager(vpCalls);

@@ -7,7 +7,7 @@ public class Note {
     private String created_at;
 
     // public constructor to create an object.
-    Note(String text, int contact_id)
+    public Note(String text, int contact_id)
     {
         //TODO: Assign id here too
         this.text = text;

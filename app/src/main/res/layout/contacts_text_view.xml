@@ -44,7 +44,7 @@
         android:paddingLeft="10dp"
         android:layout_weight="1"
         android:textSize="15dp"
-        android:id="@+id/contact_number"
+        android:id="@+id/contactNumber"
 
         />
 
@@ -56,7 +56,7 @@
         android:layout_weight="1"
         android:textSize="15dp"
         android:id="@+id/last_contact"
-        android:layout_below="@id/contact_number"
+        android:layout_below="@id/contactNumber"
         />
 
 
