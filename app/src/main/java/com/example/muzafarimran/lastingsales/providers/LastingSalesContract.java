@@ -36,6 +36,7 @@ public class LastingSalesContract {
         public static final String COLUMN_NAME_DELETED_AT = "deleted_at";
         public static final String COLUMN_NAME_SALES_STATUS = "sales_status";
     }
+
     public static class Call implements BaseColumns
     {
 //        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CALL).build();

@@ -1,89 +1,69 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.media.MediaRecorder;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.PorterDuff;
+import android.os.health.SystemHealthManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.Utils.CallRecord;
 import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.providers.LastingSalesDatabaseHelper;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.Contact;
 
-import java.util.ArrayList;
-import java.util.Locale;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
 
-//    #####  for Device admin
-    private static final int REQUEST_CODE = 0;
-    private DevicePolicyManager mDPM;
-    private ComponentName mAdminName;
-//    ##############################################
-
-
-
     private tabSelectedListener tabselectedlistener = new tabSelectedListener();
     private Context context = this;
-    /*
-        Toolbar myToolbar = null;
-    */
+/*
+    Toolbar myToolbar = null;
+*/
     // database helper
     LastingSalesDatabaseHelper dbh;
-    CallRecord callRecord;
-
-    SessionManager sessionManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        this.setTitle("");
+        this.setTitle("LastingSales");
 
         setContentView(R.layout.activity_main);
-
-        sessionManager = new SessionManager(getApplicationContext());
-
-        if ( ! sessionManager.isUserSignedIn())
-        {
-            startActivity(new Intent(getApplicationContext(), LogInActivity.class));
-            finish();
-        }
-
-
-
-//        showToastAllCallRecords();
 
        /* this.myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(this.myToolbar);*/
         //this.myToolbar.setMinimumHeight(350);
 
         // create a new database instance and open connection
-//        dbh = LastingSalesDatabaseHelper.getInstance(getApplicationContext());
-//        SQLiteDatabase db = dbh.getWritableDatabase();
+        dbh = LastingSalesDatabaseHelper.getInstance(getApplicationContext());
 
-//        // Create a new map of values, where column names are the keys
-//        ContentValues values = new ContentValues();
-//        values.put(LastingSalesContract.User.COLUMN_NAME_NAME, "salman");
-//        values.put(LastingSalesContract.User.COLUMN_NAME_EMAIL, "sbukhari577@gmail.com");
-//        values.put(LastingSalesContract.User.COLUMN_NAME_PHONE, "6789");
-//        values.put(LastingSalesContract.User.COLUMN_NAME_PASSWORD, "abcd");
-//        values.put(LastingSalesContract.User.COLUMN_NAME_CREATED_AT, "now");
-//        values.put(LastingSalesContract.User.COLUMN_NAME_CLIENT_ID, "1");
+        List<Contact> contacts = dbh.searchContacts("Kashif");
+        System.out.println("Id is: " + contacts.get(0).getId());
+        System.out.println("Email is: " + contacts.get(0).getEmail());
+//        dbh.createContact(new Contact("Salman Bukhari", "sbukhari828@gmail.com", "sales", "0323-4433108", null, null, null, null, "prospect"));
 //
-//        // Insert the new row, returning the primary key value of the new row
-//        long newRowId = db.insert(LastingSalesContract.User.TABLE_NAME, null, values);
-//        Log.d("newRowId", Long.toString(newRowId));
+//        dbh.createContact(new Contact("Leads", null, "separator", null, null, null, null, null, null));
+//        dbh.createContact(new Contact("Raza Ahmad", "sra0nasir@gmail.com", "sales", "0332-5404943", null, null, null, null, "lead"));
+//
+//        dbh.createContact(new Contact("Malcom X", "malcolmx@yahoo.com", "nonbusiness", "650-540-9865", null, null, null, null, null));
+//        dbh.createContact(new Contact("Courtney Cox", "courtney_cox@live.com", "nonbusiness", "0332-5404943", null, null, null, null, null));
+//
+//        dbh.createContact(new Contact("John Snow", "johnsnow@yahoo.com", "colleague", "546-654-7135", null, null, null, null, null));
+//        dbh.createContact(new Contact("Alastar Cook", "alastar_cook@ymail.com", "colleague", "615-736-5445", null, null, null, null, null));
+//
+//        dbh.createContact(new Contact("Rachel Greene", "rachel_greene@gmail.com", "untagged", "654-857-9332", null, null, null, null, null));
+//        dbh.createContact(new Contact("Ted Mosby", "tedmosby1@yahoo.com", "untagged", "141-785-1233", null, null, null, null, null));
+//        dbh.createContact(new Contact("Garfield Sobers", "garysobers@gmail.com", "untagged", "691-337-1285", null, null, null, null, null));
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -102,35 +82,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(2).setIcon(R.drawable.menu_icon_contact);
         tabLayout.getTabAt(3).setIcon(R.drawable.menu_icon_menu);
 
-
-        callRecord = new CallRecord.Builder(this)
-                .setRecordFileName("CallRecordFile")
-                .setRecordDirName("Record_" + new java.text.SimpleDateFormat("dd-MM-yyyy HH-mm-ss", Locale.US))
-                .setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-                .setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
-                .setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION)
-                .setShowSeed(true)
-                .buildService();
-
-        callRecord.startCallRecordService();
-
-
     }
-
-
-    private void showToastAllCallRecords() {
-        ArrayList<LSCall> allMissed = (ArrayList<LSCall>) LSCall.getCallsByType(LSCall.CALL_TYPE_MISSED);
-        ArrayList<LSCall> alloutGoing = (ArrayList<LSCall>) LSCall.getCallsByType(LSCall.CALL_TYPE_MISSED);
-        ArrayList<LSCall> allInComming = (ArrayList<LSCall>) LSCall.getCallsByType(LSCall.CALL_TYPE_MISSED);
-
-        for (int c1 = 0; c1 < allMissed.size(); c1++) {
-            Toast.makeText(context, "missed:" + allMissed.get(c1).getContactNumber(), Toast.LENGTH_SHORT).show();
-
-        }
-
-
-    }
-
 
     public class tabSelectedListener implements TabLayout.OnTabSelectedListener {
 
@@ -139,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         public void onTabSelected(TabLayout.Tab tab) {
 
 
-            switch (tab.getPosition()) {
+            switch (tab.getPosition()){
 
                 case 0:
                     tab.setIcon(R.drawable.menu_icon_home_selected_aqua);
@@ -152,13 +104,13 @@ public class MainActivity extends AppCompatActivity {
 
                 case 2:
                     tab.setIcon(R.drawable.menu_icon_contact_selected_aqua);
-                    // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
+                   // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                     break;
 
 
                 case 3:
                     tab.setIcon(R.drawable.menu_icon_menu_selected_aqua);
-                    // ((TextView)(myToolbar.findViewById(R.id.title))).setText("MENU");
+                   // ((TextView)(myToolbar.findViewById(R.id.title))).setText("MENU");
                     break;
 
             }
@@ -180,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onTabUnselected(TabLayout.Tab tab) {
 
-            switch (tab.getPosition()) {
+            switch (tab.getPosition()){
 
                 case 0:
                     tab.setIcon(R.drawable.menu_icon_home);
@@ -204,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onTabReselected(TabLayout.Tab tab) {
-            //int position = tab.getPosition();
+           //int position = tab.getPosition();
         }
     }
 }
+

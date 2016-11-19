@@ -20,7 +20,7 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
     //database logcat tag
     private static final String LOG = "LastingSalesDatabaseHelper";
     //database version number
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     // database name
     private static final String DATABASE_NAME = "LastingSales.db";
 
@@ -54,7 +54,7 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
                     LastingSalesContract.Contact.COLUMN_NAME_CREATED_AT + " TEXT NOT NULL," +
                     LastingSalesContract.Contact.COLUMN_NAME_UPDATED_AT + " TEXT NOT NULL," +
                     LastingSalesContract.Contact.COLUMN_NAME_DELETED_AT + " TEXT," +
-                    LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS + " TEXT," + ")" +
+                    LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS + " TEXT" +
                     " );";
 
     // sql query to create table call
@@ -138,8 +138,9 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
         values.put(LastingSalesContract.Contact.COLUMN_NAME_DESCRIPTION, contact.getDescription());
         values.put(LastingSalesContract.Contact.COLUMN_NAME_COMPANY, contact.getCompany());
         values.put(LastingSalesContract.Contact.COLUMN_NAME_ADDRESS, contact.getAddress());
-        values.put(LastingSalesContract.Contact.COLUMN_NAME_ADDRESS, contact.getAddress());
         values.put(LastingSalesContract.Contact.COLUMN_NAME_CREATED_AT, contact.getCreated_at());
+        values.put(LastingSalesContract.Contact.COLUMN_NAME_UPDATED_AT, contact.getUpdated_at());
+        values.put(LastingSalesContract.Contact.COLUMN_NAME_DELETED_AT, contact.getDeleted_at());
         values.put(LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS, contact.getSales_status());
 
         // insert row TODO: check for correct insertion here
@@ -163,9 +164,15 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
                 LastingSalesContract.Contact.COLUMN_NAME_ADDRESS,
                 LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS
         };
-        String selection = LastingSalesContract.Contact.COLUMN_NAME_NAME + " LIKE ?";
-        String[] selectionArgs = {name};
-        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = null;
+        String[] selectionArgs = null;
+        if(name != null)
+        {
+            selection = LastingSalesContract.Contact.COLUMN_NAME_NAME + " LIKE ?";
+            selectionArgs = new String[1];
+            selectionArgs[0] = "%" + name +"%";
+        }
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(
                 LastingSalesContract.Contact.TABLE_NAME,
                 projection,
@@ -175,22 +182,31 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
                 null,
                 null);
 
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast())
+        try
         {
-            Contact contact = new Contact();
-            contact.setId(cursor.getInt(cursor.getColumnIndex(LastingSalesContract.Contact._ID)));
-            contact.setName(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_NAME)));
-            contact.setEmail(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_EMAIL)));
-            contact.setType(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_TYPE)));
-            contact.setPhone1(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_PHONE1)));
-            contact.setPhone2(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_PHONE2)));
-            contact.setDescription(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_DESCRIPTION)));
-            contact.setCompany(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_COMPANY)));
-            contact.setAddress(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_ADDRESS)));
-            contact.setSales_status(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS)));
+            while (cursor.moveToNext()) {
+                Contact contact = new Contact();
+                contact.setId(cursor.getInt(cursor.getColumnIndex(LastingSalesContract.Contact._ID)));
+                contact.setName(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_NAME)));
+                contact.setEmail(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_EMAIL)));
+                contact.setType(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_TYPE)));
+                contact.setPhone1(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_PHONE1)));
+                contact.setPhone2(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_PHONE2)));
+                contact.setDescription(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_DESCRIPTION)));
+                contact.setCompany(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_COMPANY)));
+                contact.setAddress(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_ADDRESS)));
+                contact.setSales_status(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS)));
 
-            contacts.add(contact);
+                contacts.add(contact);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            cursor.close();
         }
 
         return contacts;
