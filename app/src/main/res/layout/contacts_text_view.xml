@@ -3,97 +3,94 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-
     >
+
     <TextView
+        android:id="@+id/contact_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
         android:layout_weight="1"
-        android:textSize="15dp"
-        android:id="@+id/contact_name" />
-
-
+        android:paddingLeft="10dp"
+        android:textSize="15dp"/>
 
     <ImageView
-        android:src="@drawable/call_icon"
+        android:id="@+id/call_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="10dp"
         android:layout_alignParentRight="true"
-        android:id="@+id/call_icon"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:paddingRight="10dp"
+        android:src="@drawable/call_icon"
         />
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/contact_details"
-    android:layout_below="@id/contact_name"
-    android:visibility="gone"
-    >
-
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/contact_details"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:layout_weight="1"
-        android:textSize="15dp"
-        android:id="@+id/contact_number"
+        android:layout_below="@id/contact_name"
+        android:visibility="gone"
+        >
 
-        />
+        <TextView
+            android:id="@+id/contactNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:layout_weight="1"
-        android:textSize="15dp"
-        android:id="@+id/last_contact"
-        android:layout_below="@id/contact_number"
-        />
+            />
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:layout_weight="1"
-        android:textSize="15dp"
-        android:id="@+id/messages"
-        android:layout_below="@id/last_contact"
-        />
+        <TextView
+            android:id="@+id/last_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contactNumber"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            />
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:layout_weight="1"
-        android:textSize="15dp"
-        android:id="@+id/number_calls"
-        android:layout_below="@id/messages"
-        />
+        <TextView
+            android:id="@+id/messages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/last_contact"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:layout_weight="1"
-        android:textSize="15dp"
-        android:id="@+id/response_time"
-        android:layout_below="@id/number_calls"
-        />
+
+        <TextView
+            android:id="@+id/number_calls"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/messages"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            />
+
+        <TextView
+            android:id="@+id/response_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/number_calls"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            />
+
+
+    </RelativeLayout>
 
 
 </RelativeLayout>
-
-
-</RelativeLayout>
-

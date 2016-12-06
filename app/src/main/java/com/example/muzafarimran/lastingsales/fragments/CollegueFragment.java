@@ -1,49 +1,160 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.muzafarimran.lastingsales.Call;
-import com.example.muzafarimran.lastingsales.providers.models.Contact;
+import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
+import com.example.muzafarimran.lastingsales.Events.ColleagueContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.activities.AddContactActivity;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import de.halfbit.tinybus.Subscribe;
+import de.halfbit.tinybus.TinyBus;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CollegueFragment extends TabFragment{
+public class CollegueFragment extends TabFragment {
 
-    private List<Contact> collegueContacts = new ArrayList<>();
+    private static final String TAG = "ColleagueContactFrag";
+    ListView listView = null;
+    ContactsAdapter contactsAdapter;
+    MaterialSearchView searchView;
+    FloatingActionButton addContactCta = null;
+    ShowAddContactForm showaddcontactform = new ShowAddContactForm();
+    private TinyBus bus;
 
-    public void setList(List<Contact> collegueContacts){ this.collegueContacts = collegueContacts; }
-
-    public CollegueFragment() {
-        // Required empty public constructor
+    public static CollegueFragment newInstance(int page, String title) {
+        CollegueFragment fragmentFirst = new CollegueFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
     }
 
+    public void setList(List<LSContact> contacts) {
+        if (contactsAdapter != null) {
+            contactsAdapter.setList(contacts);
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        contactsAdapter = new ContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_COLLEAGUE);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+        bus = TinyBus.from(getActivity().getApplicationContext());
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        Log.d(TAG, "onStop() called");
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
+        Log.d(TAG, "onColleagueContactEvent() called with: event = [" + event + "]");
+        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        setList(contacts);
+        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+    }
+
+    @Subscribe
+    public void onBackPressedEventModel(BackPressedEventModel event) {
+        if (!event.backPressHandled && contactsAdapter.isDeleteFlow()) {
+            event.backPressHandled = true;
+            contactsAdapter.setDeleteFlow(false);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        setList(contacts);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = null;
-        ListView listView = null;
-
-        view = inflater.inflate(R.layout.fragment_collegue, container, false);
+        View view = inflater.inflate(R.layout.fragment_collegue, container, false);
+        this.addContactCta = (FloatingActionButton) view.findViewById(R.id.add_contact_cta);
+        this.addContactCta.setOnClickListener(this.showaddcontactform);
         listView = (ListView) view.findViewById(R.id.collegue_contacts_list);
-
-        ContactsAdapter contactsAdapter = new ContactsAdapter(getContext(), this.collegueContacts);
         listView.setAdapter(contactsAdapter);
+//        this.inputSearch.addTextChangedListener(new CollegueFragment.addListenerOnTextChange());
+        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                contactsAdapter.getFilter().filter(query);
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                contactsAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        setHasOptionsMenu(true);
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        listView = null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /*
+    * event handler for click on add contact cta
+    * */
+    public class ShowAddContactForm implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent myIntent = new Intent(getActivity(), AddContactActivity.class);
+            //myIntent.putExtra("number",(String) v.getTag());
+            getActivity().startActivity(myIntent);
+        }
+    }
 }

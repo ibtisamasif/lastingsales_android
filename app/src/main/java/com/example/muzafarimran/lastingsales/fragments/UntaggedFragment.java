@@ -8,10 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.muzafarimran.lastingsales.Call;
-import com.example.muzafarimran.lastingsales.providers.models.Contact;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,28 +20,39 @@ import java.util.List;
  */
 public class UntaggedFragment extends TabFragment {
 
-    private List<Contact> untaggedContacts = new ArrayList<>();
-
-    public void setList(List<Contact> untaggedContacts){ this.untaggedContacts = untaggedContacts; }
+    private List<LSContact> untaggedContacts = new ArrayList<>();
 
     public UntaggedFragment() {
-        // Required empty public constructor
+    }
+
+    public static UntaggedFragment newInstance(int page, String title) {
+        UntaggedFragment fragmentFirst = new UntaggedFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
+    }
+
+    public void setList(List<LSContact> untaggedContacts) {
+        this.untaggedContacts = untaggedContacts;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = null;
         ListView listView = null;
-
         view = inflater.inflate(R.layout.fragment_untagged, container, false);
         listView = (ListView) view.findViewById(R.id.untagged_contacts_list);
-
-        ContactsAdapter contactsAdapter = new ContactsAdapter(getContext(), this.untaggedContacts);
+        ContactsAdapter contactsAdapter = new ContactsAdapter(getContext(), this.untaggedContacts, LSContact.CONTACT_TYPE_PERSONAL);
         listView.setAdapter(contactsAdapter);
-
         return view;
     }
-
 }

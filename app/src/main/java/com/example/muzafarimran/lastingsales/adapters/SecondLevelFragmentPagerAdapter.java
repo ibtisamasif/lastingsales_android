@@ -11,15 +11,14 @@ import java.util.List;
 /**
  * Created by lenovo 1 on 10/8/2016.
  */
+@Deprecated
 public class SecondLevelFragmentPagerAdapter extends FragmentPagerAdapter {
 
     List<Fragment> fragList = new ArrayList<>();
     List<String> titleList = new ArrayList<>();
-
     private Context context;
 
     public SecondLevelFragmentPagerAdapter(FragmentManager fm, Context context) {
-
         super(fm);
         this.context = context;
     }

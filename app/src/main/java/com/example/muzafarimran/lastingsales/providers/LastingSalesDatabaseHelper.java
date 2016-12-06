@@ -14,31 +14,13 @@ import com.example.muzafarimran.lastingsales.providers.models.Note;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
-{
-    private static LastingSalesDatabaseHelper dbInstance;
+public class LastingSalesDatabaseHelper extends SQLiteOpenHelper {
     //database logcat tag
     private static final String LOG = "LastingSalesDatabaseHelper";
     //database version number
     private static final int DATABASE_VERSION = 1;
     // database name
     private static final String DATABASE_NAME = "LastingSales.db";
-
-
-    // private constructor to avoid creation of new objects
-    private LastingSalesDatabaseHelper(Context context)
-    {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    // method to create or return only one object of the class
-    public static synchronized LastingSalesDatabaseHelper getInstance(Context context)
-    {
-        if (dbInstance == null)
-            dbInstance = new LastingSalesDatabaseHelper(context.getApplicationContext());
-        return dbInstance;
-    }
-
     // sql query to create table contact
     private static final String SQL_CREATE_TABLE_CONTACT =
             "CREATE TABLE " + LastingSalesContract.Contact.TABLE_NAME + " (" +
@@ -56,7 +38,6 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
                     LastingSalesContract.Contact.COLUMN_NAME_DELETED_AT + " TEXT," +
                     LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS + " TEXT," + ")" +
                     " );";
-
     // sql query to create table call
     private static final String SQL_CREATE_TABLE_CALL =
             "CREATE TABLE " + LastingSalesContract.Call.TABLE_NAME + " (" +
@@ -70,7 +51,6 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
                     "FOREIGN KEY(" + LastingSalesContract.Call.COLUMN_NAME_CONTACT_ID + ") REFERENCES " +
                     LastingSalesContract.Contact.TABLE_NAME + "(" + LastingSalesContract.Contact._ID + ")" +
                     " );";
-
     // sql query to create table note
     private static final String SQL_CREATE_TABLE_NOTE =
             "CREATE TABLE " + LastingSalesContract.Note.TABLE_NAME + " (" +
@@ -81,7 +61,6 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
                     "FOREIGN KEY(" + LastingSalesContract.Note.COLUMN_NAME_CONTACT_ID + ") REFERENCES " +
                     LastingSalesContract.Contact.TABLE_NAME + "(" + LastingSalesContract.Contact._ID + ")" +
                     " );";
-
     // sql query to create table followup
     private static final String SQL_CREATE_TABLE_FOLLOWUP =
             "CREATE TABLE " + LastingSalesContract.Followup.TABLE_NAME + " (" +
@@ -93,12 +72,23 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
                     "FOREIGN KEY(" + LastingSalesContract.Followup.COLUMN_NAME_CONTACT_ID + ") REFERENCES " +
                     LastingSalesContract.Contact.TABLE_NAME + "(" + LastingSalesContract.Contact._ID + ")" +
                     " );";
+    private static LastingSalesDatabaseHelper dbInstance;
 
+    // private constructor to avoid creation of new objects
+    private LastingSalesDatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
 
+    // method to create or return only one object of the class
+    public static synchronized LastingSalesDatabaseHelper getInstance(Context context) {
+        if (dbInstance == null) {
+            dbInstance = new LastingSalesDatabaseHelper(context.getApplicationContext());
+        }
+        return dbInstance;
+    }
 
     @Override
-    public void onCreate(SQLiteDatabase db)
-    {
+    public void onCreate(SQLiteDatabase db) {
         // execute create sql queries for all tables here
         db.execSQL(SQL_CREATE_TABLE_CONTACT);
         db.execSQL(SQL_CREATE_TABLE_CALL);
@@ -107,8 +97,7 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-    {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String delete_table = "DROP TABLE IF EXISTS ";
         // drop all tables here
         db.execSQL(delete_table + LastingSalesContract.Followup.TABLE_NAME);
@@ -121,13 +110,11 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
     }
 
     @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion)
-    {
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public long createContact(Contact contact)
-    {
+    public long createContact(Contact contact) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(LastingSalesContract.Contact.COLUMN_NAME_NAME, contact.getName());
@@ -139,8 +126,8 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
         values.put(LastingSalesContract.Contact.COLUMN_NAME_COMPANY, contact.getCompany());
         values.put(LastingSalesContract.Contact.COLUMN_NAME_ADDRESS, contact.getAddress());
         values.put(LastingSalesContract.Contact.COLUMN_NAME_ADDRESS, contact.getAddress());
-        values.put(LastingSalesContract.Contact.COLUMN_NAME_CREATED_AT, contact.getCreated_at());
-        values.put(LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS, contact.getSales_status());
+        values.put(LastingSalesContract.Contact.COLUMN_NAME_CREATED_AT, contact.getCreatedAt());
+        values.put(LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS, contact.getSalesStatus());
 
         // insert row TODO: check for correct insertion here
         long new_contact_id = db.insert(LastingSalesContract.Contact.TABLE_NAME, null, values);
@@ -148,8 +135,7 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
         return new_contact_id;
     }
 
-    public List<Contact> searchContacts(String name)
-    {
+    public List<Contact> searchContacts(String name) {
         List<Contact> contacts = new ArrayList<Contact>();
         String[] projection = {
                 LastingSalesContract.Contact._ID,
@@ -174,10 +160,8 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
                 null,
                 null,
                 null);
-
         cursor.moveToFirst();
-        while(!cursor.isAfterLast())
-        {
+        while (!cursor.isAfterLast()) {
             Contact contact = new Contact();
             contact.setId(cursor.getInt(cursor.getColumnIndex(LastingSalesContract.Contact._ID)));
             contact.setName(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_NAME)));
@@ -188,16 +172,14 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
             contact.setDescription(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_DESCRIPTION)));
             contact.setCompany(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_COMPANY)));
             contact.setAddress(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_ADDRESS)));
-            contact.setSales_status(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS)));
+            contact.setSalesStatus(cursor.getString(cursor.getColumnIndex(LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS)));
 
             contacts.add(contact);
         }
-
         return contacts;
     }
 
-    public void deleteContact(long contact_id)
-    {
+    public void deleteContact(long contact_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = LastingSalesContract.Contact.TABLE_NAME + " = ?";
         String[] selectionArgs = {Long.toString(contact_id)};
@@ -208,23 +190,19 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
         );
     }
 
-    public long createFollowup(Followup followup)
-    {
+    public long createFollowup(Followup followup) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(LastingSalesContract.Followup.COLUMN_NAME_TITLE, followup.getTitle());
         values.put(LastingSalesContract.Followup.COLUMN_NAME_TIME, followup.getTime());
         values.put(LastingSalesContract.Followup.COLUMN_NAME_CONTACT_ID, followup.getContact_id());
         values.put(LastingSalesContract.Followup.COLUMN_NAME_CREATED_AT, followup.getCreated_at());
-
         // insert row TODO: check for correct insertion here
         long new_followup_id = db.insert(LastingSalesContract.Followup.TABLE_NAME, null, values);
-
         return new_followup_id;
     }
 
-    public long createCall(Call call)
-    {
+    public long createCall(Call call) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(LastingSalesContract.Call.COLUMN_NAME_CONTACT_NUMBER, call.getContact_number());
@@ -233,26 +211,19 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper
         values.put(LastingSalesContract.Call.COLUMN_NAME_DURATION, call.getDuration());
         values.put(LastingSalesContract.Call.COLUMN_NAME_BEGIN_TIME, call.getBegin_time());
         values.put(LastingSalesContract.Call.COLUMN_NAME_AUDIO_PATH, call.getAudio_path());
-
         // insert row TODO: check for correct insertion here
         long new_call_id = db.insert(LastingSalesContract.Call.TABLE_NAME, null, values);
-
         return new_call_id;
     }
 
-    public long createNote(Note note)
-    {
+    public long createNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(LastingSalesContract.Note.COLUMN_NAME_TEXT, note.getText());
         values.put(LastingSalesContract.Note.COLUMN_NAME_CONTACT_ID, note.getContact_id());
         values.put(LastingSalesContract.Note.COLUMN_NAME_CREATED_AT, note.getCreated_at());
-
         // insert row TODO: check for correct insertion here
         long new_note_id = db.insert(LastingSalesContract.Note.TABLE_NAME, null, values);
-
         return new_note_id;
-
-
     }
 }
