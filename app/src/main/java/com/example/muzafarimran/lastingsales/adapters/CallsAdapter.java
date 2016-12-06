@@ -94,7 +94,6 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
             } else {
                 separatorholder = (separatorHolder) convertView.getTag();
             }
-//            separatorholder.text.setText(mCalls.get(position).getName());
         } else {
             ViewHolder holder = null;
             if (convertView == null) {
