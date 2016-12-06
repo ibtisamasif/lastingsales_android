@@ -115,9 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/call_number"
-                    android:layout_centerHorizontal="true"
-
-                    >
+                    android:layout_centerHorizontal="true">
 
                     <Button
                         android:id="@+id/call_details_btn"
