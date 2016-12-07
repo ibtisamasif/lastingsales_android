@@ -42,6 +42,8 @@
     <string name="funnel_hint">Filter</string>
     <string name="calls">Calls</string>
     <string name="status">Status</string>
+    <string name="details">Details</string>
+    <string name="followup">Followup</string>
 
 
 </resources>

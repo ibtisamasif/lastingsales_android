@@ -141,6 +141,8 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
                 holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);
                 holder.detailsButton = (Button) convertView.findViewById(R.id.contactDetailsDropDownDetailsButton);
                 holder.moreButton = (ImageView) convertView.findViewById(R.id.ivMoreButtonContactsDetailsDropDown);
+                holder.salesLeadStatus = (TextView) convertView.findViewById(R.id.status_text);
+                holder.statusRow = (RelativeLayout) convertView.findViewById(R.id.status_row);
                 holder.contactDetailsDopDownLayout.setVisibility(GONE);
                 convertView.setTag(holder);
                 holder.call_icon.setOnClickListener(this.callClickListener);
@@ -194,7 +196,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
             holder.moreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                            PopupMenu popupMenu = new android.widget.PopupMenu(mContext, moreView);
+                    PopupMenu popupMenu = new android.widget.PopupMenu(mContext, moreView);
                     popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
@@ -225,9 +227,28 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
                     });
                     popupMenu.inflate(R.menu.sales_tab_contact_lead_types);
                     popupMenu.show();
-
                 }
             });
+            if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+                if (contact.getContactSalesStatus() != null && !contact.getContactSalesStatus().equals("")) {
+                    switch (contact.getContactSalesStatus()) {
+                        case LSContact.SALES_STATUS_PROSTPECT:
+                            holder.salesLeadStatus.setText("Prospect");
+                            break;
+                        case LSContact.SALES_STATUS_LEAD:
+                            holder.salesLeadStatus.setText("Lead");
+                            break;
+                        case LSContact.SALES_STATUS_CLOSED_WON:
+                            holder.salesLeadStatus.setText("Closed Won");
+                            break;
+                        case LSContact.SALES_STATUS_CLOSED_LOST:
+                            holder.salesLeadStatus.setText("Closed Lost");
+                            break;
+                    }
+                }
+            }else {
+                holder.statusRow.setVisibility(GONE);
+            }
 //            this.showContactDetaislsListener = new showContactDetaislsListener(contact);
 //            showContactDetaislsListener temp= new showContactDetaislsListener(contact);
 //            convertView.setOnClickListener(temp);
@@ -305,6 +326,8 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         LinearLayout contactDetailsDopDownLayout;
         Button detailsButton;
         ImageView moreButton;
+        TextView salesLeadStatus;
+        RelativeLayout statusRow;
     }
 
     /*
@@ -330,17 +353,15 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         @Override
         public void onClick(View v) {
 
-            if (noteDetails == null)
-            {
+            if (noteDetails == null) {
                 noteDetails = detailsLayout;
                 noteDetails.setVisibility(View.VISIBLE);
             }
-            if (noteDetails.getVisibility() == View.VISIBLE)
-            {
+            if (noteDetails.getVisibility() == View.VISIBLE) {
                 noteDetails.setVisibility(GONE);
                 noteDetails = detailsLayout;
                 noteDetails.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 noteDetails.setVisibility(GONE);
                 detailsLayout.setVisibility(View.VISIBLE);
                 noteDetails = detailsLayout;

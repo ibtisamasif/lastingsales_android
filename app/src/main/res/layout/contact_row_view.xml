@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contact_row"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -22,6 +23,7 @@
             android:layout_alignParentTop="true"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:paddingBottom="10dp"
             >
 
             <ImageView
@@ -30,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="0dp"
                 android:src="@drawable/user_avatar_icon_gray_border"
+                android:layout_centerVertical="true"
                 />
 
             <RelativeLayout
@@ -46,8 +49,8 @@
                     android:id="@+id/contact_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="name"
-                    android:textSize="15dp"
+                    tools:text="name"
+                    android:textSize="15sp"
                     />
 
                 <TextView
@@ -55,8 +58,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contact_name"
-                    android:text="time"
-                    android:textSize="10dp"/>
+                    tools:text="time"
+                    android:textSize="10sp"/>
 
             </RelativeLayout>
         </RelativeLayout>
@@ -69,6 +72,7 @@
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/call_icon"
             android:background="@drawable/trash_circle_red_128"
+
             />
 
 
@@ -81,7 +85,6 @@
             android:paddingRight="10dp"
             android:scaleType="fitEnd"
             android:src="@drawable/make_call_icon"
-
             />
 
     </RelativeLayout>
@@ -129,7 +132,7 @@
                     android:layout_toRightOf="@id/status_icon"
                     android:text="@string/status"
                     android:textColor="@color/white"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     />
 
                 <LinearLayout
@@ -197,7 +200,7 @@
                     android:layout_toRightOf="@id/calls_icon"
                     android:text="@string/calls"
                     android:textColor="#ffffff"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     />
 
 
@@ -212,7 +215,7 @@
                     android:scaleType="fitEnd"
                     android:text="4"
                     android:textColor="#ffffff"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
 
                     />
 
@@ -244,7 +247,7 @@
                     android:layout_toRightOf="@id/last_contact_icon"
                     android:text="Last Contact"
                     android:textColor="#ffffff"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     />
 
                 <TextView
@@ -257,7 +260,7 @@
                     android:scaleType="fitEnd"
                     android:text="2 Days Ago"
                     android:textColor="#ffffff"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     />
 
             </RelativeLayout>
@@ -276,7 +279,7 @@
                 android:paddingTop="4dp"
                 android:radius="5dip"
                 android:tag="personal_radio"
-                android:text="Details"
+                android:text="@string/details"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 />
