@@ -137,9 +137,7 @@ public class ContactsFragment extends TabFragment {
         untaggedContacts.add(new Contact("Ted Mosby", "tedmosby1@yahoo.com", "untagged", "141-785-1233", null, null, null, null, null));
         untaggedContacts.add(new Contact("Garfield Sobers", "garysobers@gmail.com", "untagged", "691-337-1285", null, null, null, null, null));
 
-
         ArrayList<LSContact> allContacts = (ArrayList<LSContact>) LSContact.listAll(LSContact.class);
-
 
         ArrayList<LSContact> listOfSalesContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
         ArrayList<LSContact> listOfColleagueContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
@@ -163,7 +161,8 @@ public class ContactsFragment extends TabFragment {
         adp.addFrag(pc, "NON-BUSINESS");
         adp.addFrag(uc, "UNTAGGED");
 
-      */  vpConatcs.setAdapter(adp);
+      */
+        vpConatcs.setAdapter(adp);
         tabs.setupWithViewPager(vpConatcs);
     }
 
@@ -171,15 +170,11 @@ public class ContactsFragment extends TabFragment {
     * event handler for click on add contact cta
     * */
     public class showAddContactForm implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
             Intent myIntent = new Intent(getActivity(), AddContactActivity.class);
             //myIntent.putExtra("number",(String) v.getTag());
             getActivity().startActivity(myIntent);
         }
-
     }
-
-
 }
