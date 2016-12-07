@@ -23,12 +23,11 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class ImportContactsListAdapter extends ArrayAdapter<LSContact> {
-    private int listItemLayout;
     LayoutInflater inflater;
     ArrayList<LSContact> contactsList;
     Context context;
     Activity activity;
-
+    private int listItemLayout;
 
     public ImportContactsListAdapter(Context context, int resource) {
         super(context, resource);
@@ -41,21 +40,17 @@ public class ImportContactsListAdapter extends ArrayAdapter<LSContact> {
         this.contactsList = contactsList;
         this.context = context;
         this.activity = activity;
-
     }
-
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // Get the data tvContactName for this position
         final LSContact oneContact = getItem(position);
-
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(listItemLayout, parent, false);
-
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -75,11 +70,9 @@ public class ImportContactsListAdapter extends ArrayAdapter<LSContact> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
         // Populate the data into the template view using the data object
         viewHolder.contactName.setText(oneContact.getContactName());
         viewHolder.contactNumber.setText(oneContact.getPhoneOne());
-
         // Return the completed view to render on screen
         return convertView;
     }
@@ -89,6 +82,4 @@ public class ImportContactsListAdapter extends ArrayAdapter<LSContact> {
         TextView contactName;
         TextView contactNumber;
     }
-
-
 }

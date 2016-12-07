@@ -8,9 +8,7 @@ import de.halfbit.tinybus.Produce;
 
 public class PersonalContactAddedEventModel {
 
-
     public PersonalContactAddedEventModel() {
-
     }
 
     @Produce

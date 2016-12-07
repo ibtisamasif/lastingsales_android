@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,13 +23,12 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class ImportContactsListAdapter2 extends BaseAdapter {
-    private int listItemLayout;
     LayoutInflater inflater;
     ArrayList<LSContact> contactsList;
     Context context;
     Activity activity;
     Context mContext;
-
+    private int listItemLayout;
 
     public ImportContactsListAdapter2(Context context, int layoutId, ArrayList<LSContact> contactsList, Activity activity) {
         mContext = context;
@@ -39,9 +37,7 @@ public class ImportContactsListAdapter2 extends BaseAdapter {
         this.contactsList = contactsList;
         this.context = context;
         this.activity = activity;
-
     }
-
 
     @Override
     public int getCount() {
@@ -69,14 +65,12 @@ public class ImportContactsListAdapter2 extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(listItemLayout, parent, false);
 
-
             viewHolder.contactName = (TextView) convertView.findViewById(R.id.list_contacts_single_item_contact_name);
             viewHolder.contactNumber = (TextView) convertView.findViewById(R.id.list_contacts_single_item_contact_number);
             convertView.setTag(viewHolder); // view lookup cache stored in tag
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
         // Populate the data into the template view using the data object
         viewHolder.contactName.setText(oneContact.getContactName());
         viewHolder.contactNumber.setText(oneContact.getPhoneOne());
@@ -93,7 +87,6 @@ public class ImportContactsListAdapter2 extends BaseAdapter {
                 activity.finish();
             }
         });
-
         // Return the completed view to render on screen
         return convertView;
     }
@@ -103,6 +96,5 @@ public class ImportContactsListAdapter2 extends BaseAdapter {
         TextView contactName;
         TextView contactNumber;
     }
-
 
 }

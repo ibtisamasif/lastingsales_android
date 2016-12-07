@@ -8,11 +8,14 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
         android:name="com.orm.SugarApp"
@@ -20,7 +23,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="DATABASE"
             android:value="sugar_example.db"/>
@@ -42,8 +45,6 @@
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL"/>
             </intent-filter>
         </receiver>
-
-
         <receiver
             android:name=".receivers.AlarmReceiver"
             android:enabled="true"
@@ -52,7 +53,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".receivers.DeviceBootReceiver"
             android:enabled="false">
@@ -61,9 +61,7 @@
             </intent-filter>
         </receiver>
 
-
         <activity android:name=".activities.MainActivity">
-
         </activity>
         <activity android:name=".activities.ContactCallDetails"/>
         <activity android:name=".activities.AddContactActivity"/>
@@ -80,26 +78,45 @@
         </activity>
         <activity
             android:name=".activities.AlertDialogActivity"
-            android:theme="@style/MyAlertDialogStyle"
-            >
-
+            android:theme="@style/MyAlertDialogStyle">
         </activity>
-
-        <activity android:name=".activities.LogInActivity"
-            >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+        <activity android:name=".activities.LogInActivity">
 
         </activity>
 
         <service
             android:name=".Service.CallRecordService"
-            android:exported="true" />
+            android:exported="true"/>
 
+        <activity android:name=".activities.ContactDetailsActivity">
+        </activity>
+
+        <service
+            android:name=".Service.PopupUIService"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="inez.apps.customincomingcallscreen.MyService"/>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".activities.TagNumberActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
+        </activity>
+        <activity
+            android:name=".activities.NavigationDrawerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.FrameActivity">
+
+        </activity>
     </application>
 
 </manifest>

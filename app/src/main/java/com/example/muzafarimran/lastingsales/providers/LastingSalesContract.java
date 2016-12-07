@@ -1,7 +1,5 @@
 package com.example.muzafarimran.lastingsales.providers;
 
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.provider.BaseColumns;
 
 
@@ -13,7 +11,8 @@ public class LastingSalesContract {
 //    public static final String PATH_CONTACT = "contact";
 //    public static final String PATH_CALL = "call";
 
-    private LastingSalesContract(){}
+    private LastingSalesContract() {
+    }
 
     public static class Contact implements BaseColumns {
 //        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CONTACT).build();
@@ -37,8 +36,7 @@ public class LastingSalesContract {
         public static final String COLUMN_NAME_SALES_STATUS = "sales_status";
     }
 
-    public static class Call implements BaseColumns
-    {
+    public static class Call implements BaseColumns {
 //        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CALL).build();
 //        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
 //                "/" + CONTENT_AUTHORITY + "/" + PATH_CALL;
@@ -53,8 +51,8 @@ public class LastingSalesContract {
         public static final String COLUMN_NAME_BEGIN_TIME = "begin_time";
         public static final String COLUMN_NAME_AUDIO_PATH = "audio_path";
     }
-    public static class Note implements BaseColumns
-    {
+
+    public static class Note implements BaseColumns {
 //        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_NOTE).build();
 //        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
 //                "/" + CONTENT_AUTHORITY + "/" + PATH_NOTE;
@@ -66,8 +64,8 @@ public class LastingSalesContract {
         public static final String COLUMN_NAME_CONTACT_ID = "contact_id";
         public static final String COLUMN_NAME_CREATED_AT = "created_at";
     }
-    public static class Followup implements BaseColumns
-    {
+
+    public static class Followup implements BaseColumns {
 //        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_FOLLOWUP).build();
 //        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
 //                "/" + CONTENT_AUTHORITY + "/" + PATH_FOLLOWUP;

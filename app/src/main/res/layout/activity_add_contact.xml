@@ -22,7 +22,6 @@
             android:orientation="vertical"
             >
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,7 +29,6 @@
                 android:layout_marginBottom="10dp"
                 android:text="ADD CONTACT"
                 android:textColor="#ffffff"
-
                 android:textSize="20dp"
                 />
 
@@ -45,9 +43,7 @@
                     android:id="@+id/b_import_contact"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="120dp"
-
                     android:layout_height="30dp"
-
                     android:layout_alignParentRight="true"
                     android:background="@drawable/btn_primary"
                     android:paddingBottom="5dp"
@@ -60,10 +56,7 @@
                     android:textColor="#ffffff"
                     android:textSize="13sp"
                     />
-
-
             </RelativeLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -84,8 +77,6 @@
                     android:paddingRight="20dp"
                     android:paddingTop="5dp"
                     android:src="@drawable/add_contact_name_field_icon"
-
-
                     />
 
                 <EditText
@@ -93,20 +84,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
-
                     android:layout_toRightOf="@id/add_contact_name_icon"
                     android:background="@drawable/border_bottom_transparent"
                     android:ems="10"
                     android:hint="NAME*"
-
                     android:inputType="textPersonName"
                     android:textColor="#ffffff"
                     android:textColorHint="#ffffff"
-
                     />
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,8 +113,6 @@
                     android:paddingRight="30dp"
                     android:paddingTop="5dp"
                     android:src="@drawable/add_contact_number_field_icon"
-
-
                     />
 
                 <EditText
@@ -136,21 +120,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
-
                     android:layout_toRightOf="@id/add_contact_phone_icon"
                     android:background="@drawable/border_bottom_transparent"
                     android:ems="10"
                     android:hint="PHONE*"
-
                     android:inputType="numberDecimal"
                     android:textColor="#ffffff"
                     android:textColorHint="#ffffff"
-
-
                     />
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -171,8 +149,6 @@
                     android:paddingRight="23dp"
                     android:paddingTop="5dp"
                     android:src="@drawable/add_contact_email_field_icon"
-
-
                     />
 
                 <EditText
@@ -180,20 +156,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
-
                     android:layout_toRightOf="@id/add_contact_email_icon"
                     android:background="@drawable/border_bottom_transparent"
                     android:ems="10"
                     android:hint="EMAIL*"
-
                     android:inputType="textPersonName"
                     android:textColor="#ffffff"
                     android:textColorHint="#ffffff"
-
                     />
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -214,8 +185,6 @@
                     android:paddingRight="25dp"
                     android:paddingTop="0dp"
                     android:src="@drawable/add_contact_notes_field_icon"
-
-
                     />
 
                 <EditText
@@ -232,9 +201,164 @@
                     android:textColor="#ffffff"
                     android:textColorHint="#ffffff"
                     />
-
             </LinearLayout>
+            <!--Edit contact Entities begin here-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
 
+                <LinearLayout
+                    android:id="@+id/phone_two_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/border_bottom_add_contact"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="20dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/add_contact_phone_icon_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_right_add_contact"
+                        android:paddingBottom="15dp"
+                        android:paddingRight="30dp"
+                        android:paddingTop="5dp"
+                        android:src="@drawable/add_contact_number_field_icon"
+                        />
+
+                    <EditText
+                        android:id="@+id/et_contact_phone_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+
+                        android:layout_toRightOf="@id/add_contact_phone_icon"
+                        android:background="@drawable/border_bottom_transparent"
+                        android:ems="10"
+                        android:hint="PHONE 2"
+                        android:inputType="numberDecimal"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#ffffff"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/description_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/border_bottom_add_contact"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="20dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/description_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_right_add_contact"
+                        android:paddingBottom="15dp"
+                        android:paddingRight="30dp"
+                        android:paddingTop="5dp"
+                        android:src="@drawable/add_contact_number_field_icon"
+                        />
+
+                    <EditText
+                        android:id="@+id/et_contact_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/add_contact_phone_icon"
+                        android:background="@drawable/border_bottom_transparent"
+                        android:ems="10"
+                        android:hint="DESCRIPTION"
+                        android:inputType="numberDecimal"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#ffffff"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/company_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/border_bottom_add_contact"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="20dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/company_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_right_add_contact"
+                        android:paddingBottom="15dp"
+                        android:paddingRight="30dp"
+                        android:paddingTop="5dp"
+                        android:src="@drawable/add_contact_number_field_icon"
+                        />
+
+                    <EditText
+                        android:id="@+id/et_contact_company"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/add_contact_phone_icon"
+                        android:background="@drawable/border_bottom_transparent"
+                        android:ems="10"
+                        android:hint="COMPANY"
+                        android:inputType="numberDecimal"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#ffffff"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/address_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/border_bottom_add_contact"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="20dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/address_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_right_add_contact"
+                        android:paddingBottom="15dp"
+                        android:paddingRight="30dp"
+                        android:paddingTop="5dp"
+                        android:src="@drawable/add_contact_number_field_icon"
+                        />
+
+                    <EditText
+                        android:id="@+id/et_contact_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/add_contact_phone_icon"
+                        android:background="@drawable/border_bottom_transparent"
+                        android:ems="10"
+                        android:hint="ADDRESS"
+                        android:inputType="numberDecimal"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#ffffff"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <!--    Edit contact Entities End here  -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -248,7 +372,6 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="120dp"
                     android:layout_height="30dp"
-
                     android:layout_marginRight="10dp"
                     android:layout_weight="0.33"
                     android:background="@drawable/btn_transparent_white_border"
@@ -268,7 +391,6 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="120dp"
                     android:layout_height="30dp"
-
                     android:layout_marginRight="10dp"
                     android:layout_weight="0.33"
                     android:background="@drawable/btn_primary"
@@ -288,7 +410,6 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="120dp"
                     android:layout_height="30dp"
-
                     android:layout_weight="0.33"
                     android:background="@drawable/btn_transparent_white_border"
                     android:paddingBottom="5dp"
@@ -301,8 +422,6 @@
                     android:textColor="#ffffff"
                     android:textSize="13sp"
                     />
-
-
             </LinearLayout>
 
             <Button
@@ -316,11 +435,20 @@
                 android:text="ADD CONTACT"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
-
                 />
 
-
+            <Button
+                android:id="@+id/save_contact_cta"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:background="@drawable/btn_secondary"
+                android:padding="0dp"
+                android:radius="5dip"
+                android:text="SAVE CONTACT"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                />
         </LinearLayout>
-
     </ScrollView>
 </LinearLayout>

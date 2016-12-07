@@ -24,16 +24,14 @@
         />
 
     <LinearLayout
+        android:id="@+id/numberParentLoginScreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivLogoLoginScreen"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:orientation="horizontal"
-        android:id="@+id/numberParentLoginScreen"
-        android:layout_centerHorizontal="true"
-
         >
-
 
         <ImageView
             android:layout_width="30dp"
@@ -45,22 +43,22 @@
             android:id="@+id/numberLoginScreen"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:hint="Number"
             android:inputType="number"
-            android:layout_marginLeft="10dp"
             />
 
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/passwordParentlayoutLoginScreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/numberParentLoginScreen"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/passwordParentlayoutLoginScreen"
         >
 
 
@@ -74,9 +72,9 @@
             android:id="@+id/passwordLoginScreen"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:hint="Password"
             android:inputType="textPassword"
-            android:layout_marginLeft="10dp"
 
             />
 
@@ -85,12 +83,12 @@
 
 
     <Button
+        android:id="@+id/loginButtonLoginScreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordParentlayoutLoginScreen"
-        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:text="Log In"
-        android:id="@+id/loginButtonLoginScreen"
         />
 </RelativeLayout>

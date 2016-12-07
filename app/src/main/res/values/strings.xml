@@ -24,6 +24,22 @@
     <string name="followup_capital">FOLLOW UP</string>
     <string name="close">Close</string>
     <string name="open">Open</string>
+    <string name="email">Email</string>
+    <string name="number2">Number 2</string>
+    <string name="description">Description</string>
+    <string name="company">Company</string>
+    <string name="address">Address</string>
+    <string name="type">Type</string>
+    <!--        UIOCALL popup stuff-->
+    <string name="rating_prompt_string">Please rate your experience!</string>
+    <string name="please_tag_this_call">Please tag this call</string>
+    <!--UIOCALL popup stuff ends here-->
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="funnel_hint">Filter</string>
 
 
 </resources>

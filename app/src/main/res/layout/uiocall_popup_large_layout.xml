@@ -1,0 +1,89 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/popupMainLayout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:animateLayoutChanges="true"
+              android:orientation="vertical"
+              android:windowAnimationStyle="@android:style/Animation.Translucent"
+              android:windowBackground="@android:color/transparent"
+              android:windowIsTranslucent="true"
+    >
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_borders"
+        android:orientation="vertical"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/shape_rounded_rectangle_banner_bg"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+
+            >
+
+            <ImageView
+                android:id="@+id/imBanner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@drawable/banner"
+
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/sliderImageViewParentLayout"
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+
+            >
+
+
+            <TextView
+                android:id="@+id/tvNoteTextUIOCallPopup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Note"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                />
+
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_rounded_rectangle_buttons_bg"
+            >
+
+
+            <ImageButton
+                android:id="@+id/closeImageButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/close_icon"
+
+                />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

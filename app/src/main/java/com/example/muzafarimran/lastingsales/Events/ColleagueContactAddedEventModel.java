@@ -7,10 +7,7 @@ import de.halfbit.tinybus.Produce;
  */
 
 public class ColleagueContactAddedEventModel {
-
-
     public ColleagueContactAddedEventModel() {
-
     }
 
     @Produce

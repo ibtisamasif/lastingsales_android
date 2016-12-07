@@ -7,10 +7,7 @@ import de.halfbit.tinybus.Produce;
  */
 
 public class IncomingCallEventModel {
-
     public static final int CALL_TYPE_INCOMING = 1;
-
-
     private int state;
 
     public IncomingCallEventModel(int state) {

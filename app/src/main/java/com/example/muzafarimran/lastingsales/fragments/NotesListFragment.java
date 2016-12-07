@@ -14,12 +14,9 @@ import android.widget.ListView;
 import com.example.muzafarimran.lastingsales.Events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddNoteActivity;
-import com.example.muzafarimran.lastingsales.activities.LSContactChooserActivity;
 import com.example.muzafarimran.lastingsales.activities.NotesActivity;
 import com.example.muzafarimran.lastingsales.adapters.NotesListAdapter;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.providers.models.Note;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,33 +25,23 @@ import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
-import static android.app.Activity.RESULT_OK;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NotesListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class NotesListFragment extends Fragment {
-
     public static final String TAG = "NotesListFragment";
-
-
-    public static ArrayList<LSNote> allNotes;
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
+    public static ArrayList<LSNote> allNotes;
     ListView lvAllNotes;
     NotesListAdapter notesAdapter;
     FloatingActionButton floatingActionButton;
-
+    private String mParam1;
+    private String mParam2;
     private Bus mBus;
     private TinyBus bus;
-
 
     public NotesListFragment() {
         // Required empty public constructor
@@ -84,12 +71,9 @@ public class NotesListFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
-//        mBus.register(this);
-
         Log.d(TAG, "onStart() called");
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
@@ -97,25 +81,18 @@ public class NotesListFragment extends Fragment {
 
     @Override
     public void onStop() {
-//        mBus.unregister(this);
         bus.unregister(this);
         Log.d(TAG, "onStop() called");
-
         super.onStop();
-
     }
 
     @Subscribe
     public void onNoteAddedEventModel(NoteAddedEventModel event) {
         Log.d(TAG, "onNoteAddedEvent() called with: event = [" + event + "]");
-
         List<LSNote> allNotes = LSNote.listAll(LSNote.class);
         setList(allNotes);
-
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
-
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,10 +101,9 @@ public class NotesListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
         setRetainInstance(true);
-//        startActivityForResult(new Intent(getContext(), LSContactChooserActivity.class),CONTACT_REQUEST_CODE);
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -138,17 +114,11 @@ public class NotesListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notes_list, container, false);
-
         lvAllNotes = (ListView) view.findViewById(R.id.lvAllNotesNotesFragment);
-
-
         allNotes = (ArrayList<LSNote>) LSNote.listAll(LSNote.class);
-
         notesAdapter = new NotesListAdapter(getActivity(), R.layout.note_list_item, allNotes, getActivity());
         lvAllNotes.setAdapter(notesAdapter);
-
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_add_note);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,35 +126,7 @@ public class NotesListFragment extends Fragment {
                 startActivityForResult(new Intent(getContext(), AddNoteActivity.class), NotesActivity.ADD_NOTE_REQUEST_CODE);
             }
         });
-
         return view;
     }
 
-
-
-
- /*   public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == AddNoteFragment.CONTACT_REQUEST_CODE)
-        {
-            if (resultCode == RESULT_OK)
-            {
-
-                notesAdapter.notifyDataSetChanged();
-                notesAdapter.add();
-            }
-        }
-    }*/
-
-/*
-  @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (data == null)
-        {
-            getActivity().finish();
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-*/
 }

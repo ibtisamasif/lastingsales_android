@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -27,15 +30,14 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UntaggedContactsCallsFragment extends TabFragment {
+public class UntaggedContactsCallsFragment extends SearchFragment {
 
     private static final String TAG = "UntaggedCallFragment";
-    private List<LSCall> untaggedCalls = new ArrayList<>();
     CallsAdapter callsadapter;
     ListView listView = null;
+    private List<LSCall> untaggedCalls = new ArrayList<>();
     private Bus mBus;
     private TinyBus bus;
-
 
     public static UntaggedContactsCallsFragment newInstance(int page, String title) {
         UntaggedContactsCallsFragment fragmentFirst = new UntaggedContactsCallsFragment();
@@ -45,7 +47,6 @@ public class UntaggedContactsCallsFragment extends TabFragment {
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
-
 
     public void setList(List<LSCall> missedCalls) {
         if (callsadapter != null) {
@@ -57,16 +58,14 @@ public class UntaggedContactsCallsFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-//        mBus = TinyBus.from(getActivity().getApplicationContext());
         callsadapter = new CallsAdapter(getContext());
         callsadapter.setList(untaggedCalls);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-//        mBus.register(this);
-
         Log.d(TAG, "onStart() called");
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
@@ -74,12 +73,9 @@ public class UntaggedContactsCallsFragment extends TabFragment {
 
     @Override
     public void onStop() {
-//        mBus.unregister(this);
         bus.unregister(this);
         Log.d(TAG, "onStop() called");
-
         super.onStop();
-
     }
 
     @Subscribe
@@ -88,19 +84,14 @@ public class UntaggedContactsCallsFragment extends TabFragment {
         if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
             updateCallsList();
         }
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
-
     }
 
     @Subscribe
     public void onIncommingCallReceivedEvent(IncomingCallEventModel event) {
         Log.d(TAG, "onIncomingCallEvent() called with: event = [" + event + "]");
         if (event.getState() == IncomingCallEventModel.CALL_TYPE_INCOMING) {
-
             updateCallsList();
         }
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
-
     }
 
     @Subscribe
@@ -110,12 +101,11 @@ public class UntaggedContactsCallsFragment extends TabFragment {
             updateCallsList();
         }
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
-
     }
 
     private void updateCallsList() {
 
-        List<LSCall> untaggedCalls = new ArrayList<LSCall>();
+        List<LSCall> untaggedCalls = new ArrayList<>();
         List<LSCall> allCalls = LSCall.listAll(LSCall.class);
         for (LSCall oneCall : allCalls) {
             if (oneCall.getContact() == null) {
@@ -124,7 +114,6 @@ public class UntaggedContactsCallsFragment extends TabFragment {
         }
         this.untaggedCalls = untaggedCalls;
         setList(untaggedCalls);
-
     }
 
 
@@ -135,16 +124,24 @@ public class UntaggedContactsCallsFragment extends TabFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.search_options_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        materialSearchView.setMenuItem(item);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
-        View view = null;
-        view = inflater.inflate(R.layout.fragment_calls, container, false);
+        View view = inflater.inflate(R.layout.fragment_calls, container, false);
         listView = (ListView) view.findViewById(R.id.calls_list);
         listView.setAdapter(callsadapter);
-
-
         return view;
+    }
+
+    @Override
+    protected void onSearch(String query) {
+        callsadapter.getFilter().filter(query);
     }
 }

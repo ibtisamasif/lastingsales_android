@@ -4,17 +4,17 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.Events.ColleagueContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.PersonalContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.Events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
@@ -26,81 +26,98 @@ import java.util.ArrayList;
 
 import de.halfbit.tinybus.TinyBus;
 
+import static android.view.View.GONE;
+import static com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils.updateAllCallsOfThisContact;
+
 public class AddContactActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
     private static final String TAG = "AddContactActivity";
-
-    Button importContact = null;
-    Button salesRadio = null;
-    Button collegueRadio = null;
-    Button personalRadio = null;
-    Button currentSelectedRadio = null;
-    Button addContactCTA = null;
-
-    EditText contactName = null;
-    EditText contactPhone = null;
-    EditText contactEmail = null;
-    EditText contactNotes = null;
-
-    private Uri uriContact;
-
     contactImportClickListener contactimportclicklistener = new contactImportClickListener();
     changeSelectedContactType changeselectedcontactType = new changeSelectedContactType();
-    private String contactID;
-
-
+    String idOfEditContactString = "";
+    Long idOfEditContactLong = -1L;
     String selectedContactType = LSContact.CONTACT_TYPE_SALES;
-
+    LSContact editingContact = null;
+    Boolean editContactFlow = false;
+    private Button bImportContact = null;
+    private Button salesRadio = null;
+    private Button collegueRadio = null;
+    private Button personalRadio = null;
+    private Button currentSelectedRadio = null;
+    private Button bAddContactCTA = null;
+    private Button bSaveContactCTA = null;
+    private EditText etContactName = null;
+    private EditText etContactPhone = null;
+    private EditText etContactEmail = null;
+    private EditText etContactNotes = null;
+    private EditText etContactPhoneTwo = null;
+    private EditText etContactDescription = null;
+    private EditText etContactCompany = null;
+    private EditText etContactAddress = null;
+    private LinearLayout llContactPhoneTwo = null;
+    private LinearLayout llContactDescription = null;
+    private LinearLayout llContactCompany = null;
+    private LinearLayout llContactAddress = null;
+    private Uri uriContact;
+    private String contactID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
-
-        importContact = (Button) findViewById(R.id.b_import_contact);
+        bImportContact = (Button) findViewById(R.id.b_import_contact);
         salesRadio = (Button) findViewById(R.id.sales_radio);
         currentSelectedRadio = salesRadio;
-
         collegueRadio = (Button) findViewById(R.id.collegue_radio);
         personalRadio = (Button) findViewById(R.id.personal_radio);
-        addContactCTA = (Button) findViewById(R.id.add_contact_cta);
-
-        importContact.setOnClickListener(this.contactimportclicklistener);
-//        importContact.setOnClickListener(this);
-
-//
-//        importContact.setOnClickListener(this.changeselectedcontactType);
-//        importContact.setOnClickListener(this.changeselectedcontactType);
-//        importContact.setOnClickListener(this.changeselectedcontactType);
-
-        contactName = (EditText) findViewById(R.id.contact_name);
-        contactPhone = (EditText) findViewById(R.id.contact_phone);
-        contactEmail = (EditText) findViewById(R.id.contact_email);
-        contactNotes = (EditText) findViewById(R.id.contact_notes);
-
+        bAddContactCTA = (Button) findViewById(R.id.add_contact_cta);
+        bSaveContactCTA = (Button) findViewById(R.id.save_contact_cta);
+        bImportContact.setOnClickListener(this.contactimportclicklistener);
+        etContactName = (EditText) findViewById(R.id.contact_name);
+        etContactPhone = (EditText) findViewById(R.id.contact_phone);
+        etContactEmail = (EditText) findViewById(R.id.contact_email);
+        etContactNotes = (EditText) findViewById(R.id.contact_notes);
+        etContactPhoneTwo = (EditText) findViewById(R.id.et_contact_phone_two);
+        etContactDescription = (EditText) findViewById(R.id.et_contact_description);
+        etContactCompany = (EditText) findViewById(R.id.et_contact_company);
+        etContactAddress = (EditText) findViewById(R.id.et_contact_address);
+        llContactPhoneTwo = (LinearLayout) findViewById(R.id.phone_two_layout);
+        llContactDescription = (LinearLayout) findViewById(R.id.description_layout);
+        llContactCompany = (LinearLayout) findViewById(R.id.company_layout);
+        llContactAddress = (LinearLayout) findViewById(R.id.address_layout);
         Bundle bundle = getIntent().getExtras();
-
         String num = "";
         if (bundle != null) {
-
-
-
             num = bundle.getString(ContactCallDetails.NUMBER_EXTRA);
-
-            contactPhone.setText(num);
+            etContactPhone.setText(num);
+            etContactName.setText(PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), num));
+            idOfEditContactString = bundle.getString(ContactDetailsActivity.KEY_CONTACT_ID);
+            if (idOfEditContactString != null && idOfEditContactString != "") {
+                editContactFlow = true;
+                idOfEditContactLong = Long.parseLong(idOfEditContactString);
+            }
         }
-
-
+        if (!editContactFlow) {
+            hideEditFields();
+        } else {
+            hideAddContactFields();
+            editingContact = LSContact.findById(LSContact.class, idOfEditContactLong);
+            etContactName.setText(editingContact.getContactName());
+            etContactPhone.setText(editingContact.getPhoneOne());
+            etContactEmail.setText(editingContact.getContactEmail());
+            etContactPhoneTwo.setText(editingContact.getPhoneTwo());
+            etContactDescription.setText(editingContact.getContactDescription());
+            etContactCompany.setText(editingContact.getContactCompany());
+            etContactAddress.setText(editingContact.getContactAddress());
+        }
         salesRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectedContactType = LSContact.CONTACT_TYPE_SALES;
-
                 salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
                 collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 personalRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
-
             }
         });
         collegueRadio.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +127,6 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
                 salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
                 personalRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
-
             }
         });
         personalRadio.setOnClickListener(new View.OnClickListener() {
@@ -120,100 +136,129 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
                 salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 personalRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-
             }
         });
-
-        addContactCTA.setOnClickListener(new View.OnClickListener() {
+        bAddContactCTA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LSContact tempContact = new LSContact();
-
-                tempContact.setContactName(contactName.getText().toString());
-                tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone.getText().toString()));
-                tempContact.setContactEmail(contactEmail.getText().toString());
+                etContactName.setError(null);
+                etContactPhone.setError(null);
+                etContactEmail.setError(null);
+                boolean validation = true;
+                String contactName = etContactName.getText().toString();
+                String contactPhone = etContactPhone.getText().toString();
+                String contactEmail = etContactEmail.getText().toString();
+                if (contactName.equals("") || contactName.length() < 3) {
+                    validation = false;
+                    etContactName.setError("Invalid Name!");
+                }
+                if (contactPhone.equals("") || contactPhone.length() < 3) {
+                    validation = false;
+                    etContactPhone.setError("Invalid Number!");
+                }
+                if (validation) {
+                    LSContact tempContact = new LSContact();
+                    tempContact.setContactName(contactName);
+                    tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone));
+                    tempContact.setContactEmail(contactEmail);
+                    tempContact.setContactType(selectedContactType);
+                    tempContact.save();
+//                    updating all previous calls of this contact adding contact to call and removing contact name
+                    updateAllCallsOfThisContact(tempContact);
+                    String noteText = etContactNotes.getText().toString();
+                    if (noteText.length() > 0) {
+                        LSNote tempNote = new LSNote();
+                        tempNote.setNoteText(noteText);
+                        tempNote.setContactOfNote(tempContact);
+                        tempNote.save();
+                    }
+                    if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+                        SalesContactAddedEventModel mCallEvent = new SalesContactAddedEventModel();
+                        TinyBus bus = TinyBus.from(getApplicationContext());
+                        bus.register(mCallEvent);
+                        bus.post(mCallEvent);
+                        Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
+                    } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+                        ColleagueContactAddedEventModel mCallEvent = new ColleagueContactAddedEventModel();
+                        TinyBus bus = TinyBus.from(getApplicationContext());
+                        bus.register(mCallEvent);
+                        bus.post(mCallEvent);
+                        Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
+                    } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+                        PersonalContactAddedEventModel mCallEvent = new PersonalContactAddedEventModel();
+                        TinyBus bus = TinyBus.from(getApplicationContext());
+                        bus.register(mCallEvent);
+                        bus.post(mCallEvent);
+                        Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
+                    }
+                    finish();
+                }
+            }
+        });
+        bSaveContactCTA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LSContact tempContact = editingContact;
+                tempContact.setContactName(etContactName.getText().toString());
+                tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(etContactPhone.getText().toString()));
+                tempContact.setContactEmail(etContactEmail.getText().toString());
                 tempContact.setContactType(selectedContactType);
-
+                tempContact.setPhoneTwo(etContactPhoneTwo.getText().toString());
+                tempContact.setContactAddress(etContactAddress.getText().toString());
+                tempContact.setContactDescription(etContactDescription.getText().toString());
+                tempContact.setContactCompany(etContactCompany.getText().toString());
                 tempContact.save();
-
-                String noteText = contactNotes.getText().toString();
-
-                if (noteText.length() > 0) {
-                    LSNote tempNote = new LSNote();
-
-                    tempNote.setNoteText(noteText);
-                    tempNote.setContactOfNote(tempContact);
-
-                    tempNote.save();
-
-//                    LSNote.listAll(LSNote.class);
-
-                    ArrayList<LSNote> allNotes = (ArrayList<LSNote>) LSNote.listAll(LSNote.class);
-
-//                    if (allNotes.size()>0)
-
-                }
-
-                ArrayList<LSContact> allContacts = (ArrayList<LSContact>) LSContact.listAll(LSContact.class);
-
-                for (int counter1 = 0; counter1 < allContacts.size(); counter1++) {
-                    Toast.makeText(AddContactActivity.this, "name: " + allContacts.get(counter1).getContactName(), Toast.LENGTH_SHORT).show();
-                }
-
+//                    updating all previous calls of this contact adding contact to call and removing contact name
+                updateAllCallsOfThisContact(tempContact);
                 if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-
                     SalesContactAddedEventModel mCallEvent = new SalesContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.register(mCallEvent);
                     bus.post(mCallEvent);
                     Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
-
-
                 } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
-
                     ColleagueContactAddedEventModel mCallEvent = new ColleagueContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.register(mCallEvent);
                     bus.post(mCallEvent);
                     Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
-
-
                 } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
-
                     PersonalContactAddedEventModel mCallEvent = new PersonalContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.register(mCallEvent);
                     bus.post(mCallEvent);
                     Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
-
-
                 }
-
-
                 finish();
-
             }
         });
-
     }
 
+    private void hideAddContactFields() {
+        bAddContactCTA.setVisibility(GONE);
+        bImportContact.setVisibility(GONE);
+    }
 
-    /*to be seen*/
+    private void hideEditFields() {
+        llContactPhoneTwo.setVisibility(GONE);
+        llContactDescription.setVisibility(GONE);
+        llContactCompany.setVisibility(GONE);
+        llContactAddress.setVisibility(GONE);
+        bSaveContactCTA.setVisibility(GONE);
+    }
+
     private String retrieveContactName() {
         String contactName = null;
-
         // querying contact data store
         Cursor cursor = getContentResolver().query(uriContact, null, null, null, null);
-
         if (cursor.moveToFirst()) {
             // DISPLAY_NAME = The display name for the contact.
             // HAS_PHONE_NUMBER =   An indicator of whether this contact has at least one phone number.
-
             contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-//            contactEmail = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+//            etContactEmail = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
         }
         cursor.close();
-        // Log.d(TAG, "Contact Name: " + contactName);
+        // Log.d(TAG, "Contact Name: " + etContactName);
         return contactName;
     }
 
@@ -255,7 +300,6 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
         return contactNumber;
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -281,13 +325,13 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
 //            retrieveContactPhoto();
 
 
-            contactName.setText(name);
-            contactPhone.setText(number);
-            contactEmail.setText(email);
+            etContactName.setText(name);
+            etContactPhone.setText(number);
+            etContactEmail.setText(email);
 
             if (PhoneNumberAndCallUtils.isNumeric(name)) {
-                contactPhone.setText(number);
-                contactName.setText("");
+                etContactPhone.setText(number);
+                etContactName.setText("");
             }
 
         }
@@ -296,47 +340,6 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         Toast.makeText(this, "clockedImport button", Toast.LENGTH_SHORT).show();
-    }
-
-
-    public class contactImportClickListener implements View.OnClickListener {
-
-
-        @Override
-        public void onClick(View view) {
-
-            // using native contacts selection
-            // Intent.ACTION_PICK = Pick an item from the data, returning what was selected.
-            startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), REQUEST_CODE_PICK_CONTACTS);
-
-        }
-    }
-
-
-    public class changeSelectedContactType implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-
-
-            //currentSelectedRadio.setBackground(getResources().getDrawable(R.drawable.ready, null));
-
-            /*String tag =  String.valueOf(view.getTag());
-
-            switch(tag){
-
-                case "sales_radio":
-
-                    break;
-
-                case "collegue_radio":
-
-                    break;
-
-                case "personal_radio":
-
-                    break;
-            }*/
-        }
     }
 
     /**
@@ -411,5 +414,39 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
 //        return nameList; // here you can return whatever you want.
     }
 
+    public class contactImportClickListener implements View.OnClickListener {
 
+        @Override
+        public void onClick(View view) {
+            // using native contacts selection
+            // Intent.ACTION_PICK = Pick an item from the data, returning what was selected.
+            startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), REQUEST_CODE_PICK_CONTACTS);
+        }
+    }
+
+    public class changeSelectedContactType implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+
+            //currentSelectedRadio.setBackground(getResources().getDrawable(R.drawable.ready, null));
+
+            /*String tag =  String.valueOf(view.getTag());
+
+            switch(tag){
+
+                case "sales_radio":
+
+                    break;
+
+                case "collegue_radio":
+
+                    break;
+
+                case "personal_radio":
+
+                    break;
+            }*/
+        }
+    }
 }

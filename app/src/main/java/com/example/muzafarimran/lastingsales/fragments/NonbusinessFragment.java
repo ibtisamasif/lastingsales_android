@@ -1,26 +1,28 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 
-import com.example.muzafarimran.lastingsales.Call;
+import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.PersonalContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.Events.SalesContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.providers.models.Contact;
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.AddContactActivity;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
@@ -29,13 +31,13 @@ import de.halfbit.tinybus.TinyBus;
  */
 public class NonbusinessFragment extends TabFragment {
     private static final String TAG = "PersonalContactFragment";
-
-    private List<LSContact> nonbusinessContacts = new ArrayList<>();
-    private Bus mBus;
-    private TinyBus bus;
     ListView listView = null;
     ContactsAdapter contactsAdapter;
-
+    EditText inputSearch;
+    MaterialSearchView searchView;
+    FloatingActionButton addContactCta = null;
+    ShowAddContactForm showaddcontactform = new ShowAddContactForm();
+    private TinyBus bus;
 
     public static NonbusinessFragment newInstance(int page, String title) {
         NonbusinessFragment fragmentFirst = new NonbusinessFragment();
@@ -46,20 +48,23 @@ public class NonbusinessFragment extends TabFragment {
         return fragmentFirst;
     }
 
-
     public void setList(List<LSContact> contacts) {
         if (contactsAdapter != null) {
             contactsAdapter.setList(contacts);
         }
     }
-    public NonbusinessFragment() {
-        // Required empty public constructor
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        contactsAdapter = new ContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_PERSONAL);
+        setHasOptionsMenu(true);
     }
+
     @Override
     public void onStart() {
         super.onStart();
-//        mBus.register(this);
-
         Log.d(TAG, "onStart() called");
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
@@ -67,12 +72,9 @@ public class NonbusinessFragment extends TabFragment {
 
     @Override
     public void onStop() {
-//        mBus.unregister(this);
         bus.unregister(this);
         Log.d(TAG, "onStop() called");
-
         super.onStop();
-
     }
 
     @Subscribe
@@ -80,48 +82,77 @@ public class NonbusinessFragment extends TabFragment {
         Log.d(TAG, "onPersonalContactAddedEvent() called with: event = [" + event + "]");
         List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
         setList(contacts);
-
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
-
     }
 
+    @Subscribe
+    public void onBackPressedEventModel(BackPressedEventModel event) {
+        if (!event.backPressHandled && contactsAdapter.isDeleteFlow()) {
+            event.backPressHandled = true;
+            contactsAdapter.setDeleteFlow(false);
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
-        this.nonbusinessContacts = contacts;
-
         setList(contacts);
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // Inflate the layout for this fragment
-        View view = null;
-        ListView listView = null;
-
-        view = inflater.inflate(R.layout.fragment_personal, container, false);
+        View view = inflater.inflate(R.layout.fragment_personal, container, false);
+        this.addContactCta = (FloatingActionButton) view.findViewById(R.id.add_contact_cta);
+        this.addContactCta.setOnClickListener(this.showaddcontactform);
         listView = (ListView) view.findViewById(R.id.personal_contacts_list);
-
-
-        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
-        this.nonbusinessContacts = contacts;
-        contactsAdapter = new ContactsAdapter(getContext(), this.nonbusinessContacts);
+        inputSearch = (EditText) (getActivity().findViewById(R.id.search_box));
         listView.setAdapter(contactsAdapter);
+        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                contactsAdapter.getFilter().filter(query);
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                contactsAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        listView = null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /*
+    * event handler for click on add contact cta
+    * */
+    public class ShowAddContactForm implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent myIntent = new Intent(getActivity(), AddContactActivity.class);
+            //myIntent.putExtra("number",(String) v.getTag());
+            getActivity().startActivity(myIntent);
+        }
+    }
 }

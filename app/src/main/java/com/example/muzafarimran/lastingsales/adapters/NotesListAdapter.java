@@ -23,31 +23,19 @@ import java.util.List;
 
 public class NotesListAdapter extends BaseAdapter {
     private int listItemLayout;
-    ArrayList<LSNote> notesList;
-    Context mContext;
-    Activity activity;
+    private ArrayList<LSNote> notesList;
+    private Context mContext;
+    private Activity activity;
     private LayoutInflater mInflater;
-    LinearLayout noteDetails = null;
-    Boolean expanded = false;
-
-
+    private LinearLayout noteDetails = null;
+    private Boolean expanded = false;
 
     public NotesListAdapter(Context mContext, int layoutId, ArrayList<LSNote> notesList, Activity activity) {
         listItemLayout = layoutId;
         this.notesList = notesList;
         this.mContext = mContext;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
-//  public NotesListAdapter(Context mContext, int layoutId, ArrayList<LSNote> notesList, Activity activity) {
-//        super(mContext, layoutId, notesList);
-//        listItemLayout = layoutId;
-//        inflater = LayoutInflater.from(getContext());
-//        this.notesList = notesList;
-//        this.mContext = mContext;
-//
-//    }
-
 
     @Override
     public int getCount() {
@@ -68,44 +56,33 @@ public class NotesListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data tvContactName for this position
         LSNote oneNote = (LSNote) getItem(position);
-
         LSContact oneContact = oneNote.getContactOfNote();
-
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = mInflater.inflate(listItemLayout, parent, false);
-
-
             viewHolder.tvContactName = (TextView) convertView.findViewById(R.id.list_item_notes_name);
             viewHolder.tvNoteTime = (TextView) convertView.findViewById(R.id.list_item_note_time);
             viewHolder.tvShortNote = (TextView) convertView.findViewById(R.id.list_item_note_small);
             viewHolder.tvNoteDate = (TextView) convertView.findViewById(R.id.list_item_note_date);
             viewHolder.tvNoteDetails = (TextView) convertView.findViewById(R.id.tv_note_details);
             viewHolder.llNotesDetailsLayout = (LinearLayout) convertView.findViewById(R.id.note_details_layout);
-
             viewHolder.llNotesDetailsLayout.setVisibility(View.GONE);
             convertView.setOnClickListener(new ShowDetailedNoteListener(oneNote, viewHolder.llNotesDetailsLayout));
-
             convertView.setTag(viewHolder); // view lookup cache stored in tag
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
         Calendar cl = Calendar.getInstance();
-//        cl.setTimeInMillis(oneFollowup.getDateTimeForFollowup());  //here your time in miliseconds
         String date = "" + cl.get(Calendar.DAY_OF_MONTH) + ":" + cl.get(Calendar.MONTH) + ":" + cl.get(Calendar.YEAR);
         String time = "" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE);
-
-
         // Populate the data into the template view using the data object
         viewHolder.tvContactName.setText(oneContact.getContactName());
         viewHolder.tvShortNote.setText(getShortenedString(oneNote.getNoteText()));
         viewHolder.tvNoteDetails.setText(oneNote.getNoteText());
         viewHolder.tvNoteDate.setText(date);
         viewHolder.tvNoteTime.setText(time);
-
         // Return the completed view to render on screen
         return convertView;
     }
@@ -116,35 +93,6 @@ public class NotesListAdapter extends BaseAdapter {
 
     }
 
-
-    public class ShowDetailedNoteListener implements View.OnClickListener {
-
-
-        LinearLayout detailsLayout;
-
-        LSNote note;
-
-        public ShowDetailedNoteListener(LSNote note, LinearLayout detailsLayout) {
-            this.note = note;
-            this.detailsLayout = detailsLayout;
-        }
-
-        @Override
-        public void onClick(View view) {
-
-            if (expanded && noteDetails != null) {
-                noteDetails.setVisibility(View.GONE);
-                noteDetails = null;
-                expanded = false;
-            } else {
-                noteDetails = detailsLayout;
-                detailsLayout.setVisibility(View.VISIBLE);
-                expanded = true;
-
-            }
-        }
-    }
-
     private String getShortenedString(String inputString) {
         if (inputString.length() > 30) {
             return inputString.substring(0, 30) + "...";
@@ -153,7 +101,6 @@ public class NotesListAdapter extends BaseAdapter {
         }
     }
 
-    // The ViewHolder, only one tvContactName for simplicity and demonstration purposes, you can put all the views inside a row of the list into this ViewHolder
     private static class ViewHolder {
         TextView tvContactName;
         TextView tvShortNote;
@@ -163,5 +110,26 @@ public class NotesListAdapter extends BaseAdapter {
         LinearLayout llNotesDetailsLayout;
     }
 
+    private class ShowDetailedNoteListener implements View.OnClickListener {
+        LSNote note;
+        private LinearLayout detailsLayout;
 
+        public ShowDetailedNoteListener(LSNote note, LinearLayout detailsLayout) {
+            this.note = note;
+            this.detailsLayout = detailsLayout;
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (expanded && noteDetails != null) {
+                noteDetails.setVisibility(View.GONE);
+                noteDetails = null;
+                expanded = false;
+            } else {
+                noteDetails = detailsLayout;
+                detailsLayout.setVisibility(View.VISIBLE);
+                expanded = true;
+            }
+        }
+    }
 }

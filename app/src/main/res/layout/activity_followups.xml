@@ -3,10 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_screen_main_parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_screen_main_parent_layout"
     >
+
     <LinearLayout
         android:id="@+id/ll_main_layout"
         android:layout_width="match_parent"
@@ -20,17 +21,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginTop="10dp"
+        android:orientation="vertical"
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/followups_capital"
-            android:textSize="20dp"
-            android:textColor="@color/totem_blue"
             android:layout_marginBottom="10dp"
+            android:text="@string/followups_capital"
+            android:textColor="@color/totem_blue"
+            android:textSize="20dp"
             android:textStyle="bold"
             />
 
@@ -43,24 +45,22 @@
         <ListView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/followups_list_view"
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
             >
         </ListView>
     </LinearLayout>
 
 
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_followup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_add" />
-
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

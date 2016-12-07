@@ -18,8 +18,9 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.activities.LSContactChooserActivity;
 import com.example.muzafarimran.lastingsales.adapters.FollowupsListAdapter;
-import com.example.muzafarimran.lastingsales.providers.models.*;
 import com.example.muzafarimran.lastingsales.providers.models.Contact;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -37,9 +38,9 @@ public class PopUpWindowAddNewFollowUp implements
         com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener {
 
-
     public static final int CONTACT_CHOOSER_REQUEST_CODE = 11;
-
+    Calendar dateForFollowUp, timeForFollowUp;
+    FollowupsListAdapter followupsListAdapter;
     private LSContact selectedLSContact = null;
     private Activity activity = null;
     private View addNewFollowupViewForRefrence = null;
@@ -47,18 +48,11 @@ public class PopUpWindowAddNewFollowUp implements
     private TextView tvCancelButton = null;
     private Button bChangeButton = null;
     private EditText etNote = null;
-
     private TextView tvDate, tvTime, tvName, tvNumber;
     private PendingIntent pendingIntent;
-
-    Calendar dateForFollowUp, timeForFollowUp;
-    FollowupsListAdapter followupsListAdapter;
-
-
     //    Image views for folder icons
     private ImageView ivNormalFolder = null;
     private Contact selectedContact = null;
-
 
     public PopUpWindowAddNewFollowUp(Activity activity) {
         this.activity = activity;
@@ -79,18 +73,15 @@ public class PopUpWindowAddNewFollowUp implements
         addNewFollowupViewForRefrence = layoutInflater.inflate(R.layout.popup_add_new_followup_layout, null);
         final PopupWindow addNewFollowupPopUpWindow = new PopupWindow(addNewFollowupViewForRefrence, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT, true);
         addNewFollowupPopUpWindow.showAtLocation(activity.findViewById(R.id.ll_main_layout), Gravity.CENTER, 0, 0);
-
         tvOkButton = (TextView) addNewFollowupViewForRefrence.findViewById(R.id.popup_add_new_followup_b_ok);
         tvCancelButton = (TextView) addNewFollowupViewForRefrence.findViewById(R.id.popup_add_new_followup_b_cancel);
         bChangeButton = (Button) addNewFollowupViewForRefrence.findViewById(R.id.bChangeAddNewFollowupPopup);
         activity.findViewById(R.id.main_screen_main_parent_layout).setAlpha(new Float(0.2));
-
         etNote = (EditText) addNewFollowupViewForRefrence.findViewById(R.id.et_enter_note);
         tvDate = (TextView) addNewFollowupViewForRefrence.findViewById(R.id.tvDateAddNewFollowup);
         tvTime = (TextView) addNewFollowupViewForRefrence.findViewById(R.id.tvTimeAddNewFollowup);
         tvName = (TextView) addNewFollowupViewForRefrence.findViewById(R.id.tvNameAddNewFollowup);
         tvNumber = (TextView) addNewFollowupViewForRefrence.findViewById(R.id.tvNumberAddNewFollowup);
-
         Calendar now = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
                 PopUpWindowAddNewFollowUp.this,
@@ -99,64 +90,35 @@ public class PopUpWindowAddNewFollowUp implements
                 now.get(Calendar.DAY_OF_MONTH)
         );
         dpd.show(activity.getFragmentManager(), "Datepickerdialog");
-
         dateForFollowUp = null;
         timeForFollowUp = null;
-
-
         tvOkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (dateForFollowUp == null || timeForFollowUp == null) {
                     Toast.makeText(activity, "Please select a Date & Time For follow-up first!", Toast.LENGTH_LONG).show();
                     return;
                 }
-
-
                 addNewFollowupPopUpWindow.dismiss();
                 activity.findViewById(R.id.main_screen_main_parent_layout).setAlpha(new Float(1));
 //                call to setAlarm method activity is being passed
-
-
                 Calendar dateAndTimeForAlarm = Calendar.getInstance();
-
                 int year = dateForFollowUp.get(Calendar.YEAR);
                 int month = dateForFollowUp.get(Calendar.MONTH);
                 int day = dateForFollowUp.get(Calendar.DAY_OF_MONTH);
                 int hour = timeForFollowUp.get(Calendar.HOUR_OF_DAY);
                 int minute = timeForFollowUp.get(Calendar.MINUTE);
                 int seconds = 0;
-
                 dateAndTimeForAlarm.set(year, month, day, hour, minute, seconds);
-
                 String note = etNote.getText().toString();
-
-
                 TempFollowUp tempFollowUp = new TempFollowUp();
 //                TempFollowUp tempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
                 tempFollowUp.setContact(selectedLSContact);
                 tempFollowUp.setNote(note);
                 tempFollowUp.setDateTimeForFollowup(dateAndTimeForAlarm.getTimeInMillis());
-
-
                 tempFollowUp.save();
                 followupsListAdapter.add(tempFollowUp);
                 setAlarm(activity, tempFollowUp);
-
-//                FollowupsActivity tempActivity = (FollowupsActivity) activity;
-
-//                ArrayList<TempFollowUp> allfollowups1   = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
-//                ArrayList<TempFollowUp> allfollowups1   = FollowupsActivity.getAllFollowups();
-//                allfollowups1.add(tempFollowUp);
-
-//                followupsListAdapter.setList(allfollowups1);
-
-//                ArrayList<TempFollowUp> allfollowups2 = FollowupsActivity.getAllFollowups();
-//
-//                followupsListAdapter.notifyDataSetChanged();
-
-
             }
         });
         tvCancelButton.setOnClickListener(new View.OnClickListener() {
@@ -179,12 +141,9 @@ public class PopUpWindowAddNewFollowUp implements
                 dpd.setCancelable(false);
                 dpd.setMinDate(now);
                 dpd.setTitle("Select Date for Followup");
-
                 dpd.show(activity.getFragmentManager(), "Datepickerdialog");
             }
         });
-
-
     }
 
     @Override
@@ -196,75 +155,52 @@ public class PopUpWindowAddNewFollowUp implements
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-//        String time = "You picked the following time: " + hourOfDay + "h" + minute + "m" + second;
         timeForFollowUp = Calendar.getInstance();
-
         timeForFollowUp.set(dateForFollowUp.get(Calendar.YEAR), dateForFollowUp.get(Calendar.MONTH), dateForFollowUp.get(Calendar.DAY_OF_MONTH), hourOfDay, minute);
         tvTime.setText(hourOfDay + " : " + minute);
-
-        //      When date is Selected Contact Chooser Activity will open up automaticaly
         activity.startActivityForResult(new Intent(activity, LSContactChooserActivity.class), CONTACT_CHOOSER_REQUEST_CODE);
-
     }
-
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         tvDate.setText(dayOfMonth + " - " + (monthOfYear + 1) + " - " + year);
-
         Calendar now = Calendar.getInstance();
         com.wdullaer.materialdatetimepicker.time.TimePickerDialog timePickerDialog = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance(
                 PopUpWindowAddNewFollowUp.this,
                 now.get(Calendar.HOUR_OF_DAY),
                 now.get(Calendar.MINUTE),
                 false
-
         );
 
         timePickerDialog.setCancelable(false);
         timePickerDialog.setTitle("Select Time for Followup");
         timePickerDialog.setMinTime(now.HOUR_OF_DAY, now.MINUTE, now.SECOND);
-
         timePickerDialog.show(activity.getFragmentManager(), "Datepickerdialog");
-
         dateForFollowUp = Calendar.getInstance();
         dateForFollowUp.set(year, monthOfYear, dayOfMonth);
-
-
     }
 
     public void setAlarm(Context context, TempFollowUp tempFollowUp) {
         AlarmManager manager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
         int interval = 8000;
-
 //        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
-
         Calendar dateAndTimeForAlarm = Calendar.getInstance();
-
         int year = dateForFollowUp.get(Calendar.YEAR);
         int month = dateForFollowUp.get(Calendar.MONTH);
         int day = dateForFollowUp.get(Calendar.DAY_OF_MONTH);
         int hour = timeForFollowUp.get(Calendar.HOUR_OF_DAY);
         int minute = timeForFollowUp.get(Calendar.MINUTE);
         int seconds = 0;
-
         dateAndTimeForAlarm.set(year, month, day, hour, minute, seconds);
-
         Intent aint = new Intent(context, AlarmReceiver.class);
         String note = etNote.getText().toString();
         aint.putExtra("followupid", tempFollowUp.getId() + "");
-
 //        aint.putExtra("message","This is message from followup");
-
         pendingIntent = PendingIntent.getBroadcast(activity, Integer.parseInt(tempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
-
                          /* Retrieve a PendingIntent that will perform a broadcast */
 //        Intent alarmIntent = new Intent(activity, AlarmReceiver.class);
 //        pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, 0);
-
-
 //        manager.setExact(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
-
         manager.set(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
         Toast.makeText(activity, "Alarm Set", Toast.LENGTH_SHORT).show();
     }

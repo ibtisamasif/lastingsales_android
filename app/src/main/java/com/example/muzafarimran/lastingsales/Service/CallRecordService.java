@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-
 import com.example.muzafarimran.lastingsales.Utils.CallRecord;
 
 import java.text.SimpleDateFormat;
@@ -19,7 +18,6 @@ import java.text.SimpleDateFormat;
 public class CallRecordService extends Service {
 
     private static final String TAG = CallRecordService.class.getSimpleName();
-
     CallRecord mCallRecord;
     String mFileName;
     String mDirName;
@@ -39,24 +37,19 @@ public class CallRecordService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand()");
-
         mFileName = intent.getStringExtra(CallRecord.INTENT_FILE_NAME);
         mDirName = intent.getStringExtra(CallRecord.INTENT_DIR_NAME);
-
         mCallRecord = new CallRecord.Builder(this)
                 .setRecordFileName(mFileName)
                 .setRecordDirName(mDirName)
                 .setAudioEncoder(intent.getIntExtra(CallRecord.INTENT_AUDIO_ENCODER, MediaRecorder.AudioEncoder.AMR_NB))
                 .setAudioSource(intent.getIntExtra(CallRecord.INTENT_AUDIO_SOURCE, MediaRecorder.AudioSource.VOICE_COMMUNICATION))
-//                .setAudioSource(intent.getIntExtra(CallRecord.INTENT_AUDIO_SOURCE, MediaRecorder.AudioSource.VOICE_UPLINK))
                 .setOutputFormat(intent.getIntExtra(CallRecord.INTENT_OUTPUT_FORMAT, MediaRecorder.OutputFormat.AMR_NB))
                 .setShowSeed(intent.getBooleanExtra(CallRecord.INTENT_SHOW_SEED, false))
                 .setSimpleDateFormat((SimpleDateFormat) intent.getSerializableExtra(CallRecord.INTENT_SIMPLE_DATE_FORMAT))
                 .build();
-
         Log.i(TAG, "mCallRecord.startCallReceiver()");
         mCallRecord.startCallReceiver();
-
         return START_REDELIVER_INTENT;
     }
 

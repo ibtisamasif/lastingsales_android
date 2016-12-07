@@ -11,9 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
+        android:layout_marginTop="15dp"
         android:background="@color/lightGray"
         android:orientation="vertical"
-        android:layout_marginTop="15dp"
         ></LinearLayout>
 
     <RelativeLayout
@@ -32,33 +32,33 @@
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
             android:text="Contact: "
-            android:textSize="16dp"
             android:textColor="@color/black"
+            android:textSize="16dp"
             />
 
         <TextView
 
+            android:id="@+id/followup_alert_popup_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center_horizontal"
             android:layout_toRightOf="@id/followup_for_label"
             android:text="@string/followup_capital"
-            android:textSize="16dp"
-            android:id="@+id/followup_alert_popup_name"
             android:textColor="@color/black"
+            android:textSize="16dp"
 
             />
 
 
         <ImageButton
+            android:id="@+id/followup_alert_call_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/make_call_icon"
-            android:layout_marginBottom="5dp"
-            android:id="@+id/followup_alert_call_button"
             />
 
     </RelativeLayout>
@@ -67,8 +67,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="5dp"
+        android:orientation="horizontal"
         >
 
         <TextView
@@ -77,8 +77,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:text="Note : "
-            android:textSize="16dp"
             android:textColor="@color/black"
+            android:textSize="16dp"
 
             />
 

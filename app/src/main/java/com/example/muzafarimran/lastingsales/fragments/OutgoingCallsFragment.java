@@ -5,18 +5,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.muzafarimran.lastingsales.Call;
-import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.CallsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.halfbit.tinybus.Bus;
@@ -30,12 +29,11 @@ import de.halfbit.tinybus.TinyBus;
 public class OutgoingCallsFragment extends Fragment {
 
     public static final String TAG = "OutgoingCallFragment";
-    private List<LSCall> outgoingCalls = new ArrayList<>();
     CallsAdapter callsadapter;
     ListView listView = null;
+    MaterialSearchView searchView;
     private Bus mBus;
     private TinyBus bus;
-
 
     public static OutgoingCallsFragment newInstance(int page, String title) {
         OutgoingCallsFragment fragmentFirst = new OutgoingCallsFragment();
@@ -56,16 +54,13 @@ public class OutgoingCallsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-//        mBus = TinyBus.from(getActivity().getApplicationContext());
         callsadapter = new CallsAdapter(getContext());
-        callsadapter.setList(outgoingCalls);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-//        mBus.register(this);
-
         Log.d(TAG, "onStart() called");
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
@@ -73,10 +68,8 @@ public class OutgoingCallsFragment extends Fragment {
 
     @Override
     public void onStop() {
-//        mBus.unregister(this);
         bus.unregister(this);
         Log.d(TAG, "onStop() called");
-
         super.onStop();
 
     }
@@ -85,30 +78,54 @@ public class OutgoingCallsFragment extends Fragment {
     public void onOutgoingCallEventModel(OutgoingCallEventModel event) {
         Log.d(TAG, "onOutgoingCallEvent() called with: event = [" + event + "]");
         if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
-
-            List<LSCall> outgoingCalls = LSCall.getCallsByType(LSCall.CALL_TYPE_OUTGOING);
+            List<LSCall> outgoingCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_OUTGOING);
             setList(outgoingCalls);
         }
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        List<LSCall> outgoingCalls = LSCall.getCallsByType(LSCall.CALL_TYPE_OUTGOING);
+        List<LSCall> outgoingCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_OUTGOING);
         setList(outgoingCalls);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = null;
-        view = inflater.inflate(R.layout.fragment_incoming_calls, container, false);
+        View view = inflater.inflate(R.layout.fragment_incoming_calls, container, false);
         listView = (ListView) view.findViewById(R.id.incoming_calls_list);
         listView.setAdapter(callsadapter);
+        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Do some magic
+//                Toast.makeText(getContext(), "submitted text = " + query, Toast.LENGTH_SHORT).show();
+                callsadapter.getFilter().filter(query);
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Do some magic
+//                Toast.makeText(getContext(), "text changed to= " + newText, Toast.LENGTH_SHORT).show();
+                callsadapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return view;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

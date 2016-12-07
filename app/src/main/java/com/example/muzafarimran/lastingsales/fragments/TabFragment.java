@@ -20,14 +20,9 @@ public class TabFragment extends Fragment {
     protected void dialNumber(String number) {
 
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-
         }
-
-
         Intent intent = new Intent(Intent.ACTION_DIAL);
-
         intent.setData(Uri.parse("tel:" + number));
-
         getContext().startActivity(intent);
     }
 }

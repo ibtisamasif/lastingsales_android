@@ -1,84 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contact_row"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-
-    android:paddingTop="10dp"
     android:paddingBottom="0dp"
-    android:id="@+id/contact_row"
+    android:paddingTop="10dp"
     >
-    <RelativeLayout
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
         android:id="@+id/user_call_group_wrapper"
-        android:layout_alignParentTop="true"
-
-        >
-
-    <RelativeLayout
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/user_call_group"
         android:layout_alignParentTop="true"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         >
-
-
-        <ImageView
-            android:src="@drawable/user_avatar_icon_gray_border"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="0dp"
-            android:id="@+id/user_avatar"
-            />
 
         <RelativeLayout
-
+            android:id="@+id/user_call_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/user_call_group_name_time"
-            android:layout_centerVertical="true"
-            android:paddingLeft="15dp"
-            android:layout_toRightOf="@id/user_avatar"
+            android:layout_alignParentTop="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             >
 
-            <TextView
+            <ImageView
+                android:id="@+id/user_avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:text="name"
-                android:id="@+id/contact_name"
-
-
+                android:paddingLeft="0dp"
+                android:src="@drawable/user_avatar_icon_gray_border"
                 />
 
+            <RelativeLayout
 
-            <TextView
+                android:id="@+id/user_call_group_name_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10dp"
-                android:text="time"
-                android:id="@+id/contactNumber"
-                android:layout_below="@id/contact_name" />
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/user_avatar"
+                android:paddingLeft="15dp"
+                >
 
+                <TextView
+                    android:id="@+id/contact_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textSize="15dp"
+                    />
 
+                <TextView
+                    android:id="@+id/contactNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/contact_name"
+                    android:text="time"
+                    android:textSize="10dp"/>
+
+            </RelativeLayout>
         </RelativeLayout>
-</RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/deleteButtonContactRow"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/call_icon"
+            android:background="@drawable/trash_circle_red_128"
+            />
 
 
         <ImageView
-            android:src="@drawable/make_call_icon"
+            android:id="@+id/call_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
             android:layout_alignParentRight="true"
-            android:scaleType="fitEnd"
-            android:id="@+id/call_icon"
             android:layout_centerVertical="true"
+            android:paddingRight="10dp"
+            android:scaleType="fitEnd"
+            android:src="@drawable/make_call_icon"
 
             />
 

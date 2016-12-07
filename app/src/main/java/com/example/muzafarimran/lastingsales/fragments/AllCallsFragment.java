@@ -16,7 +16,6 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.CallsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.halfbit.tinybus.Bus;
@@ -30,12 +29,10 @@ import de.halfbit.tinybus.TinyBus;
 public class AllCallsFragment extends Fragment {
 
     public static final String TAG = "AllCallFragment";
-    private List<LSCall> allCalls = new ArrayList<>();
     CallsAdapter callsadapter;
     ListView listView = null;
     private Bus mBus;
     private TinyBus bus;
-
 
     public static AllCallsFragment newInstance(int page, String title) {
         AllCallsFragment fragmentFirst = new AllCallsFragment();
@@ -56,16 +53,12 @@ public class AllCallsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-//        mBus = TinyBus.from(getActivity().getApplicationContext());
         callsadapter = new CallsAdapter(getContext());
-        callsadapter.setList(allCalls);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-//        mBus.register(this);
-
         Log.d(TAG, "onStart() called");
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
@@ -73,10 +66,8 @@ public class AllCallsFragment extends Fragment {
 
     @Override
     public void onStop() {
-//        mBus.unregister(this);
         bus.unregister(this);
         Log.d(TAG, "onStop() called");
-
         super.onStop();
 
     }
@@ -85,40 +76,34 @@ public class AllCallsFragment extends Fragment {
     public void onOutgoingCallEventModel(OutgoingCallEventModel event) {
         Log.d(TAG, "onAnyOutGoingCallEvent() called with: event = [" + event + "]");
         if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
-
-            List<LSCall> allCalls = LSCall.listAll(LSCall.class);
+            List<LSCall> allCalls = LSCall.getAllCallsInDescendingOrder();
             setList(allCalls);
         }
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
-
     }
 
     @Subscribe
     public void onCallReceivedEventModel(MissedCallEventModel event) {
         Log.d(TAG, "onAnyMissedCallEvent() called with: event = [" + event + "]");
         if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
-
-            List<LSCall> missedCalls = LSCall.getCallsByType(LSCall.CALL_TYPE_MISSED);
-            setList(missedCalls);
+            List<LSCall> allCalls = LSCall.getAllCallsInDescendingOrder();
+            setList(allCalls);
         }
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
-
     }
+
     @Subscribe
     public void onIncommingCallReceivedEvent(IncomingCallEventModel event) {
         Log.d(TAG, "onAnyIncomingCallEvent() called with: event = [" + event + "]");
         if (event.getState() == IncomingCallEventModel.CALL_TYPE_INCOMING) {
-            List<LSCall> incommingCalls = LSCall.getCallsByType(LSCall.CALL_TYPE_INCOMING);
-            setList(incommingCalls);
+            List<LSCall> allCalls = LSCall.getAllCallsInDescendingOrder();
+            setList(allCalls);
         }
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
-        List<LSCall> allCalls = LSCall.listAll(LSCall.class);
+        List<LSCall> allCalls = LSCall.getAllCallsInDescendingOrder();
         setList(allCalls);
     }
 
@@ -132,5 +117,4 @@ public class AllCallsFragment extends Fragment {
 
         return view;
     }
-
 }

@@ -3,7 +3,6 @@
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
-
     >
 
     <LinearLayout
@@ -11,32 +10,33 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/notes"
-            android:textSize="20dp"
-            android:textColor="@color/totem_blue"
             android:layout_marginBottom="10dp"
-            android:textStyle="bold"
             android:layout_marginTop="10dp"
+            android:text="@string/notes"
+            android:textColor="@color/totem_blue"
+            android:textSize="20dp"
+            android:textStyle="bold"
             />
 
- <ListView
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     android:id="@+id/lvAllNotesNotesFragment"
-     ></ListView>
+        <ListView
+            android:id="@+id/lvAllNotesNotesFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ></ListView>
     </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_add_note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_input_add" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add"/>
 
-    </android.support.design.widget.CoordinatorLayout>
+</android.support.design.widget.CoordinatorLayout>

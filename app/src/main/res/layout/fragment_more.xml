@@ -3,48 +3,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
               android:background="@color/lightGray"
+              android:orientation="vertical"
 
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
+        android:layout_marginTop="15dp"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:layout_marginTop="15dp"
         >
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:background="@drawable/temp_avatar"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
+            android:background="@drawable/temp_avatar"
             />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical"
             android:layout_marginLeft="@dimen/list_text_margin_left"
+            android:orientation="vertical"
             >
 
             <TextView
+                android:id="@+id/nameOfUserMoreScreen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/nameOfUser"
-                android:id="@+id/nameOfUserMoreScreen"
                 android:textSize="15dp"
                 android:textStyle="bold"
                 />
+
             <TextView
+                android:id="@+id/ViewPublicProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/viewPublicProfile"
-                android:id="@+id/ViewPublicProfile"
                 android:textSize="12dp"
                 />
 
@@ -55,148 +56,142 @@
     </LinearLayout>
 
     <!--top picture bar ends here-->
-
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="20dp"
-
-    android:background="@color/white"
-    >
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:id="@+id/llFollowUpsMoreScreen"
-        android:clickable="true"
-
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:orientation="vertical"
         >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/followUps"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/list_text_margin_left"
-            android:textSize="12dp"
+        <LinearLayout
+            android:id="@+id/llFollowUpsMoreScreen"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:clickable="true"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/list_text_margin_left"
+                android:text="@string/followUps"
+                android:textSize="12dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGray"
             />
 
+        <LinearLayout
+            android:id="@+id/llNotesMoreFragment"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/list_text_margin_left"
+                android:text="@string/notes"
+                android:textSize="12dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGray"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/list_text_margin_left"
+                android:text="@string/about"
+                android:textSize="12dp"
+                />
+
+        </LinearLayout>
+
+
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightGray"
-        />
+
+    <!-- First set of options end here-->
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:id="@+id/llNotesMoreFragment"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
 
+        android:orientation="vertical"
         >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notes"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/list_text_margin_left"
-            android:textSize="12dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/list_text_margin_left"
+                android:text="Basic Settings"
+                android:textSize="12dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGray"
             />
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightGray"
-        />
+        <LinearLayout
+            android:id="@+id/llLogOutMoreScreen"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            >
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/list_text_margin_left"
+                android:text="Log Out"
+                android:textSize="12dp"
+                />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
+        </LinearLayout>
 
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/about"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/list_text_margin_left"
-            android:textSize="12dp"
-            />
 
     </LinearLayout>
 
-
+    <!-- 2nd set of options end here-->
 
 </LinearLayout>
-
-<!-- First set of options end here-->
-
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="20dp"
-
-    android:background="@color/white"
-    >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Basic Settings"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/list_text_margin_left"
-            android:textSize="12dp"
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightGray"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:id="@+id/llLogOutMoreScreen"
-
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Log Out"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/list_text_margin_left"
-            android:textSize="12dp"
-            />
-
-    </LinearLayout>
-
-
-</LinearLayout>
-
-<!-- 2nd set of options end here-->
-
-
-
-    </LinearLayout>

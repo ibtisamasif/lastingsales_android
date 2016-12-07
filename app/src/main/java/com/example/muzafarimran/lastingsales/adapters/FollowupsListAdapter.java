@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.LSContactChooserActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
@@ -22,11 +21,10 @@ import java.util.Calendar;
  */
 
 public class FollowupsListAdapter extends ArrayAdapter<TempFollowUp> {
-    private int listItemLayout;
     LayoutInflater inflater;
     Context context;
     Activity activity;
-
+    private int listItemLayout;
 
     public FollowupsListAdapter(Context context, int resource) {
         super(context, resource);
@@ -37,30 +35,22 @@ public class FollowupsListAdapter extends ArrayAdapter<TempFollowUp> {
         listItemLayout = layoutId;
         inflater = LayoutInflater.from(getContext());
         this.context = context;
-
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data tvContactName for this position
         TempFollowUp oneFollowup = getItem(position);
-
-//        LSContact oneContact = LSContactChooserActivity.getAllContacts().get(oneFollowup.getContactID());
-
         final LSContact oneContact = oneFollowup.getContact();
-
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(listItemLayout, parent, false);
-
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(getContext(), "name: " + oneContact.getContactName(), Toast.LENGTH_SHORT).show();
-
                     notifyDataSetChanged();
                 }
             });
@@ -72,20 +62,15 @@ public class FollowupsListAdapter extends ArrayAdapter<TempFollowUp> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-
         Calendar cl = Calendar.getInstance();
         cl.setTimeInMillis(oneFollowup.getDateTimeForFollowup());  //here your time in miliseconds
         String date = "" + cl.get(Calendar.DAY_OF_MONTH) + ":" + cl.get(Calendar.MONTH) + ":" + cl.get(Calendar.YEAR);
         String time = "" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE);
-
-
         // Populate the data into the template view using the data object
         viewHolder.contactName.setText(oneContact.getContactName());
         viewHolder.followupNote.setText(oneFollowup.getNote());
         viewHolder.followupDate.setText(date);
         viewHolder.followupTime.setText(time);
-
         // Return the completed view to render on screen
         return convertView;
     }
@@ -97,6 +82,4 @@ public class FollowupsListAdapter extends ArrayAdapter<TempFollowUp> {
         TextView followupTime;
         TextView followupNote;
     }
-
-
 }

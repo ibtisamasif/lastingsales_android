@@ -18,10 +18,9 @@
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:orientation="vertical"
             android:background="@color/white"
+            android:orientation="vertical"
             >
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,29 +38,25 @@
                     />
             </LinearLayout>
 
-
-
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 >
 
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="20dp"
+                    android:orientation="vertical"
                     >
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginLeft="20dp"
+                        android:orientation="horizontal"
                         >
 
                         <TextView
@@ -69,12 +64,13 @@
                             android:layout_height="wrap_content"
                             android:text="@string/name"
                             />
+
                         <TextView
+                            android:id="@+id/tvNameAddNewFollowup"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:text="00-00-00"
-                            android:id="@+id/tvNameAddNewFollowup"
                             android:layout_marginLeft="20dp"
+                            android:text="00-00-00"
                             />
 
                     </LinearLayout>
@@ -82,8 +78,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginLeft="20dp"
+                        android:orientation="horizontal"
                         >
 
                         <TextView
@@ -91,12 +87,13 @@
                             android:layout_height="wrap_content"
                             android:text="@string/number"
                             />
+
                         <TextView
+                            android:id="@+id/tvNumberAddNewFollowup"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:text="00:00"
-                            android:id="@+id/tvNumberAddNewFollowup"
                             android:layout_marginLeft="20dp"
+                            android:text="00:00"
                             />
 
                     </LinearLayout>
@@ -104,7 +101,6 @@
                 </LinearLayout>
 
             </RelativeLayout>
-
 
 
             <!--Change followup date and time UI ends here-->
@@ -119,17 +115,17 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="20dp"
+                    android:orientation="vertical"
                     >
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginLeft="20dp"
+                        android:orientation="horizontal"
                         >
 
                         <TextView
@@ -137,12 +133,13 @@
                             android:layout_height="wrap_content"
                             android:text="@string/date"
                             />
+
                         <TextView
+                            android:id="@+id/tvDateAddNewFollowup"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:text="00-00-00"
-                            android:id="@+id/tvDateAddNewFollowup"
                             android:layout_marginLeft="20dp"
+                            android:text="00-00-00"
                             />
 
                     </LinearLayout>
@@ -150,8 +147,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginLeft="20dp"
+                        android:orientation="horizontal"
                         >
 
                         <TextView
@@ -159,12 +156,13 @@
                             android:layout_height="wrap_content"
                             android:text="@string/time"
                             />
+
                         <TextView
+                            android:id="@+id/tvTimeAddNewFollowup"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:text="00:00"
-                            android:id="@+id/tvTimeAddNewFollowup"
                             android:layout_marginLeft="20dp"
+                            android:text="00:00"
                             />
 
                     </LinearLayout>
@@ -172,13 +170,13 @@
                 </LinearLayout>
 
                 <Button
+                    android:id="@+id/bChangeAddNewFollowupPopup"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
-                    android:text="@string/change"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
-                    android:id="@+id/bChangeAddNewFollowupPopup"
                     android:backgroundTint="@color/white"
+                    android:text="@string/change"
                     />
             </RelativeLayout>
 
@@ -216,7 +214,6 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -231,11 +228,11 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:backgroundTint="@color/white"
                     android:padding="10dp"
                     android:text="@string/cancel"
-                    android:textSize="12dp"
-                    android:backgroundTint="@color/white"
                     android:textColor="@color/black"
+                    android:textSize="12dp"
                     />
 
                 <TextView
@@ -243,12 +240,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
-                    android:padding="10dp"
                     android:layout_marginRight="15dp"
-                    android:text="@string/ok"
-                    android:textSize="12sp"
                     android:backgroundTint="@color/white"
+                    android:padding="10dp"
+                    android:text="@string/ok"
                     android:textColor="@color/black"
+                    android:textSize="12sp"
                     />
 
             </LinearLayout>
