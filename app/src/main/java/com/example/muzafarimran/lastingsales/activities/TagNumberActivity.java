@@ -1,7 +1,6 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -14,22 +13,20 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
-import static com.example.muzafarimran.lastingsales.R.id.nameAndButtonForm;
-
 public class TagNumberActivity extends Activity {
 
     public static final String NUMBER_TO_TAG = "phone_number";
-    Button bSalesRadio = null;
-    Button bCollegueRadio = null;
-    Button bPersonalRadio = null;
-    Button bSave = null;
-    Button bCancel = null;
-    String selectedContactType = LSContact.CONTACT_TYPE_SALES;
-    EditText etName = null;
-    LinearLayout llNameLayout;
-    String phoneNumber = null;
-    TextView tvNumber;
-    boolean userIntracted = false;
+    private Button bSalesRadio = null;
+    private Button bCollegueRadio = null;
+    private Button bPersonalRadio = null;
+    private Button bSave = null;
+    private Button bCancel = null;
+    private String selectedContactType = LSContact.CONTACT_TYPE_SALES;
+    private EditText etName = null;
+    private LinearLayout llNameLayout;
+    private String phoneNumber = null;
+    private TextView tvNumber;
+    private boolean userInteracted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +35,7 @@ public class TagNumberActivity extends Activity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                if (!userIntracted) {
+                if (!userInteracted) {
                     finish();
                 }
             }
@@ -62,7 +59,7 @@ public class TagNumberActivity extends Activity {
         etName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userIntracted = true;
+                userInteracted = true;
             }
         });
         llNameLayout.setVisibility(View.GONE);
@@ -74,7 +71,7 @@ public class TagNumberActivity extends Activity {
                 bCollegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 bPersonalRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 llNameLayout.setVisibility(View.VISIBLE);
-                userIntracted = true;
+                userInteracted = true;
             }
         });
         bCollegueRadio.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +82,7 @@ public class TagNumberActivity extends Activity {
                 bCollegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
                 bPersonalRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 llNameLayout.setVisibility(View.VISIBLE);
-                userIntracted = true;
+                userInteracted = true;
             }
         });
         bPersonalRadio.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +93,7 @@ public class TagNumberActivity extends Activity {
                 bCollegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 bPersonalRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
                 llNameLayout.setVisibility(View.VISIBLE);
-                userIntracted = true;
+                userInteracted = true;
             }
         });
         bCancel.setOnClickListener(new View.OnClickListener() {

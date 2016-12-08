@@ -16,8 +16,8 @@ import com.example.muzafarimran.lastingsales.fragments.UntaggedContactsCallsFrag
  * Created by MUZAFAR IMRAN on 9/18/2016.
  */
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-    final int TAB_COUNT = 4;
-    private String tabTitles[] = new String[]{"Home", "Inquiries", "Sales", "Untagged"};
+    final int TAB_COUNT = 3;
+    private String tabTitles[] = new String[]{"Home", "Inquiries", "Sales"};
     private Context context;
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
@@ -37,9 +37,6 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
                 break;
             case 2:
                 fragment = new SalesFragment();
-                break;
-            case 3:
-                fragment = new UntaggedContactsCallsFragment();
                 break;
         }
         return fragment;

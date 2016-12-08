@@ -20,6 +20,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 public class ContactDetailsActivity extends AppCompatActivity {
 
     public static final String KEY_CONTACT_ID = "contact_id";
+    Toolbar toolbar;
     private String contactIdString = "0";
     private LSContact selectedContact;
     private TextView tvName;
@@ -35,8 +36,6 @@ public class ContactDetailsActivity extends AppCompatActivity {
     private ListView lvNotesList;
     private FrameLayout notesListHolderFrameLayout;
     private NotesListFragment notesListFragment;
-    Toolbar toolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +44,8 @@ public class ContactDetailsActivity extends AppCompatActivity {
         tvName = (TextView) findViewById(R.id.tvNameOfUserContactDetailsScreen);
         toolbar = (Toolbar) findViewById(R.id.toolbarContactDetailsActivity);
         toolbar.setTitle("Contact Details");
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setSupportActionBar(toolbar);
         tvNumberOne = (TextView) findViewById(R.id.tvPhoneOneOfUserContactDetailsScreen);
         tvNumberTwo = (TextView) findViewById(R.id.tvPhoneTwoOfUserContactDetailsScreen);
@@ -70,7 +71,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
             if (selectedContact.getContactName() == null || selectedContact.getContactName().equals("")) {
                 tvName.setVisibility(View.GONE);
             } else {
-            tvName.setText(selectedContact.getContactName());
+                tvName.setText(selectedContact.getContactName());
             }
             if (selectedContact.getPhoneOne() == null || selectedContact.getPhoneOne().equals("")) {
                 tvNumberOne.setVisibility(View.GONE);
@@ -108,15 +109,12 @@ public class ContactDetailsActivity extends AppCompatActivity {
 //            tvType.setText(selectedContact.getContactType());
         }
 //        lvNotesList.setAdapter();
-
         if (savedInstanceState == null) {
             notesListFragment = new NotesListFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.notesListHolderFrameLayout, notesListFragment);
             transaction.commit();
         }
-
-
     }
 
     @Override
@@ -128,13 +126,15 @@ public class ContactDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.ic_action_edit:
                 Intent addContactScreenIntent = new Intent(getApplicationContext(), AddContactActivity.class);
                 addContactScreenIntent.putExtra(KEY_CONTACT_ID, contactIdString);
                 startActivity(addContactScreenIntent);
                 break;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
