@@ -81,7 +81,6 @@
             android:theme="@style/MyAlertDialogStyle">
         </activity>
         <activity android:name=".activities.LogInActivity">
-
         </activity>
 
         <service
@@ -103,7 +102,6 @@
         <activity
             android:name=".activities.TagNumberActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
-
         </activity>
         <activity
             android:name=".activities.NavigationDrawerActivity"
@@ -115,7 +113,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.FrameActivity">
-
+        </activity>
+        <activity android:name=".activities.TagNumberAndAddFollowupActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            >
         </activity>
     </application>
 

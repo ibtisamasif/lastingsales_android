@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/lightGray"
               android:orientation="vertical"
-
     >
 
     <LinearLayout
@@ -114,7 +112,6 @@
             android:background="@color/lightGray"
             />
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
@@ -137,7 +134,6 @@
     </LinearLayout>
 
     <!-- First set of options end here-->
-
 
     <LinearLayout
         android:layout_width="match_parent"

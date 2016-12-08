@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
               android:background="@drawable/contact_detail_drop_down_bg"
               android:orientation="vertical"
               android:paddingLeft="25dp"
@@ -59,101 +60,9 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/response_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            >
-
-            <ImageView
-                android:id="@+id/response_time_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:paddingRight="10dp"
-                android:src="@drawable/response_time_icon_sm"
-                />
-
-
-            <TextView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/response_time_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/response_time_icon"
-                android:text="Response Time"
-                android:textColor="#ffffff"
-                android:textSize="12dp"
-                />
-
-
-            <TextView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/response_time_text"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:scaleType="fitEnd"
-                android:text="2 Hours"
-                android:textColor="#ffffff"
-                android:textSize="12dp"
-                />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/messages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            >
-
-            <ImageView
-                android:id="@+id/messages_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:paddingRight="10dp"
-                android:src="@drawable/messages_icon"
-                />
-
-
-            <TextView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/messages_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/messages_icon"
-                android:text="Messages"
-                android:textColor="#ffffff"
-                android:textSize="12dp"
-                />
-
-
-            <TextView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/messages_text"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:scaleType="fitEnd"
-                android:text="7"
-                android:textColor="#ffffff"
-                android:textSize="12dp"
-                />
-
-        </RelativeLayout>
-
-        <RelativeLayout
             android:id="@+id/number_calls"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/calls_icon"
@@ -161,9 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:paddingRight="10dp"
-                android:src="@drawable/number_calls_icon"
-
-                />
+                android:src="@drawable/number_calls_icon"/>
 
 
             <TextView
@@ -175,8 +82,7 @@
                 android:layout_toRightOf="@id/calls_icon"
                 android:text="Calls"
                 android:textColor="#ffffff"
-                android:textSize="12dp"
-                />
+                android:textSize="12dp"/>
 
 
             <TextView
@@ -187,11 +93,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:scaleType="fitEnd"
-                android:text="4"
+                tools:text="4"
                 android:textColor="#ffffff"
-                android:textSize="12dp"
-                />
-
+                android:textSize="12dp"/>
 
         </RelativeLayout>
 
@@ -210,7 +114,7 @@
             android:radius="5dip"
             android:tag="personal_radio"
             android:text="Details"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="14sp"
             />
     </LinearLayout>
