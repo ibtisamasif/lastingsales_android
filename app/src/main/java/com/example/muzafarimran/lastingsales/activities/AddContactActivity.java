@@ -265,40 +265,29 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
     }
 
     private String retrieveContactNumber() {
-
         String contactNumber = null;
-
         // getting contacts ID
         Cursor cursorID = getContentResolver().query(uriContact,
                 new String[]{ContactsContract.Contacts._ID},
                 null, null, null);
-
         if (cursorID.moveToFirst()) {
-
             contactID = cursorID.getString(cursorID.getColumnIndex(ContactsContract.Contacts._ID));
         }
         cursorID.close();
         //Log.d(TAG, "Contact ID: " + contactID);
-
         // Using the contact ID now we will get contact phone number
         Cursor cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
-
                 ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
                         ContactsContract.CommonDataKinds.Phone.TYPE + " = " +
                         ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
-
                 new String[]{contactID},
                 null);
-
         if (cursorPhone.moveToFirst()) {
             contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
         }
-
         cursorPhone.close();
-
         //Log.d(TAG, "Contact Phone Number: " + contactNumber);
-
         return contactNumber;
     }
 
@@ -306,31 +295,21 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         String email = "";
-
         if (requestCode == REQUEST_CODE_PICK_CONTACTS && resultCode == RESULT_OK) {
-
             uriContact = data.getData();
-
-
             String name = retrieveContactName();
             String number = retrieveContactNumber();
             try {
-
 //                email = retrieveContactEmail();
                 email = getContactDetailsEmail();
             } catch (Exception e) {
                 e.printStackTrace();
                 email = "";
             }
-
-
 //            retrieveContactPhoto();
-
-
             etContactName.setText(name);
             etContactPhone.setText(number);
             etContactEmail.setText(email);
-
             if (PhoneNumberAndCallUtils.isNumeric(name)) {
                 etContactPhone.setText(number);
                 etContactName.setText("");

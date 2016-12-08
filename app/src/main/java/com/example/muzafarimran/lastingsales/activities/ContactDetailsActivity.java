@@ -44,9 +44,9 @@ public class ContactDetailsActivity extends AppCompatActivity {
         tvName = (TextView) findViewById(R.id.tvNameOfUserContactDetailsScreen);
         toolbar = (Toolbar) findViewById(R.id.toolbarContactDetailsActivity);
         toolbar.setTitle("Contact Details");
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setSupportActionBar(toolbar);
         tvNumberOne = (TextView) findViewById(R.id.tvPhoneOneOfUserContactDetailsScreen);
         tvNumberTwo = (TextView) findViewById(R.id.tvPhoneTwoOfUserContactDetailsScreen);
         tvDescription = (TextView) findViewById(R.id.tvDescriptionContactDetails);
