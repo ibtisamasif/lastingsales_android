@@ -56,5 +56,11 @@
     <string name="loremipsun">LoremIpsun</string>
     <string name="lorem_ipsum_com">Lorem@Ipsum.com</string>
     <string name="loremipsum_profile_pic">Loremipsum Profile Pic</string>
+    <string name="next_followup_capital">NEXT FOLLOW UP</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="three_days">3 Days</string>
+    <string name="one_week">1 Week</string>
+    <string name="add_followup">Add Followup</string>
+    <string name="add_note">Add note</string>
 
 </resources>

@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +19,10 @@ import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddContactActivity;
+import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.github.clans.fab.FloatingActionButton;
 
 import java.util.List;
 
@@ -36,9 +37,9 @@ public class SalesFragment extends SearchFragment {
     private static final String TAG = "SalesContactFragment";
     ListView listView = null;
     ContactsAdapter contactsAdapter;
-    FloatingActionButton addContactCta = null;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     private TinyBus bus;
+    FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
 
     public static SalesFragment newInstance(int page, String title) {
         SalesFragment fragmentFirst = new SalesFragment();
@@ -105,8 +106,27 @@ public class SalesFragment extends SearchFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sales, container, false);
-        this.addContactCta = (FloatingActionButton) view.findViewById(R.id.add_contact_cta);
-        this.addContactCta.setOnClickListener(this.showaddcontactform);
+//        this.addContactCta = (FloatingActionButton) view.findViewById(R.id.add_contact_cta);
+//        this.addContactCta.setOnClickListener(this.showaddcontactform);
+        floatingActionButtonAdd = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
+        floatingActionButtonImport = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import);
+
+        floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                startActivity(intent);
+            }
+        });
+        floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
+                startActivity(intent);
+            }
+        });
         listView = (ListView) view.findViewById(R.id.sales_contacts_list);
         listView.setAdapter(contactsAdapter);
         return view;
@@ -123,7 +143,9 @@ public class SalesFragment extends SearchFragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_options_menu_sales_fragment, menu);
         MenuItem item = menu.findItem(R.id.action_search);
+        if (materialSearchView!=null){
         materialSearchView.setMenuItem(item);
+        }
     }
 
     @Override

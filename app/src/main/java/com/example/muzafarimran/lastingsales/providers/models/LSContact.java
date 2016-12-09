@@ -86,16 +86,18 @@ public class LSContact extends SugarRecord {
             for (LSContact oneContact : allLeads) {
                 ArrayList<LSCall> allCallsOfThisLead = LSCall.getCallsFromNumber(oneContact.getPhoneOne());
                 LSContact inactiveLead = null;
-                for (LSCall oneCall : allCallsOfThisLead) {
-                    if (oneCall.getBeginTime() > threeDaysAgoTimestamp) {
-                        inactiveLead = null;
-                        break;
-                    } else {
-                        inactiveLead = oneContact;
+                if (allCallsOfThisLead != null && allCallsOfThisLead.size() > 0) {
+                    for (LSCall oneCall : allCallsOfThisLead) {
+                        if (oneCall.getBeginTime() > threeDaysAgoTimestamp) {
+                            inactiveLead = null;
+                            break;
+                        } else {
+                            inactiveLead = oneContact;
+                        }
                     }
-                }
-                if (inactiveLead != null) {
-                    allInactiveLeads.add(inactiveLead);
+                    if (inactiveLead != null) {
+                        allInactiveLeads.add(inactiveLead);
+                    }
                 }
             }
             return allInactiveLeads;

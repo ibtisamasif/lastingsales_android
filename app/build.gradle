@@ -28,8 +28,8 @@ android {
         targetCompatibility 1.7
         sourceCompatibility 1.7
     }
-}
 
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -46,6 +46,5 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
 //    compile 'com.aykuttasil:callrecord:1.1.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
-
-
+    compile 'com.github.clans:fab:1.6.4'
 }
