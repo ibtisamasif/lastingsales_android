@@ -32,7 +32,7 @@
     <string name="type">Type</string>
     <!--        UIOCALL popup stuff-->
     <string name="rating_prompt_string">Please rate your experience!</string>
-    <string name="please_tag_this_call">Please tag this call</string>
+    <string name="please_tag_this_call">Please Tag This Call</string>
     <!--UIOCALL popup stuff ends here-->
 
     <string name="action_settings">Settings</string>
@@ -44,6 +44,14 @@
     <string name="status">Status</string>
     <string name="details">Details</string>
     <string name="followup">Followup</string>
-
+    <string name="please_add_followup_to_this_call">Please Add Follow Up</string>
+    <string name="followUp">Follow Up</string>
+    <string name="collegue">COLLEGUE</string>
+    <string name="non_busin">NON-BUSIN</string>
+    <string name="sales">SALES</string>
+    <string name="add_contact">ADD CONTACT</string>
+    <string name="import_btn">IMPORT</string>
+    <string name="contact_name">NAME*</string>
+    <string name="contact_phone">PHONE*</string>
 
 </resources>

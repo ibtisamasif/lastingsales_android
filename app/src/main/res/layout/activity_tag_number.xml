@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="10dp"
+        android:layout_margin="6dp"
         android:animateLayoutChanges="true"
         android:background="@drawable/shadow_borders2"
         android:orientation="vertical"
@@ -29,7 +29,15 @@
             android:text="@string/please_tag_this_call"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="@color/tag_contact_text_color"
             />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            android:background="@color/lightGray">
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -43,8 +51,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="@string/number"
-                android:textStyle="bold"
-                />
+                android:textSize="16sp"
+                android:id="@+id/textView2"
+                android:textColor="@color/tag_contact_text_color"/>
 
             <TextView
                 android:id="@+id/tvNumberTagCallPopup"
@@ -52,7 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="@string/number"
-                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/tag_contact_text_color"
                 />
 
 
@@ -71,17 +81,18 @@
                 android:layout_width="120dp"
                 android:layout_height="30dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="0.33"
-                android:background="@drawable/btn_transparent_white_border"
+                android:background="@drawable/button_tags"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:radius="5dip"
                 android:tag="sales_radio"
-                android:text="COLLEGUE"
+                android:text="@string/collegue"
                 android:textColor="#ffffff"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 />
 
             <Button
@@ -89,19 +100,19 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="120dp"
                 android:layout_height="30dp"
-
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="0.33"
-                android:background="@drawable/btn_primary"
+                android:background="@drawable/button_tags"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:radius="5dip"
                 android:tag="collegue_radio"
-                android:text="SALES"
+                android:text="@string/sales"
                 android:textColor="#ffffff"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 />
 
             <Button
@@ -109,101 +120,28 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="120dp"
                 android:layout_height="30dp"
-
                 android:layout_weight="0.33"
-                android:background="@drawable/btn_transparent_white_border"
+                android:background="@drawable/button_tags"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:radius="5dip"
                 android:tag="personal_radio"
-                android:text="PERSONAL"
+                android:text="@string/non_busin"
                 android:textColor="#ffffff"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 />
 
 
         </LinearLayout>
 
-
         <LinearLayout
-            android:id="@+id/nameAndButtonForm"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/name"
-                    android:textStyle="bold"
-                    />
-
-                <EditText
-                    android:id="@+id/etNameTagCallPopup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="@string/name"
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:orientation="horizontal"
-                >
-
-                <Button
-                    android:id="@+id/bCancelTagCallPopup"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="120dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="0.33"
-                    android:background="@drawable/btn_transparent_white_border"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:radius="5dip"
-                    android:tag="personal_radio"
-                    android:text="Cancle"
-                    android:textColor="#ffffff"
-                    android:textSize="11sp"
-                    />
-
-                <Button
-                    android:id="@+id/bSaveTagCallPopup"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="120dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="0.33"
-                    android:background="@drawable/btn_transparent_white_border"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:radius="5dip"
-                    android:tag="personal_radio"
-                    android:text="@string/save"
-                    android:textColor="#ffffff"
-                    android:textSize="11sp"
-                    />
-            </LinearLayout>
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            android:background="@color/lightGray">
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

@@ -36,7 +36,6 @@
             android:drawableLeft="@drawable/call_details_icon_white"
             android:paddingBottom="5dp"
             android:paddingLeft="20dp"
-
             android:paddingRight="10dp"
             android:paddingTop="5dp"
             android:radius="5dip"

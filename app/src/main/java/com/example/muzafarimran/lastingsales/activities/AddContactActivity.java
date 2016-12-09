@@ -88,6 +88,7 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
         llContactAddress = (LinearLayout) findViewById(R.id.address_layout);
         Bundle bundle = getIntent().getExtras();
         String num = "";
+        String cat = "";
         if (bundle != null) {
             num = bundle.getString(ContactCallDetails.NUMBER_EXTRA);
             etContactPhone.setText(num);
@@ -96,6 +97,22 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
             if (idOfEditContactString != null && idOfEditContactString != "") {
                 editContactFlow = true;
                 idOfEditContactLong = Long.parseLong(idOfEditContactString);
+            }
+
+            cat = bundle.getString(TagNumberActivity.CATEGORY);
+            if(cat!=null) {
+                if (cat.equalsIgnoreCase("sales") && cat != "") {
+                    Log.d(TAG, "onCreate: Bundle Sales");
+                    selectedContactType = LSContact.CONTACT_TYPE_SALES;
+                    salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+                    collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
+                } else if (cat.equalsIgnoreCase("collegue") && cat != "") {
+                    Log.d(TAG, "onCreate: Bundle Colleagues");
+                    selectedContactType = LSContact.CONTACT_TYPE_COLLEAGUE;
+                    salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
+                    collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+
+                }
             }
         }
         if (!editContactFlow) {
@@ -111,6 +128,7 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
             etContactCompany.setText(editingContact.getContactCompany());
             etContactAddress.setText(editingContact.getContactAddress());
         }
+
         salesRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

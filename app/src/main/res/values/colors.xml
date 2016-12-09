@@ -8,4 +8,13 @@
     <color name="black">#000000</color>
     <color name="totem_blue">#212e48</color>
     <color name="transpartent_black">#77000000</color>
+
+
+    <color name="button_state_pressed">@color/colorPrimaryDark</color>
+    <color name="button_state_focused">@color/colorPrimaryDark</color>
+    <color name="button_state_normal">@color/colorPrimary</color>
+    <color name="button_state_highlighted">@color/colorPrimaryDark</color>
+    <color name="tag_contact_background">#ffffff</color>
+    <color name="tag_contact_text_color">#333333</color>
+
 </resources>
