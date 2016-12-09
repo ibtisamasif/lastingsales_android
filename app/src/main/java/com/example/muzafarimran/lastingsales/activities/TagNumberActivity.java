@@ -51,7 +51,7 @@ public class TagNumberActivity extends Activity {
             @Override
             public void onClick(View view) {
                 userInteracted = true;
-                bSalesRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this,R.drawable.btn_primary_contact_tag));
+                bSalesRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this,R.drawable.btn_primary));
                 Intent intent = new Intent(getApplicationContext(), AddContactActivity.class);
                 intent.putExtra(CATEGORY, "sales");
                 startActivity(intent);
@@ -62,7 +62,7 @@ public class TagNumberActivity extends Activity {
             @Override
             public void onClick(View view) {
                 userInteracted = true;
-                bCollegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary_contact_tag));
+                bCollegueRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this,R.drawable.btn_primary));
                 Intent intent = new Intent(getApplicationContext(), AddContactActivity.class);
                 intent.putExtra(CATEGORY, "collegue");
                 startActivity(intent);
@@ -74,7 +74,7 @@ public class TagNumberActivity extends Activity {
             public void onClick(View view) {
                 //set contact as non-business to avoid future popups
                 userInteracted = true;
-                bPersonalRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary_contact_tag));
+                bPersonalRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this,R.drawable.btn_primary));
                 LSContact tempContact = new LSContact();
                 tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(phoneNumber));
                 tempContact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);

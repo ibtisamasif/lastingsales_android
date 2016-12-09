@@ -25,7 +25,7 @@ public class ContactCallDetails extends AppCompatActivity {
 
     public static final String NUMBER_EXTRA = "number_extra";
     Button bTagButton;
-    Button bFollowupButton;
+//    Button bFollowupButton;
     private String number = "";
     private String name = "";
     private LSContact contact;
@@ -35,22 +35,22 @@ public class ContactCallDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_call_details);
         bTagButton = (Button) findViewById(R.id.b_tag_individual_contact_call_screen);
-        bFollowupButton = (Button) findViewById(R.id.b_followup_individual_contact_call_screen);
+//        bFollowupButton = (Button) findViewById(R.id.b_followup_individual_contact_call_screen);
         Intent intent = getIntent();
         this.number = intent.getStringExtra("number");
         LSContact contact = LSContact.getContactFromNumber(this.number);
         if (contact != null) {
             this.name = contact.getContactName();
             bTagButton.setVisibility(GONE);
-            bFollowupButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(getApplicationContext(), FollowupsActivity.class));
-                }
-            });
+//            bFollowupButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    startActivity(new Intent(getApplicationContext(), FollowupsActivity.class));
+//                }
+//            });
         } else {
             this.name = "UNKNOWN";
-            bFollowupButton.setVisibility(GONE);
+            //bFollowupButton.setVisibility(GONE);
             bTagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

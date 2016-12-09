@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal|center_vertical"
-        app:tabIndicatorColor="#00bab5"
+        app:tabIndicatorColor="@color/tab_indicator_color"
         app:tabGravity="fill"
         android:background="#ffffff"
         app:tabMode="fixed"/>

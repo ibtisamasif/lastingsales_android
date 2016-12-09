@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00bab5</color>
-    <color name="colorPrimaryDark">#FF03938F</color>
+    <!--<color name="colorPrimary">#00bab5</color>-->
+    <!--<color name="colorPrimaryDark">#FF03938F</color>-->
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#d0898989</color>
+    <color name="action_bar_background_color">@color/colorPrimaryDark</color>
+
+    <color name="tab_indicator_color">#5c82e5</color>
     <color name="colorAccent">#195351</color>
     <color name="lightGray">#F0F0F0</color>
     <color name="white">#FFFFFF</color>
+    <color name="half_white">#bcffffff</color>
     <color name="black">#000000</color>
     <color name="totem_blue">#212e48</color>
     <color name="transpartent_black">#77000000</color>
-
-
-    <color name="button_state_pressed">@color/colorPrimaryDark</color>
-    <color name="button_state_focused">@color/colorPrimaryDark</color>
-    <color name="button_state_normal">@color/colorPrimary</color>
-    <color name="button_state_highlighted">@color/colorPrimaryDark</color>
     <color name="tag_contact_background">#ffffff</color>
     <color name="tag_contact_text_color">#333333</color>
+
+    <color name="button_state_normal">#5c82e5</color>
+    <color name="button_state_highlighted">#4f41bc</color>
+    <color name="button_state_pressed">#4f41bc</color>
+    <color name="button_state_focused">#4f41bc</color>
+
+
+
 
 </resources>
