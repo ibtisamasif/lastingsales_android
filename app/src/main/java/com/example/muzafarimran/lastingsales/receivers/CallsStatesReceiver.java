@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.receivers;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -9,6 +10,7 @@ import com.example.muzafarimran.lastingsales.Events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.Service.PopupUIService;
+import com.example.muzafarimran.lastingsales.Utils.FollowupNotification;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.TagNumberActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
@@ -25,7 +27,8 @@ import de.halfbit.tinybus.TinyBus;
  */
 
 public class CallsStatesReceiver extends CallReceiver {
-
+    private static final String TAG = "CallsStatesReceiver";
+    private NotificationManager mNotificationManager;
     public static final String OUTGOINGCALL_CONTACT_ID = "outgoing_contact_id";
     public static final String INCOMINGCALL_CONTACT_ID = "incoming_contact_id";
     public static final String OUTGOINGCALL_CONTACT_NOTE_ID = "outgoing_contact_note_id";
@@ -139,7 +142,7 @@ public class CallsStatesReceiver extends CallReceiver {
 
     public void checkShowCallPopup(Context ctx, String number) {
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-        LSContact oneContact = null;
+        LSContact oneContact;
         oneContact = LSContact.getContactFromNumber(internationalNumber);
         ArrayList<LSNote> notesForContact = null;
         if (oneContact != null) {
@@ -161,7 +164,18 @@ public class CallsStatesReceiver extends CallReceiver {
     private void showTagNumberPopupIfNeeded(Context ctx, String number) {
         String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
-        if (tempContact == null) {
+
+        if (tempContact!=null) {
+            if(!tempContact.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+                // If caller is already Tagged and is not Business contact show NOTIFICATION
+                String name = tempContact.getContactName();
+                mNotificationManager = (NotificationManager) ctx.getSystemService(Context
+                        .NOTIFICATION_SERVICE);
+                mNotificationManager.notify(FollowupNotification.NOTIFICATION_ID, FollowupNotification.createNotification(ctx, name));
+            }
+        }
+        else {
+            // If caller is not tagged i.e not stored in app then show PopUp
             Intent myIntent = new Intent(ctx, TagNumberActivity.class);
             myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             myIntent.putExtra(TagNumberActivity.NUMBER_TO_TAG, number);
