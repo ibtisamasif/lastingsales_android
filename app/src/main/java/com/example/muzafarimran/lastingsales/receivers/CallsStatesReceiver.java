@@ -56,7 +56,7 @@ public class CallsStatesReceiver extends CallReceiver {
         tempCall.setContactNumber(internationalNumber);
         tempCall.setType(LSCall.CALL_TYPE_INCOMING);
         tempCall.setBeginTime(start.getTime());
-        String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, number);
+        String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
         if (phoneBookContactName == null) {
             tempCall.setContactName(null);
         } else if (!phoneBookContactName.equals("")) {
@@ -87,7 +87,7 @@ public class CallsStatesReceiver extends CallReceiver {
         tempCall.setContactNumber(internationalNumber);
         tempCall.setType(LSCall.CALL_TYPE_OUTGOING);
         tempCall.setBeginTime(start.getTime());
-        String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, number);
+        String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
         if (phoneBookContactName == null) {
             tempCall.setContactName(null);
         } else if (!phoneBookContactName.equals("")) {
@@ -119,7 +119,7 @@ public class CallsStatesReceiver extends CallReceiver {
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         LSCall tempCall = new LSCall();
         tempCall.setContactNumber(internationalNumber);
-        String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, number);
+        String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
         if (phoneBookContactName == null) {
             tempCall.setContactName(null);
         } else if (!phoneBookContactName.equals("")) {

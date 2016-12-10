@@ -20,8 +20,10 @@ import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.Utils.CallRecord;
+import com.example.muzafarimran.lastingsales.adapters.FollowupsListAdapter;
 import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.fragments.CollegueFragment;
+import com.example.muzafarimran.lastingsales.fragments.FollowupsListFragment;
 import com.example.muzafarimran.lastingsales.fragments.IncomingCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
@@ -159,8 +161,15 @@ public class NavigationDrawerActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_item_personal_contacts) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, NonbusinessFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Personal Contacts");
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Non-Business Contacts");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+            intent = new Intent(getApplicationContext(), FrameActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }else if (id == R.id.nav_item_followups) {
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsListFragment.class.getName());
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Followups List");
+            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/shape_rounded_corners_primary_color_dark_fill" android:state_pressed="true"/>
-    <item android:drawable="@drawable/shape_rounded_corners_primary_color" android:state_focused="true"/>
-    <item android:drawable="@drawable/shape_rounded_corners_primary_color"/>
+    <item android:drawable="@drawable/shape_rounded_corners_accent_color" android:state_focused="true"/>
+    <item android:drawable="@drawable/shape_rounded_corners_accent_color"/>
 </selector>

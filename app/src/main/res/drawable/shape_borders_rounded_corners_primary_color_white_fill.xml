@@ -8,7 +8,7 @@
 
         />
 
-<stroke android:color="@color/colorPrimary" android:width="2dp" />
+<stroke android:color="@color/colorAccent" android:width="2dp" />
     <corners
         android:topLeftRadius="@dimen/corners_radius_size_edittext_bg"
         android:topRightRadius="@dimen/corners_radius_size_edittext_bg"

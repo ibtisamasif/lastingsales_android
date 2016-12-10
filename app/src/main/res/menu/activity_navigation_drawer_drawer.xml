@@ -24,5 +24,12 @@
 
         </menu>
     </item>
+    <item android:title="Others">
+        <menu>
+            <item
+                android:id="@+id/nav_item_followups"
+                android:title="Followups"/>
+        </menu>
+    </item>
 
 </menu>

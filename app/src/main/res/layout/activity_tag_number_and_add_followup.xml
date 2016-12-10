@@ -24,7 +24,7 @@
             android:id="@+id/tvTitleFollowupPopup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_rounded_corners_primary_color"
+            android:background="@drawable/shape_rounded_corners_accent_color"
             android:gravity="center"
             android:padding="12dp"
             android:text="@string/next_followup_capital"
@@ -163,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_margin="16dp"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/colorAccent"
                     android:orientation="vertical"
                     ></LinearLayout>
 
