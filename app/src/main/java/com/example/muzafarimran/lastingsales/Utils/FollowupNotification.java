@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.FollowupNotiActivity;
+import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.receivers.FollowupNotiCancelBtnReceiver;
 
 /**
@@ -22,7 +22,8 @@ public class FollowupNotification {
         //Create the PendingIntent
         PendingIntent cancelpIntent = PendingIntent.getBroadcast(ctx, 0, cancelIntent, 0);
         //Ahmad Needs to replace FollowupNotiActivity with new Followup Activity.
-        Intent intent = new Intent(ctx, FollowupNotiActivity.class);
+        Intent intent = new Intent(ctx, TagNumberAndAddFollowupActivity.class);
+        intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE,TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
         PendingIntent pIntent = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intent, 0);
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)
                 .setSmallIcon(R.drawable.follow_ups_today_icon)

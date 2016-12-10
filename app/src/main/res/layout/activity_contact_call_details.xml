@@ -73,26 +73,6 @@
             android:layout_marginTop="25dp"
             android:background="#18366c">
 
-            <!--<Button-->
-                <!--android:id="@+id/b_followup_individual_contact_call_screen"-->
-                <!--style="?android:attr/borderlessButtonStyle"-->
-                <!--android:layout_width="150dp"-->
-                <!--android:layout_height="30dp"-->
-                <!--android:background="@drawable/btn_transparent_white_border"-->
-                <!--android:drawableLeft="@drawable/follow_ip_icon_white"-->
-                <!--android:layout_toLeftOf="@+id/b_tag_individual_contact_call_screen"-->
-                <!--android:paddingBottom="5dp"-->
-                <!--android:paddingLeft="20dp"-->
-                <!--android:paddingRight="20dp"-->
-                <!--android:paddingTop="5dp"-->
-                <!--android:radius="5dip"-->
-                <!--android:text="Follow Up"-->
-                <!--android:textColor="#ffffff"-->
-                <!--android:textSize="12dp"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_alignParentEnd="true" />-->
-
             <Button
                 android:id="@+id/b_tag_individual_contact_call_screen"
                 style="?android:attr/borderlessButtonStyle"

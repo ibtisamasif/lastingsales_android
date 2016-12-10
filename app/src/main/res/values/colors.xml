@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<color name="colorPrimary">#00bab5</color>-->
-    <!--<color name="colorPrimaryDark">#FF03938F</color>-->
+    <color name="colorPrimaryGreen">#00bab5</color>
+    <color name="colorPrimaryGreenDark">#FF03938F</color>
+
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#d0898989</color>
     <color name="action_bar_background_color">@color/colorPrimaryDark</color>

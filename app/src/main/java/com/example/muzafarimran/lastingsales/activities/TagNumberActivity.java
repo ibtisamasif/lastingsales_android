@@ -15,7 +15,6 @@ import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 public class TagNumberActivity extends Activity {
-    public static final String CATEGORY = "category";
     public static final String NUMBER_TO_TAG = "phone_number";
     private Button bSalesRadio = null;
     private Button bCollegueRadio = null;
@@ -52,8 +51,9 @@ public class TagNumberActivity extends Activity {
             public void onClick(View view) {
                 userInteracted = true;
                 bSalesRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this,R.drawable.btn_primary));
-                Intent intent = new Intent(getApplicationContext(), AddContactActivity.class);
-                intent.putExtra(CATEGORY, "sales");
+                Intent intent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE,TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
                 startActivity(intent);
                 finish();
             }
@@ -63,8 +63,10 @@ public class TagNumberActivity extends Activity {
             public void onClick(View view) {
                 userInteracted = true;
                 bCollegueRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this,R.drawable.btn_primary));
-                Intent intent = new Intent(getApplicationContext(), AddContactActivity.class);
-                intent.putExtra(CATEGORY, "collegue");
+                Intent intent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE,TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER , phoneNumber);
                 startActivity(intent);
                 finish();
             }

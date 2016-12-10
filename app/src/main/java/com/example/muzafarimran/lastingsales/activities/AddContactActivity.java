@@ -29,6 +29,7 @@ import de.halfbit.tinybus.TinyBus;
 import static android.view.View.GONE;
 import static com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils.updateAllCallsOfThisContact;
 
+@Deprecated
 public class AddContactActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
@@ -90,7 +91,7 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
         String num = "";
         String cat = "";
         if (bundle != null) {
-            num = bundle.getString(ContactCallDetails.NUMBER_EXTRA);
+            num = bundle.getString(TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER); //TODO Review later
             etContactPhone.setText(num);
             etContactName.setText(PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), num));
             idOfEditContactString = bundle.getString(ContactDetailsActivity.KEY_CONTACT_ID);
@@ -99,21 +100,21 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
                 idOfEditContactLong = Long.parseLong(idOfEditContactString);
             }
 
-            cat = bundle.getString(TagNumberActivity.CATEGORY);
-            if(cat!=null) {
-                if (cat.equalsIgnoreCase("sales") && cat != "") {
-                    Log.d(TAG, "onCreate: Bundle Sales");
-                    selectedContactType = LSContact.CONTACT_TYPE_SALES;
-                    salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-                    collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
-                } else if (cat.equalsIgnoreCase("collegue") && cat != "") {
-                    Log.d(TAG, "onCreate: Bundle Colleagues");
-                    selectedContactType = LSContact.CONTACT_TYPE_COLLEAGUE;
-                    salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
-                    collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-
-                }
-            }
+//            cat = bundle.getString(TagNumberActivity.CATEGORY);
+//            if(cat!=null) {
+//                if (cat.equalsIgnoreCase("sales") && cat != "") {
+//                    Log.d(TAG, "onCreate: Bundle Sales");
+//                    selectedContactType = LSContact.CONTACT_TYPE_SALES;
+//                    salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+//                    collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
+//                } else if (cat.equalsIgnoreCase("collegue") && cat != "") {
+//                    Log.d(TAG, "onCreate: Bundle Colleagues");
+//                    selectedContactType = LSContact.CONTACT_TYPE_COLLEAGUE;
+//                    salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
+//                    collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+//
+//                }
+//            }
         }
         if (!editContactFlow) {
             hideEditFields();

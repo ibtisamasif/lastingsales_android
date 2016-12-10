@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
     Toolbar toolbar;
     private String contactIdString = "0";
     private LSContact selectedContact;
+    private Button addFollowupBtn;
     private TextView tvName;
     private TextView tvNumberOne;
     private TextView tvNumberTwo;
@@ -40,6 +42,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_details);
+        addFollowupBtn= (Button) findViewById(R.id.bAddFollowupContactDetailsScreen);
         tvName = (TextView) findViewById(R.id.tvNameOfUserContactDetailsScreen);
         toolbar = (Toolbar) findViewById(R.id.toolbarContactDetailsActivity);
         toolbar.setTitle("Contact Details");
@@ -114,6 +117,14 @@ public class ContactDetailsActivity extends AppCompatActivity {
             transaction.replace(R.id.notesListHolderFrameLayout, notesListFragment);
             transaction.commit();
         }
+        addFollowupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getApplicationContext() , TagNumberAndAddFollowupActivity.class);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                startActivity(myIntent);
+            }
+        });
     }
 
     @Override
@@ -127,15 +138,14 @@ public class ContactDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.ic_action_edit:
-                Intent addContactScreenIntent = new Intent(getApplicationContext(), AddContactActivity.class);
-                addContactScreenIntent.putExtra(KEY_CONTACT_ID, contactIdString);
-                startActivity(addContactScreenIntent);
+//                Intent addContactScreenIntent = new Intent(getApplicationContext(), AddContactActivity.class);
+//                addContactScreenIntent.putExtra(KEY_CONTACT_ID, contactIdString);
+//                startActivity(addContactScreenIntent);
                 break;
             case android.R.id.home:
                 onBackPressed();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

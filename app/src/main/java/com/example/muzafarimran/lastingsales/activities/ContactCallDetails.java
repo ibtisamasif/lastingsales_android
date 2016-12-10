@@ -22,40 +22,30 @@ import java.util.ArrayList;
 import static android.view.View.GONE;
 
 public class ContactCallDetails extends AppCompatActivity {
-
-    public static final String NUMBER_EXTRA = "number_extra";
     Button bTagButton;
-//    Button bFollowupButton;
     private String number = "";
     private String name = "";
-    private LSContact contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_call_details);
         bTagButton = (Button) findViewById(R.id.b_tag_individual_contact_call_screen);
-//        bFollowupButton = (Button) findViewById(R.id.b_followup_individual_contact_call_screen);
         Intent intent = getIntent();
         this.number = intent.getStringExtra("number");
         LSContact contact = LSContact.getContactFromNumber(this.number);
         if (contact != null) {
             this.name = contact.getContactName();
             bTagButton.setVisibility(GONE);
-//            bFollowupButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    startActivity(new Intent(getApplicationContext(), FollowupsActivity.class));
-//                }
-//            });
         } else {
             this.name = "UNKNOWN";
             //bFollowupButton.setVisibility(GONE);
             bTagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent addContactIntent = new Intent(getApplicationContext(), AddContactActivity.class);
-                    addContactIntent.putExtra(NUMBER_EXTRA, number);
+                    Intent addContactIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
+                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
                     startActivity(addContactIntent);
                 }
             });
