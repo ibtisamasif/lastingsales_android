@@ -1,7 +1,6 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,6 @@ import android.widget.ListView;
 import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.PersonalContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddContactActivity;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -150,9 +148,10 @@ public class NonbusinessFragment extends TabFragment {
 
         @Override
         public void onClick(View v) {
-            Intent myIntent = new Intent(getActivity(), AddContactActivity.class);
-            //myIntent.putExtra("number",(String) v.getTag());
-            getActivity().startActivity(myIntent);
+            // We will not add Non-Business contact from within the app.
+//            Intent myIntent = new Intent(getActivity(), TagNumberAndAddFollowupActivity.class);
+//            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+//            getActivity().startActivity(myIntent);
         }
     }
 }

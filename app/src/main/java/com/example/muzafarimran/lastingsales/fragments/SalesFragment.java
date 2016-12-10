@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddContactActivity;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -197,8 +196,9 @@ public class SalesFragment extends SearchFragment {
 
         @Override
         public void onClick(View v) {
-            Intent myIntent = new Intent(getActivity(), AddContactActivity.class);
-            //myIntent.putExtra("number",(String) v.getTag());
+            Intent myIntent = new Intent(getActivity(), TagNumberAndAddFollowupActivity.class);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
             getActivity().startActivity(myIntent);
         }
     }

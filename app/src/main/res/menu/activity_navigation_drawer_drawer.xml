@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Calls">
+    <item android:title="@string/navigation_drawer_title_calls">
         <menu>
             <item
                 android:id="@+id/nav_item_incoming_call"
-                android:title="Incomming"/>
+                android:title="@string/navigation_drawer_incomming"/>
             <item
                 android:id="@+id/nav_item_outgoing_call"
-                android:title="Outgoing"/>
+                android:title="@string/navigation_drawer_outgoing"/>
 
         </menu>
     </item>
 
-    <item android:title="Contacts">
+    <item android:title="@string/navigation_drawer_title_contacts">
         <menu>
             <item
                 android:id="@+id/nav_item_colleague_contacts"
-                android:title="Colleague"/>
+                android:title="@string/navigation_drawer_colleague"/>
             <item
                 android:id="@+id/nav_item_personal_contacts"
-                android:title="Personal"/>
+                android:title="@string/navigation_drawer_non_business"/>
 
         </menu>
     </item>

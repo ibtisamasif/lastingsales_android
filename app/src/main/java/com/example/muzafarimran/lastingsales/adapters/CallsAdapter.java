@@ -10,15 +10,14 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.activities.AddContactActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
+import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 
 import java.util.ArrayList;
@@ -271,8 +270,10 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
 
         @Override
         public void onClick(View v) {
-            Intent myIntent = new Intent(mContext, AddContactActivity.class);
-            myIntent.putExtra(ContactCallDetails.NUMBER_EXTRA, number);
+            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+            Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNum);
             mContext.startActivity(myIntent);
         }
     }

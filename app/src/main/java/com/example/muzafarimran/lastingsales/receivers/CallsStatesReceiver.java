@@ -13,6 +13,7 @@ import com.example.muzafarimran.lastingsales.Service.PopupUIService;
 import com.example.muzafarimran.lastingsales.Utils.FollowupNotification;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.TagNumberActivity;
+import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -33,6 +34,7 @@ public class CallsStatesReceiver extends CallReceiver {
     public static final String INCOMINGCALL_CONTACT_ID = "incoming_contact_id";
     public static final String OUTGOINGCALL_CONTACT_NOTE_ID = "outgoing_contact_note_id";
     public static final String INCOMINGCALL_CONTACT_NOTE_ID = "incoming_contact_note_id";
+    private String intlNumber;
 
     @Override
     protected void onIncomingCallStarted(Context ctx, String number, Date start) {
@@ -162,7 +164,8 @@ public class CallsStatesReceiver extends CallReceiver {
     }
 
     private void showTagNumberPopupIfNeeded(Context ctx, String number) {
-        String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+
+        intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
 
         if (tempContact!=null) {
@@ -176,9 +179,10 @@ public class CallsStatesReceiver extends CallReceiver {
         }
         else {
             // If caller is not tagged i.e not stored in app then show PopUp
+            intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
             Intent myIntent = new Intent(ctx, TagNumberActivity.class);
             myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            myIntent.putExtra(TagNumberActivity.NUMBER_TO_TAG, number);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
             ctx.startActivity(myIntent);
         }
     }

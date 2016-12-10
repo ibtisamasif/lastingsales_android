@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -12,13 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddContactActivity;
 import com.example.muzafarimran.lastingsales.adapters.ContactsTabsFragmentPagerAdapter;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
+
+@Deprecated
 public class ContactsFragment extends TabFragment {
 
     CoordinatorLayout mainLayout;
@@ -81,9 +81,9 @@ public class ContactsFragment extends TabFragment {
 
         @Override
         public void onClick(View v) {
-            Intent myIntent = new Intent(getActivity(), AddContactActivity.class);
-            //myIntent.putExtra("number",(String) v.getTag());
-            getActivity().startActivity(myIntent);
+//            Intent myIntent = new Intent(getActivity(), TagNumberAndAddFollowupActivity.class);
+//            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+//            getActivity().startActivity(myIntent);
         }
     }
 }
