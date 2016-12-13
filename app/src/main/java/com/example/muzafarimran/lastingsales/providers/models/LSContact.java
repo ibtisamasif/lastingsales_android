@@ -45,6 +45,7 @@ public class LSContact extends SugarRecord {
     private String contactUpdated_at;
     private String contactDeleted_at;
     private String contactSalesStatus;
+    private boolean detailsDropDownOpen;
 
     public LSContact() {
     }
@@ -60,11 +61,6 @@ public class LSContact extends SugarRecord {
         this.contactAddress = contactAddress;
     }
 
-    public  ArrayList<TempFollowUp> getAllFollowups() {
-        ArrayList<TempFollowUp> allFollowupsOfThisContact = null;
-        allFollowupsOfThisContact = (ArrayList<TempFollowUp>) TempFollowUp.find(TempFollowUp.class, "contact = ? ", getId()+"");
-        return allFollowupsOfThisContact;
-    }
     public static List<LSContact> getContactsByType(String type) {
         try {
             return LSContact.find(LSContact.class, "contact_type = ? ", type);
@@ -125,6 +121,12 @@ public class LSContact extends SugarRecord {
         }
     }
 
+    public ArrayList<TempFollowUp> getAllFollowups() {
+        ArrayList<TempFollowUp> allFollowupsOfThisContact = null;
+        allFollowupsOfThisContact = (ArrayList<TempFollowUp>) TempFollowUp.find(TempFollowUp.class, "contact = ? ", getId() + "");
+        return allFollowupsOfThisContact;
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public boolean equals(Object obj) {
@@ -161,6 +163,14 @@ public class LSContact extends SugarRecord {
                         (this.contactDeleted_at != null ? this.contactDeleted_at.hashCode() : 0) +
                         (this.contactSalesStatus != null ? this.contactSalesStatus.hashCode() : 0)
                 ;
+    }
+
+    public boolean isDetailsDropDownOpen() {
+        return detailsDropDownOpen;
+    }
+
+    public void setDetailsDropDownOpen(boolean detailsDropDownOpen) {
+        this.detailsDropDownOpen = detailsDropDownOpen;
     }
 
     public String getContactName() {

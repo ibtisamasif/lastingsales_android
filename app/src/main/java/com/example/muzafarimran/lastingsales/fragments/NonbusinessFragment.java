@@ -33,8 +33,6 @@ public class NonbusinessFragment extends TabFragment {
     ContactsAdapter contactsAdapter;
     EditText inputSearch;
     MaterialSearchView searchView;
-    FloatingActionButton addContactCta = null;
-    ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     private TinyBus bus;
 
     public static NonbusinessFragment newInstance(int page, String title) {
@@ -102,8 +100,6 @@ public class NonbusinessFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
-        this.addContactCta = (FloatingActionButton) view.findViewById(R.id.add_contact_cta);
-        this.addContactCta.setOnClickListener(this.showaddcontactform);
         listView = (ListView) view.findViewById(R.id.personal_contacts_list);
         inputSearch = (EditText) (getActivity().findViewById(R.id.search_box));
         listView.setAdapter(contactsAdapter);
@@ -141,17 +137,4 @@ public class NonbusinessFragment extends TabFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    /*
-    * event handler for click on add contact cta
-    * */
-    public class ShowAddContactForm implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            // We will not add Non-Business contact from within the app.
-//            Intent myIntent = new Intent(getActivity(), TagNumberAndAddFollowupActivity.class);
-//            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-//            getActivity().startActivity(myIntent);
-        }
-    }
 }
