@@ -33,6 +33,7 @@ import static android.view.View.GONE;
 /**
  * Created by Ahmad Khan on 12/12/2016.
  */
+@Deprecated
 public class ContactsAdapterWithHeaders extends BaseAdapter implements Filterable {
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
