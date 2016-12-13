@@ -2,7 +2,7 @@ package com.example.muzafarimran.lastingsales.providers;
 
 import android.provider.BaseColumns;
 
-
+@Deprecated
 public class LastingSalesContract {
 //    public static final String CONTENT_AUTHORITY = "com.example.muzafarimran.lastingsales";
 //    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);

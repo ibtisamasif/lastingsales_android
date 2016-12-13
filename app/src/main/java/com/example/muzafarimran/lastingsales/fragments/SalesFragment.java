@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -19,14 +18,17 @@ import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
-import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter2;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.github.clans.fab.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
+import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,8 +36,8 @@ import de.halfbit.tinybus.TinyBus;
 public class SalesFragment extends SearchFragment {
 
     private static final String TAG = "SalesContactFragment";
-    ListView listView = null;
-    ContactsAdapter contactsAdapter;
+    ExpandableStickyListHeadersListView listView = null;
+    ContactsAdapter2 contactsAdapter2;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     private TinyBus bus;
     FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
@@ -50,8 +52,8 @@ public class SalesFragment extends SearchFragment {
     }
 
     public void setList(List<LSContact> contacts) {
-        if (contactsAdapter != null) {
-            contactsAdapter.setList(contacts);
+        if (contactsAdapter2 != null) {
+            contactsAdapter2.setList(contacts);
         }
     }
 
@@ -59,7 +61,7 @@ public class SalesFragment extends SearchFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        contactsAdapter = new ContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_SALES);
+        contactsAdapter2 = new ContactsAdapter2(getContext(), null, LSContact.CONTACT_TYPE_SALES);
         setHasOptionsMenu(true);
     }
 
@@ -88,17 +90,19 @@ public class SalesFragment extends SearchFragment {
 
     @Subscribe
     public void onBackPressedEventModel(BackPressedEventModel event) {
-        if (!event.backPressHandled && contactsAdapter.isDeleteFlow()) {
+        if (!event.backPressHandled && contactsAdapter2.isDeleteFlow()) {
             event.backPressHandled = true;
-            contactsAdapter.setDeleteFlow(false);
+            contactsAdapter2.setDeleteFlow(false);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
-        setList(contacts);
+//        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+//        setList(contacts);
+
+        setList(getAllArrangedContactsAccordingToLeadType());
     }
 
     @Override
@@ -126,8 +130,19 @@ public class SalesFragment extends SearchFragment {
                 startActivity(intent);
             }
         });
-        listView = (ListView) view.findViewById(R.id.sales_contacts_list);
-        listView.setAdapter(contactsAdapter);
+        listView = (ExpandableStickyListHeadersListView) view.findViewById(R.id.sales_contacts_list);
+        listView.setAdapter(contactsAdapter2);
+        //Expand and Contract Leads
+        listView.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
+            @Override
+            public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
+                if(listView.isHeaderCollapsed(headerId)){
+                    listView.expand(headerId);
+                }else {
+                    listView.collapse(headerId);
+                }
+            }
+        });
         return view;
     }
 
@@ -149,7 +164,7 @@ public class SalesFragment extends SearchFragment {
 
     @Override
     protected void onSearch(String query) {
-        contactsAdapter.getFilter().filter(query);
+        contactsAdapter2.getFilter().filter(query);
     }
 
     @Override
@@ -157,25 +172,37 @@ public class SalesFragment extends SearchFragment {
         switch (item.getItemId()) {
             case R.id.action_funnel:
                 View menuItemView = getActivity().findViewById(R.id.action_funnel);
-                Toast.makeText(getActivity(), "Click on funnel Icon", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Click on funnel Icon", Toast.LENGTH_SHORT).show();
                 PopupMenu popupMenu = new PopupMenu(getActivity(), menuItemView);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.filter_all:
+//                                List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+//                                setList(contacts);
+                                contactsAdapter2.setList(getAllArrangedContactsAccordingToLeadType());
                                 Toast.makeText(getActivity(), "Filter All", Toast.LENGTH_SHORT).show();
+
                                 break;
                             case R.id.filter_prospects:
+                                List<LSContact> contactsProspects = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                                contactsAdapter2.setList(contactsProspects);
                                 Toast.makeText(getActivity(), "Filter Prospects", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.filter_leads:
+                                List<LSContact> contactsLeads = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                contactsAdapter2.setList(contactsLeads);
                                 Toast.makeText(getActivity(), "Filter Leads", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.filter_closed_lost:
+                                List<LSContact> contactsClosedLost = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+                                contactsAdapter2.setList(contactsClosedLost);
                                 Toast.makeText(getActivity(), "Filter Lost", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.filter_closed_won:
+                                List<LSContact> contactsClosedWon = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+                                contactsAdapter2.setList(contactsClosedWon);
                                 Toast.makeText(getActivity(), "Filter Won", Toast.LENGTH_SHORT).show();
                                 break;
                         }
@@ -189,6 +216,29 @@ public class SalesFragment extends SearchFragment {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public List<LSContact> getAllArrangedContactsAccordingToLeadType(){
+
+        List<LSContact> contactsColle = LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        List<LSContact> contactsPerso = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
+        List<LSContact> contactsToBeRemoved = new ArrayList<>();
+        contactsToBeRemoved.addAll(contactsColle);
+        contactsToBeRemoved.addAll(contactsPerso);
+
+        List<LSContact> arrangedContacts = new ArrayList<>();
+        List<LSContact> contactsPros = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        List<LSContact> contactsLe = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_LEAD);
+        List<LSContact> contactsLo = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+        List<LSContact> contactsWo = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+
+        arrangedContacts.addAll(contactsPros);
+        arrangedContacts.addAll(contactsLe);
+        arrangedContacts.addAll(contactsLo);
+        arrangedContacts.addAll(contactsWo);
+        arrangedContacts.removeAll(contactsToBeRemoved);
+
+        return arrangedContacts;
+    }
     /*
     * event handler for click on add contact cta
     * */
