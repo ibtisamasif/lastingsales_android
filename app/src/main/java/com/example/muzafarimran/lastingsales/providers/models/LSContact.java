@@ -60,6 +60,11 @@ public class LSContact extends SugarRecord {
         this.contactAddress = contactAddress;
     }
 
+    public  ArrayList<TempFollowUp> getAllFollowups() {
+        ArrayList<TempFollowUp> allFollowupsOfThisContact = null;
+        allFollowupsOfThisContact = (ArrayList<TempFollowUp>) TempFollowUp.find(TempFollowUp.class, "contact = ? ", getId()+"");
+        return allFollowupsOfThisContact;
+    }
     public static List<LSContact> getContactsByType(String type) {
         try {
             return LSContact.find(LSContact.class, "contact_type = ? ", type);

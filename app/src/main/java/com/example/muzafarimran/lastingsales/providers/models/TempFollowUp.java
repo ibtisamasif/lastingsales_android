@@ -2,6 +2,8 @@ package com.example.muzafarimran.lastingsales.providers.models;
 
 import com.orm.SugarRecord;
 
+import java.util.ArrayList;
+
 /**
  * Created by ahmad on 01-Nov-16.
  */

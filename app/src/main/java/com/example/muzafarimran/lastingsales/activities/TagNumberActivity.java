@@ -50,10 +50,11 @@ public class TagNumberActivity extends Activity {
             @Override
             public void onClick(View view) {
                 userInteracted = true;
-                bSalesRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this,R.drawable.btn_primary));
+                bSalesRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this, R.drawable.btn_primary));
                 Intent intent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
-                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE,TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
                 intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, phoneNumber);
                 startActivity(intent);
                 finish();
             }
@@ -62,11 +63,11 @@ public class TagNumberActivity extends Activity {
             @Override
             public void onClick(View view) {
                 userInteracted = true;
-                bCollegueRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this,R.drawable.btn_primary));
+                bCollegueRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this, R.drawable.btn_primary));
                 Intent intent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
-                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE,TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
                 intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
-                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER , phoneNumber);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, phoneNumber);
                 startActivity(intent);
                 finish();
             }
@@ -76,7 +77,7 @@ public class TagNumberActivity extends Activity {
             public void onClick(View view) {
                 //set contact as non-business to avoid future popups
                 userInteracted = true;
-                bPersonalRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this,R.drawable.btn_primary));
+                bPersonalRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this, R.drawable.btn_primary));
                 LSContact tempContact = new LSContact();
                 tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(phoneNumber));
                 tempContact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);

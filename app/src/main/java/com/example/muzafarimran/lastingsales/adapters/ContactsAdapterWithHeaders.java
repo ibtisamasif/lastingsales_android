@@ -31,9 +31,9 @@ import java.util.List;
 import static android.view.View.GONE;
 
 /**
- * Created by lenovo 1 on 9/21/2016.
+ * Created by Ahmad Khan on 12/12/2016.
  */
-public class ContactsAdapter extends BaseAdapter implements Filterable {
+public class ContactsAdapterWithHeaders extends BaseAdapter implements Filterable {
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
@@ -52,7 +52,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     private LinearLayout noteDetails;
 
 
-    public ContactsAdapter(Context c, List<LSContact> contacts, String type) {
+    public ContactsAdapterWithHeaders(Context c, List<LSContact> contacts, String type) {
         this.mContext = c;
         this.mContacts = contacts;
         if (mContacts == null) {
@@ -81,10 +81,10 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         return ITEM_TYPES;
     }
 
-    @Override
+/*    @Override
     public int getItemViewType(int position) {
         return isSeparator(position) ? TYPE_SEPARATOR : TYPE_ITEM;
-    }
+    }*/
 
     @Override
     public int getCount() {
@@ -101,6 +101,14 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         return position;
     }
 
+/*    @Override
+    public int getItemViewType(int position) {
+        if (getItem(position) instanceof Person) {
+            return TYPE_PERSON;
+        }
+
+        return TYPE_DIVIDER;
+    }*/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -197,8 +205,8 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
             holder.moreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    PopupMenu popupMenu = new android.widget.PopupMenu(mContext, moreView);
-                    popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
+                    PopupMenu popupMenu = new PopupMenu(mContext, moreView);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             switch (menuItem.getItemId()) {
@@ -264,7 +272,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                FilterResults results = new Filter.FilterResults();
+                FilterResults results = new FilterResults();
                 //If there's nothing to filter on, return the original data for list
                 if (charSequence == null || charSequence.length() == 0) {
                     results.values = mContacts;

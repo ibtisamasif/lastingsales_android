@@ -22,16 +22,13 @@ import java.util.List;
  */
 
 public class NotesListAdapter extends BaseAdapter {
-    private int listItemLayout;
     private ArrayList<LSNote> notesList;
     private Context mContext;
-    private Activity activity;
     private LayoutInflater mInflater;
     private LinearLayout noteDetails = null;
     private Boolean expanded = false;
 
-    public NotesListAdapter(Context mContext, int layoutId, ArrayList<LSNote> notesList, Activity activity) {
-        listItemLayout = layoutId;
+    public NotesListAdapter(Context mContext,  ArrayList<LSNote> notesList) {
         this.notesList = notesList;
         this.mContext = mContext;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -61,7 +58,7 @@ public class NotesListAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = mInflater.inflate(listItemLayout, parent, false);
+            convertView = mInflater.inflate(R.layout.note_list_item, parent, false);
             viewHolder.tvContactName = (TextView) convertView.findViewById(R.id.list_item_notes_name);
             viewHolder.tvNoteTime = (TextView) convertView.findViewById(R.id.list_item_note_time);
             viewHolder.tvShortNote = (TextView) convertView.findViewById(R.id.list_item_note_small);

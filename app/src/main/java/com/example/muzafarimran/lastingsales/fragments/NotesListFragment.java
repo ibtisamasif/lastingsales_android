@@ -117,7 +117,7 @@ public class NotesListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_notes_list, container, false);
         lvAllNotes = (ListView) view.findViewById(R.id.lvAllNotesNotesFragment);
         allNotes = (ArrayList<LSNote>) LSNote.listAll(LSNote.class);
-        notesAdapter = new NotesListAdapter(getActivity(), R.layout.note_list_item, allNotes, getActivity());
+        notesAdapter = new NotesListAdapter(getActivity(), allNotes);
         lvAllNotes.setAdapter(notesAdapter);
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_add_note);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

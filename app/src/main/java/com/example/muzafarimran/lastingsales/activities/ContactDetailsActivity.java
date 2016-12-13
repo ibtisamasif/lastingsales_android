@@ -10,17 +10,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.adapters.NotesListAdapter;
 import com.example.muzafarimran.lastingsales.fragments.NotesListFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ContactDetailsActivity extends AppCompatActivity {
 
     public static final String KEY_CONTACT_ID = "contact_id";
     Toolbar toolbar;
+    TempFollowUp selectedFolloup = null;
     private String contactIdString = "0";
     private LSContact selectedContact;
     private Button addFollowupBtn;
@@ -37,12 +46,17 @@ public class ContactDetailsActivity extends AppCompatActivity {
     private ListView lvNotesList;
     private FrameLayout notesListHolderFrameLayout;
     private NotesListFragment notesListFragment;
+    private LinearLayout llFolloupNoteRow;
+    private LinearLayout llFolloupDateTimeRow;
+    private TextView tvFollowupNoteText;
+    private TextView tvFollowupDateTime;
+    private ImageButton ibEditFollowup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_details);
-        addFollowupBtn= (Button) findViewById(R.id.bAddFollowupContactDetailsScreen);
+        addFollowupBtn = (Button) findViewById(R.id.bAddFollowupContactDetailsScreen);
         tvName = (TextView) findViewById(R.id.tvNameOfUserContactDetailsScreen);
         toolbar = (Toolbar) findViewById(R.id.toolbarContactDetailsActivity);
         toolbar.setTitle("Contact Details");
@@ -58,7 +72,12 @@ public class ContactDetailsActivity extends AppCompatActivity {
         tvAddressTitle = (TextView) findViewById(R.id.tvAddressContactDetailsTitle);
         tvCompany = (TextView) findViewById(R.id.tvCompanyContactDetails);
         tvCompanyTitle = (TextView) findViewById(R.id.tvCompanyContactDetailsTitle);
-//        lvNotesList = (ListView) findViewById(R.id.lvNotesListContactDetailsScreen);
+        llFolloupNoteRow = (LinearLayout) findViewById(R.id.followupNoteRow);
+        llFolloupDateTimeRow = (LinearLayout) findViewById(R.id.followupDateTimeRow);
+        tvFollowupNoteText = (TextView) findViewById(R.id.followupNoteText);
+        tvFollowupDateTime = (TextView) findViewById(R.id.followupDateTimeText);
+        ibEditFollowup = (ImageButton) findViewById(R.id.ibEditFollowupButton);
+        lvNotesList = (ListView) findViewById(R.id.lvNoteListContactDetailsScreen);
         notesListHolderFrameLayout = (FrameLayout) findViewById(R.id.notesListHolderFrameLayout);
         Bundle extras = getIntent().getExtras();
         Long contactIDLong;
@@ -110,18 +129,59 @@ public class ContactDetailsActivity extends AppCompatActivity {
             }
 //            tvType.setText(selectedContact.getContactType());
         }
-//        lvNotesList.setAdapter();
-        if (savedInstanceState == null) {
+        ArrayList<LSNote> allNotesOfThisContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId());
+        lvNotesList.setAdapter(new NotesListAdapter(getApplicationContext(),allNotesOfThisContact));
+
+        /*if (savedInstanceState == null) {
             notesListFragment = new NotesListFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.notesListHolderFrameLayout, notesListFragment);
             transaction.commit();
         }
+        */
         addFollowupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getApplicationContext() , TagNumberAndAddFollowupActivity.class);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                Intent myIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
+                startActivity(myIntent);
+            }
+        });
+
+        ArrayList<TempFollowUp> allFollowupsOfThisContact = selectedContact.getAllFollowups();
+//        ArrayList<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getAllFollowupsFromContactId(selectedContact.getId()+"");
+        Calendar now = Calendar.getInstance();
+        if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
+            for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
+                if (oneFollowup.getDateTimeForFollowup() > now.getTimeInMillis()) {
+                    selectedFolloup = oneFollowup;
+                    break;
+                }
+            }
+        }
+        if (selectedFolloup == null) {
+            llFolloupNoteRow.setVisibility(View.GONE);
+            llFolloupDateTimeRow.setVisibility(View.GONE);
+            ibEditFollowup.setVisibility(View.GONE);
+        } else {
+            tvFollowupNoteText.setText(selectedFolloup.getNote());
+            Calendar followupTimeDate = Calendar.getInstance();
+            followupTimeDate.setTimeInMillis(selectedFolloup.getDateTimeForFollowup());
+            String dateTimeForFollowupString;
+            dateTimeForFollowupString = followupTimeDate.get(Calendar.DAY_OF_MONTH) + "-"
+                    + (followupTimeDate.get(Calendar.MONTH) + 1) + "-" + followupTimeDate.get(Calendar.YEAR)
+                    + " at " + followupTimeDate.get(Calendar.HOUR_OF_DAY) + " : " + followupTimeDate.get(Calendar.MINUTE);
+            tvFollowupDateTime.setText(dateTimeForFollowupString);
+            addFollowupBtn.setVisibility(View.GONE);
+        }
+        ibEditFollowup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, selectedFolloup.getId() + "");
                 startActivity(myIntent);
             }
         });
@@ -138,9 +198,10 @@ public class ContactDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.ic_action_edit:
-//                Intent addContactScreenIntent = new Intent(getApplicationContext(), AddContactActivity.class);
-//                addContactScreenIntent.putExtra(KEY_CONTACT_ID, contactIdString);
-//                startActivity(addContactScreenIntent);
+                Intent addContactScreenIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
+                addContactScreenIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                addContactScreenIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contactIdString);
+                startActivity(addContactScreenIntent);
                 break;
             case android.R.id.home:
                 onBackPressed();

@@ -20,6 +20,7 @@ import com.example.muzafarimran.lastingsales.Events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.ContactsAdapterWithHeaders;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.github.clans.fab.FloatingActionButton;
 
@@ -35,7 +36,7 @@ public class SalesFragment extends SearchFragment {
 
     private static final String TAG = "SalesContactFragment";
     ListView listView = null;
-    ContactsAdapter contactsAdapter;
+    ContactsAdapterWithHeaders contactsAdapter;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     private TinyBus bus;
     FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
@@ -59,7 +60,7 @@ public class SalesFragment extends SearchFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        contactsAdapter = new ContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_SALES);
+        contactsAdapter = new ContactsAdapterWithHeaders(getContext(), null, LSContact.CONTACT_TYPE_SALES);
         setHasOptionsMenu(true);
     }
 
