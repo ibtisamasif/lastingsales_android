@@ -14,6 +14,7 @@ import com.example.muzafarimran.lastingsales.providers.models.Note;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class LastingSalesDatabaseHelper extends SQLiteOpenHelper {
     //database logcat tag
     private static final String LOG = "LastingSalesDatabaseHelper";

@@ -20,6 +20,7 @@ public class TagNumberActivity extends Activity {
     private Button bCollegueRadio = null;
     private Button bPersonalRadio = null;
     private String phoneNumber = null;
+    private String name = null;
     private TextView textViewNum;
     private boolean userInteracted = false;
 
@@ -44,12 +45,19 @@ public class TagNumberActivity extends Activity {
             phoneNumber = bundle.getString(NUMBER_TO_TAG);
         }
         if (phoneNumber != null) {
-            textViewNum.setText(phoneNumber);
+                name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(this, phoneNumber);
+            if(name!=null){
+                textViewNum.setText(name);
+            }
+            else{
+                textViewNum.setText(phoneNumber);
+            }
         }
         bSalesRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 userInteracted = true;
+
                 bSalesRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this, R.drawable.btn_primary));
                 Intent intent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
                 intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
@@ -65,7 +73,7 @@ public class TagNumberActivity extends Activity {
                 userInteracted = true;
                 bCollegueRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this, R.drawable.btn_primary));
                 Intent intent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
-                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE,TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
                 intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
                 intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, phoneNumber);
                 startActivity(intent);
@@ -79,7 +87,7 @@ public class TagNumberActivity extends Activity {
                 userInteracted = true;
                 bPersonalRadio.setBackground(ContextCompat.getDrawable(TagNumberActivity.this, R.drawable.btn_primary));
                 LSContact tempContact = new LSContact();
-                tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(phoneNumber));
+                tempContact.setPhoneOne(phoneNumber);
                 tempContact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);
                 tempContact.save();
                 //Update Previous Record of User.

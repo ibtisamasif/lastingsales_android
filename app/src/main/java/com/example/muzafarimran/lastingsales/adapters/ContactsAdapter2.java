@@ -28,12 +28,14 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+
 import static android.view.View.GONE;
 
 /**
  * Created by lenovo 1 on 9/21/2016.
  */
-public class ContactsAdapter extends BaseAdapter implements Filterable {
+public class ContactsAdapter2 extends BaseAdapter implements Filterable , StickyListHeadersAdapter {
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
@@ -44,6 +46,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     private LayoutInflater mInflater;
     private List<LSContact> mContacts;
     private List<LSContact> filteredData;
+    private List<LSContact> arrangedFilteredData;
     private int prospectCount = 0;
     private int leadCount = 0;
     private CallClickListener callClickListener = null;
@@ -52,13 +55,41 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     private LinearLayout noteDetails;
 
 
-    public ContactsAdapter(Context c, List<LSContact> contacts, String type) {
+    public ContactsAdapter2(Context c, List<LSContact> contacts, String type) {
         this.mContext = c;
         this.mContacts = contacts;
         if (mContacts == null) {
             mContacts = new ArrayList<>();
         }
         this.filteredData = mContacts;
+
+        //Arranging contacts according to their Sales Status i.e Prospects,Leads...
+//        int index=0;
+//        for (int i = 0; i < filteredData.size(); i++) {
+//            if (filteredData.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
+//                arrangedFilteredData.set(index, filteredData.get(i));
+//                index++;
+//            }
+//        }
+//        for (int i = 0; i < filteredData.size(); i++) {
+//            if (filteredData.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_LEAD)) {
+//                arrangedFilteredData.set(index, filteredData.get(i));
+//                index++;
+//            }
+//        }
+//        for (int i = 0; i < filteredData.size(); i++) {
+//            if (filteredData.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_LOST)) {
+//                arrangedFilteredData.set(index, filteredData.get(i));
+//                index++;
+//            }
+//        }
+//        for (int i = 0; i < filteredData.size(); i++) {
+//            if (filteredData.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_WON)) {
+//                arrangedFilteredData.set(index, filteredData.get(i));
+//                index++;
+//            }
+//        }
+
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.callClickListener = new CallClickListener(c);
         this.contactType = type;
@@ -101,33 +132,10 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         return position;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         final LSContact contact = (LSContact) getItem(position);
-        if (isSeparator(position)) {
-            //Toast.makeText(mContext,"sup", Toast.LENGTH_LONG ).show();
-            separatorViewHolder separatorviewHolder = null;
-            if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.section_separator_two_text_views, parent, false);
-                separatorviewHolder = new separatorViewHolder();
-                separatorviewHolder.salesType = (TextView) convertView.findViewById(R.id.section_separator_first_text);
-                separatorviewHolder.salesTypeCount = (TextView) convertView.findViewById(R.id.section_separator_second_text);
-                convertView.setTag(separatorviewHolder);
-            } else {
-                separatorviewHolder = (separatorViewHolder) convertView.getTag();
-            }
-            separatorviewHolder.salesType.setText(contact.getContactName());
-            switch (contact.getContactName()) {
-                case "Prospects":
-                    separatorviewHolder.salesTypeCount.setText(Integer.toString(this.prospectCount));
-                    break;
-                case "Leads":
-                    separatorviewHolder.salesTypeCount.setText(Integer.toString(this.leadCount));
-                    break;
-            }
-        } else {
             ViewHolder holder = null;
             if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.contact_row_view, parent, false);
@@ -253,7 +261,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 //            this.showContactDetaislsListener = new showContactDetaislsListener(contact);
 //            showContactDetaislsListener temp= new showContactDetaislsListener(contact);
 //            convertView.setOnClickListener(temp);
-        }
         return convertView;
     }
     // for searching
@@ -313,9 +320,73 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         this.contactType = contactType;
     }
 
+
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        HeaderViewHolder holder;
+
+        if (convertView == null) {
+            holder = new HeaderViewHolder();
+            convertView = mInflater.inflate(R.layout.section_separator_two_text_views, parent, false);
+            holder.saleType = (TextView) convertView.findViewById(R.id.section_separator_first_text);
+            holder.saleTypeCount = (TextView) convertView.findViewById(R.id.section_separator_second_text);
+            convertView.setTag(holder);
+        } else {
+            holder = (HeaderViewHolder) convertView.getTag();
+        }
+
+        //TODO
+        // set header text
+        if(getHeaderId(position)==0){
+            holder.saleType.setText("Prospects");
+//            holder.saleTypeCount.setText("0");
+        }
+        else if(getHeaderId(position)==1){
+            holder.saleType.setText("Leads");
+//            holder.saleTypeCount.setText("0");
+        }
+        else if(getHeaderId(position)==2){
+            holder.saleType.setText("Closed Lost");
+//            holder.saleTypeCount.setText("0");
+        }
+        else{
+            holder.saleType.setText("Closed Won");
+//            holder.saleTypeCount.setText("0");
+        }
+
+//        CharSequence headerChar = filteredData.get(position).getContactSalesStatus();
+//        holder.category.setText(headerChar);
+
+        return convertView;
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+//        return filteredData.get(position).getContactName().subSequence(0,1).charAt(0);
+
+        if(filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)){
+            return 0;
+        }else if(filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_LEAD)){
+            return 1;
+        }
+        else if(filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_LOST)){
+            return 2;
+        }
+        else if(filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_WON)){
+            return 3;
+        }
+        return -1;
+    }
+
     /*
     * Hold references to sub views
     * */
+
+    static class HeaderViewHolder {
+        TextView saleType;
+        TextView saleTypeCount;
+    }
+
     static class ViewHolder {
         TextView name;
         TextView number;
@@ -334,10 +405,10 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     /*
     * Hold references to separator tab
     * */
-    static class separatorViewHolder {
-        TextView salesType;
-        TextView salesTypeCount;
-    }
+//    static class separatorViewHolder {
+//        TextView salesType;
+//        TextView salesTypeCount;
+//    }
 
     /*
     * event handler for click on name

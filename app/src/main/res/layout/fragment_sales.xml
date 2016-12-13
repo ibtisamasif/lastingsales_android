@@ -14,14 +14,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ListView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView
             android:id="@+id/sales_contacts_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            >
-        </ListView>
+            android:clipToPadding="false"
+            android:drawSelectorOnTop="true"
+            android:padding="16dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:fastScrollEnabled="true"
+            android:overScrollMode="never"
+            />
     </LinearLayout>
 
     <com.github.clans.fab.FloatingActionMenu
