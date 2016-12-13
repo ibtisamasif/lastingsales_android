@@ -10,9 +10,8 @@ import com.example.muzafarimran.lastingsales.Events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.Service.PopupUIService;
-import com.example.muzafarimran.lastingsales.Utils.FollowupNotification;
+import com.example.muzafarimran.lastingsales.Utils.CallEndNotification;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.activities.TagNumberActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -171,18 +170,23 @@ public class CallsStatesReceiver extends CallReceiver {
             if(!tempContact.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
                 // If caller is already Tagged and is not Business contact show NOTIFICATION
                 String name = tempContact.getContactName();
-                mNotificationManager = (NotificationManager) ctx.getSystemService(Context
-                        .NOTIFICATION_SERVICE);
-                mNotificationManager.notify(FollowupNotification.NOTIFICATION_ID, FollowupNotification.createNotification(ctx, name));
+                mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createNotification(ctx, name));
             }
         }
         else {
             // If caller is not tagged i.e not stored in app then show PopUp
-            intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-            Intent myIntent = new Intent(ctx, TagNumberActivity.class);
-            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            myIntent.putExtra(TagNumberActivity.NUMBER_TO_TAG, intlNumber);
-            ctx.startActivity(myIntent);
+            //PopUP
+//            intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+//            Intent myIntent = new Intent(ctx, TagNumberActivity.class);
+//            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            myIntent.putExtra(TagNumberActivity.NUMBER_TO_TAG, intlNumber);
+//            ctx.startActivity(myIntent);
+
+            //Notification
+            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx , intlNumber));
+            }
+
         }
     }
-}

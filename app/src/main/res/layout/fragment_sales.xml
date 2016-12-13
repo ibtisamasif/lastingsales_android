@@ -40,14 +40,14 @@
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
-        fab:menu_colorNormal="@color/colorAccent"
-        fab:menu_colorPressed="@color/colorPrimary"
+        fab:menu_colorNormal="@color/fab_contact_menu_normal"
+        fab:menu_colorPressed="@color/fab_contact_menu_pressed"
         fab:menu_colorRipple="#99d4d4d4"
         fab:menu_fab_label="Tag Contact"
         fab:menu_fab_size="normal"
         fab:menu_icon="@drawable/fab_add"
-        fab:menu_labels_colorNormal="#333"
-        fab:menu_labels_colorPressed="#444"
+        fab:menu_labels_colorNormal="@color/fab_contact_menu_text_background_normal"
+        fab:menu_labels_colorPressed="@color/fab_contact_menu_text_background_pressed"
         fab:menu_labels_colorRipple="#66efecec"
         fab:menu_labels_cornerRadius="3dp"
         fab:menu_labels_ellipsize="none"
@@ -62,7 +62,7 @@
         fab:menu_labels_textColor="#f2f1f1"
         fab:menu_labels_textSize="15sp"
         fab:menu_openDirection="up"
-        fab:menu_shadowColor="#66aff198"
+        fab:menu_shadowColor="@color/darkGray"
         fab:menu_shadowRadius="4dp"
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="4dp"
@@ -75,8 +75,8 @@
             android:src="@android:drawable/ic_input_add"
             fab:fab_label="Add New"
             fab:fab_size="mini"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_colorPressed="@color/colorPrimary"
+            app:fab_colorNormal="@color/fab_add_contact_normal"
+            app:fab_colorPressed="@color/fab_add_contact_pressed"
             />
 
         <com.github.clans.fab.FloatingActionButton
@@ -86,8 +86,8 @@
             android:src="@drawable/ic_action_action_search"
             fab:fab_label="Import from Phonebook"
             fab:fab_size="mini"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_colorPressed="@color/colorPrimary"
+            app:fab_colorNormal="@color/fab_import_contact_normal"
+            app:fab_colorPressed="@color/fab_import_contact_pressed"
             />
 
     </com.github.clans.fab.FloatingActionMenu>

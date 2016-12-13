@@ -14,6 +14,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
+@Deprecated
 public class TagNumberActivity extends Activity {
     public static final String NUMBER_TO_TAG = "phone_number";
     private Button bSalesRadio = null;

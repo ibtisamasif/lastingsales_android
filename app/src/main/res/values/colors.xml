@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryGreen">#00bab5</color>
-    <color name="colorPrimaryGreenDark">#FF03938F</color>
 
-    <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#d0898989</color>
-    <color name="action_bar_background_color">@color/colorPrimaryDark</color>
-
-    <color name="tab_indicator_color">#5c82e5</color>
+    <color name="lightBlue">#5c82e5</color>
+    <color name="darkBlue">#4f41bc</color>
     <color name="colorAccent">#195351</color>
     <color name="lightGray">#F0F0F0</color>
+    <color name="darkGray">#d0898989</color>
     <color name="white">#FFFFFF</color>
     <color name="half_white">#bcffffff</color>
     <color name="black">#000000</color>
@@ -18,12 +14,25 @@
     <color name="tag_contact_background">#ffffff</color>
     <color name="tag_contact_text_color">#333333</color>
 
-    <color name="button_state_normal">#5c82e5</color>
-    <color name="button_state_highlighted">#4f41bc</color>
-    <color name="button_state_pressed">#4f41bc</color>
-    <color name="button_state_focused">#4f41bc</color>
+    <color name="colorPrimaryGreen">#00bab5</color>
+    <color name="colorPrimaryGreenDark">#FF03938F</color>
 
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#d0898989</color>
 
-
+    <color name="action_bar_background_color">@color/colorPrimaryDark</color>
+    <color name="tab_indicator_color">@color/lightBlue</color>
+    <color name="fab_contact_menu_normal">@color/lightBlue</color>
+    <color name="fab_contact_menu_pressed">@color/darkBlue</color>
+    <color name="fab_contact_menu_text_background_normal">#333</color>
+    <color name="fab_contact_menu_text_background_pressed">#444</color>
+    <color name="fab_add_contact_normal">@color/lightBlue</color>
+    <color name="fab_add_contact_pressed">@color/darkBlue</color>
+    <color name="fab_import_contact_normal">@color/lightBlue</color>
+    <color name="fab_import_contact_pressed">@color/darkBlue</color>
+    <color name="button_state_normal">@color/lightBlue</color>
+    <color name="button_state_highlighted">@color/darkBlue</color>
+    <color name="button_state_pressed">@color/darkBlue</color>
+    <color name="button_state_focused">@color/darkBlue</color>
 
 </resources>

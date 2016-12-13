@@ -19,6 +19,7 @@ import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -272,8 +273,9 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         public void onClick(View v) {
             String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
             Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNum);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
             mContext.startActivity(myIntent);
         }
     }
