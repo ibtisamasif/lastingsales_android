@@ -5,128 +5,129 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by ibtisam on 12/14/2016.
  */
 
-public class NotesListByContactAdapter extends BaseAdapter{
-
-    private ArrayList<LSNote> notesList;
+public class NotesListByContactAdapter extends BaseAdapter {
+    private final static int TYPE_SEPARATOR = 0;
+    private final static int TYPE_ITEM = 1;
+    private final static int ITEM_TYPES = 2;
+    View contact_details = null;
+    boolean deleteFlow = false;
+    Boolean expanded = false;
     private Context mContext;
     private LayoutInflater mInflater;
-    private LinearLayout noteDetails = null;
-    private Boolean expanded = false;
+    private List<LSContact> mContacts;
+    private List<LSContact> filteredData;
+    private int prospectCount = 0;
+    private int leadCount = 0;
+    private CallClickListener callClickListener = null;
 
-    public NotesListByContactAdapter(Context mContext,  ArrayList<LSNote> notesList) {
-        this.notesList = notesList;
-        this.mContext = mContext;
+
+    public NotesListByContactAdapter(Context c, List<LSContact> contacts) {
+        this.mContext = c;
+        this.mContacts = contacts;
+        if (mContacts == null) {
+            mContacts = new ArrayList<>();
+        }
+        this.filteredData = mContacts;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.callClickListener = new CallClickListener(c);
+        //TODO: correct the counting mechanism
+//        this.prospectCount = contacts.indexOf(new LSContact("Leads", null, "separator", null, null, null, null, null, null)) - 1;
+        this.leadCount = mContacts.size() - this.prospectCount - 2;
+    }
+
+    public boolean isDeleteFlow() {
+        return deleteFlow;
+    }
+
+    public void setDeleteFlow(boolean deleteFlow) {
+        this.deleteFlow = deleteFlow;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return ITEM_TYPES;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return isSeparator(position) ? TYPE_SEPARATOR : TYPE_ITEM;
     }
 
     @Override
     public int getCount() {
-        return notesList.size();
+        return this.filteredData.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return notesList.get(i);
+    public Object getItem(int position) {
+        return this.filteredData.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
+    public long getItemId(int position) {
+        return position;
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data tvContactName for this position
-        LSNote oneNote = (LSNote) getItem(position);
-        LSContact oneContact = oneNote.getContactOfNote();
-        // Check if an existing view is being reused, otherwise inflate the view
-        NotesListByContactAdapter.ViewHolder viewHolder;
+
+        final LSContact contact = (LSContact) getItem(position);
+        ViewHolder holder = null;
         if (convertView == null) {
-            viewHolder = new NotesListByContactAdapter.ViewHolder();
-            convertView = mInflater.inflate(R.layout.note_list_item, parent, false);
-            viewHolder.tvContactName = (TextView) convertView.findViewById(R.id.list_item_notes_name);
-            viewHolder.tvNoteTime = (TextView) convertView.findViewById(R.id.list_item_note_time);
-            viewHolder.tvShortNote = (TextView) convertView.findViewById(R.id.list_item_note_small);
-            viewHolder.tvNoteDate = (TextView) convertView.findViewById(R.id.list_item_note_date);
-            viewHolder.tvNoteDetails = (TextView) convertView.findViewById(R.id.tv_note_details);
-            viewHolder.llNotesDetailsLayout = (LinearLayout) convertView.findViewById(R.id.note_details_layout);
-            viewHolder.llNotesDetailsLayout.setVisibility(View.GONE);
-            convertView.setOnClickListener(new NotesListByContactAdapter.ShowDetailedNoteListener(oneNote, viewHolder.llNotesDetailsLayout));
-            convertView.setTag(viewHolder); // view lookup cache stored in tag
+            convertView = mInflater.inflate(R.layout.note_by_contacts_item, parent, false);
+            holder = new ViewHolder();
+            holder.name = (TextView) convertView.findViewById(R.id.contact_name);
+            holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
+            holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+            convertView.setTag(holder);
+            holder.call_icon.setOnClickListener(this.callClickListener);
         } else {
-            viewHolder = (NotesListByContactAdapter.ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
-        Calendar cl = Calendar.getInstance();
-        String date = "" + cl.get(Calendar.DAY_OF_MONTH) + ":" + cl.get(Calendar.MONTH) + ":" + cl.get(Calendar.YEAR);
-        String time = "" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE);
-        // Populate the data into the template view using the data object
-        viewHolder.tvContactName.setText(oneContact.getContactName());
-        viewHolder.tvShortNote.setText(getShortenedString(oneNote.getNoteText()));
-        viewHolder.tvNoteDetails.setText(oneNote.getNoteText());
-        viewHolder.tvNoteDate.setText(date);
-        viewHolder.tvNoteTime.setText(time);
-        // Return the completed view to render on screen
+
+        holder.name.setText(contact.getContactName());
+        holder.number.setText(contact.getPhoneOne());
+        holder.call_icon.setTag(mContacts.get(position).getPhoneOne());
+
         return convertView;
     }
 
-    public void setList(List<LSNote> allNotes) {
-        notesList = (ArrayList<LSNote>) allNotes;
+    // for searching
+    //TODO this method needs to be moved from here
+
+
+    public void setList(List<LSContact> contacts) {
+        mContacts = contacts;
+        filteredData = contacts;
         notifyDataSetChanged();
-
     }
 
-    private String getShortenedString(String inputString) {
-        if (inputString.length() > 30) {
-            return inputString.substring(0, 30) + "...";
-        } else {
-            return inputString;
-        }
+    private boolean isSeparator(int position) {
+        return filteredData.get(position).getContactType() == "separator";
     }
 
-    private static class ViewHolder {
-        TextView tvContactName;
-        TextView tvShortNote;
-        TextView tvNoteDate;
-        TextView tvNoteTime;
-        TextView tvNoteDetails;
-        LinearLayout llNotesDetailsLayout;
-    }
-
-    private class ShowDetailedNoteListener implements View.OnClickListener {
-        LSNote note;
-        private LinearLayout detailsLayout;
-
-        public ShowDetailedNoteListener(LSNote note, LinearLayout detailsLayout) {
-            this.note = note;
-            this.detailsLayout = detailsLayout;
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (expanded && noteDetails != null) {
-                noteDetails.setVisibility(View.GONE);
-                noteDetails = null;
-                expanded = false;
-            } else {
-                noteDetails = detailsLayout;
-                detailsLayout.setVisibility(View.VISIBLE);
-                expanded = true;
-            }
-        }
+    /*
+    * Hold references to sub views
+    * */
+    static class ViewHolder {
+        TextView name;
+        TextView number;
+        ImageView call_icon;
     }
 }

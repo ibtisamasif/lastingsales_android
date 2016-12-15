@@ -72,34 +72,6 @@ public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyL
             mContacts = new ArrayList<>();
         }
         this.filteredData = mContacts;
-
-        //Arranging contacts according to their Sales Status i.e Prospects,Leads...
-//        int index=0;
-//        for (int i = 0; i < filteredData.size(); i++) {
-//            if (filteredData.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
-//                arrangedFilteredData.set(index, filteredData.get(i));
-//                index++;
-//            }
-//        }
-//        for (int i = 0; i < filteredData.size(); i++) {
-//            if (filteredData.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_LEAD)) {
-//                arrangedFilteredData.set(index, filteredData.get(i));
-//                index++;
-//            }
-//        }
-//        for (int i = 0; i < filteredData.size(); i++) {
-//            if (filteredData.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_LOST)) {
-//                arrangedFilteredData.set(index, filteredData.get(i));
-//                index++;
-//            }
-//        }
-//        for (int i = 0; i < filteredData.size(); i++) {
-//            if (filteredData.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_WON)) {
-//                arrangedFilteredData.set(index, filteredData.get(i));
-//                index++;
-//            }
-//        }
-
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.callClickListener = new CallClickListener(c);
         this.contactType = type;

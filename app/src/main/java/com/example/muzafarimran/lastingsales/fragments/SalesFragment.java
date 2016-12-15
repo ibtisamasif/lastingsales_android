@@ -241,7 +241,7 @@ public class SalesFragment extends SearchFragment {
 
         return arrangedContacts;
     }
-
+    
     /*
     * event handler for click on add contact cta
     * */

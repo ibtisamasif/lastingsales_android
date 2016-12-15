@@ -176,7 +176,7 @@ public class CallsStatesReceiver extends CallReceiver {
             }
         }
         else {
-            // If caller is not tagged i.e not stored in app then show PopUp
+            // If caller is UNTAGGED i.e not stored in app then show PopUp
             //PopUP
 //            intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //            Intent myIntent = new Intent(ctx, TagNumberActivity.class);

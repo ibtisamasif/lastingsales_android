@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -114,6 +115,15 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         bSalesRadio = (Button) findViewById(R.id.bSalesRadio);
         bColleagueRadio = (Button) findViewById(R.id.bCollegueRadio);
         llContactDetailsFollowupScreen = (LinearLayout) findViewById(R.id.llContactDetailsAddFollowupScreen);
+
+        //Added by ibtisam
+        int notificationId = getIntent().getIntExtra("notificationId" , 1);
+        if(notificationId!=0){
+            NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.cancel(notificationId);
+        }
+        //Added by ibtisam
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             launchMode = bundle.getString(ACTIVITY_LAUNCH_MODE);
