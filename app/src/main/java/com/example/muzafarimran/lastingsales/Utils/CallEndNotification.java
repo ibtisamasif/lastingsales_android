@@ -8,10 +8,10 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.MainActivity;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.receivers.FollowupNotiCancelBtnReceiver;
+import com.example.muzafarimran.lastingsales.receivers.TagNonBusiness;
 
 /**
  * Created by ibtisam on 12/6/2016.
@@ -19,18 +19,19 @@ import com.example.muzafarimran.lastingsales.receivers.FollowupNotiCancelBtnRece
 
 public class CallEndNotification {
     public static final int NOTIFICATION_ID = 1;
-    public static Notification createNotification(Context ctx, String name) {
+    public static Notification createNotification(Context ctx, String name , Long contact_id) {
         //Create an Intent for the BroadcastReceiver
         Intent cancelIntent = new Intent(ctx, FollowupNotiCancelBtnReceiver.class);
         cancelIntent.putExtra("notificationId", NOTIFICATION_ID);
-        //Create the PendingIntent
         PendingIntent cancelpIntent = PendingIntent.getBroadcast(ctx, 0, cancelIntent, 0);
         Intent intent = new Intent(ctx, TagNumberAndAddFollowupActivity.class);
-        intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE,TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+        intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE,TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
+        intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID , contact_id);
         //TODO New launch Mode to be created
         PendingIntent pIntent = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intent, 0);
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)
-                .setSmallIcon(R.drawable.follow_ups_today_icon)
+                .setSmallIcon(R.drawable.menu_icon_home_selected)
+                .setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_menu_icon_home_large))
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentTitle("Lasting Sales")
                 .addAction(R.drawable.cancel, "Cancel", cancelpIntent)
@@ -49,20 +50,21 @@ public class CallEndNotification {
         if (intlNumber.equals("") || intlNumber == null){
             intlNumber = "0";
         }
+
         //MainIntent
-        Intent homeIntent = new Intent(ctx, MainActivity.class);
+        Intent homeIntent = new Intent(ctx, CallEndNotification.class);
         PendingIntent contentIntent = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), homeIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
         //NonBusinessIntent
-        Intent nonBusinessIntent = new Intent(ctx, FollowupNotiCancelBtnReceiver.class);
-        //TODO
-        nonBusinessIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-        nonBusinessIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
-        PendingIntent pIntentNonBusiness = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), nonBusinessIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent nonBusinessIntent = new Intent(ctx, TagNonBusiness.class);
+        nonBusinessIntent.putExtra(TagNonBusiness.TAG_NUMBER, intlNumber);
+        nonBusinessIntent.putExtra("notificationId", NOTIFICATION_ID);
+        PendingIntent pIntentNonBusiness = PendingIntent.getBroadcast(ctx, 0, nonBusinessIntent, 0);
 
         //CollegueIntent
         Intent collegueIntent = new Intent(ctx, TagNumberAndAddFollowupActivity.class);
         collegueIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
-        collegueIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+        collegueIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
         collegueIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
         PendingIntent pIntentCollegue = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), collegueIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -76,10 +78,10 @@ public class CallEndNotification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             Notification.Builder builder = new Notification.Builder(ctx);
             Notification notification;
-            notification = builder.setContentIntent(contentIntent)
+            notification = builder.setContentIntent(pIntentSales)
                     .setSmallIcon(R.drawable.menu_icon_home_selected)
                     .setPriority(Notification.PRIORITY_MAX)
-                    .setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.menu_icon_home_selected))
+                    .setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_menu_icon_home_large))
                     .setWhen(System.currentTimeMillis())
                     .setContentTitle(number_or_name)
                     .setTicker("Lasting Sales")

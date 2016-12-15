@@ -1,35 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="@string/navigation_drawer_title_calls">
-        <menu>
-            <item
-                android:id="@+id/nav_item_incoming_call"
-                android:title="@string/navigation_drawer_incomming"/>
-            <item
-                android:id="@+id/nav_item_outgoing_call"
-                android:title="@string/navigation_drawer_outgoing"/>
+    <group android:id="@+id/calls">
 
-        </menu>
-    </item>
+        <item
+            android:id="@+id/nav_item_incoming_call"
+            android:title="@string/navigation_drawer_incoming"
+            android:icon="@drawable/menu_icon_incoming_second_level_selected"
+            />
+        <item
+            android:id="@+id/nav_item_outgoing_call"
+            android:title="@string/navigation_drawer_outgoing"
+            android:icon="@drawable/menu_icon_outgoing_second_level"/>
 
-    <item android:title="@string/navigation_drawer_title_contacts">
-        <menu>
-            <item
-                android:id="@+id/nav_item_colleague_contacts"
-                android:title="@string/navigation_drawer_colleague"/>
-            <item
-                android:id="@+id/nav_item_personal_contacts"
-                android:title="@string/navigation_drawer_non_business"/>
+    </group>
 
-        </menu>
-    </item>
-    <item android:title="Others">
-        <menu>
-            <item
-                android:id="@+id/nav_item_followups"
-                android:title="Followups"/>
-        </menu>
-    </item>
+    <group android:id="@+id/contacts">
+
+        <item
+            android:id="@+id/nav_item_colleague_contacts"
+            android:title="@string/navigation_drawer_colleague"
+            android:icon="@drawable/menu_icon_incoming_second_level_selected"/>
+        <item
+            android:id="@+id/nav_item_personal_contacts"
+            android:title="@string/navigation_drawer_non_business"
+            android:icon="@drawable/menu_icon_incoming_second_level"/>
+
+    </group>
+
+    <group android:id="@+id/followups">
+
+        <item
+            android:id="@+id/nav_item_followups"
+            android:title="Followups"
+            android:icon="@drawable/follow_ups_today_icon"/>
+
+    </group>
+
+    <group android:id="@+id/notes">
+
+        <item
+            android:id="@+id/nav_item_notes"
+            android:title="Notes"
+            android:icon="@drawable/add_contact_notes_field_icon"/>
+
+    </group>
 
 </menu>

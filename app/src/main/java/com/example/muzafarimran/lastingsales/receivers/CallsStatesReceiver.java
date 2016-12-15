@@ -170,8 +170,9 @@ public class CallsStatesReceiver extends CallReceiver {
             if(!tempContact.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
                 // If caller is already Tagged and is not Business contact show NOTIFICATION
                 String name = tempContact.getContactName();
+                Long contact_id = tempContact.getId();
                 mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createNotification(ctx, name));
+                mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createNotification(ctx, name , contact_id));
             }
         }
         else {
