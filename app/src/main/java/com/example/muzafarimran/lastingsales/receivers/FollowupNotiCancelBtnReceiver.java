@@ -10,12 +10,11 @@ import android.content.Intent;
  */
 
 public class FollowupNotiCancelBtnReceiver extends BroadcastReceiver{
-    public static final String NUMBER_TO_TAG = "phone_number";
+    public static final String TAG = "TAG";
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            System.out.println("CalledReceiver");
             int notificationId = intent.getIntExtra("notificationId", 0);
-            // if you want cancel notification
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             manager.cancel(notificationId);
     }
