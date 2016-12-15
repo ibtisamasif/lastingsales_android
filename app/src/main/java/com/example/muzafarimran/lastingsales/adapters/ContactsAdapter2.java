@@ -271,9 +271,11 @@ public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyL
 //            convertView.setOnClickListener(temp);
         return convertView;
     }
-    // for searching
-    //TODO this method needs to be moved from here
 
+    public void disableDeleteMode(){
+        deleteFlow = false;
+        setList(LSContact.getContactsByType(contactType));
+    }
     @Override
     public Filter getFilter() {
         return new Filter() {

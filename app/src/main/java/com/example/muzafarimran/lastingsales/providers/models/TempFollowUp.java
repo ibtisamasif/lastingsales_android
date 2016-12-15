@@ -2,32 +2,30 @@ package com.example.muzafarimran.lastingsales.providers.models;
 
 import com.orm.SugarRecord;
 
-import java.util.ArrayList;
-
 /**
  * Created by ahmad on 01-Nov-16.
  */
 
 public class TempFollowUp extends SugarRecord {
-    private String note;
+    private String title;
     private Long dateTimeForFollowup;
     private LSContact contact;
 
     public TempFollowUp() {
     }
 
-    public TempFollowUp(String note, Long dateTimeForFollowup, LSContact contactID) {
-        this.note = note;
+    public TempFollowUp(String title, Long dateTimeForFollowup, LSContact contactID) {
+        this.title = title;
         this.dateTimeForFollowup = dateTimeForFollowup;
         this.contact = contactID;
     }
 
-    public String getNote() {
-        return note;
+    public String getTitle() {
+        return title;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Long getDateTimeForFollowup() {

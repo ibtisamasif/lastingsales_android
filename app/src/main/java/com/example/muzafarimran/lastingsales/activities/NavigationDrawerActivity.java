@@ -109,6 +109,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 .setShowSeed(true)
                 .buildService();
         callRecord.startCallRecordService();
+
     }
 
     @Override

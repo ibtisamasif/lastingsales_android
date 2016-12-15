@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -70,8 +71,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
     private RelativeLayout addFollowupActionLayout;
     private LinearLayout noteContainerLayout;
     private LinearLayout followupContainerLayout;
+    private LinearLayout llContactDetailsFollowupScreen;
     private LayoutInflater inflater;
     private EditText etNoteText;
+    private EditText etFollowupTitleText;
     private Button bOneWeek;
     private Button bThreeDays;
     private Button bTomorrow;
@@ -100,7 +103,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         bSave = (Button) findViewById(R.id.bSaveFollowupPopup);
         bSalesRadio = (Button) findViewById(R.id.bSalesRadio);
         bColleagueRadio = (Button) findViewById(R.id.bCollegueRadio);
-
+        llContactDetailsFollowupScreen = (LinearLayout) findViewById(R.id.llContactDetailsAddFollowupScreen);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             launchMode = bundle.getString(ACTIVITY_LAUNCH_MODE);
@@ -142,6 +145,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
 //        If launch mode is to edit Folloup then contact id and followup id is gotten out and
 //        their objects are initialised so the data can be used,
         else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
+            llContactDetailsFollowupScreen.setVisibility(View.GONE);
             editingMode = true;
             String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
             if (id != null && !id.equals("")) {
@@ -153,16 +157,20 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
             }
             selectedContact = LSContact.findById(LSContact.class, contactIdLong);
             selectedFollowup = TempFollowUp.findById(TempFollowUp.class, followupIdLong);
-            selectedContactType = selectedContact.getContactType();
-            preSelectedContactType = selectedContactType;
-            etContactName.setText(selectedContact.getContactName());
-            etContactPhone.setText(selectedContact.getPhoneOne());
-            showAddNoteLayout();
             showAddFollowupLayout();
             setDateTimeFromMiliseconds(selectedFollowup.getDateTimeForFollowup());
-            if (etNoteText != null) {
-                etNoteText.setText(selectedFollowup.getNote());
+            if (etFollowupTitleText != null) {
+                etFollowupTitleText.setText(selectedFollowup.getTitle());
             }
+        } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_FOLLOWUP)) {
+            llContactDetailsFollowupScreen.setVisibility(View.GONE);
+            editingMode = false;
+            String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
+            if (id != null && !id.equals("")) {
+                contactIdLong = Long.parseLong(id);
+            }
+            selectedContact = LSContact.findById(LSContact.class, contactIdLong);
+            showAddFollowupLayout();
         } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
             editingMode = false;
         }
@@ -197,6 +205,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation && !editingMode) {
+                        String titleText = null;
                         String noteText = null;
                         TempFollowUp tempFollowUp = new TempFollowUp();
                         LSContact tempContact = new LSContact();
@@ -205,12 +214,20 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
                         tempContact.save();
-//  First checking if note is enabled so note can be gotten and passed in followup
                         if (etNoteText != null) {
                             noteText = etNoteText.getText().toString();
-                            tempFollowUp.setNote(noteText);
+                            if (!noteText.isEmpty() && !noteText.equals("")) {
+                                LSNote tempNote = new LSNote();
+                                tempNote.setNoteText(noteText);
+                                tempNote.setContactOfNote(selectedContact);
+                                tempNote.save();
+                            }
+                        }
+                        if (etFollowupTitleText != null) {
+                            titleText = etFollowupTitleText.getText().toString();
+                            tempFollowUp.setTitle(titleText);
                         } else {
-                            noteText = "Empty";
+                            titleText = "Empty";
                         }
                         if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
                             Calendar dateTimeForFollowup = Calendar.getInstance();
@@ -220,7 +237,6 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                             dateTimeForFollowup.set(Calendar.MINUTE, minute);
                             tempFollowUp.setContact(tempContact);
-                            tempFollowUp.setNote(noteText);
                             tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
                             tempFollowUp.save();
                             setAlarm(getApplicationContext(), tempFollowUp);
@@ -242,6 +258,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation && !editingMode) {
+                        String titleText = null;
                         String noteText = null;
                         TempFollowUp tempFollowUp = new TempFollowUp();
                         LSContact tempContact = new LSContact();
@@ -250,12 +267,20 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
                         tempContact.save();
-//  First checking if note is enabled so note can be gotten and passed in followup
                         if (etNoteText != null) {
                             noteText = etNoteText.getText().toString();
-                            tempFollowUp.setNote(noteText);
+                            if (!noteText.isEmpty() && !noteText.equals("")) {
+                                LSNote tempNote = new LSNote();
+                                tempNote.setNoteText(noteText);
+                                tempNote.setContactOfNote(selectedContact);
+                                tempNote.save();
+                            }
+                        }
+                        if (etFollowupTitleText != null) {
+                            titleText = etFollowupTitleText.getText().toString();
+                            tempFollowUp.setTitle(titleText);
                         } else {
-                            noteText = "Empty";
+                            titleText = "Empty";
                         }
                         if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
                             Calendar dateTimeForFollowup = Calendar.getInstance();
@@ -265,7 +290,6 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                             dateTimeForFollowup.set(Calendar.MINUTE, minute);
                             tempFollowUp.setContact(tempContact);
-                            tempFollowUp.setNote(noteText);
                             tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
                             tempFollowUp.save();
                             setAlarm(getApplicationContext(), tempFollowUp);
@@ -287,6 +311,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation && !editingMode) {
+                        String titleText = null;
                         String noteText = null;
                         TempFollowUp tempFollowUp = new TempFollowUp();
                         LSContact tempContact = new LSContact();
@@ -295,12 +320,20 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
                         tempContact.save();
-//  First checking if note is enabled so note can be gotten and passed in followup
                         if (etNoteText != null) {
                             noteText = etNoteText.getText().toString();
-                            tempFollowUp.setNote(noteText);
+                            if (!noteText.isEmpty() && !noteText.equals("")) {
+                                LSNote tempNote = new LSNote();
+                                tempNote.setNoteText(noteText);
+                                tempNote.setContactOfNote(selectedContact);
+                                tempNote.save();
+                            }
+                        }
+                        if (etFollowupTitleText != null) {
+                            titleText = etFollowupTitleText.getText().toString();
+                            tempFollowUp.setTitle(titleText);
                         } else {
-                            noteText = "Empty";
+                            titleText = "Empty";
                         }
                         if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
                             Calendar dateTimeForFollowup = Calendar.getInstance();
@@ -310,7 +343,6 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                             dateTimeForFollowup.set(Calendar.MINUTE, minute);
                             tempFollowUp.setContact(tempContact);
-                            tempFollowUp.setNote(noteText);
                             tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
                             tempFollowUp.save();
                             setAlarm(getApplicationContext(), tempFollowUp);
@@ -332,6 +364,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation && editingMode) {
+                        String titleText = null;
                         String noteText = null;
                         TempFollowUp tempFollowUp = new TempFollowUp();
                         LSContact tempContact = selectedContact;
@@ -340,12 +373,20 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
                         tempContact.save();
-//  First checking if note is enabled so note can be gotten and passed in followup
                         if (etNoteText != null) {
                             noteText = etNoteText.getText().toString();
-                            tempFollowUp.setNote(noteText);
+                            if (!noteText.isEmpty() && !noteText.equals("")) {
+                                LSNote tempNote = new LSNote();
+                                tempNote.setNoteText(noteText);
+                                tempNote.setContactOfNote(selectedContact);
+                                tempNote.save();
+                            }
+                        }
+                        if (etFollowupTitleText != null) {
+                            titleText = etFollowupTitleText.getText().toString();
+                            tempFollowUp.setTitle(titleText);
                         } else {
-                            noteText = "Empty";
+                            titleText = "Empty";
                         }
                         if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
                             Calendar dateTimeForFollowup = Calendar.getInstance();
@@ -354,9 +395,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                             dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                             dateTimeForFollowup.set(Calendar.MINUTE, minute);
-//                TempFollowUp tempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
                             tempFollowUp.setContact(tempContact);
-                            tempFollowUp.setNote(noteText);
                             tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
                             tempFollowUp.save();
                             setAlarm(getApplicationContext(), tempFollowUp);
@@ -364,51 +403,77 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         finish();
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
-                    etContactName.setError(null);
-                    etContactPhone.setError(null);
-                    boolean validation = true;
-                    String contactName = etContactName.getText().toString();
-                    String contactPhone = etContactPhone.getText().toString();
-                    if (contactName.equals("") || contactName.length() < 3) {
-                        validation = false;
-                        etContactName.setError("Invalid Name!");
-                    }
-                    if (contactPhone.equals("") || contactPhone.length() < 3) {
-                        validation = false;
-                        etContactPhone.setError("Invalid Number!");
-                    }
-                    if (validation && editingMode) {
-                        String noteText = null;
-                        TempFollowUp tempFollowUp = selectedFollowup;
-                        LSContact tempContact = selectedContact;
-                        tempContact.setContactName(contactName);
-                        tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone));
-                        tempContact.setContactType(selectedContactType);
-                        tempContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                        tempContact.save();
+
+                    String titleText = null;
+                    TempFollowUp tempFollowUp = selectedFollowup;
+                    String noteText = null;
 //  First checking if note is enabled so note can be gotten and passed in followup
-                        if (etNoteText != null) {
-                            noteText = etNoteText.getText().toString();
-                            tempFollowUp.setNote(noteText);
-                        } else {
-                            noteText = "Empty";
+                    if (etNoteText != null) {
+                        noteText = etNoteText.getText().toString();
+                        if (!noteText.isEmpty() && !noteText.equals("")) {
+                            LSNote tempNote = new LSNote();
+                            tempNote.setNoteText(noteText);
+                            tempNote.setContactOfNote(selectedContact);
+                            tempNote.save();
                         }
-                        if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
-                            Calendar dateTimeForFollowup = Calendar.getInstance();
-                            dateTimeForFollowup.set(Calendar.YEAR, year);
-                            dateTimeForFollowup.set(Calendar.MONTH, month);
-                            dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
-                            dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
-                            dateTimeForFollowup.set(Calendar.MINUTE, minute);
-//                TempFollowUp tempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
-                            tempFollowUp.setContact(tempContact);
-                            tempFollowUp.setNote(noteText);
-                            tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                            tempFollowUp.save();
-                            setAlarm(getApplicationContext(), tempFollowUp);
-                        }
-                        finish();
                     }
+                    if (etFollowupTitleText != null) {
+                        titleText = etFollowupTitleText.getText().toString();
+                        tempFollowUp.setTitle(titleText);
+                    } else {
+                        titleText = "Empty";
+                    }
+                    if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                        Calendar dateTimeForFollowup = Calendar.getInstance();
+                        dateTimeForFollowup.set(Calendar.YEAR, year);
+                        dateTimeForFollowup.set(Calendar.MONTH, month);
+                        dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
+                        dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
+                        dateTimeForFollowup.set(Calendar.MINUTE, minute);
+//                TempFollowUp tempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
+                        tempFollowUp.setContact(selectedContact);
+                        tempFollowUp.setTitle(titleText);
+                        tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                        tempFollowUp.save();
+                        setAlarm(getApplicationContext(), tempFollowUp);
+                    }
+                    finish();
+
+                } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_FOLLOWUP)) {
+
+                    String titleText = null;
+                    String noteText = null;
+                    TempFollowUp tempFollowUp = new TempFollowUp();
+                    if (etNoteText != null) {
+                        noteText = etNoteText.getText().toString();
+                        if (!noteText.isEmpty() && !noteText.equals("")) {
+                            LSNote tempNote = new LSNote();
+                            tempNote.setNoteText(noteText);
+                            tempNote.setContactOfNote(selectedContact);
+                            tempNote.save();
+                        }
+                    }
+                    if (etFollowupTitleText != null) {
+                        titleText = etFollowupTitleText.getText().toString();
+                        tempFollowUp.setTitle(titleText);
+                    } else {
+                        titleText = "Empty";
+                    }
+                    if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                        Calendar dateTimeForFollowup = Calendar.getInstance();
+                        dateTimeForFollowup.set(Calendar.YEAR, year);
+                        dateTimeForFollowup.set(Calendar.MONTH, month);
+                        dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
+                        dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
+                        dateTimeForFollowup.set(Calendar.MINUTE, minute);
+//                TempFollowUp tempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
+                        tempFollowUp.setContact(selectedContact);
+                        tempFollowUp.setTitle(titleText);
+                        tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                        tempFollowUp.save();
+                        setAlarm(getApplicationContext(), tempFollowUp);
+                    }
+                    finish();
                 }
             }
         });
@@ -441,7 +506,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
     private void showAddNoteLayout() {
         scaleView(addNoteActionLayout, 1f, 0f);
         addNoteActionLayout.setVisibility(View.GONE);
-        LinearLayout addNoteLayout = (LinearLayout) inflater.inflate(R.layout.note_body_layout_followup_screen, noteContainerLayout, false);
+        LinearLayout addNoteLayout = (LinearLayout) inflater.inflate(R.layout.section_note_body_layout_followup_screen, noteContainerLayout, false);
         scaleView(addNoteLayout, 0f, 1f);
         noteContainerLayout.addView(addNoteLayout);
         etNoteText = (EditText) findViewById(R.id.etNoteTextFollowupPopup);
@@ -449,13 +514,14 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
 
     private void showAddFollowupLayout() {
         addFollowupActionLayout.setVisibility(View.GONE);
-        LinearLayout addFollowupLayout = (LinearLayout) inflater.inflate(R.layout.followup_body_followup_screen, followupContainerLayout, false);
+        LinearLayout addFollowupLayout = (LinearLayout) inflater.inflate(R.layout.section_followup_body_followup_screen, followupContainerLayout, false);
         followupContainerLayout.addView(addFollowupLayout);
         bOneWeek = (Button) findViewById(R.id.bOneWeekFollowupPopup);
         bThreeDays = (Button) findViewById(R.id.bThreeDaysFollowupPopup);
         bTomorrow = (Button) findViewById(R.id.bTomorrowFollowupPopup);
         bDate = (Button) findViewById(R.id.bDateFollowupPopup);
         bTime = (Button) findViewById(R.id.bTimeFollowupPopup);
+        etFollowupTitleText = (EditText) findViewById(R.id.etTitleTextFollowupPopup);
         Calendar now = Calendar.getInstance();
 
         if (bTomorrow != null) {

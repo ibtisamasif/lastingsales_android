@@ -114,7 +114,7 @@ public class PopUpWindowAddNewFollowUp implements
                 TempFollowUp tempFollowUp = new TempFollowUp();
 //                TempFollowUp tempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
                 tempFollowUp.setContact(selectedLSContact);
-                tempFollowUp.setNote(note);
+                tempFollowUp.setTitle(note);
                 tempFollowUp.setDateTimeForFollowup(dateAndTimeForAlarm.getTimeInMillis());
                 tempFollowUp.save();
                 followupsListAdapter.add(tempFollowUp);

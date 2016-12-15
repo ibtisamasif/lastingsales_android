@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -143,7 +142,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
                 myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
                 startActivity(myIntent);
             }
@@ -165,7 +164,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
             llFolloupDateTimeRow.setVisibility(View.GONE);
             ibEditFollowup.setVisibility(View.GONE);
         } else {
-            tvFollowupNoteText.setText(selectedFolloup.getNote());
+            tvFollowupNoteText.setText(selectedFolloup.getTitle());
             Calendar followupTimeDate = Calendar.getInstance();
             followupTimeDate.setTimeInMillis(selectedFolloup.getDateTimeForFollowup());
             String dateTimeForFollowupString;
