@@ -57,7 +57,9 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/llUntaggedContactsContainer"
+            >
 
             <ImageView
                 android:id="@+id/untagged_contacts_icon"

@@ -1,7 +1,14 @@
 package com.example.muzafarimran.lastingsales.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.LinkAddress;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +29,7 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsActivity;
+import com.example.muzafarimran.lastingsales.fragments.DeleteBottomSheetDialogFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -54,6 +62,8 @@ public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyL
     private String contactType;
     private LinearLayout noteDetails;
     private LSContact detailsContact = null;
+    private FragmentManager supportFragmentManager;
+
 
     public ContactsAdapter2(Context c, List<LSContact> contacts, String type) {
         this.mContext = c;
@@ -133,7 +143,7 @@ public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyL
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         final LSContact contact = (LSContact) getItem(position);
         ViewHolder holder = null;
@@ -193,11 +203,24 @@ public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyL
         holder.user_details_wrapper.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+//                deleteFlow = true;
+//                setList(LSContact.getContactsByType(contactType));
+                DeleteBottomSheetDialogFragment deleteBottomSheetDialogFragment = new DeleteBottomSheetDialogFragment();
+                deleteBottomSheetDialogFragment.setPosition(position);
+                deleteBottomSheetDialogFragment.show(getSupportFragmentManager(), deleteBottomSheetDialogFragment.getTag());
+                deleteBottomSheetDialogFragment.setContactsAdapter2(ContactsAdapter2.this);
+                return true;
+            }
+        });
+        /*holder.user_details_wrapper.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
                 deleteFlow = true;
                 setList(LSContact.getContactsByType(contactType));
                 return true;
             }
-        });
+        });*/
+
         holder.call_icon.setTag(mContacts.get(position).getPhoneOne());
 //              Deletes the contact, queries db and updates local list plus nitifies adpater
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -272,10 +295,19 @@ public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyL
         return convertView;
     }
 
-    public void disableDeleteMode(){
+    public void deleteAtPosition(int position) {
+        LSContact contact = mContacts.get(position);
+        mContacts.remove(position);
+        contact.delete();
+        setList(LSContact.getContactsByType(contactType));
+
+    }
+
+    public void disableDeleteMode() {
         deleteFlow = false;
         setList(LSContact.getContactsByType(contactType));
     }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -481,5 +513,14 @@ public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyL
             detailsActivityIntent.putExtra(ContactDetailsActivity.KEY_CONTACT_ID, contactId + "");
             mContext.startActivity(detailsActivityIntent);
         }
+    }
+
+
+    public FragmentManager getSupportFragmentManager() {
+        return supportFragmentManager;
+    }
+
+    public void setSupportFragmentManager(FragmentManager supportFragmentManager) {
+        this.supportFragmentManager = supportFragmentManager;
     }
 }

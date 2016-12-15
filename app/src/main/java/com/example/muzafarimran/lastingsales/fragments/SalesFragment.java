@@ -3,17 +3,15 @@ package com.example.muzafarimran.lastingsales.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -42,8 +40,8 @@ public class SalesFragment extends SearchFragment {
     ExpandableStickyListHeadersListView listView = null;
     ContactsAdapter2 contactsAdapter2;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
-    private TinyBus bus;
     FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
+    private TinyBus bus;
 
     public static SalesFragment newInstance(int page, String title) {
         SalesFragment fragmentFirst = new SalesFragment();
@@ -116,7 +114,7 @@ public class SalesFragment extends SearchFragment {
 //        this.addContactCta.setOnClickListener(this.showaddcontactform);
         floatingActionButtonAdd = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
         floatingActionButtonImport = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import);
-
+        contactsAdapter2.setSupportFragmentManager(getFragmentManager());
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,42 +137,14 @@ public class SalesFragment extends SearchFragment {
         listView.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
             @Override
             public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
-                if(listView.isHeaderCollapsed(headerId)){
+                if (listView.isHeaderCollapsed(headerId)) {
                     listView.expand(headerId);
-                }else {
+                } else {
                     listView.collapse(headerId);
                 }
             }
         });
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-            @Override
-            public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
 
-            }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-                MenuInflater inflater = actionMode.getMenuInflater();
-                inflater.inflate(R.menu.search_options_menu_sales_fragment, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                return false;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode actionMode) {
-
-            }
-        });
         return view;
     }
 
@@ -189,8 +159,8 @@ public class SalesFragment extends SearchFragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_options_menu_sales_fragment, menu);
         MenuItem item = menu.findItem(R.id.action_search);
-        if (materialSearchView!=null){
-        materialSearchView.setMenuItem(item);
+        if (materialSearchView != null) {
+            materialSearchView.setMenuItem(item);
         }
     }
 
@@ -249,7 +219,7 @@ public class SalesFragment extends SearchFragment {
     }
 
 
-    public List<LSContact> getAllArrangedContactsAccordingToLeadType(){
+    public List<LSContact> getAllArrangedContactsAccordingToLeadType() {
 
         List<LSContact> contactsColle = LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         List<LSContact> contactsPerso = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
@@ -271,6 +241,7 @@ public class SalesFragment extends SearchFragment {
 
         return arrangedContacts;
     }
+
     /*
     * event handler for click on add contact cta
     * */
@@ -279,8 +250,8 @@ public class SalesFragment extends SearchFragment {
         @Override
         public void onClick(View v) {
             Intent myIntent = new Intent(getActivity(), TagNumberAndAddFollowupActivity.class);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
             getActivity().startActivity(myIntent);
         }
     }

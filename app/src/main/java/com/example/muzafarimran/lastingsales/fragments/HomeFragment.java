@@ -1,14 +1,17 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -23,6 +26,7 @@ public class HomeFragment extends TabFragment {
     private TextView tvUntaggedContacts;
     private TextView tvPendingProspectValue;
     private TextView tvInactiveLeadsValue;
+    private LinearLayout llUntaggedContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class HomeFragment extends TabFragment {
         tvUntaggedContacts = (TextView) view.findViewById(R.id.untagged_contacts_val);
         tvPendingProspectValue = (TextView) view.findViewById(R.id.tvPendingProspectValue);
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
+        llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
         ArrayList<LSCall> allUniqueCallsWithoutContact = LSCall.getUniqueCallsWithoutContacts();
         ArrayList<LSContact> allContactsAsProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
@@ -54,6 +59,20 @@ public class HomeFragment extends TabFragment {
         } else {
             tvInactiveLeadsValue.setText("( " + 0 + " )");
         }
+        llUntaggedContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent ;
+                Bundle bundle = new Bundle();
+                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsListFragment.class.getName());
+                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Untagged Contacts");
+                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
+                intent = new Intent(getContext(), FrameActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 }
