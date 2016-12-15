@@ -221,7 +221,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginRight="5dp"
-                            android:text="@string/note"
+                            android:text="@string/note_title"
                             android:textSize="14sp"
                             android:id="@+id/textView2"/>
 
@@ -231,7 +231,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:textSize="12sp"
-                            tools:text="@string/note"
+                            tools:text="@string/note_title"
                             />
 
                     </LinearLayout>
@@ -261,7 +261,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:textSize="12sp"
-                            tools:text="@string/note"
+                            tools:text="@string/note_title"
                             />
                     </LinearLayout>
 

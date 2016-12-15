@@ -13,7 +13,7 @@
     <string name="change">Change</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
-    <string name="note">Note</string>
+    <string name="note_title">Note</string>
     <string name="select_contact">Select Contact</string>
     <string name="number">Number</string>
     <string name="name">Name</string>
@@ -66,6 +66,7 @@
     <string name="navigation_drawer_outgoing">Outgoing</string>
     <string name="navigation_drawer_colleague">Colleague</string>
     <string name="navigation_drawer_non_business">Non-Business</string>
+    <string name="title">Title</string>
 
 
 </resources>

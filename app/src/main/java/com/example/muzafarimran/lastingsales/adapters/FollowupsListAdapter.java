@@ -68,7 +68,7 @@ public class FollowupsListAdapter extends ArrayAdapter<TempFollowUp> {
         String time = "" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE);
         // Populate the data into the template view using the data object
         viewHolder.contactName.setText(oneContact.getContactName());
-        viewHolder.followupNote.setText(oneFollowup.getNote());
+        viewHolder.followupNote.setText(oneFollowup.getTitle());
         viewHolder.followupDate.setText(date);
         viewHolder.followupTime.setText(time);
         // Return the completed view to render on screen
