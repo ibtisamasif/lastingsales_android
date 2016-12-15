@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
-import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter2;
+import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.github.clans.fab.FloatingActionButton;
 
@@ -38,7 +37,7 @@ public class SalesFragment extends SearchFragment {
 
     private static final String TAG = "SalesContactFragment";
     ExpandableStickyListHeadersListView listView = null;
-    ContactsAdapter2 contactsAdapter2;
+    SalesAdapter salesAdapter;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     private TinyBus bus;
@@ -53,8 +52,8 @@ public class SalesFragment extends SearchFragment {
     }
 
     public void setList(List<LSContact> contacts) {
-        if (contactsAdapter2 != null) {
-            contactsAdapter2.setList(contacts);
+        if (salesAdapter != null) {
+            salesAdapter.setList(contacts);
         }
     }
 
@@ -62,8 +61,13 @@ public class SalesFragment extends SearchFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        contactsAdapter2 = new ContactsAdapter2(getContext(), null, LSContact.CONTACT_TYPE_SALES);
+        salesAdapter = new SalesAdapter(getContext(), null, LSContact.CONTACT_TYPE_SALES);
         setHasOptionsMenu(true);
+
+        System.out.println("pro "+countProspects());
+        System.out.println("lead "+countLeads());
+        System.out.println("Lost "+countClosedLost());
+        System.out.println("Won "+countClosedWon());
     }
 
     @Override
@@ -91,9 +95,9 @@ public class SalesFragment extends SearchFragment {
 
     @Subscribe
     public void onBackPressedEventModel(BackPressedEventModel event) {
-        if (!event.backPressHandled && contactsAdapter2.isDeleteFlow()) {
+        if (!event.backPressHandled && salesAdapter.isDeleteFlow()) {
             event.backPressHandled = true;
-            contactsAdapter2.setDeleteFlow(false);
+            salesAdapter.setDeleteFlow(false);
         }
     }
 
@@ -102,7 +106,6 @@ public class SalesFragment extends SearchFragment {
         super.onResume();
 //        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
 //        setList(contacts);
-
         setList(getAllArrangedContactsAccordingToLeadType());
     }
 
@@ -114,7 +117,7 @@ public class SalesFragment extends SearchFragment {
 //        this.addContactCta.setOnClickListener(this.showaddcontactform);
         floatingActionButtonAdd = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
         floatingActionButtonImport = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import);
-        contactsAdapter2.setSupportFragmentManager(getFragmentManager());
+        salesAdapter.setSupportFragmentManager(getFragmentManager());
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,7 +135,7 @@ public class SalesFragment extends SearchFragment {
             }
         });
         listView = (ExpandableStickyListHeadersListView) view.findViewById(R.id.sales_contacts_list);
-        listView.setAdapter(contactsAdapter2);
+        listView.setAdapter(salesAdapter);
         //Expand and Contract Leads
         listView.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
             @Override
@@ -166,7 +169,7 @@ public class SalesFragment extends SearchFragment {
 
     @Override
     protected void onSearch(String query) {
-        contactsAdapter2.getFilter().filter(query);
+        salesAdapter.getFilter().filter(query);
     }
 
     @Override
@@ -183,28 +186,28 @@ public class SalesFragment extends SearchFragment {
                             case R.id.filter_all:
 //                                List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
 //                                setList(contacts);
-                                contactsAdapter2.setList(getAllArrangedContactsAccordingToLeadType());
+                                salesAdapter.setList(getAllArrangedContactsAccordingToLeadType());
                                 Toast.makeText(getActivity(), "Filter All", Toast.LENGTH_SHORT).show();
 
                                 break;
                             case R.id.filter_prospects:
                                 List<LSContact> contactsProspects = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                                contactsAdapter2.setList(contactsProspects);
+                                salesAdapter.setList(contactsProspects);
                                 Toast.makeText(getActivity(), "Filter Prospects", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.filter_leads:
                                 List<LSContact> contactsLeads = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_LEAD);
-                                contactsAdapter2.setList(contactsLeads);
+                                salesAdapter.setList(contactsLeads);
                                 Toast.makeText(getActivity(), "Filter Leads", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.filter_closed_lost:
                                 List<LSContact> contactsClosedLost = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-                                contactsAdapter2.setList(contactsClosedLost);
+                                salesAdapter.setList(contactsClosedLost);
                                 Toast.makeText(getActivity(), "Filter Lost", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.filter_closed_won:
                                 List<LSContact> contactsClosedWon = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-                                contactsAdapter2.setList(contactsClosedWon);
+                                salesAdapter.setList(contactsClosedWon);
                                 Toast.makeText(getActivity(), "Filter Won", Toast.LENGTH_SHORT).show();
                                 break;
                         }
@@ -220,19 +223,16 @@ public class SalesFragment extends SearchFragment {
 
 
     public List<LSContact> getAllArrangedContactsAccordingToLeadType() {
-
         List<LSContact> contactsColle = LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         List<LSContact> contactsPerso = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
         List<LSContact> contactsToBeRemoved = new ArrayList<>();
         contactsToBeRemoved.addAll(contactsColle);
         contactsToBeRemoved.addAll(contactsPerso);
-
         List<LSContact> arrangedContacts = new ArrayList<>();
         List<LSContact> contactsPros = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
         List<LSContact> contactsLe = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_LEAD);
         List<LSContact> contactsLo = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
         List<LSContact> contactsWo = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-
         arrangedContacts.addAll(contactsPros);
         arrangedContacts.addAll(contactsLe);
         arrangedContacts.addAll(contactsLo);
@@ -241,7 +241,63 @@ public class SalesFragment extends SearchFragment {
 
         return arrangedContacts;
     }
-    
+
+    public int countProspects(){
+        int count = 0;
+        List<LSContact> arrangedContacts = getAllArrangedContactsAccordingToLeadType();
+        if(arrangedContacts!=null){
+            for (int i = 0; i < arrangedContacts.size() ; i++) {
+                if(arrangedContacts.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)){
+                    count++;
+                }
+            }
+            return count;
+        }else{
+            return 0;
+        }
+    }
+    public  int countLeads(){
+        int count = 0;
+        List<LSContact> arrangedContacts = getAllArrangedContactsAccordingToLeadType();
+        if(arrangedContacts!=null){
+            for (int i = 0; i < arrangedContacts.size() ; i++) {
+                if(arrangedContacts.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_LEAD)){
+                    count++;
+                }
+            }
+            return count;
+        }else{
+            return 0;
+        }
+    }
+    public int countClosedLost(){
+        int count = 0;
+        List<LSContact> arrangedContacts = getAllArrangedContactsAccordingToLeadType();
+        if(arrangedContacts!=null){
+            for (int i = 0; i < arrangedContacts.size() ; i++) {
+                if(arrangedContacts.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_LOST)){
+                    count++;
+                }
+            }
+            return count;
+        }else{
+            return 0;
+        }
+    }
+    public int countClosedWon(){
+        int count = 0;
+        List<LSContact> arrangedContacts = getAllArrangedContactsAccordingToLeadType();
+        if(arrangedContacts!=null){
+            for (int i = 0; i < arrangedContacts.size() ; i++) {
+                if(arrangedContacts.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_WON)){
+                    count++;
+                }
+            }
+            return count;
+        }else{
+            return 0;
+        }
+    }
     /*
     * event handler for click on add contact cta
     * */

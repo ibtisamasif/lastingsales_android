@@ -1,13 +1,7 @@
 package com.example.muzafarimran.lastingsales.adapters;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.LinkAddress;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -30,6 +24,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsActivity;
 import com.example.muzafarimran.lastingsales.fragments.DeleteBottomSheetDialogFragment;
+import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -43,7 +38,7 @@ import static android.view.View.GONE;
 /**
  * Created by lenovo 1 on 9/21/2016.
  */
-public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyListHeadersAdapter {
+public class SalesAdapter extends BaseAdapter implements Filterable, StickyListHeadersAdapter {
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
@@ -65,7 +60,7 @@ public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyL
     private FragmentManager supportFragmentManager;
 
 
-    public ContactsAdapter2(Context c, List<LSContact> contacts, String type) {
+    public SalesAdapter(Context c, List<LSContact> contacts, String type) {
         this.mContext = c;
         this.mContacts = contacts;
         if (mContacts == null) {
@@ -180,7 +175,7 @@ public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyL
                 DeleteBottomSheetDialogFragment deleteBottomSheetDialogFragment = new DeleteBottomSheetDialogFragment();
                 deleteBottomSheetDialogFragment.setPosition(position);
                 deleteBottomSheetDialogFragment.show(getSupportFragmentManager(), deleteBottomSheetDialogFragment.getTag());
-                deleteBottomSheetDialogFragment.setContactsAdapter2(ContactsAdapter2.this);
+                deleteBottomSheetDialogFragment.setSalesAdapter(SalesAdapter.this);
                 return true;
             }
         });
@@ -351,18 +346,19 @@ public class ContactsAdapter2 extends BaseAdapter implements Filterable, StickyL
 
         //TODO
         // set header text
+        SalesFragment obj = new SalesFragment();
         if (getHeaderId(position) == 0) {
             holder.saleType.setText("Prospects");
-//            holder.saleTypeCount.setText("0");
+            holder.saleTypeCount.setText(Integer.toString(obj.countProspects()));
         } else if (getHeaderId(position) == 1) {
             holder.saleType.setText("Leads");
-//            holder.saleTypeCount.setText("0");
+            holder.saleTypeCount.setText(Integer.toString(obj.countLeads()));
         } else if (getHeaderId(position) == 2) {
             holder.saleType.setText("Closed Lost");
-//            holder.saleTypeCount.setText("0");
+            holder.saleTypeCount.setText(Integer.toString(obj.countClosedLost()));
         } else {
             holder.saleType.setText("Closed Won");
-//            holder.saleTypeCount.setText("0");
+            holder.saleTypeCount.setText(Integer.toString(obj.countClosedWon()));
         }
 
 //        CharSequence headerChar = filteredData.get(position).getContactSalesStatus();

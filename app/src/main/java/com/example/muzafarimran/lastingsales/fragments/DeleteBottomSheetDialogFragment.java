@@ -9,8 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter2;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
 
 /**
  * Created by ahmad on 15-Dec-16.
@@ -19,7 +18,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 public class DeleteBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     int position;
-    ContactsAdapter2 contactsAdapter2;
+    SalesAdapter salesAdapter;
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
         @Override
@@ -51,7 +50,7 @@ public class DeleteBottomSheetDialogFragment extends BottomSheetDialogFragment {
         llDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getContactsAdapter2().deleteAtPosition(position);
+                getSalesAdapter().deleteAtPosition(position);
                 dismiss();
 
             }
@@ -66,12 +65,12 @@ public class DeleteBottomSheetDialogFragment extends BottomSheetDialogFragment {
         }
     }
 
-    public ContactsAdapter2 getContactsAdapter2() {
-        return contactsAdapter2;
+    public SalesAdapter getSalesAdapter() {
+        return salesAdapter;
     }
 
-    public void setContactsAdapter2(ContactsAdapter2 contactsAdapter2) {
-        this.contactsAdapter2 = contactsAdapter2;
+    public void setSalesAdapter(SalesAdapter salesAdapter) {
+        this.salesAdapter = salesAdapter;
     }
 
     public BottomSheetBehavior.BottomSheetCallback getmBottomSheetBehaviorCallback() {

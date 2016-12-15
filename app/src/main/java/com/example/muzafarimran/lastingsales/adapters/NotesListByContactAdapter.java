@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.ContactDetailsActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -91,6 +93,15 @@ public class NotesListByContactAdapter extends BaseAdapter {
         ViewHolder holder = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.note_by_contacts_item, parent, false);
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent detailsActivityIntent = new Intent(mContext, ContactDetailsActivity.class);
+                    long contactId = contact.getId();
+                    detailsActivityIntent.putExtra(ContactDetailsActivity.KEY_CONTACT_ID, contactId + "");
+                    mContext.startActivity(detailsActivityIntent);
+                }
+            });
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.contact_name);
             holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
