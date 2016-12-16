@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
+@Deprecated
 public class UntaggedFragment extends TabFragment {
 
     private List<LSContact> untaggedContacts = new ArrayList<>();

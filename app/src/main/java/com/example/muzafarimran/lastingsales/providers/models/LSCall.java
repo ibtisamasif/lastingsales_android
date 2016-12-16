@@ -48,13 +48,19 @@ public class LSCall extends SugarRecord {
         ArrayList<LSCall> calls = new ArrayList<>();
         ArrayList<LSCall> allCalls = null;
         allCalls = (ArrayList<LSCall>) listAll(LSCall.class);
-//        calls = (ArrayList<LSCall>) LSCall.findWithQuery(LSCall.class, "SELECT * from LS_CALL where contact = null");
+//        calls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact").eq("null")).orderBy("contact_number DESC").list();
+//        calls = (ArrayList<LSCall>) LSCall.findWithQuery(LSCall.class, "SELECT * from LS_CALL ");
+//        calls = (ArrayList<LSCall>) LSCall.findWithQuery(LSCall.class, "SELECT * from LS_CALL where contact = null GROUP BY contact_number");
 //        calls = (ArrayList<LSCall>) LSCall.find(LSCall.class,"contact = ?","null");
         for (LSCall oneCall : allCalls) {
             if (oneCall.getContact() == null) {
                 calls.add(oneCall);
             }
         }
+        /*for (LSCall oneCall : calls) {
+            LSCall.
+        }*/
+
         return calls;
     }
 

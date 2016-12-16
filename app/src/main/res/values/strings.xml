@@ -68,6 +68,10 @@
     <string name="navigation_drawer_non_business">Non-Business</string>
     <string name="add_new_contact">Add New Contact</string>
     <string name="title">Title</string>
+    <string name="non_busines_capital">NON-BUSINESS</string>
+    <string name="colleague_capital">COLLEAGUE</string>
+    <string name="salesCapital">SALES</string>
+    <string name="connections">Connections</string>
 
 
 </resources>

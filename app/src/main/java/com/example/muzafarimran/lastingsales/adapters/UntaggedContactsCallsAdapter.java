@@ -12,6 +12,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
@@ -22,6 +23,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -29,7 +31,7 @@ import static android.view.View.GONE;
 /**
  * Created by MUZAFAR IMRAN on 9/19/20
  */
-public class CallsAdapter extends BaseAdapter implements Filterable {
+public class UntaggedContactsCallsAdapter extends BaseAdapter implements Filterable {
 
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
@@ -45,7 +47,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
     private ShowDetailsDropDown showcalldetailslistener = null;
     private List<LSCall> filteredData;
 
-    public CallsAdapter(Context c) {
+    public UntaggedContactsCallsAdapter(Context c) {
         this.mContext = c;
         if (mCalls == null) {
             mCalls = new ArrayList<>();
@@ -84,7 +86,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LSCall call = (LSCall) getItem(position);
-        String number = call.getContactNumber();
+        final String number = call.getContactNumber();
         if (isSeparator(position)) {
             separatorHolder separatorholder = null;
             if (convertView == null) {
@@ -98,21 +100,26 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         } else {
             ViewHolder holder = null;
             if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.calls_text_view, parent, false);
+                convertView = mInflater.inflate(R.layout.untagged_contacts_list_item, parent, false);
                 holder = new ViewHolder();
                 holder.name = (TextView) convertView.findViewById(R.id.call_name);
                 holder.time = (TextView) convertView.findViewById(R.id.call_time);
                 holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
                 holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
                 holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
-                holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
+                holder.tvConnections = (TextView) convertView.findViewById(R.id.tvConnections);
+                holder.tvLastContact = (TextView) convertView.findViewById(R.id.tvLastContact);
+                holder.bNonbusiness = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
                 holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
                 this.showcalldetailslistener = new ShowDetailsDropDown(call, holder.contactCallDetails);
-                holder.bTag = (Button) convertView.findViewById(R.id.call_tag_btn);
+                holder.bSales = (Button) convertView.findViewById(R.id.bSalesUtaggedItem);
+                holder.bColleague = (Button) convertView.findViewById(R.id.bColleagueUntaggedItem);
+                holder.bNonbusiness = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
+
                 holder.call_icon.setOnClickListener(this.callClickListener);
                 holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
                 if (call.getContact() != null) {
-                    holder.bTag.setVisibility(GONE);
+                    holder.bSales.setVisibility(GONE);
                 }
                 holder.contactCallDetails.setVisibility(GONE);
                 convertView.setTag(holder);
@@ -129,13 +136,66 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
             } else {
                 holder.name.setText(call.getContact().getContactName());
             }
-            holder.bContactCallsdetails.setTag(number);
-            holder.bContactCallsdetails.setOnClickListener(detailsListener);
+            holder.bNonbusiness.setTag(number);
+            holder.bNonbusiness.setOnClickListener(detailsListener);
             holder.numberDetailTextView.setText(number);
             holder.call_name_time.setTag(position);
             holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime()));
             holder.call_icon.setTag(mCalls.get(position).getContactNumber());
-            holder.bTag.setOnClickListener(new TagAContactClickListener(number));
+            holder.bSales.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+                    Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
+                    mContext.startActivity(myIntent);
+                }
+            });
+            holder.bColleague.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+                    Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
+                    mContext.startActivity(myIntent);
+                }
+            });
+            holder.bNonbusiness.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+                    LSContact tempContact = new LSContact();
+                    tempContact.setPhoneOne(intlNum);
+                    String localContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, intlNum);
+                    if (localContactName != null) {
+                        tempContact.setContactName(localContactName);
+                    }
+                    tempContact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);
+                    tempContact.save();
+                }
+            });
+
+            ArrayList<LSCall> allCallsForThisNumber = LSCall.getCallsFromNumber(PhoneNumberAndCallUtils.numberToInterNationalNumber(call.getContactNumber()));
+            if (allCallsForThisNumber != null && allCallsForThisNumber.size() > 0) {
+                holder.tvConnections.setText("( " + allCallsForThisNumber.size() + " )");
+            } else {
+                holder.tvConnections.setText("( " + 0 + " )");
+            }
+            if (allCallsForThisNumber != null && allCallsForThisNumber.size() > 0) {
+                LSCall latestCall = allCallsForThisNumber.get(allCallsForThisNumber.size() - 1);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(latestCall.getBeginTime());
+                String lastContact = calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-"
+                        + calendar.get(Calendar.YEAR) + " " + calendar.get(Calendar.HOUR_OF_DAY) + " : " + calendar.get(Calendar.MINUTE);
+                holder.tvLastContact.setText("( " + lastContact + " )");
+            } else {
+                holder.tvLastContact.setText("( " + "Never+" + " )");
+            }
+
         }
         return convertView;
     }
@@ -156,7 +216,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                FilterResults results = new Filter.FilterResults();
+                FilterResults results = new FilterResults();
                 //If there's nothing to filter on, return the original data for list
                 if (charSequence == null || charSequence.length() == 0) {
                     results.values = mCalls;
@@ -210,8 +270,11 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         RelativeLayout call_name_time;
         RelativeLayout contactCallDetails;
         TextView numberDetailTextView;
-        Button bContactCallsdetails;
-        Button bTag;
+        TextView tvConnections;
+        TextView tvLastContact;
+        Button bNonbusiness;
+        Button bColleague;
+        Button bSales;
     }
 
     static class separatorHolder {
