@@ -30,7 +30,7 @@ import de.halfbit.tinybus.TinyBus;
 public class NotesListByContactsFragment extends TabFragment {
     private static final String TAG = "NotesContactsFragment";
     ListView listView = null;
-    NotesListByContactAdapter contactsAdapter;
+    NotesListByContactAdapter notesListByContactAdapter;
     EditText inputSearch;
     MaterialSearchView searchView;
     private TinyBus bus;
@@ -45,8 +45,8 @@ public class NotesListByContactsFragment extends TabFragment {
     }
 
     public void setList(List<LSContact> contacts) {
-        if (contactsAdapter != null) {
-            contactsAdapter.setList(contacts);
+        if (notesListByContactAdapter != null) {
+            notesListByContactAdapter.setList(contacts);
         }
     }
 
@@ -56,7 +56,7 @@ public class NotesListByContactsFragment extends TabFragment {
         setRetainInstance(true);
         //Change
 //        contactsAdapter = new NotesListByContactAdapter(getContext(), null, LSContact.CONTACT_TYPE_PERSONAL);
-        contactsAdapter = new NotesListByContactAdapter(getContext(), null);
+        notesListByContactAdapter = new NotesListByContactAdapter(getContext(), null);
         setHasOptionsMenu(true);
     }
 
@@ -86,9 +86,9 @@ public class NotesListByContactsFragment extends TabFragment {
 
     @Subscribe
     public void onBackPressedEventModel(BackPressedEventModel event) {
-        if (!event.backPressHandled && contactsAdapter.isDeleteFlow()) {
+        if (!event.backPressHandled && notesListByContactAdapter.isDeleteFlow()) {
             event.backPressHandled = true;
-            contactsAdapter.setDeleteFlow(false);
+            notesListByContactAdapter.setDeleteFlow(false);
         }
     }
 
@@ -102,11 +102,10 @@ public class NotesListByContactsFragment extends TabFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notes_by_contacts, container, false);
         listView = (ListView) view.findViewById(R.id.notes_contacts_list);
-        listView.setAdapter(contactsAdapter);
+        listView.setAdapter(notesListByContactAdapter);
         return view;
     }
 

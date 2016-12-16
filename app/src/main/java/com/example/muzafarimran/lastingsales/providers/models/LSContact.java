@@ -81,9 +81,10 @@ public class LSContact extends SugarRecord {
         try {
             ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(SALES_STATUS_LEAD);
             ArrayList<LSContact> allInactiveLeads = new ArrayList<LSContact>();
-            long milisecondsIn3Days = 259200000;
+//            long milisecondsIn3Days = 259200000;
+            long milliSecondsIn1Min = 30000; // 30 seconds for now
             long now = Calendar.getInstance().getTimeInMillis();
-            long threeDaysAgoTimestamp = now - milisecondsIn3Days;
+            long threeDaysAgoTimestamp = now - milliSecondsIn1Min;
             for (LSContact oneContact : allLeads) {
                 ArrayList<LSCall> allCallsOfThisLead = LSCall.getCallsFromNumber(oneContact.getPhoneOne());
                 LSContact inactiveLead = null;
@@ -107,6 +108,30 @@ public class LSContact extends SugarRecord {
         }
     }
 
+    public static List<LSContact> getAllPendingProspectsContacts() {
+        try {
+
+            ArrayList<LSContact> allProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(SALES_STATUS_PROSTPECT);
+            ArrayList<LSContact> allNonPendingProspects = new ArrayList<LSContact>();
+            long secondsThresholdValue = 10;
+
+            for (LSContact oneContact : allProspects) {
+                ArrayList<LSCall> allCallsOfThisProspect = LSCall.getCallsFromNumber(oneContact.getPhoneOne());
+                if (allCallsOfThisProspect != null && allCallsOfThisProspect.size() > 0) {
+                    for (LSCall oneCall : allCallsOfThisProspect) {
+                        if (oneCall.getDuration() > secondsThresholdValue) {
+                            allNonPendingProspects.add(oneContact);
+                            break;
+                        }
+                    }
+                }
+            }
+            allProspects.removeAll(allNonPendingProspects);
+            return allProspects;
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
     public static LSContact getContactFromNumber(String number) {
         ArrayList<LSContact> list = null;
         try {

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.ContactDetailsActivity;
+import com.example.muzafarimran.lastingsales.activities.NotesByContactsActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -96,9 +96,9 @@ public class NotesListByContactAdapter extends BaseAdapter {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent detailsActivityIntent = new Intent(mContext, ContactDetailsActivity.class);
+                    Intent detailsActivityIntent = new Intent(mContext, NotesByContactsActivity.class);
                     long contactId = contact.getId();
-                    detailsActivityIntent.putExtra(ContactDetailsActivity.KEY_CONTACT_ID, contactId + "");
+                    detailsActivityIntent.putExtra(NotesByContactsActivity.KEY_CONTACT_ID, contactId + "");
                     mContext.startActivity(detailsActivityIntent);
                 }
             });

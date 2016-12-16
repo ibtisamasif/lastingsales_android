@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
@@ -56,7 +55,6 @@ public class CallEndNotification {
         Intent nonBusinessIntent = new Intent(ctx, TagNonBusiness.class);
         nonBusinessIntent.putExtra("number", intlNumber);
         nonBusinessIntent.putExtra("name", number_or_name);
-        Toast.makeText(ctx, number_or_name, Toast.LENGTH_SHORT).show();
         nonBusinessIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent pIntentNonBusiness = PendingIntent.getBroadcast(ctx, (int) System.currentTimeMillis(), nonBusinessIntent, 0);
 
@@ -83,7 +81,7 @@ public class CallEndNotification {
                     .setWhen(System.currentTimeMillis())
                     .setContentTitle(number_or_name)
                     .setTicker("Lasting Sales")
-                    .setStyle(new Notification.BigTextStyle().bigText(number_or_name))
+                    .setStyle(new Notification.BigTextStyle().bigText("Do You Want To Tag?"))
                     .setAutoCancel(true)
                     .addAction(R.drawable.non_business_icon, "", pIntentNonBusiness)
                     .addAction(R.drawable.colleague_icon, "", pIntentCollegue)

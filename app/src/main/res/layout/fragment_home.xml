@@ -21,7 +21,8 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/llInActiveLeadsContactsContainer">
 
             <ImageView
                 android:id="@+id/inactive_leads_icon"
@@ -46,7 +47,7 @@
                 android:id="@+id/tvInactiveLeadsValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="(2)"
+                android:text="(n/a)"
                 android:textColor="#b7ccf6"
                 />
 
@@ -174,7 +175,8 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/llPendingProspectsContactsContainer">
 
             <ImageView
                 android:id="@+id/pending_prospects_icon"
@@ -200,7 +202,7 @@
                 android:id="@+id/tvPendingProspectValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="(0)"
+                android:text="(n/a)"
                 android:textColor="#b7ccf6"
                 />
 

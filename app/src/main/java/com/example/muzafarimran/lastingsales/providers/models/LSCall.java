@@ -22,7 +22,7 @@ public class LSCall extends SugarRecord {
     private String contactNumber;
     private LSContact contact;
     private String type;
-    private String duration;
+    private Long duration;
     private String contactName;
     private Long beginTime;
     private String audio_path;
@@ -129,11 +129,11 @@ public class LSCall extends SugarRecord {
         this.type = type;
     }
 
-    public String getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
 

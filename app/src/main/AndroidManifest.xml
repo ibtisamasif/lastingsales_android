@@ -99,6 +99,9 @@
         <activity android:name=".activities.ContactDetailsActivity">
         </activity>
 
+        <activity android:name=".activities.NotesByContactsActivity">
+        </activity>
+
         <service
             android:name=".Service.PopupUIService"
             android:enabled="true">

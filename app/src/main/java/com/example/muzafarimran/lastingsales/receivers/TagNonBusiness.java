@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -21,14 +20,12 @@ public class TagNonBusiness extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String num = intent.getStringExtra("number");
         String name = intent.getStringExtra("name");
-        Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
         tempContact = new LSContact();
         tempContact.setPhoneOne(num);
         tempContact.setContactName(name);
         tempContact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);
         tempContact.save();
         int notificationId = intent.getIntExtra("notificationId", 0);
-        // if you want cancel notification
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(notificationId);
     }

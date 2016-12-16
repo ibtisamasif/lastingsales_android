@@ -63,7 +63,7 @@ public class CallsStatesReceiver extends CallReceiver {
             tempCall.setContactName(phoneBookContactName);
         }
         long callDuration = PhoneNumberAndCallUtils.secondsFromStartAndEndDates(start, end);
-        tempCall.setDuration(callDuration + "");
+        tempCall.setDuration(callDuration);
         LSContact contact = LSContact.getContactFromNumber(internationalNumber);
         if (contact != null) {
             tempCall.setContact(contact);
@@ -94,7 +94,8 @@ public class CallsStatesReceiver extends CallReceiver {
             tempCall.setContactName(phoneBookContactName);
         }
         long callDuration = PhoneNumberAndCallUtils.secondsFromStartAndEndDates(start, end);
-        tempCall.setDuration(callDuration + "");
+        Toast.makeText(ctx, "Duration "+callDuration, Toast.LENGTH_SHORT).show();
+        tempCall.setDuration(callDuration);
         LSContact contact = LSContact.getContactFromNumber(internationalNumber);
         if (contact != null) {
             tempCall.setContact(contact);
