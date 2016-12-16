@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +73,12 @@ public class FollowupsListAdapter2 extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         Calendar cl = Calendar.getInstance();
+        boolean followupExpired = false;
         cl.setTimeInMillis(oneFollowup.getDateTimeForFollowup());  //here your time in miliseconds
+        Calendar now = Calendar.getInstance();
+        if (cl.getTimeInMillis() < now.getTimeInMillis()) {
+            followupExpired = true;
+        }
         String date = "" + cl.get(Calendar.DAY_OF_MONTH) + ":" + cl.get(Calendar.MONTH) + ":" + cl.get(Calendar.YEAR);
         String time = "" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE);
         // Populate the data into the template view using the data object
@@ -80,6 +86,17 @@ public class FollowupsListAdapter2 extends BaseAdapter {
         viewHolder.followupNote.setText(oneFollowup.getTitle());
         viewHolder.followupDate.setText(date);
         viewHolder.followupTime.setText(time);
+        if (followupExpired) {
+            viewHolder.contactName.setTextColor(Color.GRAY);
+            viewHolder.followupNote.setTextColor(Color.GRAY);
+            viewHolder.followupDate.setTextColor(Color.GRAY);
+            viewHolder.followupTime.setTextColor(Color.GRAY);
+        } else {
+            viewHolder.contactName.setTextColor(Color.BLACK);
+            viewHolder.followupNote.setTextColor(Color.BLACK);
+            viewHolder.followupDate.setTextColor(Color.BLACK);
+            viewHolder.followupTime.setTextColor(Color.BLACK);
+        }
         // Return the completed view to render on screen
         return convertView;
     }

@@ -54,12 +54,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llUntaggedContactsContainer"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:gravity="center"
             android:orientation="vertical"
-            android:id="@+id/llUntaggedContactsContainer"
             >
 
             <ImageView
@@ -101,11 +101,13 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/llFollowupsTodayContainer"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <ImageView
                 android:id="@+id/follow_ups_today_icon"
@@ -141,7 +143,7 @@
 
 
                 <TextView
-                    android:id="@+id/followups_today_due"
+                    android:id="@+id/tvFollowUpsDue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
@@ -158,7 +160,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/followups_today_done"
+                    android:id="@+id/tvFollowupsDone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"

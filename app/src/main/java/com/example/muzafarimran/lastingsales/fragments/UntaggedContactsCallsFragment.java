@@ -17,6 +17,7 @@ import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.CallsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.UntaggedContactsCallsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import de.halfbit.tinybus.TinyBus;
 public class UntaggedContactsCallsFragment extends SearchFragment {
 
     private static final String TAG = "UntaggedCallFragment";
-    CallsAdapter callsadapter;
+    UntaggedContactsCallsAdapter untaggedContactsCallsAdapter;
     ListView listView = null;
     private List<LSCall> untaggedCalls = new ArrayList<>();
     private Bus mBus;
@@ -49,8 +50,8 @@ public class UntaggedContactsCallsFragment extends SearchFragment {
     }
 
     public void setList(List<LSCall> missedCalls) {
-        if (callsadapter != null) {
-            callsadapter.setList(missedCalls);
+        if (untaggedContactsCallsAdapter != null) {
+            untaggedContactsCallsAdapter.setList(missedCalls);
         }
     }
 
@@ -58,8 +59,8 @@ public class UntaggedContactsCallsFragment extends SearchFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        callsadapter = new CallsAdapter(getContext());
-        callsadapter.setList(untaggedCalls);
+        untaggedContactsCallsAdapter = new UntaggedContactsCallsAdapter(getContext());
+        untaggedContactsCallsAdapter.setList(untaggedCalls);
         setHasOptionsMenu(true);
     }
 
@@ -136,12 +137,24 @@ public class UntaggedContactsCallsFragment extends SearchFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
         listView = (ListView) view.findViewById(R.id.calls_list);
-        listView.setAdapter(callsadapter);
+        listView.setAdapter(untaggedContactsCallsAdapter);
         return view;
     }
 
     @Override
     protected void onSearch(String query) {
-        callsadapter.getFilter().filter(query);
+        untaggedContactsCallsAdapter.getFilter().filter(query);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

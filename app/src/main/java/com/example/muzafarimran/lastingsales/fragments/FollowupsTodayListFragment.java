@@ -13,13 +13,14 @@ import com.example.muzafarimran.lastingsales.adapters.FollowupsListAdapter2;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by ahmad on 10-Dec-16.
  */
 
-public class FollowupsListFragment extends Fragment {
+public class FollowupsTodayListFragment extends Fragment {
     public static final String TAG = "MissedCallFragment";
     FollowupsListAdapter2 followupsAdapter;
     ListView listView = null;
@@ -28,7 +29,7 @@ public class FollowupsListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        ArrayList<TempFollowUp> followUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
+        ArrayList<TempFollowUp> followUps = getFollowupsOFToday();
         followupsAdapter = new FollowupsListAdapter2(getContext(),followUps);
         setHasOptionsMenu(true);
     }
@@ -40,7 +41,7 @@ public class FollowupsListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        List<TempFollowUp> followUps = TempFollowUp.listAll(TempFollowUp.class);
+        List<TempFollowUp> followUps = getFollowupsOFToday();
         setList(followUps);
     }
     @Override
@@ -60,5 +61,25 @@ public class FollowupsListFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private ArrayList<TempFollowUp> getFollowupsOFToday()
+    {
+        ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
+        Calendar now = Calendar.getInstance();
+        Calendar beginingOfToday = Calendar.getInstance();
+        beginingOfToday.set(Calendar.HOUR_OF_DAY, 0);
+        beginingOfToday.set(Calendar.MINUTE, 0);
+        Calendar endOfToday = Calendar.getInstance();
+        endOfToday.add(Calendar.DAY_OF_MONTH, 1);
+        endOfToday.set(Calendar.HOUR_OF_DAY, 0);
+        endOfToday.set(Calendar.MINUTE, 0);
+        ArrayList<TempFollowUp> followupsInToday = new ArrayList<>();
+        for (TempFollowUp oneFollowup : allFollowUps) {
+            if (oneFollowup.getDateTimeForFollowup() > beginingOfToday.getTimeInMillis() && oneFollowup.getDateTimeForFollowup() < endOfToday.getTimeInMillis()) {
+                followupsInToday.add(oneFollowup);
+            }
+        }
+        return followupsInToday;
     }
 }
