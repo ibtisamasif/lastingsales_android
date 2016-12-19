@@ -32,7 +32,6 @@ public class CallsStatesReceiver extends CallReceiver {
     public static final String INCOMINGCALL_CONTACT_ID = "incoming_contact_id";
     public static final String OUTGOINGCALL_CONTACT_NOTE_ID = "outgoing_contact_note_id";
     public static final String INCOMINGCALL_CONTACT_NOTE_ID = "incoming_contact_note_id";
-    private String intlNumber;
 
     @Override
     protected void onIncomingCallStarted(Context ctx, String number, Date start) {
@@ -71,6 +70,20 @@ public class CallsStatesReceiver extends CallReceiver {
             tempCall.setContact(null);
         }
         tempCall.save();
+        long tenSeconds = 10;
+        LSContact tempContact = LSContact.getContactFromNumber(internationalNumber);
+        if(tempContact!= null){
+            if(callDuration > tenSeconds) {
+                if(contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)){
+                    if (contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
+                        Toast.makeText(ctx, "Called", Toast.LENGTH_SHORT).show();
+                        contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                        contact.save();
+                    }
+
+                }
+            }
+        }
         IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         bus.post(mCallEvent);
@@ -97,12 +110,27 @@ public class CallsStatesReceiver extends CallReceiver {
         Toast.makeText(ctx, "Duration "+callDuration, Toast.LENGTH_SHORT).show();
         tempCall.setDuration(callDuration);
         LSContact contact = LSContact.getContactFromNumber(internationalNumber);
+
         if (contact != null) {
             tempCall.setContact(contact);
         } else {
             tempCall.setContact(null);
         }
         tempCall.save();
+        long tenSeconds = 10;
+        LSContact tempContact = LSContact.getContactFromNumber(internationalNumber);
+        if(tempContact!= null){
+            if(callDuration > tenSeconds) {
+                if(contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)){
+                    if (contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
+                        Toast.makeText(ctx, "Called", Toast.LENGTH_SHORT).show();
+                        contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                        contact.save();
+                    }
+
+                }
+            }
+        }
         OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         try {
@@ -163,8 +191,7 @@ public class CallsStatesReceiver extends CallReceiver {
     }
 
     private void showTagNumberPopupIfNeeded(Context ctx, String number) {
-
-        intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+        String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
 
         if (tempContact!=null) {

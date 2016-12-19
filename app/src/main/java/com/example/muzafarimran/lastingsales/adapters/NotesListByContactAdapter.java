@@ -99,6 +99,8 @@ public class NotesListByContactAdapter extends BaseAdapter {
                     Intent detailsActivityIntent = new Intent(mContext, NotesByContactsActivity.class);
                     long contactId = contact.getId();
                     detailsActivityIntent.putExtra(NotesByContactsActivity.KEY_CONTACT_ID, contactId + "");
+//                    bundle.putString(FrameActivity.ACTIVITY_TITLE, "Notes List");
+//                    bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
                     mContext.startActivity(detailsActivityIntent);
                 }
             });

@@ -4,7 +4,6 @@ package com.example.muzafarimran.lastingsales.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,18 +25,15 @@ import java.util.Calendar;
  */
 public class HomeFragment extends TabFragment {
     private static final String TAG = "HomeFragment";
-    private TextView tvUntaggedContacts;
-    private TextView tvPendingProspectValue;
     private TextView tvInactiveLeadsValue;
-
-    private LinearLayout llInActiveLeadsContainer;
-    private LinearLayout llPendingProspectsContainer;
-
+    private TextView tvUntaggedContacts;
     private TextView tvFollowupsDue;
     private TextView tvFollowupsDone;
+    private TextView tvPendingProspectValue;
+    private LinearLayout llInActiveLeadsContainer;
     private LinearLayout llUntaggedContainer;
     private LinearLayout llFollowupsTodayContainer;
-
+    private LinearLayout llPendingProspectsContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,52 +46,31 @@ public class HomeFragment extends TabFragment {
         tvUntaggedContacts = (TextView) view.findViewById(R.id.untagged_contacts_val);
         tvPendingProspectValue = (TextView) view.findViewById(R.id.tvPendingProspectValue);
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
-
         llInActiveLeadsContainer = (LinearLayout) view.findViewById(R.id.llInActiveLeadsContactsContainer);
         llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
         llPendingProspectsContainer = (LinearLayout) view.findViewById(R.id.llPendingProspectsContactsContainer);
-
         tvFollowupsDue = (TextView) view.findViewById(R.id.tvFollowUpsDue);
         tvFollowupsDone = (TextView) view.findViewById(R.id.tvFollowupsDone);
         llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
         llFollowupsTodayContainer = (LinearLayout) view.findViewById(R.id.llFollowupsTodayContainer);
-
         ArrayList<LSCall> allUniqueCallsWithoutContact = LSCall.getUniqueCallsWithoutContacts();
-        ArrayList<LSContact> allPendingProspects = (ArrayList<LSContact>) LSContact.getAllPendingProspectsContacts();
+        ArrayList<LSContact> allContactsAsProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
         if (allInactiveLeads != null) {
             tvInactiveLeadsValue.setText("( " + allInactiveLeads.size() + " )");
         } else {
             tvInactiveLeadsValue.setText("( " + 0 + " )");
         }
-
         if (allUniqueCallsWithoutContact != null) {
             tvUntaggedContacts.setText("( " + allUniqueCallsWithoutContact.size() + " )");
         } else {
             tvUntaggedContacts.setText("( " + 0 + " )");
         }
-
-        if (allPendingProspects != null) {
-            tvPendingProspectValue.setText("( " + allPendingProspects.size() + " )");
-            Log.d(TAG, "PendingPros : " + allPendingProspects.size());
+        if (allContactsAsProspects != null) {
+            tvPendingProspectValue.setText("( " + allContactsAsProspects.size() + " )");
         } else {
             tvPendingProspectValue.setText("( " + 0 + " )");
         }
-
-        llInActiveLeadsContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                Bundle bundle = new Bundle();
-                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsListFragment.class.getName());
-                bundle.putString(FrameActivity.ACTIVITY_TITLE, "InActive Leads");
-                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-                intent = new Intent(getContext(), FrameActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-
         ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
         Calendar now = Calendar.getInstance();
         Calendar beginingOfToday = Calendar.getInstance();
@@ -123,6 +98,19 @@ public class HomeFragment extends TabFragment {
         tvFollowupsDone.setText("( " + followUpsDone.size() + " )");
         tvFollowupsDue.setText("( " + followupsDue.size() + " )");
 
+        llInActiveLeadsContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent;
+                Bundle bundle = new Bundle();
+                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, InActiveLeadsFragment.class.getName()); // Change
+                bundle.putString(FrameActivity.ACTIVITY_TITLE, "InActive Leads");
+                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+                intent = new Intent(getContext(), FrameActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
         llUntaggedContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +129,7 @@ public class HomeFragment extends TabFragment {
             public void onClick(View view) {
                 Intent intent;
                 Bundle bundle = new Bundle();
-                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsListFragment.class.getName());
+                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, PendingProspectsFragment.class.getName());
                 bundle.putString(FrameActivity.ACTIVITY_TITLE, "Pending Prospects");
                 bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
                 intent = new Intent(getContext(), FrameActivity.class);

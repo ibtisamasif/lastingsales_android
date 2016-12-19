@@ -6,11 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.NotesListAdapter;
+import com.example.muzafarimran.lastingsales.adapters.NotesListAdapter2;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 
@@ -34,6 +38,7 @@ public class NotesByContactsActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarContactDetailsActivity);
         toolbar.setTitle("Contact Details");
         EditText editText = (EditText) findViewById(R.id.noteLine);
+        ImageView imageView = (ImageView) findViewById(R.id.ivbutton);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,8 +52,27 @@ public class NotesByContactsActivity extends AppCompatActivity {
                 selectedContact = LSContact.findById(LSContact.class, contactIDLong);
             }
         }
-        ArrayList<LSNote> allNotesOfThisContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId());
-        lvNotesList.setAdapter(new NotesListAdapter(getApplicationContext(),allNotesOfThisContact));
+        final ArrayList<LSNote> allNotesOfThisContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId());
+        lvNotesList.setAdapter(new NotesListAdapter2(getApplicationContext(),allNotesOfThisContact));
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editText = (EditText) findViewById(R.id.noteLine);
+                //add new note to user
+                LSNote tempNote = new LSNote();
+                String note = editText.getText().toString();
+                tempNote.setNoteText(note);
+                tempNote.setContactOfNote(selectedContact);
+                tempNote.save();
+                editText.setText(null);
+                lvNotesList.setAdapter(new NotesListAdapter2(getApplicationContext(),(ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId())));
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(NotesByContactsActivity.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+                Toast.makeText(NotesByContactsActivity.this, "Note Added", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

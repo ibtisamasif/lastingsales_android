@@ -108,6 +108,7 @@ public class LSContact extends SugarRecord {
         }
     }
 
+    @Deprecated
     public static List<LSContact> getAllPendingProspectsContacts() {
         try {
 

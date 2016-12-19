@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.ColleagueContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.InActiveLeadsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.PendingProspectsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.List;
@@ -22,11 +22,12 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * Created by ibtisam on 12/17/2016.
  */
-public class InActiveLeadsFragment extends  TabFragment{
+
+public class PendingProspectsFragment extends TabFragment{
 
     private static final String TAG = "PendingProspectsFragment";
     ListView listView = null;
-    InActiveLeadsAdapter inActiveLeadsAdapter;
+    PendingProspectsAdapter pendingProspectsAdapter;
     private TinyBus bus;
 
     public static CollegueFragment newInstance(int page, String title) {
@@ -39,8 +40,8 @@ public class InActiveLeadsFragment extends  TabFragment{
     }
 
     public void setList(List<LSContact> contacts) {
-        if (inActiveLeadsAdapter != null) {
-            inActiveLeadsAdapter.setList(contacts);
+        if (pendingProspectsAdapter != null) {
+            pendingProspectsAdapter.setList(contacts);
         }
     }
 
@@ -48,7 +49,7 @@ public class InActiveLeadsFragment extends  TabFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        inActiveLeadsAdapter = new InActiveLeadsAdapter(getContext(), LSContact.getAllInactiveLeadContacts());
+        pendingProspectsAdapter = new PendingProspectsAdapter(getContext(), null, LSContact.SALES_STATUS_PROSTPECT);
         setHasOptionsMenu(true);
     }
 
@@ -70,23 +71,23 @@ public class InActiveLeadsFragment extends  TabFragment{
     @Subscribe
     public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
         Log.d(TAG, "onColleagueContactEvent() called with: event = [" + event + "]");
-        List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
+        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
         setList(contacts);
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
     public void onBackPressedEventModel(BackPressedEventModel event) {
-        if (!event.backPressHandled && inActiveLeadsAdapter.isDeleteFlow()) {
+        if (!event.backPressHandled && pendingProspectsAdapter.isDeleteFlow()) {
             event.backPressHandled = true;
-            inActiveLeadsAdapter.setDeleteFlow(false);
+            pendingProspectsAdapter.setDeleteFlow(false);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
+        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
         setList(contacts);
     }
 
@@ -96,7 +97,7 @@ public class InActiveLeadsFragment extends  TabFragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pending_prospects, container, false);
         listView = (ListView) view.findViewById(R.id.pending_prospects_contacts_list);
-        listView.setAdapter(inActiveLeadsAdapter);
+        listView.setAdapter(pendingProspectsAdapter);
         setHasOptionsMenu(true);
         return view;
     }
