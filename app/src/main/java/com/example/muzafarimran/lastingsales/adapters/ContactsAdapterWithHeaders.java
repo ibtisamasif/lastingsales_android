@@ -121,8 +121,8 @@ public class ContactsAdapterWithHeaders extends BaseAdapter implements Filterabl
             if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.section_separator_two_text_views, parent, false);
                 separatorviewHolder = new separatorViewHolder();
-                separatorviewHolder.salesType = (TextView) convertView.findViewById(R.id.section_separator_first_text);
-                separatorviewHolder.salesTypeCount = (TextView) convertView.findViewById(R.id.section_separator_second_text);
+                separatorviewHolder.salesType = (TextView) convertView.findViewById(R.id.section_separator_header_name);
+                separatorviewHolder.salesTypeCount = (TextView) convertView.findViewById(R.id.section_separator_header_count);
                 convertView.setTag(separatorviewHolder);
             } else {
                 separatorviewHolder = (separatorViewHolder) convertView.getTag();

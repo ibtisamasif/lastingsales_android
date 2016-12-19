@@ -35,6 +35,8 @@
         android:layout_marginBottom="11dp"
         android:layout_marginLeft="11dp"
         android:layout_marginRight="11dp"
+        app:fab_showAnimation="@anim/fab_scale_up"
+        app:fab_hideAnimation="@anim/fab_scale_down"
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"

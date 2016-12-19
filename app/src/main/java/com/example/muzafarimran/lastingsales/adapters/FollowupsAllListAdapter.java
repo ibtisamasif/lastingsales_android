@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.fragments.FollowupsListFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
@@ -17,19 +18,28 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+
 /**
  * Created by ahmad on 01-Nov-16.
  */
 
-public class FollowupsListAdapter2 extends BaseAdapter {
-    LayoutInflater inflater;
-    Context context;
-    ArrayList<TempFollowUp> follouwpsList;
+public class FollowupsAllListAdapter extends BaseAdapter implements StickyListHeadersAdapter {
+    private LayoutInflater inflater;
+    private Context context;
+    private ArrayList<TempFollowUp> follouwpsList;
+    private FollowupsListFragment followupsListFragment;
+    private ArrayList<TempFollowUp> TodayFollowups;
+    private ArrayList<TempFollowUp> UpcomingFollowups;
 
-    public FollowupsListAdapter2(Context context, ArrayList<TempFollowUp> follouwpsList) {
+    public FollowupsAllListAdapter(Context context, ArrayList<TempFollowUp> follouwpsList) {
         this.context = context;
         this.follouwpsList = follouwpsList;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        followupsListFragment = new FollowupsListFragment();
+        followupsListFragment.getTodaysAndUpcomingFollowups();
+        setUpcomingFollowups(followupsListFragment.getUpcomingFollowups());
+        setTodayFollowups(followupsListFragment.getTodayFollowups());
     }
 
     @Override
@@ -106,11 +116,69 @@ public class FollowupsListAdapter2 extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        HeaderViewHolder headerViewHolder;
+        if (convertView == null) {
+            headerViewHolder = new HeaderViewHolder();
+            convertView = inflater.inflate(R.layout.section_separator_two_text_views, parent, false);
+            headerViewHolder.headerName = (TextView) convertView.findViewById(R.id.section_separator_header_name);
+            headerViewHolder.headerCount = (TextView) convertView.findViewById(R.id.section_separator_header_count);
+            convertView.setTag(headerViewHolder);
+        } else {
+            headerViewHolder = (HeaderViewHolder) convertView.getTag();
+        }
+
+        if (getHeaderId(position) == 0) {
+            headerViewHolder.headerName.setText("UPCOMING");
+            headerViewHolder.headerCount.setText("( " + getUpcomingFollowups().size()+" )");
+        } else if (getHeaderId(position) == 1) {
+            headerViewHolder.headerName.setText("TODAY");
+            headerViewHolder.headerCount.setText("( "+ getTodayFollowups().size()+" )");
+        }
+        return convertView;
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        TempFollowUp oneFollowup = follouwpsList.get(position);
+        Calendar endOfToday = Calendar.getInstance();
+        endOfToday.add(Calendar.DAY_OF_MONTH, 1);
+        endOfToday.set(Calendar.HOUR_OF_DAY, 0);
+        endOfToday.set(Calendar.MINUTE, 0);
+        if (oneFollowup.getDateTimeForFollowup() > endOfToday.getTimeInMillis()) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     // The ViewHolder, only one tvContactName for simplicity and demonstration purposes, you can put all the views inside a row of the list into this ViewHolder
     private static class ViewHolder {
         TextView contactName;
         TextView followupDate;
         TextView followupTime;
         TextView followupNote;
+    }
+
+    class HeaderViewHolder {
+        TextView headerName;
+        TextView headerCount;
+    }
+
+    public ArrayList<TempFollowUp> getTodayFollowups() {
+        return TodayFollowups;
+    }
+
+    public void setTodayFollowups(ArrayList<TempFollowUp> todayFollowups) {
+        TodayFollowups = todayFollowups;
+    }
+
+    public ArrayList<TempFollowUp> getUpcomingFollowups() {
+        return UpcomingFollowups;
+    }
+
+    public void setUpcomingFollowups(ArrayList<TempFollowUp> upcomingFollowups) {
+        UpcomingFollowups = upcomingFollowups;
     }
 }

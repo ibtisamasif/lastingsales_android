@@ -31,7 +31,7 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UntaggedContactsCallsFragment extends SearchFragment {
+public class UntaggedContactsCallsFragment extends Fragment {
 
     private static final String TAG = "UntaggedCallFragment";
     UntaggedContactsCallsAdapter untaggedContactsCallsAdapter;
@@ -106,7 +106,7 @@ public class UntaggedContactsCallsFragment extends SearchFragment {
 
     private void updateCallsList() {
 
-        List<LSCall> untaggedCalls = new ArrayList<>();
+        List<LSCall> untaggedCalls = LSCall.getUniqueCallsWithoutContacts();
         List<LSCall> allCalls = LSCall.listAll(LSCall.class);
         for (LSCall oneCall : allCalls) {
             if (oneCall.getContact() == null) {
@@ -125,25 +125,12 @@ public class UntaggedContactsCallsFragment extends SearchFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search_options_menu, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        materialSearchView.setMenuItem(item);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
         listView = (ListView) view.findViewById(R.id.calls_list);
         listView.setAdapter(untaggedContactsCallsAdapter);
         return view;
-    }
-
-    @Override
-    protected void onSearch(String query) {
-        untaggedContactsCallsAdapter.getFilter().filter(query);
     }
 
     @Override
@@ -156,5 +143,4 @@ public class UntaggedContactsCallsFragment extends SearchFragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

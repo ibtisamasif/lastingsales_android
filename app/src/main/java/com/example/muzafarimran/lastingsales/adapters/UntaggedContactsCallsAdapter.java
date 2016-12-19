@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
 import static android.view.View.GONE;
 
 /**
@@ -261,6 +264,7 @@ public class UntaggedContactsCallsAdapter extends BaseAdapter implements Filtera
             }
         };
     }
+
 
     static class ViewHolder {
         TextView name;
