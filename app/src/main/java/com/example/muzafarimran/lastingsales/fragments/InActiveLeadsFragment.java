@@ -13,6 +13,7 @@ import com.example.muzafarimran.lastingsales.Events.ColleagueContactAddedEventMo
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.InActiveLeadsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class InActiveLeadsFragment extends  TabFragment{
     private static final String TAG = "PendingProspectsFragment";
     ListView listView = null;
     InActiveLeadsAdapter inActiveLeadsAdapter;
+    MaterialSearchView searchView;
     private TinyBus bus;
 
     public static CollegueFragment newInstance(int page, String title) {
@@ -97,6 +99,20 @@ public class InActiveLeadsFragment extends  TabFragment{
         View view = inflater.inflate(R.layout.fragment_pending_prospects, container, false);
         listView = (ListView) view.findViewById(R.id.pending_prospects_contacts_list);
         listView.setAdapter(inActiveLeadsAdapter);
+        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                inActiveLeadsAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                inActiveLeadsAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         setHasOptionsMenu(true);
         return view;
     }

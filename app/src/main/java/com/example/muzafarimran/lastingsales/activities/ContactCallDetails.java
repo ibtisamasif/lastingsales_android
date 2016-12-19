@@ -3,12 +3,13 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
@@ -26,11 +27,14 @@ public class ContactCallDetails extends AppCompatActivity {
     Button bTagButton;
     private String number = "";
     private String name = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact_call_details);
+        setContentView(R.layout.activity_contact_call_details_ap_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bTagButton = (Button) findViewById(R.id.b_tag_individual_contact_call_screen);
         Intent intent = getIntent();
         this.number = intent.getStringExtra("number");
@@ -44,7 +48,6 @@ public class ContactCallDetails extends AppCompatActivity {
             bTagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(ContactCallDetails.this, "I AM PRESSED", Toast.LENGTH_SHORT).show();
                     Intent addContactIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
                     addContactIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
                     addContactIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
@@ -57,6 +60,7 @@ public class ContactCallDetails extends AppCompatActivity {
         {
             setUpList();
         }
+        getSupportActionBar().setTitle("Call Details");
     }
 
     private void setUpList() {
@@ -76,4 +80,22 @@ public class ContactCallDetails extends AppCompatActivity {
         IndividualConatactCallAdapter indadapter = new IndividualConatactCallAdapter(ContactCallDetails.this, allCalls);
         listview.setAdapter(indadapter);
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.ic_action_edit:
+//                Intent addContactScreenIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
+//                addContactScreenIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+//                addContactScreenIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contactIdString);
+//                startActivity(addContactScreenIntent);
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

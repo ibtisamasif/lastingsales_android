@@ -21,7 +21,7 @@
     <color name="colorPrimaryDark">#d0898989</color>
 
     <color name="action_bar_background_color">@color/colorPrimaryDark</color>
-    <color name="tab_indicator_color">@color/lightBlue</color>
+    <color name="tab_indicator_color">@color/darkBlue</color>
     <color name="fab_contact_menu_normal">@color/lightBlue</color>
     <color name="fab_contact_menu_pressed">@color/darkBlue</color>
     <color name="fab_contact_menu_text_background_normal">#333</color>

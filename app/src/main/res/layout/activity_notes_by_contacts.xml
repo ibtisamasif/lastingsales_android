@@ -62,11 +62,11 @@
             android:paddingLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:hint="Type:"
             android:imeOptions="actionSend"
             android:maxLines="5"
             android:background="@color/white"
-            android:layout_weight="8"/>
+            android:layout_weight="8"
+            android:hint="Add Note:" />
 
         <ImageView
             android:text="Submit"

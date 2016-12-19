@@ -43,7 +43,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
     CallRecord callRecord;
     ImageView ivProfileImage;
     boolean shouldShowSearchMenu = false;
-    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
+//    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,14 +85,48 @@ public class NavigationDrawerActivity extends AppCompatActivity
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.menu_icon_home_selected);
+        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone);
+        tabLayout.getTabAt(2).setIcon(R.drawable.menu_icon_contact);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 shouldShowSearchMenu = tab.getPosition() != 0;
+                switch (tab.getPosition()) {
+                    case 0:
+                        tab.setIcon(R.drawable.menu_icon_home_selected);
+                        break;
+                    case 1:
+                        tab.setIcon(R.drawable.menu_icon_phone_selected);
+                        //((TextView)(myToolbar.findViewById(R.id.title))).setText("CALL LOGS");
+                        break;
+                    case 2:
+                        tab.setIcon(R.drawable.menu_icon_contact_selected);
+                        // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
+                        break;
+//                case 3:
+//                    tab.setIcon(R.drawable.menu_icon_menu_selected_aqua);
+//                    // ((TextView)(myToolbar.findViewById(R.id.title))).setText("MENU");
+//                    break;
+                }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        tab.setIcon(R.drawable.menu_icon_home);
+                        break;
+                    case 1:
+                        tab.setIcon(R.drawable.menu_icon_phone);
+                        break;
+                    case 2:
+                        tab.setIcon(R.drawable.menu_icon_contact);
+                        break;
+//                case 3:
+//                    tab.setIcon(R.drawable.menu_icon_menu);
+//                    break;
+                }
             }
 
             @Override
@@ -175,9 +209,9 @@ public class NavigationDrawerActivity extends AppCompatActivity
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (id == R.id.nav_item_notes) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, NotesListByContactsFragment.class.getName()); //Working
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, NotesListByContactsFragment.class.getName());
             bundle.putString(FrameActivity.ACTIVITY_TITLE, "Notes List");
-            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
+            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
@@ -192,50 +226,51 @@ public class NavigationDrawerActivity extends AppCompatActivity
         return searchView;
     }
 
-    public class tabSelectedListener implements TabLayout.OnTabSelectedListener {
-
-        @Override
-        public void onTabSelected(TabLayout.Tab tab) {
-            switch (tab.getPosition()) {
-                case 0:
+//    public class tabSelectedListener implements TabLayout.OnTabSelectedListener {
+//
+//        @Override
+//        public void onTabSelected(TabLayout.Tab tab) {
+//            switch (tab.getPosition()) {
+//                case 0:
 //                    tab.setIcon(R.drawable.menu_icon_home_selected_aqua);
-                    break;
-                case 1:
+//                    Toast.makeText(NavigationDrawerActivity.this, "Shukr", Toast.LENGTH_SHORT).show();
+//                    break;
+//                case 1:
 //                    tab.setIcon(R.drawable.menu_icon_phone_selected_aqua);
-                    //((TextView)(myToolbar.findViewById(R.id.title))).setText("CALL LOGS");
-                    break;
-                case 2:
+//                    //((TextView)(myToolbar.findViewById(R.id.title))).setText("CALL LOGS");
+//                    break;
+//                case 2:
 //                    tab.setIcon(R.drawable.menu_icon_contact_selected_aqua);
-                    // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
-                    break;
-                case 3:
-//                    tab.setIcon(R.drawable.menu_icon_menu_selected_aqua);
-                    // ((TextView)(myToolbar.findViewById(R.id.title))).setText("MENU");
-                    break;
-            }
-        }
-
-        @Override
-        public void onTabUnselected(TabLayout.Tab tab) {
-            switch (tab.getPosition()) {
-                case 0:
+//                    // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
+//                    break;
+////                case 3:
+////                    tab.setIcon(R.drawable.menu_icon_menu_selected_aqua);
+////                    // ((TextView)(myToolbar.findViewById(R.id.title))).setText("MENU");
+////                    break;
+//            }
+//        }
+//
+//        @Override
+//        public void onTabUnselected(TabLayout.Tab tab) {
+//            switch (tab.getPosition()) {
+//                case 0:
 //                    tab.setIcon(R.drawable.menu_icon_home);
-                    break;
-                case 1:
+//                    break;
+//                case 1:
 //                    tab.setIcon(R.drawable.menu_icon_phone);
-                    break;
-                case 2:
+//                    break;
+//                case 2:
 //                    tab.setIcon(R.drawable.menu_icon_contact);
-                    break;
-                case 3:
-//                    tab.setIcon(R.drawable.menu_icon_menu);
-                    break;
-            }
-        }
-
-        @Override
-        public void onTabReselected(TabLayout.Tab tab) {
-            //int position = tab.getPosition();
-        }
-    }
+//                    break;
+////                case 3:
+////                    tab.setIcon(R.drawable.menu_icon_menu);
+////                    break;
+//            }
+//        }
+//
+//        @Override
+//        public void onTabReselected(TabLayout.Tab tab) {
+//            //int position = tab.getPosition();
+//        }
+//    }
 }

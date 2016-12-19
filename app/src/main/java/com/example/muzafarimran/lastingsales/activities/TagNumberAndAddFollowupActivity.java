@@ -117,8 +117,8 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         llContactDetailsFollowupScreen = (LinearLayout) findViewById(R.id.llContactDetailsAddFollowupScreen);
 
         //Added by ibtisam
-        int notificationId = getIntent().getIntExtra("notificationId" , 1);
-        if(notificationId!=0){
+        int notificationId = getIntent().getIntExtra("notificationId", 1);
+        if (notificationId != 0) {
             NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             manager.cancel(notificationId);
         }
@@ -233,43 +233,58 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation && !editingMode) {
-                        String titleText = null;
-                        String noteText = null;
-                        TempFollowUp tempFollowUp = new TempFollowUp();
-                        LSContact tempContact = new LSContact();
-                        tempContact.setContactName(contactName);
-                        tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone));
-                        tempContact.setContactType(selectedContactType);
-                        tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                        tempContact.save();
-                        if (etNoteText != null) {
-                            noteText = etNoteText.getText().toString();
-                            if (!noteText.isEmpty() && !noteText.equals("")) {
-                                LSNote tempNote = new LSNote();
-                                tempNote.setNoteText(noteText);
-                                tempNote.setContactOfNote(tempContact);
-                                tempNote.save();
-                            }
-                        }
-                        if (etFollowupTitleText != null) {
-                            titleText = etFollowupTitleText.getText().toString();
-                            tempFollowUp.setTitle(titleText);
+
+                        //modified by ibtisam
+                        String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
+                        LSContact checkContact;
+                        checkContact = LSContact.getContactFromNumber(intlNum);
+                        if (checkContact != null) {
+                            Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
                         } else {
-                            titleText = "Empty";
+
+                            String titleText = null;
+                            String noteText = null;
+                            TempFollowUp tempFollowUp = new TempFollowUp();
+                            LSContact tempContact = new LSContact();
+                            tempContact.setContactName(contactName);
+                            tempContact.setPhoneOne(intlNum);
+                            tempContact.setContactType(selectedContactType);
+                            if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
+                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                            } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+//                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
+                            }
+                            //modified by ibtisam
+                            tempContact.save();
+                            if (etNoteText != null) {
+                                noteText = etNoteText.getText().toString();
+                                if (!noteText.isEmpty() && !noteText.equals("")) {
+                                    LSNote tempNote = new LSNote();
+                                    tempNote.setNoteText(noteText);
+                                    tempNote.setContactOfNote(tempContact);
+                                    tempNote.save();
+                                }
+                            }
+                            if (etFollowupTitleText != null) {
+                                titleText = etFollowupTitleText.getText().toString();
+                                tempFollowUp.setTitle(titleText);
+                            } else {
+                                titleText = "Empty";
+                            }
+                            if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                                Calendar dateTimeForFollowup = Calendar.getInstance();
+                                dateTimeForFollowup.set(Calendar.YEAR, year);
+                                dateTimeForFollowup.set(Calendar.MONTH, month);
+                                dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
+                                dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
+                                dateTimeForFollowup.set(Calendar.MINUTE, minute);
+                                tempFollowUp.setContact(tempContact);
+                                tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                tempFollowUp.save();
+                                setAlarm(getApplicationContext(), tempFollowUp);
+                            }
+                            finish();
                         }
-                        if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
-                            Calendar dateTimeForFollowup = Calendar.getInstance();
-                            dateTimeForFollowup.set(Calendar.YEAR, year);
-                            dateTimeForFollowup.set(Calendar.MONTH, month);
-                            dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
-                            dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
-                            dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                            tempFollowUp.setContact(tempContact);
-                            tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                            tempFollowUp.save();
-                            setAlarm(getApplicationContext(), tempFollowUp);
-                        }
-                        finish();
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
                     etContactName.setError(null);
@@ -286,43 +301,56 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation && !editingMode) {
-                        String titleText = null;
-                        String noteText = null;
-                        TempFollowUp tempFollowUp = new TempFollowUp();
-                        LSContact tempContact = new LSContact();
-                        tempContact.setContactName(contactName);
-                        tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone));
-                        tempContact.setContactType(selectedContactType);
-                        tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                        tempContact.save();
-                        if (etNoteText != null) {
-                            noteText = etNoteText.getText().toString();
-                            if (!noteText.isEmpty() && !noteText.equals("")) {
-                                LSNote tempNote = new LSNote();
-                                tempNote.setNoteText(noteText);
-                                tempNote.setContactOfNote(tempContact);
-                                tempNote.save();
-                            }
-                        }
-                        if (etFollowupTitleText != null) {
-                            titleText = etFollowupTitleText.getText().toString();
-                            tempFollowUp.setTitle(titleText);
+                        //modified by ibtisam
+                        String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
+                        LSContact checkContact;
+                        checkContact = LSContact.getContactFromNumber(intlNum);
+                        if (checkContact != null) {
+                            Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
                         } else {
-                            titleText = "Empty";
+                            String titleText = null;
+                            String noteText = null;
+                            TempFollowUp tempFollowUp = new TempFollowUp();
+                            LSContact tempContact = new LSContact();
+                            tempContact.setContactName(contactName);
+                            tempContact.setPhoneOne(intlNum);
+                            tempContact.setContactType(selectedContactType);
+                            if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
+                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                            } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+//                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
+                            }
+                            tempContact.save();
+                            if (etNoteText != null) {
+                                noteText = etNoteText.getText().toString();
+                                if (!noteText.isEmpty() && !noteText.equals("")) {
+                                    LSNote tempNote = new LSNote();
+                                    tempNote.setNoteText(noteText);
+                                    tempNote.setContactOfNote(tempContact);
+                                    tempNote.save();
+                                }
+                            }
+                            if (etFollowupTitleText != null) {
+                                titleText = etFollowupTitleText.getText().toString();
+                                tempFollowUp.setTitle(titleText);
+                            } else {
+                                titleText = "Empty";
+                            }
+                            if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                                Calendar dateTimeForFollowup = Calendar.getInstance();
+                                dateTimeForFollowup.set(Calendar.YEAR, year);
+                                dateTimeForFollowup.set(Calendar.MONTH, month);
+                                dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
+                                dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
+                                dateTimeForFollowup.set(Calendar.MINUTE, minute);
+                                tempFollowUp.setContact(tempContact);
+                                tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                tempFollowUp.save();
+                                setAlarm(getApplicationContext(), tempFollowUp);
+                            }
+                            finish();
                         }
-                        if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
-                            Calendar dateTimeForFollowup = Calendar.getInstance();
-                            dateTimeForFollowup.set(Calendar.YEAR, year);
-                            dateTimeForFollowup.set(Calendar.MONTH, month);
-                            dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
-                            dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
-                            dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                            tempFollowUp.setContact(tempContact);
-                            tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                            tempFollowUp.save();
-                            setAlarm(getApplicationContext(), tempFollowUp);
-                        }
-                        finish();
+
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
                     etContactName.setError(null);
@@ -346,7 +374,13 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         tempContact.setContactName(contactName);
                         tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone));
                         tempContact.setContactType(selectedContactType);
-                        tempContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                        //Modified by ibtisam
+                        if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
+                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                        } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+//                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
+                        }
+                        //Modified by ibtisam
                         tempContact.save();
                         if (etNoteText != null) {
                             noteText = etNoteText.getText().toString();
@@ -392,43 +426,56 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation && editingMode) {
-                        String titleText = null;
-                        String noteText = null;
-                        TempFollowUp tempFollowUp = new TempFollowUp();
-                        LSContact tempContact = selectedContact;
-                        tempContact.setContactName(contactName);
-                        tempContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone));
-                        tempContact.setContactType(selectedContactType);
-                        tempContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                        tempContact.save();
-                        if (etNoteText != null) {
-                            noteText = etNoteText.getText().toString();
-                            if (!noteText.isEmpty() && !noteText.equals("")) {
-                                LSNote tempNote = new LSNote();
-                                tempNote.setNoteText(noteText);
-                                tempNote.setContactOfNote(tempContact);
-                                tempNote.save();
-                            }
-                        }
-                        if (etFollowupTitleText != null) {
-                            titleText = etFollowupTitleText.getText().toString();
-                            tempFollowUp.setTitle(titleText);
+                        //modified by ibtisam
+                        String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
+                        LSContact checkContact;
+                        checkContact = LSContact.getContactFromNumber(intlNum);
+                        if (checkContact != null) {
+                            Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
                         } else {
-                            titleText = "Empty";
+                            String titleText = null;
+                            String noteText = null;
+                            TempFollowUp tempFollowUp = new TempFollowUp();
+                            LSContact tempContact = selectedContact;
+                            tempContact.setContactName(contactName);
+                            tempContact.setPhoneOne(intlNum);
+                            tempContact.setContactType(selectedContactType);
+                            if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
+                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                            } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+//                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
+                            }
+                            //modified by ibtisam
+                            tempContact.save();
+                            if (etNoteText != null) {
+                                noteText = etNoteText.getText().toString();
+                                if (!noteText.isEmpty() && !noteText.equals("")) {
+                                    LSNote tempNote = new LSNote();
+                                    tempNote.setNoteText(noteText);
+                                    tempNote.setContactOfNote(tempContact);
+                                    tempNote.save();
+                                }
+                            }
+                            if (etFollowupTitleText != null) {
+                                titleText = etFollowupTitleText.getText().toString();
+                                tempFollowUp.setTitle(titleText);
+                            } else {
+                                titleText = "Empty";
+                            }
+                            if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                                Calendar dateTimeForFollowup = Calendar.getInstance();
+                                dateTimeForFollowup.set(Calendar.YEAR, year);
+                                dateTimeForFollowup.set(Calendar.MONTH, month);
+                                dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
+                                dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
+                                dateTimeForFollowup.set(Calendar.MINUTE, minute);
+                                tempFollowUp.setContact(tempContact);
+                                tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                tempFollowUp.save();
+                                setAlarm(getApplicationContext(), tempFollowUp);
+                            }
+                            finish();
                         }
-                        if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
-                            Calendar dateTimeForFollowup = Calendar.getInstance();
-                            dateTimeForFollowup.set(Calendar.YEAR, year);
-                            dateTimeForFollowup.set(Calendar.MONTH, month);
-                            dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
-                            dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
-                            dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                            tempFollowUp.setContact(tempContact);
-                            tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                            tempFollowUp.save();
-                            setAlarm(getApplicationContext(), tempFollowUp);
-                        }
-                        finish();
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
 

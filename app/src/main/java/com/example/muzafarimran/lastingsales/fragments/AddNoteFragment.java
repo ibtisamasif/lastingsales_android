@@ -31,6 +31,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link AddNoteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@Deprecated
 public class AddNoteFragment extends Fragment {
 
 

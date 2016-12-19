@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +23,7 @@ import java.util.List;
  * Created by ibtisam on 12/14/2016.
  */
 
-public class NotesListByContactAdapter extends BaseAdapter {
+public class NotesListByContactAdapter extends BaseAdapter  implements Filterable{
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
@@ -133,6 +135,42 @@ public class NotesListByContactAdapter extends BaseAdapter {
 
     private boolean isSeparator(int position) {
         return filteredData.get(position).getContactType() == "separator";
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                FilterResults results = new Filter.FilterResults();
+                //If there's nothing to filter on, return the original data for list
+                if (charSequence == null || charSequence.length() == 0) {
+                    results.values = mContacts;
+                    results.count = mContacts.size();
+                } else {
+                    List<LSContact> filterResultsData = new ArrayList<>();
+                    //int length = charSequence.length();
+                    for (int i = 0; i < mContacts.size(); i++) {
+                        if (mContacts.get(i).getContactType().toLowerCase() != "separator" && mContacts.get(i).getContactName().toLowerCase().contains(((String) charSequence).toLowerCase())) {
+                            filterResultsData.add(mContacts.get(i));
+                            continue;
+                        }
+                        if (mContacts.get(i).getContactType().toLowerCase() != "separator" && mContacts.get(i).getPhoneOne().toLowerCase().contains(((String) charSequence).toLowerCase())) {
+                            filterResultsData.add(mContacts.get(i));
+                        }
+                    }
+                    results.values = filterResultsData;
+                    results.count = filterResultsData.size();
+                }
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                filteredData = ((List<LSContact>) filterResults.values);
+                notifyDataSetChanged();
+            }
+        };
     }
 
     /*

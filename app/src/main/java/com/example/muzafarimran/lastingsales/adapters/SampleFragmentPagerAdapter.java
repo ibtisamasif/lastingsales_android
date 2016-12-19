@@ -9,7 +9,6 @@ import com.example.muzafarimran.lastingsales.fragments.HomeFragment;
 import com.example.muzafarimran.lastingsales.fragments.MissedCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
-import com.example.muzafarimran.lastingsales.fragments.UntaggedContactsCallsFragment;
 
 
 /**
@@ -19,6 +18,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     final int TAB_COUNT = 3;
     private String tabTitles[] = new String[]{"Home", "Inquiries", "Sales"};
     private Context context;
+
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -47,9 +47,8 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         return TAB_COUNT;
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
+//    @Override
+//    public CharSequence getPageTitle(int position) {
 //        return tabTitles[position];
-        return tabTitles[position];
-    }
+//    }
 }

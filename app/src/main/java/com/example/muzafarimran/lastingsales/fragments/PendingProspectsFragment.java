@@ -13,6 +13,7 @@ import com.example.muzafarimran.lastingsales.Events.ColleagueContactAddedEventMo
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.PendingProspectsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class PendingProspectsFragment extends TabFragment{
     private static final String TAG = "PendingProspectsFragment";
     ListView listView = null;
     PendingProspectsAdapter pendingProspectsAdapter;
+    MaterialSearchView searchView;
     private TinyBus bus;
 
     public static CollegueFragment newInstance(int page, String title) {
@@ -72,6 +74,9 @@ public class PendingProspectsFragment extends TabFragment{
     public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
         Log.d(TAG, "onColleagueContactEvent() called with: event = [" + event + "]");
         List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        //Filtering out colleagues from list
+        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        contacts.removeAll(allCollegues);
         setList(contacts);
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
@@ -88,6 +93,9 @@ public class PendingProspectsFragment extends TabFragment{
     public void onResume() {
         super.onResume();
         List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        //Filtering out colleagues from list
+        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        contacts.removeAll(allCollegues);
         setList(contacts);
     }
 
@@ -98,6 +106,20 @@ public class PendingProspectsFragment extends TabFragment{
         View view = inflater.inflate(R.layout.fragment_pending_prospects, container, false);
         listView = (ListView) view.findViewById(R.id.pending_prospects_contacts_list);
         listView.setAdapter(pendingProspectsAdapter);
+        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                pendingProspectsAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                pendingProspectsAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         setHasOptionsMenu(true);
         return view;
     }

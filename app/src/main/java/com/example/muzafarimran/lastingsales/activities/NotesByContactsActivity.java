@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.NotesListAdapter2;
@@ -36,7 +35,7 @@ public class NotesByContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes_by_contacts);
         toolbar = (Toolbar) findViewById(R.id.toolbarContactDetailsActivity);
-        toolbar.setTitle("Contact Details");
+        toolbar.setTitle("Notes");
         EditText editText = (EditText) findViewById(R.id.noteLine);
         ImageView imageView = (ImageView) findViewById(R.id.ivbutton);
         setSupportActionBar(toolbar);
@@ -70,7 +69,6 @@ public class NotesByContactsActivity extends AppCompatActivity {
                         getSystemService(NotesByContactsActivity.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
-                Toast.makeText(NotesByContactsActivity.this, "Note Added", Toast.LENGTH_SHORT).show();
             }
         });
     }

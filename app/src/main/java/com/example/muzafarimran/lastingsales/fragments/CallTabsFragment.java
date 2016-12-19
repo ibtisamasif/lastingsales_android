@@ -18,6 +18,7 @@ import com.example.muzafarimran.lastingsales.adapters.CallsTabsFragmentPagerAdap
 /**
  * A simple {@link Fragment} subclass.
  */
+@Deprecated
 public class CallTabsFragment extends TabFragment {
 
     LinearLayout mainLayout;

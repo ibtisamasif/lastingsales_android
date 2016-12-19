@@ -54,8 +54,6 @@ public class NotesListByContactsFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        //Change
-//        contactsAdapter = new NotesListByContactAdapter(getContext(), null, LSContact.CONTACT_TYPE_PERSONAL);
         notesListByContactAdapter = new NotesListByContactAdapter(getContext(), null);
         setHasOptionsMenu(true);
     }
@@ -78,7 +76,6 @@ public class NotesListByContactsFragment extends TabFragment {
     @Subscribe
     public void onPersonalContactAddedEventModel(PersonalContactAddedEventModel event) {
         Log.d(TAG, "onPersonalContactAddedEvent() called with: event = [" + event + "]");
-//        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
         List<LSContact> contacts = (ArrayList<LSContact>) LSContact.listAll(LSContact.class);
         setList(contacts);
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
@@ -95,9 +92,7 @@ public class NotesListByContactsFragment extends TabFragment {
     @Override
     public void onResume() {
         super.onResume();
-        //Change
-//        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
-        List<LSContact> contacts = (ArrayList<LSContact>) LSContact.listAll(LSContact.class);
+        List<LSContact> contacts = LSContact.getAllNotesContacts();
         setList(contacts);
     }
 
@@ -106,6 +101,20 @@ public class NotesListByContactsFragment extends TabFragment {
         View view = inflater.inflate(R.layout.fragment_notes_by_contacts, container, false);
         listView = (ListView) view.findViewById(R.id.notes_contacts_list);
         listView.setAdapter(notesListByContactAdapter);
+        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                notesListByContactAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                notesListByContactAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return view;
     }
 

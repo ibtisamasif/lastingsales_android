@@ -1,5 +1,5 @@
 package com.example.muzafarimran.lastingsales.providers.models;
-
+@Deprecated
 public class Note {
     private int id;
     private String text;

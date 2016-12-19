@@ -54,8 +54,11 @@ public class HomeFragment extends TabFragment {
         llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
         llFollowupsTodayContainer = (LinearLayout) view.findViewById(R.id.llFollowupsTodayContainer);
         ArrayList<LSCall> allUniqueCallsWithoutContact = LSCall.getUniqueCallsWithoutContacts();
-        ArrayList<LSContact> allContactsAsProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        ArrayList<LSContact> allCollegues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        ArrayList<LSContact> allFilteredContactsAsProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        allFilteredContactsAsProspects.removeAll(allCollegues);
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
+
         if (allInactiveLeads != null) {
             tvInactiveLeadsValue.setText("( " + allInactiveLeads.size() + " )");
         } else {
@@ -66,8 +69,8 @@ public class HomeFragment extends TabFragment {
         } else {
             tvUntaggedContacts.setText("( " + 0 + " )");
         }
-        if (allContactsAsProspects != null) {
-            tvPendingProspectValue.setText("( " + allContactsAsProspects.size() + " )");
+        if (allFilteredContactsAsProspects != null) {
+            tvPendingProspectValue.setText("( " + allFilteredContactsAsProspects.size() + " )");
         } else {
             tvPendingProspectValue.setText("( " + 0 + " )");
         }
@@ -131,7 +134,7 @@ public class HomeFragment extends TabFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, PendingProspectsFragment.class.getName());
                 bundle.putString(FrameActivity.ACTIVITY_TITLE, "Pending Prospects");
-                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
+                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
                 intent = new Intent(getContext(), FrameActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

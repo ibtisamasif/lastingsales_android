@@ -32,6 +32,9 @@ public class LSContact extends SugarRecord {
     public static final String CONTACT_TYPE_COLLEAGUE = "type_colleague";
     @Ignore
     public static final String CONTACT_TYPE_PERSONAL = "type_personal";
+//    @Ignore
+//    public static final String CONTACT_TYPE_NONE = "type_none";
+
     //    private int contactId;
     private String contactName;
     private String contactEmail;
@@ -78,8 +81,10 @@ public class LSContact extends SugarRecord {
     }
 
     public static List<LSContact> getAllInactiveLeadContacts() {
-        try {
+        try { //TODO check weather below steps are required or not.
+            ArrayList<LSContact> allColleagues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
             ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(SALES_STATUS_LEAD);
+            allLeads.removeAll(allColleagues);
             ArrayList<LSContact> allInactiveLeads = new ArrayList<LSContact>();
 //            long milisecondsIn3Days = 259200000;
             long milliSecondsIn1Min = 30000; // 30 seconds for now
@@ -103,6 +108,26 @@ public class LSContact extends SugarRecord {
                 }
             }
             return allInactiveLeads;
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
+
+    public static List<LSContact> getAllNotesContacts() {
+        try {
+            ArrayList<LSContact> contactsAllHavingNotes = new ArrayList<LSContact>();
+            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+            ArrayList<LSContact> contacts = new ArrayList<LSContact>();
+            contacts = contactsSales;
+            contacts.addAll(contactsColleagues);
+            for (LSContact oneContact : contacts){
+                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(oneContact.getId());
+                if(allNotesOfThisContact!=null && allNotesOfThisContact.size()>0){
+                    contactsAllHavingNotes.add(oneContact);
+                }
+            }
+            return contactsAllHavingNotes;
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
@@ -152,6 +177,12 @@ public class LSContact extends SugarRecord {
         allFollowupsOfThisContact = (ArrayList<TempFollowUp>) TempFollowUp.find(TempFollowUp.class, "contact = ? ", getId() + "");
         return allFollowupsOfThisContact;
     }
+
+//    public ArrayList<LSNote> getAllNotes() {
+//        ArrayList<LSNote> allNotesOfThisContact = null;
+//        allNotesOfThisContact = (ArrayList<LSNote>) LSNote.find(LSNote.class, "contact_of_note = ? ", getId() + "");
+//        return allNotesOfThisContact;
+//    }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
