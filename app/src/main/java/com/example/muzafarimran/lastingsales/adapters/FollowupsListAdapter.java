@@ -19,7 +19,7 @@ import java.util.Calendar;
 /**
  * Created by ahmad on 01-Nov-16.
  */
-
+@Deprecated
 public class FollowupsListAdapter extends ArrayAdapter<TempFollowUp> {
     LayoutInflater inflater;
     Context context;

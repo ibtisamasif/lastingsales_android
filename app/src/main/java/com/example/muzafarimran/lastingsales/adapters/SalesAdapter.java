@@ -337,8 +337,8 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         if (convertView == null) {
             holder = new HeaderViewHolder();
             convertView = mInflater.inflate(R.layout.section_separator_two_text_views, parent, false);
-            holder.saleType = (TextView) convertView.findViewById(R.id.section_separator_first_text);
-            holder.saleTypeCount = (TextView) convertView.findViewById(R.id.section_separator_second_text);
+            holder.saleType = (TextView) convertView.findViewById(R.id.section_separator_header_name);
+            holder.saleTypeCount = (TextView) convertView.findViewById(R.id.section_separator_header_count);
             convertView.setTag(holder);
         } else {
             holder = (HeaderViewHolder) convertView.getTag();

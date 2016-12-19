@@ -45,7 +45,7 @@ public class LSCall extends SugarRecord {
     }
 
     public static ArrayList<LSCall> getUniqueCallsWithoutContacts() {
-        ArrayList<LSCall> calls = new ArrayList<>();
+        ArrayList<LSCall> untaggedCalls = new ArrayList<>();
         ArrayList<LSCall> allCalls = null;
         allCalls = (ArrayList<LSCall>) listAll(LSCall.class);
 //        calls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact").eq("null")).orderBy("contact_number DESC").list();
@@ -53,15 +53,15 @@ public class LSCall extends SugarRecord {
 //        calls = (ArrayList<LSCall>) LSCall.findWithQuery(LSCall.class, "SELECT * from LS_CALL where contact = null GROUP BY contact_number");
 //        calls = (ArrayList<LSCall>) LSCall.find(LSCall.class,"contact = ?","null");
         for (LSCall oneCall : allCalls) {
-            if (oneCall.getContact() == null) {
-                calls.add(oneCall);
+            if (oneCall.getContact() == null && !oneCall.getType().equals(LSCall.CALL_TYPE_MISSED)) {
+                untaggedCalls.add(oneCall);
             }
         }
         /*for (LSCall oneCall : calls) {
             LSCall.
         }*/
 
-        return calls;
+        return untaggedCalls;
     }
 
     public static List<LSCall> getCallsByType(String type) {

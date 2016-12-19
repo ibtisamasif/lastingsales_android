@@ -27,7 +27,6 @@ public class DeleteBottomSheetDialogFragment extends BottomSheetDialogFragment {
                 dismiss();
             }
         }
-
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
         }
@@ -50,7 +49,11 @@ public class DeleteBottomSheetDialogFragment extends BottomSheetDialogFragment {
         llDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSalesAdapter().deleteAtPosition(position);
+                ContactDeleteConfirmationDialogFragment contactDeleteConfirmationDialogFragment;
+                contactDeleteConfirmationDialogFragment = new ContactDeleteConfirmationDialogFragment();
+                contactDeleteConfirmationDialogFragment.setPosition(position);
+                contactDeleteConfirmationDialogFragment.setSalesAdapter(salesAdapter);
+                contactDeleteConfirmationDialogFragment.show(getFragmentManager(),"Delete Confirm");
                 dismiss();
 
             }

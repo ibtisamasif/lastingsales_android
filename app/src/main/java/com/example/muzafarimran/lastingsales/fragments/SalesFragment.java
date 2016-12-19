@@ -21,6 +21,7 @@ import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupA
 import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class SalesFragment extends SearchFragment {
     SalesAdapter salesAdapter;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
+    FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
 
     public static SalesFragment newInstance(int page, String title) {
@@ -115,9 +117,12 @@ public class SalesFragment extends SearchFragment {
         View view = inflater.inflate(R.layout.fragment_sales, container, false);
 //        this.addContactCta = (FloatingActionButton) view.findViewById(R.id.add_contact_cta);
 //        this.addContactCta.setOnClickListener(this.showaddcontactform);
+        floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu);
         floatingActionButtonAdd = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
         floatingActionButtonImport = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import);
         salesAdapter.setSupportFragmentManager(getFragmentManager());
+        floatingActionMenu.setClosedOnTouchOutside(true);
+
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

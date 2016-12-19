@@ -118,7 +118,7 @@ public class HomeFragment extends TabFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UntaggedContactsCallsFragment.class.getName());
                 bundle.putString(FrameActivity.ACTIVITY_TITLE, "Untagged Contacts");
-                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
                 intent = new Intent(getContext(), FrameActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -142,7 +142,7 @@ public class HomeFragment extends TabFragment {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsTodayListFragment.class.getName());
-                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Followups List");
+                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Followups Today");
                 bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
                 Intent intent = new Intent(getContext(), FrameActivity.class);
                 intent.putExtras(bundle);

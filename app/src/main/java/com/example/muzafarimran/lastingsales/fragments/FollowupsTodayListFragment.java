@@ -6,15 +6,19 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.FollowupsListAdapter2;
+import com.example.muzafarimran.lastingsales.adapters.FollowupsTodayListAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 /**
  * Created by ahmad on 10-Dec-16.
@@ -22,15 +26,17 @@ import java.util.List;
 
 public class FollowupsTodayListFragment extends Fragment {
     public static final String TAG = "MissedCallFragment";
-    FollowupsListAdapter2 followupsAdapter;
-    ListView listView = null;
+    FollowupsTodayListAdapter followupsAdapter;
+    ExpandableStickyListHeadersListView listView = null;
+    ArrayList<TempFollowUp> DueFollowups;
+    ArrayList<TempFollowUp> DoneFollowups;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         ArrayList<TempFollowUp> followUps = getFollowupsOFToday();
-        followupsAdapter = new FollowupsListAdapter2(getContext(),followUps);
+        followupsAdapter = new FollowupsTodayListAdapter(getContext(),followUps);
         setHasOptionsMenu(true);
     }
     public void setList(List<TempFollowUp> followUps) {
@@ -47,9 +53,19 @@ public class FollowupsTodayListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_followups_list, container, false);
-        listView = (ListView) view.findViewById(R.id.followups_list_view_in_fragment);
+        View view = inflater.inflate(R.layout.fragment_followups_today_list, container, false);
+        listView = (ExpandableStickyListHeadersListView) view.findViewById(R.id.followups_list_view_in_fragment);
         listView.setAdapter(followupsAdapter);
+        listView.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
+            @Override
+            public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
+                if (listView.isHeaderCollapsed(headerId)) {
+                    listView.expand(headerId);
+                } else {
+                    listView.collapse(headerId);
+                }
+            }
+        });
         return view;
     }
     @Override
@@ -63,7 +79,7 @@ public class FollowupsTodayListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private ArrayList<TempFollowUp> getFollowupsOFToday()
+    public ArrayList<TempFollowUp> getFollowupsOFToday()
     {
         ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
         Calendar now = Calendar.getInstance();
@@ -80,6 +96,55 @@ public class FollowupsTodayListFragment extends Fragment {
                 followupsInToday.add(oneFollowup);
             }
         }
-        return followupsInToday;
+        ArrayList<TempFollowUp> dueFollowups = new ArrayList<>();
+        for (TempFollowUp oneFollowup : followupsInToday) {
+            if (oneFollowup.getDateTimeForFollowup() > now.getTimeInMillis()) {
+                dueFollowups.add(oneFollowup);
+            }
+        }
+        ArrayList<TempFollowUp> doneFollowups = new ArrayList<>();
+        for (TempFollowUp oneFollowup : followupsInToday) {
+            if (oneFollowup.getDateTimeForFollowup() < now.getTimeInMillis()) {
+                doneFollowups.add(oneFollowup);
+            }
+        }
+        Collections.sort(dueFollowups, new Comparator<TempFollowUp>() {
+            @Override
+            public int compare(TempFollowUp tempFollowUp, TempFollowUp t1) {
+                return tempFollowUp.getDateTimeForFollowup().compareTo(t1.getDateTimeForFollowup());
+            }
+        });
+        Collections.sort(doneFollowups, new Comparator<TempFollowUp>() {
+            @Override
+            public int compare(TempFollowUp tempFollowUp, TempFollowUp t1) {
+                return tempFollowUp.getDateTimeForFollowup().compareTo(t1.getDateTimeForFollowup());
+            }
+        });
+        setDueFollowups(dueFollowups);
+        setDoneFollowups(doneFollowups);
+        ArrayList<TempFollowUp> allTodaysFollowupsOrdered = new ArrayList<>();
+        for (TempFollowUp oneFollowup : dueFollowups) {
+                allTodaysFollowupsOrdered.add(oneFollowup);
+        }
+        for (TempFollowUp oneFollowup : doneFollowups) {
+                allTodaysFollowupsOrdered.add(oneFollowup);
+        }
+        return allTodaysFollowupsOrdered;
+    }
+
+    public ArrayList<TempFollowUp> getDueFollowups() {
+        return DueFollowups;
+    }
+
+    public void setDueFollowups(ArrayList<TempFollowUp> dueFollowups) {
+        DueFollowups = dueFollowups;
+    }
+
+    public ArrayList<TempFollowUp> getDoneFollowups() {
+        return DoneFollowups;
+    }
+
+    public void setDoneFollowups(ArrayList<TempFollowUp> doneFollowups) {
+        DoneFollowups = doneFollowups;
     }
 }
