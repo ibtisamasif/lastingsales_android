@@ -4,20 +4,26 @@ package com.example.muzafarimran.lastingsales.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.muzafarimran.lastingsales.Events.IncomingCallEventModel;
+import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
+import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import de.halfbit.tinybus.Subscribe;
+import de.halfbit.tinybus.TinyBus;
 
 
 /**
@@ -53,54 +59,7 @@ public class HomeFragment extends TabFragment {
         tvFollowupsDone = (TextView) view.findViewById(R.id.tvFollowupsDone);
         llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
         llFollowupsTodayContainer = (LinearLayout) view.findViewById(R.id.llFollowupsTodayContainer);
-        ArrayList<LSCall> allUniqueCallsWithoutContact = LSCall.getUniqueCallsWithoutContacts();
-        ArrayList<LSContact> allCollegues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-        ArrayList<LSContact> allFilteredContactsAsProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-        allFilteredContactsAsProspects.removeAll(allCollegues);
-        ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
-
-        if (allInactiveLeads != null) {
-            tvInactiveLeadsValue.setText("( " + allInactiveLeads.size() + " )");
-        } else {
-            tvInactiveLeadsValue.setText("( " + 0 + " )");
-        }
-        if (allUniqueCallsWithoutContact != null) {
-            tvUntaggedContacts.setText("( " + allUniqueCallsWithoutContact.size() + " )");
-        } else {
-            tvUntaggedContacts.setText("( " + 0 + " )");
-        }
-        if (allFilteredContactsAsProspects != null) {
-            tvPendingProspectValue.setText("( " + allFilteredContactsAsProspects.size() + " )");
-        } else {
-            tvPendingProspectValue.setText("( " + 0 + " )");
-        }
-        ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
-        Calendar now = Calendar.getInstance();
-        Calendar beginingOfToday = Calendar.getInstance();
-        beginingOfToday.set(Calendar.HOUR_OF_DAY, 0);
-        beginingOfToday.set(Calendar.MINUTE, 0);
-        Calendar endOfToday = Calendar.getInstance();
-        endOfToday.add(Calendar.DAY_OF_MONTH, 1);
-        endOfToday.set(Calendar.HOUR_OF_DAY, 0);
-        endOfToday.set(Calendar.MINUTE, 0);
-        ArrayList<TempFollowUp> followupsInToday = new ArrayList<>();
-        for (TempFollowUp oneFollowup : allFollowUps) {
-            if (oneFollowup.getDateTimeForFollowup() > beginingOfToday.getTimeInMillis() && oneFollowup.getDateTimeForFollowup() < endOfToday.getTimeInMillis()) {
-                followupsInToday.add(oneFollowup);
-            }
-        }
-        ArrayList<TempFollowUp> followupsDue = new ArrayList<>();
-        ArrayList<TempFollowUp> followUpsDone = new ArrayList<>();
-        for (TempFollowUp oneFollowup : followupsInToday) {
-            if (oneFollowup.getDateTimeForFollowup() < now.getTimeInMillis()) {
-                followUpsDone.add(oneFollowup);
-            } else {
-                followupsDue.add(oneFollowup);
-            }
-        }
-        tvFollowupsDone.setText("( " + followUpsDone.size() + " )");
-        tvFollowupsDue.setText("( " + followupsDue.size() + " )");
-
+        updateHomeFigures();
         llInActiveLeadsContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,4 +115,82 @@ public class HomeFragment extends TabFragment {
 
         return view;
     }
+
+    private void updateHomeFigures() {
+        ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNTAGGED);
+        ArrayList<LSContact> allCollegues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        ArrayList<LSContact> allFilteredContactsAsProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        allFilteredContactsAsProspects.removeAll(allCollegues);
+        ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
+
+        if (allInactiveLeads != null) {
+            tvInactiveLeadsValue.setText("( " + allInactiveLeads.size() + " )");
+        } else {
+            tvInactiveLeadsValue.setText("( " + 0 + " )");
+        }
+        if (allUntaggedContacts != null) {
+            tvUntaggedContacts.setText("( " + allUntaggedContacts.size() + " )");
+        } else {
+            tvUntaggedContacts.setText("( " + 0 + " )");
+        }
+        if (allFilteredContactsAsProspects != null) {
+            tvPendingProspectValue.setText("( " + allFilteredContactsAsProspects.size() + " )");
+        } else {
+            tvPendingProspectValue.setText("( " + 0 + " )");
+        }
+        ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
+        Calendar now = Calendar.getInstance();
+        Calendar beginingOfToday = Calendar.getInstance();
+        beginingOfToday.set(Calendar.HOUR_OF_DAY, 0);
+        beginingOfToday.set(Calendar.MINUTE, 0);
+        Calendar endOfToday = Calendar.getInstance();
+        endOfToday.add(Calendar.DAY_OF_MONTH, 1);
+        endOfToday.set(Calendar.HOUR_OF_DAY, 0);
+        endOfToday.set(Calendar.MINUTE, 0);
+        ArrayList<TempFollowUp> followupsInToday = new ArrayList<>();
+        for (TempFollowUp oneFollowup : allFollowUps) {
+            if (oneFollowup.getDateTimeForFollowup() > beginingOfToday.getTimeInMillis() && oneFollowup.getDateTimeForFollowup() < endOfToday.getTimeInMillis()) {
+                followupsInToday.add(oneFollowup);
+            }
+        }
+        ArrayList<TempFollowUp> followupsDue = new ArrayList<>();
+        ArrayList<TempFollowUp> followUpsDone = new ArrayList<>();
+        for (TempFollowUp oneFollowup : followupsInToday) {
+            if (oneFollowup.getDateTimeForFollowup() < now.getTimeInMillis()) {
+                followUpsDone.add(oneFollowup);
+            } else {
+                followupsDue.add(oneFollowup);
+            }
+        }
+        tvFollowupsDone.setText("( " + followUpsDone.size() + " )");
+        tvFollowupsDue.setText("( " + followupsDue.size() + " )");
+
+    }
+
+    @Subscribe
+    public void onCallReceivedEventModel(MissedCallEventModel event) {
+        Log.d(TAG, "onUntaggedCallEvent() called with: event = [" + event + "]");
+        if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
+            updateHomeFigures();
+        }
+    }
+
+
+    @Subscribe
+    public void onIncommingCallReceivedEvent(IncomingCallEventModel event) {
+        Log.d(TAG, "onIncomingCallEvent() called with: event = [" + event + "]");
+        if (event.getState() == IncomingCallEventModel.CALL_TYPE_INCOMING) {
+            updateHomeFigures();
+        }
+    }
+
+    @Subscribe
+    public void onOutgoingCallEventModel(OutgoingCallEventModel event) {
+        Log.d(TAG, "onOutgoingCallEvent() called with: event = [" + event + "]");
+        if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
+            updateHomeFigures();
+        }
+        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+    }
+
 }

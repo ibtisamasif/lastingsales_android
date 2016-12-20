@@ -126,6 +126,7 @@ public class SalesFragment extends SearchFragment {
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                floatingActionMenu.close(true);
                 Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
                 intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
                 startActivity(intent);
@@ -134,9 +135,11 @@ public class SalesFragment extends SearchFragment {
         floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                floatingActionMenu.close(true);
                 Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
                 intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
                 startActivity(intent);
+
             }
         });
         listView = (ExpandableStickyListHeadersListView) view.findViewById(R.id.sales_contacts_list);

@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.fragments.FollowupsListFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
@@ -60,7 +62,7 @@ public class FollowupsAllListAdapter extends BaseAdapter implements StickyListHe
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data tvContactName for this position
-        TempFollowUp oneFollowup = (TempFollowUp) getItem(position);
+        final TempFollowUp oneFollowup = (TempFollowUp) getItem(position);
         final LSContact oneContact = oneFollowup.getContact();
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder;
@@ -70,7 +72,11 @@ public class FollowupsAllListAdapter extends BaseAdapter implements StickyListHe
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "name: " + oneContact.getContactName(), Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(context, TagNumberAndAddFollowupActivity.class);
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, oneContact.getId() + "");
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, oneFollowup.getId() + "");
+                    context.startActivity(myIntent);
                     notifyDataSetChanged();
                 }
             });

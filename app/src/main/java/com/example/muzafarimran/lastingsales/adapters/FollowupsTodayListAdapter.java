@@ -1,15 +1,16 @@
 package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.fragments.FollowupsTodayListFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
@@ -60,7 +61,7 @@ public class FollowupsTodayListAdapter extends BaseAdapter implements StickyList
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data tvContactName for this position
-        TempFollowUp oneFollowup = (TempFollowUp) getItem(position);
+        final TempFollowUp oneFollowup = (TempFollowUp) getItem(position);
         final LSContact oneContact = oneFollowup.getContact();
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder;
@@ -70,7 +71,11 @@ public class FollowupsTodayListAdapter extends BaseAdapter implements StickyList
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "name: " + oneContact.getContactName(), Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(context, TagNumberAndAddFollowupActivity.class);
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, oneContact.getId() + "");
+                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, oneFollowup.getId() + "");
+                    context.startActivity(myIntent);
                     notifyDataSetChanged();
                 }
             });
@@ -131,10 +136,10 @@ public class FollowupsTodayListAdapter extends BaseAdapter implements StickyList
 
         if (getHeaderId(position) == 0) {
             headerViewHolder.headerName.setText("DONE");
-            headerViewHolder.headerCount.setText("( " + getDoneFollowups().size()+" )");
+            headerViewHolder.headerCount.setText("( " + getDoneFollowups().size() + " )");
         } else if (getHeaderId(position) == 1) {
             headerViewHolder.headerName.setText("DUE");
-            headerViewHolder.headerCount.setText("( "+getDueFollowups().size()+" )");
+            headerViewHolder.headerCount.setText("( " + getDueFollowups().size() + " )");
         }
         return convertView;
     }
@@ -148,19 +153,6 @@ public class FollowupsTodayListAdapter extends BaseAdapter implements StickyList
         } else {
             return 1;
         }
-    }
-
-    // The ViewHolder, only one tvContactName for simplicity and demonstration purposes, you can put all the views inside a row of the list into this ViewHolder
-    private static class ViewHolder {
-        TextView contactName;
-        TextView followupDate;
-        TextView followupTime;
-        TextView followupNote;
-    }
-
-    class HeaderViewHolder {
-        TextView headerName;
-        TextView headerCount;
     }
 
     public ArrayList<TempFollowUp> getDueFollowups() {
@@ -177,5 +169,18 @@ public class FollowupsTodayListAdapter extends BaseAdapter implements StickyList
 
     public void setDoneFollowups(ArrayList<TempFollowUp> doneFollowups) {
         DoneFollowups = doneFollowups;
+    }
+
+    // The ViewHolder, only one tvContactName for simplicity and demonstration purposes, you can put all the views inside a row of the list into this ViewHolder
+    private static class ViewHolder {
+        TextView contactName;
+        TextView followupDate;
+        TextView followupTime;
+        TextView followupNote;
+    }
+
+    class HeaderViewHolder {
+        TextView headerName;
+        TextView headerCount;
     }
 }

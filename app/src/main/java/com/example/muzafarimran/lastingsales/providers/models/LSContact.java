@@ -32,8 +32,8 @@ public class LSContact extends SugarRecord {
     public static final String CONTACT_TYPE_COLLEAGUE = "type_colleague";
     @Ignore
     public static final String CONTACT_TYPE_PERSONAL = "type_personal";
-//    @Ignore
-//    public static final String CONTACT_TYPE_NONE = "type_none";
+    @Ignore
+    public static final String CONTACT_TYPE_UNTAGGED = "type_untagged";
 
     //    private int contactId;
     private String contactName;
