@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +14,8 @@ import com.example.muzafarimran.lastingsales.Events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.CallsAdapter;
-import com.example.muzafarimran.lastingsales.adapters.UntaggedContactsCallsAdapter;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.adapters.UntaggedContactsAdapter;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +31,9 @@ import de.halfbit.tinybus.TinyBus;
 public class UntaggedContactsCallsFragment extends Fragment {
 
     private static final String TAG = "UntaggedCallFragment";
-    UntaggedContactsCallsAdapter untaggedContactsCallsAdapter;
+    UntaggedContactsAdapter untaggedContactsAdapter;
     ListView listView = null;
-    private List<LSCall> untaggedCalls = new ArrayList<>();
+    private List<LSContact> untaggedContacts = new ArrayList<>();
     private Bus mBus;
     private TinyBus bus;
 
@@ -49,9 +46,9 @@ public class UntaggedContactsCallsFragment extends Fragment {
         return fragmentFirst;
     }
 
-    public void setList(List<LSCall> missedCalls) {
-        if (untaggedContactsCallsAdapter != null) {
-            untaggedContactsCallsAdapter.setList(missedCalls);
+    public void setList(List<LSContact> contacts) {
+        if (untaggedContactsAdapter != null) {
+            untaggedContactsAdapter.setList(contacts);
         }
     }
 
@@ -59,8 +56,8 @@ public class UntaggedContactsCallsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        untaggedContactsCallsAdapter = new UntaggedContactsCallsAdapter(getContext());
-        untaggedContactsCallsAdapter.setList(untaggedCalls);
+        untaggedContactsAdapter = new UntaggedContactsAdapter(getContext());
+        untaggedContactsAdapter.setList(untaggedContacts);
         setHasOptionsMenu(true);
     }
 
@@ -83,7 +80,7 @@ public class UntaggedContactsCallsFragment extends Fragment {
     public void onCallReceivedEventModel(MissedCallEventModel event) {
         Log.d(TAG, "onUntaggedCallEvent() called with: event = [" + event + "]");
         if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
-            updateCallsList();
+            updateContactssList();
         }
     }
 
@@ -91,7 +88,7 @@ public class UntaggedContactsCallsFragment extends Fragment {
     public void onIncommingCallReceivedEvent(IncomingCallEventModel event) {
         Log.d(TAG, "onIncomingCallEvent() called with: event = [" + event + "]");
         if (event.getState() == IncomingCallEventModel.CALL_TYPE_INCOMING) {
-            updateCallsList();
+            updateContactssList();
         }
     }
 
@@ -99,29 +96,23 @@ public class UntaggedContactsCallsFragment extends Fragment {
     public void onOutgoingCallEventModel(OutgoingCallEventModel event) {
         Log.d(TAG, "onOutgoingCallEvent() called with: event = [" + event + "]");
         if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
-            updateCallsList();
+            updateContactssList();
         }
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
-    private void updateCallsList() {
+    private void updateContactssList() {
 
-        List<LSCall> untaggedCalls = LSCall.getUniqueCallsWithoutContacts();
-        List<LSCall> allCalls = LSCall.listAll(LSCall.class);
-        for (LSCall oneCall : allCalls) {
-            if (oneCall.getContact() == null) {
-                untaggedCalls.add(oneCall);
-            }
-        }
-        this.untaggedCalls = untaggedCalls;
-        setList(untaggedCalls);
+        List<LSContact> untaggedContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNTAGGED);
+        this.untaggedContacts = untaggedContacts;
+        setList(untaggedContacts);
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        updateCallsList();
+        updateContactssList();
     }
 
     @Override
@@ -129,7 +120,7 @@ public class UntaggedContactsCallsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
         listView = (ListView) view.findViewById(R.id.calls_list);
-        listView.setAdapter(untaggedContactsCallsAdapter);
+        listView.setAdapter(untaggedContactsAdapter);
         return view;
     }
 

@@ -64,10 +64,17 @@ public class CallsStatesReceiver extends CallReceiver {
         long callDuration = PhoneNumberAndCallUtils.secondsFromStartAndEndDates(start, end);
         tempCall.setDuration(callDuration);
         LSContact contact = LSContact.getContactFromNumber(internationalNumber);
+        //      if contact is null that means contact is not already saved with this number
         if (contact != null) {
             tempCall.setContact(contact);
         } else {
-            tempCall.setContact(null);
+            //            new untagged contact is created, saved, entered in call entry
+            LSContact tempContact = new LSContact();
+            tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
+            tempContact.setPhoneOne(internationalNumber);
+            tempContact.setContactName(phoneBookContactName);
+            tempContact.save();
+            tempCall.setContact(tempContact);
         }
         tempCall.save();
         long tenSeconds = 10;
@@ -110,11 +117,17 @@ public class CallsStatesReceiver extends CallReceiver {
         Toast.makeText(ctx, "Duration "+callDuration, Toast.LENGTH_SHORT).show();
         tempCall.setDuration(callDuration);
         LSContact contact = LSContact.getContactFromNumber(internationalNumber);
-
+//      if contact is null that means contact is not already saved with this number
         if (contact != null) {
             tempCall.setContact(contact);
         } else {
-            tempCall.setContact(null);
+//            new untagged contact is created, saved, entered in call entry
+            LSContact tempContact = new LSContact();
+            tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
+            tempContact.setPhoneOne(internationalNumber);
+            tempContact.setContactName(phoneBookContactName);
+            tempContact.save();
+            tempCall.setContact(tempContact);
         }
         tempCall.save();
         long tenSeconds = 10;
@@ -127,7 +140,6 @@ public class CallsStatesReceiver extends CallReceiver {
                         contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
                         contact.save();
                     }
-
                 }
             }
         }

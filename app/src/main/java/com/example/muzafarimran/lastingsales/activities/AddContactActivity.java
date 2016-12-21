@@ -28,7 +28,7 @@ import de.halfbit.tinybus.TinyBus;
 
 import static android.view.View.GONE;
 import static com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils.updateAllCallsOfThisContact;
-
+@Deprecated
 public class AddContactActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
