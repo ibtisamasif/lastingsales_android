@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.Events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.LSContactChooserActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.Note;
@@ -31,7 +30,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link AddNoteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@Deprecated
+
 public class AddNoteFragment extends Fragment {
 
 
@@ -120,7 +119,7 @@ public class AddNoteFragment extends Fragment {
                     getActivity().setResult(RESULT_OK, data);
                     NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
                     TinyBus bus = TinyBus.from(getActivity().getApplicationContext());
-                    bus.register(mNoteAdded);
+                    bus.register(mNoteAdded);  //crashed here check it later
                     bus.post(mNoteAdded);
                     Log.d("AddNoteEventGenerated", "onNoteAdded() called  ");
                     getActivity().finish();
@@ -138,7 +137,7 @@ public class AddNoteFragment extends Fragment {
 
     public void setContact(String returnedResult) {
         if (returnedResult != null) {
-            oneContact = LSContactChooserActivity.getAllContacts().get(Integer.parseInt(returnedResult));
+            oneContact =  LSContact.getSalesAndColleguesContacts().get(Integer.parseInt(returnedResult));
             tvContactName.setText(oneContact.getContactName());
         }
     }

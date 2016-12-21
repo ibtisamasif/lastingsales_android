@@ -17,6 +17,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -36,7 +37,7 @@ public class CollegueFragment extends TabFragment {
     ContactsAdapter contactsAdapter;
     MaterialSearchView searchView;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
-    com.github.clans.fab.FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
+    FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
 

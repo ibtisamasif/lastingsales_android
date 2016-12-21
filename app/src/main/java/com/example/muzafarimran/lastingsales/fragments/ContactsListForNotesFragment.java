@@ -1,8 +1,10 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,8 +16,10 @@ import android.widget.ListView;
 import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.PersonalContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.AddNoteActivity;
 import com.example.muzafarimran.lastingsales.adapters.ContactsListForNotesAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.github.clans.fab.FloatingActionButton;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -29,11 +33,14 @@ import de.halfbit.tinybus.TinyBus;
  */
 public class ContactsListForNotesFragment extends TabFragment {
     private static final String TAG = "NotesContactsFragment";
+    private static final int CONTACT_REQUEST_CODE = 11;
     ListView listView = null;
     ContactsListForNotesAdapter contactsListForNotesAdapter;
     EditText inputSearch;
     MaterialSearchView searchView;
+    FloatingActionButton floatingActionButtonAdd;
     private TinyBus bus;
+    private FragmentManager supportFragmentManager;
 
     public static ContactsListForNotesFragment newInstance(int page, String title) {
         ContactsListForNotesFragment fragmentFirst = new ContactsListForNotesFragment();
@@ -99,6 +106,18 @@ public class ContactsListForNotesFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notes_by_contacts, container, false);
+
+        floatingActionButtonAdd = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
+        contactsListForNotesAdapter.setSupportFragmentManager(getFragmentManager());
+
+        floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AddNoteActivity.class);
+                startActivity(intent);
+            }
+        });
+
         listView = (ListView) view.findViewById(R.id.notes_contacts_list);
         listView.setAdapter(contactsListForNotesAdapter);
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
@@ -134,5 +153,4 @@ public class ContactsListForNotesFragment extends TabFragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

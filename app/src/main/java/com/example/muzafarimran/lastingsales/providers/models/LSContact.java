@@ -113,6 +113,19 @@ public class LSContact extends SugarRecord {
         }
     }
 
+    public static List<LSContact> getSalesAndColleguesContacts() {
+        try {
+            ArrayList<LSContact> salesAndColleguesContacts = new ArrayList<LSContact>();
+            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+            salesAndColleguesContacts.addAll(contactsColleagues);
+            salesAndColleguesContacts.addAll(contactsSales);
+            return salesAndColleguesContacts;
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
+
     public static List<LSContact> getAllNotesContacts() {
         try {
             ArrayList<LSContact> contactsAllHavingNotes = new ArrayList<LSContact>();

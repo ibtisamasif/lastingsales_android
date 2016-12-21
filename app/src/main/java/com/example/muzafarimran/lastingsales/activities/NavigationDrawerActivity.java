@@ -98,17 +98,17 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 switch (tab.getPosition()) {
                     case 0:
                         tab.setIcon(R.drawable.menu_icon_home_selected);
-                        getSupportActionBar().setTitle("Home");
+                        getSupportActionBar().setTitle("            Home");
 //                        setSupportActionBar(toolbar);
                         break;
                     case 1:
                         tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        getSupportActionBar().setTitle("Inquiries");
+                        getSupportActionBar().setTitle("         Inquiries");
 //                        ((TextView)(toolbar.findViewById(R.id.title))).setText("CALL LOGS");
                         break;
                     case 2:
                         tab.setIcon(R.drawable.menu_icon_contact_selected);
-                        getSupportActionBar().setTitle("Sales");
+                        getSupportActionBar().setTitle("            Sales");
                         // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                         break;
 //                case 3:

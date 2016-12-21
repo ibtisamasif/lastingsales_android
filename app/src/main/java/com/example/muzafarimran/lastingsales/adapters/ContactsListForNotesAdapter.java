@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class ContactsListForNotesAdapter extends BaseAdapter  implements Filtera
     private int prospectCount = 0;
     private int leadCount = 0;
     private CallClickListener callClickListener = null;
-
+    private FragmentManager supportFragmentManager;
 
     public ContactsListForNotesAdapter(Context c, List<LSContact> contacts) {
         this.mContext = c;
@@ -178,5 +179,13 @@ public class ContactsListForNotesAdapter extends BaseAdapter  implements Filtera
         TextView name;
         TextView number;
         ImageView call_icon;
+    }
+
+    public FragmentManager getSupportFragmentManager() {
+        return supportFragmentManager;
+    }
+
+    public void setSupportFragmentManager(FragmentManager supportFragmentManager) {
+        this.supportFragmentManager = supportFragmentManager;
     }
 }
