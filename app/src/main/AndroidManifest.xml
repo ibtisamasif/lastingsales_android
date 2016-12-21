@@ -99,7 +99,7 @@
         <activity android:name=".activities.ContactDetailsActivity">
         </activity>
 
-        <activity android:name=".activities.NotesByContactsActivity">
+        <activity android:name=".activities.NotesByContactsActivity2">
         </activity>
 
         <service

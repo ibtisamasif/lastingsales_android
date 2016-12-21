@@ -14,7 +14,7 @@ import android.widget.ListView;
 import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.PersonalContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.NotesListByContactAdapter;
+import com.example.muzafarimran.lastingsales.adapters.ContactsListForNotesAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -27,16 +27,16 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NotesListByContactsFragment extends TabFragment {
+public class ContactsListForNotesFragment extends TabFragment {
     private static final String TAG = "NotesContactsFragment";
     ListView listView = null;
-    NotesListByContactAdapter notesListByContactAdapter;
+    ContactsListForNotesAdapter contactsListForNotesAdapter;
     EditText inputSearch;
     MaterialSearchView searchView;
     private TinyBus bus;
 
-    public static NotesListByContactsFragment newInstance(int page, String title) {
-        NotesListByContactsFragment fragmentFirst = new NotesListByContactsFragment();
+    public static ContactsListForNotesFragment newInstance(int page, String title) {
+        ContactsListForNotesFragment fragmentFirst = new ContactsListForNotesFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
@@ -45,8 +45,8 @@ public class NotesListByContactsFragment extends TabFragment {
     }
 
     public void setList(List<LSContact> contacts) {
-        if (notesListByContactAdapter != null) {
-            notesListByContactAdapter.setList(contacts);
+        if (contactsListForNotesAdapter != null) {
+            contactsListForNotesAdapter.setList(contacts);
         }
     }
 
@@ -54,7 +54,7 @@ public class NotesListByContactsFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        notesListByContactAdapter = new NotesListByContactAdapter(getContext(), null);
+        contactsListForNotesAdapter = new ContactsListForNotesAdapter(getContext(), null);
         setHasOptionsMenu(true);
     }
 
@@ -83,9 +83,9 @@ public class NotesListByContactsFragment extends TabFragment {
 
     @Subscribe
     public void onBackPressedEventModel(BackPressedEventModel event) {
-        if (!event.backPressHandled && notesListByContactAdapter.isDeleteFlow()) {
+        if (!event.backPressHandled && contactsListForNotesAdapter.isDeleteFlow()) {
             event.backPressHandled = true;
-            notesListByContactAdapter.setDeleteFlow(false);
+            contactsListForNotesAdapter.setDeleteFlow(false);
         }
     }
 
@@ -100,18 +100,18 @@ public class NotesListByContactsFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notes_by_contacts, container, false);
         listView = (ListView) view.findViewById(R.id.notes_contacts_list);
-        listView.setAdapter(notesListByContactAdapter);
+        listView.setAdapter(contactsListForNotesAdapter);
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                notesListByContactAdapter.getFilter().filter(query);
+                contactsListForNotesAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                notesListByContactAdapter.getFilter().filter(newText);
+                contactsListForNotesAdapter.getFilter().filter(newText);
                 return false;
             }
         });

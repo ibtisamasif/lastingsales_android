@@ -112,8 +112,7 @@ public class SalesFragment extends SearchFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sales, container, false);
 //        this.addContactCta = (FloatingActionButton) view.findViewById(R.id.add_contact_cta);
 //        this.addContactCta.setOnClickListener(this.showaddcontactform);
@@ -128,6 +127,7 @@ public class SalesFragment extends SearchFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
                 intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
                 startActivity(intent);
             }
         });
@@ -136,6 +136,7 @@ public class SalesFragment extends SearchFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
                 intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
                 startActivity(intent);
             }
         });

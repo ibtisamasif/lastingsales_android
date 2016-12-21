@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +51,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     private showContactDetaislsListener showContactDetaislsListener = null;
     private String contactType;
     private LinearLayout noteDetails;
+    private FragmentManager supportFragmentManager;
 
 
     public ContactsAdapter(Context c, List<LSContact> contacts, String type) {
@@ -384,5 +386,13 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
             detailsActivityIntent.putExtra(ContactDetailsActivity.KEY_CONTACT_ID, contactId + "");
             mContext.startActivity(detailsActivityIntent);
         }
+    }
+
+    public FragmentManager getSupportFragmentManager() {
+        return supportFragmentManager;
+    }
+
+    public void setSupportFragmentManager(FragmentManager supportFragmentManager) {
+        this.supportFragmentManager = supportFragmentManager;
     }
 }

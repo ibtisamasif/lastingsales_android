@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.NotesByContactsActivity;
+import com.example.muzafarimran.lastingsales.activities.NotesByContactsActivity2;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.List;
  * Created by ibtisam on 12/14/2016.
  */
 
-public class NotesListByContactAdapter extends BaseAdapter  implements Filterable{
+public class ContactsListForNotesAdapter extends BaseAdapter  implements Filterable{
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
@@ -39,7 +39,7 @@ public class NotesListByContactAdapter extends BaseAdapter  implements Filterabl
     private CallClickListener callClickListener = null;
 
 
-    public NotesListByContactAdapter(Context c, List<LSContact> contacts) {
+    public ContactsListForNotesAdapter(Context c, List<LSContact> contacts) {
         this.mContext = c;
         this.mContacts = contacts;
         if (mContacts == null) {
@@ -98,11 +98,9 @@ public class NotesListByContactAdapter extends BaseAdapter  implements Filterabl
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent detailsActivityIntent = new Intent(mContext, NotesByContactsActivity.class);
+                    Intent detailsActivityIntent = new Intent(mContext, NotesByContactsActivity2.class);
                     long contactId = contact.getId();
-                    detailsActivityIntent.putExtra(NotesByContactsActivity.KEY_CONTACT_ID, contactId + "");
-//                    bundle.putString(FrameActivity.ACTIVITY_TITLE, "Notes List");
-//                    bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
+                    detailsActivityIntent.putExtra(NotesByContactsActivity2.KEY_CONTACT_ID, contactId + "");
                     mContext.startActivity(detailsActivityIntent);
                 }
             });

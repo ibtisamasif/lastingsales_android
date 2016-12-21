@@ -131,8 +131,11 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
 //        If launch mode is import contact then starting contact import activity so contact data can be brought in
         if (launchMode.equals(LAUNCH_MODE_IMPORT_CONTACT)) {
             startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), REQUEST_CODE_PICK_CONTACTS);
-            editingMode = false;
+            selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
+            preSelectedContactType = selectedContactType;
             tvTitleFollowupPopup.setText(TITLE_IMPORT_CONTACT);
+            editingMode = false;
+
         }
 //        if launch mode is edit existing contact then geting id of contact so its data can be populated
         else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
@@ -200,6 +203,9 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
             showAddFollowupLayout();
         } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
             tvTitleFollowupPopup.setText(TITLE_ADD_NEW_CONTACT);
+            selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
+            preSelectedContactType = selectedContactType;
+
             editingMode = false;
         }
 //      updating selected Radio button on UI

@@ -112,8 +112,7 @@ public class NotesListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notes_list, container, false);
         lvAllNotes = (ListView) view.findViewById(R.id.lvAllNotesNotesFragment);
         allNotes = (ArrayList<LSNote>) LSNote.listAll(LSNote.class);

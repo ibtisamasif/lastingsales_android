@@ -26,7 +26,7 @@ import com.example.muzafarimran.lastingsales.fragments.FollowupsListFragment;
 import com.example.muzafarimran.lastingsales.fragments.IncomingCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
-import com.example.muzafarimran.lastingsales.fragments.NotesListByContactsFragment;
+import com.example.muzafarimran.lastingsales.fragments.ContactsListForNotesFragment;
 import com.example.muzafarimran.lastingsales.fragments.OutgoingCallsFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -43,6 +43,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
     CallRecord callRecord;
     ImageView ivProfileImage;
     boolean shouldShowSearchMenu = false;
+    Toolbar toolbar;
 //    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
 
     @Override
@@ -50,10 +51,12 @@ public class NavigationDrawerActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_navigation_drawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -95,13 +98,17 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 switch (tab.getPosition()) {
                     case 0:
                         tab.setIcon(R.drawable.menu_icon_home_selected);
+                        getSupportActionBar().setTitle("Home");
+//                        setSupportActionBar(toolbar);
                         break;
                     case 1:
                         tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        //((TextView)(myToolbar.findViewById(R.id.title))).setText("CALL LOGS");
+                        getSupportActionBar().setTitle("Inquiries");
+//                        ((TextView)(toolbar.findViewById(R.id.title))).setText("CALL LOGS");
                         break;
                     case 2:
                         tab.setIcon(R.drawable.menu_icon_contact_selected);
+                        getSupportActionBar().setTitle("Sales");
                         // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                         break;
 //                case 3:
@@ -209,7 +216,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (id == R.id.nav_item_notes) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, NotesListByContactsFragment.class.getName());
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, ContactsListForNotesFragment.class.getName());
             bundle.putString(FrameActivity.ACTIVITY_TITLE, "Notes List");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);

@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,14 +12,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.NotesListAdapter;
+import com.example.muzafarimran.lastingsales.fragments.NotesByContactsFragment;
 import com.example.muzafarimran.lastingsales.fragments.NotesListFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.ArrayList;
@@ -42,9 +41,10 @@ public class ContactDetailsActivity extends AppCompatActivity {
     private TextView tvCompanyTitle;
     private TextView tvCompany;
     private TextView tvAddressTitle;
-    private ListView lvNotesList;
+//    private ListView lvNotesList;
     private FrameLayout notesListHolderFrameLayout;
     private NotesListFragment notesListFragment;
+    private NotesByContactsFragment notesByContactsFragment;
     private LinearLayout llFolloupNoteRow;
     private LinearLayout llFolloupDateTimeRow;
     private TextView tvFollowupNoteText;
@@ -76,7 +76,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         tvFollowupNoteText = (TextView) findViewById(R.id.followupNoteText);
         tvFollowupDateTime = (TextView) findViewById(R.id.followupDateTimeText);
         ibEditFollowup = (ImageButton) findViewById(R.id.ibEditFollowupButton);
-        lvNotesList = (ListView) findViewById(R.id.lvNoteListContactDetailsScreen);
+//        lvNotesList = (ListView) findViewById(R.id.lvNoteListContactDetailsScreen);
         notesListHolderFrameLayout = (FrameLayout) findViewById(R.id.notesListHolderFrameLayout);
         Bundle extras = getIntent().getExtras();
         Long contactIDLong;
@@ -128,16 +128,30 @@ public class ContactDetailsActivity extends AppCompatActivity {
             }
 //            tvType.setText(selectedContact.getContactType());
         }
-        ArrayList<LSNote> allNotesOfThisContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId());
-        lvNotesList.setAdapter(new NotesListAdapter(getApplicationContext(),allNotesOfThisContact));
 
-        /*if (savedInstanceState == null) {
-            notesListFragment = new NotesListFragment();
+
+        // Ibtisam working here
+//        ArrayList<LSNote> allNotesOfThisContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId());
+//        lvNotesList.setAdapter(new NotesListAdapter(getApplicationContext(),allNotesOfThisContact));
+
+//        if (savedInstanceState == null) {
+//            notesListFragment = new NotesListFragment();
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.replace(R.id.notesListHolderFrameLayout, notesListFragment);
+//            transaction.commit();
+//        }
+
+        if (savedInstanceState == null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(NotesByContactsFragment.CONTACT_ID, selectedContact.getId().toString());
+            notesByContactsFragment = new NotesByContactsFragment();
+            notesByContactsFragment.setArguments(bundle);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.notesListHolderFrameLayout, notesListFragment);
+            transaction.replace(R.id.notesListHolderFrameLayout, notesByContactsFragment);
             transaction.commit();
         }
-        */
+
+
         addFollowupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

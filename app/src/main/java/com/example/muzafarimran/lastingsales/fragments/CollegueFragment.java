@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.github.clans.fab.FloatingActionMenu;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.List;
@@ -35,8 +35,9 @@ public class CollegueFragment extends TabFragment {
     ListView listView = null;
     ContactsAdapter contactsAdapter;
     MaterialSearchView searchView;
-    FloatingActionButton addContactCta = null;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
+    com.github.clans.fab.FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
+    FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
 
     public static CollegueFragment newInstance(int page, String title) {
@@ -101,12 +102,35 @@ public class CollegueFragment extends TabFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_collegue, container, false);
-        this.addContactCta = (FloatingActionButton) view.findViewById(R.id.add_contact_cta);
-        this.addContactCta.setOnClickListener(this.showaddcontactform);
+
+        floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu);
+        floatingActionButtonAdd = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
+        floatingActionButtonImport = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import);
+        contactsAdapter.setSupportFragmentManager(getFragmentManager());
+        floatingActionMenu.setClosedOnTouchOutside(true);
+
+        floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_COLLEAGUE);
+                startActivity(intent);
+            }
+        });
+        floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_COLLEAGUE);
+                startActivity(intent);
+            }
+        });
+
         listView = (ListView) view.findViewById(R.id.collegue_contacts_list);
         listView.setAdapter(contactsAdapter);
 //        this.inputSearch.addTextChangedListener(new CollegueFragment.addListenerOnTextChange());
