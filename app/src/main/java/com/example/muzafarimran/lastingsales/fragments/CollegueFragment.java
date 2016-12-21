@@ -18,6 +18,7 @@ import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupA
 import com.example.muzafarimran.lastingsales.adapters.ColleagueContactsAdapter;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -37,7 +38,7 @@ public class CollegueFragment extends TabFragment {
     ColleagueContactsAdapter colleagueContactsAdapter;
     MaterialSearchView searchView;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
-    com.github.clans.fab.FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
+    FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
 
