@@ -44,6 +44,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
     ImageView ivProfileImage;
     boolean shouldShowSearchMenu = false;
     Toolbar toolbar;
+    ViewPager viewPager;
 //    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
 
     @Override
@@ -68,7 +69,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
             finish();
         }
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         LinearLayout navHeader = (LinearLayout) navigationView.getHeaderView(0);
         ivProfileImage = (ImageView) navHeader.findViewById(R.id.ivProfileNavBar);
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), NavigationDrawerActivity.this));

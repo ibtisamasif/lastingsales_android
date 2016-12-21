@@ -11,17 +11,23 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.muzafarimran.lastingsales.Events.ContactTaggedFromUntaggedContactEventModel;
 import com.example.muzafarimran.lastingsales.Events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
+import com.example.muzafarimran.lastingsales.Events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
+import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
+import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
@@ -40,6 +46,8 @@ public class HomeFragment extends TabFragment {
     private LinearLayout llUntaggedContainer;
     private LinearLayout llFollowupsTodayContainer;
     private LinearLayout llPendingProspectsContainer;
+    private Bus mBus;
+    private TinyBus bus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -175,7 +183,6 @@ public class HomeFragment extends TabFragment {
         }
     }
 
-
     @Subscribe
     public void onIncommingCallReceivedEvent(IncomingCallEventModel event) {
         Log.d(TAG, "onIncomingCallEvent() called with: event = [" + event + "]");
@@ -191,6 +198,27 @@ public class HomeFragment extends TabFragment {
             updateHomeFigures();
         }
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+    }
+    @Subscribe
+    public void onContactTaggedFromUntaggedContactEventModel(ContactTaggedFromUntaggedContactEventModel event) {
+        Log.d(TAG, "onNoteAddedEvent() called with: event = [" + event + "]");
+        updateHomeFigures();
+        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+        bus = TinyBus.from(getActivity().getApplicationContext());
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        Log.d(TAG, "onStop() called");
+        super.onStop();
+
     }
 
 }

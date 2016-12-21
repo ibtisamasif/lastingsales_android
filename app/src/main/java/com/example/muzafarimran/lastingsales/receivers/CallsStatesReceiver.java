@@ -54,6 +54,7 @@ public class CallsStatesReceiver extends CallReceiver {
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         tempCall.setContactNumber(internationalNumber);
         tempCall.setType(LSCall.CALL_TYPE_INCOMING);
+        tempCall.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
         tempCall.setBeginTime(start.getTime());
         String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
         if (phoneBookContactName == null) {
@@ -106,6 +107,7 @@ public class CallsStatesReceiver extends CallReceiver {
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         tempCall.setContactNumber(internationalNumber);
         tempCall.setType(LSCall.CALL_TYPE_OUTGOING);
+        tempCall.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
         tempCall.setBeginTime(start.getTime());
         String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
         if (phoneBookContactName == null) {
@@ -173,6 +175,7 @@ public class CallsStatesReceiver extends CallReceiver {
             tempCall.setContact(null);
         }
         tempCall.setType(LSCall.CALL_TYPE_MISSED);
+        tempCall.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
         tempCall.setBeginTime(start.getTime());
         tempCall.save();
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);

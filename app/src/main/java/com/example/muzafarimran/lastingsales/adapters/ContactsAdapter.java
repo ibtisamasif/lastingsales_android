@@ -275,11 +275,11 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
                     List<LSContact> filterResultsData = new ArrayList<>();
                     //int length = charSequence.length();
                     for (int i = 0; i < mContacts.size(); i++) {
-                        if (mContacts.get(i).getContactType().toLowerCase() != "separator" && mContacts.get(i).getContactName().toLowerCase().contains(((String) charSequence).toLowerCase())) {
+                        if (mContacts.get(i).getContactName() != null && mContacts.get(i).getContactName().toLowerCase().contains(((String) charSequence).toLowerCase())) {
                             filterResultsData.add(mContacts.get(i));
                             continue;
                         }
-                        if (mContacts.get(i).getContactType().toLowerCase() != "separator" && mContacts.get(i).getPhoneOne().toLowerCase().contains(((String) charSequence).toLowerCase())) {
+                        if (mContacts.get(i).getPhoneOne().toLowerCase().contains(((String) charSequence).toLowerCase())) {
                             filterResultsData.add(mContacts.get(i));
                         }
                     }

@@ -19,6 +19,10 @@ public class LSCall extends SugarRecord {
     public static final String CALL_TYPE_INCOMING = "incoming";
     @Ignore
     public static final String CALL_TYPE_MISSED = "missed";
+    @Ignore
+    public static final int INQUIRY_HANDLED = 1;
+    @Ignore
+    public static final int INQUIRY_NOT_HANDLED = 1;
     private String contactNumber;
     private LSContact contact;
     private String type;
@@ -26,6 +30,7 @@ public class LSCall extends SugarRecord {
     private String contactName;
     private Long beginTime;
     private String audio_path;
+    private int inquiryHandledState;
 
     public LSCall() {
     }
@@ -165,5 +170,13 @@ public class LSCall extends SugarRecord {
 
     public void setContactName(String contactName) {
         this.contactName = contactName;
+    }
+
+    public int getInquiryHandledState() {
+        return inquiryHandledState;
+    }
+
+    public void setInquiryHandledState(int inquiryHandledState) {
+        this.inquiryHandledState = inquiryHandledState;
     }
 }

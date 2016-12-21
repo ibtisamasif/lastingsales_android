@@ -15,6 +15,7 @@ import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.ColleagueContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
+import com.example.muzafarimran.lastingsales.adapters.ColleagueContactsAdapter;
 import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.github.clans.fab.FloatingActionMenu;
@@ -33,7 +34,7 @@ public class CollegueFragment extends TabFragment {
 
     private static final String TAG = "ColleagueContactFrag";
     ListView listView = null;
-    ContactsAdapter contactsAdapter;
+    ColleagueContactsAdapter colleagueContactsAdapter;
     MaterialSearchView searchView;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     com.github.clans.fab.FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
@@ -50,8 +51,8 @@ public class CollegueFragment extends TabFragment {
     }
 
     public void setList(List<LSContact> contacts) {
-        if (contactsAdapter != null) {
-            contactsAdapter.setList(contacts);
+        if (colleagueContactsAdapter != null) {
+            colleagueContactsAdapter.setList(contacts);
         }
     }
 
@@ -59,7 +60,7 @@ public class CollegueFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        contactsAdapter = new ContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_COLLEAGUE);
+        colleagueContactsAdapter = new ColleagueContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_COLLEAGUE);
         setHasOptionsMenu(true);
     }
 
@@ -88,9 +89,9 @@ public class CollegueFragment extends TabFragment {
 
     @Subscribe
     public void onBackPressedEventModel(BackPressedEventModel event) {
-        if (!event.backPressHandled && contactsAdapter.isDeleteFlow()) {
+        if (!event.backPressHandled && colleagueContactsAdapter.isDeleteFlow()) {
             event.backPressHandled = true;
-            contactsAdapter.setDeleteFlow(false);
+            colleagueContactsAdapter.setDeleteFlow(false);
         }
     }
 
@@ -109,7 +110,7 @@ public class CollegueFragment extends TabFragment {
         floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu);
         floatingActionButtonAdd = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
         floatingActionButtonImport = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import);
-        contactsAdapter.setSupportFragmentManager(getFragmentManager());
+        colleagueContactsAdapter.setSupportFragmentManager(getFragmentManager());
         floatingActionMenu.setClosedOnTouchOutside(true);
 
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
@@ -132,19 +133,19 @@ public class CollegueFragment extends TabFragment {
         });
 
         listView = (ListView) view.findViewById(R.id.collegue_contacts_list);
-        listView.setAdapter(contactsAdapter);
+        listView.setAdapter(colleagueContactsAdapter);
 //        this.inputSearch.addTextChangedListener(new CollegueFragment.addListenerOnTextChange());
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                contactsAdapter.getFilter().filter(query);
+                colleagueContactsAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                contactsAdapter.getFilter().filter(newText);
+                colleagueContactsAdapter.getFilter().filter(newText);
                 return false;
             }
         });

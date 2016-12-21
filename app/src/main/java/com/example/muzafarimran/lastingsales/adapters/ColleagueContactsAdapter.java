@@ -23,22 +23,19 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsActivity;
-import com.example.muzafarimran.lastingsales.fragments.SalesContactDeleteBottomSheetDialogFragment;
-import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
+import com.example.muzafarimran.lastingsales.fragments.ColleagueContactDeleteBottomSheetDialogFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
-
 import static android.view.View.GONE;
 
 /**
  * Created by lenovo 1 on 9/21/2016.
  */
-public class SalesAdapter extends BaseAdapter implements Filterable, StickyListHeadersAdapter {
+public class ColleagueContactsAdapter extends BaseAdapter implements Filterable {
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
@@ -49,18 +46,16 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
     private LayoutInflater mInflater;
     private List<LSContact> mContacts;
     private List<LSContact> filteredData;
-    private List<LSContact> arrangedFilteredData;
     private int prospectCount = 0;
     private int leadCount = 0;
     private CallClickListener callClickListener = null;
     private showContactDetaislsListener showContactDetaislsListener = null;
     private String contactType;
     private LinearLayout noteDetails;
-    private LSContact detailsContact = null;
     private FragmentManager supportFragmentManager;
 
 
-    public SalesAdapter(Context c, List<LSContact> contacts, String type) {
+    public ColleagueContactsAdapter(Context c, List<LSContact> contacts, String type) {
         this.mContext = c;
         this.mContacts = contacts;
         if (mContacts == null) {
@@ -109,6 +104,7 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         return position;
     }
 
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -129,22 +125,14 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
             holder.moreButton = (ImageView) convertView.findViewById(R.id.ivMoreButtonContactsDetailsDropDown);
             holder.salesLeadStatus = (TextView) convertView.findViewById(R.id.status_text);
             holder.statusRow = (RelativeLayout) convertView.findViewById(R.id.status_row);
-            if (!contact.isDetailsDropDownOpen()) {
-                holder.contactDetailsDopDownLayout.setVisibility(GONE);
-            } else {
-                holder.contactDetailsDopDownLayout.setVisibility(View.VISIBLE);
-            }
+            holder.contactDetailsDopDownLayout.setVisibility(GONE);
             convertView.setTag(holder);
             holder.call_icon.setOnClickListener(this.callClickListener);
         } else {
             holder = (ViewHolder) convertView.getTag();
             ((ViewGroup) holder.user_details_wrapper.getParent()).removeView(contact_details);
         }
-        if (!contact.isDetailsDropDownOpen()) {
-            holder.contactDetailsDopDownLayout.setVisibility(GONE);
-        } else {
-            holder.contactDetailsDopDownLayout.setVisibility(View.VISIBLE);
-        }
+        holder.contactDetailsDopDownLayout.setVisibility(GONE);
         String timeAgoString;
         String numberOfCalls;
         ArrayList<LSCall> allCalls = LSCall.getCallsFromNumber(contact.getPhoneOne());
@@ -172,22 +160,14 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
             public boolean onLongClick(View view) {
 //                deleteFlow = true;
 //                setList(LSContact.getContactsByType(contactType));
-                SalesContactDeleteBottomSheetDialogFragment salesContactDeleteBottomSheetDialogFragment = new SalesContactDeleteBottomSheetDialogFragment();
-                salesContactDeleteBottomSheetDialogFragment.setPosition(position);
-                salesContactDeleteBottomSheetDialogFragment.show(getSupportFragmentManager(), salesContactDeleteBottomSheetDialogFragment.getTag());
-                salesContactDeleteBottomSheetDialogFragment.setSalesAdapter(SalesAdapter.this);
+                ColleagueContactDeleteBottomSheetDialogFragment colleagueContactDeleteBottomSheetDialogFragment = new ColleagueContactDeleteBottomSheetDialogFragment();
+                colleagueContactDeleteBottomSheetDialogFragment.setPosition(position);
+                colleagueContactDeleteBottomSheetDialogFragment.show(getSupportFragmentManager(), colleagueContactDeleteBottomSheetDialogFragment.getTag());
+                colleagueContactDeleteBottomSheetDialogFragment.setColleagueContactsAdapter(ColleagueContactsAdapter.this);
+
                 return true;
             }
         });
-        /*holder.user_details_wrapper.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                deleteFlow = true;
-                setList(LSContact.getContactsByType(contactType));
-                return true;
-            }
-        });*/
-
         holder.call_icon.setTag(mContacts.get(position).getPhoneOne());
 //              Deletes the contact, queries db and updates local list plus nitifies adpater
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -203,8 +183,8 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         holder.moreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new android.widget.PopupMenu(mContext, moreView);
-                popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
+                PopupMenu popupMenu = new PopupMenu(mContext, moreView);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
@@ -261,7 +241,6 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
 //            convertView.setOnClickListener(temp);
         return convertView;
     }
-
     public void deleteAtPosition(int position) {
         LSContact contact = mContacts.get(position);
         mContacts.remove(position);
@@ -269,18 +248,15 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         setList(LSContact.getContactsByType(contactType));
 
     }
-
-    public void disableDeleteMode() {
-        deleteFlow = false;
-        setList(LSContact.getContactsByType(contactType));
-    }
+    // for searching
+    //TODO this method needs to be moved from here
 
     @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                FilterResults results = new Filter.FilterResults();
+                FilterResults results = new FilterResults();
                 //If there's nothing to filter on, return the original data for list
                 if (charSequence == null || charSequence.length() == 0) {
                     results.values = mContacts;
@@ -289,11 +265,11 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
                     List<LSContact> filterResultsData = new ArrayList<>();
                     //int length = charSequence.length();
                     for (int i = 0; i < mContacts.size(); i++) {
-                        if (mContacts.get(i).getContactType().toLowerCase() != "separator" && mContacts.get(i).getContactName().toLowerCase().contains(((String) charSequence).toLowerCase())) {
+                        if (mContacts.get(i).getContactName() != null && mContacts.get(i).getContactName().toLowerCase().contains(((String) charSequence).toLowerCase())) {
                             filterResultsData.add(mContacts.get(i));
                             continue;
                         }
-                        if (mContacts.get(i).getContactType().toLowerCase() != "separator" && mContacts.get(i).getPhoneOne().toLowerCase().contains(((String) charSequence).toLowerCase())) {
+                        if (mContacts.get(i).getPhoneOne().toLowerCase().contains(((String) charSequence).toLowerCase())) {
                             filterResultsData.add(mContacts.get(i));
                         }
                     }
@@ -329,69 +305,17 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         this.contactType = contactType;
     }
 
-
-    @Override
-    public View getHeaderView(int position, View convertView, ViewGroup parent) {
-        HeaderViewHolder holder;
-
-        if (convertView == null) {
-            holder = new HeaderViewHolder();
-            convertView = mInflater.inflate(R.layout.section_separator_two_text_views, parent, false);
-            holder.saleType = (TextView) convertView.findViewById(R.id.section_separator_header_name);
-            holder.saleTypeCount = (TextView) convertView.findViewById(R.id.section_separator_header_count);
-            convertView.setTag(holder);
-        } else {
-            holder = (HeaderViewHolder) convertView.getTag();
-        }
-
-        //TODO
-        // set header text
-        SalesFragment obj = new SalesFragment();
-        if (getHeaderId(position) == 0) {
-            holder.saleType.setText("Prospects");
-            holder.saleTypeCount.setText(Integer.toString(obj.countProspects()));
-        } else if (getHeaderId(position) == 1) {
-            holder.saleType.setText("Leads");
-            holder.saleTypeCount.setText(Integer.toString(obj.countLeads()));
-        } else if (getHeaderId(position) == 2) {
-            holder.saleType.setText("Closed Lost");
-            holder.saleTypeCount.setText(Integer.toString(obj.countClosedLost()));
-        } else {
-            holder.saleType.setText("Closed Won");
-            holder.saleTypeCount.setText(Integer.toString(obj.countClosedWon()));
-        }
-
-//        CharSequence headerChar = filteredData.get(position).getContactSalesStatus();
-//        holder.category.setText(headerChar);
-
-        return convertView;
+    public FragmentManager getSupportFragmentManager() {
+        return supportFragmentManager;
     }
 
-    @Override
-    public long getHeaderId(int position) {
-//        return filteredData.get(position).getContactName().subSequence(0,1).charAt(0);
-
-        if (filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
-            return 0;
-        } else if (filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_LEAD)) {
-            return 1;
-        } else if (filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_LOST)) {
-            return 2;
-        } else if (filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_WON)) {
-            return 3;
-        }
-        return -1;
+    public void setSupportFragmentManager(FragmentManager supportFragmentManager) {
+        this.supportFragmentManager = supportFragmentManager;
     }
 
     /*
     * Hold references to sub views
     * */
-
-    static class HeaderViewHolder {
-        TextView saleType;
-        TextView saleTypeCount;
-    }
-
     static class ViewHolder {
         TextView name;
         TextView number;
@@ -410,10 +334,10 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
     /*
     * Hold references to separator tab
     * */
-//    static class separatorViewHolder {
-//        TextView salesType;
-//        TextView salesTypeCount;
-//    }
+    static class separatorViewHolder {
+        TextView salesType;
+        TextView salesTypeCount;
+    }
 
     /*
     * event handler for click on name
@@ -430,39 +354,18 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         @Override
         public void onClick(View v) {
 
-            boolean wasNull = false;
             if (noteDetails == null) {
                 noteDetails = detailsLayout;
                 noteDetails.setVisibility(View.VISIBLE);
-                wasNull = true;
-                detailsContact = contact;
-                detailsContact.setDetailsDropDownOpen(true);
-                detailsContact.save();
             }
             if (noteDetails.getVisibility() == View.VISIBLE) {
                 noteDetails.setVisibility(GONE);
-                detailsContact.setDetailsDropDownOpen(false);
-                detailsContact.save();
-                if (noteDetails == detailsLayout && !wasNull) {
-                    noteDetails.setVisibility(GONE);
-                    detailsContact.setDetailsDropDownOpen(false);
-                    detailsContact.save();
-                } else {
-                    noteDetails = detailsLayout;
-                    detailsContact = contact;
-                    noteDetails.setVisibility(View.VISIBLE);
-                    detailsContact.setDetailsDropDownOpen(true);
-                    detailsContact.save();
-                }
+                noteDetails = detailsLayout;
+                noteDetails.setVisibility(View.VISIBLE);
             } else {
                 noteDetails.setVisibility(GONE);
-                detailsContact.setDetailsDropDownOpen(false);
-                detailsContact.save();
                 detailsLayout.setVisibility(View.VISIBLE);
-                contact.setDetailsDropDownOpen(true);
                 noteDetails = detailsLayout;
-                detailsContact = contact;
-                detailsContact.save();
             }
         }
     }
@@ -481,14 +384,5 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
             detailsActivityIntent.putExtra(ContactDetailsActivity.KEY_CONTACT_ID, contactId + "");
             mContext.startActivity(detailsActivityIntent);
         }
-    }
-
-
-    public FragmentManager getSupportFragmentManager() {
-        return supportFragmentManager;
-    }
-
-    public void setSupportFragmentManager(FragmentManager supportFragmentManager) {
-        this.supportFragmentManager = supportFragmentManager;
     }
 }

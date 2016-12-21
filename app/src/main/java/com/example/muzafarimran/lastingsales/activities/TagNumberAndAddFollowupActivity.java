@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.muzafarimran.lastingsales.Events.ContactTaggedFromUntaggedContactEventModel;
+import com.example.muzafarimran.lastingsales.Events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -34,6 +37,8 @@ import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.util.Calendar;
+
+import de.halfbit.tinybus.TinyBus;
 
 
 public class TagNumberAndAddFollowupActivity extends Activity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
@@ -559,6 +564,12 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             setAlarm(getApplicationContext(), tempFollowUp);
                         }
                         finish();
+//                        Registering a tiny bus event so home tab can be updated
+                        ContactTaggedFromUntaggedContactEventModel contactTaggedFromUntaggedContactEventModel = new ContactTaggedFromUntaggedContactEventModel();
+                        TinyBus bus = TinyBus.from(getApplicationContext());
+                        bus.register(contactTaggedFromUntaggedContactEventModel);
+                        bus.post(contactTaggedFromUntaggedContactEventModel);
+                        Log.d("TagUntaggedGenerated", "contact tagged and saved() called  ");
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
 

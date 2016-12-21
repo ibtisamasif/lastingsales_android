@@ -12,6 +12,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
@@ -129,35 +130,21 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
         holder.bSales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (contact.getContactName() != null && !contact.getContactName().equals("")) {
-                    contact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                    contact.save();
-                    ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNTAGGED);
-                    setList(allUntaggedContacts);
-                } else if (contact.getContactName() == null || contact.getContactName().equals("")) {
-                    Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
-                    myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_UNTAGGED_CONTACT);
-                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId()+"");
-                    mContext.startActivity(myIntent);
-                }
+                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_UNTAGGED_CONTACT);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                mContext.startActivity(myIntent);
             }
         });
         holder.bColleague.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (contact.getContactName() != null && !contact.getContactName().equals("")) {
-                    contact.setContactType(LSContact.CONTACT_TYPE_COLLEAGUE);
-                    contact.save();
-                    ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNTAGGED);
-                    setList(allUntaggedContacts);
-                }else if (contact.getContactName() == null || contact.getContactName().equals("")) {
-                    Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
-                    myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_UNTAGGED_CONTACT);
-                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
-                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId()+"");
-                    mContext.startActivity(myIntent);
-                }
+                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_UNTAGGED_CONTACT);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                mContext.startActivity(myIntent);
             }
         });
         holder.bNonbusiness.setOnClickListener(new View.OnClickListener() {
@@ -168,15 +155,15 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
                 contact.save();
                 ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNTAGGED);
                 setList(allUntaggedContacts);
-
+                Toast.makeText(mContext, "Added as Non-Business Contact!", Toast.LENGTH_SHORT).show();
             }
         });
 
         ArrayList<LSCall> allCallsForThisNumber = LSCall.getCallsFromNumber(PhoneNumberAndCallUtils.numberToInterNationalNumber(contact.getPhoneOne()));
         if (allCallsForThisNumber != null && allCallsForThisNumber.size() > 0) {
-            holder.tvConnections.setText("( " + allCallsForThisNumber.size() + " )");
+            holder.tvConnections.setText("" + allCallsForThisNumber.size() + "");
         } else {
-            holder.tvConnections.setText("( " + 0 + " )");
+            holder.tvConnections.setText("" + 0 + "");
         }
         if (allCallsForThisNumber != null && allCallsForThisNumber.size() > 0) {
             LSCall latestCall = allCallsForThisNumber.get(allCallsForThisNumber.size() - 1);
@@ -184,9 +171,9 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
             calendar.setTimeInMillis(latestCall.getBeginTime());
             String lastContact = calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-"
                     + calendar.get(Calendar.YEAR) + " " + calendar.get(Calendar.HOUR_OF_DAY) + " : " + calendar.get(Calendar.MINUTE);
-            holder.tvLastContact.setText("( " + lastContact + " )");
+            holder.tvLastContact.setText("" + lastContact + "");
         } else {
-            holder.tvLastContact.setText("( " + "Never+" + " )");
+            holder.tvLastContact.setText("" + "Never+" + "");
         }
         return convertView;
     }
