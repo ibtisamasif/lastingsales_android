@@ -85,7 +85,6 @@ public class NotesByContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
         view = inflater.inflate(R.layout.fragment_notes_by_contacts2, container, false);
         imageView = (ImageView) view.findViewById(R.id.ivbutton);
         lvNotesList = (ListView) view.findViewById(R.id.lvNoteListContactDetailsScreen);
