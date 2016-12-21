@@ -38,7 +38,6 @@ public class NotesByContactsFragment extends Fragment {
     MaterialSearchView searchView;
     private TinyBus bus;
     View view;
-    EditText editText;
     ImageView imageView;
     ListView lvNotesList;
     LSContact selectedContact;

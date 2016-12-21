@@ -191,11 +191,11 @@ public class LSContact extends SugarRecord {
         return allFollowupsOfThisContact;
     }
 
-//    public ArrayList<LSNote> getAllNotes() {
-//        ArrayList<LSNote> allNotesOfThisContact = null;
-//        allNotesOfThisContact = (ArrayList<LSNote>) LSNote.find(LSNote.class, "contact_of_note = ? ", getId() + "");
-//        return allNotesOfThisContact;
-//    }
+    public ArrayList<LSNote> getAllNotes() {
+        ArrayList<LSNote> allNotesOfThisContact = null;
+        allNotesOfThisContact = (ArrayList<LSNote>) LSNote.find(LSNote.class, "contact_of_note = ? ", getId() + "");
+        return allNotesOfThisContact;
+    }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
