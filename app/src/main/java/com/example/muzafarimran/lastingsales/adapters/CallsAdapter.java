@@ -31,9 +31,8 @@ import static android.view.View.GONE;
  */
 public class CallsAdapter extends BaseAdapter implements Filterable {
 
-    private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
-    private final static int ITEM_TYPES = 2;
+    private final static int ITEM_TYPES = 1;
     public Context mContext;
     public ShowContactCallDetails detailsListener = null;
     Boolean expanded = false;
@@ -63,7 +62,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getItemViewType(int position) {
-        return isSeparator(position) ? TYPE_SEPARATOR : TYPE_ITEM;
+        return  TYPE_ITEM;
     }
 
     @Override
@@ -85,6 +84,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
         LSCall call = (LSCall) getItem(position);
         String number = call.getContactNumber();
+<<<<<<< HEAD
         ViewHolder holder = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.calls_text_view, parent, false);
@@ -112,6 +112,28 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         if (call.getContact() == null) {
             if (call.getContactName() != null) {
                 holder.name.setText(call.getContactName());
+=======
+            ViewHolder holder = null;
+            if (convertView == null) {
+                convertView = mInflater.inflate(R.layout.calls_text_view, parent, false);
+                holder = new ViewHolder();
+                holder.name = (TextView) convertView.findViewById(R.id.call_name);
+                holder.time = (TextView) convertView.findViewById(R.id.call_time);
+                holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+                holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
+                holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
+                holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
+                holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
+                this.showcalldetailslistener = new ShowDetailsDropDown(call, holder.contactCallDetails);
+                holder.bTag = (Button) convertView.findViewById(R.id.call_tag_btn);
+                holder.call_icon.setOnClickListener(this.callClickListener);
+                holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
+                if (call.getContact() != null) {
+                    holder.bTag.setVisibility(GONE);
+                }
+                holder.contactCallDetails.setVisibility(GONE);
+                convertView.setTag(holder);
+>>>>>>> 355145816d498b147fbd3f590fc6c9c019787c13
             } else {
                 holder.name.setText(call.getContactNumber());
             }
@@ -121,6 +143,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
             } else {
                 holder.name.setText(call.getContact().getContactName());
             }
+<<<<<<< HEAD
         }
         holder.bContactCallsdetails.setTag(number);
         holder.bContactCallsdetails.setOnClickListener(detailsListener);
@@ -130,6 +153,15 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         holder.call_icon.setTag(mCalls.get(position).getContactNumber());
         holder.bTag.setOnClickListener(new TagAContactClickListener(number));
 
+=======
+            holder.bContactCallsdetails.setTag(number);
+            holder.bContactCallsdetails.setOnClickListener(detailsListener);
+            holder.numberDetailTextView.setText(number);
+            holder.call_name_time.setTag(position);
+            holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime()));
+            holder.call_icon.setTag(mCalls.get(position).getContactNumber());
+            holder.bTag.setOnClickListener(new TagAContactClickListener(number));
+>>>>>>> 355145816d498b147fbd3f590fc6c9c019787c13
         return convertView;
     }
 
@@ -137,10 +169,6 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         this.mCalls = mCalls;
         filteredData = mCalls;
         notifyDataSetChanged();
-    }
-
-    private boolean isSeparator(int position) {
-        return mCalls.get(position).getType() == "separator";
     }
 
     // for searching
@@ -205,10 +233,6 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         TextView numberDetailTextView;
         Button bContactCallsdetails;
         Button bTag;
-    }
-
-    static class separatorHolder {
-        TextView text;
     }
 
     /*

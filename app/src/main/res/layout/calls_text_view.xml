@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="10dp"
     android:orientation="vertical">
 
@@ -28,18 +26,16 @@
                 android:layout_alignParentTop="true">
 
                 <RelativeLayout
-
                     android:id="@+id/user_call_group_wrapper"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    >
+                    android:layout_alignParentTop="true">
 
                     <ImageView
                         android:id="@+id/user_avatar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/user_avatar_icon_gray_border"/>
+                        android:src="@drawable/user_avatar_icon_gray_border" />
 
                     <RelativeLayout
                         android:id="@+id/user_call_group_name_time"
@@ -47,16 +43,14 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@id/user_avatar"
-                        android:paddingLeft="16dp"
-                        >
+                        android:paddingLeft="16dp">
 
                         <TextView
                             android:id="@+id/call_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="name"
-                            android:textSize="15sp"
-                            />
+                            android:textSize="15sp" />
 
                         <ImageView
                             android:id="@+id/missed_call_icon"
@@ -64,7 +58,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/call_name"
                             android:layout_marginTop="5dp"
-                            android:src="@drawable/missed_call_icon"/>
+                            android:src="@drawable/missed_call_icon" />
 
                         <TextView
                             android:id="@+id/call_time"
@@ -75,7 +69,7 @@
                             android:layout_toRightOf="@id/missed_call_icon"
                             android:paddingLeft="4dp"
                             android:text="time"
-                            android:textSize="10sp"/>
+                            android:textSize="10sp" />
                     </RelativeLayout>
                 </RelativeLayout>
 
@@ -87,19 +81,17 @@
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/make_call_icon"/>
+                    android:src="@drawable/make_call_icon" />
 
             </RelativeLayout>
 
-            <RelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/rl_calls_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:padding="10dp"
-                android:paddingBottom="0dp"
-                >
+                android:paddingBottom="0dp">
 
                 <TextView
                     android:id="@+id/call_number"
@@ -107,8 +99,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:paddingLeft="52dp"
-                    tools:text="03234433108"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp"
+                    tools:text="03234433108" />
 
                 <RelativeLayout
 
@@ -131,8 +123,7 @@
                         android:radius="5dip"
                         android:text="Details"
                         android:textColor="#ffffff"
-                        android:textSize="12dp"
-                        />
+                        android:textSize="12dp" />
 
 
                     <Button
@@ -151,8 +142,7 @@
                         android:radius="5dip"
                         android:text="Tag"
                         android:textColor="#ffffff"
-                        android:textSize="12dp"
-                        />
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
