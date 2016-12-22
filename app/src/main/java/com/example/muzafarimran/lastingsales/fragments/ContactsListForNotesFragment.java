@@ -99,7 +99,7 @@ public class ContactsListForNotesFragment extends TabFragment {
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getAllNotesContacts();
+        List<LSContact> contacts = LSContact.getAllContactsHavingNotes();
         setList(contacts);
     }
 

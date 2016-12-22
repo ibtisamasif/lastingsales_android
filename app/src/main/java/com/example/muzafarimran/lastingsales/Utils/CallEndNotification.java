@@ -19,7 +19,7 @@ import com.example.muzafarimran.lastingsales.receivers.TagNonBusiness;
 public class CallEndNotification {
     private static final String TAG = "CallEndNotification";
     public static final int NOTIFICATION_ID = 1;
-    public static Notification createNotification(Context ctx, String name , Long contact_id) {
+    public static Notification createFollowUpNotification(Context ctx, String name , Long contact_id) {
 
         Intent cancelIntent = new Intent(ctx, FollowupNotiCancelBtnReceiver.class);
         cancelIntent.putExtra("notificationId", NOTIFICATION_ID);
@@ -43,7 +43,7 @@ public class CallEndNotification {
                 .setAutoCancel(true);
         return notificationBuilder.build();
     }
-    public static Notification createFollowUpNotification(Context ctx, String intlNumber) {
+    public static Notification createTagNotification(Context ctx, String intlNumber) {
         String number_or_name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, intlNumber);
         if (number_or_name == null) {
             number_or_name = intlNumber;

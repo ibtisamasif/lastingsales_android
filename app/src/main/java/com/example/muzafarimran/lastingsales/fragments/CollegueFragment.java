@@ -16,7 +16,6 @@ import com.example.muzafarimran.lastingsales.Events.ColleagueContactAddedEventMo
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.adapters.ColleagueContactsAdapter;
-import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -108,9 +107,9 @@ public class CollegueFragment extends TabFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_collegue, container, false);
 
-        floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu);
-        floatingActionButtonAdd = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
-        floatingActionButtonImport = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import);
+        floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu_collegue);
+        floatingActionButtonAdd = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add_collegue);
+        floatingActionButtonImport = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import_collegue);
         colleagueContactsAdapter.setSupportFragmentManager(getFragmentManager());
         floatingActionMenu.setClosedOnTouchOutside(true);
 

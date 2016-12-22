@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.Events.ContactTaggedFromUntaggedContactEventModel;
-import com.example.muzafarimran.lastingsales.Events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -572,7 +571,6 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         Log.d("TagUntaggedGenerated", "contact tagged and saved() called  ");
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
-
                     String titleText = null;
                     TempFollowUp tempFollowUp = selectedFollowup;
                     String noteText = null;

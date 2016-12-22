@@ -74,7 +74,9 @@
         </activity>
         <activity android:name=".activities.ContactCallDetails"/>
         <activity android:name=".activities.AddContactActivity"/>
-        <activity android:name=".activities.LSContactChooserActivity">
+        <activity
+            android:name=".activities.LSContactChooserActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
             android:name=".activities.FollowupsActivity"

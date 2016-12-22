@@ -1,12 +1,14 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,14 +16,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.muzafarimran.lastingsales.Events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.NotesByContactsActivity2;
-import com.example.muzafarimran.lastingsales.adapters.NotesListAdapter2;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.Note;
 
 import java.util.ArrayList;
+
+import de.halfbit.tinybus.TinyBus;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,98 +100,53 @@ public class AddNoteFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-////         Inflate the layout for this fragment
-//        View view = inflater.inflate(R.layout.fragment_add_note, container, false);
-//        tvContactName = (TextView) view.findViewById(R.id.contact_name_add_note);
-//        etContactNote = (EditText) view.findViewById(R.id.contact_note_add_note);
-//        bOk = (Button) view.findViewById(R.id.ok_add_note);
-//        bCancel = (Button) view.findViewById(R.id.cancel_add_note);
-//        setUpListners();
-//        return view;
-
-
-        view = inflater.inflate(R.layout.fragment_notes_by_contacts2, container, false);
-        imageView = (ImageView) view.findViewById(R.id.ivbutton);
-        lvNotesList = (ListView) view.findViewById(R.id.lvNoteListContactDetailsScreen);
-//        String contactIdString = this.getArguments().getString(CONTACT_ID);
-//        Long contactIDLong;
-//        if (contactIdString != null) {
-//            contactIDLong = Long.parseLong(contactIdString);
-//            selectedContact = LSContact.findById(LSContact.class, contactIDLong);
-
-
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Note Added", Toast.LENGTH_SHORT).show();
-                EditText editText = (EditText) view.findViewById(R.id.noteLine);
-                //add new note to user
-                LSNote tempNote = new LSNote();
-                String note = editText.getText().toString();
-                tempNote.setNoteText(note);
-                tempNote.setContactOfNote(selectedContact);
-                tempNote.save();
-                editText.setText(null);
-                lvNotesList.setAdapter(new NotesListAdapter2(getActivity(), (ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId())));
-                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(NotesByContactsActivity2.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-//                }
-            }
-
-        });
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//         Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_add_note, container, false);
+        tvContactName = (TextView) view.findViewById(R.id.contact_name_add_note);
+        etContactNote = (EditText) view.findViewById(R.id.contact_note_add_note);
+        bOk = (Button) view.findViewById(R.id.ok_add_note);
+        bCancel = (Button) view.findViewById(R.id.cancel_add_note);
+        setUpListners();
         return view;
     }
 
-//    private void setUpListners() {
-//        bOk.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (oneContact != null) {
-//                    LSNote note = new LSNote();
-//                    note.setContactOfNote(oneContact);
-//                    note.setNoteText(etContactNote.getText().toString());
-//                    note.save();
-//                    Intent data = new Intent();
-//                    String text = note.getId() + "";
-//                    data.setData(Uri.parse(text));
-//                    getActivity().setResult(RESULT_OK, data);
-//                    NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
-//                    TinyBus bus = TinyBus.from(getActivity().getApplicationContext());
-//                    bus.register(mNoteAdded);  //crashed here check it later
-//                    bus.post(mNoteAdded);
-//                    Log.d("AddNoteEventGenerated", "onNoteAdded() called  ");
-//                    getActivity().finish();
-//                }
-//            }
-//        });
-//        bCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                getActivity().finish();
-//
-//            }
-//        });
-//    }
+    private void setUpListners() {
+        bOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (oneContact != null) {
+                    LSNote note = new LSNote();
+                    note.setContactOfNote(oneContact);
+                    note.setNoteText(etContactNote.getText().toString());
+                    note.save();
+                    Intent data = new Intent();
+                    String text = note.getId() + "";
+                    data.setData(Uri.parse(text));
+                    getActivity().setResult(RESULT_OK, data);
+                    NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
+                    TinyBus bus = TinyBus.from(getActivity().getApplicationContext());
+                    bus.register(mNoteAdded);  //crashed here check it later
+                    bus.post(mNoteAdded);
+                    Log.d("AddNoteEventGenerated", "onNoteAdded() called  ");
+                    getActivity().finish();
+                }
+            }
+        });
+        bCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+
+            }
+        });
+    }
 
     public void setContact(String returnedResult) {
         if (returnedResult != null) {
-            Toast.makeText(getActivity(), ""+returnedResult, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "" + returnedResult, Toast.LENGTH_SHORT).show();
             oneContact = LSContact.getSalesAndColleguesContacts().get(Integer.parseInt(returnedResult));
-            selectedContact = oneContact;
-//            tvContactName.setText(oneContact.getContactName());
-            ArrayList<LSNote> allNotesOfThisContact;
-            selectedContact = oneContact;
-            if(LSNote.getNotesByContactId(selectedContact.getId())!=null){
-                allNotesOfThisContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId());
-            }
-            else {
-                allNotesOfThisContact = null;
-            }
-            lvNotesList.setAdapter(new NotesListAdapter2(getActivity(), allNotesOfThisContact));
+            tvContactName.setText(oneContact.getContactName());
         }
     }
 }

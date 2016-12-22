@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by ahmad on 01-Nov-16.
  */
 
-public class ImportContactsListAdapter2 extends BaseAdapter {
+public class ImportContactsListAdapter2 extends BaseAdapter implements Filterable{
     LayoutInflater inflater;
     ArrayList<LSContact> contactsList;
     Context context;
@@ -89,6 +91,11 @@ public class ImportContactsListAdapter2 extends BaseAdapter {
         });
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 
     // The ViewHolder, only one tvContactName for simplicity and demonstration purposes, you can put all the views inside a row of the list into this ViewHolder

@@ -26,12 +26,12 @@ import de.halfbit.tinybus.TinyBus;
  */
 
 public class CallsStatesReceiver extends CallReceiver {
-    private static final String TAG = "CallsStatesReceiver";
-    private NotificationManager mNotificationManager;
     public static final String OUTGOINGCALL_CONTACT_ID = "outgoing_contact_id";
     public static final String INCOMINGCALL_CONTACT_ID = "incoming_contact_id";
     public static final String OUTGOINGCALL_CONTACT_NOTE_ID = "outgoing_contact_note_id";
     public static final String INCOMINGCALL_CONTACT_NOTE_ID = "incoming_contact_note_id";
+    private static final String TAG = "CallsStatesReceiver";
+    private NotificationManager mNotificationManager;
 
     @Override
     protected void onIncomingCallStarted(Context ctx, String number, Date start) {
@@ -80,11 +80,10 @@ public class CallsStatesReceiver extends CallReceiver {
         tempCall.save();
         long tenSeconds = 10;
         LSContact tempContact = LSContact.getContactFromNumber(internationalNumber);
-        if(tempContact!= null){
-            if(callDuration > tenSeconds) {
-                if(contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)){
+        if (tempContact != null) {
+            if (callDuration > tenSeconds) {
+                if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                     if (contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
-                        Toast.makeText(ctx, "Called", Toast.LENGTH_SHORT).show();
                         contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
                         contact.save();
                     }
@@ -116,7 +115,7 @@ public class CallsStatesReceiver extends CallReceiver {
             tempCall.setContactName(phoneBookContactName);
         }
         long callDuration = PhoneNumberAndCallUtils.secondsFromStartAndEndDates(start, end);
-        Toast.makeText(ctx, "Duration "+callDuration, Toast.LENGTH_SHORT).show();
+        Toast.makeText(ctx, "Duration " + callDuration, Toast.LENGTH_SHORT).show();
         tempCall.setDuration(callDuration);
         LSContact contact = LSContact.getContactFromNumber(internationalNumber);
 //      if contact is null that means contact is not already saved with this number
@@ -134,9 +133,9 @@ public class CallsStatesReceiver extends CallReceiver {
         tempCall.save();
         long tenSeconds = 10;
         LSContact tempContact = LSContact.getContactFromNumber(internationalNumber);
-        if(tempContact!= null){
-            if(callDuration > tenSeconds) {
-                if(contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)){
+        if (tempContact != null) {
+            if (callDuration > tenSeconds) {
+                if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                     if (contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
                         Toast.makeText(ctx, "Called", Toast.LENGTH_SHORT).show();
                         contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
@@ -209,28 +208,18 @@ public class CallsStatesReceiver extends CallReceiver {
         String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
 
-        if (tempContact!=null) {
-            if(!tempContact.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
-                // If caller is already Tagged and is not Business contact show NOTIFICATION
-                String name = tempContact.getContactName();
-                Long contact_id = tempContact.getId();
-                mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createNotification(ctx, name , contact_id));
-            }
-        }
-        else {
-            // If caller is UNTAGGED i.e not stored in app then show PopUp
-            //PopUP
-//            intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-//            Intent myIntent = new Intent(ctx, TagNumberActivity.class);
-//            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            myIntent.putExtra(TagNumberActivity.NUMBER_TO_TAG, intlNumber);
-//            ctx.startActivity(myIntent);
-
-            //Notification
+        if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+            String name = tempContact.getContactName();
+            Long contact_id = tempContact.getId();
             mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx , intlNumber));
-            }
+            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx, name, contact_id));
 
+        } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
+        } else if (tempContact == null) {
+            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
         }
     }
+}

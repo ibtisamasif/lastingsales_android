@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,11 +37,11 @@ public class NotesByContactsFragment extends Fragment {
     NotesListAdapter2 notesListAdapter2;
     EditText inputSearch;
     MaterialSearchView searchView;
-    private TinyBus bus;
     View view;
     ImageView imageView;
     ListView lvNotesList;
     LSContact selectedContact;
+    private TinyBus bus;
 
     public NotesByContactsFragment() {
     }
@@ -57,6 +58,7 @@ public class NotesByContactsFragment extends Fragment {
         setRetainInstance(true);
         notesListAdapter2 = new NotesListAdapter2(getActivity(), null);
         setHasOptionsMenu(true);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
     @Override
@@ -97,19 +99,19 @@ public class NotesByContactsFragment extends Fragment {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
                     EditText editText = (EditText) view.findViewById(R.id.noteLine);
-                    //add new note to user
                     LSNote tempNote = new LSNote();
                     String note = editText.getText().toString();
-                    tempNote.setNoteText(note);
-                    tempNote.setContactOfNote(selectedContact);
-                    tempNote.save();
-                    editText.setText(null);
-                    lvNotesList.setAdapter(new NotesListAdapter2(getActivity(), (ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId())));
-                    InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(NotesByContactsActivity2.INPUT_METHOD_SERVICE);
-                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
+                    if (note != null && note.length() > 0) {
+                        tempNote.setNoteText(note);
+                        tempNote.setContactOfNote(selectedContact);
+                        tempNote.save();
+                        editText.setText(null);
+                        Toast.makeText(getActivity(), "Note Saved", Toast.LENGTH_SHORT).show();
+                        lvNotesList.setAdapter(new NotesListAdapter2(getActivity(), (ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId())));
+                        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(NotesByContactsActivity2.INPUT_METHOD_SERVICE);
+                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
                 }
             });
         }

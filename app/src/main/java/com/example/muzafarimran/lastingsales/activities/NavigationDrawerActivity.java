@@ -22,11 +22,11 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.Utils.CallRecord;
 import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.fragments.CollegueFragment;
+import com.example.muzafarimran.lastingsales.fragments.ContactsListForNotesFragment;
 import com.example.muzafarimran.lastingsales.fragments.FollowupsListFragment;
 import com.example.muzafarimran.lastingsales.fragments.IncomingCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
-import com.example.muzafarimran.lastingsales.fragments.ContactsListForNotesFragment;
 import com.example.muzafarimran.lastingsales.fragments.OutgoingCallsFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -99,17 +99,16 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 switch (tab.getPosition()) {
                     case 0:
                         tab.setIcon(R.drawable.menu_icon_home_selected);
-                        getSupportActionBar().setTitle("            Home");
-//                        setSupportActionBar(toolbar);
+                        getSupportActionBar().setTitle("Home");
                         break;
                     case 1:
                         tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        getSupportActionBar().setTitle("         Inquiries");
+                        getSupportActionBar().setTitle("Inquiries");
 //                        ((TextView)(toolbar.findViewById(R.id.title))).setText("CALL LOGS");
                         break;
                     case 2:
                         tab.setIcon(R.drawable.menu_icon_contact_selected);
-                        getSupportActionBar().setTitle("            Sales");
+                        getSupportActionBar().setTitle("Sales");
                         // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                         break;
 //                case 3:

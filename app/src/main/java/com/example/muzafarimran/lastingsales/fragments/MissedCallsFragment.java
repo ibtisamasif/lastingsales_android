@@ -94,7 +94,9 @@ public class MissedCallsFragment extends SearchFragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_options_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
-        materialSearchView.setMenuItem(item);
+        if(materialSearchView!=null) {
+            materialSearchView.setMenuItem(item);
+        }
     }
 
     @Override

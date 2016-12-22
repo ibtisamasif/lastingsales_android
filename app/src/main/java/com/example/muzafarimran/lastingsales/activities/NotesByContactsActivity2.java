@@ -43,7 +43,6 @@ public class NotesByContactsActivity2 extends AppCompatActivity {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.FragmentContainer, fragobj);
                 transaction.commit();
-
             }
         }
     }

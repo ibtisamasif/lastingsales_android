@@ -24,7 +24,7 @@ public class AddNoteActivity extends AppCompatActivity {
             transaction.commit();
         }
         Intent intent = new Intent(getApplicationContext(), LSContactChooserActivity.class);
-        intent.putExtra(LSContactChooserActivity.ACTIVITY_LAUNCH_MODE, LSContactChooserActivity.LAUNCH_MODE_COLLEGUES_AND_SALES);
+        intent.putExtra(LSContactChooserActivity.CONTACT_TYPE_TO_DISPLAY, LSContactChooserActivity.LAUNCH_MODE_CONTACTS_COLLEGUES_AND_SALES);
         startActivityForResult(intent, AddNoteFragment.CONTACT_REQUEST_CODE);
     }
 

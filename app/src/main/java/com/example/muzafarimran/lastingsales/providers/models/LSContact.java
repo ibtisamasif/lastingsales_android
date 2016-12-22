@@ -126,7 +126,7 @@ public class LSContact extends SugarRecord {
         }
     }
 
-    public static List<LSContact> getAllNotesContacts() {
+    public static List<LSContact> getAllContactsHavingNotes() {
         try {
             ArrayList<LSContact> contactsAllHavingNotes = new ArrayList<LSContact>();
             ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
@@ -146,6 +146,28 @@ public class LSContact extends SugarRecord {
         }
     }
 
+    public static List<LSContact> getAllContactsNotHavingNotes() {
+        try {
+            ArrayList<LSContact> contactsAllNotHavingNotes = new ArrayList<LSContact>();
+            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+            ArrayList<LSContact> contacts = new ArrayList<LSContact>();
+            contacts = contactsSales;
+            contacts.addAll(contactsColleagues);
+            for (LSContact oneContact : contacts){
+                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(oneContact.getId());
+                if(allNotesOfThisContact != null && allNotesOfThisContact.size()>0){
+                    //Nothing to do
+                }
+                else {
+                    contactsAllNotHavingNotes.add(oneContact);
+                }
+            }
+            return contactsAllNotHavingNotes;
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
     @Deprecated
     public static List<LSContact> getAllPendingProspectsContacts() {
         try {
