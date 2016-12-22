@@ -87,7 +87,7 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
         String number = call.getContactNumber();
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.calls_text_view, parent, false);
+            convertView = mInflater.inflate(R.layout.missed_calls_list_item, parent, false);
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.call_name);
             holder.time = (TextView) convertView.findViewById(R.id.call_time);
@@ -96,6 +96,7 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
             holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
             holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
             holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
+            holder.inquireyCount = (TextView) convertView.findViewById(R.id.inquireyCount);
             this.showcalldetailslistener = new ShowDetailsDropDown(call, holder.contactCallDetails);
             holder.bTag = (Button) convertView.findViewById(R.id.call_tag_btn);
             holder.call_icon.setOnClickListener(this.callClickListener);
@@ -129,6 +130,9 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
         holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime()));
         holder.call_icon.setTag(mCalls.get(position).getContactNumber());
         holder.bTag.setOnClickListener(new TagAContactClickListener(number));
+        if (call.getCountOfInquiries() > 0) {
+            holder.inquireyCount.setText(call.getCountOfInquiries()+"");
+        }
 
         return convertView;
     }
@@ -205,6 +209,7 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
         TextView numberDetailTextView;
         Button bContactCallsdetails;
         Button bTag;
+        TextView inquireyCount;
     }
 
     static class separatorHolder {

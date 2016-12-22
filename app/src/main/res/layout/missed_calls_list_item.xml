@@ -80,9 +80,9 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:background="@color/black"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/red"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -91,7 +91,8 @@
                     android:layout_toLeftOf="@id/call_icon"
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
-                    android:id="@+id/num_calls_text"
+                    android:id="@+id/inquireyCount"
+                    android:layout_centerVertical="true"
                     />
 
                 <ImageView

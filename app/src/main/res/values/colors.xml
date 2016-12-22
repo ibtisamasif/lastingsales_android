@@ -35,5 +35,6 @@
     <color name="button_state_pressed">@color/darkBlue</color>
     <color name="button_state_focused">@color/darkBlue</color>
     <color name="blue_transparent">#440000bc</color>
+    <color name="red">#ff0000</color>
 
 </resources>

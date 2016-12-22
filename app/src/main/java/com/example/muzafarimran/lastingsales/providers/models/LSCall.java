@@ -31,6 +31,8 @@ public class LSCall extends SugarRecord {
     private Long beginTime;
     private String audio_path;
     private int inquiryHandledState;
+    @Ignore
+    private int countOfInquiries;
 
     public LSCall() {
     }
@@ -178,5 +180,13 @@ public class LSCall extends SugarRecord {
 
     public void setInquiryHandledState(int inquiryHandledState) {
         this.inquiryHandledState = inquiryHandledState;
+    }
+
+    public int getCountOfInquiries() {
+        return countOfInquiries;
+    }
+
+    public void setCountOfInquiries(int countOfInquiries) {
+        this.countOfInquiries = countOfInquiries;
     }
 }
