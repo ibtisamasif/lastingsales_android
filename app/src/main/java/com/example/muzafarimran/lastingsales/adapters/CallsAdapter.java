@@ -85,58 +85,51 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
         LSCall call = (LSCall) getItem(position);
         String number = call.getContactNumber();
-        if (isSeparator(position)) {
-            separatorHolder separatorholder = null;
-            if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.section_separator, parent, false);
-                separatorholder = new separatorHolder();
-                separatorholder.text = (TextView) convertView.findViewById(R.id.section_separator);
-                convertView.setTag(separatorholder);
+        ViewHolder holder = null;
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.calls_text_view, parent, false);
+            holder = new ViewHolder();
+            holder.name = (TextView) convertView.findViewById(R.id.call_name);
+            holder.time = (TextView) convertView.findViewById(R.id.call_time);
+            holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+            holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
+            holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
+            holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
+            holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
+            this.showcalldetailslistener = new ShowDetailsDropDown(call, holder.contactCallDetails);
+            holder.bTag = (Button) convertView.findViewById(R.id.call_tag_btn);
+            holder.call_icon.setOnClickListener(this.callClickListener);
+            holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
+            if (call.getContact() != null) {
+                holder.bTag.setVisibility(GONE);
+            }
+            holder.contactCallDetails.setVisibility(GONE);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+            ((ViewGroup) holder.call_name_time.getParent().getParent()).removeView(call_details);
+        }
+        if (call.getContact() == null) {
+            if (call.getContactName() != null) {
+                holder.name.setText(call.getContactName());
             } else {
-                separatorholder = (separatorHolder) convertView.getTag();
+                holder.name.setText(call.getContactNumber());
             }
         } else {
-            ViewHolder holder = null;
-            if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.calls_text_view, parent, false);
-                holder = new ViewHolder();
-                holder.name = (TextView) convertView.findViewById(R.id.call_name);
-                holder.time = (TextView) convertView.findViewById(R.id.call_time);
-                holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
-                holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
-                holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
-                holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
-                holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
-                this.showcalldetailslistener = new ShowDetailsDropDown(call, holder.contactCallDetails);
-                holder.bTag = (Button) convertView.findViewById(R.id.call_tag_btn);
-                holder.call_icon.setOnClickListener(this.callClickListener);
-                holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
-                if (call.getContact() != null) {
-                    holder.bTag.setVisibility(GONE);
-                }
-                holder.contactCallDetails.setVisibility(GONE);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-                ((ViewGroup) holder.call_name_time.getParent().getParent()).removeView(call_details);
-            }
-            if (call.getContact() == null) {
-                if (call.getContactName() != null) {
-                    holder.name.setText(call.getContactName());
-                } else {
-                    holder.name.setText(call.getContactNumber());
-                }
+            if (call.getContact().getContactName() == null) {
+                holder.name.setText(call.getContactNumber());
             } else {
                 holder.name.setText(call.getContact().getContactName());
             }
-            holder.bContactCallsdetails.setTag(number);
-            holder.bContactCallsdetails.setOnClickListener(detailsListener);
-            holder.numberDetailTextView.setText(number);
-            holder.call_name_time.setTag(position);
-            holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime()));
-            holder.call_icon.setTag(mCalls.get(position).getContactNumber());
-            holder.bTag.setOnClickListener(new TagAContactClickListener(number));
         }
+        holder.bContactCallsdetails.setTag(number);
+        holder.bContactCallsdetails.setOnClickListener(detailsListener);
+        holder.numberDetailTextView.setText(number);
+        holder.call_name_time.setTag(position);
+        holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime()));
+        holder.call_icon.setTag(mCalls.get(position).getContactNumber());
+        holder.bTag.setOnClickListener(new TagAContactClickListener(number));
+
         return convertView;
     }
 

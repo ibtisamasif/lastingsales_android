@@ -52,6 +52,9 @@ public class LogInActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.loginButtonLoginScreen);
         tvNumber = (TextView) findViewById(R.id.numberLoginScreen);
         tvPassword = (TextView) findViewById(R.id.passwordLoginScreen);
+//        hardcoding number and password for develoment speedup purposes
+        tvNumber.setText("03361124888");
+        tvPassword.setText("LastingSales123@");
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
