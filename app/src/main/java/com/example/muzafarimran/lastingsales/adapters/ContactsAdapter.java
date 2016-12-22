@@ -23,6 +23,7 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsActivity;
+import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -84,11 +85,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return isSeparator(position) ? TYPE_SEPARATOR : TYPE_ITEM;
-    }
-
-    @Override
     public int getCount() {
         return this.filteredData.size();
     }
@@ -108,154 +104,78 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         final LSContact contact = (LSContact) getItem(position);
-        if (isSeparator(position)) {
-            //Toast.makeText(mContext,"sup", Toast.LENGTH_LONG ).show();
-            separatorViewHolder separatorviewHolder = null;
-            if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.section_separator_two_text_views, parent, false);
-                separatorviewHolder = new separatorViewHolder();
-                separatorviewHolder.salesType = (TextView) convertView.findViewById(R.id.section_separator_header_name);
-                separatorviewHolder.salesTypeCount = (TextView) convertView.findViewById(R.id.section_separator_header_count);
-                convertView.setTag(separatorviewHolder);
-            } else {
-                separatorviewHolder = (separatorViewHolder) convertView.getTag();
-            }
-            separatorviewHolder.salesType.setText(contact.getContactName());
-            switch (contact.getContactName()) {
-                case "Prospects":
-                    separatorviewHolder.salesTypeCount.setText(Integer.toString(this.prospectCount));
-                    break;
-                case "Leads":
-                    separatorviewHolder.salesTypeCount.setText(Integer.toString(this.leadCount));
-                    break;
-            }
-        } else {
-            ViewHolder holder = null;
-            if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.contact_row_view, parent, false);
-                holder = new ViewHolder();
-                holder.name = (TextView) convertView.findViewById(R.id.contact_name);
-                holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
-                holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
-                holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
-                holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
-                holder.lastContactText = (TextView) convertView.findViewById(R.id.last_contact_text);
-                holder.numberCallsText = (TextView) convertView.findViewById(R.id.calls_text);
-                holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);
-                holder.detailsButton = (Button) convertView.findViewById(R.id.contactDetailsDropDownDetailsButton);
-                holder.moreButton = (ImageView) convertView.findViewById(R.id.ivMoreButtonContactsDetailsDropDown);
-                holder.salesLeadStatus = (TextView) convertView.findViewById(R.id.status_text);
-                holder.statusRow = (RelativeLayout) convertView.findViewById(R.id.status_row);
-                holder.contactDetailsDopDownLayout.setVisibility(GONE);
-                convertView.setTag(holder);
-                holder.call_icon.setOnClickListener(this.callClickListener);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-                ((ViewGroup) holder.user_details_wrapper.getParent()).removeView(contact_details);
-            }
+        ViewHolder holder = null;
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.non_busines_contact_row_item_view, parent, false);
+            holder = new ViewHolder();
+            holder.name = (TextView) convertView.findViewById(R.id.contact_name);
+            holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
+            holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+            holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
+            holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
+            holder.bSales = (Button) convertView.findViewById(R.id.bSalesNonbusinesstem);
+            holder.bColleague = (Button) convertView.findViewById(R.id.bColleagueNonbusinessItem);
+            holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);
             holder.contactDetailsDopDownLayout.setVisibility(GONE);
-            String timeAgoString;
-            String numberOfCalls;
-            ArrayList<LSCall> allCalls = LSCall.getCallsFromNumber(contact.getPhoneOne());
-            if (allCalls == null || allCalls.size() == 0) {
-                timeAgoString = "Never";
-                numberOfCalls = 0 + "";
-            } else {
-                LSCall latestCall = allCalls.get(allCalls.size() - 1);
-                timeAgoString = PhoneNumberAndCallUtils.getTimeAgo(latestCall.getBeginTime(), mContext);
-                numberOfCalls = allCalls.size() + "";
-            }
-            holder.lastContactText.setText(timeAgoString);
-            holder.numberCallsText.setText(numberOfCalls);
-            holder.name.setText(contact.getContactName());
-            holder.user_details_wrapper.setTag(position);
-            holder.number.setText(contact.getPhoneOne());
-            holder.user_details_wrapper.setOnClickListener(new showContactDetaislsListener(contact, holder.contactDetailsDopDownLayout));
-            if (!deleteFlow) {
-                holder.deleteButton.setVisibility(GONE);
-            } else {
-                holder.deleteButton.setVisibility(View.VISIBLE);
-            }
-            holder.user_details_wrapper.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    deleteFlow = true;
-                    setList(LSContact.getContactsByType(contactType));
-                    return true;
-                }
-            });
-            holder.call_icon.setTag(mContacts.get(position).getPhoneOne());
-//              Deletes the contact, queries db and updates local list plus nitifies adpater
-            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    contact.delete();
-                    setList(LSContact.getContactsByType(contactType));
-                    Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
-                }
-            });
-            holder.detailsButton.setOnClickListener(new DetailsButtonClickListener(contact));
-            final View moreView = holder.moreButton;
-            holder.moreButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupMenu popupMenu = new android.widget.PopupMenu(mContext, moreView);
-                    popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            switch (menuItem.getItemId()) {
-                                case R.id.lead_type_prospect:
-                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                                    contact.save();
-                                    notifyDataSetChanged();
-                                    break;
-                                case R.id.lead_type_lead:
-                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                                    contact.save();
-                                    notifyDataSetChanged();
-                                    break;
-                                case R.id.lead_type_closed_won:
-                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-                                    contact.save();
-                                    notifyDataSetChanged();
-                                    break;
-                                case R.id.lead_type_closed_lost:
-                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-                                    contact.save();
-                                    notifyDataSetChanged();
-                                    break;
-                            }
-                            return false;
-                        }
-                    });
-                    popupMenu.inflate(R.menu.sales_tab_contact_lead_types);
-                    popupMenu.show();
-                }
-            });
-            if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                if (contact.getContactSalesStatus() != null && !contact.getContactSalesStatus().equals("")) {
-                    switch (contact.getContactSalesStatus()) {
-                        case LSContact.SALES_STATUS_PROSTPECT:
-                            holder.salesLeadStatus.setText("Prospect");
-                            break;
-                        case LSContact.SALES_STATUS_LEAD:
-                            holder.salesLeadStatus.setText("Lead");
-                            break;
-                        case LSContact.SALES_STATUS_CLOSED_WON:
-                            holder.salesLeadStatus.setText("Closed Won");
-                            break;
-                        case LSContact.SALES_STATUS_CLOSED_LOST:
-                            holder.salesLeadStatus.setText("Closed Lost");
-                            break;
-                    }
-                }
-            } else {
-                holder.statusRow.setVisibility(GONE);
-            }
-//            this.showContactDetaislsListener = new showContactDetaislsListener(contact);
-//            showContactDetaislsListener temp= new showContactDetaislsListener(contact);
-//            convertView.setOnClickListener(temp);
+            holder.call_icon.setOnClickListener(this.callClickListener);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+            ((ViewGroup) holder.user_details_wrapper.getParent()).removeView(contact_details);
         }
+        holder.contactDetailsDopDownLayout.setVisibility(GONE);
+        if (contact.getContactName() != null) {
+            holder.name.setText(contact.getContactName());
+        } else {
+            holder.name.setText(contact.getPhoneOne());
+        }
+        holder.user_details_wrapper.setTag(position);
+        holder.number.setText(contact.getPhoneOne());
+        holder.user_details_wrapper.setOnClickListener(new showContactDetaislsListener(contact, holder.contactDetailsDopDownLayout));
+        if (!deleteFlow) {
+            holder.deleteButton.setVisibility(GONE);
+        } else {
+            holder.deleteButton.setVisibility(View.VISIBLE);
+        }
+        /*holder.user_details_wrapper.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                deleteFlow = true;
+                setList(LSContact.getContactsByType(contactType));
+                return true;
+            }
+        });*/
+        holder.call_icon.setTag(mContacts.get(position).getPhoneOne());
+//              Deletes the contact, queries db and updates local list plus nitifies adpater
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                contact.delete();
+                setList(LSContact.getContactsByType(contactType));
+                Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.bSales.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                mContext.startActivity(myIntent);
+            }
+        });
+        holder.bColleague.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
+                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                mContext.startActivity(myIntent);
+            }
+        });
+
         return convertView;
     }
     // for searching
@@ -303,10 +223,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         notifyDataSetChanged();
     }
 
-    private boolean isSeparator(int position) {
-        return filteredData.get(position).getContactType() == "separator";
-    }
-
     public String getContactType() {
         return contactType;
     }
@@ -315,22 +231,26 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         this.contactType = contactType;
     }
 
+    public FragmentManager getSupportFragmentManager() {
+        return supportFragmentManager;
+    }
+
+    public void setSupportFragmentManager(FragmentManager supportFragmentManager) {
+        this.supportFragmentManager = supportFragmentManager;
+    }
+
     /*
     * Hold references to sub views
     * */
     static class ViewHolder {
         TextView name;
         TextView number;
-        TextView lastContactText;
-        TextView numberCallsText;
         ImageView call_icon;
         RelativeLayout user_details_wrapper;
         ImageButton deleteButton;
         LinearLayout contactDetailsDopDownLayout;
-        Button detailsButton;
-        ImageView moreButton;
-        TextView salesLeadStatus;
-        RelativeLayout statusRow;
+        Button bSales;
+        Button bColleague;
     }
 
     /*
@@ -370,29 +290,5 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
                 noteDetails = detailsLayout;
             }
         }
-    }
-
-    private class DetailsButtonClickListener implements View.OnClickListener {
-        LSContact contact;
-
-        public DetailsButtonClickListener(LSContact contact) {
-            this.contact = contact;
-        }
-
-        @Override
-        public void onClick(View view) {
-            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsActivity.class);
-            long contactId = contact.getId();
-            detailsActivityIntent.putExtra(ContactDetailsActivity.KEY_CONTACT_ID, contactId + "");
-            mContext.startActivity(detailsActivityIntent);
-        }
-    }
-
-    public FragmentManager getSupportFragmentManager() {
-        return supportFragmentManager;
-    }
-
-    public void setSupportFragmentManager(FragmentManager supportFragmentManager) {
-        this.supportFragmentManager = supportFragmentManager;
     }
 }

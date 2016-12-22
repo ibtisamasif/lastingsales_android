@@ -122,7 +122,6 @@
                     android:paddingRight="10dp"
                     android:src="@drawable/ic_plain_status_white"/>
 
-
                 <TextView
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/status_label"
@@ -142,7 +141,6 @@
                     android:layout_alignParentRight="true"
                     >
 
-
                     <TextView
                         xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/status_text"
@@ -156,7 +154,6 @@
                         android:text="Prospect"
                         android:textColor="#ffffff"
                         android:textSize="12sp"
-
                         />
 
                     <ImageView
@@ -171,9 +168,7 @@
 
                 </LinearLayout>
 
-
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:id="@+id/number_calls"
@@ -190,7 +185,6 @@
                     android:paddingRight="10dp"
                     android:src="@drawable/number_calls_icon"/>
 
-
                 <TextView
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/calls_label"
@@ -202,7 +196,6 @@
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     />
-
 
                 <TextView
                     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -216,9 +209,7 @@
                     android:text="4"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
-
                     />
-
 
             </RelativeLayout>
 

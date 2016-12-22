@@ -152,9 +152,18 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                 contactIdLong = Long.parseLong(id);
             }
             selectedContact = LSContact.findById(LSContact.class, contactIdLong);
-            selectedContactType = selectedContact.getContactType();
+            String tempContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
+            if (tempContactType == null || tempContactType.equals("")) {
+                selectedContactType = selectedContact.getContactType();
+            } else {
+                selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
+            }
             preSelectedContactType = selectedContactType;
-            etContactName.setText(selectedContact.getContactName());
+            if (selectedContact.getContactName() != null && !selectedContact.getContactName().equals("")) {
+                etContactName.setText(selectedContact.getContactName());
+            } else {
+                etContactName.setText("UNKNOWN");
+            }
             etContactPhone.setText(selectedContact.getPhoneOne());
         }
 //        if launch mode is tag untagged contact then the contact is already temporarily saved but with
@@ -563,12 +572,16 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             setAlarm(getApplicationContext(), tempFollowUp);
                         }
                         finish();
+                        try{
 //                        Registering a tiny bus event so home tab can be updated
-                        ContactTaggedFromUntaggedContactEventModel contactTaggedFromUntaggedContactEventModel = new ContactTaggedFromUntaggedContactEventModel();
-                        TinyBus bus = TinyBus.from(getApplicationContext());
-                        bus.register(contactTaggedFromUntaggedContactEventModel);
-                        bus.post(contactTaggedFromUntaggedContactEventModel);
-                        Log.d("TagUntaggedGenerated", "contact tagged and saved() called  ");
+                            ContactTaggedFromUntaggedContactEventModel contactTaggedFromUntaggedContactEventModel = new ContactTaggedFromUntaggedContactEventModel();
+                            TinyBus bus = TinyBus.from(getApplicationContext());
+                            bus.register(contactTaggedFromUntaggedContactEventModel);
+                            bus.post(contactTaggedFromUntaggedContactEventModel);
+                            Log.d("TagUntaggedGenerated", "contact tagged and saved() called  ");
+                        } catch (IllegalArgumentException e){
+                            e.printStackTrace();
+                        }
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
                     String titleText = null;

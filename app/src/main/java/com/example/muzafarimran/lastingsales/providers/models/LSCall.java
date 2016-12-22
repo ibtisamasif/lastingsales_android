@@ -22,7 +22,7 @@ public class LSCall extends SugarRecord {
     @Ignore
     public static final int INQUIRY_HANDLED = 1;
     @Ignore
-    public static final int INQUIRY_NOT_HANDLED = 1;
+    public static final int INQUIRY_NOT_HANDLED = 0;
     private String contactNumber;
     private LSContact contact;
     private String type;
