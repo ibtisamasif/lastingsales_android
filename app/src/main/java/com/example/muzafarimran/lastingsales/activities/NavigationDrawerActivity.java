@@ -21,13 +21,12 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.Utils.CallRecord;
 import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.fragments.AllCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.CollegueFragment;
 import com.example.muzafarimran.lastingsales.fragments.ContactsListForNotesFragment;
 import com.example.muzafarimran.lastingsales.fragments.FollowupsListFragment;
-import com.example.muzafarimran.lastingsales.fragments.IncomingCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
-import com.example.muzafarimran.lastingsales.fragments.OutgoingCallsFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -181,20 +180,22 @@ public class NavigationDrawerActivity extends AppCompatActivity
         Intent intent;
         Bundle bundle = new Bundle();
         if (id == R.id.nav_item_incoming_call) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, IncomingCallsFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Incoming Calls");
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, AllCallsFragment.class.getName());
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "All Calls");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
-        } else if (id == R.id.nav_item_outgoing_call) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, OutgoingCallsFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Outgoing Calls");
-            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-            intent = new Intent(getApplicationContext(), FrameActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        } else if (id == R.id.nav_item_colleague_contacts) {
+//        }
+//        else if (id == R.id.nav_item_outgoing_call) {
+//            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, OutgoingCallsFragment.class.getName());
+//            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Outgoing Calls");
+//            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+//            intent = new Intent(getApplicationContext(), FrameActivity.class);
+//            intent.putExtras(bundle);
+//            startActivity(intent);
+        }
+        else if (id == R.id.nav_item_colleague_contacts) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, CollegueFragment.class.getName());
             bundle.putString(FrameActivity.ACTIVITY_TITLE, "Colleague Contacts");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);

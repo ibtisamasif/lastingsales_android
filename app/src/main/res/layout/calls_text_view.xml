@@ -53,7 +53,7 @@
                             android:textSize="15sp" />
 
                         <ImageView
-                            android:id="@+id/missed_call_icon"
+                            android:id="@+id/call_type_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/call_name"
@@ -65,8 +65,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/call_name"
-                            android:layout_toEndOf="@id/missed_call_icon"
-                            android:layout_toRightOf="@id/missed_call_icon"
+                            android:layout_toEndOf="@id/call_type_icon"
+                            android:layout_toRightOf="@id/call_type_icon"
                             android:paddingLeft="4dp"
                             android:text="time"
                             android:textSize="10sp" />

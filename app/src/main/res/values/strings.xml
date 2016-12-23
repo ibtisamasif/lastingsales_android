@@ -62,7 +62,7 @@
     <string name="add_note">Add note</string>
     <string name="navigation_drawer_title_calls">Calls</string>
     <string name="navigation_drawer_title_contacts">Contacts</string>
-    <string name="navigation_drawer_incoming">Incoming</string>
+    <string name="navigation_drawer_incoming">All Calls</string>
     <string name="navigation_drawer_outgoing">Outgoing</string>
     <string name="navigation_drawer_colleague">Colleague</string>
     <string name="navigation_drawer_non_business">Non-Business</string>

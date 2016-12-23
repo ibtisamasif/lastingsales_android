@@ -408,14 +408,6 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
     }
 
     /*
-    * Hold references to separator tab
-    * */
-//    static class separatorViewHolder {
-//        TextView salesType;
-//        TextView salesTypeCount;
-//    }
-
-    /*
     * event handler for click on name
     * */
     public class showContactDetaislsListener implements View.OnClickListener {

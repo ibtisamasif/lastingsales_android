@@ -6,12 +6,12 @@
         <item
             android:id="@+id/nav_item_incoming_call"
             android:title="@string/navigation_drawer_incoming"
-            android:icon="@drawable/ic_drawer_incoming"
+            android:icon="@drawable/call_icon"
             />
-        <item
-            android:id="@+id/nav_item_outgoing_call"
-            android:title="@string/navigation_drawer_outgoing"
-            android:icon="@drawable/ic_drawer_outgoing"/>
+        <!--<item-->
+            <!--android:id="@+id/nav_item_outgoing_call"-->
+            <!--android:title="@string/navigation_drawer_outgoing"-->
+            <!--android:icon="@drawable/ic_drawer_outgoing"/>-->
 
     </group>
 

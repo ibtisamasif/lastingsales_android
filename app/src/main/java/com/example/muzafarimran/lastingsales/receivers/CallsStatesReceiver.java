@@ -137,7 +137,7 @@ public class CallsStatesReceiver extends CallReceiver {
             if (callDuration > tenSeconds) {
                 if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                     if (contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
-                        Toast.makeText(ctx, "Called", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ctx, "Converted "+contact.getContactName()+" to Leads", Toast.LENGTH_SHORT).show();
                         contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
                         contact.save();
                     }

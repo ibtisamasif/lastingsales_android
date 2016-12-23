@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,6 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
-/**
- * Created by MUZAFAR IMRAN on 9/19/20
- */
 public class CallsAdapter extends BaseAdapter implements Filterable {
 
     private final static int TYPE_ITEM = 1;
@@ -43,6 +41,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
     private CallClickListener callClickListener = null;
     private ShowDetailsDropDown showcalldetailslistener = null;
     private List<LSCall> filteredData;
+    private FragmentManager supportFragmentManager;
 
     public CallsAdapter(Context c) {
         this.mContext = c;
@@ -84,13 +83,16 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
         LSCall call = (LSCall) getItem(position);
         String number = call.getContactNumber();
-        MissedCallsAdapter.ViewHolder holder = null;
+        ViewHolder holder = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.calls_text_view, parent, false);
-            holder = new MissedCallsAdapter.ViewHolder();
+            holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.call_name);
+            holder.callTypeIcon = (ImageView) convertView.findViewById(R.id.call_type_icon);
             holder.time = (TextView) convertView.findViewById(R.id.call_time);
+
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+
             holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
             holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
@@ -105,16 +107,18 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
             holder.contactCallDetails.setVisibility(GONE);
             convertView.setTag(holder);
         } else {
-            holder = (MissedCallsAdapter.ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
             ((ViewGroup) holder.call_name_time.getParent().getParent()).removeView(call_details);
         }
         if (call.getContact() == null) {
+            //Missed Call
             if (call.getContactName() != null) {
                 holder.name.setText(call.getContactName());
             } else {
                 holder.name.setText(call.getContactNumber());
             }
         } else {
+            //Incoming OR Outgoing Call
             if (call.getContact().getContactName() == null) {
                 holder.name.setText(call.getContactNumber());
             } else {
@@ -128,8 +132,32 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime()));
         holder.call_icon.setTag(mCalls.get(position).getContactNumber());
         holder.bTag.setOnClickListener(new TagAContactClickListener(number));
+        switch (call.getType()) {
+            case "missed":
+                holder.callTypeIcon.setImageResource(R.drawable.ic_missed_call_small);
+                break;
+            case "incoming":
+                holder.callTypeIcon.setImageResource(R.drawable.ic_incoming_call_small);
+                break;
+            case "outgoing":
+                holder.callTypeIcon.setImageResource(R.drawable.ic_outgoing_call_small);
+                break;
+        }
 
         return convertView;
+    }
+
+    static class ViewHolder {
+        TextView name;
+        TextView time;
+        ImageView callTypeIcon;
+        ImageView call_icon;
+        ImageView missed_call_icon;
+        RelativeLayout call_name_time;
+        RelativeLayout contactCallDetails;
+        TextView numberDetailTextView;
+        Button bContactCallsdetails;
+        Button bTag;
     }
 
     public void setList(List<LSCall> mCalls) {
@@ -190,17 +218,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         };
     }
 
-    static class ViewHolder {
-        TextView name;
-        TextView time;
-        ImageView call_icon;
-        ImageView missed_call_icon;
-        RelativeLayout call_name_time;
-        RelativeLayout contactCallDetails;
-        TextView numberDetailTextView;
-        Button bContactCallsdetails;
-        Button bTag;
-    }
+
 
     /*
     * event handler for click on Name Wrapper layout
@@ -262,5 +280,13 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
             myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
             mContext.startActivity(myIntent);
         }
+    }
+
+    public FragmentManager getSupportFragmentManager() {
+        return supportFragmentManager;
+    }
+
+    public void setSupportFragmentManager(FragmentManager supportFragmentManager) {
+        this.supportFragmentManager = supportFragmentManager;
     }
 }
