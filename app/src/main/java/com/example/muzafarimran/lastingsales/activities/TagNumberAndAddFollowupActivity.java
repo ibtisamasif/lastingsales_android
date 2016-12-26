@@ -275,7 +275,11 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);
                         if (checkContact != null) {
-                            Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
+                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Case Need to be handled", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
 
                             String titleText = null;
@@ -342,7 +346,12 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);
                         if (checkContact != null) {
-                            Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
+                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Case Need to be handled", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
+                            }
+
                         } else {
                             String titleText = null;
                             String noteText = null;
@@ -406,7 +415,12 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);
                         if (checkContact != null) {
-                            Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
+                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Case Need to be handled", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
+                            }
+
                         } else {
                             String titleText = null;
                             String noteText = null;

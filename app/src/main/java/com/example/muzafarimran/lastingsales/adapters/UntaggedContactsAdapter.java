@@ -113,11 +113,11 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
             ((ViewGroup) holder.call_name_time.getParent().getParent()).removeView(call_details);
         }
         if (contact.getContactName() == null) {
-//            if (contact.getContactName() != null) {
-//                holder.name.setText(contact.getContactName());
-//            } else {
-//                holder.name.setText(contact.getContactNumber());
-//            }
+            if (contact.getContactName() != null) {
+                holder.name.setText(contact.getContactName());
+            } else {
+                holder.name.setText(contact.getPhoneOne());
+            }
         } else {
             holder.name.setText(contact.getContactName());
         }

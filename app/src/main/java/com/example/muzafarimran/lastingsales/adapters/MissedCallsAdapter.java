@@ -33,7 +33,7 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
 
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
-    private final static int ITEM_TYPES = 2;
+    private final static int ITEM_TYPES = 1;
     public Context mContext;
     public ShowContactCallDetails detailsListener = null;
     Boolean expanded = false;
@@ -63,7 +63,7 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getItemViewType(int position) {
-        return isSeparator(position) ? TYPE_SEPARATOR : TYPE_ITEM;
+        return TYPE_ITEM;
     }
 
     @Override
@@ -143,10 +143,6 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
         notifyDataSetChanged();
     }
 
-    private boolean isSeparator(int position) {
-        return mCalls.get(position).getType() == "separator";
-    }
-
     // for searching
     @Override
     public Filter getFilter() {
@@ -210,10 +206,6 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
         Button bContactCallsdetails;
         Button bTag;
         TextView inquireyCount;
-    }
-
-    static class separatorHolder {
-        TextView text;
     }
 
     /*

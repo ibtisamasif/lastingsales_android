@@ -68,6 +68,18 @@ public class CallsStatesReceiver extends CallReceiver {
         //      if contact is null that means contact is not already saved with this number
         if (contact != null) {
             tempCall.setContact(contact);
+
+            long tenSeconds = 2;
+            if (callDuration > tenSeconds) {
+                if (contact.getContactType() != null && !contact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+                    if (contact.getContactSalesStatus() != null && contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
+                        contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                        contact.save();
+                    }
+
+                }
+            }
+
         } else {
             //            new untagged contact is created, saved, entered in call entry
             LSContact tempContact = new LSContact();
@@ -78,19 +90,7 @@ public class CallsStatesReceiver extends CallReceiver {
             tempCall.setContact(tempContact);
         }
         tempCall.save();
-        long tenSeconds = 10;
-        LSContact tempContact = LSContact.getContactFromNumber(internationalNumber);
-        if (tempContact != null) {
-            if (callDuration > tenSeconds) {
-                if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                    if (contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
-                        contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                        contact.save();
-                    }
 
-                }
-            }
-        }
         IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         bus.post(mCallEvent);
@@ -121,6 +121,19 @@ public class CallsStatesReceiver extends CallReceiver {
 //      if contact is null that means contact is not already saved with this number
         if (contact != null) {
             tempCall.setContact(contact);
+
+
+            long tenSeconds = 2;
+            if (callDuration > tenSeconds) {
+                if (contact.getContactType() != null && !contact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+                    if (contact.getContactSalesStatus() != null && contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
+                        contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                        contact.save();
+                    }
+
+                }
+            }
+
         } else {
 //            new untagged contact is created, saved, entered in call entry
             LSContact tempContact = new LSContact();
@@ -131,19 +144,6 @@ public class CallsStatesReceiver extends CallReceiver {
             tempCall.setContact(tempContact);
         }
         tempCall.save();
-        long tenSeconds = 10;
-        LSContact tempContact = LSContact.getContactFromNumber(internationalNumber);
-        if (tempContact != null) {
-            if (callDuration > tenSeconds) {
-                if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                    if (contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
-                        Toast.makeText(ctx, "Converted "+contact.getContactName()+" to Leads", Toast.LENGTH_SHORT).show();
-                        contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                        contact.save();
-                    }
-                }
-            }
-        }
         OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         try {
