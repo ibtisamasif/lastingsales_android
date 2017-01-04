@@ -14,18 +14,14 @@ import android.widget.TextView;
 import com.example.muzafarimran.lastingsales.Events.ContactTaggedFromUntaggedContactEventModel;
 import com.example.muzafarimran.lastingsales.Events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
-import com.example.muzafarimran.lastingsales.Events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
@@ -39,12 +35,10 @@ public class HomeFragment extends TabFragment {
     private static final String TAG = "HomeFragment";
     private TextView tvInactiveLeadsValue;
     private TextView tvUntaggedContacts;
-    private TextView tvFollowupsDue;
-    private TextView tvFollowupsDone;
     private TextView tvPendingProspectValue;
     private LinearLayout llInActiveLeadsContainer;
     private LinearLayout llUntaggedContainer;
-    private LinearLayout llFollowupsTodayContainer;
+    private LinearLayout llinquriesContainer;
     private LinearLayout llPendingProspectsContainer;
     private Bus mBus;
     private TinyBus bus;
@@ -63,11 +57,10 @@ public class HomeFragment extends TabFragment {
         llInActiveLeadsContainer = (LinearLayout) view.findViewById(R.id.llInActiveLeadsContactsContainer);
         llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
         llPendingProspectsContainer = (LinearLayout) view.findViewById(R.id.llPendingProspectsContactsContainer);
-        tvFollowupsDue = (TextView) view.findViewById(R.id.tvFollowUpsDue);
-        tvFollowupsDone = (TextView) view.findViewById(R.id.tvFollowupsDone);
         llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
-        llFollowupsTodayContainer = (LinearLayout) view.findViewById(R.id.llFollowupsTodayContainer);
+        llinquriesContainer = (LinearLayout) view.findViewById(R.id.llinquriesContainer);
         updateHomeFigures();
+        
         llInActiveLeadsContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,7 +100,7 @@ public class HomeFragment extends TabFragment {
                 startActivity(intent);
             }
         });
-        llFollowupsTodayContainer.setOnClickListener(new View.OnClickListener() {
+        llinquriesContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
@@ -170,9 +163,6 @@ public class HomeFragment extends TabFragment {
                 followupsDue.add(oneFollowup);
             }
         }
-        tvFollowupsDone.setText("( " + followUpsDone.size() + " )");
-        tvFollowupsDue.setText("( " + followupsDue.size() + " )");
-
     }
 
     @Subscribe

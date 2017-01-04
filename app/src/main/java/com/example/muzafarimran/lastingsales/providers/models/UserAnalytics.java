@@ -1,5 +1,5 @@
 package com.example.muzafarimran.lastingsales.providers.models;
-
+@Deprecated
 public class UserAnalytics {
     private int id;
     private int user_id;

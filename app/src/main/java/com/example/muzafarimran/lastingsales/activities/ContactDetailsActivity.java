@@ -58,10 +58,10 @@ public class ContactDetailsActivity extends AppCompatActivity {
         addFollowupBtn = (Button) findViewById(R.id.bAddFollowupContactDetailsScreen);
         tvName = (TextView) findViewById(R.id.tvNameOfUserContactDetailsScreen);
         toolbar = (Toolbar) findViewById(R.id.toolbarContactDetailsActivity);
-        toolbar.setTitle("Contact Details");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        toolbar.setTitle("Contact Details");
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tvNumberOne = (TextView) findViewById(R.id.tvPhoneOneOfUserContactDetailsScreen);
         tvNumberTwo = (TextView) findViewById(R.id.tvPhoneTwoOfUserContactDetailsScreen);
         tvDescription = (TextView) findViewById(R.id.tvDescriptionContactDetails);
@@ -92,6 +92,10 @@ public class ContactDetailsActivity extends AppCompatActivity {
                 tvName.setVisibility(View.GONE);
             } else {
                 tvName.setText(selectedContact.getContactName());
+                toolbar.setTitle(selectedContact.getContactName());
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
             if (selectedContact.getPhoneOne() == null || selectedContact.getPhoneOne().equals("")) {
                 tvNumberOne.setVisibility(View.GONE);

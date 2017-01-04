@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.R;
@@ -23,10 +24,7 @@ import com.example.muzafarimran.lastingsales.Utils.CallRecord;
 import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.fragments.AllCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.CollegueFragment;
-import com.example.muzafarimran.lastingsales.fragments.ContactsListForNotesFragment;
-import com.example.muzafarimran.lastingsales.fragments.FollowupsListFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
-import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -57,7 +55,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
@@ -68,10 +66,8 @@ public class NavigationDrawerActivity extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
             finish();
         }
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
         LinearLayout navHeader = (LinearLayout) navigationView.getHeaderView(0);
         ivProfileImage = (ImageView) navHeader.findViewById(R.id.ivProfileNavBar);
-        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), NavigationDrawerActivity.this));
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +81,9 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), NavigationDrawerActivity.this));
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -107,7 +106,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                         break;
                     case 2:
                         tab.setIcon(R.drawable.menu_icon_contact_selected);
-                        getSupportActionBar().setTitle("Sales");
+                        getSupportActionBar().setTitle("Leads");
                         // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                         break;
 //                case 3:
@@ -140,6 +139,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
             }
         });
+
         callRecord = new CallRecord.Builder(this)
                 .setRecordFileName("CallRecordFile")
                 .setRecordDirName("Record_" + new java.text.SimpleDateFormat("dd-MM-yyyy HH-mm-ss", Locale.US))
@@ -181,12 +181,12 @@ public class NavigationDrawerActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         if (id == R.id.nav_item_incoming_call) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, AllCallsFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "All Calls");
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Calls");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
-//        }
+        }
 //        else if (id == R.id.nav_item_outgoing_call) {
 //            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, OutgoingCallsFragment.class.getName());
 //            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Outgoing Calls");
@@ -194,7 +194,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 //            intent = new Intent(getApplicationContext(), FrameActivity.class);
 //            intent.putExtras(bundle);
 //            startActivity(intent);
-        }
+//        }
         else if (id == R.id.nav_item_colleague_contacts) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, CollegueFragment.class.getName());
             bundle.putString(FrameActivity.ACTIVITY_TITLE, "Colleague Contacts");
@@ -202,28 +202,39 @@ public class NavigationDrawerActivity extends AppCompatActivity
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
-        } else if (id == R.id.nav_item_personal_contacts) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, NonbusinessFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Non-Business Contacts");
-            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-            intent = new Intent(getApplicationContext(), FrameActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        } else if (id == R.id.nav_item_followups) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsListFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Followups List");
-            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
-            intent = new Intent(getApplicationContext(), FrameActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        } else if (id == R.id.nav_item_notes) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, ContactsListForNotesFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Notes List");
-            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-            intent = new Intent(getApplicationContext(), FrameActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
-    }
+        }
+//        else if (id == R.id.nav_item_personal_contacts) {
+//            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, NonbusinessFragment.class.getName());
+//            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Non-Business Contacts");
+//            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+//            intent = new Intent(getApplicationContext(), FrameActivity.class);
+//            intent.putExtras(bundle);
+//            startActivity(intent);
+//        }
+//        else if (id == R.id.nav_item_followups) {
+//            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsListFragment.class.getName());
+//            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Followups List");
+//            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
+//            intent = new Intent(getApplicationContext(), FrameActivity.class);
+//            intent.putExtras(bundle);
+//            startActivity(intent);
+//        }
+//        else if (id == R.id.nav_item_notes) {
+//            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, ContactsListForNotesFragment.class.getName());
+//            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Notes List");
+//            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+//            intent = new Intent(getApplicationContext(), FrameActivity.class);
+//            intent.putExtras(bundle);
+//            startActivity(intent);
+//        }
+        else if (id == R.id.nav_item_feedback) {
+            Toast.makeText(this, "FeedbackScreen", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.nav_item_logout) {
+            sessionManager.logoutUser();
+            startActivity(new Intent(this, LogInActivity.class));
+            finish();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -241,7 +252,6 @@ public class NavigationDrawerActivity extends AppCompatActivity
 //            switch (tab.getPosition()) {
 //                case 0:
 //                    tab.setIcon(R.drawable.menu_icon_home_selected_aqua);
-//                    Toast.makeText(NavigationDrawerActivity.this, "Shukr", Toast.LENGTH_SHORT).show();
 //                    break;
 //                case 1:
 //                    tab.setIcon(R.drawable.menu_icon_phone_selected_aqua);

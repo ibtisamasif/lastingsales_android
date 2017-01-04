@@ -21,28 +21,46 @@
             android:id="@+id/nav_item_colleague_contacts"
             android:title="@string/navigation_drawer_colleague"
             android:icon="@drawable/ic_drawer_colleague"/>
-        <item
-            android:id="@+id/nav_item_personal_contacts"
-            android:title="@string/navigation_drawer_non_business"
-            android:icon="@drawable/ic_drawer_non_business"/>
+        <!--<item-->
+            <!--android:id="@+id/nav_item_personal_contacts"-->
+            <!--android:title="@string/navigation_drawer_non_business"-->
+            <!--android:icon="@drawable/ic_drawer_non_business"/>-->
 
     </group>
 
-    <group android:id="@+id/followups">
+    <!--<group android:id="@+id/followups">-->
+
+        <!--<item-->
+            <!--android:id="@+id/nav_item_followups"-->
+            <!--android:title="Followups"-->
+            <!--android:icon="@drawable/ic_drawer_followup"/>-->
+
+    <!--</group>-->
+
+    <!--<group android:id="@+id/notes">-->
+
+        <!--<item-->
+            <!--android:id="@+id/nav_item_notes"-->
+            <!--android:title="Notes"-->
+            <!--android:icon="@drawable/ic_drawer_notes"/>-->
+
+    <!--</group>-->
+
+    <group android:id="@+id/feedback">
 
         <item
-            android:id="@+id/nav_item_followups"
-            android:title="Followups"
-            android:icon="@drawable/ic_drawer_followup"/>
+            android:id="@+id/nav_item_feedback"
+            android:icon="@drawable/ic_drawer_notes"
+            android:title="@string/feedback" />
 
     </group>
 
-    <group android:id="@+id/notes">
+    <group android:id="@+id/logout">
 
         <item
-            android:id="@+id/nav_item_notes"
-            android:title="Notes"
-            android:icon="@drawable/ic_drawer_notes"/>
+            android:id="@+id/nav_item_logout"
+            android:icon="@drawable/ic_drawer_logout"
+            android:title="@string/log_out" />
 
     </group>
 

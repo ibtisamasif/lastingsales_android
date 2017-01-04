@@ -1,7 +1,6 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.ListView;
 import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.Events.ColleagueContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.PendingProspectsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.LeadsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -26,14 +25,14 @@ import de.halfbit.tinybus.TinyBus;
 
 public class PendingProspectsFragment extends TabFragment{
 
-    private static final String TAG = "PendingProspectsFragment";
+    public static final String TAG = "PendingProspectsFragment";
     ListView listView = null;
-    PendingProspectsAdapter pendingProspectsAdapter;
+    LeadsAdapter leadsAdapter;
     MaterialSearchView searchView;
     private TinyBus bus;
 
-    public static CollegueFragment newInstance(int page, String title) {
-        CollegueFragment fragmentFirst = new CollegueFragment();
+    public static PendingProspectsFragment newInstance(int page, String title) {
+        PendingProspectsFragment fragmentFirst = new PendingProspectsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
@@ -42,8 +41,8 @@ public class PendingProspectsFragment extends TabFragment{
     }
 
     public void setList(List<LSContact> contacts) {
-        if (pendingProspectsAdapter != null) {
-            pendingProspectsAdapter.setList(contacts);
+        if (leadsAdapter != null) {
+            leadsAdapter.setList(contacts);
         }
     }
 
@@ -51,14 +50,13 @@ public class PendingProspectsFragment extends TabFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        pendingProspectsAdapter = new PendingProspectsAdapter(getContext(), null, LSContact.SALES_STATUS_PROSTPECT);
+        leadsAdapter = new LeadsAdapter(getContext(), null, LSContact.SALES_STATUS_PROSTPECT);
         setHasOptionsMenu(true);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart() called");
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -66,13 +64,11 @@ public class PendingProspectsFragment extends TabFragment{
     @Override
     public void onStop() {
         bus.unregister(this);
-        Log.d(TAG, "onStop() called");
         super.onStop();
     }
 
     @Subscribe
     public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
-        Log.d(TAG, "onColleagueContactEvent() called with: event = [" + event + "]");
         List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
         //Filtering out colleagues from list
         List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
@@ -83,9 +79,9 @@ public class PendingProspectsFragment extends TabFragment{
 
     @Subscribe
     public void onBackPressedEventModel(BackPressedEventModel event) {
-        if (!event.backPressHandled && pendingProspectsAdapter.isDeleteFlow()) {
+        if (!event.backPressHandled && leadsAdapter.isDeleteFlow()) {
             event.backPressHandled = true;
-            pendingProspectsAdapter.setDeleteFlow(false);
+            leadsAdapter.setDeleteFlow(false);
         }
     }
 
@@ -103,20 +99,20 @@ public class PendingProspectsFragment extends TabFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_pending_prospects, container, false);
-        listView = (ListView) view.findViewById(R.id.pending_prospects_contacts_list);
-        listView.setAdapter(pendingProspectsAdapter);
+        View view = inflater.inflate(R.layout.fragment_leads, container, false);
+        listView = (ListView) view.findViewById(R.id.leads_contacts_list);
+        listView.setAdapter(leadsAdapter);
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                pendingProspectsAdapter.getFilter().filter(query);
+                leadsAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                pendingProspectsAdapter.getFilter().filter(newText);
+                leadsAdapter.getFilter().filter(newText);
                 return false;
             }
         });

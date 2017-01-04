@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +31,7 @@ import de.halfbit.tinybus.TinyBus;
  * A simple {@link Fragment} subclass.
  */
 public class ContactsListForNotesFragment extends TabFragment {
-    private static final String TAG = "NotesContactsFragment";
+    public static final String TAG = "ContactsListForNotesFragment";
     private static final int CONTACT_REQUEST_CODE = 11;
     ListView listView = null;
     ContactsListForNotesAdapter contactsListForNotesAdapter;
@@ -68,7 +67,6 @@ public class ContactsListForNotesFragment extends TabFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart() called");
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -76,13 +74,11 @@ public class ContactsListForNotesFragment extends TabFragment {
     @Override
     public void onStop() {
         bus.unregister(this);
-        Log.d(TAG, "onStop() called");
         super.onStop();
     }
 
     @Subscribe
     public void onPersonalContactAddedEventModel(PersonalContactAddedEventModel event) {
-        Log.d(TAG, "onPersonalContactAddedEvent() called with: event = [" + event + "]");
         List<LSContact> contacts = (ArrayList<LSContact>) LSContact.listAll(LSContact.class);
         setList(contacts);
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);

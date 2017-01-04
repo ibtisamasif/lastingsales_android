@@ -9,8 +9,9 @@ import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
 import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
 import com.example.muzafarimran.lastingsales.fragments.UntaggedContactsCallsFragment;
 
-
+@Deprecated
 public class ContactsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
+
     static final int NUM_ITEMS = 4;
 
     public ContactsTabsFragmentPagerAdapter(FragmentManager fm) {

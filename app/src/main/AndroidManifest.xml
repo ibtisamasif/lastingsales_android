@@ -101,6 +101,9 @@
         <activity android:name=".activities.ContactDetailsActivity">
         </activity>
 
+        <activity android:name=".activities.ContactDetailsTabActivity">
+        </activity>
+
         <activity android:name=".activities.NotesByContactsActivity2">
         </activity>
 

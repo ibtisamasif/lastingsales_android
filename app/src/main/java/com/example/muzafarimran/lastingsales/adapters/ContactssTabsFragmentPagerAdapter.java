@@ -5,14 +5,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.fragments.CollegueFragment;
-import com.example.muzafarimran.lastingsales.fragments.IncomingCallsFragment;
-import com.example.muzafarimran.lastingsales.fragments.MissedCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
-import com.example.muzafarimran.lastingsales.fragments.OutgoingCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
 import com.example.muzafarimran.lastingsales.fragments.UntaggedContactsCallsFragment;
 
-
+@Deprecated
 public class ContactssTabsFragmentPagerAdapter extends FragmentPagerAdapter {
 
 

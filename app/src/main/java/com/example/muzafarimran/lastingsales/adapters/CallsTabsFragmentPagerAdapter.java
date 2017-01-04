@@ -9,7 +9,7 @@ import com.example.muzafarimran.lastingsales.fragments.IncomingCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.MissedCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.OutgoingCallsFragment;
 
-
+@Deprecated
 public class CallsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
 
     static final int NUM_ITEMS = 4;

@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
+@Deprecated
 public class User {
     private int id;
     private String name;

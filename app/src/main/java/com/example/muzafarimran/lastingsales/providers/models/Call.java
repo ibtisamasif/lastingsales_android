@@ -1,6 +1,6 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
-
+@Deprecated
 public class Call {
     private int id;
     private String contact_number;

@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.activities.ContactDetailsActivity;
+import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -34,7 +34,7 @@ import static android.view.View.GONE;
  * Created by ibtisam on 12/17/2016.
  */
 
-public class PendingProspectsAdapter extends BaseAdapter implements Filterable{
+public class LeadsAdapter extends BaseAdapter implements Filterable{
 
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
@@ -53,7 +53,7 @@ public class PendingProspectsAdapter extends BaseAdapter implements Filterable{
     private LinearLayout noteDetails;
 
 
-    public PendingProspectsAdapter(Context c, List<LSContact> contacts, String type) {
+    public LeadsAdapter(Context c, List<LSContact> contacts, String type) {
         this.mContext = c;
         this.mContacts = contacts;
         if (mContacts == null) {
@@ -346,9 +346,9 @@ public class PendingProspectsAdapter extends BaseAdapter implements Filterable{
 
         @Override
         public void onClick(View view) {
-            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsActivity.class);
+            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
             long contactId = contact.getId();
-            detailsActivityIntent.putExtra(ContactDetailsActivity.KEY_CONTACT_ID, contactId + "");
+            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
             mContext.startActivity(detailsActivityIntent);
         }
     }

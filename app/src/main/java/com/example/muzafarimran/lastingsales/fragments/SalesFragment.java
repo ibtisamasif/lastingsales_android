@@ -36,7 +36,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
  */
 public class SalesFragment extends SearchFragment {
 
-    private static final String TAG = "SalesContactFragment";
+    public static final String TAG = "SalesContactFragment";
     ExpandableStickyListHeadersListView listView = null;
     SalesAdapter salesAdapter;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();

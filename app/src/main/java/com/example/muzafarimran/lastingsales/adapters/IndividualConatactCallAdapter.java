@@ -29,6 +29,11 @@ public class IndividualConatactCallAdapter extends BaseAdapter {
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    public void setList(List<LSCall> mCalls) {
+        this.mCalls = mCalls;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return mCalls.size();

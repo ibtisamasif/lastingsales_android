@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.activities.ContactDetailsActivity;
+import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.fragments.ColleagueContactDeleteBottomSheetDialogFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -379,9 +379,9 @@ public class ColleagueContactsAdapter extends BaseAdapter implements Filterable 
 
         @Override
         public void onClick(View view) {
-            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsActivity.class);
+            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
             long contactId = contact.getId();
-            detailsActivityIntent.putExtra(ContactDetailsActivity.KEY_CONTACT_ID, contactId + "");
+            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
             mContext.startActivity(detailsActivityIntent);
         }
     }

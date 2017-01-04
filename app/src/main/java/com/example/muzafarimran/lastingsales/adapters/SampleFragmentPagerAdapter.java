@@ -6,14 +6,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.fragments.HomeFragment;
+import com.example.muzafarimran.lastingsales.fragments.LeadTabsFragment;
 import com.example.muzafarimran.lastingsales.fragments.MissedCallsFragment;
-import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
 
 /**
  * Created by MUZAFAR IMRAN on 9/18/2016.
  */
+
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     final int TAB_COUNT = 3;
     private String tabTitles[] = new String[]{"Home", "Inquiries", "Sales"};
@@ -36,7 +37,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = new MissedCallsFragment();
                 break;
             case 2:
-                fragment = new SalesFragment();
+                fragment = new LeadTabsFragment();
                 break;
         }
         return fragment;

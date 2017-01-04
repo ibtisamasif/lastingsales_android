@@ -311,7 +311,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             } else {
                                 titleText = "Empty";
                             }
-                            if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                            if (year != 0  && day != 0 && hour != 0 && minute != 0) {
                                 Calendar dateTimeForFollowup = Calendar.getInstance();
                                 dateTimeForFollowup.set(Calendar.YEAR, year);
                                 dateTimeForFollowup.set(Calendar.MONTH, month);
@@ -381,7 +381,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             } else {
                                 titleText = "Empty";
                             }
-                            if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                            if (year != 0  && day != 0 && hour != 0 && minute != 0) {
                                 Calendar dateTimeForFollowup = Calendar.getInstance();
                                 dateTimeForFollowup.set(Calendar.YEAR, year);
                                 dateTimeForFollowup.set(Calendar.MONTH, month);
@@ -452,7 +452,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             } else {
                                 titleText = "Empty";
                             }
-                            if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                            if (year != 0 && day != 0 && hour != 0 && minute != 0) {
                                 Calendar dateTimeForFollowup = Calendar.getInstance();
                                 dateTimeForFollowup.set(Calendar.YEAR, year);
                                 dateTimeForFollowup.set(Calendar.MONTH, month);
@@ -513,7 +513,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         } else {
                             titleText = "Empty";
                         }
-                        if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                        if (year != 0 && day != 0 && hour != 0 && minute != 0) {
                             Calendar dateTimeForFollowup = Calendar.getInstance();
                             dateTimeForFollowup.set(Calendar.YEAR, year);
                             dateTimeForFollowup.set(Calendar.MONTH, month);
@@ -573,7 +573,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         } else {
                             titleText = "Empty";
                         }
-                        if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                        if (year != 0 && day != 0 && hour != 0 && minute != 0) {
                             Calendar dateTimeForFollowup = Calendar.getInstance();
                             dateTimeForFollowup.set(Calendar.YEAR, year);
                             dateTimeForFollowup.set(Calendar.MONTH, month);
@@ -607,7 +607,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                     } else {
                         titleText = "Empty";
                     }
-                    if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                    if (year != 0 && day != 0 && hour != 0 && minute != 0) {
                         Calendar dateTimeForFollowup = Calendar.getInstance();
                         dateTimeForFollowup.set(Calendar.YEAR, year);
                         dateTimeForFollowup.set(Calendar.MONTH, month);
@@ -634,7 +634,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                     } else {
                         titleText = "Empty";
                     }
-                    if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
+                    if (year != 0 && day != 0 && hour != 0 && minute != 0) {
                         Calendar dateTimeForFollowup = Calendar.getInstance();
                         dateTimeForFollowup.set(Calendar.YEAR, year);
                         dateTimeForFollowup.set(Calendar.MONTH, month);

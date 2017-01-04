@@ -1,7 +1,6 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +19,8 @@ import java.util.List;
 import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-/**
- * Created by ahmad on 10-Dec-16.
- */
 
-public class FollowupsTodayListFragment extends Fragment {
+public class FollowupsTodayListFragment extends TabFragment {
     public static final String TAG = "MissedCallFragment";
     FollowupsTodayListAdapter followupsAdapter;
     ExpandableStickyListHeadersListView listView = null;
@@ -51,8 +47,7 @@ public class FollowupsTodayListFragment extends Fragment {
         setList(followUps);
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_followups_today_list, container, false);
         listView = (ExpandableStickyListHeadersListView) view.findViewById(R.id.followups_list_view_in_fragment);
         listView.setAdapter(followupsAdapter);

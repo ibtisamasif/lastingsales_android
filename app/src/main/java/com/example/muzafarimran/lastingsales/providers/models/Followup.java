@@ -1,5 +1,5 @@
 package com.example.muzafarimran.lastingsales.providers.models;
-
+@Deprecated
 public class Followup {
     private int id;
     private String title;
