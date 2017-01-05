@@ -67,6 +67,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
             finish();
         }
         LinearLayout navHeader = (LinearLayout) navigationView.getHeaderView(0);
+        //TODO sync required for image
         ivProfileImage = (ImageView) navHeader.findViewById(R.id.ivProfileNavBar);
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override

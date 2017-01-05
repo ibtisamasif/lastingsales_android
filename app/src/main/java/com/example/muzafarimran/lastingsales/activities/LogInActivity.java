@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,7 +21,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.Utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.providers.models.MyURLs;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -45,6 +48,7 @@ public class LogInActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), NavigationDrawerActivity.class));
             finish();
         }
+
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
         //this method will be running on UI thread
@@ -95,13 +99,12 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     public void makeLoginRequest(final Activity activity, final String number, final String password) {
-
+        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(activity);
-        StringRequest sr = new StringRequest(Request.Method.POST, " http://api.lastingsales.com/api/auth/login", new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.LOGIN_URL , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() called with: response = [" + response + "]");
-//                Toast.makeText(context, "Request Completed", Toast.LENGTH_SHORT).show();
                 pdLoading.dismiss();
                 sessionManager.loginnUser(response, Calendar.getInstance().getTimeInMillis(), number);
                 activity.startActivity(new Intent(activity, NavigationDrawerActivity.class));
@@ -112,7 +115,11 @@ public class LogInActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 pdLoading.dismiss();
                 Log.d(TAG, "onErrorResponse() called with: error = [" + error + "]");
-                Toast.makeText(activity, "Error Loging In", Toast.LENGTH_SHORT).show();
+                if (!NetworkAccess.isNetworkAvailable(getApplicationContext())){
+                    Toast.makeText(getApplicationContext(), "No Internet Connectivity", Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(getApplicationContext(), "Wrong Credentials Or Poor Internet Connectivity", Toast.LENGTH_LONG).show();
+                }
             }
         }) {
             @Override
@@ -130,6 +137,10 @@ public class LogInActivity extends AppCompatActivity {
                 return params;
             }
         };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 }
