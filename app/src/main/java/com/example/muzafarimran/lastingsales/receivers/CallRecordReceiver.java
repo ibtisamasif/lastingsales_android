@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.example.muzafarimran.lastingsales.Utils.CallRecord;
+import com.example.muzafarimran.lastingsales.utils.CallRecord;
 
 import java.io.File;
 import java.io.IOException;

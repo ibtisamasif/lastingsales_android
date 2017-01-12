@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.Events;
+package com.example.muzafarimran.lastingsales.events;
 
 import de.halfbit.tinybus.Produce;
 

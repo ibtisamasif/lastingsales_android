@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.muzafarimran.lastingsales.Events.IncomingCallEventModel;
+import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.CallsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;

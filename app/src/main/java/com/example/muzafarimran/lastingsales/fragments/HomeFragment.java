@@ -11,14 +11,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.muzafarimran.lastingsales.Events.ContactTaggedFromUntaggedContactEventModel;
-import com.example.muzafarimran.lastingsales.Events.IncomingCallEventModel;
-import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
-import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
+import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
+import com.example.muzafarimran.lastingsales.events.ContactTaggedFromUntaggedContactEventModel;
+import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
+import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
+import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +43,8 @@ public class HomeFragment extends TabFragment {
     private LinearLayout llUntaggedContainer;
     private LinearLayout llinquriesContainer;
     private LinearLayout llPendingProspectsContainer;
+    FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
+    FloatingActionMenu floatingActionMenu;
     private Bus mBus;
     private TinyBus bus;
 
@@ -113,6 +118,33 @@ public class HomeFragment extends TabFragment {
             }
         });
 
+
+        floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu);
+        floatingActionButtonAdd = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
+        floatingActionButtonImport = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import);
+        floatingActionMenu.setClosedOnTouchOutside(true);
+
+        floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                floatingActionMenu.close(true);
+                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
+                startActivity(intent);
+            }
+        });
+        floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                floatingActionMenu.close(true);
+                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
+                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
+                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
+                startActivity(intent);
+
+            }
+        });
 
         return view;
     }

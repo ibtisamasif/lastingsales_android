@@ -12,9 +12,9 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -123,10 +123,8 @@ public class ContactDetailsTabActivity extends AppCompatActivity implements Sear
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
-
     }
 
     private void dynamicToolbarColor() {
@@ -135,8 +133,8 @@ public class ContactDetailsTabActivity extends AppCompatActivity implements Sear
         Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(Palette palette) {
-                collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(getResources().getColor(R.color.black)));
-                collapsingToolbarLayout.setStatusBarScrimColor(palette.getMutedColor(getResources().getColor(R.color.white)));
+                collapsingToolbarLayout.setContentScrimColor(getResources().getColor(R.color.lightBlue));
+                collapsingToolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.darkBlue));
             }
         });
     }

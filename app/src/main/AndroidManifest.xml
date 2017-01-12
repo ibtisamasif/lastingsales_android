@@ -85,6 +85,8 @@
         </activity>
         <activity android:name=".activities.NotesActivity">
         </activity>
+        <activity android:name=".activities.EditNoteActivity">
+        </activity>
         <activity android:name=".activities.AddNoteActivity">
         </activity>
         <activity
@@ -95,7 +97,7 @@
         </activity>
 
         <service
-            android:name=".Service.CallRecordService"
+            android:name=".service.CallRecordService"
             android:exported="true"/>
 
         <activity android:name=".activities.ContactDetailsActivity">
@@ -108,7 +110,7 @@
         </activity>
 
         <service
-            android:name=".Service.PopupUIService"
+            android:name=".service.PopupUIService"
             android:enabled="true">
             <intent-filter>
                 <action android:name="inez.apps.customincomingcallscreen.MyService"/>

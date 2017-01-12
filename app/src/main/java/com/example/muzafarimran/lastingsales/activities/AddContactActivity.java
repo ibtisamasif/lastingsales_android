@@ -14,11 +14,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.muzafarimran.lastingsales.Events.ColleagueContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.Events.PersonalContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.Events.SalesContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.PersonalContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import de.halfbit.tinybus.TinyBus;
 
 import static android.view.View.GONE;
-import static com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils.updateAllCallsOfThisContact;
+import static com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils.updateAllCallsOfThisContact;
 @Deprecated
 public class AddContactActivity extends AppCompatActivity implements View.OnClickListener {
 

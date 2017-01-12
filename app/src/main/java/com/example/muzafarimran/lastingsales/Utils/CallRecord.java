@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.Utils;
+package com.example.muzafarimran.lastingsales.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.media.MediaRecorder;
 import android.util.Log;
 
 
-import com.example.muzafarimran.lastingsales.Service.CallRecordService;
+import com.example.muzafarimran.lastingsales.service.CallRecordService;
 import com.example.muzafarimran.lastingsales.receivers.CallRecordReceiver;
 
 import java.text.SimpleDateFormat;

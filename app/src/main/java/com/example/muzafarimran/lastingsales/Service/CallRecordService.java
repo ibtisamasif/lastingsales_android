@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.Service;
+package com.example.muzafarimran.lastingsales.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.muzafarimran.lastingsales.Utils.CallRecord;
+import com.example.muzafarimran.lastingsales.utils.CallRecord;
 
 import java.text.SimpleDateFormat;
 

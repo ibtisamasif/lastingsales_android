@@ -22,7 +22,7 @@ import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
+@Deprecated
 public class ContactDetailsActivity extends AppCompatActivity {
 
     public static final String KEY_CONTACT_ID = "contact_id";

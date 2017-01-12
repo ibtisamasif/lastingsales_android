@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.Utils;
+package com.example.muzafarimran.lastingsales.utils;
 
 import android.content.ContentResolver;
 import android.content.Context;

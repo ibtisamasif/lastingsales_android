@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
-import com.example.muzafarimran.lastingsales.Events.PersonalContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
+import com.example.muzafarimran.lastingsales.events.PersonalContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddNoteActivity;
 import com.example.muzafarimran.lastingsales.adapters.ContactsListForNotesAdapter;

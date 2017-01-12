@@ -21,8 +21,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.Utils.NetworkAccess;
-import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.MyURLs;
 
 import java.util.Calendar;

@@ -12,9 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
+import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.CallsAdapter;
 import com.example.muzafarimran.lastingsales.adapters.MissedCallsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 

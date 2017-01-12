@@ -1,7 +1,9 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.AddNoteActivity;
+import com.example.muzafarimran.lastingsales.activities.NotesActivity;
 import com.example.muzafarimran.lastingsales.activities.NotesByContactsActivity2;
 import com.example.muzafarimran.lastingsales.adapters.NotesListAdapter2;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -43,6 +47,7 @@ public class NotesByContactsFragment extends TabFragment {
     LSContact selectedContact;
     private TinyBus bus;
     private String number = "";
+    FloatingActionButton floatingActionButton;
 
     public NotesByContactsFragment() {
     }
@@ -153,6 +158,15 @@ public class NotesByContactsFragment extends TabFragment {
                 }
             });
         }
+
+
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_add_note);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(getContext(), AddNoteActivity.class), NotesActivity.ADD_NOTE_REQUEST_CODE);
+            }
+        });
         return view;
     }
 }

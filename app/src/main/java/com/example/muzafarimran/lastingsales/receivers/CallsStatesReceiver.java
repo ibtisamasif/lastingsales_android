@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.muzafarimran.lastingsales.Events.IncomingCallEventModel;
-import com.example.muzafarimran.lastingsales.Events.MissedCallEventModel;
-import com.example.muzafarimran.lastingsales.Events.OutgoingCallEventModel;
-import com.example.muzafarimran.lastingsales.Service.PopupUIService;
-import com.example.muzafarimran.lastingsales.Utils.CallEndNotification;
-import com.example.muzafarimran.lastingsales.Utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
+import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
+import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
+import com.example.muzafarimran.lastingsales.service.PopupUIService;
+import com.example.muzafarimran.lastingsales.utils.CallEndNotification;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;

@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.Events;
+package com.example.muzafarimran.lastingsales.events;
 
 /**
  * Created by ahmad on 10-Nov-16.

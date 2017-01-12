@@ -6,10 +6,10 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.muzafarimran.lastingsales.Events.BackPressedEventModel;
+import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.Utils.CallRecord;
+import com.example.muzafarimran.lastingsales.utils.CallRecord;
 
 import java.util.Locale;
 

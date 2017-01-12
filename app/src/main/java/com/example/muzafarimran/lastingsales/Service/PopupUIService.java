@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.Service;
+package com.example.muzafarimran.lastingsales.service;
 
 import android.app.Service;
 import android.content.Context;

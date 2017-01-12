@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.Utils;
+package com.example.muzafarimran.lastingsales.utils;
 
 import android.app.Notification;
 import android.app.PendingIntent;
