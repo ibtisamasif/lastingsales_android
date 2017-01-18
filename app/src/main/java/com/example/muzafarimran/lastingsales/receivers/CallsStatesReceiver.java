@@ -121,8 +121,6 @@ public class CallsStatesReceiver extends CallReceiver {
 //      if contact is null that means contact is not already saved with this number
         if (contact != null) {
             tempCall.setContact(contact);
-
-
             long tenSeconds = 2;
             if (callDuration > tenSeconds) {
                 if (contact.getContactType() != null && !contact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
@@ -151,7 +149,7 @@ public class CallsStatesReceiver extends CallReceiver {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        bus.post(mCallEvent);
+        bus.post(mCallEvent); //crashed here didnt fixed
         Log.d("OutgoingCallReceiver", "onOutgoingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
     }
 

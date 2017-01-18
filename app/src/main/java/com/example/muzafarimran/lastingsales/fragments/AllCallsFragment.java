@@ -48,9 +48,9 @@ public class AllCallsFragment extends TabFragment {
         return fragmentFirst;
     }
 
-    public void setList(List<LSCall> outgoingCalls) {
+    public void setList(List<LSCall> AllCalls) {
         if (callsadapter != null) {
-            callsadapter.setList(outgoingCalls);
+            callsadapter.setList(AllCalls);
         }
     }
 
@@ -135,6 +135,22 @@ public class AllCallsFragment extends TabFragment {
             }
         });
 
+        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                callsadapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                callsadapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        setHasOptionsMenu(true);
         return view;
     }
 

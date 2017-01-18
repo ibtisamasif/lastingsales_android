@@ -16,8 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.Note;
@@ -88,6 +88,7 @@ public class AddNoteFragment extends Fragment {
         return allNotes;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +127,7 @@ public class AddNoteFragment extends Fragment {
                     getActivity().setResult(RESULT_OK, data);
                     NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
                     TinyBus bus = TinyBus.from(getActivity().getApplicationContext());
-                    bus.register(mNoteAdded);  //crashed here check it later
+                    bus.register(mNoteAdded);  //crashed here check it later fixed but could check thoroughly
                     bus.post(mNoteAdded);
                     Log.d("AddNoteEventGenerated", "onNoteAdded() called  ");
                     getActivity().finish();

@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,8 @@ import java.util.List;
 import static android.view.View.GONE;
 
 public class CallsAdapter extends BaseAdapter implements Filterable {
-
+    private final static String TAG = "CallsAdapter";
+    private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 1;
     public Context mContext;
@@ -38,17 +40,18 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
     View call_details = null; //TODO move to handler class below
     private LayoutInflater mInflater;
     private List<LSCall> mCalls;
+    private List<LSCall> filteredData;
     private CallClickListener callClickListener = null;
     private ShowDetailsDropDown showcalldetailslistener = null;
-    private List<LSCall> filteredData;
+
     private FragmentManager supportFragmentManager;
 
     public CallsAdapter(Context c) {
         this.mContext = c;
         if (mCalls == null) {
             mCalls = new ArrayList<>();
-            filteredData = new ArrayList<>();
         }
+        this.filteredData = new ArrayList<>();
         this.callClickListener = new CallClickListener(c);
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.detailsListener = new ShowContactCallDetails();
@@ -61,17 +64,17 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getItemViewType(int position) {
-        return  TYPE_ITEM;
+        return isSeparator(position) ? TYPE_SEPARATOR : TYPE_ITEM;
     }
 
     @Override
     public int getCount() {
-        return filteredData.size();
+        return this.filteredData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return filteredData.get(position);
+        return this.filteredData.get(position);
     }
 
     @Override
@@ -129,7 +132,8 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         holder.bContactCallsdetails.setOnClickListener(detailsListener);
         holder.numberDetailTextView.setText(number);
         holder.call_name_time.setTag(position);
-        holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime()));
+        String timeAgoString = PhoneNumberAndCallUtils.getTimeAgo(call.getBeginTime(), mContext);
+        holder.time.setText(timeAgoString);
         holder.call_icon.setTag(mCalls.get(position).getContactNumber());
         holder.bTag.setOnClickListener(new TagAContactClickListener(number));
         switch (call.getType()) {
@@ -166,6 +170,10 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         notifyDataSetChanged();
     }
 
+    private boolean isSeparator(int position) {
+        return filteredData.get(position).getType() == "separator";
+    }
+
     // for searching
     @Override
     public Filter getFilter() {
@@ -177,12 +185,15 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
                 if (charSequence == null || charSequence.length() == 0) {
                     results.values = mCalls;
                     results.count = mCalls.size();
-                } else {
+                    Log.d(TAG, "performFiltering: CallsSize : "+mCalls.size());
+                }
+                else {
                     List<LSCall> filterResultsData = new ArrayList<>();
                     //int length = charSequence.length();
                     for (int i = 0; i < mCalls.size(); i++) {
                         LSCall oneCall = mCalls.get(i);
 //                        if (mCalls.get(i).getContactName().toLowerCase().startsWith(((String) charSequence).toLowerCase()) && mCalls.get(i).getContact().getContactName().toLowerCase().startsWith(((String) charSequence).toLowerCase())) {
+
                         if (oneCall.getContactName() != null) {
                             if (oneCall.getContactName().toLowerCase().contains(((String) charSequence).toLowerCase())) {
                                 filterResultsData.add(mCalls.get(i));
@@ -208,12 +219,8 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-
-                if (((List<LSCall>) filterResults.values) != null) {
                     filteredData = ((List<LSCall>) filterResults.values);
-                }
-//                filteredData = ((List<LSCall>) filterResults.values);
-                notifyDataSetChanged();
+                    notifyDataSetChanged();
             }
         };
     }

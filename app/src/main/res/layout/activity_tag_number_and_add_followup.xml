@@ -119,6 +119,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llContactType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
@@ -168,15 +169,14 @@
 
                     </LinearLayout>
 
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_margin="16dp"
                         android:background="@color/colorAccent"
-                        android:orientation="vertical"
-                        ></LinearLayout>
->>>>>>> 82929dcc3a2a0968ba630cf08730d1f35b50c2e5
+                        android:orientation="vertical">
+                    </LinearLayout>
+
                 </LinearLayout>
                 <!--contact Details  end here-->
                 <RelativeLayout

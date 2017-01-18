@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -160,7 +159,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
     private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            Toast.makeText(parent.getContext(), "Status : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(parent.getContext(), "Status : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -174,7 +173,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
     private class CustomSpinner1OnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            Toast.makeText(parent.getContext(), "Custom Tag1 : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(parent.getContext(), "Custom Tag1 : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -187,7 +186,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
     private class CustomSpinner2OnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            Toast.makeText(parent.getContext(), "Custom Tag2 : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(parent.getContext(), "Custom Tag2 : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
         }
 
         @Override

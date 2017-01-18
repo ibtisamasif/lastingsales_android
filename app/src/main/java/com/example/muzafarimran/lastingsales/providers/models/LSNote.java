@@ -13,6 +13,7 @@ public class LSNote extends SugarRecord {
     //    private int id;
     private String NoteText;
     private String createdAt;
+    private String syncStatus;
 
     public LSNote() {
     }
@@ -43,5 +44,13 @@ public class LSNote extends SugarRecord {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
     }
 }

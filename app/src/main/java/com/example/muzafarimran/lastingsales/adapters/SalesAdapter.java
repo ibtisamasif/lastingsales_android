@@ -236,25 +236,27 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
                 popupMenu.show();
             }
         });
-        if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-            if (contact.getContactSalesStatus() != null && !contact.getContactSalesStatus().equals("")) {
-                switch (contact.getContactSalesStatus()) {
-                    case LSContact.SALES_STATUS_PROSTPECT:
-                        holder.salesLeadStatus.setText("Prospect");
-                        break;
-                    case LSContact.SALES_STATUS_LEAD:
-                        holder.salesLeadStatus.setText("Lead");
-                        break;
-                    case LSContact.SALES_STATUS_CLOSED_WON:
-                        holder.salesLeadStatus.setText("Closed Won");
-                        break;
-                    case LSContact.SALES_STATUS_CLOSED_LOST:
-                        holder.salesLeadStatus.setText("Closed Lost");
-                        break;
+        if(contact.getContactType()!=null) {
+            if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+                if (contact.getContactSalesStatus() != null && !contact.getContactSalesStatus().equals("")) {
+                    switch (contact.getContactSalesStatus()) {
+                        case LSContact.SALES_STATUS_PROSTPECT:
+                            holder.salesLeadStatus.setText("Prospect");
+                            break;
+                        case LSContact.SALES_STATUS_LEAD:
+                            holder.salesLeadStatus.setText("Lead");
+                            break;
+                        case LSContact.SALES_STATUS_CLOSED_WON:
+                            holder.salesLeadStatus.setText("Closed Won");
+                            break;
+                        case LSContact.SALES_STATUS_CLOSED_LOST:
+                            holder.salesLeadStatus.setText("Closed Lost");
+                            break;
+                    }
                 }
+            } else {
+                holder.statusRow.setVisibility(GONE);
             }
-        } else {
-            holder.statusRow.setVisibility(GONE);
         }
 //            this.showContactDetaislsListener = new showContactDetaislsListener(contact);
 //            showContactDetaislsListener temp= new showContactDetaislsListener(contact);

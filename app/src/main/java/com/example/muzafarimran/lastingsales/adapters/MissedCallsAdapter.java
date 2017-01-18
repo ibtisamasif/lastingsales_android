@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +16,14 @@ import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -127,7 +129,19 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
         holder.bContactCallsdetails.setOnClickListener(detailsListener);
         holder.numberDetailTextView.setText(number);
         holder.call_name_time.setTag(position);
-        holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime()));
+
+        long callTimeMillis = call.getBeginTime();
+        long now = Calendar.getInstance().getTimeInMillis();
+        long agoTimestamp = now - callTimeMillis;
+
+        if (agoTimestamp > 300000) {
+            holder.time.setTextColor(Color.parseColor("#ff0000"));
+        }
+        else
+        {
+            holder.time.setTextColor(Color.parseColor("#d0898989"));
+        }
+        holder.time.setText(PhoneNumberAndCallUtils.getTimeAgo(call.getBeginTime(), mContext));
         holder.call_icon.setTag(mCalls.get(position).getContactNumber());
         holder.bTag.setOnClickListener(new TagAContactClickListener(number));
         if (call.getCountOfInquiries() > 0) {

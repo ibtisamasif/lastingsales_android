@@ -4,20 +4,23 @@ package com.example.muzafarimran.lastingsales.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.events.ContactTaggedFromUntaggedContactEventModel;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
-import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.FrameActivity;
+import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.github.clans.fab.FloatingActionButton;
@@ -43,10 +46,13 @@ public class HomeFragment extends TabFragment {
     private LinearLayout llUntaggedContainer;
     private LinearLayout llinquriesContainer;
     private LinearLayout llPendingProspectsContainer;
-    FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
-    FloatingActionMenu floatingActionMenu;
+    private FrameLayout followupsListHolderFrameLayout;
+    private FollowupsTodayListFragment followupsTodayListFragment;
+    private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
+    private FloatingActionMenu floatingActionMenu;
     private Bus mBus;
     private TinyBus bus;
+//    public ViewPager mViewPager, vpLeads;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,19 +70,23 @@ public class HomeFragment extends TabFragment {
         llPendingProspectsContainer = (LinearLayout) view.findViewById(R.id.llPendingProspectsContactsContainer);
         llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
         llinquriesContainer = (LinearLayout) view.findViewById(R.id.llinquriesContainer);
+        followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
+
         updateHomeFigures();
         
         llInActiveLeadsContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent;
-                Bundle bundle = new Bundle();
-                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, InActiveLeadsFragment.class.getName()); // Change
-                bundle.putString(FrameActivity.ACTIVITY_TITLE, "InActive Leads");
-                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-                intent = new Intent(getContext(), FrameActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                int position = 2;
+                ((TabSelectedListener)getActivity()).onTabSelectedEvent(position, "InActiveLeads");
+//                Intent intent;
+//                Bundle bundle = new Bundle();
+//                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, InActiveLeadsFragment.class.getName()); // Change
+//                bundle.putString(FrameActivity.ACTIVITY_TITLE, "InActive Leads");
+//                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+//                intent = new Intent(getContext(), FrameActivity.class);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
             }
         });
         llUntaggedContainer.setOnClickListener(new View.OnClickListener() {
@@ -108,13 +118,16 @@ public class HomeFragment extends TabFragment {
         llinquriesContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsTodayListFragment.class.getName());
-                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Followups Today");
-                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
-                Intent intent = new Intent(getContext(), FrameActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                int position = 1;
+                ((TabSelectedListener)getActivity()).onTabSelectedEvent(position, "Inquiries");
+//                mViewPager.setCurrentItem(1,true);
+//                Bundle bundle = new Bundle();
+//                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsTodayListFragment.class.getName());
+//                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Followups Today");
+//                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
+//                Intent intent = new Intent(getContext(), FrameActivity.class);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
             }
         });
 
@@ -146,7 +159,21 @@ public class HomeFragment extends TabFragment {
             }
         });
 
+        //Bundle bundle = new Bundle();
+        //bundle.putString(NotesByContactsFragment.CONTACT_ID, selectedContact.getId().toString());
+        followupsTodayListFragment = new FollowupsTodayListFragment();
+        //followupsTodayListFragment.setArguments(bundle);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.followupsListHolderFrameLayout, followupsTodayListFragment);
+        transaction.commit();
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateHomeFigures();
     }
 
     private void updateHomeFigures() {
@@ -156,21 +183,39 @@ public class HomeFragment extends TabFragment {
         allFilteredContactsAsProspects.removeAll(allCollegues);
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
 
-        if (allInactiveLeads != null) {
-            tvInactiveLeadsValue.setText("( " + allInactiveLeads.size() + " )");
-        } else {
-            tvInactiveLeadsValue.setText("( " + 0 + " )");
-        }
+
         if (allUntaggedContacts != null) {
-            tvUntaggedContacts.setText("( " + allUntaggedContacts.size() + " )");
+            if(allUntaggedContacts.size() > 0){
+                tvUntaggedContacts.setText(" ( " + allUntaggedContacts.size() + " ) ");
+            }else {
+                llUntaggedContainer.setVisibility(View.GONE);
+            }
+
         } else {
-            tvUntaggedContacts.setText("( " + 0 + " )");
+            tvUntaggedContacts.setText("  ( " + 0 + " )  ");
         }
+
+        if (allInactiveLeads != null) {
+            if(allInactiveLeads.size() > 0){
+                tvInactiveLeadsValue.setText(" ( " + allInactiveLeads.size() + " ) ");
+            }else {
+                llInActiveLeadsContainer.setVisibility(View.GONE);
+            }
+        } else {
+            tvInactiveLeadsValue.setText(" ( " + 0 + " ) ");
+        }
+
         if (allFilteredContactsAsProspects != null) {
-            tvPendingProspectValue.setText("( " + allFilteredContactsAsProspects.size() + " )");
+            if(allFilteredContactsAsProspects.size() > 0) {
+                tvPendingProspectValue.setText(" ( " + allFilteredContactsAsProspects.size() + " ) ");
+            }
+            else {
+                llPendingProspectsContainer.setVisibility(View.GONE);
+            }
         } else {
-            tvPendingProspectValue.setText("( " + 0 + " )");
+            tvPendingProspectValue.setText(" ( " + 0 + " ) ");
         }
+
         ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
         Calendar now = Calendar.getInstance();
         Calendar beginingOfToday = Calendar.getInstance();

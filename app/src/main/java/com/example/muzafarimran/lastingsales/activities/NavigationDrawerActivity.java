@@ -15,17 +15,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
+import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.utils.CallRecord;
 import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.fragments.AllCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.CollegueFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
+import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
+import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.utils.CallRecord;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.Locale;
@@ -33,15 +37,16 @@ import java.util.Locale;
 import de.halfbit.tinybus.TinyBus;
 
 public class NavigationDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SearchCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, SearchCallback , TabSelectedListener{
 
     MaterialSearchView searchView;
     SessionManager sessionManager;
     CallRecord callRecord;
     ImageView ivProfileImage;
+    TextView tvProfileName , tvProfileNumber;
     boolean shouldShowSearchMenu = false;
     Toolbar toolbar;
-    ViewPager viewPager;
+    private ViewPager viewPager;
 //    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
 
     @Override
@@ -67,8 +72,17 @@ public class NavigationDrawerActivity extends AppCompatActivity
             finish();
         }
         LinearLayout navHeader = (LinearLayout) navigationView.getHeaderView(0);
-        //TODO sync required for image
-        ivProfileImage = (ImageView) navHeader.findViewById(R.id.ivProfileNavBar);
+        ivProfileImage = (ImageView) navHeader.findViewById(R.id.ivProfileImgNavBar);
+        tvProfileName = (TextView) navHeader.findViewById(R.id.tvProfileNameNavBar);
+        tvProfileNumber = (TextView) navHeader.findViewById(R.id.tvProfileNumberNavBar);
+        tvProfileName.setText(sessionManager.getKeyLoginFirstName()+sessionManager.getKeyLoginLastName());
+        tvProfileNumber.setText(sessionManager.getLoginNumber());
+
+        String url = sessionManager.getKeyLoginImagePath();
+        Glide.with(this)
+                .load(url)
+                .into(ivProfileImage);
+
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +99,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), NavigationDrawerActivity.this));
+        viewPager.setOffscreenPageLimit(2);
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -229,6 +244,8 @@ public class NavigationDrawerActivity extends AppCompatActivity
 //            startActivity(intent);
 //        }
         else if (id == R.id.nav_item_feedback) {
+            DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
+            dataSenderNew.execute();
             Toast.makeText(this, "FeedbackScreen", Toast.LENGTH_SHORT).show();
         }
         else if (id == R.id.nav_item_logout) {
@@ -244,6 +261,33 @@ public class NavigationDrawerActivity extends AppCompatActivity
     @Override
     public MaterialSearchView getSearchView() {
         return searchView;
+    }
+
+    @Override
+    public void onTabSelectedEvent(int position, final String tag) {
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 2){
+                    TabSelectedListener tabSelectedListener = (TabSelectedListener) ((SampleFragmentPagerAdapter)viewPager.getAdapter()).getItem(position);
+                    tabSelectedListener.onTabSelectedEvent(4,"");
+                }
+                viewPager.removeOnPageChangeListener(this);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        viewPager.setCurrentItem(position,true);
+
     }
 
 //    public class tabSelectedListener implements TabLayout.OnTabSelectedListener {

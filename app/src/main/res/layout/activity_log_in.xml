@@ -45,8 +45,16 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:hint="Number"
-            android:inputType="number"
             />
+
+        <!--<EditText-->
+            <!--android:id="@+id/numberLoginScreen"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:hint="Number"-->
+            <!--android:inputType="number"-->
+            <!--/>-->
 
 
     </LinearLayout>

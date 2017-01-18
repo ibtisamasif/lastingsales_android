@@ -29,7 +29,7 @@
             android:value="sugar_example.db"/>
         <meta-data
             android:name="VERSION"
-            android:value="2"/>
+            android:value="5"/>
         <meta-data
             android:name="QUERY_LOG"
             android:value="true"/>
@@ -122,16 +122,30 @@
             android:name=".activities.TagNumberActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
+
+        <activity
+            android:name=".activities.SplashActivity"
+            android:label="@string/title_activity_splash"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".activities.NavigationDrawerActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"
+            android:hardwareAccelerated="true"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
+
         <activity android:name=".activities.FrameActivity">
         </activity>
         <activity

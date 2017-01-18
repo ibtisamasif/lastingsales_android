@@ -20,10 +20,10 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,6 +212,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
                     popupMenu.show();
                 }
             });
+        if (contact.getContactType() != null) {
             if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                 if (contact.getContactSalesStatus() != null && !contact.getContactSalesStatus().equals("")) {
                     switch (contact.getContactSalesStatus()) {
@@ -232,6 +233,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
             } else {
                 holder.statusRow.setVisibility(GONE);
             }
+        }
         return convertView;
     }
 

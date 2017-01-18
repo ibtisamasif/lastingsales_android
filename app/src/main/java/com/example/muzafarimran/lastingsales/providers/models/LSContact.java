@@ -49,6 +49,7 @@ public class LSContact extends SugarRecord {
     private String contactDeleted_at;
     private String contactSalesStatus;
     private boolean detailsDropDownOpen;
+    private String syncStatus;
 
     public LSContact() {
     }
@@ -160,6 +161,24 @@ public class LSContact extends SugarRecord {
                     //Nothing to do
                 }
                 else {
+                    contactsAllNotHavingNotes.add(oneContact);
+                }
+            }
+            return contactsAllNotHavingNotes;
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
+
+    public static List<LSContact> getAllSalesContactsHavingNotes() {
+        try {
+            ArrayList<LSContact> contactsAllNotHavingNotes = new ArrayList<LSContact>();
+            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+            ArrayList<LSContact> contacts = new ArrayList<LSContact>();
+            contacts = contactsSales;
+            for (LSContact oneContact : contacts) {
+                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(oneContact.getId());
+                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
                     contactsAllNotHavingNotes.add(oneContact);
                 }
             }
@@ -359,5 +378,12 @@ public class LSContact extends SugarRecord {
 
     public void setContactSalesStatus(String contactSalesStatus) {
         this.contactSalesStatus = contactSalesStatus;
+    }
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
     }
 }

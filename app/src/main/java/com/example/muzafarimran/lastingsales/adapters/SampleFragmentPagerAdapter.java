@@ -8,7 +8,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.fragments.HomeFragment;
 import com.example.muzafarimran.lastingsales.fragments.LeadTabsFragment;
 import com.example.muzafarimran.lastingsales.fragments.MissedCallsFragment;
-import com.example.muzafarimran.lastingsales.fragments.TabFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -18,29 +20,28 @@ import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     final int TAB_COUNT = 3;
     private String tabTitles[] = new String[]{"Home", "Inquiries", "Sales"};
+    private List<Fragment> mFragments = new ArrayList<>();
     private Context context;
 
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
+        init();
+    }
+
+    private void init() {
+        mFragments.add(new HomeFragment());
+        mFragments.add(new MissedCallsFragment());
+        mFragments.add(new LeadTabsFragment());
     }
 
     @Override
     public Fragment getItem(int position) {
-        TabFragment fragment = null;
-        switch (position) {
-            case 0:
-                fragment = new HomeFragment();
-                break;
-            case 1:
-                fragment = new MissedCallsFragment();
-                break;
-            case 2:
-                fragment = new LeadTabsFragment();
-                break;
+        if (position > mFragments.size()) {
+            throw new IllegalArgumentException("Invalid Position");
         }
-        return fragment;
+        return mFragments.get(position);
     }
 
     @Override

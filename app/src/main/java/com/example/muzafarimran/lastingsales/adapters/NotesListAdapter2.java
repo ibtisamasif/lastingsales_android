@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.EditNoteActivity;
@@ -68,7 +67,6 @@ public class NotesListAdapter2 extends BaseAdapter {
     public void setList(List<LSNote> allNotes) {
         notesList = (ArrayList<LSNote>) allNotes;
         notifyDataSetChanged();
-
     }
 
     private String getShortenedString(String inputString) {
@@ -95,7 +93,6 @@ public class NotesListAdapter2 extends BaseAdapter {
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(mContext, ""+note.getId(), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(mContext, EditNoteActivity.class);
             intent.putExtra("noteid", ""+note.getId());
             mContext.startActivity(intent);

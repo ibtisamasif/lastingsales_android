@@ -13,7 +13,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/ivProfileNavBar"
+        android:id="@+id/ivProfileImgNavBar"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/temp_avatar"
@@ -22,6 +22,7 @@
         />
 
     <TextView
+        android:id="@+id/tvProfileNameNavBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -29,7 +30,7 @@
         android:textColor="@color/white"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvProfileNumberNavBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="+923228899906"

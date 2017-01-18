@@ -24,13 +24,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.muzafarimran.lastingsales.events.ContactTaggedFromUntaggedContactEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.events.ContactTaggedFromUntaggedContactEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -87,6 +88,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
     private LinearLayout noteContainerLayout;
     private LinearLayout followupContainerLayout;
     private LinearLayout llContactDetailsFollowupScreen;
+    private LinearLayout llContactType;
     private LayoutInflater inflater;
     private EditText etNoteText;
     private EditText etFollowupTitleText;
@@ -121,21 +123,20 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         bSalesRadio = (Button) findViewById(R.id.bSalesRadio);
         bColleagueRadio = (Button) findViewById(R.id.bCollegueRadio);
         llContactDetailsFollowupScreen = (LinearLayout) findViewById(R.id.llContactDetailsAddFollowupScreen);
-
-        //Added by ibtisam
+        llContactType = (LinearLayout) findViewById(R.id.llContactType);
+        // Cancel the Notifitcation appeared on call ending
         int notificationId = getIntent().getIntExtra("notificationId", 1);
         if (notificationId != 0) {
             NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             manager.cancel(notificationId);
         }
-        //Added by ibtisam
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             launchMode = bundle.getString(ACTIVITY_LAUNCH_MODE);
         }
 //        If launch mode is import contact then starting contact import activity so contact data can be brought in
         if (launchMode.equals(LAUNCH_MODE_IMPORT_CONTACT)) {
+            llContactType.setVisibility(View.GONE);
             startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), REQUEST_CODE_PICK_CONTACTS);
             selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
             preSelectedContactType = selectedContactType;
@@ -145,6 +146,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         }
 //        if launch mode is edit existing contact then geting id of contact so its data can be populated
         else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
+            llContactType.setVisibility(View.GONE);
             tvTitleFollowupPopup.setText(TITLE_EDIT_CONTACT);
             editingMode = true;
             String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
@@ -165,10 +167,12 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                 etContactName.setText("UNKNOWN");
             }
             etContactPhone.setText(selectedContact.getPhoneOne());
+            selectedContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
         }
 //        if launch mode is tag untagged contact then the contact is already temporarily saved but with
 //        untagged type. and contact id and selected new contact tupe is passed to this activity
         else if (launchMode.equals(LAUNCH_MODE_TAG_UNTAGGED_CONTACT)) {
+            llContactType.setVisibility(View.GONE);
             tvTitleFollowupPopup.setText(TITLE_TAG_UNTAGGED_CONTACT);
             editingMode = true;
             String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
@@ -184,6 +188,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
 //        if launch mode is tag number then number is gotten out of bundle so it can be searched in
 //        phonebook and the number can be populated in the editText Field
         else if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
+            llContactType.setVisibility(View.GONE);
             tvTitleFollowupPopup.setText(TITLE_TAG_NUMBER);
             phoneNumberFromLastActivity = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
             selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
@@ -232,6 +237,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
             selectedContact = LSContact.findById(LSContact.class, contactIdLong);
             showAddFollowupLayout();
         } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
+            llContactType.setVisibility(View.GONE);
             tvTitleFollowupPopup.setText(TITLE_ADD_NEW_CONTACT);
             selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
             preSelectedContactType = selectedContactType;
@@ -269,32 +275,64 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation && !editingMode) {
-
-                        //modified by ibtisam
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);
+
                         if (checkContact != null) {
                             if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
-                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Case Need to be handled", Toast.LENGTH_SHORT).show();
+                                String titleText = null;
+                                String noteText = null;
+                                TempFollowUp tempFollowUp = new TempFollowUp();
+                                checkContact.setContactName(contactName);
+                                checkContact.setPhoneOne(intlNum);
+                                checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                checkContact.save();
+                                if (etNoteText != null) {
+                                    noteText = etNoteText.getText().toString();
+                                    if (!noteText.isEmpty() && !noteText.equals("")) {
+                                        LSNote tempNote = new LSNote();
+                                        tempNote.setNoteText(noteText);
+                                        tempNote.setContactOfNote(checkContact);
+                                        tempNote.save();
+                                    }
+                                }
+                                if (etFollowupTitleText != null) {
+                                    titleText = etFollowupTitleText.getText().toString();
+                                    tempFollowUp.setTitle(titleText);
+                                } else {
+                                    titleText = "Empty";
+                                }
+                                if (year != 0 && day != 0 && hour != 0 && minute != 0) {
+                                    Calendar dateTimeForFollowup = Calendar.getInstance();
+                                    dateTimeForFollowup.set(Calendar.YEAR, year);
+                                    dateTimeForFollowup.set(Calendar.MONTH, month);
+                                    dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
+                                    dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
+                                    dateTimeForFollowup.set(Calendar.MINUTE, minute);
+                                    tempFollowUp.setContact(checkContact);
+                                    tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                    tempFollowUp.save();
+                                    setAlarm(getApplicationContext(), tempFollowUp);
+                                }
+                                finish();
+
                             } else {
                                 Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-
                             String titleText = null;
                             String noteText = null;
                             TempFollowUp tempFollowUp = new TempFollowUp();
                             LSContact tempContact = new LSContact();
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(intlNum);
-                            tempContact.setContactType(selectedContactType);
                             if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
                                 tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
                             } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
 //                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
                             }
-                            //modified by ibtisam
                             tempContact.save();
                             if (etNoteText != null) {
                                 noteText = etNoteText.getText().toString();
@@ -311,7 +349,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             } else {
                                 titleText = "Empty";
                             }
-                            if (year != 0  && day != 0 && hour != 0 && minute != 0) {
+                            if (year != 0 && day != 0 && hour != 0 && minute != 0) {
                                 Calendar dateTimeForFollowup = Calendar.getInstance();
                                 dateTimeForFollowup.set(Calendar.YEAR, year);
                                 dateTimeForFollowup.set(Calendar.MONTH, month);
@@ -347,11 +385,44 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         checkContact = LSContact.getContactFromNumber(intlNum);
                         if (checkContact != null) {
                             if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
-                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Case Need to be handled", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
+                                String titleText = null;
+                                String noteText = null;
+                                TempFollowUp tempFollowUp = new TempFollowUp();
+                                checkContact.setContactName(contactName);
+                                checkContact.setPhoneOne(intlNum);
+                                checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                checkContact.save();
+                                if (etNoteText != null) {
+                                    noteText = etNoteText.getText().toString();
+                                    if (!noteText.isEmpty() && !noteText.equals("")) {
+                                        LSNote tempNote = new LSNote();
+                                        tempNote.setNoteText(noteText);
+                                        tempNote.setContactOfNote(checkContact);
+                                        tempNote.save();
+                                    }
+                                }
+                                if (etFollowupTitleText != null) {
+                                    titleText = etFollowupTitleText.getText().toString();
+                                    tempFollowUp.setTitle(titleText);
+                                } else {
+                                    titleText = "Empty";
+                                }
+                                if (year != 0 && day != 0 && hour != 0 && minute != 0) {
+                                    Calendar dateTimeForFollowup = Calendar.getInstance();
+                                    dateTimeForFollowup.set(Calendar.YEAR, year);
+                                    dateTimeForFollowup.set(Calendar.MONTH, month);
+                                    dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
+                                    dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
+                                    dateTimeForFollowup.set(Calendar.MINUTE, minute);
+                                    tempFollowUp.setContact(checkContact);
+                                    tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                    tempFollowUp.save();
+                                    setAlarm(getApplicationContext(), tempFollowUp);
+                                }
+                                finish();
                             }
-
+                            Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
                         } else {
                             String titleText = null;
                             String noteText = null;
@@ -381,7 +452,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             } else {
                                 titleText = "Empty";
                             }
-                            if (year != 0  && day != 0 && hour != 0 && minute != 0) {
+                            if (year != 0 && day != 0 && hour != 0 && minute != 0) {
                                 Calendar dateTimeForFollowup = Calendar.getInstance();
                                 dateTimeForFollowup.set(Calendar.YEAR, year);
                                 dateTimeForFollowup.set(Calendar.MONTH, month);
@@ -416,11 +487,45 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         checkContact = LSContact.getContactFromNumber(intlNum);
                         if (checkContact != null) {
                             if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
-                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Case Need to be handled", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
-                            }
+                                String titleText = null;
+                                String noteText = null;
+                                TempFollowUp tempFollowUp = new TempFollowUp();
+                                checkContact.setContactName(contactName);
+                                checkContact.setPhoneOne(intlNum);
+                                checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                checkContact.save();
+                                if (etNoteText != null) {
+                                    noteText = etNoteText.getText().toString();
+                                    if (!noteText.isEmpty() && !noteText.equals("")) {
+                                        LSNote tempNote = new LSNote();
+                                        tempNote.setNoteText(noteText);
+                                        tempNote.setContactOfNote(checkContact);
+                                        tempNote.save();
+                                    }
+                                }
+                                if (etFollowupTitleText != null) {
+                                    titleText = etFollowupTitleText.getText().toString();
+                                    tempFollowUp.setTitle(titleText);
+                                } else {
+                                    titleText = "Empty";
+                                }
+                                if (year != 0 && day != 0 && hour != 0 && minute != 0) {
+                                    Calendar dateTimeForFollowup = Calendar.getInstance();
+                                    dateTimeForFollowup.set(Calendar.YEAR, year);
+                                    dateTimeForFollowup.set(Calendar.MONTH, month);
+                                    dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
+                                    dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
+                                    dateTimeForFollowup.set(Calendar.MINUTE, minute);
+                                    tempFollowUp.setContact(checkContact);
+                                    tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                    tempFollowUp.save();
+                                    setAlarm(getApplicationContext(), tempFollowUp);
+                                }
+                                finish();
 
+                            }
+                                Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
                         } else {
                             String titleText = null;
                             String noteText = null;
@@ -490,13 +595,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         LSContact tempContact = selectedContact;
                         tempContact.setContactName(contactName);
                         tempContact.setPhoneOne(intlNum);
-                        tempContact.setContactType(selectedContactType);
-                        if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
-                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                        } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
-//                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
-                        }
-                        //modified by ibtisam
+                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
                         tempContact.save();
                         if (etNoteText != null) {
                             noteText = etNoteText.getText().toString();
@@ -542,7 +641,6 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation && editingMode) {
-                        //modified by ibtisam
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
                         String titleText = null;
                         String noteText = null;
@@ -556,7 +654,6 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
 //                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
                         }
-                        //modified by ibtisam
                         tempContact.save();
                         if (etNoteText != null) {
                             noteText = etNoteText.getText().toString();
@@ -586,14 +683,14 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             setAlarm(getApplicationContext(), tempFollowUp);
                         }
                         finish();
-                        try{
+                        try {
 //                        Registering a tiny bus event so home tab can be updated
                             ContactTaggedFromUntaggedContactEventModel contactTaggedFromUntaggedContactEventModel = new ContactTaggedFromUntaggedContactEventModel();
                             TinyBus bus = TinyBus.from(getApplicationContext());
                             bus.register(contactTaggedFromUntaggedContactEventModel);
                             bus.post(contactTaggedFromUntaggedContactEventModel);
                             Log.d("TagUntaggedGenerated", "contact tagged and saved() called  ");
-                        } catch (IllegalArgumentException e){
+                        } catch (IllegalArgumentException e) {
                             e.printStackTrace();
                         }
                     }

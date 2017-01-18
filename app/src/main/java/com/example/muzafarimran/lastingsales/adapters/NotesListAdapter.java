@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +74,7 @@ public class NotesListAdapter extends BaseAdapter {
         String date = "" + cl.get(Calendar.DAY_OF_MONTH) + ":" + cl.get(Calendar.MONTH) + ":" + cl.get(Calendar.YEAR);
         String time = "" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE);
         // Populate the data into the template view using the data object
-        viewHolder.tvContactName.setText(oneContact.getContactName());
+        viewHolder.tvContactName.setText(oneContact.getContactName());  // Crashed here on Deleting the contact and then viewing his notes from agents profile.
         viewHolder.tvShortNote.setText(getShortenedString(oneNote.getNoteText()));
         viewHolder.tvNoteDetails.setText(oneNote.getNoteText());
         viewHolder.tvNoteDate.setText(date);

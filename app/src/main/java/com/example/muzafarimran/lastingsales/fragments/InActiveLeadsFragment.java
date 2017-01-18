@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
+import com.example.muzafarimran.lastingsales.adapters.InActiveLeadsAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.InActiveLeadsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -35,8 +35,6 @@ public class InActiveLeadsFragment extends  TabFragment{
     private TinyBus bus;
     FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     FloatingActionMenu floatingActionMenu;
-
-
     public static InActiveLeadsFragment newInstance(int page, String title) {
         InActiveLeadsFragment fragmentFirst = new InActiveLeadsFragment();
         Bundle args = new Bundle();
@@ -161,4 +159,5 @@ public class InActiveLeadsFragment extends  TabFragment{
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

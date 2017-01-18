@@ -21,9 +21,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.providers.models.MyURLs;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -92,7 +95,10 @@ public class LogInActivity extends AppCompatActivity {
                 }
                 if (numberVarified && passwordVarified) {
                     pdLoading.show();
+                    intlNumber = "ibtisamasif@gmail.com";
+                    password = "11111111";
                     makeLoginRequest(LogInActivity.this, intlNumber, password);
+
                 }
             }
         });
@@ -101,23 +107,62 @@ public class LogInActivity extends AppCompatActivity {
     public void makeLoginRequest(final Activity activity, final String number, final String password) {
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(activity);
-        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.LOGIN_URL , new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() called with: response = [" + response + "]");
                 pdLoading.dismiss();
-                sessionManager.loginnUser(response, Calendar.getInstance().getTimeInMillis(), number);
-                activity.startActivity(new Intent(activity, NavigationDrawerActivity.class));
-                activity.finish();
+                //TODO pass token in place of response
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+//                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
+
+                    if (responseCode == 200) {
+                        JSONObject responseObject = jObj.getJSONObject("response");
+
+                        String user_id = responseObject.getString("id");
+                        String firstname = responseObject.getString("firstname");
+                        String lastname = responseObject.getString("lastname");
+                        String email = responseObject.getString("email");
+                        String group_id = responseObject.getString("group_id");
+                        String hash_key = responseObject.getString("hash_key");
+                        String phone = responseObject.getString("phone");
+                        String image = responseObject.getString("image");
+                        String client_id = responseObject.getString("client_id");
+                        String persist_code = responseObject.getString("persist_code");
+                        String image_path = responseObject.getString("image_path");
+                        String api_token = responseObject.getString("api_token");
+                        String role_id = responseObject.getString("role_id");
+
+                        String completeImagePath = MyURLs.IMAGE_URL + image_path;
+                        sessionManager.loginnUser(user_id, api_token, Calendar.getInstance().getTimeInMillis(), number, firstname, lastname, completeImagePath);
+
+                        activity.startActivity(new Intent(activity, NavigationDrawerActivity.class));
+                        activity.finish();
+
+                        Toast.makeText(activity, "" + completeImagePath, Toast.LENGTH_SHORT).show();
+                    } else if (responseCode == 3) {
+                        Toast.makeText(activity, "No User Found.", Toast.LENGTH_SHORT).show();
+                    }else if (responseCode == 4){
+                        Toast.makeText(activity, "inValid Password", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (responseCode == 5){
+                        Toast.makeText(activity, "Wrong Password", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 pdLoading.dismiss();
+                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse() called with: error = [" + error + "]");
-                if (!NetworkAccess.isNetworkAvailable(getApplicationContext())){
+                if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
                     Toast.makeText(getApplicationContext(), "No Internet Connectivity", Toast.LENGTH_LONG).show();
-                }else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Wrong Credentials Or Poor Internet Connectivity", Toast.LENGTH_LONG).show();
                 }
             }
@@ -125,7 +170,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("phone", number);
+                params.put("email", number);
                 params.put("password", password);
                 return params;
             }
@@ -133,7 +178,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/x-www-form-urlencoded");
+//                params.put("Content-Type", "application/x-www-form-urlencoded");
                 return params;
             }
         };
