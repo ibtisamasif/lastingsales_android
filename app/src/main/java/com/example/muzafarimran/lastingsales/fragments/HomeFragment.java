@@ -14,13 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
-import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.events.ContactTaggedFromUntaggedContactEventModel;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
+import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.github.clans.fab.FloatingActionButton;
@@ -28,6 +29,7 @@ import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
@@ -39,6 +41,7 @@ import de.halfbit.tinybus.TinyBus;
  */
 public class HomeFragment extends TabFragment {
     private static final String TAG = "HomeFragment";
+    private TextView tvInquiriesValue;
     private TextView tvInactiveLeadsValue;
     private TextView tvUntaggedContacts;
     private TextView tvPendingProspectValue;
@@ -62,7 +65,8 @@ public class HomeFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        tvUntaggedContacts = (TextView) view.findViewById(R.id.untagged_contacts_val);
+        tvInquiriesValue = (TextView) view.findViewById(R.id.tvInquriesValue);
+        tvUntaggedContacts = (TextView) view.findViewById(R.id.tvUntaggeContactsVal);
         tvPendingProspectValue = (TextView) view.findViewById(R.id.tvPendingProspectValue);
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
         llInActiveLeadsContainer = (LinearLayout) view.findViewById(R.id.llInActiveLeadsContactsContainer);
@@ -141,24 +145,30 @@ public class HomeFragment extends TabFragment {
             @Override
             public void onClick(View view) {
                 floatingActionMenu.close(true);
-                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
-                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
+                Intent intent = new Intent(getContext(), AddLeadActivity.class);
+                intent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
                 startActivity(intent);
+
+//                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
+//                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+//                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
+//                startActivity(intent);
             }
         });
         floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 floatingActionMenu.close(true);
-                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
-                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
-                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
+                Intent intent = new Intent(getContext(), AddLeadActivity.class);
+                intent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
                 startActivity(intent);
+//                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
+//                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
+//                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
+//                startActivity(intent);
 
             }
         });
-
         //Bundle bundle = new Bundle();
         //bundle.putString(NotesByContactsFragment.CONTACT_ID, selectedContact.getId().toString());
         followupsTodayListFragment = new FollowupsTodayListFragment();
@@ -166,7 +176,6 @@ public class HomeFragment extends TabFragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.followupsListHolderFrameLayout, followupsTodayListFragment);
         transaction.commit();
-
         return view;
     }
 
@@ -183,6 +192,24 @@ public class HomeFragment extends TabFragment {
         allFilteredContactsAsProspects.removeAll(allCollegues);
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
 
+        List<LSCall> allMissedCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_MISSED);
+        List<LSCall> unhandledMissedCalls = new ArrayList<>();
+        for (LSCall oneMissedCall : allMissedCalls) {
+            if (oneMissedCall.getInquiryHandledState() == LSCall.INQUIRY_NOT_HANDLED) {
+                unhandledMissedCalls.add(oneMissedCall);
+            }
+        }
+
+        if (unhandledMissedCalls != null) {
+            if(unhandledMissedCalls.size() > 0){
+                tvInquiriesValue.setText(" ( " + unhandledMissedCalls.size() + " ) ");
+            }else {
+                llinquriesContainer.setVisibility(View.GONE);
+            }
+
+        } else {
+            tvInquiriesValue.setText("  ( " + 0 + " )  ");
+        }
 
         if (allUntaggedContacts != null) {
             if(allUntaggedContacts.size() > 0){
@@ -244,7 +271,7 @@ public class HomeFragment extends TabFragment {
 
     @Subscribe
     public void onCallReceivedEventModel(MissedCallEventModel event) {
-        Log.d(TAG, "onUntaggedCallEvent() called with: event = [" + event + "]");
+        Log.d(TAG, "onMissedCallEvent() called with: event = [" + event + "]");
         if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
             updateHomeFigures();
         }

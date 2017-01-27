@@ -34,6 +34,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 /**
  * A simple {@link Fragment} subclass.
  */
+@Deprecated
 public class SalesFragment extends SearchFragment {
 
     public static final String TAG = "SalesContactFragment";

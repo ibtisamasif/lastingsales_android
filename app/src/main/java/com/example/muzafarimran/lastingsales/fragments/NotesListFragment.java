@@ -30,6 +30,7 @@ import de.halfbit.tinybus.TinyBus;
  * Use the {@link NotesListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@Deprecated
 public class NotesListFragment extends Fragment {
     public static final String TAG = "NotesListFragment";
     private static final String ARG_PARAM1 = "param1";

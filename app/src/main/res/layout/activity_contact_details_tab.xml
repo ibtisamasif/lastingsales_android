@@ -61,7 +61,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:background="@drawable/app_background"
+                android:background="@drawable/app_background_drawer"
                 android:minHeight="160dp"
                 android:src="@drawable/temp_avatar"
                 app:layout_collapseMode="parallax" />
@@ -83,7 +83,9 @@
             android:background="#ececec"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/tab_indicator_color"
-            app:tabMode="scrollable"/>
+            app:tabMode="fixed"
+            app:tabTextColor="@color/darkGray"
+            app:tabSelectedTextColor="@color/black"/>
 
     </android.support.design.widget.AppBarLayout>
 

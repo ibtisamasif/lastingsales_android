@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 /**
  * Created by ibtisam on 12/14/2016.
@@ -18,15 +19,32 @@ public class TagNonBusiness extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String num = intent.getStringExtra("number");
-        String name = intent.getStringExtra("name");
-        tempContact = new LSContact();
-        tempContact.setPhoneOne(num);
-        tempContact.setContactName(name);
-        tempContact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);
-        tempContact.save();
-        int notificationId = intent.getIntExtra("notificationId", 0);
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(notificationId);
+        String contactPhone = intent.getStringExtra("number");
+        String contactName = intent.getStringExtra("name");
+
+        String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
+        LSContact checkContact;
+        checkContact = LSContact.getContactFromNumber(intlNum);
+        if (checkContact != null) {
+            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+                checkContact.setPhoneOne(contactPhone);
+                checkContact.setContactName(contactName);
+                checkContact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);
+                checkContact.save();
+                int notificationId = intent.getIntExtra("notificationId", 0);
+                NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.cancel(notificationId);
+            }
+        }
+        else{
+            tempContact = new LSContact();
+            tempContact.setPhoneOne(contactPhone);
+            tempContact.setContactName(contactName);
+            tempContact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);
+            tempContact.save();
+            int notificationId = intent.getIntExtra("notificationId", 0);
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.cancel(notificationId);
+        }
     }
 }

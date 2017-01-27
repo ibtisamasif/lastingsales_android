@@ -38,6 +38,7 @@ import static android.view.View.GONE;
 /**
  * Created by lenovo 1 on 9/21/2016.
  */
+@Deprecated
 public class SalesAdapter extends BaseAdapter implements Filterable, StickyListHeadersAdapter {
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;

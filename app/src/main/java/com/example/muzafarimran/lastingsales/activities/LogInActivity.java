@@ -95,7 +95,7 @@ public class LogInActivity extends AppCompatActivity {
                 }
                 if (numberVarified && passwordVarified) {
                     pdLoading.show();
-                    intlNumber = "ibtisamasif@gmail.com";
+                    intlNumber = "ibtisamasif1@gmail.com";
                     password = "11111111";
                     makeLoginRequest(LogInActivity.this, intlNumber, password);
 
@@ -125,12 +125,9 @@ public class LogInActivity extends AppCompatActivity {
                         String firstname = responseObject.getString("firstname");
                         String lastname = responseObject.getString("lastname");
                         String email = responseObject.getString("email");
-                        String group_id = responseObject.getString("group_id");
                         String hash_key = responseObject.getString("hash_key");
                         String phone = responseObject.getString("phone");
                         String image = responseObject.getString("image");
-                        String client_id = responseObject.getString("client_id");
-                        String persist_code = responseObject.getString("persist_code");
                         String image_path = responseObject.getString("image_path");
                         String api_token = responseObject.getString("api_token");
                         String role_id = responseObject.getString("role_id");
@@ -141,7 +138,8 @@ public class LogInActivity extends AppCompatActivity {
                         activity.startActivity(new Intent(activity, NavigationDrawerActivity.class));
                         activity.finish();
 
-                        Toast.makeText(activity, "" + completeImagePath, Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onResponse: "+response);
+                        Toast.makeText(activity, "" + user_id, Toast.LENGTH_SHORT).show();
                     } else if (responseCode == 3) {
                         Toast.makeText(activity, "No User Found.", Toast.LENGTH_SHORT).show();
                     }else if (responseCode == 4){

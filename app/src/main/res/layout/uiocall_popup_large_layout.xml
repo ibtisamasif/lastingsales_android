@@ -40,7 +40,6 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:id="@+id/sliderImageViewParentLayout"
             android:layout_width="250dp"

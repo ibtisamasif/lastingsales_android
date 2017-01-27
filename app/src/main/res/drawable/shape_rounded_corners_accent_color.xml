@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <!-- Specify a semi-transparent solid green background color -->
-    <solid android:color="@color/colorAccent"
-        />
-<stroke android:color="@color/colorAccent" android:width="2dp" />
+    <solid android:color="@color/colorAccent" />
+    <stroke
+        android:width="2dp"
+        android:color="@color/colorAccent" />
     <corners
-        android:topLeftRadius="@dimen/corners_radius_size_edittext_bg"
-        android:topRightRadius="@dimen/corners_radius_size_edittext_bg"
+        android:bottomLeftRadius="@dimen/corners_radius_size_edittext_bg"
         android:bottomRightRadius="@dimen/corners_radius_size_edittext_bg"
-        android:bottomLeftRadius="@dimen/corners_radius_size_edittext_bg" />
+        android:topLeftRadius="@dimen/corners_radius_size_edittext_bg"
+        android:topRightRadius="@dimen/corners_radius_size_edittext_bg" />
     <!-- Specify the margins that all content inside the drawable must adhere to -->
     <padding
+        android:bottom="2dp"
         android:left="2dp"
         android:right="2dp"
-        android:top="2dp"
-        android:bottom="2dp"
-        />
+        android:top="2dp" />
 </shape>

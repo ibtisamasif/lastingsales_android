@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.AddNewFollowUpsActivity;
 import com.example.muzafarimran.lastingsales.receivers.FollowupNotiCancelBtnReceiver;
 import com.example.muzafarimran.lastingsales.receivers.TagNonBusiness;
 
@@ -25,9 +25,9 @@ public class CallEndNotification {
         cancelIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent cancelpIntent = PendingIntent.getBroadcast(ctx, (int) System.currentTimeMillis(), cancelIntent, 0);
 
-        Intent intent = new Intent(ctx, TagNumberAndAddFollowupActivity.class);
-        intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE,TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
-        intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID , contact_id);
+        Intent intent = new Intent(ctx, AddNewFollowUpsActivity.class);
+        intent.putExtra(AddNewFollowUpsActivity.ACTIVITY_LAUNCH_MODE,AddNewFollowUpsActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
+        intent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID , contact_id);
         PendingIntent pIntent = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intent, 0);
 
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)
@@ -58,19 +58,18 @@ public class CallEndNotification {
         nonBusinessIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent pIntentNonBusiness = PendingIntent.getBroadcast(ctx, (int) System.currentTimeMillis(), nonBusinessIntent, 0);
 
-        //CollegueIntent
-        Intent collegueIntent = new Intent(ctx, TagNumberAndAddFollowupActivity.class);
-        collegueIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
-        collegueIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
-        collegueIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
-        nonBusinessIntent.putExtra("notificationId", NOTIFICATION_ID);
-        PendingIntent pIntentCollegue = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), collegueIntent, 0);
+//        //CollegueIntent
+//        Intent collegueIntent = new Intent(ctx, TagNumberAndAddFollowupActivity.class);
+//        collegueIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+//        collegueIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
+//        collegueIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
+//        nonBusinessIntent.putExtra("notificationId", NOTIFICATION_ID);
+//        PendingIntent pIntentCollegue = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), collegueIntent, 0);
+
         //SalesIntent
-        Intent salesIntent = new Intent(ctx, TagNumberAndAddFollowupActivity.class);
-        salesIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
-        salesIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-        salesIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
-        nonBusinessIntent.putExtra("notificationId", NOTIFICATION_ID);
+        Intent salesIntent = new Intent(ctx, AddLeadActivity.class);
+        salesIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+        salesIntent.putExtra(AddLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
         PendingIntent pIntentSales = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), salesIntent, 0);
 
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)
@@ -83,9 +82,11 @@ public class CallEndNotification {
                     .setTicker("Lasting Sales")
                     .setStyle(new Notification.BigTextStyle().bigText("Do You Want To Tag?"))
                     .setAutoCancel(true)
-                    .addAction(R.drawable.non_business_icon, "", pIntentNonBusiness)
-                    .addAction(R.drawable.colleague_icon, "", pIntentCollegue)
-                    .addAction(R.drawable.sales_icon, "", pIntentSales)
+                .addAction(R.drawable.non_business_icon_croped, "Untrack", pIntentNonBusiness)
+                .addAction(R.drawable.sales_icon_croped, "Track", pIntentSales)
+//                    .addAction(R.drawable.non_business_icon, "", pIntentNonBusiness)
+//                    .addAction(R.drawable.colleague_icon, "", pIntentCollegue)
+//                    .addAction(R.drawable.sales_icon, "", pIntentSales)
                     .setDefaults(Notification.DEFAULT_SOUND)
                     .setDefaults(Notification.DEFAULT_VIBRATE)
                     .setContentText("Please Specify Your Business Call?");

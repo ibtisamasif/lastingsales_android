@@ -29,7 +29,7 @@
             android:value="sugar_example.db"/>
         <meta-data
             android:name="VERSION"
-            android:value="5"/>
+            android:value="7"/>
         <meta-data
             android:name="QUERY_LOG"
             android:value="true"/>
@@ -77,6 +77,11 @@
         <activity
             android:name=".activities.LSContactChooserActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activities.AddNewFollowUpsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="nosensor">
         </activity>
         <activity
             android:name=".activities.FollowupsActivity"
@@ -127,29 +132,33 @@
             android:name=".activities.SplashActivity"
             android:label="@string/title_activity_splash"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <activity
             android:name=".activities.NavigationDrawerActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"
-            android:hardwareAccelerated="true"
             >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
         <activity android:name=".activities.FrameActivity">
         </activity>
         <activity
             android:name=".activities.TagNumberAndAddFollowupActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            >
+        </activity>
+
+        <activity
+            android:name=".activities.AddLeadActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             >
         </activity>

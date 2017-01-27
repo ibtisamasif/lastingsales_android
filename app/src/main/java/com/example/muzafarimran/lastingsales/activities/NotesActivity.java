@@ -9,6 +9,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.fragments.NotesListFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 
+@Deprecated
 public class NotesActivity extends AppCompatActivity {
 
     public static final int ADD_NOTE_REQUEST_CODE = 13;

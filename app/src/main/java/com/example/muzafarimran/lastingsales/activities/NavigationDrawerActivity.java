@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,32 +23,45 @@ import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.customview.BadgeView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
+import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.fragments.AllCallsFragment;
-import com.example.muzafarimran.lastingsales.fragments.CollegueFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
+import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
+import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
 import com.example.muzafarimran.lastingsales.utils.CallRecord;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
 public class NavigationDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SearchCallback , TabSelectedListener{
-
+        implements NavigationView.OnNavigationItemSelectedListener, SearchCallback, TabSelectedListener {
+    private static final String TAG = "NaviDrawerActivity";
     MaterialSearchView searchView;
     SessionManager sessionManager;
     CallRecord callRecord;
     ImageView ivProfileImage;
-    TextView tvProfileName , tvProfileNumber;
+    TextView tvProfileName, tvProfileNumber;
     boolean shouldShowSearchMenu = false;
     Toolbar toolbar;
-    private ViewPager viewPager;
+    BadgeView badgeInquries;
+    ImageView imageViewBadge;
+    TabLayout tabLayout;
+    List<LSCall> allMissedCalls;
+    List<LSCall> unhandledMissedCalls;
+    TabLayout.Tab tab1;
+    TinyBus bus;
 //    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +89,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         ivProfileImage = (ImageView) navHeader.findViewById(R.id.ivProfileImgNavBar);
         tvProfileName = (TextView) navHeader.findViewById(R.id.tvProfileNameNavBar);
         tvProfileNumber = (TextView) navHeader.findViewById(R.id.tvProfileNumberNavBar);
-        tvProfileName.setText(sessionManager.getKeyLoginFirstName()+sessionManager.getKeyLoginLastName());
+        tvProfileName.setText(sessionManager.getKeyLoginFirstName() + sessionManager.getKeyLoginLastName());
         tvProfileNumber.setText(sessionManager.getLoginNumber());
 
         String url = sessionManager.getKeyLoginImagePath();
@@ -101,11 +115,33 @@ public class NavigationDrawerActivity extends AppCompatActivity
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), NavigationDrawerActivity.this));
         viewPager.setOffscreenPageLimit(2);
         // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.menu_icon_home_selected);
-        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone);
+//        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone);
         tabLayout.getTabAt(2).setIcon(R.drawable.menu_icon_contact);
+
+        allMissedCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_MISSED);
+        unhandledMissedCalls = new ArrayList<>();
+        for (LSCall oneMissedCall : allMissedCalls) {
+            if (oneMissedCall.getInquiryHandledState() == LSCall.INQUIRY_NOT_HANDLED) {
+                unhandledMissedCalls.add(oneMissedCall);
+            }
+        }
+
+        tab1 = tabLayout.getTabAt(1);
+        imageViewBadge = new ImageView(getApplicationContext());
+        imageViewBadge.setImageResource(R.drawable.menu_icon_phone);
+        tab1.setCustomView(imageViewBadge);
+        badgeInquries = new BadgeView(getApplicationContext(), imageViewBadge);
+        if (unhandledMissedCalls != null && unhandledMissedCalls.size() > 0) {
+            badgeInquries.setText("" + unhandledMissedCalls.size());
+            badgeInquries.toggle();
+            badgeInquries.show();
+        } else {
+            badgeInquries.hide();
+        }
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -116,7 +152,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                         getSupportActionBar().setTitle("Home");
                         break;
                     case 1:
-                        tab.setIcon(R.drawable.menu_icon_phone_selected);
+//                        tab.setIcon(R.drawable.menu_icon_phone_selected);
                         getSupportActionBar().setTitle("Inquiries");
 //                        ((TextView)(toolbar.findViewById(R.id.title))).setText("CALL LOGS");
                         break;
@@ -139,7 +175,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                         tab.setIcon(R.drawable.menu_icon_home);
                         break;
                     case 1:
-                        tab.setIcon(R.drawable.menu_icon_phone);
+//                        tab.setIcon(R.drawable.menu_icon_phone);
                         break;
                     case 2:
                         tab.setIcon(R.drawable.menu_icon_contact);
@@ -165,7 +201,40 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 .setShowSeed(true)
                 .buildService();
         callRecord.startCallRecordService();
+        bus = TinyBus.from(this.getApplicationContext());
+        bus.register(this);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bus.unregister(this);
+    }
+
+    //TODO Does this work on fragments only ?
+    @Subscribe
+    public void onCallReceivedEventModel(MissedCallEventModel event) {
+        Log.d(TAG, "NavionMissedCallEvent() called with: event = [" + event + "]");
+        if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
+            allMissedCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_MISSED);
+            unhandledMissedCalls = new ArrayList<>();
+            for (LSCall oneMissedCall : allMissedCalls) {
+                if (oneMissedCall.getInquiryHandledState() == LSCall.INQUIRY_NOT_HANDLED) {
+                    unhandledMissedCalls.add(oneMissedCall);
+                }
+            }
+//            tab1 = tabLayout.getTabAt(1);
+//            imageViewBadge.setImageResource(R.drawable.menu_icon_phone);
+//            tab1.setCustomView(imageViewBadge);
+            //badgeInquries = new BadgeView(getApplicationContext(), imageViewBadge);
+            if (unhandledMissedCalls != null && unhandledMissedCalls.size() > 0) {
+                badgeInquries.setText("" + unhandledMissedCalls.size());
+                badgeInquries.toggle();
+                badgeInquries.show();
+            } else {
+                badgeInquries.hide();
+            }
+        }
     }
 
     @Override
@@ -211,22 +280,22 @@ public class NavigationDrawerActivity extends AppCompatActivity
 //            intent.putExtras(bundle);
 //            startActivity(intent);
 //        }
-        else if (id == R.id.nav_item_colleague_contacts) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, CollegueFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Colleague Contacts");
-            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-            intent = new Intent(getApplicationContext(), FrameActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
-//        else if (id == R.id.nav_item_personal_contacts) {
-//            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, NonbusinessFragment.class.getName());
-//            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Non-Business Contacts");
+//        else if (id == R.id.nav_item_colleague_contacts) {
+//            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, CollegueFragment.class.getName());
+//            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Colleague Contacts");
 //            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
 //            intent = new Intent(getApplicationContext(), FrameActivity.class);
 //            intent.putExtras(bundle);
 //            startActivity(intent);
 //        }
+        else if (id == R.id.nav_item_personal_contacts) {
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, NonbusinessFragment.class.getName());
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Untracked Contacts");
+            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+            intent = new Intent(getApplicationContext(), FrameActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
 //        else if (id == R.id.nav_item_followups) {
 //            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsListFragment.class.getName());
 //            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Followups List");
@@ -247,8 +316,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
             DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
             dataSenderNew.execute();
             Toast.makeText(this, "FeedbackScreen", Toast.LENGTH_SHORT).show();
-        }
-        else if (id == R.id.nav_item_logout) {
+        } else if (id == R.id.nav_item_logout) {
             sessionManager.logoutUser();
             startActivity(new Intent(this, LogInActivity.class));
             finish();
@@ -274,9 +342,9 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 2){
-                    TabSelectedListener tabSelectedListener = (TabSelectedListener) ((SampleFragmentPagerAdapter)viewPager.getAdapter()).getItem(position);
-                    tabSelectedListener.onTabSelectedEvent(4,"");
+                if (position == 2) {
+                    TabSelectedListener tabSelectedListener = (TabSelectedListener) ((SampleFragmentPagerAdapter) viewPager.getAdapter()).getItem(position);
+                    tabSelectedListener.onTabSelectedEvent(4, "");
                 }
                 viewPager.removeOnPageChangeListener(this);
             }
@@ -286,7 +354,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
             }
         });
-        viewPager.setCurrentItem(position,true);
+        viewPager.setCurrentItem(position, true);
 
     }
 

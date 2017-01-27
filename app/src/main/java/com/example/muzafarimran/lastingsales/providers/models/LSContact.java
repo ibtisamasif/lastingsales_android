@@ -232,6 +232,7 @@ public class LSContact extends SugarRecord {
         return allFollowupsOfThisContact;
     }
 
+    @Deprecated
     public ArrayList<LSNote> getAllNotes() {
         ArrayList<LSNote> allNotesOfThisContact = null;
         allNotesOfThisContact = (ArrayList<LSNote>) LSNote.find(LSNote.class, "contact_of_note = ? ", getId() + "");

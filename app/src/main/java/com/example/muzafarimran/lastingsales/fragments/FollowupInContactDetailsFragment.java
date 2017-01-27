@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
+import com.example.muzafarimran.lastingsales.activities.AddNewFollowUpsActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -89,13 +89,12 @@ public class FollowupInContactDetailsFragment extends TabFragment{
         number = bundle.getString("someNumber");
         if(number!=null) {
             selectedContact = LSContact.getContactFromNumber(number);
-
         addFollowupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getActivity(), TagNumberAndAddFollowupActivity.class);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
+                Intent myIntent = new Intent(getActivity(), AddNewFollowUpsActivity.class);
+                myIntent.putExtra(AddNewFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddNewFollowUpsActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
+                myIntent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
                 startActivity(myIntent);
             }
         });
@@ -129,10 +128,10 @@ public class FollowupInContactDetailsFragment extends TabFragment{
         ibEditFollowup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(getActivity(), TagNumberAndAddFollowupActivity.class);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, selectedFolloup.getId() + "");
+                Intent myIntent = new Intent(getActivity(), AddNewFollowUpsActivity.class);
+                myIntent.putExtra(AddNewFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddNewFollowUpsActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
+                myIntent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
+                myIntent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, selectedFolloup.getId() + "");
                 startActivity(myIntent);
             }
         });

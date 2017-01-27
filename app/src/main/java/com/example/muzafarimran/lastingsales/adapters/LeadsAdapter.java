@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
@@ -21,12 +20,19 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
+import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.halfbit.tinybus.TinyBus;
 
 import static android.view.View.GONE;
 
@@ -117,13 +123,18 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
                 holder.name = (TextView) convertView.findViewById(R.id.contact_name);
                 holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
                 holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+
                 holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
+
                 holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
                 holder.lastContactText = (TextView) convertView.findViewById(R.id.last_contact_text);
                 holder.numberCallsText = (TextView) convertView.findViewById(R.id.calls_text);
                 holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);
-                holder.detailsButton = (Button) convertView.findViewById(R.id.contactDetailsDropDownDetailsButton);
+
+//                holder.detailsButton = (Button) convertView.findViewById(R.id.contactDetailsDropDownDetailsButton);
+
                 holder.moreButton = (ImageView) convertView.findViewById(R.id.ivMoreButtonContactsDetailsDropDown);
+
                 holder.salesLeadStatus = (TextView) convertView.findViewById(R.id.status_text);
                 holder.statusRow = (RelativeLayout) convertView.findViewById(R.id.status_row);
                 holder.contactDetailsDopDownLayout.setVisibility(GONE);
@@ -165,16 +176,40 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
                 }
             });
             holder.call_icon.setTag(mContacts.get(position).getPhoneOne());
-//              Deletes the contact, queries db and updates local list plus nitifies adpater
+//              Deletes the contact, queries db and updates local list plus notifies adapter
             holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    contact.delete();
+                    //Flushing Notes Of lead
+                    List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(contact.getId());
+                    if(allNotesOfThisContact!=null && allNotesOfThisContact.size()>0){
+                        for(LSNote oneNote : allNotesOfThisContact){
+                            oneNote.delete();
+                        }
+                    }
+                    //Flushing Followup Of lead
+                    List<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getFollowupsByContactId(contact.getId());
+                    if(allFollowupsOfThisContact!=null && allFollowupsOfThisContact.size()>0){
+                        for(TempFollowUp oneFollowup : allFollowupsOfThisContact){
+                            oneFollowup.delete();
+                        }
+                    }
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_DELETE_REQUIRE);
+                    contact.save();
+//                    contact.delete();
+                    DataSenderNew dataSenderNew = new DataSenderNew(mContext);
+                    dataSenderNew.execute();
                     setList(LSContact.getContactsByLeadSalesStatus(contactLeadType));
                     Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
+                    LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
+                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+//                    bus.register(mCallEvent);
+                    bus.post(mCallEvent);
                 }
             });
-            holder.detailsButton.setOnClickListener(new DetailsButtonClickListener(contact));
+
+//            holder.detailsButton.setOnClickListener(new DetailsButtonClickListener(contact));
+
             final View moreView = holder.moreButton;
             holder.moreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -212,6 +247,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
                     popupMenu.show();
                 }
             });
+
         if (contact.getContactType() != null) {
             if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                 if (contact.getContactSalesStatus() != null && !contact.getContactSalesStatus().equals("")) {
@@ -302,7 +338,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
         RelativeLayout user_details_wrapper;
         ImageButton deleteButton;
         LinearLayout contactDetailsDopDownLayout;
-        Button detailsButton;
+//        Button detailsButton;
         ImageView moreButton;
         TextView salesLeadStatus;
         RelativeLayout statusRow;
@@ -322,36 +358,26 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
 
         @Override
         public void onClick(View v) {
-
-            if (noteDetails == null) {
-                noteDetails = detailsLayout;
-                noteDetails.setVisibility(View.VISIBLE);
-            }
-            if (noteDetails.getVisibility() == View.VISIBLE) {
-                noteDetails.setVisibility(GONE);
-                noteDetails = detailsLayout;
-                noteDetails.setVisibility(View.VISIBLE);
-            } else {
-                noteDetails.setVisibility(GONE);
-                detailsLayout.setVisibility(View.VISIBLE);
-                noteDetails = detailsLayout;
-            }
-        }
-    }
-
-    private class DetailsButtonClickListener implements View.OnClickListener {
-        LSContact contact;
-
-        public DetailsButtonClickListener(LSContact contact) {
-            this.contact = contact;
-        }
-
-        @Override
-        public void onClick(View view) {
             Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
             long contactId = contact.getId();
             detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
             mContext.startActivity(detailsActivityIntent);
         }
     }
+
+//    private class DetailsButtonClickListener implements View.OnClickListener {
+//        LSContact contact;
+//
+//        public DetailsButtonClickListener(LSContact contact) {
+//            this.contact = contact;
+//        }
+//
+//        @Override
+//        public void onClick(View view) {
+//            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
+//            long contactId = contact.getId();
+//            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
+//            mContext.startActivity(detailsActivityIntent);
+//        }
+//    }
 }

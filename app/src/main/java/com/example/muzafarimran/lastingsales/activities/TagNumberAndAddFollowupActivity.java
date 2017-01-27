@@ -30,6 +30,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
+import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -40,7 +41,7 @@ import java.util.Calendar;
 
 import de.halfbit.tinybus.TinyBus;
 
-
+@Deprecated
 public class TagNumberAndAddFollowupActivity extends Activity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     //    Constants
@@ -317,7 +318,6 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                     setAlarm(getApplicationContext(), tempFollowUp);
                                 }
                                 finish();
-
                             } else {
                                 Toast.makeText(TagNumberAndAddFollowupActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
                             }
@@ -379,7 +379,6 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation && !editingMode) {
-                        //modified by ibtisam
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);
@@ -743,6 +742,8 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
                         tempFollowUp.save();
                         setAlarm(getApplicationContext(), tempFollowUp);
+                        DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
+                        dataSenderNew.execute();
                     }
                     finish();
                 }

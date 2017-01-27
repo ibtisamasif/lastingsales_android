@@ -14,7 +14,7 @@ import com.example.muzafarimran.lastingsales.fragments.NotesByContactsFragment;
 /**
  * Created by ibtisam on 12/16/2016.
  */
-
+@Deprecated
 public class NotesByContactsActivity2 extends AppCompatActivity {
     public static final String KEY_CONTACT_ID = "contact_id";
     Toolbar toolbar;

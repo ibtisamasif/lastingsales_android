@@ -29,10 +29,11 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter{
         TabFragment fragment = null;
         switch (position) {
             case 0:
-                fragment = IndividualCallLogsFragment.newInstance(0 , IndividualCallLogsFragment.TAG , number);
+                fragment = IndividualContactDetailsFragment.newInstance(0, IndividualContactDetailsFragment.TAG , number);
+
                 break;
             case 1:
-                fragment = IndividualContactDetailsFragment.newInstance(1, IndividualContactDetailsFragment.TAG , number);
+                fragment = IndividualCallLogsFragment.newInstance(1 , IndividualCallLogsFragment.TAG , number);
                 break;
             case 2:
                 fragment = FollowupInContactDetailsFragment.newInstance(2 , FollowupInContactDetailsFragment.TAG , number);
@@ -53,9 +54,9 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter{
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Calls";
-            case 1:
                 return "Details";
+            case 1:
+                return "Calls";
             case 2:
                 return "Followups";
             case 3:

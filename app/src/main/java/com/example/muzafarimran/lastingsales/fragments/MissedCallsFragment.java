@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.MissedCallsAdapter;
+import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 
 import java.util.ArrayList;
@@ -78,6 +78,8 @@ public class MissedCallsFragment extends SearchFragment {
     public void onCallReceivedEventModel(MissedCallEventModel event) {
         Log.d(TAG, "onMissedCallEvent() called with: event = [" + event + "]");
         if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
+//            List<LSCall> missedCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_MISSED);
+//            setList(missedCalls);
             updateList();
         }
     }
@@ -85,6 +87,8 @@ public class MissedCallsFragment extends SearchFragment {
     @Override
     public void onResume() {
         super.onResume();
+//        List<LSCall> missedCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_MISSED);
+//        setList(missedCalls);
        updateList();
     }
 
@@ -99,14 +103,16 @@ public class MissedCallsFragment extends SearchFragment {
 //        List<LSCall> missedCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_MISSED);
         ArrayList<LSCall> uniqueCalls = new ArrayList<>();
         if (unhandledMissedCalls.size() > 0) {
-            for(int counter1=0; counter1<unhandledMissedCalls.size();counter1++) {
+            for(int counter1=0; counter1<unhandledMissedCalls.size(); counter1++) {
                 LSCall oneCall = unhandledMissedCalls.get(counter1);
                 if (isNumberInUniqueCalls(uniqueCalls, oneCall)) {
                     LSCall uniqueCallObject = getUniqueCallObject(unhandledMissedCalls, oneCall);
                     if (uniqueCallObject != null) {
                         uniqueCallObject.setCountOfInquiries(uniqueCallObject.getCountOfInquiries()+1);
+                        Log.d(TAG, "updateList: "+uniqueCallObject.getCountOfInquiries());
                     }
                 } else {
+                    Log.d(TAG, "updateList: Unique");
                     oneCall.setCountOfInquiries(1);
                     uniqueCalls.add(oneCall);
                 }
@@ -147,21 +153,26 @@ public class MissedCallsFragment extends SearchFragment {
             if (callFromList.getContact() != null) {
                 if (oneCall.getContact() != null) {
                     if (callFromList.getContact().getPhoneOne().equals(oneCall.getContact().getPhoneOne())) {
+                        Log.d(TAG, "isNumberInUniqueCalls: 1");
                         return true;
                     }
                 } else if (oneCall.getContact() == null) {
                     if (callFromList.getContact().getPhoneOne().equals(oneCall.getContactNumber())) {
+                        Log.d(TAG, "isNumberInUniqueCalls: 2");
                         return true;
                     }
                 }
             } else if (callFromList.getContact() == null) {
                 if (oneCall.getContact() != null) {
                     if (callFromList.getContactNumber().equals(oneCall.getContact().getPhoneOne())) {
+                        Log.d(TAG, "isNumberInUniqueCalls: 3");
                         return true;
                     }
-                }else if (oneCall.getContact() == null) {
-                    callFromList.getContactNumber().equals(oneCall.getContactNumber());
-                    return true;
+                } else if (oneCall.getContact() == null) {
+                    if (callFromList.getContactNumber().equals(oneCall.getContactNumber())) {
+                        Log.d(TAG, "isNumberInUniqueCalls: 4");
+                        return true;
+                    }
                 }
             }
         }

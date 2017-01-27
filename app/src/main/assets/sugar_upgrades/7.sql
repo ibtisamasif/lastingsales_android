@@ -1,0 +1,1 @@
+alter table TEMP_FOLLOW_UP add SYNC_STATUS TEXT;

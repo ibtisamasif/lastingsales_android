@@ -19,10 +19,12 @@ public class LSCall extends SugarRecord {
     public static final String CALL_TYPE_INCOMING = "incoming";
     @Ignore
     public static final String CALL_TYPE_MISSED = "missed";
+
     @Ignore
     public static final int INQUIRY_HANDLED = 1;
     @Ignore
     public static final int INQUIRY_NOT_HANDLED = 0;
+
     private String contactNumber;
     private LSContact contact;
     private String type;
@@ -33,6 +35,7 @@ public class LSCall extends SugarRecord {
     private int inquiryHandledState;
     @Ignore
     private int countOfInquiries;
+    private String syncStatus;
 
     public LSCall() {
     }
@@ -73,6 +76,11 @@ public class LSCall extends SugarRecord {
 
     public static List<LSCall> getCallsByType(String type) {
         return LSCall.find(LSCall.class, "type = ? ", type);
+    }
+
+    public static List<LSCall> getCallsByInquiryHandledStateInDescendingOrder(int state) {
+        ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("inquiry_handled_state").eq(state)).orderBy("begin_time DESC").list();
+        return allCalls;
     }
 
     public static List<LSCall> getCallsByTypeInDescendingOrder(String type) {
@@ -188,5 +196,12 @@ public class LSCall extends SugarRecord {
 
     public void setCountOfInquiries(int countOfInquiries) {
         this.countOfInquiries = countOfInquiries;
+    }
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
     }
 }

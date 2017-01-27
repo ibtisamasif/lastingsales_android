@@ -133,7 +133,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         holder.numberDetailTextView.setText(number);
         holder.call_name_time.setTag(position);
         String timeAgoString = PhoneNumberAndCallUtils.getTimeAgo(call.getBeginTime(), mContext);
-        holder.time.setText(timeAgoString);
+        holder.time.setText(""+call.getDuration());
         holder.call_icon.setTag(mCalls.get(position).getContactNumber());
         holder.bTag.setOnClickListener(new TagAContactClickListener(number));
         switch (call.getType()) {

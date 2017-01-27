@@ -14,16 +14,15 @@ import com.example.muzafarimran.lastingsales.activities.EditNoteActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class NotesListAdapter2 extends BaseAdapter {
-    private ArrayList<LSNote> notesList;
+    private List<LSNote> notesList;
     private Context mContext;
     private LayoutInflater mInflater;
 
-    public NotesListAdapter2(Context mContext,  ArrayList<LSNote> notesList) {
+    public NotesListAdapter2(Context mContext,  List<LSNote> notesList) {
         this.notesList = notesList;
         this.mContext = mContext;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -65,7 +64,7 @@ public class NotesListAdapter2 extends BaseAdapter {
     }
 
     public void setList(List<LSNote> allNotes) {
-        notesList = (ArrayList<LSNote>) allNotes;
+        notesList = allNotes;
         notifyDataSetChanged();
     }
 

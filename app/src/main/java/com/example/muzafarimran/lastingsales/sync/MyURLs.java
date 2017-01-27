@@ -6,8 +6,12 @@ public class MyURLs {
     public static String LOGIN_URL = "http://staging.lastingsales.com/api/v1/auth/login";
     public static String IMAGE_URL = "http://staging.lastingsales.com/";
     public static String ADD_CONTACT = "http://staging.lastingsales.com/api/v1/lead";
-    public static String ADD_NOTE = "http://staging.lastingsales.com/api/v1/lead/";
-//    public static String ADD_NOTE = "http://staging.lastingsales.com/api/v1/lead/145/notes";
+    public static String ADD_FOLLOWUP = "http://staging.lastingsales.com/api/v1/lead/"; //SampleFormatComplete ADD_FOLLOWUP = "http://staging.lastingsales.com/api/v1/lead/85/followup";
+    public static String ADD_NOTE = "http://staging.lastingsales.com/api/v1/lead/"; //SampleFormatComplete ADD_NOTE = "http://staging.lastingsales.com/api/v1/lead/145/notes";
+    public static String ADD_CALL = "http://staging.lastingsales.com/api/v1/call";
+    public static String DELETE_CONTACT = "http://staging.lastingsales.com/api/v1/lead/";
+
+
 
 //    public static String SOCKET_REQUEST_URL = "http://vivid-intern.cloudapp.net/lastingsales-portal/public/api/socket";
     public static String SOCKET_REQUEST_URL = "http://login.lastingsales.com/api/socket";

@@ -1,8 +1,6 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,33 +12,29 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.AddNoteActivity;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.Note;
+import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import java.util.ArrayList;
 
 import de.halfbit.tinybus.TinyBus;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddNoteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-
 public class AddNoteFragment extends Fragment {
-
-
     public static final String TAG = "AddNoteFragment";
     public static final int CONTACT_REQUEST_CODE = 99;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String NUMBER = "number";
     public static ArrayList<Note> allNotes;
     TextView tvContactName;
     EditText etContactNote;
@@ -50,8 +44,7 @@ public class AddNoteFragment extends Fragment {
     ImageView imageView;
     ListView lvNotesList;
     LSContact selectedContact;
-    private String mParam1;
-    private String mParam2;
+    private String number;
 
 
     public AddNoteFragment() {
@@ -62,16 +55,14 @@ public class AddNoteFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param number Parameter 1.
      * @return A new instance of fragment NotesListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddNoteFragment newInstance(String param1, String param2) {
+    public static AddNoteFragment newInstance(String number) {
         AddNoteFragment fragment = new AddNoteFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(NUMBER, number);
         fragment.setArguments(args);
         return fragment;
     }
@@ -93,8 +84,7 @@ public class AddNoteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            number = getArguments().getString(NUMBER);
         }
         setRetainInstance(true);
 
@@ -108,29 +98,29 @@ public class AddNoteFragment extends Fragment {
         etContactNote = (EditText) view.findViewById(R.id.contact_note_add_note);
         bOk = (Button) view.findViewById(R.id.ok_add_note);
         bCancel = (Button) view.findViewById(R.id.cancel_add_note);
-        setUpListners();
+        String contactNumber = getArguments().getString(AddNoteActivity.ADD_NOTE_CONTACT_NUMBER);
+        setUpListners(contactNumber);
         return view;
     }
 
-    private void setUpListners() {
+    private void setUpListners(final String contactNumber) {
         bOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                oneContact = LSContact.getContactFromNumber(contactNumber);
                 if (oneContact != null) {
                     LSNote note = new LSNote();
                     note.setContactOfNote(oneContact);
                     note.setNoteText(etContactNote.getText().toString());
+                    note.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
                     note.save();
-                    Intent data = new Intent();
-                    String text = note.getId() + "";
-                    data.setData(Uri.parse(text));
-                    getActivity().setResult(RESULT_OK, data);
                     NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
                     TinyBus bus = TinyBus.from(getActivity().getApplicationContext());
-                    bus.register(mNoteAdded);  //crashed here check it later fixed but could check thoroughly
                     bus.post(mNoteAdded);
-                    Log.d("AddNoteEventGenerated", "onNoteAdded() called  ");
+                    Log.d(TAG, "onNoteAdded() called");
                     getActivity().finish();
+                    DataSenderNew dataSenderNew = new DataSenderNew(getActivity());
+                    dataSenderNew.execute();
                 }
             }
         });
@@ -142,12 +132,11 @@ public class AddNoteFragment extends Fragment {
             }
         });
     }
-
-    public void setContact(String returnedResult) {
-        if (returnedResult != null) {
-            Toast.makeText(getActivity(), "" + returnedResult, Toast.LENGTH_SHORT).show();
-            oneContact = LSContact.getSalesAndColleguesContacts().get(Integer.parseInt(returnedResult));
-            tvContactName.setText(oneContact.getContactName());
-        }
-    }
+//    public void setContact(String returnedResult) {
+//        if (returnedResult != null) {
+//            Toast.makeText(getActivity(), "" + returnedResult, Toast.LENGTH_SHORT).show();
+//            oneContact = LSContact.getSalesAndColleguesContacts().get(Integer.parseInt(returnedResult));
+//            tvContactName.setText(oneContact.getContactName());
+//        }
+//    }
 }

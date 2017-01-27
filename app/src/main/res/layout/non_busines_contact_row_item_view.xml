@@ -114,23 +114,23 @@
                 android:orientation="horizontal"
                 >
 
-                <Button
-                    android:id="@+id/bColleagueNonbusinessItem"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="27dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/btn_primary"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:radius="5dip"
-                    android:text="@string/colleague_capital"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    />
+                <!--<Button-->
+                    <!--android:id="@+id/bColleagueNonbusinessItem"-->
+                    <!--style="?android:attr/borderlessButtonStyle"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="27dp"-->
+                    <!--android:layout_marginStart="10dp"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:background="@drawable/btn_primary"-->
+                    <!--android:paddingBottom="5dp"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:paddingTop="5dp"-->
+                    <!--android:radius="5dip"-->
+                    <!--android:text="@string/colleague_capital"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:textSize="12sp"-->
+                    <!--/>-->
 
                 <Button
                     android:id="@+id/bSalesNonbusinesstem"

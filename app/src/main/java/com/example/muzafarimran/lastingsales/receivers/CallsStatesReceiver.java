@@ -10,6 +10,8 @@ import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.service.PopupUIService;
+import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.CallEndNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
@@ -89,8 +91,10 @@ public class CallsStatesReceiver extends CallReceiver {
             tempContact.save();
             tempCall.setContact(tempContact);
         }
+        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
         tempCall.save();
-
+        DataSenderNew dataSenderNew = new DataSenderNew(ctx);
+        dataSenderNew.execute();
         IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         bus.post(mCallEvent);
@@ -141,7 +145,10 @@ public class CallsStatesReceiver extends CallReceiver {
             tempContact.save();
             tempCall.setContact(tempContact);
         }
+        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
         tempCall.save();
+        DataSenderNew dataSenderNew = new DataSenderNew(ctx);
+        dataSenderNew.execute();
         OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         try {
@@ -156,6 +163,7 @@ public class CallsStatesReceiver extends CallReceiver {
     @Override
     protected void onMissedCall(Context ctx, String number, Date start) {
         Toast.makeText(ctx, "Missed Call Detected", Toast.LENGTH_SHORT).show();
+        showTagNumberPopupIfNeeded(ctx, number);
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         LSCall tempCall = new LSCall();
         tempCall.setContactNumber(internationalNumber);
@@ -174,7 +182,11 @@ public class CallsStatesReceiver extends CallReceiver {
         tempCall.setType(LSCall.CALL_TYPE_MISSED);
         tempCall.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
         tempCall.setBeginTime(start.getTime());
+        tempCall.setDuration(0L);
+        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
         tempCall.save();
+        DataSenderNew dataSenderNew = new DataSenderNew(ctx);
+        dataSenderNew.execute();
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         bus.post(mCallEvent);

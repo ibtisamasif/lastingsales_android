@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -29,7 +31,9 @@ public class IndividualContactDetailsFragment extends TabFragment {
     MaterialSearchView searchView;
     private TinyBus bus;
     private String number = "";
-    private Spinner leadStatusSpinner, customTagSpinner1 , customTagSpinner2;
+    private Spinner leadStatusSpinner, customTagSpinner1, customTagSpinner2;
+    private Button bSave;
+    private LSContact mContact;
 
     public static IndividualContactDetailsFragment newInstance(int page, String title, String number) {
         IndividualContactDetailsFragment fragmentFirst = new IndividualContactDetailsFragment();
@@ -63,18 +67,51 @@ public class IndividualContactDetailsFragment extends TabFragment {
         super.onStop();
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         Bundle bundle = this.getArguments();
         number = bundle.getString("someNumber");
+        mContact = LSContact.getContactFromNumber(number);
+        if (mContact.getContactType() != null) {
+            if (mContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+                if (mContact.getContactSalesStatus() != null && !mContact.getContactSalesStatus().equals("")) {
+                    switch (mContact.getContactSalesStatus()) {
+                        case LSContact.SALES_STATUS_PROSTPECT:
+                            leadStatusSpinner.setSelection(0);
+                            break;
+                        case LSContact.SALES_STATUS_LEAD:
+                            leadStatusSpinner.setSelection(1);
+                            break;
+                        case LSContact.SALES_STATUS_CLOSED_WON:
+                            leadStatusSpinner.setSelection(2);
+                            break;
+                        case LSContact.SALES_STATUS_CLOSED_LOST:
+                            leadStatusSpinner.setSelection(3);
+                            break;
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Bundle bundle = this.getArguments();
+        number = bundle.getString("someNumber");
         View view = inflater.inflate(R.layout.contact_profile_details_fragment, container, false);
+        bSave = (Button) view.findViewById(R.id.contactDetailsSaveButton);
+        bSave.setVisibility(View.GONE);
+//        bSave.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mContact = LSContact.getContactFromNumber(number);
+//                mContact.save();
+//                Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+//                getActivity().finish();
+//            }
+//        });
         addItemsOnSpinnerLeadStatus(view);
         addItemsOnSpinner1(view);
         addItemsOnSpinner2(view);
@@ -82,24 +119,31 @@ public class IndividualContactDetailsFragment extends TabFragment {
         addListenerOnSpinner1ItemSelection(view);
         addListenerOnSpinner2ItemSelection(view);
         setHasOptionsMenu(true);
+//        edEmailLabel.setSelected(false);
+//        edEmailLabel.clearFocus();
+//        edEmailLabel.setFocusableInTouchMode(false);
+//        edEmailLabel.setFocusable(false);
+//        edEmailLabel.setFocusableInTouchMode(true);
+//        edEmailLabel.setFocusable(true);
+//        // hide virtual keyboard
+//        InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.hideSoftInputFromWindow(edEmailLabel.getWindowToken(), 0);
         return view;
     }
 
     public void addItemsOnSpinnerLeadStatus(View view) {
-
         leadStatusSpinner = (Spinner) view.findViewById(R.id.lead_status_spinner);
         List<String> list = new ArrayList<String>();
         list.add("Prospect");
         list.add("Leads");
-        list.add("Closed");
-        list.add("Won");
+        list.add("Close Won");
+        list.add("Closed Lost");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         leadStatusSpinner.setAdapter(dataAdapter);
     }
 
     public void addItemsOnSpinner1(View view) {
-
         customTagSpinner1 = (Spinner) view.findViewById(R.id.custom_tag_spinner1);
         List<String> list = new ArrayList<String>();
         list.add("Residential");
@@ -111,7 +155,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
     }
 
     public void addItemsOnSpinner2(View view) {
-
         customTagSpinner2 = (Spinner) view.findViewById(R.id.custom_tag_spinner2);
         List<String> list = new ArrayList<String>();
         list.add("Honda City");
@@ -122,20 +165,17 @@ public class IndividualContactDetailsFragment extends TabFragment {
         customTagSpinner2.setAdapter(dataAdapter);
     }
 
-    public void addListenerOnSpinnerLeadStatusItemSelection(View view){
-
+    public void addListenerOnSpinnerLeadStatusItemSelection(View view) {
         leadStatusSpinner = (Spinner) view.findViewById(R.id.lead_status_spinner);
         leadStatusSpinner.setOnItemSelectedListener(new CustomSpinnerLeadStatusOnItemSelectedListener());
     }
 
-    public void addListenerOnSpinner1ItemSelection(View view){
-
+    public void addListenerOnSpinner1ItemSelection(View view) {
         customTagSpinner1 = (Spinner) view.findViewById(R.id.custom_tag_spinner1);
         customTagSpinner1.setOnItemSelectedListener(new CustomSpinner1OnItemSelectedListener());
     }
 
-    public void addListenerOnSpinner2ItemSelection(View view){
-
+    public void addListenerOnSpinner2ItemSelection(View view) {
         customTagSpinner2 = (Spinner) view.findViewById(R.id.custom_tag_spinner2);
         customTagSpinner2.setOnItemSelectedListener(new CustomSpinner2OnItemSelectedListener());
     }
@@ -156,18 +196,37 @@ public class IndividualContactDetailsFragment extends TabFragment {
         }
         return super.onOptionsItemSelected(item);
     }
-    private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
+    private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-//            Toast.makeText(parent.getContext(), "Status : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
+            switch (pos) {
+                case 0:
+                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                    mContact.save();
+//                    Toast.makeText(parent.getContext(), "Status Changed to Prospect", Toast.LENGTH_SHORT).show();
+                    break;
+                case 1:
+                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                    mContact.save();
+//                    Toast.makeText(parent.getContext(), "Status Changed to Lead", Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+                    mContact.save();
+//                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
+                    break;
+                case 3:
+                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+                    mContact.save();
+//                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> arg0) {
             // TODO Auto-generated method stub
-
         }
-
     }
 
     private class CustomSpinner1OnItemSelectedListener implements AdapterView.OnItemSelectedListener {
@@ -179,10 +238,9 @@ public class IndividualContactDetailsFragment extends TabFragment {
         @Override
         public void onNothingSelected(AdapterView<?> arg0) {
             // TODO Auto-generated method stub
-
         }
-
     }
+
     private class CustomSpinner2OnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -192,8 +250,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
         @Override
         public void onNothingSelected(AdapterView<?> arg0) {
             // TODO Auto-generated method stub
-
         }
-
     }
 }

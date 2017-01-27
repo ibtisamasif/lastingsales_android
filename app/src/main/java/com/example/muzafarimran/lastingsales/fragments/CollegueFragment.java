@@ -30,6 +30,7 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * A simple {@link Fragment} subclass.
  */
+@Deprecated
 public class CollegueFragment extends TabFragment {
 
     private static final String TAG = "ColleagueContactFrag";

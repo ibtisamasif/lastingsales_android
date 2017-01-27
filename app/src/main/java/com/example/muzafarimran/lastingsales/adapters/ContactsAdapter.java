@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
+import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
             holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
             holder.bSales = (Button) convertView.findViewById(R.id.bSalesNonbusinesstem);
-            holder.bColleague = (Button) convertView.findViewById(R.id.bColleagueNonbusinessItem);
+//            holder.bColleague = (Button) convertView.findViewById(R.id.bColleagueNonbusinessItem);
             holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);
             holder.contactDetailsDopDownLayout.setVisibility(GONE);
             holder.call_icon.setOnClickListener(this.callClickListener);
@@ -132,14 +132,14 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         } else {
             holder.deleteButton.setVisibility(View.VISIBLE);
         }
-        /*holder.user_details_wrapper.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.user_details_wrapper.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 deleteFlow = true;
                 setList(LSContact.getContactsByType(contactType));
                 return true;
             }
-        });*/
+        });
         holder.call_icon.setTag(mContacts.get(position).getPhoneOne());
 //              Deletes the contact, queries db and updates local list plus nitifies adpater
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -153,23 +153,22 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         holder.bSales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                Intent myIntent = new Intent(mContext, AddLeadActivity.class);
+                myIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_CONVERT_NON_BUSINESS);
+                myIntent.putExtra(AddLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
                 mContext.startActivity(myIntent);
             }
         });
-        holder.bColleague.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
-                mContext.startActivity(myIntent);
-            }
-        });
+//        holder.bColleague.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
+//                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+//                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
+//                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+//                mContext.startActivity(myIntent);
+//            }
+//        });
 
         return convertView;
     }
@@ -245,7 +244,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         ImageButton deleteButton;
         LinearLayout contactDetailsDopDownLayout;
         Button bSales;
-        Button bColleague;
+//        Button bColleague;
     }
 
     /*

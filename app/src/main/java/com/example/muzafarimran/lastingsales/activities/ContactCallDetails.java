@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.IndividualConatactCallAdapter;
+import com.example.muzafarimran.lastingsales.adapters.IndividualContactCallAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.orm.query.Condition;
@@ -77,7 +77,7 @@ public class ContactCallDetails extends AppCompatActivity {
         }
         ((TextView) (this.findViewById(R.id.contact_name_ind))).setText(contactName);
         ListView listview = (ListView) this.findViewById(R.id.calls_list);
-        IndividualConatactCallAdapter indadapter = new IndividualConatactCallAdapter(ContactCallDetails.this, allCalls);
+        IndividualContactCallAdapter indadapter = new IndividualContactCallAdapter(ContactCallDetails.this, allCalls);
         listview.setAdapter(indadapter);
     }
 

@@ -2,6 +2,8 @@ package com.example.muzafarimran.lastingsales.providers.models;
 
 import com.orm.SugarRecord;
 
+import java.util.List;
+
 /**
  * Created by ahmad on 01-Nov-16.
  */
@@ -10,6 +12,7 @@ public class TempFollowUp extends SugarRecord {
     private String title;
     private Long dateTimeForFollowup;
     private LSContact contact;
+    private String syncStatus;
 
     public TempFollowUp() {
     }
@@ -18,6 +21,10 @@ public class TempFollowUp extends SugarRecord {
         this.title = title;
         this.dateTimeForFollowup = dateTimeForFollowup;
         this.contact = contactID;
+    }
+
+    public static List<TempFollowUp> getFollowupsByContactId(Long id) {
+        return TempFollowUp.find(TempFollowUp.class, "contact = ? ", id + "");
     }
 
     public String getTitle() {
@@ -42,5 +49,13 @@ public class TempFollowUp extends SugarRecord {
 
     public void setContact(LSContact contactID) {
         this.contact = contactID;
+    }
+
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
     }
 }

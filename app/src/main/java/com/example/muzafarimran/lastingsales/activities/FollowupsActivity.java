@@ -15,6 +15,8 @@ import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.ArrayList;
 
+//The one in agents profile
+@Deprecated
 public class FollowupsActivity extends AppCompatActivity {
     static ArrayList<TempFollowUp> allFollowups;
     ListView listView = null;

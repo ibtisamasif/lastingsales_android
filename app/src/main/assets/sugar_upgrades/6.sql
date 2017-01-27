@@ -1,0 +1,1 @@
+alter table LS_CALL add SYNC_STATUS TEXT;

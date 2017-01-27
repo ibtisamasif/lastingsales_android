@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.IndividualConatactCallAdapter;
+import com.example.muzafarimran.lastingsales.adapters.IndividualContactCallAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.orm.query.Condition;
@@ -27,7 +27,7 @@ public class IndividualCallLogsFragment extends TabFragment{
 
     public static final String TAG = "IndividualCallLogsFragment";
     ListView listView = null;
-    IndividualConatactCallAdapter individualConatactCallAdapter;
+    IndividualContactCallAdapter individualContactCallAdapter;
     MaterialSearchView searchView;
     private TinyBus bus;
     private String number = "";
@@ -43,8 +43,8 @@ public class IndividualCallLogsFragment extends TabFragment{
     }
 
     public void setList(List<LSCall> calls) {
-        if (individualConatactCallAdapter != null) {
-            individualConatactCallAdapter.setList(calls);
+        if (individualContactCallAdapter != null) {
+            individualContactCallAdapter.setList(calls);
         }
     }
 
@@ -55,7 +55,7 @@ public class IndividualCallLogsFragment extends TabFragment{
         Bundle bundle = this.getArguments();
         number = bundle.getString("someNumber");
         ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();
-        individualConatactCallAdapter = new IndividualConatactCallAdapter(getActivity(), allCalls);
+        individualContactCallAdapter = new IndividualContactCallAdapter(getActivity(), allCalls);
         setHasOptionsMenu(true);
     }
 
@@ -87,7 +87,7 @@ public class IndividualCallLogsFragment extends TabFragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.contact_call_details_fragment, container, false);
         listView = (ListView) view.findViewById(R.id.calls_list);
-        listView.setAdapter(individualConatactCallAdapter);
+        listView.setAdapter(individualContactCallAdapter);
         setHasOptionsMenu(true);
         return view;
     }
