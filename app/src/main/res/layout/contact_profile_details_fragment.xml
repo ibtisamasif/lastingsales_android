@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
 
     <LinearLayout
@@ -11,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/user_call_group_wrapper"
-        android:background="@drawable/contact_detail_drop_down_bg"
         android:orientation="vertical"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
@@ -37,7 +37,7 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
-                    android:src="@drawable/ic_plain_status_white"/>
+                    android:src="@drawable/add_contact_email_field_icon"/>
 
 
                 <TextView
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Status"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12sp"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/lead_icon"
@@ -81,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Custom Tag"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12sp"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/custom_icon1"
@@ -117,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Custom Tag"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12sp"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/custom_icon2"

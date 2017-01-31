@@ -144,37 +144,37 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
         if (allProspects != null) {
             if (allProspects.size() > 0) {
-                tabs.getTabAt(0).setText("Prospects" + "(" + allProspects.size() + ")");
+                tabs.getTabAt(0).setText("Prospects" + " (" + allProspects.size() + ")");
             } else {
-                tabs.getTabAt(0).setText("Prospects" + "(" + 0 + ")");
+                tabs.getTabAt(0).setText("Prospects" + " (" + 0 + ")");
             }
         }
         if (allLeads != null) {
             if (allLeads.size() > 0) {
-                tabs.getTabAt(1).setText("Leads" + "(" + allLeads.size() + ")");
+                tabs.getTabAt(1).setText("Leads" + " (" + allLeads.size() + ")");
             } else {
-                tabs.getTabAt(1).setText("Leads" + "(" + 0 + ")");
+                tabs.getTabAt(1).setText("Leads" + " (" + 0 + ")");
             }
         }
         if (allWon != null) {
             if (allWon.size() > 0) {
-                tabs.getTabAt(2).setText("Won" + "(" + allWon.size() + ")");
+                tabs.getTabAt(2).setText("Won" + " (" + allWon.size() + ")");
             } else {
-                tabs.getTabAt(2).setText("Won" + "(" + 0 + ")");
+                tabs.getTabAt(2).setText("Won" + " (" + 0 + ")");
             }
         }
         if (allLost != null) {
             if (allLost.size() > 0) {
-                tabs.getTabAt(3).setText("Lost" + "(" + allLost.size() + ")");
+                tabs.getTabAt(3).setText("Lost" + " (" + allLost.size() + ")");
             } else {
-                tabs.getTabAt(3).setText("Lost" + "(" + 0 + ")");
+                tabs.getTabAt(3).setText("Lost" + " (" + 0 + ")");
             }
         }
         if (allInactiveLeads != null) {
             if (allInactiveLeads.size() > 0) {
-                tabs.getTabAt(4).setText("InActive" + "(" + allInactiveLeads.size() + ")");
+                tabs.getTabAt(4).setText("InActive" + " (" + allInactiveLeads.size() + ")");
             } else {
-                tabs.getTabAt(4).setText("InActive" + "(" + 0 + ")");
+                tabs.getTabAt(4).setText("InActive" + " (" + 0 + ")");
             }
         }
     }

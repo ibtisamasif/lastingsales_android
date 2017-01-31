@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
@@ -98,7 +99,6 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
             holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
             this.showcalldetailslistener = new ShowDetailsDropDown(contact, holder.contactCallDetails);
             holder.bSales = (Button) convertView.findViewById(R.id.bSalesUtaggedItem);
-            holder.bColleague = (Button) convertView.findViewById(R.id.bColleagueUntaggedItem);
             holder.bNonbusiness = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
 
             holder.call_icon.setOnClickListener(this.callClickListener);
@@ -130,20 +130,9 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
         holder.bSales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_UNTAGGED_CONTACT);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
-                mContext.startActivity(myIntent);
-            }
-        });
-        holder.bColleague.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_UNTAGGED_CONTACT);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
-                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                Intent myIntent = new Intent(mContext, AddLeadActivity.class);
+                myIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+                myIntent.putExtra(AddLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, contact.getPhoneOne() + "");
                 mContext.startActivity(myIntent);
             }
         });
@@ -231,7 +220,6 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
         TextView tvConnections;
         TextView tvLastContact;
         Button bNonbusiness;
-        Button bColleague;
         Button bSales;
     }
 

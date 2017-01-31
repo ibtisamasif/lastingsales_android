@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     final int TAB_COUNT = 3;
-    private String tabTitles[] = new String[]{"Home", "Inquiries", "Sales"};
+    private String tabTitles[] = new String[]{"Inquiries", "Home", "Sales"};
     private List<Fragment> mFragments = new ArrayList<>();
     private Context context;
 
@@ -31,8 +31,8 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     private void init() {
-        mFragments.add(new HomeFragment());
         mFragments.add(new MissedCallsFragment());
+        mFragments.add(new HomeFragment());
         mFragments.add(new LeadTabsFragment());
     }
 

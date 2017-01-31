@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.fragments.FollowupInContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.IndividualCallLogsFragment;
 import com.example.muzafarimran.lastingsales.fragments.IndividualContactDetailsFragment;
-import com.example.muzafarimran.lastingsales.fragments.NotesByContactsFragment;
+import com.example.muzafarimran.lastingsales.fragments.NotesFragmentNew;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
 /**
@@ -16,7 +16,6 @@ import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
 public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter{
     final int TAB_COUNT = 4;
-    private String tabTitles[] = new String[]{"Logs", "Details", "Followup" , "Notes"};
     private String number;
 
     public ContactDetailsFragmentPagerAdapter(FragmentManager fm , String number) {
@@ -39,7 +38,7 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter{
                 fragment = FollowupInContactDetailsFragment.newInstance(2 , FollowupInContactDetailsFragment.TAG , number);
                 break;
             case 3:
-                fragment = NotesByContactsFragment.newInstance(3 , NotesByContactsFragment.TAG , number);
+                fragment = NotesFragmentNew.newInstance(3 , NotesFragmentNew.TAG , number);
                 break;
         }
         return fragment;
@@ -58,7 +57,7 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter{
             case 1:
                 return "Calls";
             case 2:
-                return "Followups";
+                return "Followup";
             case 3:
                 return "Notes";
             default:

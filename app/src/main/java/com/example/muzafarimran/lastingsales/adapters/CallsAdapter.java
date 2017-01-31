@@ -156,7 +156,6 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
         TextView time;
         ImageView callTypeIcon;
         ImageView call_icon;
-        ImageView missed_call_icon;
         RelativeLayout call_name_time;
         RelativeLayout contactCallDetails;
         TextView numberDetailTextView;

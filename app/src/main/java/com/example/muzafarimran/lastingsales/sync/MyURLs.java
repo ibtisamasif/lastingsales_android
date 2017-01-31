@@ -10,8 +10,8 @@ public class MyURLs {
     public static String ADD_NOTE = "http://staging.lastingsales.com/api/v1/lead/"; //SampleFormatComplete ADD_NOTE = "http://staging.lastingsales.com/api/v1/lead/145/notes";
     public static String ADD_CALL = "http://staging.lastingsales.com/api/v1/call";
     public static String DELETE_CONTACT = "http://staging.lastingsales.com/api/v1/lead/";
-
-
+    public static String UPDATE_CONTACT = "http://staging.lastingsales.com/api/v1/lead/";
+    public static String UPDATE_NOTE = "http://staging.lastingsales.com/api/v1/lead/";
 
 //    public static String SOCKET_REQUEST_URL = "http://vivid-intern.cloudapp.net/lastingsales-portal/public/api/socket";
     public static String SOCKET_REQUEST_URL = "http://login.lastingsales.com/api/socket";

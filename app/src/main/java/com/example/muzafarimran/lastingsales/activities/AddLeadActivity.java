@@ -107,13 +107,11 @@ public class AddLeadActivity extends Activity {
                 etContactEmail.setText("");
             }
             etContactPhone.setText(selectedContact.getPhoneOne());
-            selectedContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
         } else if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
             llEmailAddress.setVisibility(View.GONE);
             tvTitleAddContact.setText(TITLE_TAG_NUMBER);
             phoneNumberFromLastActivity = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
             editingMode = false;
-            phoneNumberFromLastActivity = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
             String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(phoneNumberFromLastActivity);
             String nameFromPhoneBook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), internationalNumber);
             etContactPhone.setText(internationalNumber);
@@ -135,7 +133,6 @@ public class AddLeadActivity extends Activity {
                 etContactName.setText("UNKNOWN");
             }
             etContactPhone.setText(selectedContact.getPhoneOne());
-            selectedContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
         }
 
         bCancel.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +169,7 @@ public class AddLeadActivity extends Activity {
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                                 checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                                 checkContact.save();
                                 finish();
                                 Intent detailsActivityIntent = new Intent(AddLeadActivity.this, ContactDetailsTabActivity.class);
@@ -189,7 +186,7 @@ public class AddLeadActivity extends Activity {
                             tempContact.setPhoneOne(intlNum);
                             tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
                             Intent detailsActivityIntent = new Intent(AddLeadActivity.this, ContactDetailsTabActivity.class);
                             long contactId = tempContact.getId();
@@ -223,7 +220,7 @@ public class AddLeadActivity extends Activity {
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                                 checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                                 checkContact.save();
                                 finish();
                                 Intent detailsActivityIntent = new Intent(AddLeadActivity.this, ContactDetailsTabActivity.class);
@@ -240,7 +237,7 @@ public class AddLeadActivity extends Activity {
                             tempContact.setPhoneOne(intlNum);
                             tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
                             finish();
                             Intent detailsActivityIntent = new Intent(AddLeadActivity.this, ContactDetailsTabActivity.class);
@@ -248,8 +245,6 @@ public class AddLeadActivity extends Activity {
                             detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                             startActivity(detailsActivityIntent);
                             Toast.makeText(AddLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
-                            DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
-                            dataSenderNew.execute();
                         }
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
@@ -268,17 +263,17 @@ public class AddLeadActivity extends Activity {
                         validation = false;
                         etContactPhone.setError("Invalid Number!");
                     }
-                    if (contactEmail.equals("") || contactEmail.length() < 3) {
-                        validation = false;
-                        etContactPhone.setError("Invalid Email!");
-                    }
+//                    if (contactEmail.equals("") || contactEmail.length() < 3) {
+//                        validation = false;
+//                        etContactEmail.setError("Invalid Email!");
+//                    }
                     if (validation && editingMode) {
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
                         LSContact tempContact = selectedContact;
                         tempContact.setContactName(contactName);
                         tempContact.setPhoneOne(intlNum);
                         tempContact.setContactEmail(contactEmail);
-                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                         tempContact.save();
                         finish();
                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
@@ -307,7 +302,7 @@ public class AddLeadActivity extends Activity {
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                                 checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                                 checkContact.save();
                                 finish();
                                 Intent detailsActivityIntent = new Intent(AddLeadActivity.this, ContactDetailsTabActivity.class);
@@ -324,7 +319,7 @@ public class AddLeadActivity extends Activity {
                             tempContact.setPhoneOne(intlNum);
                             tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
                             finish();
                             Intent detailsActivityIntent = new Intent(AddLeadActivity.this, ContactDetailsTabActivity.class);
@@ -332,8 +327,6 @@ public class AddLeadActivity extends Activity {
                             detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                             startActivity(detailsActivityIntent);
                             Toast.makeText(AddLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
-                            DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
-                            dataSenderNew.execute();
                         }
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_CONVERT_NON_BUSINESS)) {
@@ -360,7 +353,7 @@ public class AddLeadActivity extends Activity {
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                                 checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                                 checkContact.save();
                                 finish();
                                 Intent detailsActivityIntent = new Intent(AddLeadActivity.this, ContactDetailsTabActivity.class);
@@ -377,7 +370,7 @@ public class AddLeadActivity extends Activity {
                             tempContact.setPhoneOne(intlNum);
                             tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
                             finish();
                             Intent detailsActivityIntent = new Intent(AddLeadActivity.this, ContactDetailsTabActivity.class);
@@ -385,11 +378,11 @@ public class AddLeadActivity extends Activity {
                             detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                             startActivity(detailsActivityIntent);
                             Toast.makeText(AddLeadActivity.this, "Saved AS LEAD", Toast.LENGTH_SHORT).show();
-                            DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
-                            dataSenderNew.execute();
                         }
                     }
                 }
+                DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
+                dataSenderNew.execute();
             }
         });
     }

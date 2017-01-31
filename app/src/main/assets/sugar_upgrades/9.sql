@@ -1,0 +1,1 @@
+alter table LS_NOTE add SERVER_ID TEXT;

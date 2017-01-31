@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
-import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -31,8 +30,6 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.halfbit.tinybus.TinyBus;
 
 import static android.view.View.GONE;
 
@@ -194,17 +191,13 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
                             oneFollowup.delete();
                         }
                     }
-                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_DELETE_REQUIRE);
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
                     contact.save();
 //                    contact.delete();
                     DataSenderNew dataSenderNew = new DataSenderNew(mContext);
                     dataSenderNew.execute();
                     setList(LSContact.getContactsByLeadSalesStatus(contactLeadType));
                     Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
-                    LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
-                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-//                    bus.register(mCallEvent);
-                    bus.post(mCallEvent);
                 }
             });
 

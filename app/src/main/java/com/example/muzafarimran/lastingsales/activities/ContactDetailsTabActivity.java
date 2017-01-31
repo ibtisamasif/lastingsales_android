@@ -13,7 +13,6 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
@@ -32,8 +31,6 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     ViewPager viewPager;
     private String contactIdString = "0";
     private LSContact selectedContact;
-    private TextView tvName;
-    private TextView tvNumberOne;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
     @Override
@@ -83,51 +80,51 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.menu_icon_details);
-        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone_selected);
-        tabLayout.getTabAt(2).setIcon(R.drawable.menu_icon_contact);
-        tabLayout.getTabAt(3).setIcon(R.drawable.add_contact_notes_field_icon_unselected);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.menu_icon_details_selected);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        break;
-                    case 2:
-                        tab.setIcon(R.drawable.menu_icon_contact_selected);
-                        break;
-                    case 3:
-                        tab.setIcon(R.drawable.add_contact_notes_field_icon);
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.menu_icon_details);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.menu_icon_phone);
-                        break;
-                    case 2:
-                        tab.setIcon(R.drawable.menu_icon_contact);
-                        break;
-                    case 3:
-                        tab.setIcon(R.drawable.add_contact_notes_field_icon_unselected);
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+//        tabLayout.getTabAt(0).setIcon(R.drawable.menu_icon_details);
+//        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone_selected);
+//        tabLayout.getTabAt(2).setIcon(R.drawable.menu_icon_contact);
+//        tabLayout.getTabAt(3).setIcon(R.drawable.add_contact_notes_field_icon_unselected);
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                switch (tab.getPosition()) {
+//                    case 0:
+//                        tab.setIcon(R.drawable.menu_icon_details_selected);
+//                        break;
+//                    case 1:
+//                        tab.setIcon(R.drawable.menu_icon_phone_selected);
+//                        break;
+//                    case 2:
+//                        tab.setIcon(R.drawable.menu_icon_contact_selected);
+//                        break;
+//                    case 3:
+//                        tab.setIcon(R.drawable.add_contact_notes_field_icon);
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//                switch (tab.getPosition()) {
+//                    case 0:
+//                        tab.setIcon(R.drawable.menu_icon_details);
+//                        break;
+//                    case 1:
+//                        tab.setIcon(R.drawable.menu_icon_phone);
+//                        break;
+//                    case 2:
+//                        tab.setIcon(R.drawable.menu_icon_contact);
+//                        break;
+//                    case 3:
+//                        tab.setIcon(R.drawable.add_contact_notes_field_icon_unselected);
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//            }
+//        });
     }
 
     private void dynamicToolbarColor() {
@@ -136,7 +133,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(Palette palette) {
-                collapsingToolbarLayout.setContentScrimColor(getResources().getColor(R.color.lightBlue));
+                collapsingToolbarLayout.setContentScrimColor(getResources().getColor(R.color.collapsing_toolbar_effect));
                 collapsingToolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.darkBlue));
             }
         });

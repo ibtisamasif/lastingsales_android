@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -27,6 +28,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.halfbit.tinybus.TinyBus;
 
 public class DataSenderNew extends AsyncTask<Object, Void, Void> {
     public static final String TAG = "DataSenderNew";
@@ -51,10 +54,12 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
                     Log.d(TAG, "Syncing");
                     Log.d(TAG, "Token : "+sessionManager.getLoginToken());
                     Log.d(TAG, "user_id : "+sessionManager.getKeyLoginId());
-//                    addContactsToServer();
-//                    addCallsToServer();
-//                    addNotesToServer();
-//                    addFollowupsToServer();
+                    addContactsToServer();
+                    updateContactsToServer();
+                    addCallsToServer();
+                    addNotesToServer();
+                    updateNotesToServer();
+                    addFollowupsToServer();
                     deleteContactsFromServer();
                 }
             } else {
@@ -70,7 +75,7 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
     private void addContactsToServer() {
         List<LSContact> contactsList = null;
         if (LSContact.count(LSContact.class) > 0){
-            contactsList = LSContact.find(LSContact.class, "sync_status = ? and contact_type = ?", SyncStatus.SYNC_STATUS_NOT_SYNCED, LSContact.CONTACT_TYPE_SALES);
+            contactsList = LSContact.find(LSContact.class, "sync_status = ? and contact_type = ?", SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED, LSContact.CONTACT_TYPE_SALES);
             Log.d(TAG, "addContactsToServer: count : "+contactsList.size());
             for (LSContact oneContact : contactsList) {
                 Log.d(TAG, "Found Contacts");
@@ -85,7 +90,7 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_CONTACT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "onResponse() called with: response = [" + response + "]");
+                Log.d(TAG, "onResponse() addContact: response = [" + response + "]");
                 try {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
@@ -93,11 +98,14 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
 
                     if (responseCode ==  200) {
                         JSONObject responseObject = jObj.getJSONObject("response");
-                        contact.setSyncStatus(SyncStatus.SYNC_STATUS_SYNCED);
+                        contact.setServerId(responseObject.getString("id"));
+                        Log.d(TAG, "onResponse: ServerID : " +responseObject.getString("id"));
+                        contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                         contact.save();
                     } else if (responseCode ==  409) {
                         JSONObject responseObject = jObj.getJSONObject("response");
-                        contact.setSyncStatus(SyncStatus.SYNC_STATUS_SYNCED);
+                        contact.setServerId(responseObject.getString("id"));
+                        contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                         contact.save();
                         Log.d(TAG, "onResponse: Lead already Exists");
                     }
@@ -146,6 +154,66 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
                 return params;
             }
         };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void updateContactsToServer() {
+        List<LSContact> contactsList = null;
+        if (LSContact.count(LSContact.class) > 0){
+            contactsList = LSContact.find(LSContact.class, "sync_status = ? and contact_type = ?", SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED, LSContact.CONTACT_TYPE_SALES);
+            Log.d(TAG, "updateContactsToServer: count : "+contactsList.size());
+            for (LSContact oneContact : contactsList) {
+                Log.d(TAG, "Found Contact : "+oneContact.getContactName());
+                Log.d(TAG,  "Server ID : "+oneContact.getServerId());
+                updateContactToServerSync(oneContact);
+            }
+        }
+    }
+
+    public void updateContactToServerSync(final LSContact contact) {
+        final int MY_SOCKET_TIMEOUT_MS = 60000;
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        final String BASE_URL = MyURLs.UPDATE_CONTACT;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(""+contact.getServerId())
+                .appendQueryParameter("name", ""+contact.getContactName())
+                .appendQueryParameter("email", ""+contact.getContactEmail())
+                .appendQueryParameter("phone", ""+contact.getPhoneOne())
+                .appendQueryParameter("address", ""+contact.getContactAddress())
+//                .appendQueryParameter("status", ""+contact.getContactSalesStatus())
+                .appendQueryParameter("api_token", ""+sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() updateContact: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+                    if (responseCode ==  200) {
+                        JSONObject responseObject = jObj.getJSONObject("response");
+                        contact.setServerId(responseObject.getString("id"));
+                        contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED);
+                        contact.save();
+                        Log.d(TAG, "onResponse : ServerID : " +responseObject.getString("id"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateContact");
+            }
+        }){};
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -241,51 +309,36 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
 
         List<LSNote> notesList = null;
         if (LSNote.count(LSNote.class) > 0){
-            notesList = LSNote.find(LSNote.class, "sync_status = ?", SyncStatus.SYNC_STATUS_NOT_SYNCED);
+            notesList = LSNote.find(LSNote.class, "sync_status = ?", SyncStatus.SYNC_STATUS_NOTE_ADDED_NOT_SYNCED);
             Log.d(TAG, "addNoteToServer: count : "+notesList.size());
             for (LSNote oneNote : notesList) {
                 Log.d(TAG, "Found Notes");
                 addNoteToServerSync(oneNote);
             }
         }
-
-//        List<LSContact> salesContactsHavingNotes = (List<LSContact>) LSContact.getAllSalesContactsHavingNotes();
-//        if (salesContactsHavingNotes.size() != 0) {
-//            Log.d(TAG, "addNoteToServer1: "+salesContactsHavingNotes.size());
-//            for (LSContact oneContact : salesContactsHavingNotes) {
-//                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(oneContact.getId());
-//                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
-//                    Log.d(TAG, "addNoteToServer2: "+allNotesOfThisContact.size());
-//                    for (LSNote oneNote : allNotesOfThisContact) {
-//                        Log.d(TAG, "Found Notes");
-//                        addNoteToServerSync(oneNote);
-//                    }
-//                }
-//            }
-//        } else {
-//            Log.d(TAG, "No Contact to sync Note");
-//        }
     }
 
     public void addNoteToServerSync(final LSNote note) {
-        Log.d(TAG, "LeadIdOfNote: "+note.getContactOfNote().getId());
+        Log.d(TAG, "LeadLocalIdOfNote: "+note.getContactOfNote().getId());
+        Log.d(TAG, "LeadServerIdOfNote: "+note.getContactOfNote().getServerId());
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
-        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_NOTE+"/"+note.getContactOfNote().getId()+"/notes", new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_NOTE+"/"+note.getContactOfNote().getServerId()+"/notes", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "onResponse() called with: response = [" + response + "]");
+                Log.d(TAG, "onResponse() called with addNoteToServerSync: response = [" + response + "]");
                 try {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
 //                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
-
                     if (responseCode == 200) {
                         JSONObject responseObject = jObj.getJSONObject("response");
                         String description = responseObject.getString("description");
-                        note.setSyncStatus(SyncStatus.SYNC_STATUS_SYNCED);
+                        String id = responseObject.getString("id");
+                        note.setServerId(id);
+                        note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
                         note.save();
-                        Log.d(TAG, "onResponse: " + description);
+                        Log.d(TAG, "onResponse addNote: " + description+" ServerNoteID : "+id);
 
                     }
                 } catch (JSONException e) {
@@ -301,7 +354,6 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
         }) {
             @Override
             protected Map<String, String> getParams() {
-//                sessionManager.setLoginToken("rWD5qNG9yzogbFLBV7pkuMp2pNNxG1zMmmJ8Fy3OTsiNLrpXcEsEz5YH03bS");
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("description", ""+note.getNoteText());
                 params.put("api_token", ""+sessionManager.getLoginToken());
@@ -322,8 +374,70 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
         queue.add(sr);
     }
 
-    private void addFollowupsToServer() {
+    private void updateNotesToServer() {
 
+        List<LSNote> notesList = null;
+        if (LSNote.count(LSNote.class) > 0){
+            notesList = LSNote.find(LSNote.class, "sync_status = ?", SyncStatus.SYNC_STATUS_NOTE_EDIT_NOT_SYNCED);
+            Log.d(TAG, "updateNoteToServer: count : "+notesList.size());
+            for (LSNote oneNote : notesList) {
+                Log.d(TAG, "Found Notes");
+                updateNoteToServerSync(oneNote);
+            }
+        }
+    }
+
+    public void updateNoteToServerSync(final LSNote note) {
+        Log.d(TAG, "LeadLocalIdOfNote: "+note.getContactOfNote().getId());
+        Log.d(TAG, "LeadServerIdOfNote: "+note.getContactOfNote().getServerId());
+        final int MY_SOCKET_TIMEOUT_MS = 60000;
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        final String BASE_URL = MyURLs.UPDATE_NOTE;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(""+note.getContactOfNote().getServerId())
+                .appendPath("notes")
+                .appendPath(""+note.getServerId())
+//                .appendPath(""+note.getId())
+                .appendQueryParameter("description", ""+note.getNoteText())
+                .appendQueryParameter("api_token", ""+sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() called with updateNoteToServerSync: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+//                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
+
+                    if (responseCode ==  200) {
+                        JSONObject responseObject = jObj.getJSONObject("response");
+                        note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_EDIT_SYNCED);
+                        note.save();
+                        Log.d(TAG, "onResponse updateNote : ServerID : " +responseObject.getString("id"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateNote "+myUrl);
+                Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateNoteID "+note.getId());
+            }
+        }){};
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void addFollowupsToServer() {
         List<TempFollowUp> followupsList = null;
         if (TempFollowUp.count(TempFollowUp.class) > 0){
             followupsList = TempFollowUp.find(TempFollowUp.class, "sync_status = ?", SyncStatus.SYNC_STATUS_NOT_SYNCED);
@@ -336,9 +450,11 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
     }
 
     public void addFollowupToServerSync(final TempFollowUp followup) {
+        Log.d(TAG, "LeadLocalIdOfFollowup: "+followup.getContact().getId());
+        Log.d(TAG, "LeadServerIdOfFollowup: "+followup.getContact().getServerId());
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
-        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_FOLLOWUP+"/"+followup.getContact().getId()+"/followup", new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_FOLLOWUP+"/"+followup.getContact().getServerId()+"/followup", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() called with: response = [" + response + "]");
@@ -395,10 +511,11 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
     private void deleteContactsFromServer() {
         List<LSContact> contactsList = null;
         if (LSContact.count(LSContact.class) > 0){
-            contactsList = LSContact.find(LSContact.class, "sync_status = ? and contact_type = ?", SyncStatus.SYNC_STATUS_DELETE_REQUIRE, LSContact.CONTACT_TYPE_SALES);
+            contactsList = LSContact.find(LSContact.class, "sync_status = ? and contact_type = ?", SyncStatus.SYNC_STATUS_NOT_SYNCED, LSContact.CONTACT_TYPE_SALES);
             Log.d(TAG, "deleteContactsFromServer: count : " + contactsList.size());
             for (LSContact oneContact : contactsList) {
                 Log.d(TAG, "Found Contact : "+oneContact.getContactName());
+                Log.d(TAG,  "Server ID : "+oneContact.getServerId());
                 deleteContactFromServerSync(oneContact);
             }
         }
@@ -410,7 +527,7 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
         final String BASE_URL = MyURLs.DELETE_CONTACT;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
-                .appendPath("201") //contact.getServerId();
+                .appendPath(""+contact.getServerId())
                 .appendQueryParameter("api_token", ""+sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
@@ -426,6 +543,14 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
                     if (responseCode ==  200) {
 //                        JSONObject responseObject = jObj.getJSONObject("response");
                         contact.delete();
+                        LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
+                        TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                        try {
+                            bus.register(mCallEvent);
+                        } catch (IllegalArgumentException e) {
+                            e.printStackTrace();
+                        }
+                        bus.post(mCallEvent);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

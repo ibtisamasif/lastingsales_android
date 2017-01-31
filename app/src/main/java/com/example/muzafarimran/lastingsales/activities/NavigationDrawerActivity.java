@@ -43,8 +43,7 @@ import java.util.Locale;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
-public class NavigationDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SearchCallback, TabSelectedListener {
+public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SearchCallback, TabSelectedListener {
     private static final String TAG = "NaviDrawerActivity";
     MaterialSearchView searchView;
     SessionManager sessionManager;
@@ -89,7 +88,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         ivProfileImage = (ImageView) navHeader.findViewById(R.id.ivProfileImgNavBar);
         tvProfileName = (TextView) navHeader.findViewById(R.id.tvProfileNameNavBar);
         tvProfileNumber = (TextView) navHeader.findViewById(R.id.tvProfileNumberNavBar);
-        tvProfileName.setText(sessionManager.getKeyLoginFirstName() + sessionManager.getKeyLoginLastName());
+        tvProfileName.setText(sessionManager.getKeyLoginFirstName()+ " " + sessionManager.getKeyLoginLastName());
         tvProfileNumber.setText(sessionManager.getLoginNumber());
 
         String url = sessionManager.getKeyLoginImagePath();
@@ -114,12 +113,13 @@ public class NavigationDrawerActivity extends AppCompatActivity
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), NavigationDrawerActivity.this));
         viewPager.setOffscreenPageLimit(2);
+        viewPager.setCurrentItem(1);
         // Give the TabLayout the ViewPager
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.menu_icon_home_selected);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_home_white_48dp);
 //        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone);
-        tabLayout.getTabAt(2).setIcon(R.drawable.menu_icon_contact);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_people_white_48dp);
 
         allMissedCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_MISSED);
         unhandledMissedCalls = new ArrayList<>();
@@ -129,9 +129,9 @@ public class NavigationDrawerActivity extends AppCompatActivity
             }
         }
 
-        tab1 = tabLayout.getTabAt(1);
+        tab1 = tabLayout.getTabAt(0);
         imageViewBadge = new ImageView(getApplicationContext());
-        imageViewBadge.setImageResource(R.drawable.menu_icon_phone);
+        imageViewBadge.setImageResource(R.drawable.ic_phone_missed_white_48dp);
         tab1.setCustomView(imageViewBadge);
         badgeInquries = new BadgeView(getApplicationContext(), imageViewBadge);
         if (unhandledMissedCalls != null && unhandledMissedCalls.size() > 0) {
@@ -148,16 +148,16 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 shouldShowSearchMenu = tab.getPosition() != 0;
                 switch (tab.getPosition()) {
                     case 0:
-                        tab.setIcon(R.drawable.menu_icon_home_selected);
-                        getSupportActionBar().setTitle("Home");
+//                        tab.setIcon(R.drawable.ic_home_white_48dp);
+                        getSupportActionBar().setTitle("Inquiries");
                         break;
                     case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        getSupportActionBar().setTitle("Inquiries");
+                        getSupportActionBar().setTitle("Home");
 //                        ((TextView)(toolbar.findViewById(R.id.title))).setText("CALL LOGS");
                         break;
                     case 2:
-                        tab.setIcon(R.drawable.menu_icon_contact_selected);
+//                        tab.setIcon(R.drawable.menu_icon_contact_selected);
                         getSupportActionBar().setTitle("Leads");
                         // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                         break;
@@ -172,13 +172,13 @@ public class NavigationDrawerActivity extends AppCompatActivity
             public void onTabUnselected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        tab.setIcon(R.drawable.menu_icon_home);
+//                        tab.setIcon(R.drawable.menu_icon_home);
                         break;
                     case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone);
                         break;
                     case 2:
-                        tab.setIcon(R.drawable.menu_icon_contact);
+//                        tab.setIcon(R.drawable.menu_icon_contact);
                         break;
 //                case 3:
 //                    tab.setIcon(R.drawable.menu_icon_menu);

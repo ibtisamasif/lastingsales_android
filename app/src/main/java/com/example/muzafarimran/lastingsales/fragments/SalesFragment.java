@@ -14,11 +14,11 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
+import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
-import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -34,7 +34,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 /**
  * A simple {@link Fragment} subclass.
  */
-@Deprecated
+
 public class SalesFragment extends SearchFragment {
 
     public static final String TAG = "SalesContactFragment";
@@ -115,8 +115,6 @@ public class SalesFragment extends SearchFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sales, container, false);
-//        this.addContactCta = (FloatingActionButton) view.findViewById(R.id.add_contact_cta);
-//        this.addContactCta.setOnClickListener(this.showaddcontactform);
         floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu);
         floatingActionButtonAdd = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
         floatingActionButtonImport = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import);
@@ -127,9 +125,8 @@ public class SalesFragment extends SearchFragment {
             @Override
             public void onClick(View view) {
                 floatingActionMenu.close(true);
-                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
-                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
+                Intent intent = new Intent(getContext(), AddLeadActivity.class);
+                intent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
                 startActivity(intent);
             }
         });
@@ -137,9 +134,8 @@ public class SalesFragment extends SearchFragment {
             @Override
             public void onClick(View view) {
                 floatingActionMenu.close(true);
-                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
-                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
-                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
+                Intent intent = new Intent(getContext(), AddLeadActivity.class);
+                intent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
                 startActivity(intent);
 
             }
@@ -312,12 +308,10 @@ public class SalesFragment extends SearchFragment {
     * event handler for click on add contact cta
     * */
     public class ShowAddContactForm implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
-            Intent myIntent = new Intent(getActivity(), TagNumberAndAddFollowupActivity.class);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+            Intent myIntent = new Intent(getActivity(), AddLeadActivity.class);
+            myIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
             getActivity().startActivity(myIntent);
         }
     }

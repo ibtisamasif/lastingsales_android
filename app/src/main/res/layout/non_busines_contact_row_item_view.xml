@@ -84,7 +84,7 @@
             android:layout_centerVertical="true"
             android:paddingRight="10dp"
             android:scaleType="fitEnd"
-            android:src="@drawable/make_call_icon"
+            android:src="@drawable/ic_call_green"
             />
 
     </RelativeLayout>

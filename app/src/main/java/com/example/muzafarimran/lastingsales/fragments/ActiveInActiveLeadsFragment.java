@@ -11,6 +11,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.LeadsAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -55,16 +56,21 @@ public class ActiveInActiveLeadsFragment extends TabFragment{
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
+        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_LEAD);
+        //Filtering out colleagues from list
+        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        contacts.removeAll(allCollegues);
+        setList(contacts);
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
 
     @Override
-    public void onStop() {
+    public void onPause() {
+        super.onPause();
         bus.unregister(this);
-        super.onStop();
     }
 
     @Subscribe
@@ -78,21 +84,21 @@ public class ActiveInActiveLeadsFragment extends TabFragment{
     }
 
     @Subscribe
+    public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
+        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        //Filtering out colleagues from list
+        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        contacts.removeAll(allCollegues);
+        setList(contacts);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+    }
+
+    @Subscribe
     public void onBackPressedEventModel(BackPressedEventModel event) {
         if (!event.backPressHandled && leadsAdapter.isDeleteFlow()) {
             event.backPressHandled = true;
             leadsAdapter.setDeleteFlow(false);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_LEAD);
-        //Filtering out colleagues from list
-        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-        contacts.removeAll(allCollegues);
-        setList(contacts);
     }
 
     @Override

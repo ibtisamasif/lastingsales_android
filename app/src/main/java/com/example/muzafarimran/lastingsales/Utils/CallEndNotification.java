@@ -82,7 +82,7 @@ public class CallEndNotification {
                     .setTicker("Lasting Sales")
                     .setStyle(new Notification.BigTextStyle().bigText("Do You Want To Tag?"))
                     .setAutoCancel(true)
-                .addAction(R.drawable.non_business_icon_croped, "Untrack", pIntentNonBusiness)
+                .addAction(R.drawable.ic_untrack_darkgray, "Untrack", pIntentNonBusiness)
                 .addAction(R.drawable.sales_icon_croped, "Track", pIntentSales)
 //                    .addAction(R.drawable.non_business_icon, "", pIntentNonBusiness)
 //                    .addAction(R.drawable.colleague_icon, "", pIntentCollegue)

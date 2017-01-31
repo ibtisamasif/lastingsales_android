@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsActivity;
 import com.example.muzafarimran.lastingsales.fragments.SalesContactDeleteBottomSheetDialogFragment;
@@ -38,7 +39,7 @@ import static android.view.View.GONE;
 /**
  * Created by lenovo 1 on 9/21/2016.
  */
-@Deprecated
+
 public class SalesAdapter extends BaseAdapter implements Filterable, StickyListHeadersAdapter {
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
@@ -112,7 +113,6 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
         final LSContact contact = (LSContact) getItem(position);
         ViewHolder holder = null;
         if (convertView == null) {
@@ -425,40 +425,45 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         @Override
         public void onClick(View v) {
 
-            boolean wasNull = false;
-            if (noteDetails == null) {
-                noteDetails = detailsLayout;
-                noteDetails.setVisibility(View.VISIBLE);
-                wasNull = true;
-                detailsContact = contact;
-                detailsContact.setDetailsDropDownOpen(true);
-                detailsContact.save();
-            }
-            if (noteDetails.getVisibility() == View.VISIBLE) {
-                noteDetails.setVisibility(GONE);
-                detailsContact.setDetailsDropDownOpen(false);
-                detailsContact.save();
-                if (noteDetails == detailsLayout && !wasNull) {
-                    noteDetails.setVisibility(GONE);
-                    detailsContact.setDetailsDropDownOpen(false);
-                    detailsContact.save();
-                } else {
-                    noteDetails = detailsLayout;
-                    detailsContact = contact;
-                    noteDetails.setVisibility(View.VISIBLE);
-                    detailsContact.setDetailsDropDownOpen(true);
-                    detailsContact.save();
-                }
-            } else {
-                noteDetails.setVisibility(GONE);
-                detailsContact.setDetailsDropDownOpen(false);
-                detailsContact.save();
-                detailsLayout.setVisibility(View.VISIBLE);
-                contact.setDetailsDropDownOpen(true);
-                noteDetails = detailsLayout;
-                detailsContact = contact;
-                detailsContact.save();
-            }
+            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
+            long contactId = contact.getId();
+            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
+            mContext.startActivity(detailsActivityIntent);
+
+//            boolean wasNull = false;
+//            if (noteDetails == null) {
+//                noteDetails = detailsLayout;
+//                noteDetails.setVisibility(View.VISIBLE);
+//                wasNull = true;
+//                detailsContact = contact;
+//                detailsContact.setDetailsDropDownOpen(true);
+//                detailsContact.save();
+//            }
+//            if (noteDetails.getVisibility() == View.VISIBLE) {
+//                noteDetails.setVisibility(GONE);
+//                detailsContact.setDetailsDropDownOpen(false);
+//                detailsContact.save();
+//                if (noteDetails == detailsLayout && !wasNull) {
+//                    noteDetails.setVisibility(GONE);
+//                    detailsContact.setDetailsDropDownOpen(false);
+//                    detailsContact.save();
+//                } else {
+//                    noteDetails = detailsLayout;
+//                    detailsContact = contact;
+//                    noteDetails.setVisibility(View.VISIBLE);
+//                    detailsContact.setDetailsDropDownOpen(true);
+//                    detailsContact.save();
+//                }
+//            } else {
+//                noteDetails.setVisibility(GONE);
+//                detailsContact.setDetailsDropDownOpen(false);
+//                detailsContact.save();
+//                detailsLayout.setVisibility(View.VISIBLE);
+//                contact.setDetailsDropDownOpen(true);
+//                noteDetails = detailsLayout;
+//                detailsContact = contact;
+//                detailsContact.save();
+//            }
         }
     }
 

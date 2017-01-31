@@ -10,19 +10,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.EditNoteActivity;
+import com.example.muzafarimran.lastingsales.activities.AddEditNoteActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 
 import java.util.List;
 
 
-public class NotesListAdapter2 extends BaseAdapter {
+public class NotesListAdapterNew extends BaseAdapter {
     private List<LSNote> notesList;
     private Context mContext;
     private LayoutInflater mInflater;
 
-    public NotesListAdapter2(Context mContext,  List<LSNote> notesList) {
+    public NotesListAdapterNew(Context mContext, List<LSNote> notesList) {
         this.notesList = notesList;
         this.mContext = mContext;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -92,8 +92,9 @@ public class NotesListAdapter2 extends BaseAdapter {
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(mContext, EditNoteActivity.class);
-            intent.putExtra("noteid", ""+note.getId());
+            Intent intent = new Intent(mContext, AddEditNoteActivity.class);
+            intent.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_EDIT_EXISTING_NOTE);
+            intent.putExtra(AddEditNoteActivity.LAUNCH_MODE_NOTE_ID, ""+note.getId());
             mContext.startActivity(intent);
         }
     }

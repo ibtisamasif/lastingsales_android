@@ -23,7 +23,6 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,8 +59,8 @@ public class LogInActivity extends AppCompatActivity {
         tvNumber = (TextView) findViewById(R.id.numberLoginScreen);
         tvPassword = (TextView) findViewById(R.id.passwordLoginScreen);
 //        hardcoding number and password for develoment speedup purposes
-        tvNumber.setText("03361124888");
-        tvPassword.setText("LastingSales123@");
+//        tvNumber.setText("03361124888");
+//        tvPassword.setText("LastingSales123@");
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,36 +69,42 @@ public class LogInActivity extends AppCompatActivity {
                 Boolean numberVarified = true, passwordVarified = true;
                 number = tvNumber.getText().toString();
                 password = tvPassword.getText().toString();
-                if (number.length() < 7) {
-                    numberVarified = false;
-                }
-                String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-                if (intlNumber != null) {
-                    if (intlNumber.length() < 15) {
-                        numberVarified = false;
-                    }
-                } else {
-                    numberVarified = false;
-                }
-                if (password.length() < 8) {
-                    passwordVarified = false;
-                }
-                if (!PhoneNumberAndCallUtils.isValidPassword(password)) {
-                    passwordVarified = false;
-                }
-                if (!numberVarified) {
-                    tvNumber.setError("Invalid Number!");
-                }
-                if (!passwordVarified) {
-                    tvPassword.setError("Invalid Password!");
-                }
-                if (numberVarified && passwordVarified) {
-                    pdLoading.show();
-                    intlNumber = "ibtisamasif1@gmail.com";
-                    password = "11111111";
-                    makeLoginRequest(LogInActivity.this, intlNumber, password);
 
-                }
+//                intlNumber = "ibtisamasif1@gmail.com";
+//                password = "11111111";
+
+                makeLoginRequest(LogInActivity.this, number, password);
+
+//                if (number.length() < 7) {
+//                    numberVarified = false;
+//                }
+//                String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+//                if (intlNumber != null) {
+//                    if (intlNumber.length() < 15) {
+//                        numberVarified = false;
+//                    }
+//                } else {
+//                    numberVarified = false;
+//                }
+//                if (password.length() < 8) {
+//                    passwordVarified = false;
+//                }
+//                if (!PhoneNumberAndCallUtils.isValidPassword(password)) {
+//                    passwordVarified = false;
+//                }
+//                if (!numberVarified) {
+//                    tvNumber.setError("Invalid Number!");
+//                }
+//                if (!passwordVarified) {
+//                    tvPassword.setError("Invalid Password!");
+//                }
+//                if (numberVarified && passwordVarified) {
+//                    pdLoading.show();
+//                    intlNumber = "ibtisamasif1@gmail.com";
+//                    password = "11111111";
+//                    makeLoginRequest(LogInActivity.this, intlNumber, password);
+//
+//                }
             }
         });
     }

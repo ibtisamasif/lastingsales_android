@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -138,7 +139,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
         list.add("Leads");
         list.add("Close Won");
         list.add("Closed Lost");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         leadStatusSpinner.setAdapter(dataAdapter);
     }
@@ -149,7 +150,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
         list.add("Residential");
         list.add("Commercial");
         list.add("Industrial");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         customTagSpinner1.setAdapter(dataAdapter);
     }
@@ -160,7 +161,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
         list.add("Honda City");
         list.add("Civic Reborn");
         list.add("Chevrolet Exclusive");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         customTagSpinner2.setAdapter(dataAdapter);
     }
@@ -199,26 +200,35 @@ public class IndividualContactDetailsFragment extends TabFragment {
 
     private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+//            DataSenderNew dataSenderNew = new DataSenderNew(getActivity().getApplicationContext());
             switch (pos) {
                 case 0:
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+//                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
-//                    Toast.makeText(parent.getContext(), "Status Changed to Prospect", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(parent.getContext(), "Status Changed to Prospect", Toast.LENGTH_SHORT).show();
+//                    dataSenderNew.execute();
                     break;
                 case 1:
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+//                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
-//                    Toast.makeText(parent.getContext(), "Status Changed to Lead", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(parent.getContext(), "Status Changed to Lead", Toast.LENGTH_SHORT).show();
+//                    dataSenderNew.execute();
                     break;
                 case 2:
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+//                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
-//                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
+//                    dataSenderNew.execute();
                     break;
                 case 3:
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+//                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
-//                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
+//                    dataSenderNew.execute();
                     break;
             }
         }

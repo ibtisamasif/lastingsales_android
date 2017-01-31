@@ -11,6 +11,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.LeadsAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -56,19 +57,6 @@ public class PendingProspectsFragment extends TabFragment{
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        bus = TinyBus.from(getActivity().getApplicationContext());
-        bus.register(this);
-    }
-
-    @Override
-    public void onStop() {
-        bus.unregister(this);
-        super.onStop();
-    }
-
     @Subscribe
     public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
         List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
@@ -77,6 +65,16 @@ public class PendingProspectsFragment extends TabFragment{
         contacts.removeAll(allCollegues);
         setList(contacts);
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+    }
+
+    @Subscribe
+    public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
+        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        //Filtering out colleagues from list
+        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        contacts.removeAll(allCollegues);
+        setList(contacts);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
@@ -95,6 +93,14 @@ public class PendingProspectsFragment extends TabFragment{
         List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         contacts.removeAll(allCollegues);
         setList(contacts);
+        bus = TinyBus.from(getActivity().getApplicationContext());
+        bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bus.unregister(this);
     }
 
     @Override

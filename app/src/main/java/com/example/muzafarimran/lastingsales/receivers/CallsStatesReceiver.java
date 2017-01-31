@@ -78,7 +78,6 @@ public class CallsStatesReceiver extends CallReceiver {
                         contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
                         contact.save();
                     }
-
                 }
             }
 
@@ -91,7 +90,7 @@ public class CallsStatesReceiver extends CallReceiver {
             tempContact.save();
             tempCall.setContact(tempContact);
         }
-        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
         tempCall.save();
         DataSenderNew dataSenderNew = new DataSenderNew(ctx);
         dataSenderNew.execute();
@@ -145,7 +144,7 @@ public class CallsStatesReceiver extends CallReceiver {
             tempContact.save();
             tempCall.setContact(tempContact);
         }
-        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
         tempCall.save();
         DataSenderNew dataSenderNew = new DataSenderNew(ctx);
         dataSenderNew.execute();
@@ -183,7 +182,7 @@ public class CallsStatesReceiver extends CallReceiver {
         tempCall.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
         tempCall.setBeginTime(start.getTime());
         tempCall.setDuration(0L);
-        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
         tempCall.save();
         DataSenderNew dataSenderNew = new DataSenderNew(ctx);
         dataSenderNew.execute();

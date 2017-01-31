@@ -81,7 +81,7 @@
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/make_call_icon"/>
+                    android:src="@drawable/ic_call_green"/>
 
             </RelativeLayout>
 
@@ -202,23 +202,6 @@
                         android:textSize="12sp"
                         />
 
-                    <Button
-                        android:id="@+id/bColleagueUntaggedItem"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="27dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@id/bNonBusinessUntaggedItem"
-                        android:background="@drawable/btn_primary"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="5dp"
-                        android:radius="5dip"
-                        android:text="@string/colleague_capital"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        />
 
                     <Button
                         android:id="@+id/bSalesUtaggedItem"

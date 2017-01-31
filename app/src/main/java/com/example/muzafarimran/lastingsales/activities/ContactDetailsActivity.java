@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.fragments.NotesByContactsFragment;
+import com.example.muzafarimran.lastingsales.fragments.NotesFragmentNew;
 import com.example.muzafarimran.lastingsales.fragments.NotesListFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
@@ -44,7 +44,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
 //    private ListView lvNotesList;
     private FrameLayout notesListHolderFrameLayout;
     private NotesListFragment notesListFragment;
-    private NotesByContactsFragment notesByContactsFragment;
+    private NotesFragmentNew notesFragmentNew;
     private LinearLayout llFolloupNoteRow;
     private LinearLayout llFolloupDateTimeRow;
     private TextView tvFollowupNoteText;
@@ -147,11 +147,11 @@ public class ContactDetailsActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             Bundle bundle = new Bundle();
-            bundle.putString(NotesByContactsFragment.CONTACT_ID, selectedContact.getId().toString());
-            notesByContactsFragment = new NotesByContactsFragment();
-            notesByContactsFragment.setArguments(bundle);
+            bundle.putString(NotesFragmentNew.CONTACT_ID, selectedContact.getId().toString());
+            notesFragmentNew = new NotesFragmentNew();
+            notesFragmentNew.setArguments(bundle);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.notesListHolderFrameLayout, notesByContactsFragment);
+            transaction.replace(R.id.notesListHolderFrameLayout, notesFragmentNew);
             transaction.commit();
         }
 

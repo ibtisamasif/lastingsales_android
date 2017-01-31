@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.fragments.NotesByContactsFragment;
+import com.example.muzafarimran.lastingsales.fragments.NotesFragmentNew;
 
 /**
  * Created by ibtisam on 12/16/2016.
@@ -37,8 +37,8 @@ public class NotesByContactsActivity2 extends AppCompatActivity {
             contactIdString = extras.getString(NotesByContactsActivity2.KEY_CONTACT_ID);
             if (contactIdString != null) {
                 Bundle bundle = new Bundle();
-                bundle.putString(NotesByContactsFragment.CONTACT_ID, contactIdString);
-                NotesByContactsFragment fragobj = new NotesByContactsFragment();
+                bundle.putString(NotesFragmentNew.CONTACT_ID, contactIdString);
+                NotesFragmentNew fragobj = new NotesFragmentNew();
                 fragobj.setArguments(bundle);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.FragmentContainer, fragobj);

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
@@ -49,11 +48,15 @@ public class HomeFragment extends TabFragment {
     private LinearLayout llUntaggedContainer;
     private LinearLayout llinquriesContainer;
     private LinearLayout llPendingProspectsContainer;
+//    private LinearLayout llshadow1;
+//    private LinearLayout llshadow2;
+//    private LinearLayout llshadow3;
+    private LinearLayout llshadow4;
     private FrameLayout followupsListHolderFrameLayout;
     private FollowupsTodayListFragment followupsTodayListFragment;
     private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     private FloatingActionMenu floatingActionMenu;
-    private Bus mBus;
+
     private TinyBus bus;
 //    public ViewPager mViewPager, vpLeads;
 
@@ -69,11 +72,16 @@ public class HomeFragment extends TabFragment {
         tvUntaggedContacts = (TextView) view.findViewById(R.id.tvUntaggeContactsVal);
         tvPendingProspectValue = (TextView) view.findViewById(R.id.tvPendingProspectValue);
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
-        llInActiveLeadsContainer = (LinearLayout) view.findViewById(R.id.llInActiveLeadsContactsContainer);
-        llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
-        llPendingProspectsContainer = (LinearLayout) view.findViewById(R.id.llPendingProspectsContactsContainer);
-        llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
+
         llinquriesContainer = (LinearLayout) view.findViewById(R.id.llinquriesContainer);
+//        llshadow1 = (LinearLayout) view.findViewById(R.id.llshadow1);
+        llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
+//        llshadow2 = (LinearLayout) view.findViewById(R.id.llshadow2);
+        llInActiveLeadsContainer = (LinearLayout) view.findViewById(R.id.llInActiveLeadsContactsContainer);
+//        llshadow3 = (LinearLayout) view.findViewById(R.id.llshadow3);
+        llPendingProspectsContainer = (LinearLayout) view.findViewById(R.id.llPendingProspectsContactsContainer);
+        llshadow4 = (LinearLayout) view.findViewById(R.id.llshadow4);
+
         followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
 
         updateHomeFigures();
@@ -122,7 +130,7 @@ public class HomeFragment extends TabFragment {
         llinquriesContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = 1;
+                int position = 0;
                 ((TabSelectedListener)getActivity()).onTabSelectedEvent(position, "Inquiries");
 //                mViewPager.setCurrentItem(1,true);
 //                Bundle bundle = new Bundle();
@@ -170,7 +178,7 @@ public class HomeFragment extends TabFragment {
             }
         });
         //Bundle bundle = new Bundle();
-        //bundle.putString(NotesByContactsFragment.CONTACT_ID, selectedContact.getId().toString());
+        //bundle.putString(NotesFragmentNew.CONTACT_ID, selectedContact.getId().toString());
         followupsTodayListFragment = new FollowupsTodayListFragment();
         //followupsTodayListFragment.setArguments(bundle);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -202,45 +210,49 @@ public class HomeFragment extends TabFragment {
 
         if (unhandledMissedCalls != null) {
             if(unhandledMissedCalls.size() > 0){
-                tvInquiriesValue.setText(" ( " + unhandledMissedCalls.size() + " ) ");
+                tvInquiriesValue.setText(""+unhandledMissedCalls.size());
             }else {
                 llinquriesContainer.setVisibility(View.GONE);
+//                llshadow1.setVisibility(View.GONE);
             }
 
         } else {
-            tvInquiriesValue.setText("  ( " + 0 + " )  ");
+            tvInquiriesValue.setText(0);
         }
 
         if (allUntaggedContacts != null) {
             if(allUntaggedContacts.size() > 0){
-                tvUntaggedContacts.setText(" ( " + allUntaggedContacts.size() + " ) ");
+                tvUntaggedContacts.setText(""+allUntaggedContacts.size());
             }else {
                 llUntaggedContainer.setVisibility(View.GONE);
+//                llshadow2.setVisibility(View.GONE);
             }
 
         } else {
-            tvUntaggedContacts.setText("  ( " + 0 + " )  ");
+            tvUntaggedContacts.setText(0);
         }
 
         if (allInactiveLeads != null) {
             if(allInactiveLeads.size() > 0){
-                tvInactiveLeadsValue.setText(" ( " + allInactiveLeads.size() + " ) ");
+                tvInactiveLeadsValue.setText(""+allInactiveLeads.size());
             }else {
                 llInActiveLeadsContainer.setVisibility(View.GONE);
+//                llshadow3.setVisibility(View.GONE);
             }
         } else {
-            tvInactiveLeadsValue.setText(" ( " + 0 + " ) ");
+            tvInactiveLeadsValue.setText(0);
         }
 
         if (allFilteredContactsAsProspects != null) {
             if(allFilteredContactsAsProspects.size() > 0) {
-                tvPendingProspectValue.setText(" ( " + allFilteredContactsAsProspects.size() + " ) ");
+                tvPendingProspectValue.setText(""+allFilteredContactsAsProspects.size());
             }
             else {
                 llPendingProspectsContainer.setVisibility(View.GONE);
+                llshadow4.setVisibility(View.GONE);
             }
         } else {
-            tvPendingProspectValue.setText(" ( " + 0 + " ) ");
+            tvPendingProspectValue.setText(0);
         }
 
         ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);

@@ -1,0 +1,1 @@
+alter table LS_CONTACT add SERVER_ID TEXT;

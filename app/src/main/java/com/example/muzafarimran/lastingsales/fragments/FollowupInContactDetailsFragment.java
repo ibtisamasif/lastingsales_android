@@ -29,7 +29,6 @@ public class FollowupInContactDetailsFragment extends TabFragment{
 
 
     public static final String TAG = "FollowupInContactDetailsFragment";
-    public static final String CONTACT_ID = "contact_id";
     MaterialSearchView searchView;
     TempFollowUp selectedFolloup = null;
     private String number = "";
@@ -137,7 +136,7 @@ public class FollowupInContactDetailsFragment extends TabFragment{
         });
 
                 //Bundle bundle = new Bundle();
-                //bundle.putString(NotesByContactsFragment.CONTACT_ID, selectedContact.getId().toString());
+                //bundle.putString(NotesFragmentNew.CONTACT_ID, selectedContact.getId().toString());
                 followupsTodayListFragment = new FollowupsTodayListFragment();
                 //followupsTodayListFragment.setArguments(bundle);
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

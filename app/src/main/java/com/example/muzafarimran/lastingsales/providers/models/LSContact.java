@@ -50,6 +50,7 @@ public class LSContact extends SugarRecord {
     private String contactSalesStatus;
     private boolean detailsDropDownOpen;
     private String syncStatus;
+    private String serverId;
 
     public LSContact() {
     }
@@ -386,5 +387,13 @@ public class LSContact extends SugarRecord {
 
     public void setSyncStatus(String syncStatus) {
         this.syncStatus = syncStatus;
+    }
+
+    public String getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
     }
 }

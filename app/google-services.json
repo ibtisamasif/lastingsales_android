@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "41471578067",
+    "firebase_url": "https://lastingsales-e2a28.firebaseio.com",
+    "project_id": "lastingsales-e2a28",
+    "storage_bucket": "lastingsales-e2a28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41471578067:android:0cc8cee9151ee169",
+        "android_client_info": {
+          "package_name": "com.example.muzafarimran.lastingsales"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "41471578067-k4hgh86n6rtg6ehnql6nhcnke0jc50u4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnqVtbKzeoBMwpG0r7_f8Djh7lp3S6axI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
