@@ -82,5 +82,6 @@
     <string name="log_out">Log Out</string>
 
     <string name="title_main_activity">Firebase Notifications</string>
+    <string name="lead_picture">lead Picture</string>
 
 </resources>

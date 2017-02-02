@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -322,6 +323,12 @@ public class AddLeadActivity extends Activity {
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
                             finish();
+                            //update inquiry as well if exists
+                            LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
+                            if (tempInquiry != null) {
+                                tempInquiry.setContact(tempContact);
+                                tempInquiry.save();
+                            }
                             Intent detailsActivityIntent = new Intent(AddLeadActivity.this, ContactDetailsTabActivity.class);
                             long contactId = tempContact.getId();
                             detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");

@@ -31,12 +31,11 @@ import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
 import com.example.muzafarimran.lastingsales.utils.CallRecord;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,8 +54,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     BadgeView badgeInquries;
     ImageView imageViewBadge;
     TabLayout tabLayout;
-    List<LSCall> allMissedCalls;
-    List<LSCall> unhandledMissedCalls;
     TabLayout.Tab tab1;
     TinyBus bus;
 //    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
@@ -121,21 +118,15 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_people_white_48dp);
 
-        allMissedCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_MISSED);
-        unhandledMissedCalls = new ArrayList<>();
-        for (LSCall oneMissedCall : allMissedCalls) {
-            if (oneMissedCall.getInquiryHandledState() == LSCall.INQUIRY_NOT_HANDLED) {
-                unhandledMissedCalls.add(oneMissedCall);
-            }
-        }
+        List<LSInquiry> allInquiries = LSInquiry.getAllInquiriesInDescendingOrder();
 
         tab1 = tabLayout.getTabAt(0);
         imageViewBadge = new ImageView(getApplicationContext());
         imageViewBadge.setImageResource(R.drawable.ic_phone_missed_white_48dp);
         tab1.setCustomView(imageViewBadge);
         badgeInquries = new BadgeView(getApplicationContext(), imageViewBadge);
-        if (unhandledMissedCalls != null && unhandledMissedCalls.size() > 0) {
-            badgeInquries.setText("" + unhandledMissedCalls.size());
+        if (allInquiries != null && allInquiries.size() > 0) {
+            badgeInquries.setText("" + allInquiries.size());
             badgeInquries.toggle();
             badgeInquries.show();
         } else {
@@ -216,19 +207,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     public void onCallReceivedEventModel(MissedCallEventModel event) {
         Log.d(TAG, "NavionMissedCallEvent() called with: event = [" + event + "]");
         if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
-            allMissedCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_MISSED);
-            unhandledMissedCalls = new ArrayList<>();
-            for (LSCall oneMissedCall : allMissedCalls) {
-                if (oneMissedCall.getInquiryHandledState() == LSCall.INQUIRY_NOT_HANDLED) {
-                    unhandledMissedCalls.add(oneMissedCall);
-                }
-            }
+            List<LSInquiry> allInquiries = LSInquiry.getAllInquiriesInDescendingOrder();
 //            tab1 = tabLayout.getTabAt(1);
 //            imageViewBadge.setImageResource(R.drawable.menu_icon_phone);
 //            tab1.setCustomView(imageViewBadge);
             //badgeInquries = new BadgeView(getApplicationContext(), imageViewBadge);
-            if (unhandledMissedCalls != null && unhandledMissedCalls.size() > 0) {
-                badgeInquries.setText("" + unhandledMissedCalls.size());
+            if (allInquiries != null && allInquiries.size() > 0) {
+                badgeInquries.setText("" + allInquiries.size());
                 badgeInquries.toggle();
                 badgeInquries.show();
             } else {

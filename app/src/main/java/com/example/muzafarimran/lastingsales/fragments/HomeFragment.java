@@ -21,8 +21,8 @@ import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -48,7 +48,7 @@ public class HomeFragment extends TabFragment {
     private LinearLayout llUntaggedContainer;
     private LinearLayout llinquriesContainer;
     private LinearLayout llPendingProspectsContainer;
-//    private LinearLayout llshadow1;
+    //    private LinearLayout llshadow1;
 //    private LinearLayout llshadow2;
 //    private LinearLayout llshadow3;
     private LinearLayout llshadow4;
@@ -85,12 +85,12 @@ public class HomeFragment extends TabFragment {
         followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
 
         updateHomeFigures();
-        
+
         llInActiveLeadsContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = 2;
-                ((TabSelectedListener)getActivity()).onTabSelectedEvent(position, "InActiveLeads");
+                ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "InActiveLeads");
 //                Intent intent;
 //                Bundle bundle = new Bundle();
 //                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, InActiveLeadsFragment.class.getName()); // Change
@@ -131,7 +131,7 @@ public class HomeFragment extends TabFragment {
             @Override
             public void onClick(View view) {
                 int position = 0;
-                ((TabSelectedListener)getActivity()).onTabSelectedEvent(position, "Inquiries");
+                ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "Inquiries");
 //                mViewPager.setCurrentItem(1,true);
 //                Bundle bundle = new Bundle();
 //                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsTodayListFragment.class.getName());
@@ -200,54 +200,44 @@ public class HomeFragment extends TabFragment {
         allFilteredContactsAsProspects.removeAll(allCollegues);
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
 
-        List<LSCall> allMissedCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_MISSED);
-        List<LSCall> unhandledMissedCalls = new ArrayList<>();
-        for (LSCall oneMissedCall : allMissedCalls) {
-            if (oneMissedCall.getInquiryHandledState() == LSCall.INQUIRY_NOT_HANDLED) {
-                unhandledMissedCalls.add(oneMissedCall);
-            }
-        }
+        List<LSInquiry> allInquiries = LSInquiry.getAllInquiriesInDescendingOrder();
 
-        if (unhandledMissedCalls != null) {
-            if(unhandledMissedCalls.size() > 0){
-                tvInquiriesValue.setText(""+unhandledMissedCalls.size());
-            }else {
+        if (allInquiries != null) {
+            if (allInquiries.size() > 0) {
+                tvInquiriesValue.setText("" + allInquiries.size());
+            } else {
                 llinquriesContainer.setVisibility(View.GONE);
 //                llshadow1.setVisibility(View.GONE);
             }
-
         } else {
             tvInquiriesValue.setText(0);
         }
 
         if (allUntaggedContacts != null) {
-            if(allUntaggedContacts.size() > 0){
-                tvUntaggedContacts.setText(""+allUntaggedContacts.size());
-            }else {
+            if (allUntaggedContacts.size() > 0) {
+                tvUntaggedContacts.setText("" + allUntaggedContacts.size());
+            } else {
                 llUntaggedContainer.setVisibility(View.GONE);
 //                llshadow2.setVisibility(View.GONE);
             }
-
         } else {
             tvUntaggedContacts.setText(0);
         }
 
         if (allInactiveLeads != null) {
-            if(allInactiveLeads.size() > 0){
-                tvInactiveLeadsValue.setText(""+allInactiveLeads.size());
-            }else {
+            if (allInactiveLeads.size() > 0) {
+                tvInactiveLeadsValue.setText("" + allInactiveLeads.size());
+            } else {
                 llInActiveLeadsContainer.setVisibility(View.GONE);
 //                llshadow3.setVisibility(View.GONE);
             }
         } else {
             tvInactiveLeadsValue.setText(0);
         }
-
         if (allFilteredContactsAsProspects != null) {
-            if(allFilteredContactsAsProspects.size() > 0) {
-                tvPendingProspectValue.setText(""+allFilteredContactsAsProspects.size());
-            }
-            else {
+            if (allFilteredContactsAsProspects.size() > 0) {
+                tvPendingProspectValue.setText("" + allFilteredContactsAsProspects.size());
+            } else {
                 llPendingProspectsContainer.setVisibility(View.GONE);
                 llshadow4.setVisibility(View.GONE);
             }
@@ -305,12 +295,14 @@ public class HomeFragment extends TabFragment {
         }
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
+
     @Subscribe
     public void onContactTaggedFromUntaggedContactEventModel(ContactTaggedFromUntaggedContactEventModel event) {
         Log.d(TAG, "onNoteAddedEvent() called with: event = [" + event + "]");
         updateHomeFigures();
         TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
+
     @Override
     public void onStart() {
         super.onStart();

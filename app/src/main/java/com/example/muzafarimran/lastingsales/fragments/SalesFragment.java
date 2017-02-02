@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +18,6 @@ import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +37,6 @@ public class SalesFragment extends SearchFragment {
     ExpandableStickyListHeadersListView listView = null;
     SalesAdapter salesAdapter;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
-    FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
-    FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
 
     public static SalesFragment newInstance(int page, String title) {
@@ -66,11 +60,6 @@ public class SalesFragment extends SearchFragment {
         setRetainInstance(true);
         salesAdapter = new SalesAdapter(getContext(), null, LSContact.CONTACT_TYPE_SALES);
         setHasOptionsMenu(true);
-
-        System.out.println("pro "+countProspects());
-        System.out.println("lead "+countLeads());
-        System.out.println("Lost "+countClosedLost());
-        System.out.println("Won "+countClosedWon());
     }
 
     @Override
@@ -115,31 +104,6 @@ public class SalesFragment extends SearchFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sales, container, false);
-        floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu);
-        floatingActionButtonAdd = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add);
-        floatingActionButtonImport = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import);
-        salesAdapter.setSupportFragmentManager(getFragmentManager());
-        floatingActionMenu.setClosedOnTouchOutside(true);
-
-        floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                floatingActionMenu.close(true);
-                Intent intent = new Intent(getContext(), AddLeadActivity.class);
-                intent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-                startActivity(intent);
-            }
-        });
-        floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                floatingActionMenu.close(true);
-                Intent intent = new Intent(getContext(), AddLeadActivity.class);
-                intent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
-                startActivity(intent);
-
-            }
-        });
         listView = (ExpandableStickyListHeadersListView) view.findViewById(R.id.sales_contacts_list);
         listView.setAdapter(salesAdapter);
         //Expand and Contract Leads
@@ -163,15 +127,15 @@ public class SalesFragment extends SearchFragment {
         listView = null;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search_options_menu_sales_fragment, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        if (materialSearchView != null) {
-            materialSearchView.setMenuItem(item);
-        }
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.search_options_menu_sales_fragment, menu);
+//        MenuItem item = menu.findItem(R.id.action_search);
+//        if (materialSearchView != null) {
+//            materialSearchView.setMenuItem(item);
+//        }
+//    }
 
     @Override
     protected void onSearch(String query) {

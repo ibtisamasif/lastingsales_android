@@ -31,6 +31,7 @@ import static android.view.View.GONE;
 /**
  * Created by MUZAFAR IMRAN on 9/19/20
  */
+@Deprecated
 public class MissedCallsAdapter extends BaseAdapter implements Filterable {
 
     private final static int TYPE_SEPARATOR = 0;
@@ -89,7 +90,7 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
         String number = call.getContactNumber();
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.missed_calls_list_item, parent, false);
+            convertView = mInflater.inflate(R.layout.inquiry_calls_list_item, parent, false);
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.call_name);
             holder.time = (TextView) convertView.findViewById(R.id.call_time);

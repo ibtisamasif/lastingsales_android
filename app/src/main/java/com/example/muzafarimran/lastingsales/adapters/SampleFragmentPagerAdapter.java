@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.fragments.HomeFragment;
+import com.example.muzafarimran.lastingsales.fragments.InquiriesFragment;
 import com.example.muzafarimran.lastingsales.fragments.LeadTabsFragment;
-import com.example.muzafarimran.lastingsales.fragments.MissedCallsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     private void init() {
-        mFragments.add(new MissedCallsFragment());
+        mFragments.add(new InquiriesFragment());
         mFragments.add(new HomeFragment());
         mFragments.add(new LeadTabsFragment());
     }

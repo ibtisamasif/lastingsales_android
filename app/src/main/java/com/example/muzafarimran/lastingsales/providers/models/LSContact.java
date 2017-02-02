@@ -396,4 +396,25 @@ public class LSContact extends SugarRecord {
     public void setServerId(String serverId) {
         this.serverId = serverId;
     }
+
+    @Override
+    public String toString() {
+        return "LSContact{" +
+                "contactName='" + contactName + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", contactType='" + contactType + '\'' +
+                ", phoneOne='" + phoneOne + '\'' +
+                ", phoneTwo='" + phoneTwo + '\'' +
+                ", contactDescription='" + contactDescription + '\'' +
+                ", contactCompany='" + contactCompany + '\'' +
+                ", contactAddress='" + contactAddress + '\'' +
+                ", contactCreated_at='" + contactCreated_at + '\'' +
+                ", contactUpdated_at='" + contactUpdated_at + '\'' +
+                ", contactDeleted_at='" + contactDeleted_at + '\'' +
+                ", contactSalesStatus='" + contactSalesStatus + '\'' +
+                ", detailsDropDownOpen=" + detailsDropDownOpen +
+                ", syncStatus='" + syncStatus + '\'' +
+                ", serverId='" + serverId + '\'' +
+                '}';
+    }
 }

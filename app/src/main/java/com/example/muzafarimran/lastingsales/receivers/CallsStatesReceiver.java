@@ -9,14 +9,15 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
+import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.service.PopupUIService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.CallEndNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,7 +81,6 @@ public class CallsStatesReceiver extends CallReceiver {
                     }
                 }
             }
-
         } else {
             //            new untagged contact is created, saved, entered in call entry
             LSContact tempContact = new LSContact();
@@ -92,6 +92,11 @@ public class CallsStatesReceiver extends CallReceiver {
         }
         tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
         tempCall.save();
+        LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(internationalNumber);
+        if (tempInquiry != null) {
+            tempInquiry.delete();
+            //TODO SYNC
+        }
         DataSenderNew dataSenderNew = new DataSenderNew(ctx);
         dataSenderNew.execute();
         IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
@@ -131,10 +136,8 @@ public class CallsStatesReceiver extends CallReceiver {
                         contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
                         contact.save();
                     }
-
                 }
             }
-
         } else {
 //            new untagged contact is created, saved, entered in call entry
             LSContact tempContact = new LSContact();
@@ -146,6 +149,11 @@ public class CallsStatesReceiver extends CallReceiver {
         }
         tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
         tempCall.save();
+        LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(internationalNumber);
+        if (tempInquiry != null) {
+            tempInquiry.delete();
+            //TODO SYNC
+        }
         DataSenderNew dataSenderNew = new DataSenderNew(ctx);
         dataSenderNew.execute();
         OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
@@ -155,6 +163,7 @@ public class CallsStatesReceiver extends CallReceiver {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+//        bus.register(mCallEvent); //Fixed but not sure // Update = still crashing
         bus.post(mCallEvent); //crashed here didnt fixed
         Log.d("OutgoingCallReceiver", "onOutgoingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
     }
@@ -162,7 +171,7 @@ public class CallsStatesReceiver extends CallReceiver {
     @Override
     protected void onMissedCall(Context ctx, String number, Date start) {
         Toast.makeText(ctx, "Missed Call Detected", Toast.LENGTH_SHORT).show();
-        showTagNumberPopupIfNeeded(ctx, number);
+//        showTagNumberPopupIfNeeded(ctx, number);
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         LSCall tempCall = new LSCall();
         tempCall.setContactNumber(internationalNumber);
@@ -175,6 +184,7 @@ public class CallsStatesReceiver extends CallReceiver {
         LSContact contact = LSContact.getContactFromNumber(internationalNumber);
         if (contact != null) {
             tempCall.setContact(contact);
+            tempCall.setContactName(contact.getContactName());
         } else {
             tempCall.setContact(null);
         }
@@ -184,6 +194,26 @@ public class CallsStatesReceiver extends CallReceiver {
         tempCall.setDuration(0L);
         tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
         tempCall.save();
+        LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(tempCall.getContactNumber());
+        if (tempInquiry != null) {
+            Toast.makeText(ctx, "Already Exists", Toast.LENGTH_SHORT).show();
+            tempInquiry.setCountOfInquiries(tempInquiry.getCountOfInquiries()+1);
+            tempInquiry.setBeginTime(start.getTime());
+            tempInquiry.save();
+            Log.d(TAG, "onMissedCall: getCountOfInquiries: " +tempInquiry.getCountOfInquiries());
+            Log.d(TAG, "onMissedCall: tempInquiry :" + tempInquiry.toString());
+        } else {
+            Toast.makeText(ctx, "Doesnt Exist", Toast.LENGTH_SHORT).show();
+            LSInquiry newInquiry = new LSInquiry();
+            newInquiry.setContactNumber(tempCall.getContactNumber());
+            newInquiry.setContactName(tempCall.getContactName());
+            newInquiry.setContact(tempCall.getContact());
+            newInquiry.setBeginTime(tempCall.getBeginTime());
+            newInquiry.setDuration(tempCall.getDuration());
+            newInquiry.setCountOfInquiries(1);
+            newInquiry.save();
+            Log.d(TAG, "onMissedCall: newInquiry: " + newInquiry.toString());
+        }
         DataSenderNew dataSenderNew = new DataSenderNew(ctx);
         dataSenderNew.execute();
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);

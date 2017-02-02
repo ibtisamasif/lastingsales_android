@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -24,10 +23,10 @@ import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
+@Deprecated
 public class MissedCallsFragment extends SearchFragment {
 
     public static final String TAG = "MissedCallFragment";

@@ -5,45 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.muzafarimran.lastingsales.customview.MyNestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffe5e5e5"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <com.example.muzafarimran.lastingsales.customview.WrapContentHeightViewPager
-                android:id="@+id/viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!--<android.support.design.widget.TabLayout-->
-                <!--android:id="@+id/sliding_tabs"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="60dp"-->
-                <!--android:layout_gravity="center_horizontal|center_vertical"-->
-                <!--android:background="#ececec"-->
-                <!--app:tabGravity="fill"-->
-                <!--app:tabIndicatorColor="@color/tab_indicator_color"-->
-                <!--app:tabMode="scrollable"/>-->
-
-            <!--<android.support.v4.view.ViewPager-->
-                <!--android:id="@+id/viewpager"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="0px"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@android:color/white"/>-->
-
-        </LinearLayout>
-
-
-    </com.example.muzafarimran.lastingsales.customview.MyNestedScrollView>
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,7 +12,6 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolbarCollapse"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -84,9 +44,32 @@
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/tab_indicator_color"
             app:tabMode="fixed"
-            app:tabTextColor="@color/darkGray"
-            app:tabSelectedTextColor="@color/white"/>
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/darkGray" />
 
     </android.support.design.widget.AppBarLayout>
+
+    <com.example.muzafarimran.lastingsales.customview.MyNestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffe5e5e5"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <com.example.muzafarimran.lastingsales.customview.WrapContentHeightViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </com.example.muzafarimran.lastingsales.customview.MyNestedScrollView>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

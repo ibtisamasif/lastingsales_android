@@ -19,7 +19,6 @@ public class LSCall extends SugarRecord {
     public static final String CALL_TYPE_INCOMING = "incoming";
     @Ignore
     public static final String CALL_TYPE_MISSED = "missed";
-
     @Ignore
     public static final int INQUIRY_HANDLED = 1;
     @Ignore
@@ -77,7 +76,7 @@ public class LSCall extends SugarRecord {
     public static List<LSCall> getCallsByType(String type) {
         return LSCall.find(LSCall.class, "type = ? ", type);
     }
-
+@Deprecated
     public static List<LSCall> getCallsByInquiryHandledStateInDescendingOrder(int state) {
         ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("inquiry_handled_state").eq(state)).orderBy("begin_time DESC").list();
         return allCalls;
@@ -121,7 +120,6 @@ public class LSCall extends SugarRecord {
 */
 
     public static List<LSCall> getAllCallsInDescendingOrder() {
-
         ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).orderBy("begin_time DESC").list();
         return allCalls;
     }
