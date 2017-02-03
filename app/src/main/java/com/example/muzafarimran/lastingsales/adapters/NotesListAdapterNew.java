@@ -94,7 +94,7 @@ public class NotesListAdapterNew extends BaseAdapter {
         public void onClick(View view) {
             Intent intent = new Intent(mContext, AddEditNoteActivity.class);
             intent.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_EDIT_EXISTING_NOTE);
-            intent.putExtra(AddEditNoteActivity.LAUNCH_MODE_NOTE_ID, ""+note.getId());
+            intent.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_NOTE_ID, ""+note.getId());
             mContext.startActivity(intent);
         }
     }

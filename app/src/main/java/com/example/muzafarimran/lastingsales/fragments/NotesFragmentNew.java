@@ -2,9 +2,7 @@ package com.example.muzafarimran.lastingsales.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddEditNoteActivity;
 import com.example.muzafarimran.lastingsales.adapters.NotesListAdapterNew;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -40,7 +37,7 @@ public class NotesFragmentNew extends TabFragment {
     ListView lvNotesList;
     LSContact selectedContact;
     private String number = "";
-    FloatingActionButton floatingActionButton;
+//    FloatingActionButton floatingActionButton;
     private TinyBus bus;
 
     public NotesFragmentNew() {
@@ -152,17 +149,17 @@ public class NotesFragmentNew extends TabFragment {
             lvNotesList.setAdapter(new NotesListAdapterNew(getActivity(), allNotesOfThisContact));
         }
 
-        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_add_note);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddEditNoteActivity.class);
-                intent.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_ADD_NEW_NOTE);
-                intent.putExtra(AddEditNoteActivity.LAUNCH_MODE_CONTACT_NUMBER, number);
-                startActivity(intent);
-//                startActivityForResult(new Intent(getContext(), AddNoteActivity.class), AddNoteActivity.ADD_NOTE_REQUEST_CODE);
-            }
-        });
+//        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_add_note);
+//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity(), AddEditNoteActivity.class);
+//                intent.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_ADD_NEW_NOTE);
+//                intent.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_CONTACT_NUMBER, number);
+//                startActivity(intent);
+////                startActivityForResult(new Intent(getContext(), AddNoteActivity.class), AddNoteActivity.ADD_NOTE_REQUEST_CODE);
+//            }
+//        });
         return view;
     }
 }

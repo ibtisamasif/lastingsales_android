@@ -29,8 +29,8 @@ public class AddEditNoteActivity extends AppCompatActivity {
     public static final String LAUNCH_MODE_ADD_NEW_NOTE = "launch_mode_add_new_note";
     public static final String LAUNCH_MODE_EDIT_EXISTING_NOTE = "launch_mode_edit_existing_note";
 
-    public static final String LAUNCH_MODE_NOTE_ID = "launch_mode_note_id";
-    public static final String LAUNCH_MODE_CONTACT_NUMBER = "launch_mode_contact_number";
+    public static final String TAG_LAUNCH_MODE_NOTE_ID = "launch_mode_note_id";
+    public static final String TAG_LAUNCH_MODE_CONTACT_NUMBER = "launch_mode_contact_number";
 
     public static final String ADD_NOTE_CONTACT_NUMBER = "add_note_contact_number";
 
@@ -62,7 +62,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
         if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_NOTE)) {
             // for edit note
-            noteIdLong = Long.parseLong(bundle.getString(LAUNCH_MODE_NOTE_ID));
+            noteIdLong = Long.parseLong(bundle.getString(TAG_LAUNCH_MODE_NOTE_ID));
             selectedNote = LSNote.findById(LSNote.class, noteIdLong);
             etContactNote.setText(selectedNote.getNoteText());
             selectedContact = selectedNote.getContactOfNote();
@@ -70,7 +70,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
         } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_NOTE)) {
             //for add new note
-            number = bundle.getString(LAUNCH_MODE_CONTACT_NUMBER);
+            number = bundle.getString(TAG_LAUNCH_MODE_CONTACT_NUMBER);
             selectedContact = LSContact.getContactFromNumber(number);
             tvContactName.setText(selectedContact.getContactName());
         }
