@@ -66,7 +66,8 @@
                 android:layout_margin="4dp"
                 android:padding="8dp"
                 android:text="@string/tomorrow"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:background="@drawable/btn_primary"/>
 
             <Button
                 android:id="@+id/bThreeDaysFollowupPopup"
@@ -75,7 +76,8 @@
                 android:layout_margin="4dp"
                 android:padding="8dp"
                 android:text="@string/three_days"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:background="@drawable/btn_primary"/>
 
             <Button
                 android:id="@+id/bOneWeekFollowupPopup"
@@ -84,7 +86,8 @@
                 android:layout_margin="4dp"
                 android:padding="8dp"
                 android:text="@string/one_week"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:background="@drawable/btn_primary"/>
 
         </LinearLayout>
 
@@ -102,7 +105,8 @@
                 android:layout_margin="4dp"
                 android:padding="8dp"
                 android:text="09-12-16"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:background="@drawable/btn_primary"/>
 
             <Button
                 android:id="@+id/bTimeFollowupPopup"
@@ -111,7 +115,8 @@
                 android:layout_margin="4dp"
                 android:padding="8dp"
                 android:text="01:00 PM "
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:background="@drawable/btn_primary"/>
 
         </LinearLayout>
 

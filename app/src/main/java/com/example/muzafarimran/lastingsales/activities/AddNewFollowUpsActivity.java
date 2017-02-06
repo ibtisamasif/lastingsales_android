@@ -57,11 +57,11 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
     Button bCancel;
     Button bSave;
     EditText etFollowupTitleText;
-    int year;
-    int month;
-    int day;
-    int hour;
-    int minute;
+    int mYear;
+    int mMonth;
+    int mDay;
+    int mHour;
+    int mMinute;
     private LSContact selectedContact = null;
     private TempFollowUp selectedFollowup = null;
     private TextView tvTitleFollowupPopup;
@@ -137,14 +137,14 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                     } else {
                         titleText = "Empty";
                     }
-                    if (year != 0 && day != 0 && hour != 0 && minute != 0) {
+                    if (mYear != 0 && mDay != 0 && mHour != 0 && mMinute != 0) {
                         Calendar dateTimeForFollowup = Calendar.getInstance();
-                        dateTimeForFollowup.set(Calendar.YEAR, year);
-                        dateTimeForFollowup.set(Calendar.MONTH, month);
-                        dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
-                        dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, 14);
-                        dateTimeForFollowup.set(Calendar.MINUTE, 18);
-                        Log.d(TAG, "New Alarm func: Year="+year+" Month="+month+" DAY="+day+" Hour="+hour+" Minute="+minute);
+                        dateTimeForFollowup.set(Calendar.YEAR, mYear);
+                        dateTimeForFollowup.set(Calendar.MONTH, mMonth);
+                        dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, mDay);
+                        dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, mHour);
+                        dateTimeForFollowup.set(Calendar.MINUTE, mMinute);
+                        Log.d(TAG, "New Alarm func: Year="+ mYear +" Month="+ mMonth +" DAY="+ mDay +" Hour="+ mHour +" Minute="+ mMinute);
                         tempFollowUp.setContact(selectedContact);
                         tempFollowUp.setTitle(titleText);
                         tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
@@ -165,13 +165,13 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                     } else {
                         titleText = "Empty";
                     }
-                    if (year != 0 && day != 0 && hour != 0 && minute != 0) {
+                    if (mYear != 0 && mDay != 0 && mHour != 0 && mMinute != 0) {
                         Calendar dateTimeForFollowup = Calendar.getInstance();
-                        dateTimeForFollowup.set(Calendar.YEAR, year);
-                        dateTimeForFollowup.set(Calendar.MONTH, month);
-                        dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
-                        dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
-                        dateTimeForFollowup.set(Calendar.MINUTE, minute);
+                        dateTimeForFollowup.set(Calendar.YEAR, mYear);
+                        dateTimeForFollowup.set(Calendar.MONTH, mMonth);
+                        dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, mDay);
+                        dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, mHour);
+                        dateTimeForFollowup.set(Calendar.MINUTE, mMinute);
 //                TempFollowUp tempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
                         tempFollowUp.setContact(selectedContact);
                         tempFollowUp.setTitle(titleText);
@@ -200,9 +200,10 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                     Calendar now = Calendar.getInstance();
                     now.add(Calendar.DAY_OF_MONTH, 1);
                     setDateTimeFromMiliseconds(now.getTimeInMillis());
-                    day = now.get(Calendar.DAY_OF_MONTH);
-                    month = (now.get(Calendar.MONTH));
-                    year = now.get(Calendar.YEAR);
+                    mDay = now.get(Calendar.DAY_OF_MONTH);
+                    mMonth = (now.get(Calendar.MONTH));
+                    mYear = now.get(Calendar.YEAR);
+                    Toast.makeText(AddNewFollowUpsActivity.this, "Tomorrow", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -213,9 +214,10 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                     Calendar now = Calendar.getInstance();
                     now.add(Calendar.DAY_OF_MONTH, 3);
                     setDateTimeFromMiliseconds(now.getTimeInMillis());
-                    day = now.get(Calendar.DAY_OF_MONTH);
-                    month = (now.get(Calendar.MONTH));
-                    year = now.get(Calendar.YEAR);
+                    mDay = now.get(Calendar.DAY_OF_MONTH);
+                    mMonth = (now.get(Calendar.MONTH));
+                    mYear = now.get(Calendar.YEAR);
+                    Toast.makeText(AddNewFollowUpsActivity.this, "3 Days", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -226,17 +228,18 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                     Calendar now = Calendar.getInstance();
                     now.add(Calendar.DAY_OF_MONTH, 7);
                     setDateTimeFromMiliseconds(now.getTimeInMillis());
-                    day = now.get(Calendar.DAY_OF_MONTH);
-                    month = (now.get(Calendar.MONTH));
-                    year = now.get(Calendar.YEAR);
+                    mDay = now.get(Calendar.DAY_OF_MONTH);
+                    mMonth = (now.get(Calendar.MONTH));
+                    mYear = now.get(Calendar.YEAR);
+                    Toast.makeText(AddNewFollowUpsActivity.this, "1 Week", Toast.LENGTH_SHORT).show();
                 }
             });
         }
-        day = now.get(Calendar.DAY_OF_MONTH);
-        month = (now.get(Calendar.MONTH));
-        year = now.get(Calendar.YEAR);
-        hour = now.get(Calendar.HOUR_OF_DAY);
-        minute = now.get(Calendar.MINUTE);
+        mDay = now.get(Calendar.DAY_OF_MONTH);
+        mMonth = (now.get(Calendar.MONTH));
+        mYear = now.get(Calendar.YEAR);
+        mHour = now.get(Calendar.HOUR_OF_DAY);
+        mMinute = now.get(Calendar.MINUTE);
         setDateTimeFromMiliseconds(now.getTimeInMillis());
         bDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,8 +280,8 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
         if (bTime != null) {
             bTime.setText(hourOfDay + ":" + minute);
-            hour = hourOfDay;
-            minute = minute;
+            mHour = hourOfDay;
+            mMinute = minute;
         }
     }
 
@@ -287,9 +290,9 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
         String date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year + "";
         if (bDate != null) {
             bDate.setText(date);
-            this.year = year;
-            this.month = monthOfYear;
-            this.day = dayOfMonth;
+            this.mYear = year;
+            this.mMonth = monthOfYear;
+            this.mDay = dayOfMonth;
         }
     }
 
@@ -299,16 +302,16 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
         int interval = 8000;
 //        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
         Calendar dateAndTimeForAlarm = Calendar.getInstance();
-        /*int year = dateForFollowUp.get(Calendar.YEAR);
-        int month = dateForFollowUp.get(Calendar.MONTH);
-        int day = dateForFollowUp.get(Calendar.DAY_OF_MONTH);
-        int hour = timeForFollowUp.get(Calendar.HOUR_OF_DAY);
-        int minute = timeForFollowUp.get(Calendar.MINUTE);
+        /*int mYear = dateForFollowUp.get(Calendar.YEAR);
+        int mMonth = dateForFollowUp.get(Calendar.MONTH);
+        int mDay = dateForFollowUp.get(Calendar.DAY_OF_MONTH);
+        int mHour = timeForFollowUp.get(Calendar.HOUR_OF_DAY);
+        int mMinute = timeForFollowUp.get(Calendar.MINUTE);
         int seconds = 0;*/
-        dateAndTimeForAlarm.set(year, month, day, hour, minute, 0);
+        dateAndTimeForAlarm.set(mYear, mMonth, mDay, mHour, mMinute, 0);
+        Log.d(TAG, "Set Alarm func: Year="+ mYear +" Month="+ mMonth +" DAY="+ mDay +" Hour="+ mHour +" Minute="+ mMinute);
         Intent aint = new Intent(context, AlarmReceiver.class);
-//        String note = etNote.getText().toString();
-//        String note = "Hello";
+
         aint.putExtra("followupid", tempFollowUp.getId() + "");
 //        aint.putExtra("message","This is message from followup");
         pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(tempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);

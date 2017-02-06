@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.FollowupsTodayListAdapter;
@@ -21,16 +22,29 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 
 public class FollowupsTodayListFragment extends TabFragment {
-    public static final String TAG = "MissedCallFragment";
+    public static final String TAG = "FollowupsTodayListFragment";
     FollowupsTodayListAdapter followupsAdapter;
     ExpandableStickyListHeadersListView listView = null;
     ArrayList<TempFollowUp> DueFollowups;
     ArrayList<TempFollowUp> DoneFollowups;
+    Long selectedContactID = 0l;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            selectedContactID = bundle.getLong("contactID");
+        }
+        if(selectedContactID != null){
+            Toast.makeText(getActivity(), "Not NUll "+selectedContactID, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getActivity(), "NUll " +selectedContactID, Toast.LENGTH_SHORT).show();
+        }
         ArrayList<TempFollowUp> followUps = getFollowupsOFToday();
         followupsAdapter = new FollowupsTodayListAdapter(getContext(),followUps);
         setHasOptionsMenu(true);
@@ -43,8 +57,15 @@ public class FollowupsTodayListFragment extends TabFragment {
     @Override
     public void onResume() {
         super.onResume();
-        List<TempFollowUp> followUps = getFollowupsOFToday();
-        setList(followUps);
+//        if(selectedContactID != null){
+//            Toast.makeText(getActivity(), "NotNUll", Toast.LENGTH_SHORT).show();
+//            ArrayList<TempFollowUp> followUps = getFollowupsOFToday();
+//            setList(followUps);
+//        }
+//        else {
+            ArrayList<TempFollowUp> followUps = getFollowupsOFToday();
+            setList(followUps);
+//        }
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

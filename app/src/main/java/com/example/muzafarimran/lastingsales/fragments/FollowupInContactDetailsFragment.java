@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,14 +26,12 @@ import java.util.Calendar;
  * Created by ibtisam on 12/30/2016.
  */
 
-public class FollowupInContactDetailsFragment extends TabFragment{
+public class FollowupInContactDetailsFragment extends TabFragment {
 
 
-    public static final String TAG = "FollowupInContactDetailsFragment";
+    public static final String TAG = "FollowupInContactFra";
     MaterialSearchView searchView;
     TempFollowUp selectedFolloup = null;
-    private String number = "";
-    private LSContact selectedContact;
     Button addFollowupBtn;
     LinearLayout llFolloupNoteRow;
     LinearLayout llFolloupDateTimeRow;
@@ -40,9 +39,11 @@ public class FollowupInContactDetailsFragment extends TabFragment{
     TextView tvFollowupDateTime;
     ImageButton ibEditFollowup;
     FrameLayout followupsListHolderFrameLayout;
+    private String number = "";
+    private LSContact selectedContact;
     private FollowupsTodayListFragment followupsTodayListFragment;
 
-    public static FollowupInContactDetailsFragment newInstance(int page, String title , String number) {
+    public static FollowupInContactDetailsFragment newInstance(int page, String title, String number) {
         FollowupInContactDetailsFragment fragmentFirst = new FollowupInContactDetailsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
@@ -70,6 +71,7 @@ public class FollowupInContactDetailsFragment extends TabFragment{
     @Override
     public void onResume() {
         super.onResume();
+        updateUi();
     }
 
     @Override
@@ -79,41 +81,77 @@ public class FollowupInContactDetailsFragment extends TabFragment{
         addFollowupBtn = (Button) view.findViewById(R.id.bAddFollowupContactDetailsScreen);
         llFolloupNoteRow = (LinearLayout) view.findViewById(R.id.followupNoteRow);
         llFolloupDateTimeRow = (LinearLayout) view.findViewById(R.id.followupDateTimeRow);
+        ibEditFollowup = (ImageButton) view.findViewById(R.id.ibEditFollowupButton);
         tvFollowupNoteText = (TextView) view.findViewById(R.id.followupNoteText);
         tvFollowupDateTime = (TextView) view.findViewById(R.id.followupDateTimeText);
-        ibEditFollowup = (ImageButton) view.findViewById(R.id.ibEditFollowupButton);
         followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
 
         Bundle bundle = this.getArguments();
         number = bundle.getString("someNumber");
-        if(number!=null) {
+        if (number != null) {
             selectedContact = LSContact.getContactFromNumber(number);
-        addFollowupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(getActivity(), AddNewFollowUpsActivity.class);
-                myIntent.putExtra(AddNewFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddNewFollowUpsActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
-                myIntent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
-                startActivity(myIntent);
-            }
-        });
+            addFollowupBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent myIntent = new Intent(getActivity(), AddNewFollowUpsActivity.class);
+                    myIntent.putExtra(AddNewFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddNewFollowUpsActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
+                    myIntent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
+                    startActivity(myIntent);
+                }
+            });
+            ibEditFollowup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent myIntent = new Intent(getActivity(), AddNewFollowUpsActivity.class);
+                    myIntent.putExtra(AddNewFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddNewFollowUpsActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
+                    myIntent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
+                    myIntent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, selectedFolloup.getId() + "");
+                    startActivity(myIntent);
+                }
+            });
 
+
+            followupsTodayListFragment = new FollowupsTodayListFragment();
+            Bundle newBundle = new Bundle();
+            newBundle.putLong("contactID", selectedContact.getId());
+            followupsTodayListFragment.setArguments(newBundle);
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.replace(R.id.followupsListHolderFrameLayout, followupsTodayListFragment);
+            transaction.commit();
+
+        }
+        return view;
+    }
+
+    public void updateUi(){
+        Log.d(TAG, "onResume: called");
         ArrayList<TempFollowUp> allFollowupsOfThisContact = selectedContact.getAllFollowups();
 //        ArrayList<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getAllFollowupsFromContactId(selectedContact.getId()+"");
         Calendar now = Calendar.getInstance();
         if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
             for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
-                if (oneFollowup.getDateTimeForFollowup() > now.getTimeInMillis()) {
+                if (oneFollowup.getDateTimeForFollowup()-30000 > now.getTimeInMillis()) { //TODO not an ethical way to fix this bug.
+                    Log.d(TAG, "updateUi time difference: " + (oneFollowup.getDateTimeForFollowup() - now.getTimeInMillis()));
                     selectedFolloup = oneFollowup;
                     break;
+                }
+                else {
+                    selectedFolloup = null;
                 }
             }
         }
         if (selectedFolloup == null) {
+            Log.d(TAG, "updateUi: if called");
             llFolloupNoteRow.setVisibility(View.GONE);
             llFolloupDateTimeRow.setVisibility(View.GONE);
             ibEditFollowup.setVisibility(View.GONE);
+            addFollowupBtn.setVisibility(View.VISIBLE);
         } else {
+            Log.d(TAG, "updateUi: else called");
+            addFollowupBtn.setVisibility(View.GONE);
+            llFolloupNoteRow.setVisibility(View.VISIBLE);
+            llFolloupDateTimeRow.setVisibility(View.VISIBLE);
+            ibEditFollowup.setVisibility(View.VISIBLE);
             tvFollowupNoteText.setText(selectedFolloup.getTitle());
             Calendar followupTimeDate = Calendar.getInstance();
             followupTimeDate.setTimeInMillis(selectedFolloup.getDateTimeForFollowup());
@@ -122,28 +160,6 @@ public class FollowupInContactDetailsFragment extends TabFragment{
                     + (followupTimeDate.get(Calendar.MONTH) + 1) + "-" + followupTimeDate.get(Calendar.YEAR)
                     + " at " + followupTimeDate.get(Calendar.HOUR_OF_DAY) + " : " + followupTimeDate.get(Calendar.MINUTE);
             tvFollowupDateTime.setText(dateTimeForFollowupString);
-            addFollowupBtn.setVisibility(View.GONE);
         }
-        ibEditFollowup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(getActivity(), AddNewFollowUpsActivity.class);
-                myIntent.putExtra(AddNewFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddNewFollowUpsActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
-                myIntent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId() + "");
-                myIntent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, selectedFolloup.getId() + "");
-                startActivity(myIntent);
-            }
-        });
-
-                //Bundle bundle = new Bundle();
-                //bundle.putString(NotesFragmentNew.CONTACT_ID, selectedContact.getId().toString());
-                followupsTodayListFragment = new FollowupsTodayListFragment();
-                //followupsTodayListFragment.setArguments(bundle);
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                transaction.replace(R.id.followupsListHolderFrameLayout, followupsTodayListFragment);
-                transaction.commit();
-
-        }
-        return view;
     }
 }

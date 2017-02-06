@@ -996,11 +996,11 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         int interval = 8000;
 //        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
         Calendar dateAndTimeForAlarm = Calendar.getInstance();
-        /*int year = dateForFollowUp.get(Calendar.YEAR);
-        int month = dateForFollowUp.get(Calendar.MONTH);
-        int day = dateForFollowUp.get(Calendar.DAY_OF_MONTH);
-        int hour = timeForFollowUp.get(Calendar.HOUR_OF_DAY);
-        int minute = timeForFollowUp.get(Calendar.MINUTE);
+        /*int mYear = dateForFollowUp.get(Calendar.YEAR);
+        int mMonth = dateForFollowUp.get(Calendar.MONTH);
+        int mDay = dateForFollowUp.get(Calendar.DAY_OF_MONTH);
+        int mHour = timeForFollowUp.get(Calendar.HOUR_OF_DAY);
+        int mMinute = timeForFollowUp.get(Calendar.MINUTE);
         int seconds = 0;*/
         dateAndTimeForAlarm.set(year, month, day, hour, minute, 0);
         Intent aint = new Intent(context, AlarmReceiver.class);
