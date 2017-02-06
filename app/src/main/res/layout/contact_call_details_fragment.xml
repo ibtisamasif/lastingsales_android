@@ -2,11 +2,12 @@
 
 <!-- The frame layout is here since we will be showing either
 the empty view or the list view.  -->
-<FrameLayout android:layout_width="match_parent"
-    android:layout_height="0dip"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="0dip"
     android:layout_weight="1"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <!-- Here is the list. Since we are using a ListActivity, we
          have to call it "@android:id/list" so ListActivity will
@@ -19,11 +20,11 @@ the empty view or the list view.  -->
 
     <!-- Here is the view to show if the list is emtpy -->
     <!--<TextView-->
-        <!--android:id="@android:id/empty"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="All Calls"-->
-        <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+    <!--android:id="@android:id/empty"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:text="All Calls"-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
 
 </FrameLayout>
 

@@ -68,7 +68,6 @@ public class DataSenderNew extends AsyncTask<Object, Void, Void> {
         } catch (Exception e) {
             Log.d(TAG, "SyncingException: " + e.getMessage());
         }
-
         return null;
     }
 
