@@ -21,13 +21,13 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsActivity;
+import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.fragments.SalesContactDeleteBottomSheetDialogFragment;
 import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -209,13 +209,13 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
-                            case R.id.lead_type_prospect:
-                                contact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                                contact.save();
-                                notifyDataSetChanged();
-                                break;
+//                            case R.id.lead_type_prospect:
+//                                contact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+//                                contact.save();
+//                                notifyDataSetChanged();
+//                                break;
                             case R.id.lead_type_lead:
-                                contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                contact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 contact.save();
                                 notifyDataSetChanged();
                                 break;
@@ -237,15 +237,15 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
                 popupMenu.show();
             }
         });
-        if(contact.getContactType()!=null) {
+        if (contact.getContactType() != null) {
             if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                 if (contact.getContactSalesStatus() != null && !contact.getContactSalesStatus().equals("")) {
                     switch (contact.getContactSalesStatus()) {
-                        case LSContact.SALES_STATUS_PROSTPECT:
-                            holder.salesLeadStatus.setText("Prospect");
-                            break;
-                        case LSContact.SALES_STATUS_LEAD:
-                            holder.salesLeadStatus.setText("Lead");
+//                        case LSContact.SALES_STATUS_PROSTPECT:
+//                            holder.salesLeadStatus.setText("Prospect");
+//                            break;
+                        case LSContact.SALES_STATUS_INPROGRESS:
+                            holder.salesLeadStatus.setText("InProgress");
                             break;
                         case LSContact.SALES_STATUS_CLOSED_WON:
                             holder.salesLeadStatus.setText("Closed Won");
@@ -351,12 +351,9 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         // set header text
         SalesFragment obj = new SalesFragment();
         if (getHeaderId(position) == 0) {
-            holder.saleType.setText("Prospects");
-            holder.saleTypeCount.setText(Integer.toString(obj.countProspects()));
-        } else if (getHeaderId(position) == 1) {
-            holder.saleType.setText("Leads");
+            holder.saleType.setText("InProgress");
             holder.saleTypeCount.setText(Integer.toString(obj.countLeads()));
-        } else if (getHeaderId(position) == 2) {
+        } else if (getHeaderId(position) == 1) {
             holder.saleType.setText("Closed Lost");
             holder.saleTypeCount.setText(Integer.toString(obj.countClosedLost()));
         } else {
@@ -374,14 +371,12 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
     public long getHeaderId(int position) {
 //        return filteredData.get(position).getContactName().subSequence(0,1).charAt(0);
 
-        if (filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
+        if (filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_INPROGRESS)) {
             return 0;
-        } else if (filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_LEAD)) {
-            return 1;
         } else if (filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_LOST)) {
-            return 2;
+            return 1;
         } else if (filteredData.get(position).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_WON)) {
-            return 3;
+            return 2;
         }
         return -1;
     }
@@ -389,6 +384,14 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
     /*
     * Hold references to sub views
     * */
+
+    public FragmentManager getSupportFragmentManager() {
+        return supportFragmentManager;
+    }
+
+    public void setSupportFragmentManager(FragmentManager supportFragmentManager) {
+        this.supportFragmentManager = supportFragmentManager;
+    }
 
     static class HeaderViewHolder {
         TextView saleType;
@@ -481,14 +484,5 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
             detailsActivityIntent.putExtra(ContactDetailsActivity.KEY_CONTACT_ID, contactId + "");
             mContext.startActivity(detailsActivityIntent);
         }
-    }
-
-
-    public FragmentManager getSupportFragmentManager() {
-        return supportFragmentManager;
-    }
-
-    public void setSupportFragmentManager(FragmentManager supportFragmentManager) {
-        this.supportFragmentManager = supportFragmentManager;
     }
 }

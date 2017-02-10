@@ -18,14 +18,14 @@ import java.util.Objects;
 
 public class LSContact extends SugarRecord {
 
+//    @Ignore
+//    public static final String SALES_STATUS_PROSTPECT = "prospect";
     @Ignore
-    public static final String SALES_STATUS_PROSTPECT = "open_prostpect";
+    public static final String SALES_STATUS_INPROGRESS = "InProgress";
     @Ignore
-    public static final String SALES_STATUS_LEAD = "open_lead";
+    public static final String SALES_STATUS_CLOSED_WON = "Won";
     @Ignore
-    public static final String SALES_STATUS_CLOSED_WON = "closed_won";
-    @Ignore
-    public static final String SALES_STATUS_CLOSED_LOST = "closed_lost";
+    public static final String SALES_STATUS_CLOSED_LOST = "Lost";
     @Ignore
     public static final String CONTACT_TYPE_SALES = "type_sales";
     @Ignore
@@ -85,7 +85,7 @@ public class LSContact extends SugarRecord {
     public static List<LSContact> getAllInactiveLeadContacts() {
         try { //TODO check weather below steps are required or not.
             ArrayList<LSContact> allColleagues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-            ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(SALES_STATUS_LEAD);
+            ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
             allLeads.removeAll(allColleagues);
             ArrayList<LSContact> allInactiveLeads = new ArrayList<LSContact>();
 //            long milisecondsIn3Days = 259200000;
@@ -188,31 +188,46 @@ public class LSContact extends SugarRecord {
             return new ArrayList<LSContact>();
         }
     }
-    @Deprecated
-    public static List<LSContact> getAllPendingProspectsContacts() {
+//    @Deprecated
+//    public static List<LSContact> getAllPendingProspectsContacts() {
+//        try {
+//
+//            ArrayList<LSContact> allProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(SALES_STATUS_PROSTPECT);
+//            ArrayList<LSContact> allNonPendingProspects = new ArrayList<LSContact>();
+//            long secondsThresholdValue = 10;
+//
+//            for (LSContact oneContact : allProspects) {
+//                ArrayList<LSCall> allCallsOfThisProspect = LSCall.getCallsFromNumber(oneContact.getPhoneOne());
+//                if (allCallsOfThisProspect != null && allCallsOfThisProspect.size() > 0) {
+//                    for (LSCall oneCall : allCallsOfThisProspect) {
+//                        if (oneCall.getDuration() > secondsThresholdValue) {
+//                            allNonPendingProspects.add(oneContact);
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//            allProspects.removeAll(allNonPendingProspects);
+//            return allProspects;
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+
+    public static LSContact getContactFromServerId(String id) {
+        ArrayList<LSContact> list = null;
         try {
-
-            ArrayList<LSContact> allProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(SALES_STATUS_PROSTPECT);
-            ArrayList<LSContact> allNonPendingProspects = new ArrayList<LSContact>();
-            long secondsThresholdValue = 10;
-
-            for (LSContact oneContact : allProspects) {
-                ArrayList<LSCall> allCallsOfThisProspect = LSCall.getCallsFromNumber(oneContact.getPhoneOne());
-                if (allCallsOfThisProspect != null && allCallsOfThisProspect.size() > 0) {
-                    for (LSCall oneCall : allCallsOfThisProspect) {
-                        if (oneCall.getDuration() > secondsThresholdValue) {
-                            allNonPendingProspects.add(oneContact);
-                            break;
-                        }
-                    }
-                }
-            }
-            allProspects.removeAll(allNonPendingProspects);
-            return allProspects;
-        } catch (SQLiteException e) {
-            return new ArrayList<LSContact>();
+            list = (ArrayList<LSContact>) LSContact.find(LSContact.class, "server_id = ? ", id);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
         }
     }
+
     public static LSContact getContactFromNumber(String number) {
         ArrayList<LSContact> list = null;
         try {

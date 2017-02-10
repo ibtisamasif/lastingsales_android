@@ -139,7 +139,6 @@
                             android:layout_marginRight="16dp"
                             android:layout_weight="1"
                             android:background="@drawable/shape_borders_rounded_corners_primary_color_white_fill"
-                            android:inputType="phone"
                             android:padding="8dp"
                             android:textColor="@color/black"
                             android:textSize="20sp"

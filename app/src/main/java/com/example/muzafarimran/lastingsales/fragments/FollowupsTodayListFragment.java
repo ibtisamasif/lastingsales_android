@@ -20,7 +20,6 @@ import java.util.List;
 import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-
 public class FollowupsTodayListFragment extends TabFragment {
     public static final String TAG = "FollowupsTodayListFragment";
     FollowupsTodayListAdapter followupsAdapter;

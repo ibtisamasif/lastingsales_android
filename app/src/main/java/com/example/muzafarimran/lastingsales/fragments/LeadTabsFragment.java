@@ -128,11 +128,8 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
     private void updateTabFigues() {
         //List Taken To Filter out Colleagues
         ArrayList<LSContact> allCollegues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-        //Prospects List
-        ArrayList<LSContact> allProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-        allProspects.removeAll(allCollegues);
         //Leads List
-        List<LSContact> allLeads = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_LEAD);
+        List<LSContact> allLeads = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         allLeads.removeAll(allCollegues);
         //All Won
         List<LSContact> allWon = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
@@ -142,39 +139,32 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
         allLost.removeAll(allCollegues);
         //InActive Leads List
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
-        if (allProspects != null) {
-            if (allProspects.size() > 0) {
-                tabs.getTabAt(0).setText("Prospects" + " (" + allProspects.size() + ")");
-            } else {
-                tabs.getTabAt(0).setText("Prospects" + " (" + 0 + ")");
-            }
-        }
         if (allLeads != null) {
             if (allLeads.size() > 0) {
-                tabs.getTabAt(1).setText("Leads" + " (" + allLeads.size() + ")");
+                tabs.getTabAt(0).setText("InProgress" + " (" + allLeads.size() + ")");
             } else {
-                tabs.getTabAt(1).setText("Leads" + " (" + 0 + ")");
+                tabs.getTabAt(0).setText("InProgress" + " (" + 0 + ")");
             }
         }
         if (allWon != null) {
             if (allWon.size() > 0) {
-                tabs.getTabAt(2).setText("Won" + " (" + allWon.size() + ")");
+                tabs.getTabAt(1).setText("Won" + " (" + allWon.size() + ")");
             } else {
-                tabs.getTabAt(2).setText("Won" + " (" + 0 + ")");
+                tabs.getTabAt(1).setText("Won" + " (" + 0 + ")");
             }
         }
         if (allLost != null) {
             if (allLost.size() > 0) {
-                tabs.getTabAt(3).setText("Lost" + " (" + allLost.size() + ")");
+                tabs.getTabAt(2).setText("Lost" + " (" + allLost.size() + ")");
             } else {
-                tabs.getTabAt(3).setText("Lost" + " (" + 0 + ")");
+                tabs.getTabAt(2).setText("Lost" + " (" + 0 + ")");
             }
         }
         if (allInactiveLeads != null) {
             if (allInactiveLeads.size() > 0) {
-                tabs.getTabAt(4).setText("InActive" + " (" + allInactiveLeads.size() + ")");
+                tabs.getTabAt(3).setText("InActive" + " (" + allInactiveLeads.size() + ")");
             } else {
-                tabs.getTabAt(4).setText("InActive" + " (" + 0 + ")");
+                tabs.getTabAt(3).setText("InActive" + " (" + 0 + ")");
             }
         }
     }

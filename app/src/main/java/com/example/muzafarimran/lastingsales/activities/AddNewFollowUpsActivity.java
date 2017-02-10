@@ -17,7 +17,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
-import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -148,11 +148,11 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                         tempFollowUp.setContact(selectedContact);
                         tempFollowUp.setTitle(titleText);
                         tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                        tempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                        tempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_ADDED_NOT_SYNCED);
                         tempFollowUp.save();
                         setAlarm(getApplicationContext(), tempFollowUp);
-                        DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
-                        dataSenderNew.execute();
+                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                        dataSenderAsync.execute();
                     }
                     finish();
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
@@ -176,11 +176,11 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                         tempFollowUp.setContact(selectedContact);
                         tempFollowUp.setTitle(titleText);
                         tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                        tempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                        tempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_EDIT_NOT_SYNCED);
                         tempFollowUp.save();
                         setAlarm(getApplicationContext(), tempFollowUp);
-                        DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
-                        dataSenderNew.execute();
+                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                        dataSenderAsync.execute();
                     }
                     finish();
                     Toast.makeText(AddNewFollowUpsActivity.this, "Followup Added", Toast.LENGTH_SHORT).show();

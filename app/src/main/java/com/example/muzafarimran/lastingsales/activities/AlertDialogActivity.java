@@ -37,7 +37,7 @@ public class AlertDialogActivity extends Activity {
         builder.setSound(alarmSound);
         builder.setSmallIcon(R.drawable.call_icon)
                 .setContentTitle("Lastingsales Notification")
-                .setContentText("this is content text");
+                .setContentText("Followup");
         return builder;
     }
 
@@ -86,8 +86,7 @@ public class AlertDialogActivity extends Activity {
         builder.create();
         builder.show();
         NotificationCompat.Builder notificationCommon = buildNotificationCommon(getApplicationContext());
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotifyMgr.notify(001, notificationCommon.build());
     }
 }

@@ -189,13 +189,13 @@ public class ColleagueContactsAdapter extends BaseAdapter implements Filterable 
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
-                            case R.id.lead_type_prospect:
-                                contact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                                contact.save();
-                                notifyDataSetChanged();
-                                break;
+//                            case R.id.lead_type_prospect:
+//                                contact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+//                                contact.save();
+//                                notifyDataSetChanged();
+//                                break;
                             case R.id.lead_type_lead:
-                                contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                contact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 contact.save();
                                 notifyDataSetChanged();
                                 break;
@@ -220,11 +220,11 @@ public class ColleagueContactsAdapter extends BaseAdapter implements Filterable 
         if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
             if (contact.getContactSalesStatus() != null && !contact.getContactSalesStatus().equals("")) {
                 switch (contact.getContactSalesStatus()) {
-                    case LSContact.SALES_STATUS_PROSTPECT:
-                        holder.salesLeadStatus.setText("Prospect");
-                        break;
-                    case LSContact.SALES_STATUS_LEAD:
-                        holder.salesLeadStatus.setText("Lead");
+//                    case LSContact.SALES_STATUS_PROSTPECT:
+//                        holder.salesLeadStatus.setText("Prospect");
+//                        break;
+                    case LSContact.SALES_STATUS_INPROGRESS:
+                        holder.salesLeadStatus.setText("InProgress");
                         break;
                     case LSContact.SALES_STATUS_CLOSED_WON:
                         holder.salesLeadStatus.setText("Closed Won");

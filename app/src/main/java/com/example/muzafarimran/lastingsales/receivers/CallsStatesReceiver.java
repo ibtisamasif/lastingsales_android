@@ -14,7 +14,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.service.PopupUIService;
-import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.CallEndNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -67,38 +67,22 @@ public class CallsStatesReceiver extends CallReceiver {
         }
         long callDuration = PhoneNumberAndCallUtils.secondsFromStartAndEndDates(start, end);
         tempCall.setDuration(callDuration);
-        LSContact contact = LSContact.getContactFromNumber(internationalNumber);
-        //      if contact is null that means contact is not already saved with this number
-        if (contact != null) {
-            tempCall.setContact(contact);
-
-            long tenSeconds = 2;
-            if (callDuration > tenSeconds) {
-                if (contact.getContactType() != null && !contact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
-                    if (contact.getContactSalesStatus() != null && contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
-                        contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                        contact.save();
-                    }
-                }
-            }
-        } else {
-            //            new untagged contact is created, saved, entered in call entry
-            LSContact tempContact = new LSContact();
-            tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
-            tempContact.setPhoneOne(internationalNumber);
-            tempContact.setContactName(phoneBookContactName);
-            tempContact.save();
-            tempCall.setContact(tempContact);
-        }
-        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+        // new untagged contact is created, saved, entered in call entry
+        LSContact tempContact = new LSContact();
+        tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
+        tempContact.setPhoneOne(internationalNumber);
+        tempContact.setContactName(phoneBookContactName);
+        tempContact.save();
+        tempCall.setContact(tempContact);
+        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
         tempCall.save();
         LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(internationalNumber);
         if (tempInquiry != null) {
             tempInquiry.delete();
             //TODO SYNC
         }
-        DataSenderNew dataSenderNew = new DataSenderNew(ctx);
-        dataSenderNew.execute();
+        DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
+        dataSenderAsync.execute();
         IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         bus.post(mCallEvent);
@@ -126,36 +110,22 @@ public class CallsStatesReceiver extends CallReceiver {
         Toast.makeText(ctx, "Duration " + callDuration, Toast.LENGTH_SHORT).show();
         tempCall.setDuration(callDuration);
         LSContact contact = LSContact.getContactFromNumber(internationalNumber);
-//      if contact is null that means contact is not already saved with this number
-        if (contact != null) {
-            tempCall.setContact(contact);
-            long tenSeconds = 2;
-            if (callDuration > tenSeconds) {
-                if (contact.getContactType() != null && !contact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
-                    if (contact.getContactSalesStatus() != null && contact.getContactSalesStatus().equals(LSContact.SALES_STATUS_PROSTPECT)) {
-                        contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
-                        contact.save();
-                    }
-                }
-            }
-        } else {
-//            new untagged contact is created, saved, entered in call entry
-            LSContact tempContact = new LSContact();
-            tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
-            tempContact.setPhoneOne(internationalNumber);
-            tempContact.setContactName(phoneBookContactName);
-            tempContact.save();
-            tempCall.setContact(tempContact);
-        }
-        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+        // new untagged contact is created, saved, entered in call entry
+        LSContact tempContact = new LSContact();
+        tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
+        tempContact.setPhoneOne(internationalNumber);
+        tempContact.setContactName(phoneBookContactName);
+        tempContact.save();
+        tempCall.setContact(tempContact);
+        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
         tempCall.save();
         LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(internationalNumber);
         if (tempInquiry != null) {
             tempInquiry.delete();
             //TODO SYNC
         }
-        DataSenderNew dataSenderNew = new DataSenderNew(ctx);
-        dataSenderNew.execute();
+        DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
+        dataSenderAsync.execute();
         OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         try {
@@ -192,15 +162,16 @@ public class CallsStatesReceiver extends CallReceiver {
         tempCall.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
         tempCall.setBeginTime(start.getTime());
         tempCall.setDuration(0L);
-        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
         tempCall.save();
         LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(tempCall.getContactNumber());
         if (tempInquiry != null) {
             Toast.makeText(ctx, "Already Exists", Toast.LENGTH_SHORT).show();
-            tempInquiry.setCountOfInquiries(tempInquiry.getCountOfInquiries()+1);
+            tempInquiry.setCountOfInquiries(tempInquiry.getCountOfInquiries() + 1);
             tempInquiry.setBeginTime(start.getTime());
+            tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_HANDLE_STATE_NOT_HANDLED);
             tempInquiry.save();
-            Log.d(TAG, "onMissedCall: getCountOfInquiries: " +tempInquiry.getCountOfInquiries());
+            Log.d(TAG, "onMissedCall: getCountOfInquiries: " + tempInquiry.getCountOfInquiries());
             Log.d(TAG, "onMissedCall: tempInquiry :" + tempInquiry.toString());
         } else {
             Toast.makeText(ctx, "Doesnt Exist", Toast.LENGTH_SHORT).show();
@@ -211,11 +182,12 @@ public class CallsStatesReceiver extends CallReceiver {
             newInquiry.setBeginTime(tempCall.getBeginTime());
             newInquiry.setDuration(tempCall.getDuration());
             newInquiry.setCountOfInquiries(1);
+            newInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_HANDLE_STATE_NOT_HANDLED);
             newInquiry.save();
             Log.d(TAG, "onMissedCall: newInquiry: " + newInquiry.toString());
         }
-        DataSenderNew dataSenderNew = new DataSenderNew(ctx);
-        dataSenderNew.execute();
+        DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
+        dataSenderAsync.execute();
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         bus.post(mCallEvent);

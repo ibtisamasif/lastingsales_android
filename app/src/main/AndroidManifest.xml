@@ -68,7 +68,7 @@
             android:enabled="true"
             android:exported="true">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
             <!--</intent-filter>-->
         </receiver>
         <receiver
@@ -81,40 +81,43 @@
 
         <activity
             android:name=".activities.MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ContactCallDetails"
             android:screenOrientation="portrait" />
         <activity android:name=".activities.AddContactActivity" />
         <activity
             android:name=".activities.LSContactChooserActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activities.AddNewFollowUpsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="nosensor"></activity>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".activities.FollowupsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="nosensor"></activity>
-        <activity android:name=".activities.NotesActivity"></activity>
-        <activity android:name=".activities.AddEditNoteActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="nosensor" />
+        <activity android:name=".activities.NotesActivity" />
+        <activity
+            android:name=".activities.AddEditNoteActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AlertDialogActivity"
-            android:theme="@style/MyAlertDialogStyle"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".activities.LogInActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/MyAlertDialogStyle" />
+        <activity
+            android:name=".activities.LogInActivity"
+            android:screenOrientation="portrait" />
 
 
-        <activity android:name=".activities.ContactDetailsActivity"></activity>
+        <activity android:name=".activities.ContactDetailsActivity" />
 
-        <activity android:name=".activities.ContactDetailsTabActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.ContactDetailsTabActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".activities.NotesByContactsActivity2"></activity>
+        <activity android:name=".activities.NotesByContactsActivity2" />
 
         <service
             android:name=".service.PopupUIService"
@@ -127,14 +130,14 @@
 
         <activity
             android:name=".activities.TagNumberActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name=".activities.SplashActivity"
             android:label="@string/title_activity_splash"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
@@ -143,12 +146,12 @@
 
         <activity
             android:name=".activities.NavigationDrawerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -157,22 +160,23 @@
             android:label="@string/title_main_activity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
-        <activity android:name=".activities.FrameActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.FrameActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.TagNumberAndAddFollowupActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name=".activities.AddLeadActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
 
         <service android:name=".service.MyFirebaseMessagingService">

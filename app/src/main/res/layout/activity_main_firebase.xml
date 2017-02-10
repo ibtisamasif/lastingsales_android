@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="info.androidhive.firebasenotifications.activity.MainActivity">
+    tools:context="com.example.muzafarimran.lastingsales.activities.FireBaseMainActivity">
 
     <TextView
         android:id="@+id/txt_push_message"
@@ -18,12 +18,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:gravity="center_horizontal"
-        android:textColor="@color/colorPrimary"
-        android:textSize="26dp" />
+        android:textColor="@color/black"
+        android:textSize="26dp"/>
 
     <EditText
         android:id="@+id/txt_reg_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/black"/>
 </RelativeLayout>

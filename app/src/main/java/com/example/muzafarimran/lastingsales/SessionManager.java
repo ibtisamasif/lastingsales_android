@@ -22,6 +22,7 @@ public class SessionManager {
     private static final String KEY_LOGIN_FIRSTNAME = "user_login_firstname";
     private static final String KEY_LOGIN_LASTNAME = "user_login_lastname";
     private static final String KEY_LOGIN_IMAGEPATH = "user_login_imagepath";
+    private static final String KEY_LOGIN_FIREBASE_REG_ID = "user_login_firebase_reg_id";
 
 
 
@@ -154,6 +155,15 @@ public class SessionManager {
 
     public void setKeyLoginId(String path) {
         editor.putString(KEY_LOGIN_ID, path);
+        editor.commit();
+    }
+
+    public String getKeyLoginFirebaseRegId() {
+        return pref.getString(KEY_LOGIN_FIREBASE_REG_ID , "");
+    }
+
+    public void setKeyLoginFirebaseRegId(String token) {
+        editor.putString(KEY_LOGIN_FIREBASE_REG_ID, token);
         editor.commit();
     }
 }

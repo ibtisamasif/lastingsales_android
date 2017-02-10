@@ -32,7 +32,7 @@ import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.utils.CallRecord;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -298,8 +298,10 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            startActivity(intent);
 //        }
         else if (id == R.id.nav_item_feedback) {
-            DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
-            dataSenderNew.execute();
+            Intent tempIntent = new Intent(this, FireBaseMainActivity.class);
+            startActivity(tempIntent);
+            DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+            dataSenderAsync.execute();
             Toast.makeText(this, "FeedbackScreen", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_item_logout) {
             sessionManager.logoutUser();

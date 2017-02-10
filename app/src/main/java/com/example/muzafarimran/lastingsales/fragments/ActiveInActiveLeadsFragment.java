@@ -51,14 +51,14 @@ public class ActiveInActiveLeadsFragment extends TabFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        leadsAdapter = new LeadsAdapter(getContext(), null, LSContact.SALES_STATUS_LEAD);
+        leadsAdapter = new LeadsAdapter(getContext(), null, LSContact.SALES_STATUS_INPROGRESS);
         setHasOptionsMenu(true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_LEAD);
+        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         //Filtering out colleagues from list
         List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         contacts.removeAll(allCollegues);
@@ -75,7 +75,7 @@ public class ActiveInActiveLeadsFragment extends TabFragment{
 
     @Subscribe
     public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
-        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_LEAD);
+        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         //Filtering out colleagues from list
         List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         contacts.removeAll(allCollegues);
@@ -85,7 +85,7 @@ public class ActiveInActiveLeadsFragment extends TabFragment{
 
     @Subscribe
     public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
-        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         //Filtering out colleagues from list
         List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         contacts.removeAll(allCollegues);

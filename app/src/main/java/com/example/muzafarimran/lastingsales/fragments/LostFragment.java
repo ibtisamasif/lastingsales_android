@@ -85,7 +85,7 @@ public class LostFragment extends  TabFragment{
 
     @Subscribe
     public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
-        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         //Filtering out colleagues from list
         List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         contacts.removeAll(allCollegues);

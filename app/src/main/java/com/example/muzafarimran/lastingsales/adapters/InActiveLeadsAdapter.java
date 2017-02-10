@@ -169,11 +169,11 @@ public class InActiveLeadsAdapter extends BaseAdapter implements Filterable{
         if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
             if (contact.getContactSalesStatus() != null && !contact.getContactSalesStatus().equals("")) {
                 switch (contact.getContactSalesStatus()) {
-                    case LSContact.SALES_STATUS_PROSTPECT:
-                        holder.salesLeadStatus.setText("Prospect");
-                        break;
-                    case LSContact.SALES_STATUS_LEAD:
-                        holder.salesLeadStatus.setText("Lead");
+//                    case LSContact.SALES_STATUS_PROSTPECT:
+//                        holder.salesLeadStatus.setText("Prospect");
+//                        break;
+                    case LSContact.SALES_STATUS_INPROGRESS:
+                        holder.salesLeadStatus.setText("InProgress");
                         break;
                     case LSContact.SALES_STATUS_CLOSED_WON:
                         holder.salesLeadStatus.setText("Closed Won");

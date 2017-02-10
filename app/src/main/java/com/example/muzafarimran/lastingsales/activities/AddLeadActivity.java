@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -169,7 +169,7 @@ public class AddLeadActivity extends Activity {
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                                 checkContact.save();
                                 finish();
@@ -186,7 +186,7 @@ public class AddLeadActivity extends Activity {
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(intlNum);
                             tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
                             Intent detailsActivityIntent = new Intent(AddLeadActivity.this, ContactDetailsTabActivity.class);
@@ -220,7 +220,7 @@ public class AddLeadActivity extends Activity {
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                                 checkContact.save();
                                 finish();
@@ -237,7 +237,7 @@ public class AddLeadActivity extends Activity {
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(intlNum);
                             tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
                             finish();
@@ -302,7 +302,7 @@ public class AddLeadActivity extends Activity {
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                                 checkContact.save();
                                 finish();
@@ -319,7 +319,7 @@ public class AddLeadActivity extends Activity {
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(intlNum);
                             tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
                             finish();
@@ -359,7 +359,7 @@ public class AddLeadActivity extends Activity {
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                                 checkContact.save();
                                 finish();
@@ -376,7 +376,7 @@ public class AddLeadActivity extends Activity {
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(intlNum);
                             tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
                             finish();
@@ -388,8 +388,8 @@ public class AddLeadActivity extends Activity {
                         }
                     }
                 }
-                DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
-                dataSenderNew.execute();
+                DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                dataSenderAsync.execute();
             }
         });
     }

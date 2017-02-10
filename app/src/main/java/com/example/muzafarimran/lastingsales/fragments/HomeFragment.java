@@ -43,11 +43,9 @@ public class HomeFragment extends TabFragment {
     private TextView tvInquiriesValue;
     private TextView tvInactiveLeadsValue;
     private TextView tvUntaggedContacts;
-    private TextView tvPendingProspectValue;
     private LinearLayout llInActiveLeadsContainer;
     private LinearLayout llUntaggedContainer;
     private LinearLayout llinquriesContainer;
-    private LinearLayout llPendingProspectsContainer;
     //    private LinearLayout llshadow1;
 //    private LinearLayout llshadow2;
 //    private LinearLayout llshadow3;
@@ -70,7 +68,6 @@ public class HomeFragment extends TabFragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         tvInquiriesValue = (TextView) view.findViewById(R.id.tvInquriesValue);
         tvUntaggedContacts = (TextView) view.findViewById(R.id.tvUntaggeContactsVal);
-        tvPendingProspectValue = (TextView) view.findViewById(R.id.tvPendingProspectValue);
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
 
         llinquriesContainer = (LinearLayout) view.findViewById(R.id.llinquriesContainer);
@@ -79,7 +76,6 @@ public class HomeFragment extends TabFragment {
 //        llshadow2 = (LinearLayout) view.findViewById(R.id.llshadow2);
         llInActiveLeadsContainer = (LinearLayout) view.findViewById(R.id.llInActiveLeadsContactsContainer);
 //        llshadow3 = (LinearLayout) view.findViewById(R.id.llshadow3);
-        llPendingProspectsContainer = (LinearLayout) view.findViewById(R.id.llPendingProspectsContactsContainer);
         llshadow4 = (LinearLayout) view.findViewById(R.id.llshadow4);
 
         followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
@@ -107,21 +103,8 @@ public class HomeFragment extends TabFragment {
                 Intent intent;
                 Bundle bundle = new Bundle();
                 bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UntaggedContactsCallsFragment.class.getName());
-                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Untagged Contacts");
+                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
                 bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
-                intent = new Intent(getContext(), FrameActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-        llPendingProspectsContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                Bundle bundle = new Bundle();
-                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, PendingProspectsFragment.class.getName());
-                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Pending Prospects");
-                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
                 intent = new Intent(getContext(), FrameActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -196,7 +179,7 @@ public class HomeFragment extends TabFragment {
     private void updateHomeFigures() {
         ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNTAGGED);
         ArrayList<LSContact> allCollegues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-        ArrayList<LSContact> allFilteredContactsAsProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+        ArrayList<LSContact> allFilteredContactsAsProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         allFilteredContactsAsProspects.removeAll(allCollegues);
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
 
@@ -233,16 +216,6 @@ public class HomeFragment extends TabFragment {
             }
         } else {
             tvInactiveLeadsValue.setText(0);
-        }
-        if (allFilteredContactsAsProspects != null) {
-            if (allFilteredContactsAsProspects.size() > 0) {
-                tvPendingProspectValue.setText("" + allFilteredContactsAsProspects.size());
-            } else {
-                llPendingProspectsContainer.setVisibility(View.GONE);
-                llshadow4.setVisibility(View.GONE);
-            }
-        } else {
-            tvPendingProspectValue.setText(0);
         }
 
         ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);

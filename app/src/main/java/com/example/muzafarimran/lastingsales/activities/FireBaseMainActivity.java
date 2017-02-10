@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,15 +13,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class FireBaseMainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    SessionManager sessionManager;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private EditText txtRegId;
     private TextView txtMessage;
@@ -31,6 +31,7 @@ public class FireBaseMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_firebase);
+        sessionManager = new SessionManager(getApplicationContext());
 
         txtRegId = (EditText) findViewById(R.id.txt_reg_id);
         txtMessage = (TextView) findViewById(R.id.txt_push_message);
@@ -65,8 +66,10 @@ public class FireBaseMainActivity extends AppCompatActivity {
     // Fetches reg id from shared preferences
     // and displays on the screen
     private void displayFirebaseRegId() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(FireBaseConfig.SHARED_PREF, 0);
-        String regId = pref.getString("regId", null);
+
+        String regId = sessionManager.getKeyLoginFirebaseRegId();
+//        SharedPreferences pref = getApplicationContext().getSharedPreferences(FireBaseConfig.SHARED_PREF, 0);
+//        String regId = pref.getString("regId", null);
 
         Log.e(TAG, "Firebase reg id: " + regId);
 

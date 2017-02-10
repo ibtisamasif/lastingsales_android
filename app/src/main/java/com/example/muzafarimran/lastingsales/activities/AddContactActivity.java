@@ -191,7 +191,7 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
                         tempNote.save();
                     }
                     if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                        tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                        tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                         tempContact.save();
                         SalesContactAddedEventModel mCallEvent = new SalesContactAddedEventModel();
                         TinyBus bus = TinyBus.from(getApplicationContext());

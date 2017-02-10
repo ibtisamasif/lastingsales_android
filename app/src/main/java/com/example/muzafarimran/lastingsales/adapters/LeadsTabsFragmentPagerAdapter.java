@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.fragments.ActiveInActiveLeadsFragment;
 import com.example.muzafarimran.lastingsales.fragments.InActiveLeadsFragment;
 import com.example.muzafarimran.lastingsales.fragments.LostFragment;
-import com.example.muzafarimran.lastingsales.fragments.PendingProspectsFragment;
 import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
 import com.example.muzafarimran.lastingsales.fragments.WonFragment;
 
@@ -17,7 +16,7 @@ import com.example.muzafarimran.lastingsales.fragments.WonFragment;
 
 public class LeadsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    static final int NUM_ITEMS = 6;
+    static final int NUM_ITEMS = 5;
 
     public LeadsTabsFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -27,17 +26,15 @@ public class LeadsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return PendingProspectsFragment.newInstance(0, PendingProspectsFragment.TAG);
+                return ActiveInActiveLeadsFragment.newInstance(0, ActiveInActiveLeadsFragment.TAG);
             case 1:
-                return ActiveInActiveLeadsFragment.newInstance(1, ActiveInActiveLeadsFragment.TAG);
+                return WonFragment.newInstance(1, WonFragment.TAG);
             case 2:
-                return WonFragment.newInstance(2, WonFragment.TAG);
+                return LostFragment.newInstance(2, LostFragment.TAG);
             case 3:
-                return LostFragment.newInstance(3, LostFragment.TAG);
+                return InActiveLeadsFragment.newInstance(3, InActiveLeadsFragment.TAG);
             case 4:
-                return InActiveLeadsFragment.newInstance(4, InActiveLeadsFragment.TAG);
-            case 5:
-                return SalesFragment.newInstance(5, SalesFragment.TAG);
+                return SalesFragment.newInstance(4, SalesFragment.TAG);
             default:
                 return null;
         }
@@ -52,16 +49,14 @@ public class LeadsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Prospects";
-            case 1:
                 return "Leads";
-            case 2:
+            case 1:
                 return "Won";
-            case 3:
+            case 2:
                 return "Lost";
-            case 4:
+            case 3:
                 return "InActive";
-            case 5:
+            case 4:
                 return "All";
             default:
                 return null;

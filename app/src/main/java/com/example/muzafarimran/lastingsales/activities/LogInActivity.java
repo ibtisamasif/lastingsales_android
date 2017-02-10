@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -139,6 +140,8 @@ public class LogInActivity extends AppCompatActivity {
 
                         String completeImagePath = MyURLs.IMAGE_URL + image_path;
                         sessionManager.loginnUser(user_id, api_token, Calendar.getInstance().getTimeInMillis(), number, firstname, lastname, completeImagePath);
+                        sessionManager.getKeyLoginFirebaseRegId();
+                        updateAgentFirebaseIdToServer(activity);
 
                         activity.startActivity(new Intent(activity, NavigationDrawerActivity.class));
                         activity.finish();
@@ -185,6 +188,46 @@ public class LogInActivity extends AppCompatActivity {
                 return params;
             }
         };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    public void updateAgentFirebaseIdToServer(final Activity activity) {
+        final int MY_SOCKET_TIMEOUT_MS = 60000;
+        RequestQueue queue = Volley.newRequestQueue(activity);
+        final String BASE_URL = MyURLs.UPDATE_AGENT;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendQueryParameter("device_id", ""+sessionManager.getKeyLoginFirebaseRegId())
+                .appendQueryParameter("api_token", ""+sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() updateAgent: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+                    if (responseCode ==  200) {
+                        JSONObject responseObject = jObj.getJSONObject("response");
+                        Log.d(TAG, "onResponse : FirebaseLocalRegID : " +sessionManager.getKeyLoginFirebaseRegId());
+                        Log.d(TAG, "onResponse : FirebaseServerRegID : " +responseObject.getString("device_id"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.d(TAG, "onErrorResponse: CouldNotSyncAgentFirebaseRegId");
+            }
+        }){};
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

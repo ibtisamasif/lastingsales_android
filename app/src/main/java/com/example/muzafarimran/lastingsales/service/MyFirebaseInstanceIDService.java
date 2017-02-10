@@ -1,21 +1,21 @@
 package com.example.muzafarimran.lastingsales.service;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
+import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-
-import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 
 /**
  * Created by Ravi Tamada on 08/08/16.
  * www.androidhive.info
  */
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
+
     private static final String TAG = MyFirebaseInstanceIDService.class.getSimpleName();
+    SessionManager sessionManager;
 
     @Override
     public void onTokenRefresh() {
@@ -25,8 +25,8 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // Saving reg id to shared preferences
         storeRegIdInPref(refreshedToken);
 
-        // sending reg id to your server
-        sendRegistrationToServer(refreshedToken);
+//        // sending reg id to your server
+//        sendRegistrationToServer(refreshedToken);
 
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(FireBaseConfig.REGISTRATION_COMPLETE);
@@ -34,16 +34,19 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
-    private void sendRegistrationToServer(final String token) {
-        // sending gcm token to server
-        Log.e(TAG, "sendRegistrationToServer: " + token);
-    }
+//    private void sendRegistrationToServer(final String token) {
+//        // sending gcm token to server
+//        Log.e(TAG, "sendRegistrationToServer: " + token);
+//    }
 
     private void storeRegIdInPref(String token) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(FireBaseConfig.SHARED_PREF, 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("regId", token);
-        editor.commit();
+//        SharedPreferences pref = getApplicationContext().getSharedPreferences(FireBaseConfig.SHARED_PREF, 0);
+//        SharedPreferences.Editor editor = pref.edit();
+//        editor.putString("regId", token);
+//        editor.commit();
+
+        sessionManager = new SessionManager(getApplicationContext());
+        sessionManager.setKeyLoginFirebaseRegId(token);
     }
 }
 

@@ -30,7 +30,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
-import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -288,7 +288,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 checkContact.save();
                                 if (etNoteText != null) {
                                     noteText = etNoteText.getText().toString();
@@ -329,7 +329,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(intlNum);
                             if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
-                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                             } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
 //                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
                             }
@@ -390,7 +390,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 checkContact.save();
                                 if (etNoteText != null) {
                                     noteText = etNoteText.getText().toString();
@@ -431,7 +431,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             tempContact.setPhoneOne(intlNum);
                             tempContact.setContactType(selectedContactType);
                             if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
-                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                             } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
 //                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
                             }
@@ -492,7 +492,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 checkContact.save();
                                 if (etNoteText != null) {
                                     noteText = etNoteText.getText().toString();
@@ -535,7 +535,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             tempContact.setContactType(selectedContactType);
                             //Modified by ibtisam
                             if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
-                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                             } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
 //                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
                             }
@@ -649,7 +649,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         tempContact.setPhoneOne(intlNum);
                         tempContact.setContactType(selectedContactType);
                         if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
-                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                         } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
 //                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
                         }
@@ -742,8 +742,8 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
                         tempFollowUp.save();
                         setAlarm(getApplicationContext(), tempFollowUp);
-                        DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
-                        dataSenderNew.execute();
+                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                        dataSenderAsync.execute();
                     }
                     finish();
                 }

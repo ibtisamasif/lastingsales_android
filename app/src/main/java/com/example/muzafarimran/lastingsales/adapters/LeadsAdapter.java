@@ -24,7 +24,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -191,11 +191,11 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
                             oneFollowup.delete();
                         }
                     }
-                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
                     contact.save();
 //                    contact.delete();
-                    DataSenderNew dataSenderNew = new DataSenderNew(mContext);
-                    dataSenderNew.execute();
+                    DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
+                    dataSenderAsync.execute();
                     setList(LSContact.getContactsByLeadSalesStatus(contactLeadType));
                     Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
                 }
@@ -212,13 +212,13 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             switch (menuItem.getItemId()) {
-                                case R.id.lead_type_prospect:
-                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
-                                    contact.save();
-                                    notifyDataSetChanged();
-                                    break;
+//                                case R.id.lead_type_prospect:
+//                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
+//                                    contact.save();
+//                                    notifyDataSetChanged();
+//                                    break;
                                 case R.id.lead_type_lead:
-                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_LEAD);
+                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                     contact.save();
                                     notifyDataSetChanged();
                                     break;
@@ -245,11 +245,11 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
             if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                 if (contact.getContactSalesStatus() != null && !contact.getContactSalesStatus().equals("")) {
                     switch (contact.getContactSalesStatus()) {
-                        case LSContact.SALES_STATUS_PROSTPECT:
-                            holder.salesLeadStatus.setText("Prospect");
-                            break;
-                        case LSContact.SALES_STATUS_LEAD:
-                            holder.salesLeadStatus.setText("Lead");
+//                        case LSContact.SALES_STATUS_PROSTPECT:
+//                            holder.salesLeadStatus.setText("Prospect");
+//                            break;
+                        case LSContact.SALES_STATUS_INPROGRESS:
+                            holder.salesLeadStatus.setText("InProgress");
                             break;
                         case LSContact.SALES_STATUS_CLOSED_WON:
                             holder.salesLeadStatus.setText("Closed Won");

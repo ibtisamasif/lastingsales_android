@@ -12,7 +12,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.sync.DataSenderNew;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import de.halfbit.tinybus.TinyBus;
@@ -84,8 +84,8 @@ public class AddEditNoteActivity extends AppCompatActivity {
                     selectedNote.save();
                     finish();
                     Toast.makeText(AddEditNoteActivity.this, "Note Edited", Toast.LENGTH_SHORT).show();
-                    DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
-                    dataSenderNew.execute();
+                    DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                    dataSenderAsync.execute();
 
                 } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_NOTE)) {
                     LSNote note = new LSNote();
@@ -98,8 +98,8 @@ public class AddEditNoteActivity extends AppCompatActivity {
                     bus.post(mNoteAdded);
                     finish();
                     Toast.makeText(getApplicationContext(), "Note Added", Toast.LENGTH_SHORT).show();
-                    DataSenderNew dataSenderNew = new DataSenderNew(getApplicationContext());
-                    dataSenderNew.execute();
+                    DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                    dataSenderAsync.execute();
                 }
             }
         });
