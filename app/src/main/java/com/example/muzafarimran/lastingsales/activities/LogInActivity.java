@@ -59,6 +59,8 @@ public class LogInActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.loginButtonLoginScreen);
         tvNumber = (TextView) findViewById(R.id.numberLoginScreen);
         tvPassword = (TextView) findViewById(R.id.passwordLoginScreen);
+        tvNumber.getBackground().clearColorFilter();
+        tvPassword.getBackground().clearColorFilter();
 //        hardcoding number and password for develoment speedup purposes
 //        tvNumber.setText("03361124888");
 //        tvPassword.setText("LastingSales123@");
@@ -75,7 +77,7 @@ public class LogInActivity extends AppCompatActivity {
 //                password = "11111111";
 
                 makeLoginRequest(LogInActivity.this, number, password);
-
+                pdLoading.show();
 //                if (number.length() < 7) {
 //                    numberVarified = false;
 //                }
@@ -117,7 +119,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() called with: response = [" + response + "]");
-                pdLoading.dismiss();
+//                pdLoading.dismiss();
                 //TODO pass token in place of response
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -169,7 +171,7 @@ public class LogInActivity extends AppCompatActivity {
                 if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
                     Toast.makeText(getApplicationContext(), "No Internet Connectivity", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Wrong Credentials Or Poor Internet Connectivity", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Wrong Credentials", Toast.LENGTH_LONG).show();
                 }
             }
         }) {
@@ -210,6 +212,7 @@ public class LogInActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() updateAgent: response = [" + response + "]");
                 try {
+                    pdLoading.dismiss();
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
                     if (responseCode ==  200) {
@@ -224,6 +227,7 @@ public class LogInActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                pdLoading.dismiss();
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAgentFirebaseRegId");
             }

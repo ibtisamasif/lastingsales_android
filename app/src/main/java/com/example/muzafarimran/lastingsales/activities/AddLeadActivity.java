@@ -274,7 +274,9 @@ public class AddLeadActivity extends Activity {
                         tempContact.setContactName(contactName);
                         tempContact.setPhoneOne(intlNum);
                         tempContact.setContactEmail(contactEmail);
-                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                        if(tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                        }
                         tempContact.save();
                         finish();
                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();

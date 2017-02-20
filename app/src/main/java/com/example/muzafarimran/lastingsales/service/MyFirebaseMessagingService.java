@@ -9,6 +9,7 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.MainActivity;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -25,41 +26,47 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
     String mMsg;
-    private FireBaseNotificationUtils notificationUtils;
-
     SessionManager sessionManager;
+    private FireBaseNotificationUtils notificationUtils;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.e(TAG, "MessageReceived");
         sessionManager = new SessionManager(getApplicationContext());
 
-        Log.e(TAG, "From: " + remoteMessage.getFrom());
+//        Log.e(TAG, "From: " + remoteMessage.getFrom());
+//        Log.e(TAG, "From2: " + remoteMessage.getTo());
+//        Log.e(TAG, "From3: " + remoteMessage.getNotification());
+//        Log.e(TAG, "From4: " + remoteMessage.getData());
+//        Log.e(TAG, "From5: " + remoteMessage.getMessageType());
+//        Log.e(TAG, "From6: " + remoteMessage.getCollapseKey());
 
-        if (remoteMessage == null)
-            return;
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.e(TAG, "Notification Body: " + remoteMessage.getNotification().getBody());
-            handleNotification(remoteMessage.getNotification().getBody());
+//        if (remoteMessage == null)
+//            return;
+//
+//        // Check if message contains a notification payload.
+//        if (remoteMessage.getNotification() != null) {
+//            Log.e(TAG, "Notification Body: " + remoteMessage.getNotification().getBody());
+//            handleNotification(remoteMessage.getNotification().getBody());
+//        }
+//
+//        // Check if message contains a data payload.
+//        if (remoteMessage.getData().size() > 0) {
+//            Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
+
+        try {
+//                JSONObject json = new JSONObject(remoteMessage.getNotification().getBody().toString());
+            JSONObject json = new JSONObject(remoteMessage.getData().toString());
+            handleDataMessage(json);
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage());
         }
-
-        // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
-
-            try {
-                JSONObject json = new JSONObject(remoteMessage.getNotification().getBody().toString());
-//                JSONObject json = new JSONObject(remoteMessage.getData().toString());
-                handleDataMessage(json);
-            } catch (Exception e) {
-                Log.e(TAG, "Exception: " + e.getMessage());
-            }
-        }
+//        }
     }
 
     private void handleNotification(String message) {
+        Log.d(TAG, "handleNotification: CHECK 1");
         if (!FireBaseNotificationUtils.isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message
             Intent pushNotification = new Intent(FireBaseConfig.PUSH_NOTIFICATION);
@@ -77,22 +84,54 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void handleDataMessage(JSONObject json) {
 
         Log.e(TAG, "push json: " + json.toString());
-        try {
-            String tag = json.getString("tag");
-            Log.e(TAG, "handleDataMessageTAG: " + tag);
 
-            String action = json.getString("action");
-            Log.e(TAG, "handleDataMessageTAG: " + action);
+        try {
+            JSONObject data = json.getJSONObject("data");
+            Log.e(TAG, "DataValues: "+data.toString());
+
+            String tag = data.getString("tag");
+            Log.e(TAG, "TagValues: "+tag);
+
+            String action = data.getString("action");
+            Log.e(TAG, "ActionValues: "+action);
+
+            JSONObject payload = data.getJSONObject("payload");
+            Log.e(TAG, "PayloadValues: "+payload.toString());
 
             if (tag.equals("Lead")) {
-                if (action.equals("put")) {
-                    JSONObject data = json.getJSONObject("payload");
-                    String id = data.getString("id");
-                    String name = data.getString("name");
-                    String email = data.getString("email");
-                    String phone = data.getString("phone");
-                    String address = data.getString("address");
-                    String status = data.getString("status");
+                if (action.equals("post")) {
+
+                    String id = payload.getString("id");
+                    String name = payload.getString("name");
+//                    String email = data.getString("email");  // Json Exception: No value for email
+                    String phone = payload.getString("phone");
+//                    String address = data.getString("address");
+                    String status = payload.getString("status");
+                    mMsg = name;
+                    Log.e(TAG, "handleDataMessageName: " + name);
+                    LSContact contact = new LSContact();
+                    contact.setServerId(id);
+                    contact.setContactName(name);
+//                  contact.setContactEmail(email);
+                    contact.setPhoneOne(phone);
+//                  contact.setContactAddress(address);
+                    contact.setContactType(LSContact.CONTACT_TYPE_SALES);
+                    contact.setContactSalesStatus(status);
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                    contact.save();
+                    Log.e(TAG, "Post From Local DB: " + contact.getContactName());
+//                  ColleagueContactAddedEventModel mCallEvent = new ColleagueContactAddedEventModel();
+//                  TinyBus bus = TinyBus.from(getApplicationContext());
+//                  bus.register(mCallEvent);
+//                  bus.post(mCallEvent);
+
+                } else if (action.equals("put")) {
+                    String id = payload.getString("id");
+                    String name = payload.getString("name");
+                    String email = payload.getString("email");
+                    String phone = payload.getString("phone");
+                    String address = payload.getString("address");
+                    String status = payload.getString("status");
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
                     LSContact contact = LSContact.getContactFromServerId(id);
@@ -100,42 +139,28 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     contact.setContactEmail(email);
                     contact.setPhoneOne(phone);
                     contact.setContactAddress(address);
-                    contact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-//                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                    contact.setContactSalesStatus(status);
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                     contact.save();
-                    Log.e(TAG, "Put From Local DB: "+contact.getContactName());
+                    Log.e(TAG, "Put From Local DB: " + contact.getContactName());
                 }
             }
 
-            if (tag.equals("Lead")) {
+            if (tag.equals("Note")) {
                 if (action.equals("post")) {
+                    String id = payload.getString("id");
+                    String lead_id = payload.getString("lead_id");
+                    String description = payload.getString("description");
+                    mMsg = description;
+                    LSNote tempNote = new LSNote();
+                    tempNote.setServerId(id);
+                    tempNote.setNoteText(description);
+                    tempNote.setContactOfNote(LSContact.getContactFromServerId(lead_id));
+                    tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
+                    tempNote.save();
 
-                    JSONObject data = json.getJSONObject("payload");
-
-                    String id = data.getString("id");
-                    String name = data.getString("name");
-//                    String email = data.getString("email");  // Json Exception: No value for email
-                    String phone = data.getString("phone");
-//                    String address = data.getString("address");
-                    String status = data.getString("status");
-                    mMsg = name;
-                    Log.e(TAG, "handleDataMessageName: " + name);
-
-                    LSContact contact = new LSContact();
-                    contact.setServerId(id);
-                    contact.setContactName(name);
-//                    contact.setContactEmail(email);
-                    contact.setPhoneOne(phone);
-//                    contact.setContactAddress(address);
-                    contact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                    contact.setContactSalesStatus("InProgress");
-                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                    contact.save();
-                    Log.e(TAG, "Post From Local DB: "+contact.getContactName());
-//                    ColleagueContactAddedEventModel mCallEvent = new ColleagueContactAddedEventModel();
-//                    TinyBus bus = TinyBus.from(getApplicationContext());
-//                    bus.register(mCallEvent);
-//                    bus.post(mCallEvent);
+                }else if(action.equals("put")){
+                    // TODO Notes Update
                 }
             }
 
@@ -155,19 +180,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //            Log.e(TAG, "imageUrl: " + imageUrl);
 //            Log.e(TAG, "timestamp: " + timestamp);
 
-            if (!FireBaseNotificationUtils.isAppIsInBackground(getApplicationContext())) {
+//            if (!FireBaseNotificationUtils.isAppIsInBackground(getApplicationContext())) {
+//            Log.d(TAG, "handleNotification: CHECK 2");
 //                 app is in foreground, broadcast the push message
-                Intent pushNotification = new Intent(FireBaseConfig.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", mMsg);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+            Intent pushNotification = new Intent(FireBaseConfig.PUSH_NOTIFICATION);
+            pushNotification.putExtra("message", mMsg);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
-                // play notification sound
-                FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
-                notificationUtils.playNotificationSound();
-            } else {
-                // app is in background, show the notification in notification tray
-                Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
-                resultIntent.putExtra("message", mMsg);
+            // play notification sound
+            FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
+            notificationUtils.playNotificationSound();
+//            } else {
+//            Log.d(TAG, "handleNotification: CHECK 3");
+            // app is in background, show the notification in notification tray
+            Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+            resultIntent.putExtra("message", mMsg);
 
 //                // check for image attachment
 //                if (TextUtils.isEmpty(imageUrl)) {
@@ -176,7 +203,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                    // image is present, show notification with image
 //                    showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
 //                }
-            }
+//            }
         } catch (JSONException e) {
             Log.e(TAG, "Json Exception: " + e.getMessage());
         } catch (Exception e) {

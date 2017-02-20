@@ -25,7 +25,9 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.customview.BadgeView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
+import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
+import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.fragments.AllCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
@@ -56,7 +58,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     TabLayout tabLayout;
     TabLayout.Tab tab1;
     TinyBus bus;
-//    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
+    //    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
     private ViewPager viewPager;
 
     @Override
@@ -85,14 +87,14 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         ivProfileImage = (ImageView) navHeader.findViewById(R.id.ivProfileImgNavBar);
         tvProfileName = (TextView) navHeader.findViewById(R.id.tvProfileNameNavBar);
         tvProfileNumber = (TextView) navHeader.findViewById(R.id.tvProfileNumberNavBar);
-        tvProfileName.setText(sessionManager.getKeyLoginFirstName()+ " " + sessionManager.getKeyLoginLastName());
+        tvProfileName.setText(sessionManager.getKeyLoginFirstName() + " " + sessionManager.getKeyLoginLastName());
         tvProfileNumber.setText(sessionManager.getLoginNumber());
 
         String url = sessionManager.getKeyLoginImagePath();
         Glide.with(this)
                 .load(url)
+                .error(R.drawable.temp_avatar)
                 .into(ivProfileImage);
-
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,13 +127,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         imageViewBadge.setImageResource(R.drawable.ic_phone_missed_white_48dp);
         tab1.setCustomView(imageViewBadge);
         badgeInquries = new BadgeView(getApplicationContext(), imageViewBadge);
-        if (allInquiries != null && allInquiries.size() > 0) {
-            badgeInquries.setText("" + allInquiries.size());
-            badgeInquries.toggle();
-            badgeInquries.show();
-        } else {
-            badgeInquries.hide();
-        }
+        UpdateBadge();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -141,6 +137,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                     case 0:
 //                        tab.setIcon(R.drawable.ic_home_white_48dp);
                         getSupportActionBar().setTitle("Inquiries");
+                        UpdateBadge();
                         break;
                     case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
@@ -149,7 +146,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                         break;
                     case 2:
 //                        tab.setIcon(R.drawable.menu_icon_contact_selected);
-                        getSupportActionBar().setTitle("Leads");
+                        getSupportActionBar().setTitle("Sales Leads");
                         // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                         break;
 //                case 3:
@@ -202,23 +199,42 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         bus.unregister(this);
     }
 
-    //TODO Does this work on fragments only ?
     @Subscribe
     public void onCallReceivedEventModel(MissedCallEventModel event) {
         Log.d(TAG, "NavionMissedCallEvent() called with: event = [" + event + "]");
         if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
-            List<LSInquiry> allInquiries = LSInquiry.getAllInquiriesInDescendingOrder();
-//            tab1 = tabLayout.getTabAt(1);
-//            imageViewBadge.setImageResource(R.drawable.menu_icon_phone);
-//            tab1.setCustomView(imageViewBadge);
-            //badgeInquries = new BadgeView(getApplicationContext(), imageViewBadge);
-            if (allInquiries != null && allInquiries.size() > 0) {
-                badgeInquries.setText("" + allInquiries.size());
-                badgeInquries.toggle();
-                badgeInquries.show();
-            } else {
-                badgeInquries.hide();
-            }
+            UpdateBadge();
+        }
+    }
+
+    @Subscribe
+    public void onIncommingCallReceivedEvent(IncomingCallEventModel event) {
+        Log.d(TAG, "onAnyIncomingCallEvent() called with: event = [" + event + "]");
+        if (event.getState() == IncomingCallEventModel.CALL_TYPE_INCOMING) {
+            Log.d(TAG, "Incoming");
+            UpdateBadge();
+        }
+    }
+
+    @Subscribe
+    public void onOutgoingCallEventModel(OutgoingCallEventModel event) {
+        Log.d(TAG, "onAnyOutGoingCallEvent() called with: event = [" + event + "]");
+        if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
+            Log.d(TAG, "Outgoing");
+            UpdateBadge();
+        }
+    }
+
+    private void UpdateBadge() {
+        List<LSInquiry> allInquiries = LSInquiry.getAllInquiriesInDescendingOrder();
+        if (allInquiries != null && allInquiries.size() > 0) {
+            badgeInquries.setText("" + allInquiries.size());
+            badgeInquries.toggle();
+            badgeInquries.show();
+            Log.d(TAG, "if");
+        } else {
+            Log.d(TAG, "else");
+            badgeInquries.hide();
         }
     }
 
@@ -331,7 +347,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             public void onPageSelected(int position) {
                 if (position == 2) {
                     TabSelectedListener tabSelectedListener = (TabSelectedListener) ((SampleFragmentPagerAdapter) viewPager.getAdapter()).getItem(position);
-                    tabSelectedListener.onTabSelectedEvent(4, "");
+                    tabSelectedListener.onTabSelectedEvent(3, "");
                 }
                 viewPager.removeOnPageChangeListener(this);
             }

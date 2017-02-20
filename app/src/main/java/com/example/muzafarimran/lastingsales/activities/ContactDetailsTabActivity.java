@@ -107,12 +107,15 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
+                        floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.menu_icon_details_selected);
                         break;
                     case 1:
+                        floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
                         break;
                     case 2:
+                        floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.menu_icon_contact_selected);
                         break;
                     case 3:

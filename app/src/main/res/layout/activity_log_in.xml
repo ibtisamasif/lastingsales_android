@@ -10,41 +10,48 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/login_background"
     tools:mContext="com.example.muzafarimran.lastingsales.activities.LogInActivity">
     <ImageView
         android:id="@+id/ivLogoLoginScreen"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
-        app:srcCompat="@drawable/lasting_sales_logo"
+        android:layout_height="100dp"
+        android:layout_marginTop="60dp"
+        app:srcCompat="@drawable/login_logo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
     <LinearLayout
         android:id="@+id/numberParentLoginScreen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_below="@id/ivLogoLoginScreen"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:orientation="horizontal"
+        android:background="@color/half_white2"
+        android:gravity="center"
         >
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/contact_avatar_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_email_white_24dp"
+            android:layout_marginRight="16dp"
             />
 
         <EditText
             android:id="@+id/numberLoginScreen"
-            android:layout_width="250dp"
-            android:layout_height="30dp"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:hint="Email"
+            android:textColorHint="@color/half_white"
+            android:inputType="textNoSuggestions"
             android:textSize="20sp"
-            android:textColor="@color/black"
-            android:background="@drawable/shape_borders_rounded_corners_primary_color_white_fill"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:imeOptions="actionNext"
             />
 
         <!--<EditText-->
@@ -61,46 +68,49 @@
 
     <LinearLayout
         android:id="@+id/passwordParentlayoutLoginScreen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/numberParentLoginScreen"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:orientation="horizontal"
+        android:background="@color/half_white2"
+        android:gravity="center"
         >
 
-
         <ImageView
-            android:layout_width="26dp"
-            android:layout_height="30dp"
-            android:background="@drawable/ic_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_lock_white_24dp"
+            android:layout_marginRight="16dp"
             />
 
         <EditText
             android:id="@+id/passwordLoginScreen"
-            android:layout_width="250dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
+            android:layout_marginLeft="10dp"
             android:hint="Password"
-            android:inputType="textPassword"
+            android:textColorHint="@color/half_white"
+            android:inputType="textPassword|textNoSuggestions"
             android:textSize="20sp"
-            android:textColor="@color/black"
-            android:background="@drawable/shape_borders_rounded_corners_primary_color_white_fill"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:imeOptions="actionGo"
             />
-
 
     </LinearLayout>
 
 
     <Button
         android:id="@+id/loginButtonLoginScreen"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordParentlayoutLoginScreen"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="60dp"
-        android:text="Log In"
+        android:text="Sign In"
         android:background="@drawable/btn_secondary"
         />
 

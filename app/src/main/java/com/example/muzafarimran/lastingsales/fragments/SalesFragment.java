@@ -162,7 +162,7 @@ public class SalesFragment extends SearchFragment {
                             case R.id.filter_leads:
                                 List<LSContact> contactsLeads = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 salesAdapter.setList(contactsLeads);
-                                Toast.makeText(getActivity(), "Filter Leads", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Filter InProgress", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.filter_closed_lost:
                                 List<LSContact> contactsClosedLost = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
@@ -185,7 +185,6 @@ public class SalesFragment extends SearchFragment {
         return super.onOptionsItemSelected(item);
     }
 
-
     public List<LSContact> getAllArrangedContactsAccordingToLeadType() {
         List<LSContact> contactsColle = LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         List<LSContact> contactsPerso = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
@@ -204,20 +203,6 @@ public class SalesFragment extends SearchFragment {
         return arrangedContacts;
     }
 
-    public int countProspects(){
-        int count = 0;
-        List<LSContact> arrangedContacts = getAllArrangedContactsAccordingToLeadType();
-        if(arrangedContacts!=null){
-            for (int i = 0; i < arrangedContacts.size() ; i++) {
-                if(arrangedContacts.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_INPROGRESS)){
-                    count++;
-                }
-            }
-            return count;
-        }else{
-            return 0;
-        }
-    }
     public  int countLeads(){
         int count = 0;
         List<LSContact> arrangedContacts = getAllArrangedContactsAccordingToLeadType();

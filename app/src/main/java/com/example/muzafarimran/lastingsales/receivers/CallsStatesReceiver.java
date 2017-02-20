@@ -20,6 +20,7 @@ import com.example.muzafarimran.lastingsales.utils.CallEndNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import de.halfbit.tinybus.TinyBus;
@@ -53,39 +54,57 @@ public class CallsStatesReceiver extends CallReceiver {
         Toast.makeText(ctx, "Incoming call Ended", Toast.LENGTH_SHORT).show();
         showTagNumberPopupIfNeeded(ctx, number);
         endServiceAndCallPopup(ctx);
-        LSCall tempCall = new LSCall();
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-        tempCall.setContactNumber(internationalNumber);
-        tempCall.setType(LSCall.CALL_TYPE_INCOMING);
-        tempCall.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
-        tempCall.setBeginTime(start.getTime());
-        String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-        if (phoneBookContactName == null) {
-            tempCall.setContactName(null);
-        } else if (!phoneBookContactName.equals("")) {
-            tempCall.setContactName(phoneBookContactName);
+        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
+        if (personalContactCheck != null && !personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+            LSCall tempCall = new LSCall();
+            tempCall.setContactNumber(internationalNumber);
+            tempCall.setType(LSCall.CALL_TYPE_INCOMING);
+            tempCall.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
+            tempCall.setBeginTime(start.getTime());
+            String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+            if (phoneBookContactName == null) {
+                tempCall.setContactName(null);
+            } else if (!phoneBookContactName.equals("")) {
+                tempCall.setContactName(phoneBookContactName);
+            }
+            long callDuration = PhoneNumberAndCallUtils.secondsFromStartAndEndDates(start, end);
+            tempCall.setDuration(callDuration);
+            LSContact contact = LSContact.getContactFromNumber(internationalNumber);
+//      if contact is null that means contact is not already saved with this number
+            if (contact != null) {
+                tempCall.setContact(contact);
+            } else {
+//            new untagged contact is created, saved, entered in call entry
+                LSContact tempContact = new LSContact();
+                tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
+                tempContact.setPhoneOne(internationalNumber);
+                tempContact.setContactName(phoneBookContactName);
+                tempContact.save();
+                tempCall.setContact(tempContact);
+            }
+            tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
+            tempCall.save();
+            LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(internationalNumber);
+            if (tempInquiry != null && tempInquiry.getAverageResponseTime() <= 0) {
+                Calendar now = Calendar.getInstance();
+                tempInquiry.setAverageResponseTime(now.getTimeInMillis() - tempInquiry.getBeginTime());
+                tempInquiry.setStatus(LSInquiry.INQUIRY_STATUS_ATTENDED);
+                if (tempInquiry.getSyncStatus().equals(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED)) {
+                    Log.d(TAG, "onOutgoingCallEnded: 1");
+                    tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED);
+                } else { // TODO USELESS REMOVE IT
+                    Log.d(TAG, "onOutgoingCallEnded: 2");
+                    tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
+                }
+                tempInquiry.save();
+            }
+            DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
+            dataSenderAsync.execute();
+            IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
+            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+            bus.post(mCallEvent);
         }
-        long callDuration = PhoneNumberAndCallUtils.secondsFromStartAndEndDates(start, end);
-        tempCall.setDuration(callDuration);
-        // new untagged contact is created, saved, entered in call entry
-        LSContact tempContact = new LSContact();
-        tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
-        tempContact.setPhoneOne(internationalNumber);
-        tempContact.setContactName(phoneBookContactName);
-        tempContact.save();
-        tempCall.setContact(tempContact);
-        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
-        tempCall.save();
-        LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(internationalNumber);
-        if (tempInquiry != null) {
-            tempInquiry.delete();
-            //TODO SYNC
-        }
-        DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
-        dataSenderAsync.execute();
-        IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
-        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
-        bus.post(mCallEvent);
         Log.d("IncomingCallReceiver", "onIncomingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
     }
 
@@ -94,47 +113,57 @@ public class CallsStatesReceiver extends CallReceiver {
         Toast.makeText(ctx, "Outgoing call Ended", Toast.LENGTH_SHORT).show();
         showTagNumberPopupIfNeeded(ctx, number);
         endServiceAndCallPopup(ctx);
-        LSCall tempCall = new LSCall();
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-        tempCall.setContactNumber(internationalNumber);
-        tempCall.setType(LSCall.CALL_TYPE_OUTGOING);
-        tempCall.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
-        tempCall.setBeginTime(start.getTime());
-        String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-        if (phoneBookContactName == null) {
-            tempCall.setContactName(null);
-        } else if (!phoneBookContactName.equals("")) {
-            tempCall.setContactName(phoneBookContactName);
+        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
+        if (personalContactCheck != null && !personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+            LSCall tempCall = new LSCall();
+            tempCall.setContactNumber(internationalNumber);
+            tempCall.setType(LSCall.CALL_TYPE_OUTGOING);
+            tempCall.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
+            tempCall.setBeginTime(start.getTime());
+            String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+            if (phoneBookContactName == null) {
+                tempCall.setContactName(null);
+            } else if (!phoneBookContactName.equals("")) {
+                tempCall.setContactName(phoneBookContactName);
+            }
+            long callDuration = PhoneNumberAndCallUtils.secondsFromStartAndEndDates(start, end);
+            Toast.makeText(ctx, "Duration " + callDuration, Toast.LENGTH_SHORT).show();
+            tempCall.setDuration(callDuration);
+            LSContact contact = LSContact.getContactFromNumber(internationalNumber);
+//      if contact is null that means contact is not already saved with this number
+            if (contact != null) {
+                tempCall.setContact(contact);
+            } else {
+//            new untagged contact is created, saved, entered in call entry
+                LSContact tempContact = new LSContact();
+                tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
+                tempContact.setPhoneOne(internationalNumber);
+                tempContact.setContactName(phoneBookContactName);
+                tempContact.save();
+                tempCall.setContact(tempContact);
+            }
+            tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
+            tempCall.save();
+            LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(internationalNumber);
+            Log.d(TAG, "onOutgoingCallEnded: 0");
+            if (tempInquiry != null && tempInquiry.getAverageResponseTime() <= 0) {
+                Calendar now = Calendar.getInstance();
+                tempInquiry.setAverageResponseTime(now.getTimeInMillis() - tempInquiry.getBeginTime());
+                tempInquiry.setStatus(LSInquiry.INQUIRY_STATUS_ATTENDED);
+                if (tempInquiry.getSyncStatus().equals(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED)) {
+                    tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED);
+                } else { // TODO check if else is needed or not.
+                    tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
+                }
+                tempInquiry.save();
+            }
+            DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
+            dataSenderAsync.execute();
+            OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
+            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+            bus.post(mCallEvent);
         }
-        long callDuration = PhoneNumberAndCallUtils.secondsFromStartAndEndDates(start, end);
-        Toast.makeText(ctx, "Duration " + callDuration, Toast.LENGTH_SHORT).show();
-        tempCall.setDuration(callDuration);
-        LSContact contact = LSContact.getContactFromNumber(internationalNumber);
-        // new untagged contact is created, saved, entered in call entry
-        LSContact tempContact = new LSContact();
-        tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
-        tempContact.setPhoneOne(internationalNumber);
-        tempContact.setContactName(phoneBookContactName);
-        tempContact.save();
-        tempCall.setContact(tempContact);
-        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
-        tempCall.save();
-        LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(internationalNumber);
-        if (tempInquiry != null) {
-            tempInquiry.delete();
-            //TODO SYNC
-        }
-        DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
-        dataSenderAsync.execute();
-        OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
-        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
-        try {
-            bus.register(mCallEvent);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-//        bus.register(mCallEvent); //Fixed but not sure // Update = still crashing
-        bus.post(mCallEvent); //crashed here didnt fixed
         Log.d("OutgoingCallReceiver", "onOutgoingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
     }
 
@@ -143,54 +172,61 @@ public class CallsStatesReceiver extends CallReceiver {
         Toast.makeText(ctx, "Missed Call Detected", Toast.LENGTH_SHORT).show();
 //        showTagNumberPopupIfNeeded(ctx, number);
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-        LSCall tempCall = new LSCall();
-        tempCall.setContactNumber(internationalNumber);
-        String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-        if (phoneBookContactName == null) {
-            tempCall.setContactName(null);
-        } else if (!phoneBookContactName.equals("")) {
-            tempCall.setContactName(phoneBookContactName);
-        }
-        LSContact contact = LSContact.getContactFromNumber(internationalNumber);
-        if (contact != null) {
-            tempCall.setContact(contact);
-            tempCall.setContactName(contact.getContactName());
+        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
+        if (personalContactCheck != null && !personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+            //Do nothing
         } else {
-            tempCall.setContact(null);
+            LSCall tempCall = new LSCall();
+            tempCall.setContactNumber(internationalNumber);
+            String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+            if (phoneBookContactName == null) {
+                tempCall.setContactName(null);
+            } else if (!phoneBookContactName.equals("")) {
+                tempCall.setContactName(phoneBookContactName);
+            }
+            LSContact contact = LSContact.getContactFromNumber(internationalNumber);
+            if (contact != null) {
+                tempCall.setContact(contact);
+                tempCall.setContactName(contact.getContactName());
+            } else {
+                tempCall.setContact(null);
+            }
+            tempCall.setType(LSCall.CALL_TYPE_MISSED);
+            tempCall.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
+            tempCall.setBeginTime(start.getTime());
+            tempCall.setDuration(0L);
+            tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
+            tempCall.save();
+            LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(tempCall.getContactNumber());
+            if (tempInquiry != null) {
+                Toast.makeText(ctx, "Already Exists", Toast.LENGTH_SHORT).show();
+                tempInquiry.setCountOfInquiries(tempInquiry.getCountOfInquiries() + 1);
+//            tempInquiry.setBeginTime(start.getTime());
+//            tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
+                tempInquiry.save();
+                Log.d(TAG, "onMissedCall: getCountOfInquiries: " + tempInquiry.getCountOfInquiries());
+                Log.d(TAG, "onMissedCall: tempInquiry :" + tempInquiry.toString());
+            } else {
+                Toast.makeText(ctx, "Doesnt Exist", Toast.LENGTH_SHORT).show();
+                LSInquiry newInquiry = new LSInquiry();
+                newInquiry.setContactNumber(tempCall.getContactNumber());
+                newInquiry.setContactName(tempCall.getContactName());
+                newInquiry.setContact(tempCall.getContact());
+                newInquiry.setBeginTime(tempCall.getBeginTime());
+                newInquiry.setDuration(tempCall.getDuration());
+                newInquiry.setCountOfInquiries(1);
+                newInquiry.setStatus(LSInquiry.INQUIRY_STATUS_PENDING);
+                newInquiry.setAverageResponseTime(0L);
+                newInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
+                newInquiry.save();
+                Log.d(TAG, "onMissedCall: newInquiry: " + newInquiry.toString());
+            }
+            DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
+            dataSenderAsync.execute();
+            MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
+            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+            bus.post(mCallEvent);
         }
-        tempCall.setType(LSCall.CALL_TYPE_MISSED);
-        tempCall.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
-        tempCall.setBeginTime(start.getTime());
-        tempCall.setDuration(0L);
-        tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
-        tempCall.save();
-        LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(tempCall.getContactNumber());
-        if (tempInquiry != null) {
-            Toast.makeText(ctx, "Already Exists", Toast.LENGTH_SHORT).show();
-            tempInquiry.setCountOfInquiries(tempInquiry.getCountOfInquiries() + 1);
-            tempInquiry.setBeginTime(start.getTime());
-            tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_HANDLE_STATE_NOT_HANDLED);
-            tempInquiry.save();
-            Log.d(TAG, "onMissedCall: getCountOfInquiries: " + tempInquiry.getCountOfInquiries());
-            Log.d(TAG, "onMissedCall: tempInquiry :" + tempInquiry.toString());
-        } else {
-            Toast.makeText(ctx, "Doesnt Exist", Toast.LENGTH_SHORT).show();
-            LSInquiry newInquiry = new LSInquiry();
-            newInquiry.setContactNumber(tempCall.getContactNumber());
-            newInquiry.setContactName(tempCall.getContactName());
-            newInquiry.setContact(tempCall.getContact());
-            newInquiry.setBeginTime(tempCall.getBeginTime());
-            newInquiry.setDuration(tempCall.getDuration());
-            newInquiry.setCountOfInquiries(1);
-            newInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_HANDLE_STATE_NOT_HANDLED);
-            newInquiry.save();
-            Log.d(TAG, "onMissedCall: newInquiry: " + newInquiry.toString());
-        }
-        DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
-        dataSenderAsync.execute();
-        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
-        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
-        bus.post(mCallEvent);
         Log.d("MissedCallReceiver", "onMissedCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
     }
 

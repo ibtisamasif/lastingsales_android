@@ -31,7 +31,7 @@
             android:value="sugar_example.db" />
         <meta-data
             android:name="VERSION"
-            android:value="1" />
+            android:value="3" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -39,11 +39,12 @@
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.example.muzafarimran.lastingsales" />
 
-        <!--<receiver android:name=".receivers.GcmReceiver">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
+        <receiver android:name=".receivers.NetworkStateReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
         <receiver android:name=".receivers.TagNonBusiness">
             <intent-filter>

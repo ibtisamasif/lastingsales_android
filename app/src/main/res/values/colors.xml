@@ -20,6 +20,7 @@
     <color name="darkGray">#d0898989</color>
     <color name="white">#FFFFFF</color>
     <color name="half_white">#bcffffff</color>
+    <color name="half_white2">#25ffffff</color>
     <color name="black">#000000</color>
     <color name="totem_blue">#212e48</color>
     <color name="transpartent_black">#77000000</color>

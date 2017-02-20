@@ -26,7 +26,7 @@ public class OutgoingCallEventModel {
     }
 
     @Produce
-    public OutgoingCallEventModel geOutgoingCallEventModel() {
+    public OutgoingCallEventModel geLastCallReceivedEvent() {
         return this;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
@@ -13,6 +14,11 @@ import java.util.List;
 
 public class LSInquiry extends SugarRecord {
 
+    @Ignore
+    public static final String INQUIRY_STATUS_PENDING = "inquiry_status_pending";
+    @Ignore
+    public static final String INQUIRY_STATUS_ATTENDED = "inquiry_status_attended";
+
     private String contactName;
     private String contactNumber;
     private LSContact contact;
@@ -20,6 +26,9 @@ public class LSInquiry extends SugarRecord {
     private Long duration;
     private int countOfInquiries;
     private String syncStatus;
+    private String serverId;
+    private Long averageResponseTime;
+    private String status;
 
     public LSInquiry() {
     }
@@ -97,6 +106,30 @@ public class LSInquiry extends SugarRecord {
 
     public void setSyncStatus(String syncStatus) {
         this.syncStatus = syncStatus;
+    }
+
+    public String getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
+    }
+
+    public Long getAverageResponseTime() {
+        return averageResponseTime;
+    }
+
+    public void setAverageResponseTime(Long averageResponseTime) {
+        this.averageResponseTime = averageResponseTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

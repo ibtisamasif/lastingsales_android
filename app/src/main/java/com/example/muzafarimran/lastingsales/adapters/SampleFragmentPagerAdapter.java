@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     final int TAB_COUNT = 3;
-    private String tabTitles[] = new String[]{"Inquiries", "Home", "Sales"};
+    private String tabTitles[] = new String[]{"Inquiries", "Home", "Sales Leads"};
     private List<Fragment> mFragments = new ArrayList<>();
     private Context context;
 

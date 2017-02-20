@@ -187,6 +187,7 @@ public class HomeFragment extends TabFragment {
 
         if (allInquiries != null) {
             if (allInquiries.size() > 0) {
+                llinquriesContainer.setVisibility(View.VISIBLE);
                 tvInquiriesValue.setText("" + allInquiries.size());
             } else {
                 llinquriesContainer.setVisibility(View.GONE);
@@ -198,6 +199,7 @@ public class HomeFragment extends TabFragment {
 
         if (allUntaggedContacts != null) {
             if (allUntaggedContacts.size() > 0) {
+                llUntaggedContainer.setVisibility(View.VISIBLE);
                 tvUntaggedContacts.setText("" + allUntaggedContacts.size());
             } else {
                 llUntaggedContainer.setVisibility(View.GONE);
@@ -209,6 +211,7 @@ public class HomeFragment extends TabFragment {
 
         if (allInactiveLeads != null) {
             if (allInactiveLeads.size() > 0) {
+                llInActiveLeadsContainer.setVisibility(View.VISIBLE);
                 tvInactiveLeadsValue.setText("" + allInactiveLeads.size());
             } else {
                 llInActiveLeadsContainer.setVisibility(View.GONE);

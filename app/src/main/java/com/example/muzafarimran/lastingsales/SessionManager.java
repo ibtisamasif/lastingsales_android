@@ -53,7 +53,7 @@ public class SessionManager {
         }
         Long oldTimestamp = getLoginTimestamp();
         Long currentTimestamp = Calendar.getInstance().getTimeInMillis();
-        Long oldAnd24Hours = oldTimestamp + 86400000;
+        Long oldAnd24Hours = oldTimestamp + 15552000000L; //Six months expiry
         if (currentTimestamp > oldAnd24Hours) {
             return false;
         }
@@ -61,7 +61,6 @@ public class SessionManager {
     }
 
     public void loginnUser(String userId, String token, Long timeStamp, String number, String firstName, String lastName, String imagePath) {
-
         deleteDataIfDifferentUser(number);
         setLoginNumber(number);
         setLoginToken(token);

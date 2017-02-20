@@ -10,32 +10,10 @@ public class MyURLs {
     public static String ADD_NOTE = "http://staging.lastingsales.com/api/v1/lead/"; //SampleFormatComplete ADD_NOTE = "http://staging.lastingsales.com/api/v1/lead/145/notes";
     public static String ADD_CALL = "http://staging.lastingsales.com/api/v1/call";
     public static String ADD_INQUIRY = "http://staging.lastingsales.com/api/v1/inquiries";
+    public static String UPDATE_INQUIRY = "http://staging.lastingsales.com/api/v1/inquiries/";
     public static String DELETE_CONTACT = "http://staging.lastingsales.com/api/v1/lead/";
     public static String UPDATE_CONTACT = "http://staging.lastingsales.com/api/v1/lead/";
     public static String UPDATE_NOTE = "http://staging.lastingsales.com/api/v1/lead/";
     public static String UPDATE_AGENT = "http://staging.lastingsales.com/api/v1/user";
-
-//    public static String SOCKET_REQUEST_URL = "http://vivid-intern.cloudapp.net/lastingsales-portal/public/api/socket";
-    public static String SOCKET_REQUEST_URL = "http://login.lastingsales.com/api/socket";
-    public static String ON_CALL_DETAILS_URL = "http://login.lastingsales.com/api/contacts-on-call-details";
-    public static String OUTGOING_CALL_URL = "http://login.lastingsales.com/api/outgoingcall";
-    public static String INCOMING_CALL_URL = "http://login.lastingsales.com/api/incomingcall";
-    public static String INQUIRY_URL = "http://login.lastingsales.com/api/inquiry";
-    public static String LEAD_URL = "http://login.lastingsales.com/api/lead";
-    public static String LEAD_UPDATE_URL = "http://login.lastingsales.com/api/lead-update";
-    public static String PERSISTENCE_LRT_URL = "http://login.lastingsales.com/api/persistencelrt";
-//    public static String BUSINESS_CONTACT_URL = "http://login.lastingsales.com/api/create-businesscontact";
-    public static String PRIVATE_CONTACT_URL = "http://login.lastingsales.com/api/create-contact";
-    public static String LEAD_FETCHING_URL = "http://login.lastingsales.com/api/lead-to-android-app";
-    public static String CONTACTS_FETCHING_URL = "http://login.lastingsales.com/api/contacts";
-    public static String INQUIRIES_DELETE_FETCHING_URL = "http://login.lastingsales.com/api/inquiries-delete-to-android-app";
-    public static String INCOMING_CALLS_FETCHING_URL = "http://login.lastingsales.com/api/incomingcalls-to-android-app";
-    public static String OUTGOING_CALLS_FETCHING_URL = "http://login.lastingsales.com/api/outgoingcalls-to-android-app";
-    public static String CONTACT_UPDATE_URL = "http://login.lastingsales.com/api/contact-update";
-    public static String LEAD_DELETE_URL = "http://login.lastingsales.com/api/lead-delete";
-    public static String CONTACT_DELETE_URL = "http://login.lastingsales.com/api/contact-delete";
-    public static String PRIVATE_CALL_DURATION_URL = "http://login.lastingsales.com/api/private-calls-duration";
-    public static String AUDIO_FILE_UPLOAD_URL = "http://login.lastingsales.com/api/audiofile";
-    public static String PERMISSION_URL = "http://login.lastingsales.com/api/permissions";
 
 }

@@ -80,7 +80,9 @@ public class AddEditNoteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_NOTE)) {
                     selectedNote.setNoteText(etContactNote.getText().toString());
-                    selectedNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_EDIT_NOT_SYNCED);
+                    if(selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED) || selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_EDIT_SYNCED)) {
+                        selectedNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_EDIT_NOT_SYNCED);
+                    }
                     selectedNote.save();
                     finish();
                     Toast.makeText(AddEditNoteActivity.this, "Note Edited", Toast.LENGTH_SHORT).show();

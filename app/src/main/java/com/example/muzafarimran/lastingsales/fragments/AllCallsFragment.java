@@ -84,7 +84,7 @@ public class AllCallsFragment extends TabFragment {
             List<LSCall> allCalls = LSCall.getAllCallsInDescendingOrder();
             setList(allCalls);
         }
-        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event); //TODO pakra gya shayad
     }
 
     @Subscribe

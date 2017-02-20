@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.FollowupsTodayListAdapter;
@@ -38,12 +37,12 @@ public class FollowupsTodayListFragment extends TabFragment {
         if (bundle != null) {
             selectedContactID = bundle.getLong("contactID");
         }
-        if(selectedContactID != null){
-            Toast.makeText(getActivity(), "Not NUll "+selectedContactID, Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(getActivity(), "NUll " +selectedContactID, Toast.LENGTH_SHORT).show();
-        }
+//        if(selectedContactID != null){
+//            Toast.makeText(getActivity(), "Not NUll "+selectedContactID, Toast.LENGTH_SHORT).show();
+//        }
+//        else {
+//            Toast.makeText(getActivity(), "NUll " +selectedContactID, Toast.LENGTH_SHORT).show();
+//        }
         ArrayList<TempFollowUp> followUps = getFollowupsOFToday();
         followupsAdapter = new FollowupsTodayListAdapter(getContext(),followUps);
         setHasOptionsMenu(true);

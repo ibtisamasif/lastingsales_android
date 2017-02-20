@@ -59,6 +59,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     updateContactsToServer();
                     addCallsToServer();
                     addInquiriesToServer();
+                    updateInquiriesToServer();
                     addNotesToServer();
                     updateNotesToServer();
                     addFollowupsToServer();
@@ -132,6 +133,12 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 Map<String, String> params = new HashMap<String, String>();
 
                 params.put("name", ""+contact.getContactName());
+                if(contact.getContactEmail() != null){
+                    params.put("email", ""+contact.getContactEmail());
+                }
+                if(contact.getContactAddress() != null){
+                    params.put("address", ""+contact.getContactAddress());
+                }
                 params.put("phone", ""+contact.getPhoneOne());
                 params.put("status", ""+contact.getContactSalesStatus());
                 params.put("api_token", ""+sessionManager.getLoginToken());
@@ -166,17 +173,27 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
     }
 
     public void updateContactToServerSync(final LSContact contact) {
+        String email = "";
+        String address = "";
+
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
+        if(contact.getContactEmail() != null){
+            email = contact.getContactEmail();
+        }
+        if(contact.getContactAddress() != null){
+            address = contact.getContactAddress();
+        }
+
         final String BASE_URL = MyURLs.UPDATE_CONTACT;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendPath(""+contact.getServerId())
                 .appendQueryParameter("name", ""+contact.getContactName())
-                .appendQueryParameter("email", ""+contact.getContactEmail())
+                .appendQueryParameter("email", ""+email)
                 .appendQueryParameter("phone", ""+contact.getPhoneOne())
-                .appendQueryParameter("address", ""+contact.getContactAddress())
-//                .appendQueryParameter("status", ""+contact.getContactSalesStatus())
+                .appendQueryParameter("address", ""+address)
+                .appendQueryParameter("status", ""+contact.getContactSalesStatus())
                 .appendQueryParameter("api_token", ""+sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
@@ -301,10 +318,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 
         List<LSInquiry> inquiriesList = null;
         if (LSInquiry.count(LSInquiry.class) > 0){
-            inquiriesList = LSInquiry.find(LSInquiry.class, "sync_status = ?", SyncStatus.SYNC_STATUS_INQUIRY_HANDLE_STATE_NOT_HANDLED);
+            inquiriesList = LSInquiry.find(LSInquiry.class, "sync_status = ?", SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
             Log.d(TAG, "addInquiriesToServer: count : "+inquiriesList.size());
             for (LSInquiry oneInquiry : inquiriesList) {
-                Log.d(TAG, "Found Inquiry");
+                Log.d(TAG, "Found Inquiry" + oneInquiry.getContactNumber());
                 addInquiryToServerSync(oneInquiry);
             }
         }
@@ -323,8 +340,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     int responseCode = jObj.getInt("responseCode");
                     if (responseCode == 200) {
                         JSONObject responseObject = jObj.getJSONObject("response");
+                        String id = responseObject.getString("id");
                         String contactNumber = responseObject.getString("contact_number");
-                        inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_HANDLE_STATE_HANDLED);
+                        inquiry.setServerId(id);
+                        inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
                         inquiry.save();
                         Log.d(TAG, "onResponse: " + contactNumber);
                     }
@@ -345,7 +364,8 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 params.put("date", ""+ PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(inquiry.getBeginTime(), "yyyy-MM-dd"));
                 params.put("time", ""+ PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(inquiry.getBeginTime(), "hh:mm:ss"));
                 params.put("contact_number", ""+inquiry.getContactNumber());
-                params.put("status", "attend");
+                params.put("status", "pending");
+                params.put("avg_response_time", ""+inquiry.getAverageResponseTime()/1000);
                 params.put("api_token", ""+sessionManager.getLoginToken());
                 return params;
             }
@@ -357,6 +377,68 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 return params;
             }
         };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+
+    private void updateInquiriesToServer() {
+
+        List<LSInquiry> inquiriesList = null;
+        if (LSInquiry.count(LSInquiry.class) > 0){
+            inquiriesList = LSInquiry.find(LSInquiry.class, "sync_status = ?", SyncStatus.SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED);
+            Log.d(TAG, "updateInquiriesToServer: count : "+inquiriesList.size());
+            for (LSInquiry oneInquiry : inquiriesList) {
+                Log.d(TAG, "Found Inquiry");
+                updateInquiryToServerSync(oneInquiry);
+            }
+        }
+    }
+
+    public void updateInquiryToServerSync(final LSInquiry inquiry) {
+
+        final int MY_SOCKET_TIMEOUT_MS = 60000;
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+
+        final String BASE_URL = MyURLs.UPDATE_INQUIRY;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(""+inquiry.getServerId())
+                .appendQueryParameter("status", "attended")
+                .appendQueryParameter("avg_response_time", ""+inquiry.getAverageResponseTime()/1000)
+                .appendQueryParameter("api_token", ""+sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+
+        StringRequest sr = new StringRequest(Request.Method.PUT, myUrl , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() Update Inquiry: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+                    if (responseCode == 200) {
+                        JSONObject responseObject = jObj.getJSONObject("response");
+                        String contactNumber = responseObject.getString("contact_number");
+                        String avg_response_time = responseObject.getString("avg_response_time");
+                        inquiry.delete();
+                        Log.d(TAG, "onResponse: ContactNum" + contactNumber);
+                        Log.d(TAG, "onResponse: AverageResponseTime: " +avg_response_time);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateInquiry");
+            }
+        });
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -485,8 +567,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateNote "+myUrl);
-                Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateNoteID "+note.getId());
+                Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateNote");
             }
         }){};
         sr.setRetryPolicy(new DefaultRetryPolicy(
@@ -581,6 +662,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
     }
 
     public void deleteContactFromServerSync(final LSContact contact) {
+//        Log.d(TAG, "deleteContactFromServerSync: DELETE LEAD SERVER ID : "+contact.getServerId());
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
         final String BASE_URL = MyURLs.DELETE_CONTACT;
@@ -604,11 +686,6 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                         contact.delete();
                         LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
                         TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-                        try {
-                            bus.register(mCallEvent);
-                        } catch (IllegalArgumentException e) {
-                            e.printStackTrace();
-                        }
                         bus.post(mCallEvent);
                     }
                 } catch (JSONException e) {

@@ -31,7 +31,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -168,7 +167,6 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                 etContactName.setText("UNKNOWN");
             }
             etContactPhone.setText(selectedContact.getPhoneOne());
-            selectedContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
         }
 //        if launch mode is tag untagged contact then the contact is already temporarily saved but with
 //        untagged type. and contact id and selected new contact tupe is passed to this activity
@@ -594,7 +592,6 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         LSContact tempContact = selectedContact;
                         tempContact.setContactName(contactName);
                         tempContact.setPhoneOne(intlNum);
-                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_NOT_SYNCED);
                         tempContact.save();
                         if (etNoteText != null) {
                             noteText = etNoteText.getText().toString();

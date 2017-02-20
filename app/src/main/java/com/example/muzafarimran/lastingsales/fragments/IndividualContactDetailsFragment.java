@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
@@ -29,14 +30,18 @@ import de.halfbit.tinybus.TinyBus;
 
 public class IndividualContactDetailsFragment extends TabFragment {
 
-    public static final String TAG = "IndividualContactDetailsFragment";
+    public static final String TAG = "IndividualConDetailFrag";
+    TextView tvName;
+    TextView tvNumber;
+    TextView tvEmail;
+    TextView tvAddress;
     ListView listView = null;
     MaterialSearchView searchView;
-    private TinyBus bus;
     private String number = "";
-    private Spinner leadStatusSpinner, customTagSpinner1, customTagSpinner2;
+    private Spinner leadStatusSpinner;
     private Button bSave;
     private LSContact mContact;
+    private TinyBus bus;
 
     public static IndividualContactDetailsFragment newInstance(int page, String title, String number) {
         IndividualContactDetailsFragment fragmentFirst = new IndividualContactDetailsFragment();
@@ -54,6 +59,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
         setRetainInstance(true);
         Bundle bundle = this.getArguments();
         number = bundle.getString("someNumber");
+        mContact = LSContact.getContactFromNumber(number);
         setHasOptionsMenu(true);
     }
 
@@ -73,34 +79,54 @@ public class IndividualContactDetailsFragment extends TabFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Bundle bundle = this.getArguments();
-        number = bundle.getString("someNumber");
-        mContact = LSContact.getContactFromNumber(number);
+//        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+
+        if (mContact.getContactName() != null) {
+            tvName.setText(mContact.getContactName());
+        }
+        if (mContact.getPhoneOne() != null) {
+            tvNumber.setText(mContact.getPhoneOne());
+        }
+        if (mContact.getContactEmail() != null) {
+            tvEmail.setText(mContact.getContactEmail());
+        }
+        if (mContact.getContactAddress() != null) {
+            tvAddress.setText(mContact.getContactAddress());
+        }
         if (mContact.getContactType() != null) { //TODO crashed here
             if (mContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                 if (mContact.getContactSalesStatus() != null && !mContact.getContactSalesStatus().equals("")) {
                     switch (mContact.getContactSalesStatus()) {
                         case LSContact.SALES_STATUS_INPROGRESS:
-                            leadStatusSpinner.setSelection(0);
+                            leadStatusSpinner.setSelection(0, false);
                             break;
                         case LSContact.SALES_STATUS_CLOSED_WON:
-                            leadStatusSpinner.setSelection(1);
+                            leadStatusSpinner.setSelection(1, false);
                             break;
                         case LSContact.SALES_STATUS_CLOSED_LOST:
-                            leadStatusSpinner.setSelection(2);
+                            leadStatusSpinner.setSelection(2, false);
                             break;
                     }
                 }
             }
         }
+
+        leadStatusSpinner.post(new Runnable() {
+            public void run() {
+                leadStatusSpinner.setOnItemSelectedListener(new CustomSpinnerLeadStatusOnItemSelectedListener());
+            }
+        });
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Bundle bundle = this.getArguments();
-        number = bundle.getString("someNumber");
         View view = inflater.inflate(R.layout.contact_profile_details_fragment, container, false);
+        tvName = (TextView) view.findViewById(R.id.tvName);
+        tvNumber = (TextView) view.findViewById(R.id.tvNumber);
+        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
+        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
         bSave = (Button) view.findViewById(R.id.contactDetailsSaveButton);
         bSave.setVisibility(View.GONE);
 //        bSave.setOnClickListener(new View.OnClickListener() {
@@ -112,22 +138,9 @@ public class IndividualContactDetailsFragment extends TabFragment {
 //                getActivity().finish();
 //            }
 //        });
+
         addItemsOnSpinnerLeadStatus(view);
-        addItemsOnSpinner1(view);
-        addItemsOnSpinner2(view);
-        addListenerOnSpinnerLeadStatusItemSelection(view);
-        addListenerOnSpinner1ItemSelection(view);
-        addListenerOnSpinner2ItemSelection(view);
         setHasOptionsMenu(true);
-//        edEmailLabel.setSelected(false);
-//        edEmailLabel.clearFocus();
-//        edEmailLabel.setFocusableInTouchMode(false);
-//        edEmailLabel.setFocusable(false);
-//        edEmailLabel.setFocusableInTouchMode(true);
-//        edEmailLabel.setFocusable(true);
-//        // hide virtual keyboard
-//        InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.hideSoftInputFromWindow(edEmailLabel.getWindowToken(), 0);
         return view;
     }
 
@@ -140,43 +153,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         leadStatusSpinner.setAdapter(dataAdapter);
-    }
-
-    public void addItemsOnSpinner1(View view) {
-        customTagSpinner1 = (Spinner) view.findViewById(R.id.custom_tag_spinner1);
-        List<String> list = new ArrayList<String>();
-        list.add("Residential");
-        list.add("Commercial");
-        list.add("Industrial");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        customTagSpinner1.setAdapter(dataAdapter);
-    }
-
-    public void addItemsOnSpinner2(View view) {
-        customTagSpinner2 = (Spinner) view.findViewById(R.id.custom_tag_spinner2);
-        List<String> list = new ArrayList<String>();
-        list.add("Honda City");
-        list.add("Civic Reborn");
-        list.add("Chevrolet Exclusive");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        customTagSpinner2.setAdapter(dataAdapter);
-    }
-
-    public void addListenerOnSpinnerLeadStatusItemSelection(View view) {
-        leadStatusSpinner = (Spinner) view.findViewById(R.id.lead_status_spinner);
-        leadStatusSpinner.setOnItemSelectedListener(new CustomSpinnerLeadStatusOnItemSelectedListener());
-    }
-
-    public void addListenerOnSpinner1ItemSelection(View view) {
-        customTagSpinner1 = (Spinner) view.findViewById(R.id.custom_tag_spinner1);
-        customTagSpinner1.setOnItemSelectedListener(new CustomSpinner1OnItemSelectedListener());
-    }
-
-    public void addListenerOnSpinner2ItemSelection(View view) {
-        customTagSpinner2 = (Spinner) view.findViewById(R.id.custom_tag_spinner2);
-        customTagSpinner2.setOnItemSelectedListener(new CustomSpinner2OnItemSelectedListener());
     }
 
     @Override
@@ -222,30 +198,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
                     dataSenderNew.execute();
                     break;
             }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> arg0) {
-            // TODO Auto-generated method stub
-        }
-    }
-
-    private class CustomSpinner1OnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-//            Toast.makeText(parent.getContext(), "Custom Tag1 : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> arg0) {
-            // TODO Auto-generated method stub
-        }
-    }
-
-    private class CustomSpinner2OnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-//            Toast.makeText(parent.getContext(), "Custom Tag2 : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
