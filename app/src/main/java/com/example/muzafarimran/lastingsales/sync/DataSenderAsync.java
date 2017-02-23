@@ -20,12 +20,23 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+import com.example.muzafarimran.lastingsales.sync.AndroidMultiPartEntity.ProgressListener;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,15 +66,16 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     Log.d(TAG, "Syncing");
                     Log.d(TAG, "Token : "+sessionManager.getLoginToken());
                     Log.d(TAG, "user_id : "+sessionManager.getKeyLoginId());
-                    addContactsToServer();
-                    updateContactsToServer();
-                    addCallsToServer();
-                    addInquiriesToServer();
-                    updateInquiriesToServer();
-                    addNotesToServer();
-                    updateNotesToServer();
-                    addFollowupsToServer();
-                    deleteContactsFromServer();
+//                    addContactsToServer();
+//                    updateContactsToServer();
+//                    addCallsToServer();
+//                    addInquiriesToServer();
+//                    updateInquiriesToServer();
+//                    addNotesToServer();
+//                    updateNotesToServer();
+//                    addFollowupsToServer();
+//                    deleteContactsFromServer();
+                    addRecordingToServer();
                 }
             } else {
                 Log.d(TAG, "SyncNoInternet");
@@ -255,13 +267,13 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     int responseCode = jObj.getInt("responseCode");
 //                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
 
-                    if (responseCode == 200) {
+//                    if (responseCode == 200) {
                         JSONObject responseObject = jObj.getJSONObject("response");
                         String contactNumber = responseObject.getString("contact_number");
                         call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_SYNCED);
                         call.save();
                         Log.d(TAG, "onResponse: " + contactNumber);
-                    }
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -342,9 +354,15 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                         JSONObject responseObject = jObj.getJSONObject("response");
                         String id = responseObject.getString("id");
                         String contactNumber = responseObject.getString("contact_number");
+                        String status = responseObject.getString("status");
                         inquiry.setServerId(id);
                         inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
-                        inquiry.save();
+                        if(status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)){
+                            inquiry.delete();
+                        }
+                        else {
+                            inquiry.save();
+                        }
                         Log.d(TAG, "onResponse: " + contactNumber);
                     }
                 } catch (JSONException e) {
@@ -364,7 +382,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 params.put("date", ""+ PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(inquiry.getBeginTime(), "yyyy-MM-dd"));
                 params.put("time", ""+ PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(inquiry.getBeginTime(), "hh:mm:ss"));
                 params.put("contact_number", ""+inquiry.getContactNumber());
-                params.put("status", "pending");
+                params.put("status", ""+inquiry.getStatus());
                 params.put("avg_response_time", ""+inquiry.getAverageResponseTime()/1000);
                 params.put("api_token", ""+sessionManager.getLoginToken());
                 return params;
@@ -407,7 +425,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendPath(""+inquiry.getServerId())
-                .appendQueryParameter("status", "attended")
+                .appendQueryParameter("status", ""+inquiry.getStatus())
                 .appendQueryParameter("avg_response_time", ""+inquiry.getAverageResponseTime()/1000)
                 .appendQueryParameter("api_token", ""+sessionManager.getLoginToken())
                 .build();
@@ -420,14 +438,14 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
-                    if (responseCode == 200) {
+//                    if (responseCode == 200) {
                         JSONObject responseObject = jObj.getJSONObject("response");
                         String contactNumber = responseObject.getString("contact_number");
                         String avg_response_time = responseObject.getString("avg_response_time");
                         inquiry.delete();
                         Log.d(TAG, "onResponse: ContactNum" + contactNumber);
                         Log.d(TAG, "onResponse: AverageResponseTime: " +avg_response_time);
-                    }
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -472,7 +490,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
 //                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
-                    if (responseCode == 200) {
+//                    if (responseCode == 200) {
                         JSONObject responseObject = jObj.getJSONObject("response");
                         String description = responseObject.getString("description");
                         String id = responseObject.getString("id");
@@ -481,7 +499,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                         note.save();
                         Log.d(TAG, "onResponse addNote: " + description+" ServerNoteID : "+id);
 
-                    }
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -603,13 +621,13 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     int responseCode = jObj.getInt("responseCode");
 //                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
 
-                    if (responseCode == 200) {
+//                    if (responseCode == 200) {
                         JSONObject responseObject = jObj.getJSONObject("response");
                         String description = responseObject.getString("description");
                         followup.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_ADDED_SYNCED);
                         followup.save();
                         Log.d(TAG, "onResponse: " + description);
-                    }
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -706,15 +724,156 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         queue.add(sr);
     }
 
+    public void addRecordingToServer(){
+//        uploadFile(CallsStatesReceiver.mAudio_FolderPath + CallsStatesReceiver.mAudio_FileName + "_outgoing_429683239.amr");
+    }
+    @SuppressWarnings("deprecation")
+    private String uploadFile(String path) {
+        Log.d(TAG, "uploadFile: Path: " + path);
+        long totalSize = 0;
+//        String filePath = "/storage/emulated/0/Pictures/Android File Upload/myrec.amr";
+        String responseString = null;
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost(MyURLs.FILE_UPLOAD_URL);
+
+        try {
+            Log.d(TAG, "uploadFile: 0");
+            AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+                    new ProgressListener() {
+                        @Override
+                        public void transferred(long num) {
+                            Log.d(TAG, "uploading...");
+//                            publishProgress((int) ((num / (float) totalSize) * 100));
+                        }
+                    });
+
+            File sourceFile = new File(path);
+
+            // Adding file data to http body
+            entity.addPart("file", new FileBody(sourceFile));
+
+//				// Extra parameters if you want to pass to server
+//				entity.addPart("website", new StringBody("www.androidhive.info"));
+//				entity.addPart("email", new StringBody("abc@gmail.com"));
+
+            totalSize = entity.getContentLength();
+            httppost.setEntity(entity);
+
+            // Making server call
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity r_entity = response.getEntity();
+
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == 200) {
+                // Server response
+                responseString = EntityUtils.toString(r_entity);
+            } else {
+                responseString = "Error occurred! Http Status Code: " + statusCode;
+            }
+            Log.d(TAG, "uploadFile: ResponseCode: "+statusCode);
+            Log.d(TAG, "uploadFile: ResponseString: "+responseString);
+
+        } catch (ClientProtocolException e) {
+            responseString = e.toString();
+            Log.d(TAG, "ClientProtocolException: "+responseString);
+        } catch (IOException e) {
+            responseString = e.toString();
+            Log.d(TAG, "IOException: "+responseString);
+        }
+
+        return responseString;
+
+    }
+
+//    public void addCallRecordingsToServer(){
+//        String path;
+//        File[] myFiles = new File[0];
+//        File pathToRecordings = new File(Environment.getExternalStorageDirectory() + AudioFilePath.audioFileDirectoryPath);
+//        if(pathToRecordings.exists())
+//        {
+//            myFiles = pathToRecordings.listFiles();
+//        }
+//        else {
+//            Log.d(TAG,  "17)AudioFile: No files found");
+//        }
+//        Log.d(TAG,  "17)PathToRecordings: "+pathToRecordings);
+//        try {
+//            if (myFiles.length != 0) {
+//                try {
+//                    if (myFiles.length !=0){
+//                        for (File file : myFiles) {
+//                            try {
+//                                path = file.getAbsolutePath();
+//                                MediaPlayer mediaPlayer = MediaPlayer.create(mContext, Uri.parse(path));
+//                                int file_duration = mediaPlayer.getDuration();
+//                                Log.d(TAG,  "17)AudioFile: Duration: "+file_duration+" path: "+path);
+//                                uploadFile(path, sessionManager.getLoginToken());
+//                            }catch (Exception e){
+//                                Log.d(TAG, "17)AudioFileSyncing Deleting Corrupted File: "+e.getMessage());
+//                                file.delete();
+//                            }
+//                        }
+//                    }
+//                }catch (Exception e){
+//                    Log.d(TAG, "17)AudioFileSyncing Exception: "+e.getMessage());
+//                }
+//            }else {
+//                pathToRecordings.delete();
+//            }
+//        }catch (Exception e){
+//            Log.d(TAG, "17)AudioFileSyncing Exception: "+e.getMessage());
+//        }
+//
+//    }
+//
+//    @SuppressWarnings("deprecation")
+//    private String uploadFile(String filePath) {
+//        String status = "Other";
+//
+//        List<NameValuePair> params = new ArrayList<NameValuePair>();
+//        String responseString = null;
+//        try {
+//            File sourceFile = new File(filePath);
+//            FileBody sourceFileBody = new FileBody(new File(filePath));
+//
+//            MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+//            multipartEntityBuilder.addPart("status", new StringBody(status));
+//
+//            multipartEntityBuilder.addBinaryBody("audiofile",sourceFile);
+//
+//            Log.d(TAG, "17)Audio file Sending...");
+//            responseString = Http_Request.getHttpPostFile(MyURLs.AUDIO_FILE_UPLOAD_URL, params, multipartEntityBuilder);
+//            Log.d(TAG, "17)Audio file Response: "+responseString);
+//            JSONObject jobj = new JSONObject(responseString);
+//
+//            int error = jobj.getInt("error");
+//            if (error == 0){
+//                String fileOutputPath;
+//                File pathToRecordings = new File(Environment.getExternalStorageDirectory() + AudioFilePath.audioFileDirectoryOutputPath);
+//                fileOutputPath = pathToRecordings.getAbsolutePath();
+//
+//                Log.d(TAG, "17)VoiceRecord: audio deleted from mobile.");
+//            }
+//        } catch (IOException e) {
+//            responseString = e.toString();
+//            Log.d(TAG, "17)VoiceRecord: responseStringIOException: " + responseString);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            Log.d(TAG, "17)VoiceRecord: JSONException: " + e.getMessage());
+//        }
+//
+//        return responseString;
+//
+//    }
+
     @Override
     protected void onProgressUpdate(Void... values) {
-        // TODO Auto-generated method stub
         super.onProgressUpdate(values);
     }
 
     //this method is executed when doInBackground function finishes
     @Override
     protected void onPostExecute(Void result) {
-        // TODO Auto-generated method stub
     }
 }

@@ -90,7 +90,7 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
         String num = "";
         String cat = "";
         if (bundle != null) {
-            num = bundle.getString(TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER); //TODO Review later
+            num = bundle.getString(TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
             etContactPhone.setText(num);
             etContactName.setText(PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), num));
             idOfEditContactString = bundle.getString(ContactDetailsActivity.KEY_CONTACT_ID);

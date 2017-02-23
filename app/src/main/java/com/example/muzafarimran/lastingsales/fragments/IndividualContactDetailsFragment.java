@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
@@ -22,6 +24,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
 /**
@@ -110,14 +113,12 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 }
             }
         }
-
         leadStatusSpinner.post(new Runnable() {
             public void run() {
                 leadStatusSpinner.setOnItemSelectedListener(new CustomSpinnerLeadStatusOnItemSelectedListener());
             }
         });
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -204,5 +205,11 @@ public class IndividualContactDetailsFragment extends TabFragment {
         public void onNothingSelected(AdapterView<?> arg0) {
             // TODO Auto-generated method stub
         }
+    }
+
+    @Subscribe
+    public void onSalesContactAddedEventModel(SalesContactAddedEventModel event) {
+        Log.d(TAG, "onSalesContactAddedEventModel: CalledInFrag");
+
     }
 }

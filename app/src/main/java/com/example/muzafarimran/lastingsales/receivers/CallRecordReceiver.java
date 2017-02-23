@@ -91,10 +91,12 @@ public class CallRecordReceiver extends BroadcastReceiver {
             }
             String file_name = "";
             if (mBuilder.isShowSeed()) {
-                file_name = mBuilder.getRecordFileName() + "_" + seed + "_"; // temp dosyaya kayıt edildiği için dosya isminin en sonuna random karakter ekleniyor
+                file_name = mBuilder.getRecordFileName() + "_" + seed + "_"; // Temp is registered to file, so random character is added at the end of file name
             } else {
                 file_name = mBuilder.getRecordFileName();
             }
+            Log.d(TAG, "startRecord: FileName :" +file_name);
+            Log.d(TAG, "startRecord: Seed: " +seed);
             String suffix = "";
             switch (mBuilder.getOutputFormat()) {
                 case MediaRecorder.OutputFormat.AMR_NB: {

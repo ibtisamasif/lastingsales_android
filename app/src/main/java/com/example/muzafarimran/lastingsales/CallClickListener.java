@@ -26,7 +26,6 @@ public class CallClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        // TODO handle the click
         if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
         }
         String number = v.getTag().toString();

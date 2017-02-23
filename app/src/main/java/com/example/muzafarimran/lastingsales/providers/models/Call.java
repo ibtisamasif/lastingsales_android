@@ -13,7 +13,6 @@ public class Call {
     // public constructor to create an object.
     public Call(String contact_number, int contact_id, String type, String duration,
                 String begin_time, String audio_path) {
-        //TODO: Assign id here too
         this.contact_number = contact_number;
         this.contact_id = contact_id;
         this.type = type;

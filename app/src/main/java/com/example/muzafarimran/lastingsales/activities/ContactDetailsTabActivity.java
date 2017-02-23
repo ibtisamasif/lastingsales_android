@@ -1,17 +1,14 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +16,10 @@ import android.view.View;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
+import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
+import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
 /**
@@ -28,28 +27,31 @@ import de.halfbit.tinybus.TinyBus;
  */
 
 public class ContactDetailsTabActivity extends AppCompatActivity {
-
+    public static final String TAG = "ContactDetailsTab";
     public static final String KEY_CONTACT_ID = "contact_id";
     ViewPager viewPager;
     FloatingActionButton floatingActionButton;
     private String contactIdString = "0";
     private LSContact selectedContact;
-    private CollapsingToolbarLayout collapsingToolbarLayout = null;
+    private TinyBus bus;
+    Toolbar toolbar;
+    ActionBar actionBar;
+//    private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_details_tab);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbarCollapse);
-        collapsingToolbarLayout.setTitle("Lorem Ipsum");
-        collapsingToolbarLayout.setTitleEnabled(true);
-        dynamicToolbarColor();
-        toolbarTextAppernce();
+//        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbarCollapse);
+//        collapsingToolbarLayout.setTitle("Lorem Ipsum");
+//        collapsingToolbarLayout.setTitleEnabled(true);
+//        dynamicToolbarColor();
+//        toolbarTextAppernce();
 
 //        tvName = (TextView) findViewById(R.id.tvNameOfUserContactDetailsScreen);
 //        tvNumberOne = (TextView) findViewById(R.id.tvPhoneOneOfUserContactDetailsScreen);
@@ -67,7 +69,9 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
             if (selectedContact.getContactName() == null || selectedContact.getContactName().equals("")) {
 //                tvName.setVisibility(View.GONE);
             } else {
-                collapsingToolbarLayout.setTitle(selectedContact.getContactName());
+                toolbar.setTitle(selectedContact.getContactName());
+                setSupportActionBar(toolbar);
+//                collapsingToolbarLayout.setTitle(selectedContact.getContactName());
             }
             if (selectedContact.getPhoneOne() == null || selectedContact.getPhoneOne().equals("")) {
 //                tvNumberOne.setVisibility(View.GONE);
@@ -162,22 +166,22 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         });
     }
 
-    private void dynamicToolbarColor() {
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.temp_avatar);
-        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-            @Override
-            public void onGenerated(Palette palette) {
-                collapsingToolbarLayout.setContentScrimColor(getResources().getColor(R.color.collapsing_toolbar_effect));
-                collapsingToolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.darkBlue));
-            }
-        });
-    }
-
-    private void toolbarTextAppernce() {
-        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.collapsedappbar);
-        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.expandedappbar);
-    }
+//    private void dynamicToolbarColor() {
+//
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.temp_avatar);
+//        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+//            @Override
+//            public void onGenerated(Palette palette) {
+//                collapsingToolbarLayout.setContentScrimColor(getResources().getColor(R.color.collapsing_toolbar_effect));
+//                collapsingToolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.darkBlue));
+//            }
+//        });
+//    }
+//
+//    private void toolbarTextAppernce() {
+//        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.collapsedappbar);
+//        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.expandedappbar);
+//    }
 
     public void onBackPressed() {
         super.onBackPressed();
@@ -208,5 +212,25 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bus = TinyBus.from(this.getApplicationContext());
+        bus.register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        bus.unregister(this);
+    }
+
+    @Subscribe
+    public void onSalesContactAddedEventModel(SalesContactAddedEventModel event) {
+        Log.d(TAG, "onSalesContactAddedEventModel: Called");
+        toolbar.setTitle(selectedContact.getContactName());
+        setSupportActionBar(toolbar);
     }
 }

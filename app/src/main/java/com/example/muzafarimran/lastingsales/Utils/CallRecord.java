@@ -86,7 +86,7 @@ public class CallRecord {
 
         if (intent == null) {
             try {
-                throw new Exception("Intent nesnesi boş. Lütfen buildService() i çalıştırdığınızdan emin olun.");
+                throw new Exception("The Intent object is empty. Please make sure you are running buildService ().");
             } catch (Exception e) {
                 e.printStackTrace();
             }

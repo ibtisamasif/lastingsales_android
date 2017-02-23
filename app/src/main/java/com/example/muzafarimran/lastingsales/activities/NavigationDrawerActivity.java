@@ -31,6 +31,7 @@ import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.fragments.AllCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
+import com.example.muzafarimran.lastingsales.fragments.UntaggedContactsCallsFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -64,6 +65,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: DB name: " +getDatabasePath("sugar_example").getAbsolutePath());
 
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -120,8 +122,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_people_white_48dp);
 
-        List<LSInquiry> allInquiries = LSInquiry.getAllInquiriesInDescendingOrder();
-
         tab1 = tabLayout.getTabAt(0);
         imageViewBadge = new ImageView(getApplicationContext());
         imageViewBadge.setImageResource(R.drawable.ic_phone_missed_white_48dp);
@@ -142,11 +142,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                     case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
                         getSupportActionBar().setTitle("Home");
+                        UpdateBadge();
 //                        ((TextView)(toolbar.findViewById(R.id.title))).setText("CALL LOGS");
                         break;
                     case 2:
 //                        tab.setIcon(R.drawable.menu_icon_contact_selected);
                         getSupportActionBar().setTitle("Sales Leads");
+                        UpdateBadge();
                         // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                         break;
 //                case 3:
@@ -186,16 +188,22 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 .setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
                 .setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
                 .setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION)
-                .setShowSeed(true)
+                .setShowSeed(false)
                 .buildService();
         callRecord.startCallRecordService();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         bus = TinyBus.from(this.getApplicationContext());
         bus.register(this);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         bus.unregister(this);
     }
 
@@ -226,14 +234,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     }
 
     private void UpdateBadge() {
-        List<LSInquiry> allInquiries = LSInquiry.getAllInquiriesInDescendingOrder();
-        if (allInquiries != null && allInquiries.size() > 0) {
-            badgeInquries.setText("" + allInquiries.size());
+        List<LSInquiry> allPendingInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+        if (allPendingInquiries != null && allPendingInquiries.size() > 0) {
+            badgeInquries.setText("" + allPendingInquiries.size());
             badgeInquries.toggle();
             badgeInquries.show();
-            Log.d(TAG, "if");
         } else {
-            Log.d(TAG, "else");
             badgeInquries.hide();
         }
     }
@@ -281,17 +287,17 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            intent.putExtras(bundle);
 //            startActivity(intent);
 //        }
-//        else if (id == R.id.nav_item_colleague_contacts) {
-//            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, CollegueFragment.class.getName());
-//            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Colleague Contacts");
-//            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-//            intent = new Intent(getApplicationContext(), FrameActivity.class);
-//            intent.putExtras(bundle);
-//            startActivity(intent);
-//        }
+        else if (id == R.id.nav_item_unlabeled_contacts) {
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UntaggedContactsCallsFragment.class.getName());
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
+            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+            intent = new Intent(getApplicationContext(), FrameActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
         else if (id == R.id.nav_item_personal_contacts) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, NonbusinessFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Untracked Contacts");
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Ignored Contacts");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);

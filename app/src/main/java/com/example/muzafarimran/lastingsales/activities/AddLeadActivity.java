@@ -16,11 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+
+import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by ibtisam on 1/19/2017.
@@ -281,6 +284,9 @@ public class AddLeadActivity extends Activity {
                         finish();
                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     }
+                    SalesContactAddedEventModel mCallEvent = new SalesContactAddedEventModel();
+                    TinyBus bus = TinyBus.from(getApplicationContext());
+                    bus.post(mCallEvent);
                 } else if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
                     etContactName.setError(null);
                     etContactPhone.setError(null);

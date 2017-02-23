@@ -85,7 +85,7 @@ public class CollegueFragment extends TabFragment {
         Log.d(TAG, "onColleagueContactEvent() called with: event = [" + event + "]");
         List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         setList(contacts);
-        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe

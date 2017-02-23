@@ -27,7 +27,6 @@ public class Contact {
     // public constructor to create an object.
     public Contact(String name, String email, String type, String phone1, String phone2,
                    String description, String company, String address, String salesStatus) {
-        //TODO: Assign id here too
         this.name = name;
         this.email = email;
         this.type = type;
@@ -36,7 +35,6 @@ public class Contact {
         this.description = description;
         this.company = company;
         this.address = address;
-        //TODO: find current date here
         this.createdAt = "current_date";
         this.updatedAt = "current_date";
         this.deletedAt = null;

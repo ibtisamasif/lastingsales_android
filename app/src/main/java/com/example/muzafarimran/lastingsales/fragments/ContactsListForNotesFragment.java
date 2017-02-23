@@ -80,7 +80,7 @@ public class ContactsListForNotesFragment extends TabFragment {
     public void onPersonalContactAddedEventModel(PersonalContactAddedEventModel event) {
         List<LSContact> contacts = (ArrayList<LSContact>) LSContact.listAll(LSContact.class);
         setList(contacts);
-        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe

@@ -21,7 +21,6 @@ public class UserAnalytics {
                          int followups_due, int followups_done, int untagged_contacts,
                          int incoming_call_count, int incoming_call_duration, int outgoing_call_count,
                          int outgoing_call_duration, String avg_lead_response_time, int message_count) {
-        //TODO: Assign id here too
         this.user_id = user_id;
         this.inactive_leads = inactive_leads;
         this.missed_inquiries = missed_inquiries;

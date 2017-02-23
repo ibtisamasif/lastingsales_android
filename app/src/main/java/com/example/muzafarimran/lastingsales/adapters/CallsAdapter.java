@@ -37,7 +37,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
     public ShowContactCallDetails detailsListener = null;
     Boolean expanded = false;
     RelativeLayout noteDetails = null;
-    View call_details = null; //TODO move to handler class below
+    View call_details = null;
     private LayoutInflater mInflater;
     private List<LSCall> mCalls;
     private List<LSCall> filteredData;

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import static android.view.View.GONE;
 
+@Deprecated
 public class ContactCallDetails extends AppCompatActivity {
     Button bTagButton;
     private String number = "";
@@ -56,7 +57,6 @@ public class ContactCallDetails extends AppCompatActivity {
                 }
             });
         }
-        //TODO get name of the person if exists
         {
             setUpList();
         }

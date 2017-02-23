@@ -16,4 +16,6 @@ public class MyURLs {
     public static String UPDATE_NOTE = "http://staging.lastingsales.com/api/v1/lead/";
     public static String UPDATE_AGENT = "http://staging.lastingsales.com/api/v1/user";
 
+    public static final String FILE_UPLOAD_URL = "http://54.91.47.130:3000/api/interviewee/img";
+    //	public static final String FILE_UPLOAD_URL = "http://192.168.8.37/AndroidFileUpload/fileUpload.php";
 }

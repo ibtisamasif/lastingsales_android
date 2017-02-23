@@ -77,7 +77,7 @@ public class NonbusinessFragment extends TabFragment {
         Log.d(TAG, "onPersonalContactAddedEvent() called with: event = [" + event + "]");
         List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
         setList(contacts);
-        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe

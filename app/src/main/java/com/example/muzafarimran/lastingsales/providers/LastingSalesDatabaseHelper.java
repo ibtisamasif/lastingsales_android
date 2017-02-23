@@ -130,7 +130,7 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper {
         values.put(LastingSalesContract.Contact.COLUMN_NAME_CREATED_AT, contact.getCreatedAt());
         values.put(LastingSalesContract.Contact.COLUMN_NAME_SALES_STATUS, contact.getSalesStatus());
 
-        // insert row TODO: check for correct insertion here
+        // insert row
         long new_contact_id = db.insert(LastingSalesContract.Contact.TABLE_NAME, null, values);
 
         return new_contact_id;
@@ -198,7 +198,7 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper {
         values.put(LastingSalesContract.Followup.COLUMN_NAME_TIME, followup.getTime());
         values.put(LastingSalesContract.Followup.COLUMN_NAME_CONTACT_ID, followup.getContact_id());
         values.put(LastingSalesContract.Followup.COLUMN_NAME_CREATED_AT, followup.getCreated_at());
-        // insert row TODO: check for correct insertion here
+        // insert row
         long new_followup_id = db.insert(LastingSalesContract.Followup.TABLE_NAME, null, values);
         return new_followup_id;
     }
@@ -212,7 +212,7 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper {
         values.put(LastingSalesContract.Call.COLUMN_NAME_DURATION, call.getDuration());
         values.put(LastingSalesContract.Call.COLUMN_NAME_BEGIN_TIME, call.getBegin_time());
         values.put(LastingSalesContract.Call.COLUMN_NAME_AUDIO_PATH, call.getAudio_path());
-        // insert row TODO: check for correct insertion here
+        // insert row
         long new_call_id = db.insert(LastingSalesContract.Call.TABLE_NAME, null, values);
         return new_call_id;
     }
@@ -223,7 +223,7 @@ public class LastingSalesDatabaseHelper extends SQLiteOpenHelper {
         values.put(LastingSalesContract.Note.COLUMN_NAME_TEXT, note.getText());
         values.put(LastingSalesContract.Note.COLUMN_NAME_CONTACT_ID, note.getContact_id());
         values.put(LastingSalesContract.Note.COLUMN_NAME_CREATED_AT, note.getCreated_at());
-        // insert row TODO: check for correct insertion here
+        // insert row
         long new_note_id = db.insert(LastingSalesContract.Note.TABLE_NAME, null, values);
         return new_note_id;
     }

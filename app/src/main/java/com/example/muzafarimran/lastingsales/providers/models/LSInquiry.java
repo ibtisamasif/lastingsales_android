@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.providers.models;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ import java.util.List;
 public class LSInquiry extends SugarRecord {
 
     @Ignore
-    public static final String INQUIRY_STATUS_PENDING = "inquiry_status_pending";
+    public static final String INQUIRY_STATUS_PENDING = "pending";
     @Ignore
-    public static final String INQUIRY_STATUS_ATTENDED = "inquiry_status_attended";
+    public static final String INQUIRY_STATUS_ATTENDED = "attended";
 
     private String contactName;
     private String contactNumber;
@@ -33,9 +34,29 @@ public class LSInquiry extends SugarRecord {
     public LSInquiry() {
     }
 
+    public static List<LSInquiry> getAllPendingInquiriesInDescendingOrder (){
+        ArrayList<LSInquiry> allInquiries = (ArrayList<LSInquiry>) Select.from(LSInquiry.class).where(Condition.prop("status").eq(LSInquiry.INQUIRY_STATUS_PENDING)).orderBy("begin_time DESC").list();
+        return  allInquiries;
+    }
+
+@Deprecated
     public static List<LSInquiry> getAllInquiriesInDescendingOrder (){
         ArrayList<LSInquiry> allInquiries = (ArrayList<LSInquiry>) Select.from(LSInquiry.class).orderBy("begin_time DESC").list();
         return  allInquiries;
+    }
+
+    public static LSInquiry getPendingInquiryByNumberIfExists(String number) {
+        ArrayList<LSInquiry> list = null;
+        try {
+            list = (ArrayList<LSInquiry>) LSInquiry.find(LSInquiry.class, "contact_number = ? and status = ? ", number, LSInquiry.INQUIRY_STATUS_PENDING);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 
     public static LSInquiry getInquiryByNumberIfExists(String number) {

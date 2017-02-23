@@ -81,7 +81,7 @@ public class OutgoingCallsFragment extends Fragment {
             List<LSCall> outgoingCalls = LSCall.getCallsByTypeInDescendingOrder(LSCall.CALL_TYPE_OUTGOING);
             setList(outgoingCalls);
         }
-        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Override

@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.lastingsales.agent"
-        minSdkVersion 19
+        minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -23,6 +23,18 @@ android {
         debug {
             debuggable true
         }
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
     }
     compileOptions {
         targetCompatibility 1.7
@@ -43,13 +55,15 @@ dependencies {
     compile 'com.googlecode.libphonenumber:libphonenumber:7.7.3'
     compile 'de.halfbit:tinybus:3.0.2'
     compile 'com.android.volley:volley:1.0.0'
-    //    compile 'com.aykuttasil:callrecord:1.1.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.github.clans:fab:1.6.4'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-
     compile 'com.google.firebase:firebase-core:9.6.0'
     compile 'com.google.firebase:firebase-messaging:9.6.0'
+//    compile 'com.aykuttasil:callrecord:1.2.1'
+    compile files('libs/httpclient-4.3.6.jar')
+    compile files('libs/httpcore-4.3.3.jar')
+    compile files('libs/httpmime-4.3.6.jar')
 }
 apply plugin: 'com.google.gms.google-services'

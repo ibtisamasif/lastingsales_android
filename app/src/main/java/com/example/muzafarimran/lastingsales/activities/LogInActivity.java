@@ -120,7 +120,6 @@ public class LogInActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() called with: response = [" + response + "]");
 //                pdLoading.dismiss();
-                //TODO pass token in place of response
                 try {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
@@ -148,15 +147,8 @@ public class LogInActivity extends AppCompatActivity {
                         activity.startActivity(new Intent(activity, NavigationDrawerActivity.class));
                         activity.finish();
 
-                        Log.d(TAG, "onResponse: "+response);
+                        Log.d(TAG, "onResponse: " + response);
                         Toast.makeText(activity, "" + user_id, Toast.LENGTH_SHORT).show();
-                    } else if (responseCode == 3) {
-                        Toast.makeText(activity, "No User Found.", Toast.LENGTH_SHORT).show();
-                    }else if (responseCode == 4){
-                        Toast.makeText(activity, "inValid Password", Toast.LENGTH_SHORT).show();
-                    }
-                    else if (responseCode == 5){
-                        Toast.makeText(activity, "Wrong Password", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -171,7 +163,17 @@ public class LogInActivity extends AppCompatActivity {
                 if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
                     Toast.makeText(getApplicationContext(), "No Internet Connectivity", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Wrong Credentials", Toast.LENGTH_LONG).show();
+                    try {
+                        if (error.networkResponse.statusCode == 400) {
+                            Toast.makeText(activity, "Wrong Password.", Toast.LENGTH_SHORT).show();
+                        } else if (error.networkResponse.statusCode == 404) {
+                            Toast.makeText(activity, "User Does not Exist.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(activity, "Server Error.", Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }) {
@@ -203,8 +205,8 @@ public class LogInActivity extends AppCompatActivity {
         final String BASE_URL = MyURLs.UPDATE_AGENT;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
-                .appendQueryParameter("device_id", ""+sessionManager.getKeyLoginFirebaseRegId())
-                .appendQueryParameter("api_token", ""+sessionManager.getLoginToken())
+                .appendQueryParameter("device_id", "" + sessionManager.getKeyLoginFirebaseRegId())
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
         StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
@@ -215,10 +217,10 @@ public class LogInActivity extends AppCompatActivity {
                     pdLoading.dismiss();
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
-                    if (responseCode ==  200) {
+                    if (responseCode == 200) {
                         JSONObject responseObject = jObj.getJSONObject("response");
-                        Log.d(TAG, "onResponse : FirebaseLocalRegID : " +sessionManager.getKeyLoginFirebaseRegId());
-                        Log.d(TAG, "onResponse : FirebaseServerRegID : " +responseObject.getString("device_id"));
+                        Log.d(TAG, "onResponse : FirebaseLocalRegID : " + sessionManager.getKeyLoginFirebaseRegId());
+                        Log.d(TAG, "onResponse : FirebaseServerRegID : " + responseObject.getString("device_id"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -231,7 +233,8 @@ public class LogInActivity extends AppCompatActivity {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAgentFirebaseRegId");
             }
-        }){};
+        }) {
+        };
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

@@ -53,7 +53,6 @@ public class NotesListFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment NotesListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static NotesListFragment newInstance(String param1, String param2) {
         NotesListFragment fragment = new NotesListFragment();
         Bundle args = new Bundle();
@@ -89,7 +88,7 @@ public class NotesListFragment extends Fragment {
         Log.d(TAG, "onNoteAddedEvent() called with: event = [" + event + "]");
         List<LSNote> allNotes = LSNote.listAll(LSNote.class);
         setList(allNotes);
-        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Override

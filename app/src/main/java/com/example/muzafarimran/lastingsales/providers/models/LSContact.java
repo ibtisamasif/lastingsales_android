@@ -83,7 +83,7 @@ public class LSContact extends SugarRecord {
     }
 
     public static List<LSContact> getAllInactiveLeadContacts() {
-        try { //TODO check weather below steps are required or not.
+        try { //TODO check weather below steps are required or not + change time before launching
             ArrayList<LSContact> allColleagues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
             ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
             allLeads.removeAll(allColleagues);

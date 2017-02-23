@@ -98,7 +98,7 @@ public class UntaggedContactsCallsFragment extends Fragment {
         if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
             updateContactssList();
         }
-        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     private void updateContactssList() {

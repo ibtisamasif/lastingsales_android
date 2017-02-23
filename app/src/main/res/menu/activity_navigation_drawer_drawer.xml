@@ -17,10 +17,10 @@
 
     <group android:id="@+id/contacts">
 
-        <!--<item-->
-            <!--android:id="@+id/nav_item_colleague_contacts"-->
-            <!--android:title="@string/navigation_drawer_colleague"-->
-            <!--android:icon="@drawable/ic_drawer_colleague"/>-->
+        <item
+            android:id="@+id/nav_item_unlabeled_contacts"
+            android:title="@string/navigation_drawer_unlabeled"
+            android:icon="@drawable/ic_drawer_colleague"/>
         <item
             android:id="@+id/nav_item_personal_contacts"
             android:title="@string/navigation_drawer_non_business"

@@ -22,7 +22,6 @@ public class User {
     public User(String name, String email, String phone, String password, String type,
                 int status, String image, int rec_salesman, int rec_manager, int client_id,
                 int manager_id) {
-        //TODO: Assign id here too
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -32,7 +31,6 @@ public class User {
         this.image = image;
         this.rec_salesman = rec_salesman;
         this.rec_manager = rec_manager;
-        //TODO: find current date here
         this.created_at = "current_date";
         this.updated_at = null;
         this.deleted_at = null;

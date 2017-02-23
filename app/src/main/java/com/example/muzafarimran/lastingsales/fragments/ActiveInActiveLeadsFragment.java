@@ -80,7 +80,6 @@ public class ActiveInActiveLeadsFragment extends TabFragment{
         List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         contacts.removeAll(allCollegues);
         setList(contacts);
-        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
@@ -90,7 +89,6 @@ public class ActiveInActiveLeadsFragment extends TabFragment{
         List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         contacts.removeAll(allCollegues);
         setList(contacts);
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe

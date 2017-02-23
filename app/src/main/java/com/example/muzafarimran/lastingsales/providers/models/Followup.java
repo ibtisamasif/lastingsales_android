@@ -9,10 +9,8 @@ public class Followup {
 
     // public constructor to create an object.
     Followup(String title, int contact_id, String time) {
-        //TODO: Assign id here too
         this.title = title;
         this.contact_id = contact_id;
-        //TODO: find current date here
         this.created_at = "current_date";
         this.time = time;
     }

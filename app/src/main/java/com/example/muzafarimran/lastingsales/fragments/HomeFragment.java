@@ -183,7 +183,7 @@ public class HomeFragment extends TabFragment {
         allFilteredContactsAsProspects.removeAll(allCollegues);
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
 
-        List<LSInquiry> allInquiries = LSInquiry.getAllInquiriesInDescendingOrder();
+        List<LSInquiry> allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
 
         if (allInquiries != null) {
             if (allInquiries.size() > 0) {
@@ -269,14 +269,14 @@ public class HomeFragment extends TabFragment {
         if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
             updateHomeFigures();
         }
-        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
     public void onContactTaggedFromUntaggedContactEventModel(ContactTaggedFromUntaggedContactEventModel event) {
         Log.d(TAG, "onNoteAddedEvent() called with: event = [" + event + "]");
         updateHomeFigures();
-        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
+//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Override
@@ -292,7 +292,6 @@ public class HomeFragment extends TabFragment {
         bus.unregister(this);
         Log.d(TAG, "onStop() called");
         super.onStop();
-
     }
 
 }

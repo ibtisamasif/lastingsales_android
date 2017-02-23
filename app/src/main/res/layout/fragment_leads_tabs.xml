@@ -79,7 +79,7 @@
             android:src="@drawable/ic_input_add"
             app:fab_colorNormal="@color/fab_add_contact_normal"
             app:fab_colorPressed="@color/fab_add_contact_pressed"
-            fab:fab_label="Add New"
+            fab:fab_label="Add Lead"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton

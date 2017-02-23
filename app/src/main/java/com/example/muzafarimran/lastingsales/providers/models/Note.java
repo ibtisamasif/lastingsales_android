@@ -8,10 +8,8 @@ public class Note {
 
     // public constructor to create an object.
     public Note(String text, int contact_id) {
-        //TODO: Assign id here too
         this.text = text;
         this.contact_id = contact_id;
-        //TODO: find current date here
         this.created_at = "current_date";
     }
 

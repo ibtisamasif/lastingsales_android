@@ -192,6 +192,10 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".service.CallRecordService"
+            android:exported="true"/>
+
     </application>
 
 </manifest>
