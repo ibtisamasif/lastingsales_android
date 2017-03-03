@@ -39,16 +39,17 @@ public class FollowupInContactDetailsFragment extends TabFragment {
     TextView tvFollowupDateTime;
     ImageButton ibEditFollowup;
     FrameLayout followupsListHolderFrameLayout;
-    private String number = "";
+//    private String number = "";
+private Long contactIDLong;
     private LSContact selectedContact;
     private FollowupsTodayListFragment followupsTodayListFragment;
 
-    public static FollowupInContactDetailsFragment newInstance(int page, String title, String number) {
+    public static FollowupInContactDetailsFragment newInstance(int page, String title, Long id) {
         FollowupInContactDetailsFragment fragmentFirst = new FollowupInContactDetailsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
-        args.putString("someNumber", number);
+        args.putLong("someId", id);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -85,11 +86,10 @@ public class FollowupInContactDetailsFragment extends TabFragment {
         tvFollowupNoteText = (TextView) view.findViewById(R.id.followupNoteText);
         tvFollowupDateTime = (TextView) view.findViewById(R.id.followupDateTimeText);
         followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
-
         Bundle bundle = this.getArguments();
-        number = bundle.getString("someNumber");
-        if (number != null) {
-            selectedContact = LSContact.getContactFromNumber(number);
+        contactIDLong = bundle.getLong("someId");
+        selectedContact = LSContact.findById(LSContact.class, contactIDLong);
+        if (selectedContact != null) {
             addFollowupBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -124,7 +124,6 @@ public class FollowupInContactDetailsFragment extends TabFragment {
     }
 
     public void updateUi(){
-        Log.d(TAG, "onResume: called");
         ArrayList<TempFollowUp> allFollowupsOfThisContact = selectedContact.getAllFollowups();
 //        ArrayList<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getAllFollowupsFromContactId(selectedContact.getId()+"");
         Calendar now = Calendar.getInstance();

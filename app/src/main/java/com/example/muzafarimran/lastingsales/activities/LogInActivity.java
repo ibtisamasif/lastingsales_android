@@ -75,9 +75,9 @@ public class LogInActivity extends AppCompatActivity {
 
 //                intlNumber = "ibtisamasif1@gmail.com";
 //                password = "11111111";
-
-                makeLoginRequest(LogInActivity.this, number, password);
                 pdLoading.show();
+                makeLoginRequest(LogInActivity.this, number, password);
+                pdLoading.dismiss();
 //                if (number.length() < 7) {
 //                    numberVarified = false;
 //                }
@@ -110,6 +110,13 @@ public class LogInActivity extends AppCompatActivity {
 //                }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (pdLoading != null && pdLoading.isShowing())
+            pdLoading.dismiss();
+        super.onDestroy();
     }
 
     public void makeLoginRequest(final Activity activity, final String number, final String password) {

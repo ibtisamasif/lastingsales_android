@@ -8,6 +8,7 @@ import android.text.TextUtils;
 /**
  * Created by ahmad.
  */
+@Deprecated
 public class CommunicationManager
 {
 

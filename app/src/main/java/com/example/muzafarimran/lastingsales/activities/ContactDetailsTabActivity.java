@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +15,8 @@ import android.view.View;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
-import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
-import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
 /**
@@ -81,7 +78,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getPhoneOne()));
+        viewPager.setAdapter(new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId(), selectedContact.getPhoneOne()));
 
         //Disable touch event of scroll view to scroll viewpager
 //        viewPager.setOnTouchListener(new View.OnTouchListener() {
@@ -227,10 +224,26 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         bus.unregister(this);
     }
 
-    @Subscribe
-    public void onSalesContactAddedEventModel(SalesContactAddedEventModel event) {
-        Log.d(TAG, "onSalesContactAddedEventModel: Called");
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        Bundle extras = getIntent().getExtras();
+        Long contactIDLong;
+        if (extras != null) {
+            contactIdString = extras.getString(ContactDetailsTabActivity.KEY_CONTACT_ID);
+            if (contactIdString != null) {
+                contactIDLong = Long.parseLong(contactIdString);
+                selectedContact = LSContact.findById(LSContact.class, contactIDLong);
+            }
+        }
         toolbar.setTitle(selectedContact.getContactName());
         setSupportActionBar(toolbar);
     }
+
+//    @Subscribe
+//    public void onSalesContactAddedEventModel(SalesContactAddedEventModel event) {
+//        Log.d(TAG, "onSalesContactAddedEventModel: Called");
+//        toolbar.setTitle(selectedContact.getContactName());
+//        setSupportActionBar(toolbar);
+//    }
 }

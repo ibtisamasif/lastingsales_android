@@ -143,6 +143,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                     contact.save();
                     Log.e(TAG, "Put From Local DB: " + contact.getContactName());
+                } else if (action.equals("delete")) {
+                    //TODO
+                    String id = payload.getString("id");
+                    LSContact contact = LSContact.getContactFromServerId(id);
+                    Log.e(TAG, "handleDataMessage: contact: "+contact.toString());
+                    contact.delete();
                 }
             }
 
@@ -161,6 +167,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 }else if(action.equals("put")){
                     // TODO Notes Update
+                }else if(action.equals("delete")){
+                    // TODO Notes Delete
                 }
             }
 

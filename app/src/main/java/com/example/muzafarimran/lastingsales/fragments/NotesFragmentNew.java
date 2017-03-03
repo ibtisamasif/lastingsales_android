@@ -17,6 +17,8 @@ import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.List;
 
@@ -37,20 +39,32 @@ public class NotesFragmentNew extends TabFragment {
     ListView lvNotesList;
     LSContact selectedContact;
     private String number = "";
-//    FloatingActionButton floatingActionButton;
+    private Long contactIDLong;
+    //    FloatingActionButton floatingActionButton;
     private TinyBus bus;
 
     public NotesFragmentNew() {
     }
 
-    public static NotesFragmentNew newInstance(int page, String title , String number) {
+    public static NotesFragmentNew newInstance(int page, String title, Long id) {
         NotesFragmentNew fragmentFirst = new NotesFragmentNew();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
-        args.putString("someNumber", number);
+        args.putLong("someId", id);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
+    }
+
+    public static void hideKeyboard(Context ctx) {
+        InputMethodManager inputManager = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View v = ((Activity) ctx).getCurrentFocus();
+        if (v == null)
+            return;
+
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     public void setList(List<LSNote> contacts) {
@@ -100,11 +114,15 @@ public class NotesFragmentNew extends TabFragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: called");
-        List<LSNote> allNotesOfThisContact =  LSNote.getNotesByContactId(selectedContact.getId());
+        List<LSNote> allNotesOfThisContact = Select.from(LSNote.class).where(Condition.prop("contact_of_note").eq(selectedContact.getId())).orderBy("id DESC").list();
+//        List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedContact.getId());
         setList(allNotesOfThisContact);
         Bundle bundle = this.getArguments();
-        number = bundle.getString("someNumber");
-        if(number!=null) {
+        contactIDLong = bundle.getLong("someId");
+        selectedContact = LSContact.findById(LSContact.class, contactIDLong);
+        number = selectedContact.getPhoneOne();
+//        number = bundle.getString("someNumber");
+        if (number != null) {
             selectedContact = LSContact.getContactFromNumber(number);
             //List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedContact.getId());
             lvNotesList.setAdapter(new NotesListAdapterNew(getActivity(), allNotesOfThisContact));
@@ -119,25 +137,18 @@ public class NotesFragmentNew extends TabFragment {
         hideKeyboard(getActivity());
     }
 
-    public static void hideKeyboard(Context ctx) {
-        InputMethodManager inputManager = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        // check if no view has focus:
-        View v = ((Activity) ctx).getCurrentFocus();
-        if (v == null)
-            return;
-
-        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_notes_by_contacts2, container, false);
         lvNotesList = (ListView) view.findViewById(R.id.lvNoteListContactDetailsScreen);
         Bundle bundle = this.getArguments();
-        number = bundle.getString("someNumber");
-        if(number!=null) {
+        contactIDLong = bundle.getLong("someId");
+        selectedContact = LSContact.findById(LSContact.class, contactIDLong);
+        number = selectedContact.getPhoneOne();
+        if (number != null) {
             selectedContact = LSContact.getContactFromNumber(number);
-            List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedContact.getId());
+            List<LSNote> allNotesOfThisContact = Select.from(LSNote.class).where(Condition.prop("contact_of_note").eq(selectedContact.getId())).orderBy("id DESC").list();
+//            List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedContact.getId());
             lvNotesList.setAdapter(new NotesListAdapterNew(getActivity(), allNotesOfThisContact));
         }
         String contactIdString = this.getArguments().getString(CONTACT_ID);

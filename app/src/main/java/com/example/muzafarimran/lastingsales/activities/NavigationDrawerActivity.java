@@ -1,7 +1,6 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import android.content.Intent;
-import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -40,7 +39,6 @@ import com.example.muzafarimran.lastingsales.utils.CallRecord;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.List;
-import java.util.Locale;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
@@ -65,8 +63,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         Log.d(TAG, "onCreate: DB name: " +getDatabasePath("sugar_example").getAbsolutePath());
-
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -182,15 +180,15 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             }
         });
 
-        callRecord = new CallRecord.Builder(this)
-                .setRecordFileName("CallRecordFile")
-                .setRecordDirName("Record_" + new java.text.SimpleDateFormat("dd-MM-yyyy HH-mm-ss", Locale.US))
-                .setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-                .setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
-                .setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION)
-                .setShowSeed(false)
-                .buildService();
-        callRecord.startCallRecordService();
+//        callRecord = new CallRecord.Builder(this)
+//                .setRecordFileName("CallRecordFile")
+//                .setRecordDirName("Record_" + new java.text.SimpleDateFormat("dd-MM-yyyy HH-mm-ss", Locale.US))
+//                .setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+//                .setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
+//                .setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION)
+//                .setShowSeed(false)
+//                .buildService();
+//        callRecord.startCallRecordService();
 
     }
 
@@ -320,11 +318,11 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            startActivity(intent);
 //        }
         else if (id == R.id.nav_item_feedback) {
-            Intent tempIntent = new Intent(this, FireBaseMainActivity.class);
-            startActivity(tempIntent);
+//            Intent tempIntent = new Intent(this, FireBaseMainActivity.class);
+//            startActivity(tempIntent);
             DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
             dataSenderAsync.execute();
-            Toast.makeText(this, "FeedbackScreen", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_item_logout) {
             sessionManager.logoutUser();
             startActivity(new Intent(this, LogInActivity.class));

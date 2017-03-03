@@ -69,7 +69,7 @@
     <string name="navigation_drawer_non_business">Ignored Contacts</string>
     <string name="add_new_contact">Add New Contact</string>
     <string name="title">Title</string>
-    <string name="non_busines_capital">UnTrack</string>
+    <string name="non_busines_capital">Ignore</string>
     <string name="colleague_capital">COLLEAGUE</string>
     <string name="salesCapital">ADD AS LEAD</string>
     <string name="connections">Connections</string>
@@ -78,10 +78,11 @@
     <string name="tab_inquiries">Inquiries</string>
     <string name="tab_sales">Sales</string>
     <string name="unknown_capital">UNKNOWN</string>
-    <string name="feedback">Feedback</string>
+    <string name="refresh">Refresh</string>
     <string name="log_out">Log Out</string>
 
     <string name="title_main_activity">Firebase Notifications</string>
     <string name="lead_picture">lead Picture</string>
+    <string name="delights_of_leads">Delights of Leads</string>
 
 </resources>

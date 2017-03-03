@@ -95,6 +95,7 @@ public class AddLeadActivity extends Activity {
         } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
             tvTitleAddContact.setText(TITLE_EDIT_CONTACT);
             editingMode = true;
+
             String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
             if (id != null && !id.equals("")) {
                 contactIdLong = Long.parseLong(id);
@@ -111,6 +112,7 @@ public class AddLeadActivity extends Activity {
                 etContactEmail.setText("");
             }
             etContactPhone.setText(selectedContact.getPhoneOne());
+//            etContactPhone.setFocusable(false);
         } else if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
             llEmailAddress.setVisibility(View.GONE);
             tvTitleAddContact.setText(TITLE_TAG_NUMBER);

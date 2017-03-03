@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.lastingsales.agent"
@@ -59,11 +59,14 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.google.firebase:firebase-core:9.6.0'
-    compile 'com.google.firebase:firebase-messaging:9.6.0'
+    compile 'com.google.firebase:firebase-core:10.2.0'
+    compile 'com.google.firebase:firebase-messaging:10.2.0'
+    compile 'com.google.firebase:firebase-crash:10.2.0'
 //    compile 'com.aykuttasil:callrecord:1.2.1'
     compile files('libs/httpclient-4.3.6.jar')
     compile files('libs/httpcore-4.3.3.jar')
     compile files('libs/httpmime-4.3.6.jar')
+    compile 'org.apache.commons:commons-lang3:3.5'
+
 }
 apply plugin: 'com.google.gms.google-services'

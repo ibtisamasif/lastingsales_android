@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.AddEditNoteActivity;
 import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.AddNewFollowUpsActivity;
 import com.example.muzafarimran.lastingsales.receivers.FollowupNotiCancelBtnReceiver;
@@ -20,26 +21,32 @@ public class CallEndNotification {
     public static final int NOTIFICATION_ID = 1;
     private static final String TAG = "CallEndNotification";
 
-    public static Notification createFollowUpNotification(Context ctx, String name, Long contact_id) {
+    public static Notification createFollowUpNotification(Context ctx, String number, Long contact_id) {
 
         Intent cancelIntent = new Intent(ctx, FollowupNotiCancelBtnReceiver.class);
         cancelIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent cancelpIntent = PendingIntent.getBroadcast(ctx, (int) System.currentTimeMillis(), cancelIntent, 0);
 
-        Intent intent = new Intent(ctx, AddNewFollowUpsActivity.class);
-        intent.putExtra(AddNewFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddNewFollowUpsActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
-        intent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact_id);
-        PendingIntent pIntent = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intent, 0);
+        Intent intentNote = new Intent(ctx, AddEditNoteActivity.class);
+        intentNote.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_ADD_NEW_NOTE);
+        intentNote.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact_id);
+        PendingIntent pIntentNote = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intentNote, 0);
+
+        Intent intentFollow = new Intent(ctx, AddNewFollowUpsActivity.class);
+        intentFollow.putExtra(AddNewFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddNewFollowUpsActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
+        intentFollow.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact_id);
+        PendingIntent pIntentFollow = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intentFollow, 0);
 
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)
                 .setSmallIcon(R.drawable.menu_icon_home_selected)
                 .setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_menu_icon_home_large))
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentTitle("Lasting Sales")
-                .addAction(R.drawable.cancel, "Cancel", cancelpIntent)
-                .addAction(R.drawable.follow_ip_icon_white, "Follow Up", pIntent)
-                .setContentText("Add Follow Up for " + name + "?")
-                .setFullScreenIntent(pIntent, true)
+                .addAction(R.drawable.ic_notes_black, "Add Note", pIntentNote)
+//                .addAction(R.drawable.cancel, "Cancel", cancelpIntent)
+                .addAction(R.drawable.ic_followup_black, "Add Follow Up", pIntentFollow)
+                .setContentText("What would you like to do?")
+//                .setFullScreenIntent(pIntentFollow, true)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setAutoCancel(true);
         return notificationBuilder.build();
@@ -50,7 +57,7 @@ public class CallEndNotification {
         if (number_or_name == null) {
             number_or_name = intlNumber;
         }
-        if (intlNumber.equals("") || intlNumber == null) {
+        if (intlNumber == null || intlNumber.equals("")) {
             intlNumber = "0";
         }
         //NonBusinessIntent

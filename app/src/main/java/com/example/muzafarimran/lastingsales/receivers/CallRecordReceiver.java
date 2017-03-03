@@ -60,9 +60,9 @@ public class CallRecordReceiver extends BroadcastReceiver {
                     wasRinging = false;
                     Log.i(TAG, recordstarted ? "recordstarted is true" : "recordstarted is false");
                     if (recordstarted) {
-                        recorder.stop();
-                        recorder.reset();
-                        recorder.release();
+//                        recorder.stop();
+//                        recorder.reset();
+//                        recorder.release();
                         recordstarted = false;
                         Log.i(TAG, "stop record");
                     }

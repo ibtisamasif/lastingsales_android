@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.muzafarimran.lastingsales">
 
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -16,8 +17,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
-    <uses-permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+    <!--<uses-permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" />-->
 
     <application
         android:name="com.orm.SugarApp"
@@ -57,10 +58,8 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".receivers.CallsStatesReceiver">
-            <intent-filter>
+            <intent-filter android:priority="999">
                 <action android:name="android.intent.action.PHONE_STATE" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
@@ -192,9 +191,13 @@
             </intent-filter>
         </service>
 
-        <service
-            android:name=".service.CallRecordService"
-            android:exported="true"/>
+        <!--<service android:name=".chatheadbubble.BubblesService"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="false" />-->
+
+        <!--<service-->
+            <!--android:name=".service.CallRecordService"-->
+            <!--android:exported="true"/>-->
 
     </application>
 

@@ -40,18 +40,18 @@ public class IndividualContactDetailsFragment extends TabFragment {
     TextView tvAddress;
     ListView listView = null;
     MaterialSearchView searchView;
-    private String number = "";
+    private Long contactIDLong;
     private Spinner leadStatusSpinner;
     private Button bSave;
     private LSContact mContact;
     private TinyBus bus;
 
-    public static IndividualContactDetailsFragment newInstance(int page, String title, String number) {
+    public static IndividualContactDetailsFragment newInstance(int page, String title, Long id) {
         IndividualContactDetailsFragment fragmentFirst = new IndividualContactDetailsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
-        args.putString("someNumber", number);
+        args.putLong("someId", id);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -61,8 +61,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         Bundle bundle = this.getArguments();
-        number = bundle.getString("someNumber");
-        mContact = LSContact.getContactFromNumber(number);
+        contactIDLong = bundle.getLong("someId");
         setHasOptionsMenu(true);
     }
 
@@ -82,21 +81,22 @@ public class IndividualContactDetailsFragment extends TabFragment {
     @Override
     public void onResume() {
         super.onResume();
-//        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-
-        if (mContact.getContactName() != null) {
+        Bundle bundle = this.getArguments();
+        contactIDLong = bundle.getLong("someId");
+        mContact = LSContact.findById(LSContact.class, contactIDLong);
+        if (mContact != null && mContact.getContactName() != null) {
             tvName.setText(mContact.getContactName());
         }
-        if (mContact.getPhoneOne() != null) {
+        if (mContact != null && mContact.getPhoneOne() != null) {
             tvNumber.setText(mContact.getPhoneOne());
         }
-        if (mContact.getContactEmail() != null) {
+        if (mContact != null && mContact.getContactEmail() != null) {
             tvEmail.setText(mContact.getContactEmail());
         }
-        if (mContact.getContactAddress() != null) {
+        if (mContact != null && mContact.getContactAddress() != null) {
             tvAddress.setText(mContact.getContactAddress());
         }
-        if (mContact.getContactType() != null) { //TODO crashed here
+        if (mContact != null && mContact.getContactType() != null) {
             if (mContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                 if (mContact.getContactSalesStatus() != null && !mContact.getContactSalesStatus().equals("")) {
                     switch (mContact.getContactSalesStatus()) {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
@@ -27,6 +28,7 @@ import de.halfbit.tinybus.TinyBus;
 public class WonFragment extends TabFragment{
     public static final String TAG = "WonFragment";
     ListView listView = null;
+    ImageView imageView;
     LeadsAdapter leadsAdapter;
     MaterialSearchView searchView;
     private TinyBus bus;
@@ -101,12 +103,14 @@ public class WonFragment extends TabFragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_leads, container, false);
         listView = (ListView) view.findViewById(R.id.leads_contacts_list);
+        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
+        imageView.setImageResource(R.drawable.delight_won);
         listView.setAdapter(leadsAdapter);
+        listView.setEmptyView(imageView);
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override

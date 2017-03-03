@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.muzafarimran.lastingsales.fragments.ActiveInActiveLeadsFragment;
+import com.example.muzafarimran.lastingsales.fragments.InProgressFragment;
 import com.example.muzafarimran.lastingsales.fragments.InActiveLeadsFragment;
 import com.example.muzafarimran.lastingsales.fragments.LostFragment;
 import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
@@ -26,7 +26,7 @@ public class LeadsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return ActiveInActiveLeadsFragment.newInstance(0, ActiveInActiveLeadsFragment.TAG);
+                return InProgressFragment.newInstance(0, InProgressFragment.TAG);
             case 1:
                 return WonFragment.newInstance(1, WonFragment.TAG);
             case 2:

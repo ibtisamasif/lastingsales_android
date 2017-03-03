@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
@@ -32,6 +33,7 @@ public class InquiriesFragment extends SearchFragment {
     public static final String TAG = "InquiriesFragment";
     InquiriesAdapter inquiriesAdapter;
     ListView listView = null;
+    ImageView imageView;
     private Bus mBus;
     private TinyBus bus;
 
@@ -102,8 +104,11 @@ public class InquiriesFragment extends SearchFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
+        imageView = (ImageView) view.findViewById(R.id.ivInquiry_contacts);
+        imageView.setImageResource(R.drawable.delight_inactive);
         listView = (ListView) view.findViewById(R.id.calls_list);
         listView.setAdapter(inquiriesAdapter);
+        listView.setEmptyView(imageView);
         return view;
     }
 

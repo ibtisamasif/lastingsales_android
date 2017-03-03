@@ -31,6 +31,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
     public static final String TAG_LAUNCH_MODE_NOTE_ID = "launch_mode_note_id";
     public static final String TAG_LAUNCH_MODE_CONTACT_NUMBER = "launch_mode_contact_number";
+    public static final String TAG_LAUNCH_MODE_CONTACT_ID = "launch_mode_contact_id";
 
     public static final String ADD_NOTE_CONTACT_NUMBER = "add_note_contact_number";
 
@@ -43,6 +44,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
     LSNote selectedNote;
     LSContact selectedContact;
     String number;
+    Long contactIdLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +73,16 @@ public class AddEditNoteActivity extends AppCompatActivity {
         } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_NOTE)) {
             //for add new note
             number = bundle.getString(TAG_LAUNCH_MODE_CONTACT_NUMBER);
-            selectedContact = LSContact.getContactFromNumber(number);
-            tvContactName.setText(selectedContact.getContactName());
+            Long id = bundle.getLong(TAG_LAUNCH_MODE_CONTACT_ID);
+            if (number != null) {
+                selectedContact = LSContact.getContactFromNumber(number);
+                tvContactName.setText(selectedContact.getContactName());
+            } else if (id != null && !id.equals("")) {
+                contactIdLong = id;
+                selectedContact = LSContact.findById(LSContact.class, contactIdLong);
+                tvContactName.setText(selectedContact.getContactName());
+            }
+
         }
 
         bOk.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +90,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_NOTE)) {
                     selectedNote.setNoteText(etContactNote.getText().toString());
-                    if(selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED) || selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_EDIT_SYNCED)) {
+                    if (selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED) || selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_EDIT_SYNCED)) {
                         selectedNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_EDIT_NOT_SYNCED);
                     }
                     selectedNote.save();

@@ -30,16 +30,12 @@ import java.util.Calendar;
  */
 
 public class AddNewFollowUpsActivity extends Activity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
-    private static final String TAG = "AddNewFollowUpsActivity";
-
     public static final String ACTIVITY_LAUNCH_MODE = "activity_launch_mode";
-
     public static final String LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP = "launch_mode_edit_existing_followup";
     public static final String LAUNCH_MODE_ADD_NEW_FOLLOWUP = "launch_mode_add_new_followup";
-
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     public static final String TAG_LAUNCH_MODE_FOLLOWUP_ID = "followup_id";
-
+    private static final String TAG = "AddNewFollowUpsActivity";
     private static final String TITLE_ADD_FOLLOWUP = "Add Followup";
     private static final String TITLE_EDIT_FOLLOWUP = "Edit Followup";
 
@@ -144,7 +140,7 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                         dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, mDay);
                         dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, mHour);
                         dateTimeForFollowup.set(Calendar.MINUTE, mMinute);
-                        Log.d(TAG, "New Alarm func: Year="+ mYear +" Month="+ mMonth +" DAY="+ mDay +" Hour="+ mHour +" Minute="+ mMinute);
+                        Log.d(TAG, "New Alarm func: Year=" + mYear + " Month=" + mMonth + " DAY=" + mDay + " Hour=" + mHour + " Minute=" + mMinute);
                         tempFollowUp.setContact(selectedContact);
                         tempFollowUp.setTitle(titleText);
                         tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
@@ -309,7 +305,7 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
         int mMinute = timeForFollowUp.get(Calendar.MINUTE);
         int seconds = 0;*/
         dateAndTimeForAlarm.set(mYear, mMonth, mDay, mHour, mMinute, 0);
-        Log.d(TAG, "Set Alarm func: Year="+ mYear +" Month="+ mMonth +" DAY="+ mDay +" Hour="+ mHour +" Minute="+ mMinute);
+        Log.d(TAG, "Set Alarm func: Year=" + mYear + " Month=" + mMonth + " DAY=" + mDay + " Hour=" + mHour + " Minute=" + mMinute);
         Intent aint = new Intent(context, AlarmReceiver.class);
 
         aint.putExtra("followupid", tempFollowUp.getId() + "");
@@ -318,8 +314,13 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                          /* Retrieve a PendingIntent that will perform a broadcast */
 //        Intent alarmIntent = new Intent(activity, AlarmReceiver.class);
 //        pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, 0);
-        manager.setExact(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
-//        manager.set(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            // Do something for lollipop and above versions
+            manager.setExact(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent); //TODO Battery draining function
+        } else {
+            // do something for phones running an SDK before lollipop
+            manager.set(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
+        }
         Toast.makeText(context, "Alarm Set", Toast.LENGTH_SHORT).show();
     }
 }

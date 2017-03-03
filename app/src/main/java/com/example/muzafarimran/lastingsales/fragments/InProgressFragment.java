@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
@@ -24,16 +25,17 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 12/29/2016.
  */
 
-public class ActiveInActiveLeadsFragment extends TabFragment{
+public class InProgressFragment extends TabFragment{
 
-    public static final String TAG = "ActiveInActiveLeadsFragment";
+    public static final String TAG = "InProgressFragment";
     ListView listView = null;
+    ImageView imageView;
     LeadsAdapter leadsAdapter;
     MaterialSearchView searchView;
     private TinyBus bus;
 
-    public static ActiveInActiveLeadsFragment newInstance(int page, String title) {
-        ActiveInActiveLeadsFragment fragmentFirst = new ActiveInActiveLeadsFragment();
+    public static InProgressFragment newInstance(int page, String title) {
+        InProgressFragment fragmentFirst = new InProgressFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
@@ -100,12 +102,14 @@ public class ActiveInActiveLeadsFragment extends TabFragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_leads, container, false);
+        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
+        imageView.setImageResource(R.drawable.delight_inprogress);
         listView = (ListView) view.findViewById(R.id.leads_contacts_list);
         listView.setAdapter(leadsAdapter);
+        listView.setEmptyView(imageView);
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override

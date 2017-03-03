@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.IndividualContactCallAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -30,14 +31,16 @@ public class IndividualCallLogsFragment extends TabFragment{
     IndividualContactCallAdapter individualContactCallAdapter;
     MaterialSearchView searchView;
     private TinyBus bus;
-    private String number = "";
+    private Long contactIDLong;
+    LSContact mContact;
+    String number = "";
 
-    public static IndividualCallLogsFragment newInstance(int page, String title , String number) {
+    public static IndividualCallLogsFragment newInstance(int page, String title , Long id) {
         IndividualCallLogsFragment fragmentFirst = new IndividualCallLogsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
-        args.putString("someNumber", number);
+        args.putLong("someId", id);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -53,7 +56,9 @@ public class IndividualCallLogsFragment extends TabFragment{
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         Bundle bundle = this.getArguments();
-        number = bundle.getString("someNumber");
+        contactIDLong = bundle.getLong("someId");
+        mContact = LSContact.findById(LSContact.class, contactIDLong);
+        number = mContact.getPhoneOne();
         ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();
         individualContactCallAdapter = new IndividualContactCallAdapter(getActivity(), allCalls);
         setHasOptionsMenu(true);
@@ -72,14 +77,15 @@ public class IndividualCallLogsFragment extends TabFragment{
         super.onStop();
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
-        Bundle bundle = this.getArguments();
-        number = bundle.getString("someNumber");
-        ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();
-        setList(allCalls);
+//        Bundle bundle = this.getArguments();
+//        contactIDLong = bundle.getLong("someId");
+//        mContact = LSContact.findById(LSContact.class, contactIDLong);
+//        number = mContact.getPhoneOne();
+//        ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();
+//        setList(allCalls);
     }
 
     @Override

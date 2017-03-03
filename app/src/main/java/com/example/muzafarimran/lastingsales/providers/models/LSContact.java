@@ -88,10 +88,10 @@ public class LSContact extends SugarRecord {
             ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
             allLeads.removeAll(allColleagues);
             ArrayList<LSContact> allInactiveLeads = new ArrayList<LSContact>();
-//            long milisecondsIn3Days = 259200000;
-            long milliSecondsIn1Min = 30000; // 30 seconds for now
+            long milisecondsIn3Days = 259200000;
+//            long milliSecondsIn1Min = 30000; // 30 seconds for now
             long now = Calendar.getInstance().getTimeInMillis();
-            long threeDaysAgoTimestamp = now - milliSecondsIn1Min;
+            long threeDaysAgoTimestamp = now - milisecondsIn3Days;
             for (LSContact oneContact : allLeads) {
                 ArrayList<LSCall> allCallsOfThisLead = LSCall.getCallsFromNumber(oneContact.getPhoneOne());
                 LSContact inactiveLead = null;
@@ -213,6 +213,17 @@ public class LSContact extends SugarRecord {
 //            return new ArrayList<LSContact>();
 //        }
 //    }
+
+    @Deprecated
+    public static LSContact getContactFromLocalId(Long id) {
+        LSContact contact = null;
+        try {
+            contact =  LSContact.findById(LSContact.class, id);
+            return contact;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
 
     public static LSContact getContactFromServerId(String id) {
         ArrayList<LSContact> list = null;

@@ -60,7 +60,7 @@ public class AlertDialogActivity extends Activity {
         // dialog layout
         View view = inflater.inflate(R.layout.popup_alert_dialog_layout, null);
         TextView message = (TextView) view.findViewById(R.id.followup_popup_note_text);
-        message.setText(tempFollowUp.getTitle());
+        message.setText(tempFollowUp.getTitle()); // TODO crashes here on deleting lead after setting up a followup of that lead
         TextView contactName = (TextView) view.findViewById(R.id.followup_alert_popup_name);
         contactName.setText(tempFollowUp.getContact().getContactName());
         ImageButton callButton = (ImageButton) view.findViewById(R.id.followup_alert_call_button);

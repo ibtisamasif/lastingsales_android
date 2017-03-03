@@ -52,7 +52,7 @@ public class LSInquiry extends SugarRecord {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        if (list.size() > 0) {
+        if (list != null && list.size() > 0) {
             return list.get(0);
         } else {
             return null;
@@ -66,7 +66,7 @@ public class LSInquiry extends SugarRecord {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        if (list.size() > 0) {
+        if (list != null && list.size() > 0) {
             return list.get(0);
         } else {
             return null;

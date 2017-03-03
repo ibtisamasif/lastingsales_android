@@ -116,8 +116,7 @@ public class UntaggedContactsCallsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
         listView = (ListView) view.findViewById(R.id.calls_list);
         listView.setAdapter(untaggedContactsAdapter);

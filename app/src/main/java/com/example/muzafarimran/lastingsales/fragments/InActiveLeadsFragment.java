@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
@@ -27,6 +28,7 @@ public class InActiveLeadsFragment extends  TabFragment{
 
     public static final String TAG = "InActiveLeadsFragment";
     ListView listView = null;
+    ImageView imageView;
     InActiveLeadsAdapter inActiveLeadsAdapter;
     MaterialSearchView searchView;
     private TinyBus bus;
@@ -100,7 +102,10 @@ public class InActiveLeadsFragment extends  TabFragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_leads, container, false);
         listView = (ListView) view.findViewById(R.id.leads_contacts_list);
+        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
+        imageView.setImageResource(R.drawable.delight_inactive);
         listView.setAdapter(inActiveLeadsAdapter);
+        listView.setEmptyView(imageView);
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override

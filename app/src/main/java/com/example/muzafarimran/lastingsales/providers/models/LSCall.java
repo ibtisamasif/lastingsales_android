@@ -30,14 +30,16 @@ public class LSCall extends SugarRecord {
     private Long duration;
     private String contactName;
     private Long beginTime;
-    private String audio_path;
     private int inquiryHandledState;
     @Ignore
     private int countOfInquiries;
+    private String serverId;
     private String syncStatus;
+    private String audioPath;
 
     public LSCall() {
     }
+
 
     public static ArrayList<LSCall> getCallsFromNumber(String number) {
         ArrayList<LSCall> list = null;
@@ -164,12 +166,12 @@ public class LSCall extends SugarRecord {
         this.beginTime = beginTime;
     }
 
-    public String getAudio_path() {
-        return audio_path;
+    public String getAudioPath() {
+        return audioPath;
     }
 
-    public void setAudio_path(String audio_path) {
-        this.audio_path = audio_path;
+    public void setAudioPath(String path) {
+        this.audioPath = path;
     }
 
     public String getContactName() {
@@ -201,5 +203,13 @@ public class LSCall extends SugarRecord {
 
     public void setSyncStatus(String syncStatus) {
         this.syncStatus = syncStatus;
+    }
+
+    public String getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
     }
 }

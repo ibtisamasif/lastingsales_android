@@ -12,6 +12,8 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -121,6 +123,24 @@ public class PhoneNumberAndCallUtils {
         } else {
             return diff / DAY_MILLIS + " days ago";
         }
+    }
+
+    public static String currentDateTime() {
+        Date curDate = new Date();
+        SimpleDateFormat format = new SimpleDateFormat();
+        String DateToStr = format.format(curDate);
+        return DateToStr;
+    }
+
+    public static String generateUniqueFileName(String fname) {
+        String filename = fname;
+        long millis = System.currentTimeMillis();
+        String datetime = new Date().toGMTString();
+        datetime = datetime.replace(" ", "");
+        datetime = datetime.replace(":", "");
+        String rndchars = RandomStringUtils.randomAlphanumeric(16);
+        filename = rndchars + "_" + datetime + "_" + millis;
+        return filename;
     }
 
     public static String getContactNameFromLocalPhoneBook(Context context, String phoneNumber) {

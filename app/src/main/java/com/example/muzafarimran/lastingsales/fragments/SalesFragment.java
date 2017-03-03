@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
@@ -35,6 +37,8 @@ public class SalesFragment extends SearchFragment {
 
     public static final String TAG = "SalesContactFragment";
     ExpandableStickyListHeadersListView listView = null;
+    WeakHashMap<View,Integer> mOriginalViewHeightPool = new WeakHashMap<View, Integer>();
+    ImageView imageView;
     SalesAdapter salesAdapter;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     private TinyBus bus;
@@ -104,8 +108,15 @@ public class SalesFragment extends SearchFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sales, container, false);
+        imageView = (ImageView) view.findViewById(R.id.ivAllleads_contacts);
+        imageView.setImageResource(R.drawable.delight_all);
         listView = (ExpandableStickyListHeadersListView) view.findViewById(R.id.sales_contacts_list);
+        listView.setAnimExecutor(new AnimationExecutor());
+        listView.setFastScrollEnabled(true);
+        listView.setFastScrollAlwaysVisible(true);
+        listView.setStickyHeaderTopOffset(-20);
         listView.setAdapter(salesAdapter);
+        listView.setEmptyView(imageView);
         //Expand and Contract Leads
         listView.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
             @Override
@@ -254,6 +265,28 @@ public class SalesFragment extends SearchFragment {
             Intent myIntent = new Intent(getActivity(), AddLeadActivity.class);
             myIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
             getActivity().startActivity(myIntent);
+        }
+    }
+    //animation executor StickeyHeader ListView
+    class AnimationExecutor implements ExpandableStickyListHeadersListView.IAnimationExecutor {
+
+        @Override
+        public void executeAnim(final View target, final int animType) {
+            if(ExpandableStickyListHeadersListView.ANIMATION_EXPAND==animType&&target.getVisibility()==View.VISIBLE){
+                return;
+            }
+            if(ExpandableStickyListHeadersListView.ANIMATION_COLLAPSE==animType&&target.getVisibility()!=View.VISIBLE){
+                return;
+            }
+            if(mOriginalViewHeightPool.get(target)==null){
+                mOriginalViewHeightPool.put(target,target.getHeight());
+            }
+            final int viewHeight = mOriginalViewHeightPool.get(target);
+            float animStartY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? 0f : viewHeight;
+            float animEndY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? viewHeight : 0f;
+            final ViewGroup.LayoutParams lp = target.getLayoutParams();
+            target.setVisibility(View.VISIBLE);
+
         }
     }
 }

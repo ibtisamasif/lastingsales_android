@@ -21,6 +21,7 @@ import com.example.muzafarimran.lastingsales.activities.NotesActivity;
  * A simple {@link Fragment} subclass.
  */
 //Fragment agent Profile
+    @Deprecated
 public class MoreFragment extends TabFragment {
 
     LinearLayout llFollowUp, llNotes, llLogOut;
