@@ -19,6 +19,12 @@ public class LSCall extends SugarRecord {
     public static final String CALL_TYPE_INCOMING = "incoming";
     @Ignore
     public static final String CALL_TYPE_MISSED = "missed";
+
+    @Ignore
+    public static final String CALL_TYPE_REJECTED = "rejected";
+    @Ignore
+    public static final String CALL_TYPE_UNANSWERED = "unanswered";
+
     @Ignore
     public static final int INQUIRY_HANDLED = 1;
     @Ignore
@@ -34,12 +40,27 @@ public class LSCall extends SugarRecord {
     @Ignore
     private int countOfInquiries;
     private String serverId;
+    private String callLogId;
     private String syncStatus;
     private String audioPath;
 
     public LSCall() {
     }
 
+
+    public static boolean ifExist(String id) {
+        ArrayList<LSCall> list = null;
+        try {
+            list = (ArrayList<LSCall>) LSCall.find(LSCall.class, "call_log_id = ?", id);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        if (list != null && list.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public static ArrayList<LSCall> getCallsFromNumber(String number) {
         ArrayList<LSCall> list = null;
@@ -211,5 +232,13 @@ public class LSCall extends SugarRecord {
 
     public void setServerId(String serverId) {
         this.serverId = serverId;
+    }
+
+    public String getCallLogId() {
+        return callLogId;
+    }
+
+    public void setCallLogId(String callLogId) {
+        this.callLogId = callLogId;
     }
 }

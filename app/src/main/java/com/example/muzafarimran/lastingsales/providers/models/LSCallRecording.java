@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
@@ -14,8 +15,23 @@ public class LSCallRecording extends SugarRecord {
     private String localIdOfCall;
     private String audioPath;
     private String syncStatus;
+    private Long beginTime;
 
     public LSCallRecording() {
+    }
+
+    public static LSCallRecording getAllUnsyncedRecordings(){
+        ArrayList<LSCallRecording> list = null;
+        try {
+            list = (ArrayList<LSCallRecording>) LSCallRecording.find(LSCallRecording.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 
     public static LSCallRecording getRecordingByAudioPath(String path){
@@ -43,8 +59,16 @@ public class LSCallRecording extends SugarRecord {
         return serverIdOfCall;
     }
 
-    public void setServerIdOfCall(String serverIofCall) {
-        this.serverIdOfCall = serverIofCall;
+    public void setServerIdOfCall(String serverIdofCall) {
+        this.serverIdOfCall = serverIdofCall;
+    }
+
+    public Long getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Long beginTime) {
+        this.beginTime = beginTime;
     }
 
     public String getAudioPath() {

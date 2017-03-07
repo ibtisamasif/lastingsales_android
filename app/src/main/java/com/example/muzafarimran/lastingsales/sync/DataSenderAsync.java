@@ -21,7 +21,8 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.sync.AndroidMultiPartEntity.ProgressListener;
+import com.example.muzafarimran.lastingsales.utils.AndroidMultiPartEntity;
+import com.example.muzafarimran.lastingsales.utils.AndroidMultiPartEntity.ProgressListener;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -278,15 +279,17 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     JSONObject responseObject = jObj.getJSONObject("response");
                     String id = responseObject.getString("id");
                     String contactNumber = responseObject.getString("contact_number");
-                    if (!call.getType().equals(LSCall.CALL_TYPE_MISSED)) {
-                        Log.d(TAG, "onResponse: audiopath: " + call.getAudioPath());
-                        LSCallRecording tempRecording = LSCallRecording.getRecordingByAudioPath(call.getAudioPath());
-                        if (tempRecording != null) {
-                            tempRecording.setServerIdOfCall(id);
-                            tempRecording.save();
-                            Log.d(TAG, "onResponse: ServerIDofCAll: " + tempRecording.getServerIdOfCall());
-                        }
-                    }
+                    call.setServerId(id);
+                    call.save();
+//                    if (!call.getType().equals(LSCall.CALL_TYPE_MISSED)) {
+//                        Log.d(TAG, "onResponse: audiopath: " + call.getAudioPath());
+//                        LSCallRecording tempRecording = LSCallRecording.getRecordingByAudioPath(call.getAudioPath());
+//                        if (tempRecording != null) {
+//                            tempRecording.setServerIdOfCall(id);
+//                            tempRecording.save();
+//                            Log.d(TAG, "onResponse: ServerIDofCAll: " + tempRecording.getServerIdOfCall());
+//                        }
+//                    }
                     call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_SYNCED);
                     call.save();
                     Log.d(TAG, "onResponse: " + contactNumber);
@@ -317,6 +320,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 params.put("call_type", "" + call.getType());
                 params.put("date", "" + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "yyyy-MM-dd"));
                 params.put("from_time", "" + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss"));
+//                Log.d(TAG, "getParams: "+PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss"));
                 params.put("api_token", "" + sessionManager.getLoginToken());
 //                params.put("duration", ""+call.getDuration());
 //                params.put("contact_number", ""+call.getContactNumber());

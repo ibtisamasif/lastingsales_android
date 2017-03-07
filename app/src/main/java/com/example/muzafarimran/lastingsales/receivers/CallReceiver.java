@@ -21,6 +21,7 @@ public abstract class CallReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        callStartTime = new Date();
         //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.
         if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
             savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
@@ -66,7 +67,7 @@ public abstract class CallReceiver extends BroadcastReceiver {
         switch (state) {
             case TelephonyManager.CALL_STATE_RINGING:
                 isIncoming = true;
-                callStartTime = new Date();
+//                callStartTime = new Date();
                 savedNumber = number;
                 onIncomingCallStarted(context, number, callStartTime);
                 break;
@@ -74,7 +75,7 @@ public abstract class CallReceiver extends BroadcastReceiver {
                 //Transition of ringing->offhook are pickups of incoming calls.  Nothing done on them
                 if (lastState != TelephonyManager.CALL_STATE_RINGING) {
                     isIncoming = false;
-                    callStartTime = new Date();
+//                    callStartTime = new Date();
                     onOutgoingCallStarted(context, savedNumber, callStartTime);
                 }
                 break;

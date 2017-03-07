@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.sync;
+package com.example.muzafarimran.lastingsales.utils;
 
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;

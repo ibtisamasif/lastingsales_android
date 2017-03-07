@@ -34,7 +34,9 @@ import com.example.muzafarimran.lastingsales.fragments.UntaggedContactsCallsFrag
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.receivers.RecordingManager;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.example.muzafarimran.lastingsales.utils.CallRecord;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -320,6 +322,10 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         else if (id == R.id.nav_item_feedback) {
 //            Intent tempIntent = new Intent(this, FireBaseMainActivity.class);
 //            startActivity(tempIntent);
+            RecordingManager recordingManager = new RecordingManager();
+            recordingManager.execute();
+            TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+            theCallLogEngine.execute();
             DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
             dataSenderAsync.execute();
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
