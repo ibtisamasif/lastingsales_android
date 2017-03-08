@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
@@ -28,7 +29,7 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UntaggedContactsCallsFragment extends Fragment {
+public class UnlabeledContactsCallsFragment extends Fragment {
 
     private static final String TAG = "UntaggedCallFragment";
     UntaggedContactsAdapter untaggedContactsAdapter;
@@ -36,9 +37,10 @@ public class UntaggedContactsCallsFragment extends Fragment {
     private List<LSContact> untaggedContacts = new ArrayList<>();
     private Bus mBus;
     private TinyBus bus;
+    private ErrorScreenView errorScreenView;
 
-    public static UntaggedContactsCallsFragment newInstance(int page, String title) {
-        UntaggedContactsCallsFragment fragmentFirst = new UntaggedContactsCallsFragment();
+    public static UnlabeledContactsCallsFragment newInstance(int page, String title) {
+        UnlabeledContactsCallsFragment fragmentFirst = new UnlabeledContactsCallsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
@@ -120,6 +122,10 @@ public class UntaggedContactsCallsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
         listView = (ListView) view.findViewById(R.id.calls_list);
         listView.setAdapter(untaggedContactsAdapter);
+        errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
+        errorScreenView.setErrorImage(R.drawable.delight_inactive);
+        errorScreenView.setErrorText(this.getResources().getString(R.string.em_unlabeled_delight));
+        listView.setEmptyView(errorScreenView);
         return view;
     }
 
