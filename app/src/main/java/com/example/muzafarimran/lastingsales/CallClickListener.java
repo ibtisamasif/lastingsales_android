@@ -37,7 +37,7 @@ public class CallClickListener implements View.OnClickListener {
 //                oneCall.save();
 //            }
 //        }
-        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + number));
         this.context.startActivity(intent);
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);

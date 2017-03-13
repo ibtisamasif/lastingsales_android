@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- The frame layout is here since we will be showing either
-the empty view or the list view.  -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="0dip"
-    android:layout_weight="1"
-    android:background="@color/white"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    <!-- Here is the list. Since we are using a ListActivity, we
-         have to call it "@android:id/list" so ListActivity will
-         find it -->
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <com.example.muzafarimran.lastingsales.customview.NestedListView
         android:id="@+id/lvNoteListContactDetailsScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        android:drawSelectorOnTop="false" />
+        android:drawSelectorOnTop="false"
+        android:layout_marginTop="8dp"/>
 
+        <com.example.muzafarimran.lastingsales.customview.ErrorScreenView
+            android:id="@+id/ivleads_contacts_custom"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+        </com.example.muzafarimran.lastingsales.customview.ErrorScreenView>
 
-</FrameLayout>
+    <!--<ImageView-->
+        <!--android:id="@+id/ivleads_contacts"-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:contentDescription="@string/delights_of_leads">-->
+    <!--</ImageView>-->
+</RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

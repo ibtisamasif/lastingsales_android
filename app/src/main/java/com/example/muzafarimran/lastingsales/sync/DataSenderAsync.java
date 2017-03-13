@@ -143,6 +143,19 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddContact");
+                try {
+                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                    int responseCode = jObj.getInt("responseCode");
+                    if (responseCode == 409) {
+                        JSONObject responseObject = jObj.getJSONObject("response");
+                        contact.setServerId(responseObject.getString("id"));
+                        contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                        contact.save();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         }) {
             @Override
@@ -224,11 +237,11 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
 //                    if (responseCode == 200) {
-                        JSONObject responseObject = jObj.getJSONObject("response");
-                        contact.setServerId(responseObject.getString("id"));
-                        contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED);
-                        contact.save();
-                        Log.d(TAG, "onResponse : ServerID : " + responseObject.getString("id"));
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    contact.setServerId(responseObject.getString("id"));
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED);
+                    contact.save();
+                    Log.d(TAG, "onResponse : ServerID : " + responseObject.getString("id"));
 //                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -303,6 +316,18 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddCall");
+//                try {
+//                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+//                    int responseCode = jObj.getInt("responseCode");
+//                    if (responseCode == 409) {
+//                        JSONObject responseObject = jObj.getJSONObject("response");
+//                        call.setServerId(responseObject.getString("id"));
+//                        call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_SYNCED);
+//                        call.save();
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
         }) {
             @Override
@@ -370,18 +395,18 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
 //                    if (responseCode == 200) {
-                        JSONObject responseObject = jObj.getJSONObject("response");
-                        String id = responseObject.getString("id");
-                        String contactNumber = responseObject.getString("contact_number");
-                        String status = responseObject.getString("status");
-                        inquiry.setServerId(id);
-                        inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
-                        if (status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)) {
-                            inquiry.delete();
-                        } else {
-                            inquiry.save();
-                        }
-                        Log.d(TAG, "onResponse: " + contactNumber);
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    String id = responseObject.getString("id");
+                    String contactNumber = responseObject.getString("contact_number");
+                    String status = responseObject.getString("status");
+                    inquiry.setServerId(id);
+                    inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
+                    if (status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)) {
+                        inquiry.delete();
+                    } else {
+                        inquiry.save();
+                    }
+                    Log.d(TAG, "onResponse: " + contactNumber);
 //                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -392,6 +417,24 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddInquiry");
+                try {
+                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                    int responseCode = jObj.getInt("responseCode");
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    String id = responseObject.getString("id");
+                    String contactNumber = responseObject.getString("contact_number");
+                    String status = responseObject.getString("status");
+                    inquiry.setServerId(id);
+                    inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
+                    if (status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)) {
+                        inquiry.delete();
+                    } else {
+                        inquiry.save();
+                    }
+                    Log.d(TAG, "onResponse: addInquiryReSync " + contactNumber);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }) {
             @Override
@@ -527,6 +570,24 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddNote");
+
+                try {
+                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                    int responseCode = jObj.getInt("responseCode");
+//                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
+//                    if (responseCode == 200) {
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    String description = responseObject.getString("description");
+                    String id = responseObject.getString("id");
+                    note.setServerId(id);
+                    note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
+                    note.save();
+                    Log.d(TAG, "onResponse addNoteReSynced: " + description + " ServerNoteID : " + note.getServerId());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         }) {
             @Override
@@ -590,10 +651,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 //                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
 
 //                    if (responseCode == 200) {
-                        JSONObject responseObject = jObj.getJSONObject("response");
-                        note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_EDIT_SYNCED);
-                        note.save();
-                        Log.d(TAG, "onResponse updateNote : ServerID : " + responseObject.getString("id"));
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_EDIT_SYNCED);
+                    note.save();
+                    Log.d(TAG, "onResponse updateNote : ServerID : " + responseObject.getString("id"));
 //                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -720,10 +781,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 
 //                    if (responseCode == 200) {
 //                        JSONObject responseObject = jObj.getJSONObject("response");
-                        contact.delete();
-                        LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
-                        TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-                        bus.post(mCallEvent);
+                    contact.delete();
+                    LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
+                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                    bus.post(mCallEvent);
 //                    }
                 } catch (JSONException e) {
                     e.printStackTrace();

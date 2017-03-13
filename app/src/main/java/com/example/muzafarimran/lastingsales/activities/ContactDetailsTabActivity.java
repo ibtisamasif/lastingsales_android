@@ -112,7 +112,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 //                        tab.setIcon(R.drawable.menu_icon_details_selected);
                         break;
                     case 1:
-                        floatingActionButton.hide();
+                        floatingActionButton.show();
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
                         break;
                     case 2:
@@ -120,7 +120,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 //                        tab.setIcon(R.drawable.menu_icon_contact_selected);
                         break;
                     case 3:
-                        floatingActionButton.show();
+                        floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.add_contact_notes_field_icon);
                         break;
                 }

@@ -21,7 +21,7 @@ public class TabFragment extends Fragment {
 
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
         }
-        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + number));
         getContext().startActivity(intent);
     }

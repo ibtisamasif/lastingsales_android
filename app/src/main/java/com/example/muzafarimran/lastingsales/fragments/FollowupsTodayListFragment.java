@@ -23,10 +23,10 @@ public class FollowupsTodayListFragment extends TabFragment {
     public static final String TAG = "FollowupsTodayListFragment";
     FollowupsTodayListAdapter followupsAdapter;
     ExpandableStickyListHeadersListView listView = null;
+//    private ImageView imageView;
     ArrayList<TempFollowUp> DueFollowups;
     ArrayList<TempFollowUp> DoneFollowups;
     Long selectedContactID = 0l;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,10 @@ public class FollowupsTodayListFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_followups_today_list, container, false);
         listView = (ExpandableStickyListHeadersListView) view.findViewById(R.id.followups_list_view_in_fragment);
+//        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
+//        imageView.setImageResource(R.drawable.delight_won);
         listView.setAdapter(followupsAdapter);
+//        listView.setEmptyView(imageView);
         listView.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
             @Override
             public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
@@ -124,14 +127,14 @@ public class FollowupsTodayListFragment extends TabFragment {
         }
         Collections.sort(dueFollowups, new Comparator<TempFollowUp>() {
             @Override
-            public int compare(TempFollowUp tempFollowUp, TempFollowUp t1) {
-                return tempFollowUp.getDateTimeForFollowup().compareTo(t1.getDateTimeForFollowup());
+            public int compare(TempFollowUp TempFollowUp, TempFollowUp t1) {
+                return TempFollowUp.getDateTimeForFollowup().compareTo(t1.getDateTimeForFollowup());
             }
         });
         Collections.sort(doneFollowups, new Comparator<TempFollowUp>() {
             @Override
-            public int compare(TempFollowUp tempFollowUp, TempFollowUp t1) {
-                return tempFollowUp.getDateTimeForFollowup().compareTo(t1.getDateTimeForFollowup());
+            public int compare(TempFollowUp TempFollowUp, TempFollowUp t1) {
+                return TempFollowUp.getDateTimeForFollowup().compareTo(t1.getDateTimeForFollowup());
             }
         });
         setDueFollowups(dueFollowups);

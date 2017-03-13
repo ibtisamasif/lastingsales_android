@@ -126,10 +126,10 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
 
                     String titleText = null;
                     String noteText = null;
-                    TempFollowUp tempFollowUp = new TempFollowUp();
+                    TempFollowUp TempFollowUp = new TempFollowUp();
                     if (etFollowupTitleText != null) {
                         titleText = etFollowupTitleText.getText().toString();
-                        tempFollowUp.setTitle(titleText);
+                        TempFollowUp.setTitle(titleText);
                     } else {
                         titleText = "Empty";
                     }
@@ -141,23 +141,23 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                         dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, mHour);
                         dateTimeForFollowup.set(Calendar.MINUTE, mMinute);
                         Log.d(TAG, "New Alarm func: Year=" + mYear + " Month=" + mMonth + " DAY=" + mDay + " Hour=" + mHour + " Minute=" + mMinute);
-                        tempFollowUp.setContact(selectedContact);
-                        tempFollowUp.setTitle(titleText);
-                        tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                        tempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_ADDED_NOT_SYNCED);
-                        tempFollowUp.save();
-                        setAlarm(getApplicationContext(), tempFollowUp);
+                        TempFollowUp.setContact(selectedContact);
+                        TempFollowUp.setTitle(titleText);
+                        TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                        TempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_ADDED_NOT_SYNCED);
+                        TempFollowUp.save();
+                        setAlarm(getApplicationContext(), TempFollowUp);
                         DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
                         dataSenderAsync.execute();
                     }
                     finish();
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
                     String titleText = null;
-                    TempFollowUp tempFollowUp = selectedFollowup;
+                    TempFollowUp TempFollowUp = selectedFollowup;
                     String noteText = null;
                     if (etFollowupTitleText != null) {
                         titleText = etFollowupTitleText.getText().toString();
-                        tempFollowUp.setTitle(titleText);
+                        TempFollowUp.setTitle(titleText);
                     } else {
                         titleText = "Empty";
                     }
@@ -168,13 +168,13 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                         dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, mDay);
                         dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, mHour);
                         dateTimeForFollowup.set(Calendar.MINUTE, mMinute);
-//                TempFollowUp tempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
-                        tempFollowUp.setContact(selectedContact);
-                        tempFollowUp.setTitle(titleText);
-                        tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                        tempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_EDIT_NOT_SYNCED);
-                        tempFollowUp.save();
-                        setAlarm(getApplicationContext(), tempFollowUp);
+//                TempFollowUp TempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
+                        TempFollowUp.setContact(selectedContact);
+                        TempFollowUp.setTitle(titleText);
+                        TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                        TempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_EDIT_NOT_SYNCED);
+                        TempFollowUp.save();
+                        setAlarm(getApplicationContext(), TempFollowUp);
                         DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
                         dataSenderAsync.execute();
                     }
@@ -292,7 +292,7 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
         }
     }
 
-    public void setAlarm(Context context, TempFollowUp tempFollowUp) {
+    public void setAlarm(Context context, TempFollowUp TempFollowUp) {
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent;
         int interval = 8000;
@@ -308,9 +308,9 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
         Log.d(TAG, "Set Alarm func: Year=" + mYear + " Month=" + mMonth + " DAY=" + mDay + " Hour=" + mHour + " Minute=" + mMinute);
         Intent aint = new Intent(context, AlarmReceiver.class);
 
-        aint.putExtra("followupid", tempFollowUp.getId() + "");
+        aint.putExtra("followupid", TempFollowUp.getId() + "");
 //        aint.putExtra("message","This is message from followup");
-        pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(tempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(TempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
                          /* Retrieve a PendingIntent that will perform a broadcast */
 //        Intent alarmIntent = new Intent(activity, AlarmReceiver.class);
 //        pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, 0);

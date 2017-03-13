@@ -74,7 +74,9 @@ public class NotesListAdapter extends BaseAdapter {
         String date = "" + cl.get(Calendar.DAY_OF_MONTH) + ":" + cl.get(Calendar.MONTH) + ":" + cl.get(Calendar.YEAR);
         String time = "" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE);
         // Populate the data into the template view using the data object
-        viewHolder.tvContactName.setText(oneContact.getContactName());  // Crashed here on Deleting the contact and then viewing his notes from agents profile.
+        if(oneContact!=null) {
+            viewHolder.tvContactName.setText(oneContact.getContactName());  // Crashed here on Deleting the contact and then viewing his notes from agents profile. (huawei crashed again)
+        }
         viewHolder.tvShortNote.setText(getShortenedString(oneNote.getNoteText()));
         viewHolder.tvNoteDetails.setText(oneNote.getNoteText());
         viewHolder.tvNoteDate.setText(date);

@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,7 +40,6 @@ import de.halfbit.tinybus.TinyBus;
  */
 public class HomeFragment extends TabFragment {
     private static final String TAG = "HomeFragment";
-    ImageView imageView;
     private TextView tvInquiriesValue;
     private TextView tvInactiveLeadsValue;
     private TextView tvUntaggedContacts;
@@ -68,8 +66,6 @@ public class HomeFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
-        imageView.setImageResource(R.drawable.delight_home);
         tvInquiriesValue = (TextView) view.findViewById(R.id.tvInquriesValue);
         tvUntaggedContacts = (TextView) view.findViewById(R.id.tvUntaggeContactsVal);
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
@@ -106,7 +102,7 @@ public class HomeFragment extends TabFragment {
             public void onClick(View view) {
                 Intent intent;
                 Bundle bundle = new Bundle();
-                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UntaggedContactsCallsFragment.class.getName());
+                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledContactsCallsFragment.class.getName());
                 bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
                 bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
                 intent = new Intent(getContext(), FrameActivity.class);
@@ -223,14 +219,6 @@ public class HomeFragment extends TabFragment {
             }
         } else {
             tvInactiveLeadsValue.setText(0);
-        }
-
-        if(allInquiries!=null && allInquiries.size()>0 || allUntaggedContacts!=null && allUntaggedContacts.size()>0 || allInactiveLeads!=null && allInactiveLeads.size()>0 ){
-            //Do Nothing
-            imageView.setVisibility(View.GONE);
-        }
-        else {
-            imageView.setVisibility(View.VISIBLE);
         }
 
         ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);

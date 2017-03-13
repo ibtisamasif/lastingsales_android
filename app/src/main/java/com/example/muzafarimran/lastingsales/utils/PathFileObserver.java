@@ -1,12 +1,14 @@
-package com.example.muzafarimran.lastingsales.receivers;
+package com.example.muzafarimran.lastingsales.utils;
 
 import android.os.FileObserver;
+
+import com.example.muzafarimran.lastingsales.receivers.CallsStatesReceiver;
 
 import java.io.File;
 
 public class PathFileObserver extends FileObserver {
 
-    interface FileObserverInterface{
+    public interface FileObserverInterface{
         public void onEvent(int event , String path);
     }
 

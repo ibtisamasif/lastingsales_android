@@ -14,14 +14,22 @@
             android:layout_height="match_parent">
         </ListView>
 
-        <ImageView
-            android:id="@+id/ivleads_contacts"
+        <com.example.muzafarimran.lastingsales.customview.ErrorScreenView
+            android:id="@+id/ivleads_contacts_custom"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/delights_of_leads">
-        </ImageView>
+            android:layout_centerVertical="true">
+        </com.example.muzafarimran.lastingsales.customview.ErrorScreenView>
+
+        <!--<ImageView-->
+            <!--android:id="@+id/ivleads_contacts"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="200dp"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:contentDescription="@string/delights_of_leads">-->
+        <!--</ImageView>-->
 
     </RelativeLayout>
 

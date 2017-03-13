@@ -120,8 +120,8 @@ public class FollowupsTodayListAdapter extends BaseAdapter implements StickyList
         return convertView;
     }
 
-    public void setList(List<TempFollowUp> tempFollowUps) {
-        this.follouwpsList = (ArrayList<TempFollowUp>) tempFollowUps;
+    public void setList(List<TempFollowUp> TempFollowUps) {
+        this.follouwpsList = (ArrayList<TempFollowUp>) TempFollowUps;
         notifyDataSetChanged();
     }
 

@@ -45,8 +45,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
         <receiver android:name=".receivers.TagNonBusiness">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -108,7 +106,8 @@
             android:theme="@style/MyAlertDialogStyle" />
         <activity
             android:name=".activities.LogInActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
 
 
         <activity android:name=".activities.ContactDetailsActivity" />

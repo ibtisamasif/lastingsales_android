@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="0dp"
-                android:src="@drawable/user_avatar_icon_gray_border"
+                android:src="@drawable/ic_account_circle"
                 android:layout_centerVertical="true"
                 />
 

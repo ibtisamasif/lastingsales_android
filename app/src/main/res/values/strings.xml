@@ -84,5 +84,13 @@
     <string name="title_main_activity">Firebase Notifications</string>
     <string name="lead_picture">lead Picture</string>
     <string name="delights_of_leads">Delights of Leads</string>
+    <string name="em_inprogress_delight">Nothing in InProgress</string>
+    <string name="em_won_delight">Nothing in Won</string>
+    <string name="em_inactive_delight">Nothing in InActive</string>
+    <string name="em_lost_delight">Nothing in Lost</string>
+    <string name="em_notes_delight">Nothing in Notes</string>
+    <string name="em_inquiries_delight">Nothing in Inquiries</string>
+    <string name="em_unlabeled_delight">Nothing in Unlabeled</string>
+    <string name="em_all_delight">Nothing in Leads</string>
 
 </resources>

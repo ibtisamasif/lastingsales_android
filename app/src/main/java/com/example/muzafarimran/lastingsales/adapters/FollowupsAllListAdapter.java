@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
@@ -117,8 +116,8 @@ public class FollowupsAllListAdapter extends BaseAdapter implements StickyListHe
         return convertView;
     }
 
-    public void setList(List<TempFollowUp> tempFollowUps) {
-        this.follouwpsList = (ArrayList<TempFollowUp>) tempFollowUps;
+    public void setList(List<TempFollowUp> TempFollowUps) {
+        this.follouwpsList = (ArrayList<TempFollowUp>) TempFollowUps;
         notifyDataSetChanged();
     }
 

@@ -5,11 +5,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.LeadsAdapter;
+import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
@@ -28,10 +28,12 @@ import de.halfbit.tinybus.TinyBus;
 public class WonFragment extends TabFragment{
     public static final String TAG = "WonFragment";
     ListView listView = null;
-    ImageView imageView;
+//    ImageView imageView;
     LeadsAdapter leadsAdapter;
     MaterialSearchView searchView;
     private TinyBus bus;
+
+    ErrorScreenView errorScreenView;
 
     public static WonFragment newInstance(int page, String title) {
         WonFragment fragmentFirst = new WonFragment();
@@ -104,13 +106,19 @@ public class WonFragment extends TabFragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        errorScreenView = new ErrorScreenView(this.getContext());
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_leads, container, false);
         listView = (ListView) view.findViewById(R.id.leads_contacts_list);
-        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
-        imageView.setImageResource(R.drawable.delight_won);
+//        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
+//        imageView.setImageResource(R.drawable.delight_won);
         listView.setAdapter(leadsAdapter);
-        listView.setEmptyView(imageView);
+        errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
+        errorScreenView.setErrorImage(R.drawable.delight_won);
+        errorScreenView.setErrorText(this.getResources().getString(R.string.em_won_delight));
+        listView.setEmptyView(errorScreenView);
+
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override

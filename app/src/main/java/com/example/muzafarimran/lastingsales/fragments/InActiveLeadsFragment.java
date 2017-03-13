@@ -5,11 +5,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.InActiveLeadsAdapter;
+import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
@@ -28,10 +28,12 @@ public class InActiveLeadsFragment extends  TabFragment{
 
     public static final String TAG = "InActiveLeadsFragment";
     ListView listView = null;
-    ImageView imageView;
+//    ImageView imageView;
     InActiveLeadsAdapter inActiveLeadsAdapter;
     MaterialSearchView searchView;
     private TinyBus bus;
+    private ErrorScreenView errorScreenView;
+
     public static InActiveLeadsFragment newInstance(int page, String title) {
         InActiveLeadsFragment fragmentFirst = new InActiveLeadsFragment();
         Bundle args = new Bundle();
@@ -102,10 +104,13 @@ public class InActiveLeadsFragment extends  TabFragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_leads, container, false);
         listView = (ListView) view.findViewById(R.id.leads_contacts_list);
-        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
-        imageView.setImageResource(R.drawable.delight_inactive);
+//        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
+//        imageView.setImageResource(R.drawable.delight_inactive);
         listView.setAdapter(inActiveLeadsAdapter);
-        listView.setEmptyView(imageView);
+        errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
+        errorScreenView.setErrorImage(R.drawable.delight_inactive);
+        errorScreenView.setErrorText(this.getResources().getString(R.string.em_inactive_delight));
+        listView.setEmptyView(errorScreenView);
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override

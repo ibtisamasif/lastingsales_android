@@ -12,11 +12,13 @@ import com.example.muzafarimran.lastingsales.utils.NotificationBuilder;
 
 public class UnlabeledProcessor {
 
-    public static void Process(Context mContext, LSCall call) {
+    public static void Process(Context mContext, LSCall call, boolean showNotification) {
         // Check if type is incoming , outgoing or missed
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
             //Incoming
-            NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+            if(showNotification) {
+                NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+            }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
             InquiryManager.Remove(call);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
@@ -24,7 +26,9 @@ public class UnlabeledProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
             //Outgoing
-            NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+            if(showNotification) {
+                NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+            }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
             InquiryManager.Remove(call);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);

@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.providers.models;
 
 import com.orm.SugarRecord;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,20 @@ public class LSNote extends SugarRecord {
     private String serverId;
 
     public LSNote() {
+    }
+
+    public static LSNote getNoteByServerId(String id) {
+        ArrayList<LSNote> list = null;
+        try {
+            list = (ArrayList<LSNote>) LSNote.find(LSNote.class, "server_id = ? ", id);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 
     public static List<LSNote> getNotesByContactId(Long id) {

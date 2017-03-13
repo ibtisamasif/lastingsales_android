@@ -87,16 +87,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         try {
             JSONObject data = json.getJSONObject("data");
-            Log.e(TAG, "DataValues: "+data.toString());
+            Log.e(TAG, "DataValues: " + data.toString());
 
             String tag = data.getString("tag");
-            Log.e(TAG, "TagValues: "+tag);
+            Log.e(TAG, "TagValues: " + tag);
 
             String action = data.getString("action");
-            Log.e(TAG, "ActionValues: "+action);
+            Log.e(TAG, "ActionValues: " + action);
 
             JSONObject payload = data.getJSONObject("payload");
-            Log.e(TAG, "PayloadValues: "+payload.toString());
+            Log.e(TAG, "PayloadValues: " + payload.toString());
 
             if (tag.equals("Lead")) {
                 if (action.equals("post")) {
@@ -147,7 +147,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     //TODO
                     String id = payload.getString("id");
                     LSContact contact = LSContact.getContactFromServerId(id);
-                    Log.e(TAG, "handleDataMessage: contact: "+contact.toString());
+                    Log.e(TAG, "handleDataMessage: contact: " + contact.toString());
                     contact.delete();
                 }
             }
@@ -165,10 +165,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
                     tempNote.save();
 
-                }else if(action.equals("put")){
+                } else if (action.equals("put")) {
                     // TODO Notes Update
-                }else if(action.equals("delete")){
+                    Log.d(TAG, "handleDataMessage: NOTE PUT");
+                    String id = payload.getString("id");
+                    String description = payload.getString("description");
+                    LSNote note = LSNote.getNoteByServerId(id);
+                    note.setNoteText(description);
+                    note.save();
+
+                } else if (action.equals("delete")) {
                     // TODO Notes Delete
+                    Log.d(TAG, "handleDataMessage: NOTE delete");
+                    String id = payload.getString("id");
+                    LSNote note = LSNote.getNoteByServerId(id);
+                    note.delete();
                 }
             }
 

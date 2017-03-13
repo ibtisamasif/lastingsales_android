@@ -11,26 +11,26 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 class CallProcessor {
 
-    public static void Process(Context mContext, LSCall call) {
+    public static void Process(Context mContext, LSCall call, boolean showNotification) {
 
         LSContact personalContactCheck = LSContact.getContactFromNumber(call.getContactNumber());
         // Check the category of call i.e UnLabeled , Lead or Ignored
         if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
             // Unlabeled
 
-            UnlabeledProcessor.Process(mContext, call);
+            UnlabeledProcessor.Process(mContext, call, showNotification);
 
         } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
             // Lead
 
-            LeadProcessor.Process(mContext, call);
+            LeadProcessor.Process(mContext, call, showNotification);
 
         } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
             // Contact is in Ignored list. Do Nothing
 
         } else {
             // new call
-            UnknownProcessor.Process(mContext, call);
+            UnknownProcessor.Process(mContext, call, showNotification);
         }
     }
 }

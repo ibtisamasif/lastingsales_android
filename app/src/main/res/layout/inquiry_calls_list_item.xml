@@ -36,7 +36,7 @@
                         android:id="@+id/user_avatar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/user_avatar_icon_gray_border"
+                        android:src="@drawable/ic_account_circle"
                         android:contentDescription="@string/lead_picture" />
 
                     <RelativeLayout
@@ -45,7 +45,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/user_avatar"
-                        android:paddingStart="16dp">
+                        android:layout_toRightOf="@+id/user_avatar"
+                        android:paddingStart="16dp"
+                        android:paddingLeft="16dp">
 
                         <TextView
                             android:id="@+id/call_name"

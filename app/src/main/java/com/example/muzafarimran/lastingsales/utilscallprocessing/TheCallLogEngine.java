@@ -37,7 +37,8 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     }
 
     public void CallLogFunc() {
-        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, "date DESC limit 5");
+        boolean showNotification = false;
+        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, "date DESC limit 10");
         try {
             int id = managedCursor.getColumnIndex(CallLog.Calls._ID);
             int numbers = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
@@ -50,8 +51,11 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
 
             managedCursor.moveToLast();
             do {
-
-                String callId = managedCursor.getString(id);
+                if(managedCursor.isFirst()){
+                    Log.d(TAG, "CallLogFunc: Cursor is at First Now");
+                    showNotification = true;
+                }
+                String callId = managedCursor.getString(id); // TODO crash here if call log is empty
                 String callNumber = managedCursor.getString(numbers);
                 String callName = managedCursor.getString(name);
                 String callType = managedCursor.getString(type);
@@ -97,7 +101,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                         tempCall.setType(LSCall.CALL_TYPE_REJECTED);
                     }
 
-                    CallProcessor.Process(mContext, tempCall);
+                    CallProcessor.Process(mContext, tempCall, showNotification);
                 }
             } while (managedCursor.moveToPrevious());
         } catch (Exception e) {

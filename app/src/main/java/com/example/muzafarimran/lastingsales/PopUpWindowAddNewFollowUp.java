@@ -111,14 +111,14 @@ public class PopUpWindowAddNewFollowUp implements
                 int seconds = 0;
                 dateAndTimeForAlarm.set(year, month, day, hour, minute, seconds);
                 String note = etNote.getText().toString();
-                TempFollowUp tempFollowUp = new TempFollowUp();
-//                TempFollowUp tempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
-                tempFollowUp.setContact(selectedLSContact);
-                tempFollowUp.setTitle(note);
-                tempFollowUp.setDateTimeForFollowup(dateAndTimeForAlarm.getTimeInMillis());
-                tempFollowUp.save();
-                followupsListAdapter.add(tempFollowUp);
-                setAlarm(activity, tempFollowUp);
+                TempFollowUp TempFollowUp = new TempFollowUp();
+//                TempFollowUp TempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
+                TempFollowUp.setContact(selectedLSContact);
+                TempFollowUp.setTitle(note);
+                TempFollowUp.setDateTimeForFollowup(dateAndTimeForAlarm.getTimeInMillis());
+                TempFollowUp.save();
+                followupsListAdapter.add(TempFollowUp);
+                setAlarm(activity, TempFollowUp);
             }
         });
         tvCancelButton.setOnClickListener(new View.OnClickListener() {
@@ -180,7 +180,7 @@ public class PopUpWindowAddNewFollowUp implements
         dateForFollowUp.set(year, monthOfYear, dayOfMonth);
     }
 
-    public void setAlarm(Context context, TempFollowUp tempFollowUp) {
+    public void setAlarm(Context context, TempFollowUp TempFollowUp) {
         AlarmManager manager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
         int interval = 8000;
 //        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
@@ -194,9 +194,9 @@ public class PopUpWindowAddNewFollowUp implements
         dateAndTimeForAlarm.set(year, month, day, hour, minute, seconds);
         Intent aint = new Intent(context, AlarmReceiver.class);
         String note = etNote.getText().toString();
-        aint.putExtra("followupid", tempFollowUp.getId() + "");
+        aint.putExtra("followupid", TempFollowUp.getId() + "");
 //        aint.putExtra("message","This is message from followup");
-        pendingIntent = PendingIntent.getBroadcast(activity, Integer.parseInt(tempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(activity, Integer.parseInt(TempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
                          /* Retrieve a PendingIntent that will perform a broadcast */
 //        Intent alarmIntent = new Intent(activity, AlarmReceiver.class);
 //        pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, 0);

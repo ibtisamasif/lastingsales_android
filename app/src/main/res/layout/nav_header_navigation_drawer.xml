@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/app_background_drawer"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -12,13 +12,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/ivProfileImgNavBar"
+    <android.support.v7.widget.CardView
+        android:id="@+id/view2"
+        app:cardCornerRadius="40dp"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:contentDescription="@string/loremipsum_profile_pic"
-        />
+        android:layout_centerHorizontal="true"
+        android:elevation="12dp"
+        android:innerRadius="0dp"
+        android:shape="ring"
+        android:thicknessRatio="1.9">
+
+        <ImageView
+            android:id="@+id/ivProfileImgNavBar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:contentDescription="@string/loremipsum_profile_pic"/>
+
+    </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/tvProfileNameNavBar"
@@ -26,14 +37,13 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/loremipsun"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/tvProfileNumberNavBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="+923228899906"
-        android:textColor="@color/half_white"
-        />
+        android:textColor="@color/half_white" />
 
 </LinearLayout>

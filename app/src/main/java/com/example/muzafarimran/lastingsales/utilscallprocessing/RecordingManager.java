@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.receivers;
+package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -43,7 +43,8 @@ public class RecordingManager extends AsyncTask<Object, Void, Void> {
                 List<LSCall> allCalls = LSCall.getAllCallsInDescendingOrder();
                 if (allCalls != null && allCalls.size() > 0) {
                     for (LSCall oneCall : allCalls) {
-                        if(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(oneCall.getBeginTime()).equals(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(oneRecording.getBeginTime()))){
+                        if(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(oneCall.getBeginTime()).equals(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(oneRecording.getBeginTime()))
+                                && oneCall.getContactNumber().equals(oneRecording.getContactNumber())){
                             Log.d(TAG, "doInBackground: RecordingTime: "+oneRecording.getBeginTime());
                             Log.d(TAG, "doInBackground:      CallTime: "+oneCall.getBeginTime());
                             if(oneCall.getServerId() != null){
@@ -51,7 +52,6 @@ public class RecordingManager extends AsyncTask<Object, Void, Void> {
                                 oneRecording.setServerIdOfCall(oneCall.getServerId());
                                 oneRecording.save();
                                 Log.d(TAG, "doInBackground: ServerIdOfCallFromLSCallRecording: "+oneRecording.getServerIdOfCall());
-
 //                                DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
 //                                dataSenderAsync.execute();
                             }

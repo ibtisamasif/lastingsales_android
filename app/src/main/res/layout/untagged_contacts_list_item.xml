@@ -39,7 +39,7 @@
                         android:id="@+id/user_avatar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/user_avatar_icon_gray_border"/>
+                        android:src="@drawable/ic_account_circle"/>
 
                     <RelativeLayout
                         android:id="@+id/user_call_group_name_time"

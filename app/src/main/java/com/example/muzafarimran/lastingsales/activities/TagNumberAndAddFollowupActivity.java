@@ -282,7 +282,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
                                 String titleText = null;
                                 String noteText = null;
-                                TempFollowUp tempFollowUp = new TempFollowUp();
+                                TempFollowUp TempFollowUp = new TempFollowUp();
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
@@ -299,7 +299,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                 }
                                 if (etFollowupTitleText != null) {
                                     titleText = etFollowupTitleText.getText().toString();
-                                    tempFollowUp.setTitle(titleText);
+                                    TempFollowUp.setTitle(titleText);
                                 } else {
                                     titleText = "Empty";
                                 }
@@ -310,10 +310,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                     dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                                     dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                                     dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                                    tempFollowUp.setContact(checkContact);
-                                    tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                                    tempFollowUp.save();
-                                    setAlarm(getApplicationContext(), tempFollowUp);
+                                    TempFollowUp.setContact(checkContact);
+                                    TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                    TempFollowUp.save();
+                                    setAlarm(getApplicationContext(), TempFollowUp);
                                 }
                                 finish();
                             } else {
@@ -322,7 +322,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         } else {
                             String titleText = null;
                             String noteText = null;
-                            TempFollowUp tempFollowUp = new TempFollowUp();
+                            TempFollowUp TempFollowUp = new TempFollowUp();
                             LSContact tempContact = new LSContact();
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(intlNum);
@@ -343,7 +343,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             }
                             if (etFollowupTitleText != null) {
                                 titleText = etFollowupTitleText.getText().toString();
-                                tempFollowUp.setTitle(titleText);
+                                TempFollowUp.setTitle(titleText);
                             } else {
                                 titleText = "Empty";
                             }
@@ -354,10 +354,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                 dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                                 dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                                 dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                                tempFollowUp.setContact(tempContact);
-                                tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                                tempFollowUp.save();
-                                setAlarm(getApplicationContext(), tempFollowUp);
+                                TempFollowUp.setContact(tempContact);
+                                TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                TempFollowUp.save();
+                                setAlarm(getApplicationContext(), TempFollowUp);
                             }
                             finish();
                         }
@@ -384,7 +384,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
                                 String titleText = null;
                                 String noteText = null;
-                                TempFollowUp tempFollowUp = new TempFollowUp();
+                                TempFollowUp TempFollowUp = new TempFollowUp();
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
@@ -401,7 +401,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                 }
                                 if (etFollowupTitleText != null) {
                                     titleText = etFollowupTitleText.getText().toString();
-                                    tempFollowUp.setTitle(titleText);
+                                    TempFollowUp.setTitle(titleText);
                                 } else {
                                     titleText = "Empty";
                                 }
@@ -412,10 +412,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                     dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                                     dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                                     dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                                    tempFollowUp.setContact(checkContact);
-                                    tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                                    tempFollowUp.save();
-                                    setAlarm(getApplicationContext(), tempFollowUp);
+                                    TempFollowUp.setContact(checkContact);
+                                    TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                    TempFollowUp.save();
+                                    setAlarm(getApplicationContext(), TempFollowUp);
                                 }
                                 finish();
                             }
@@ -423,7 +423,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         } else {
                             String titleText = null;
                             String noteText = null;
-                            TempFollowUp tempFollowUp = new TempFollowUp();
+                            TempFollowUp TempFollowUp = new TempFollowUp();
                             LSContact tempContact = new LSContact();
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(intlNum);
@@ -445,7 +445,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             }
                             if (etFollowupTitleText != null) {
                                 titleText = etFollowupTitleText.getText().toString();
-                                tempFollowUp.setTitle(titleText);
+                                TempFollowUp.setTitle(titleText);
                             } else {
                                 titleText = "Empty";
                             }
@@ -456,10 +456,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                 dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                                 dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                                 dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                                tempFollowUp.setContact(tempContact);
-                                tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                                tempFollowUp.save();
-                                setAlarm(getApplicationContext(), tempFollowUp);
+                                TempFollowUp.setContact(tempContact);
+                                TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                TempFollowUp.save();
+                                setAlarm(getApplicationContext(), TempFollowUp);
                             }
                             finish();
                         }
@@ -486,7 +486,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
                                 String titleText = null;
                                 String noteText = null;
-                                TempFollowUp tempFollowUp = new TempFollowUp();
+                                TempFollowUp TempFollowUp = new TempFollowUp();
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
                                 checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
@@ -503,7 +503,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                 }
                                 if (etFollowupTitleText != null) {
                                     titleText = etFollowupTitleText.getText().toString();
-                                    tempFollowUp.setTitle(titleText);
+                                    TempFollowUp.setTitle(titleText);
                                 } else {
                                     titleText = "Empty";
                                 }
@@ -514,10 +514,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                     dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                                     dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                                     dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                                    tempFollowUp.setContact(checkContact);
-                                    tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                                    tempFollowUp.save();
-                                    setAlarm(getApplicationContext(), tempFollowUp);
+                                    TempFollowUp.setContact(checkContact);
+                                    TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                    TempFollowUp.save();
+                                    setAlarm(getApplicationContext(), TempFollowUp);
                                 }
                                 finish();
 
@@ -526,7 +526,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         } else {
                             String titleText = null;
                             String noteText = null;
-                            TempFollowUp tempFollowUp = new TempFollowUp();
+                            TempFollowUp TempFollowUp = new TempFollowUp();
                             LSContact tempContact = new LSContact();
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(intlNum);
@@ -550,7 +550,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             }
                             if (etFollowupTitleText != null) {
                                 titleText = etFollowupTitleText.getText().toString();
-                                tempFollowUp.setTitle(titleText);
+                                TempFollowUp.setTitle(titleText);
                             } else {
                                 titleText = "Empty";
                             }
@@ -561,10 +561,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                                 dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                                 dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                                 dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                                tempFollowUp.setContact(tempContact);
-                                tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                                tempFollowUp.save();
-                                setAlarm(getApplicationContext(), tempFollowUp);
+                                TempFollowUp.setContact(tempContact);
+                                TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                                TempFollowUp.save();
+                                setAlarm(getApplicationContext(), TempFollowUp);
                             }
                             finish();
                         }
@@ -588,7 +588,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
                         String titleText = null;
                         String noteText = null;
-                        TempFollowUp tempFollowUp = new TempFollowUp();
+                        TempFollowUp TempFollowUp = new TempFollowUp();
                         LSContact tempContact = selectedContact;
                         tempContact.setContactName(contactName);
                         tempContact.setPhoneOne(intlNum);
@@ -604,7 +604,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         }
                         if (etFollowupTitleText != null) {
                             titleText = etFollowupTitleText.getText().toString();
-                            tempFollowUp.setTitle(titleText);
+                            TempFollowUp.setTitle(titleText);
                         } else {
                             titleText = "Empty";
                         }
@@ -615,10 +615,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                             dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                             dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                            tempFollowUp.setContact(tempContact);
-                            tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                            tempFollowUp.save();
-                            setAlarm(getApplicationContext(), tempFollowUp);
+                            TempFollowUp.setContact(tempContact);
+                            TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                            TempFollowUp.save();
+                            setAlarm(getApplicationContext(), TempFollowUp);
                         }
                         finish();
                     }
@@ -640,7 +640,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
                         String titleText = null;
                         String noteText = null;
-                        TempFollowUp tempFollowUp = new TempFollowUp();
+                        TempFollowUp TempFollowUp = new TempFollowUp();
                         LSContact tempContact = selectedContact;
                         tempContact.setContactName(contactName);
                         tempContact.setPhoneOne(intlNum);
@@ -662,7 +662,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         }
                         if (etFollowupTitleText != null) {
                             titleText = etFollowupTitleText.getText().toString();
-                            tempFollowUp.setTitle(titleText);
+                            TempFollowUp.setTitle(titleText);
                         } else {
                             titleText = "Empty";
                         }
@@ -673,10 +673,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                             dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                             dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                            tempFollowUp.setContact(tempContact);
-                            tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                            tempFollowUp.save();
-                            setAlarm(getApplicationContext(), tempFollowUp);
+                            TempFollowUp.setContact(tempContact);
+                            TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                            TempFollowUp.save();
+                            setAlarm(getApplicationContext(), TempFollowUp);
                         }
                         finish();
                         try {
@@ -692,11 +692,11 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
                     String titleText = null;
-                    TempFollowUp tempFollowUp = selectedFollowup;
+                    TempFollowUp TempFollowUp = selectedFollowup;
                     String noteText = null;
                     if (etFollowupTitleText != null) {
                         titleText = etFollowupTitleText.getText().toString();
-                        tempFollowUp.setTitle(titleText);
+                        TempFollowUp.setTitle(titleText);
                     } else {
                         titleText = "Empty";
                     }
@@ -707,12 +707,12 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                         dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                         dateTimeForFollowup.set(Calendar.MINUTE, minute);
-//                TempFollowUp tempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
-                        tempFollowUp.setContact(selectedContact);
-                        tempFollowUp.setTitle(titleText);
-                        tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                        tempFollowUp.save();
-                        setAlarm(getApplicationContext(), tempFollowUp);
+//                TempFollowUp TempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
+                        TempFollowUp.setContact(selectedContact);
+                        TempFollowUp.setTitle(titleText);
+                        TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                        TempFollowUp.save();
+                        setAlarm(getApplicationContext(), TempFollowUp);
                     }
                     finish();
 
@@ -720,10 +720,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
 
                     String titleText = null;
                     String noteText = null;
-                    TempFollowUp tempFollowUp = new TempFollowUp();
+                    TempFollowUp TempFollowUp = new TempFollowUp();
                     if (etFollowupTitleText != null) {
                         titleText = etFollowupTitleText.getText().toString();
-                        tempFollowUp.setTitle(titleText);
+                        TempFollowUp.setTitle(titleText);
                     } else {
                         titleText = "Empty";
                     }
@@ -734,11 +734,11 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
                         dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
                         dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                        tempFollowUp.setContact(selectedContact);
-                        tempFollowUp.setTitle(titleText);
-                        tempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                        tempFollowUp.save();
-                        setAlarm(getApplicationContext(), tempFollowUp);
+                        TempFollowUp.setContact(selectedContact);
+                        TempFollowUp.setTitle(titleText);
+                        TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
+                        TempFollowUp.save();
+                        setAlarm(getApplicationContext(), TempFollowUp);
                         DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
                         dataSenderAsync.execute();
                     }
@@ -987,7 +987,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         }
     }
 
-    public void setAlarm(Context context, TempFollowUp tempFollowUp) {
+    public void setAlarm(Context context, TempFollowUp TempFollowUp) {
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent;
         int interval = 8000;
@@ -1003,9 +1003,9 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         Intent aint = new Intent(context, AlarmReceiver.class);
 //        String note = etNote.getText().toString();
 //        String note = "Hello";
-        aint.putExtra("followupid", tempFollowUp.getId() + "");
+        aint.putExtra("followupid", TempFollowUp.getId() + "");
 //        aint.putExtra("message","This is message from followup");
-        pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(tempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(TempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
                          /* Retrieve a PendingIntent that will perform a broadcast */
 //        Intent alarmIntent = new Intent(activity, AlarmReceiver.class);
 //        pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, 0);

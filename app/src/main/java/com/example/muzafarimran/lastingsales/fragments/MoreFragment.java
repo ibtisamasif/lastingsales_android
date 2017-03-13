@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,15 +12,9 @@ import android.widget.LinearLayout;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.FollowupsActivity;
-import com.example.muzafarimran.lastingsales.activities.LogInActivity;
 import com.example.muzafarimran.lastingsales.activities.NotesActivity;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 //Fragment agent Profile
-    @Deprecated
 public class MoreFragment extends TabFragment {
 
     LinearLayout llFollowUp, llNotes, llLogOut;
@@ -61,9 +54,9 @@ public class MoreFragment extends TabFragment {
         llLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sessionManager.logoutUser();
-                startActivity(new Intent(getContext(), LogInActivity.class));
-                getActivity().finish();
+//                sessionManager.logoutUser();
+//                startActivity(new Intent(getContext(), LogInActivity.class));
+//                getActivity().finish();
             }
         });
     }

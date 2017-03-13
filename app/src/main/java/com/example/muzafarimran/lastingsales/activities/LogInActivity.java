@@ -37,8 +37,8 @@ public class LogInActivity extends AppCompatActivity {
     public static final String TAG = "LogInActivity";
     ProgressDialog pdLoading;
     RequestQueue requestQueue;
-    TextView tvNumber, tvPassword;
-    String number, password;
+    TextView tvEmail, tvPassword;
+    String email, password;
     Button loginButton;
     SessionManager sessionManager;
 
@@ -57,65 +57,50 @@ public class LogInActivity extends AppCompatActivity {
         //this method will be running on UI thread
         pdLoading.setMessage("Please Wait...");
         loginButton = (Button) findViewById(R.id.loginButtonLoginScreen);
-        tvNumber = (TextView) findViewById(R.id.numberLoginScreen);
+        tvEmail = (TextView) findViewById(R.id.numberLoginScreen);
         tvPassword = (TextView) findViewById(R.id.passwordLoginScreen);
-        tvNumber.getBackground().clearColorFilter();
+        tvEmail.getBackground().clearColorFilter();
         tvPassword.getBackground().clearColorFilter();
 //        hardcoding number and password for develoment speedup purposes
-//        tvNumber.setText("03361124888");
-//        tvPassword.setText("LastingSales123@");
+//        tvEmail.setText("ibtiagent3@gmail.com");
+//        tvPassword.setText("11111111");
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvNumber.setError(null);
+                tvEmail.setError(null);
                 tvPassword.setError(null);
-                Boolean numberVarified = true, passwordVarified = true;
-                number = tvNumber.getText().toString();
+                Boolean emailVarified = true, passwordVarified = true;
+                email = tvEmail.getText().toString();
                 password = tvPassword.getText().toString();
 
-//                intlNumber = "ibtisamasif1@gmail.com";
-//                password = "11111111";
-                pdLoading.show();
-                makeLoginRequest(LogInActivity.this, number, password);
-                pdLoading.dismiss();
-//                if (number.length() < 7) {
-//                    numberVarified = false;
-//                }
-//                String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-//                if (intlNumber != null) {
-//                    if (intlNumber.length() < 15) {
-//                        numberVarified = false;
-//                    }
-//                } else {
-//                    numberVarified = false;
-//                }
-//                if (password.length() < 8) {
-//                    passwordVarified = false;
-//                }
+                if (email.length() < 7) {
+                    emailVarified = false;
+                }
+                if (password.length() < 4) {
+                    passwordVarified = false;
+                }
 //                if (!PhoneNumberAndCallUtils.isValidPassword(password)) {
 //                    passwordVarified = false;
 //                }
-//                if (!numberVarified) {
-//                    tvNumber.setError("Invalid Number!");
-//                }
-//                if (!passwordVarified) {
-//                    tvPassword.setError("Invalid Password!");
-//                }
-//                if (numberVarified && passwordVarified) {
-//                    pdLoading.show();
-//                    intlNumber = "ibtisamasif1@gmail.com";
-//                    password = "11111111";
-//                    makeLoginRequest(LogInActivity.this, intlNumber, password);
-//
-//                }
+                if (!emailVarified) {
+                    tvEmail.setError("Invalid Email!");
+                }
+                if (!passwordVarified) {
+                    tvPassword.setError("Invalid Password!");
+                }
+                if (emailVarified && passwordVarified) {
+                    pdLoading.show();
+                    makeLoginRequest(LogInActivity.this, email, password);
+                }
             }
         });
     }
 
     @Override
     protected void onDestroy() {
-        if (pdLoading != null && pdLoading.isShowing())
+        if (pdLoading != null && pdLoading.isShowing()) {
             pdLoading.dismiss();
+        }
         super.onDestroy();
     }
 
@@ -164,7 +149,9 @@ public class LogInActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                pdLoading.dismiss();
+                if (pdLoading != null && pdLoading.isShowing()) {
+                    pdLoading.dismiss();
+                }
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse() called with: error = [" + error + "]");
                 if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
@@ -221,7 +208,9 @@ public class LogInActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() updateAgent: response = [" + response + "]");
                 try {
-                    pdLoading.dismiss();
+                    if (pdLoading != null && pdLoading.isShowing()) {
+                        pdLoading.dismiss();
+                    }
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
                     if (responseCode == 200) {
@@ -236,7 +225,9 @@ public class LogInActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                pdLoading.dismiss();
+                if (pdLoading != null && pdLoading.isShowing()) {
+                    pdLoading.dismiss();
+                }
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAgentFirebaseRegId");
             }

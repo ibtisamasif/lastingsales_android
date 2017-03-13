@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:id="@+id/calls">
+    <!--<group android:id="@+id/calls">-->
 
-        <item
-            android:id="@+id/nav_item_incoming_call"
-            android:title="@string/navigation_drawer_incoming"
-            android:icon="@drawable/ic_call_darkgray"
-            />
         <!--<item-->
-            <!--android:id="@+id/nav_item_outgoing_call"-->
-            <!--android:title="@string/navigation_drawer_outgoing"-->
-            <!--android:icon="@drawable/ic_drawer_outgoing"/>-->
+            <!--android:id="@+id/nav_item_incoming_call"-->
+            <!--android:title="@string/navigation_drawer_incoming"-->
+            <!--android:icon="@drawable/ic_call_darkgray"-->
+            <!--/>-->
+        <!--&lt;!&ndash;<item&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/nav_item_outgoing_call"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:title="@string/navigation_drawer_outgoing"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:icon="@drawable/ic_drawer_outgoing"/>&ndash;&gt;-->
 
-    </group>
+    <!--</group>-->
 
     <group android:id="@+id/contacts">
 
         <item
             android:id="@+id/nav_item_unlabeled_contacts"
             android:title="@string/navigation_drawer_unlabeled"
-            android:icon="@drawable/ic_drawer_colleague"/>
+            android:icon="@drawable/ic_label_outline"/>
         <item
             android:id="@+id/nav_item_personal_contacts"
             android:title="@string/navigation_drawer_non_business"
             android:icon="@drawable/ic_untrack_darkgray"/>
 
-    </group>
 
     <!--<group android:id="@+id/followups">-->
 
@@ -46,11 +45,10 @@
 
     <!--</group>-->
 
-    <group android:id="@+id/feedback">
 
         <item
-            android:id="@+id/nav_item_feedback"
-            android:icon="@drawable/ic_feedback_darkgray"
+            android:id="@+id/nav_item_refresh"
+            android:icon="@drawable/ic_refresh"
             android:title="@string/refresh" />
 
     </group>

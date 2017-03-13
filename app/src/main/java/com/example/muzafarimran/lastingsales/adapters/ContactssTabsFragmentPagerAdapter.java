@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.fragments.CollegueFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
 import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
-import com.example.muzafarimran.lastingsales.fragments.UntaggedContactsCallsFragment;
+import com.example.muzafarimran.lastingsales.fragments.UnlabeledContactsCallsFragment;
 
 @Deprecated
 public class ContactssTabsFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -29,7 +29,7 @@ public class ContactssTabsFragmentPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return NonbusinessFragment.newInstance(2, "Outgoing Calls");
             case 3:
-                return UntaggedContactsCallsFragment.newInstance(2, "Outgoing Calls");
+                return UnlabeledContactsCallsFragment.newInstance(2, "Outgoing Calls");
             default:
                 return null;
         }

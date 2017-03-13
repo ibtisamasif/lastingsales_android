@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
 import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
+import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -42,6 +43,7 @@ public class SalesFragment extends SearchFragment {
     SalesAdapter salesAdapter;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     private TinyBus bus;
+    private ErrorScreenView errorScreenView;
 
     public static SalesFragment newInstance(int page, String title) {
         SalesFragment fragmentFirst = new SalesFragment();
@@ -108,15 +110,18 @@ public class SalesFragment extends SearchFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sales, container, false);
-        imageView = (ImageView) view.findViewById(R.id.ivAllleads_contacts);
-        imageView.setImageResource(R.drawable.delight_all);
+//        imageView = (ImageView) view.findViewById(R.id.ivAllleads_contacts);
+//        imageView.setImageResource(R.drawable.delight_all);
+        errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
+        errorScreenView.setErrorImage(R.drawable.delight_all);
+        errorScreenView.setErrorText(this.getResources().getString(R.string.em_all_delight));
         listView = (ExpandableStickyListHeadersListView) view.findViewById(R.id.sales_contacts_list);
         listView.setAnimExecutor(new AnimationExecutor());
         listView.setFastScrollEnabled(true);
         listView.setFastScrollAlwaysVisible(true);
         listView.setStickyHeaderTopOffset(-20);
         listView.setAdapter(salesAdapter);
-        listView.setEmptyView(imageView);
+        listView.setEmptyView(errorScreenView);
         //Expand and Contract Leads
         listView.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
             @Override

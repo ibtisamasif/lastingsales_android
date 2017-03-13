@@ -21,7 +21,15 @@ public class CallEndNotification {
     public static final int NOTIFICATION_ID = 1;
     private static final String TAG = "CallEndNotification";
 
-    public static Notification createFollowUpNotification(Context ctx, String number, Long contact_id) {
+    public static Notification createFollowUpNotification(Context ctx, String intlNumber, Long contact_id) {
+//TODO get from LSCONTACT first
+        String number_or_name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, intlNumber);
+        if (number_or_name == null) {
+            number_or_name = intlNumber;
+        }
+        if (intlNumber == null || intlNumber.equals("")) {
+            intlNumber = "0";
+        }
 
         Intent cancelIntent = new Intent(ctx, FollowupNotiCancelBtnReceiver.class);
         cancelIntent.putExtra("notificationId", NOTIFICATION_ID);
@@ -38,10 +46,10 @@ public class CallEndNotification {
         PendingIntent pIntentFollow = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intentFollow, 0);
 
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)
-                .setSmallIcon(R.drawable.menu_icon_home_selected)
-                .setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_menu_icon_home_large))
+                .setSmallIcon(R.drawable.ic_notification_small)
+                .setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_notification))
                 .setPriority(Notification.PRIORITY_MAX)
-                .setContentTitle("Lasting Sales")
+                .setContentTitle(number_or_name)
                 .addAction(R.drawable.ic_notes_black, "Add Note", pIntentNote)
 //                .addAction(R.drawable.cancel, "Cancel", cancelpIntent)
                 .addAction(R.drawable.ic_followup_black, "Add Follow Up", pIntentFollow)
@@ -83,9 +91,9 @@ public class CallEndNotification {
 
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)
 //                    .setContentIntent(pIntentSales)
-                .setSmallIcon(R.drawable.menu_icon_home_selected)
+                .setSmallIcon(R.drawable.ic_notification_small)
                 .setPriority(Notification.PRIORITY_MAX)
-                .setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_menu_icon_home_large))
+                .setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_notification))
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(number_or_name)
                 .setTicker("Lasting Sales")

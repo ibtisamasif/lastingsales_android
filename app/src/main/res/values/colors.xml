@@ -30,7 +30,7 @@
     <color name="lightGreen">#00bab5</color>
     <color name="darkGreen">#FF03938F</color>
 
-    <color name="colorPrimary">#155072</color>
+    <color name="colorPrimary">@color/blueDark</color>
     <color name="colorPrimaryDark">#d0898989</color>
 
     <!--<color name="action_bar_background_color">@color/colorPrimaryDark</color>-->

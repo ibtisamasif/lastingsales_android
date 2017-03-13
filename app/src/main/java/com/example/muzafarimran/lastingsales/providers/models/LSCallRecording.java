@@ -11,11 +11,13 @@ import java.util.ArrayList;
 
 public class LSCallRecording extends SugarRecord {
 
+    private String contactNumber;
     private String serverIdOfCall;
     private String localIdOfCall;
     private String audioPath;
     private String syncStatus;
     private Long beginTime;
+
 
     public LSCallRecording() {
     }
@@ -53,6 +55,14 @@ public class LSCallRecording extends SugarRecord {
 
     public void setLocalIdOfCall(String localIdOfCall) {
         this.localIdOfCall = localIdOfCall;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 
     public String getServerIdOfCall() {

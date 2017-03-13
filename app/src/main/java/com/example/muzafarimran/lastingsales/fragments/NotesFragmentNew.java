@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.NotesListAdapterNew;
+import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -32,7 +33,7 @@ import de.halfbit.tinybus.TinyBus;
 public class NotesFragmentNew extends TabFragment {
     public static final String TAG = "NotesFragmentNew";
     public static final String CONTACT_ID = "contact_id";
-    ListView listView = null;
+    //    ImageView imageView;
     NotesListAdapterNew notesListAdapterNew;
     MaterialSearchView searchView;
     View view;
@@ -42,6 +43,7 @@ public class NotesFragmentNew extends TabFragment {
     private Long contactIDLong;
     //    FloatingActionButton floatingActionButton;
     private TinyBus bus;
+    private ErrorScreenView errorScreenView;
 
     public NotesFragmentNew() {
     }
@@ -141,6 +143,13 @@ public class NotesFragmentNew extends TabFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_notes_by_contacts2, container, false);
         lvNotesList = (ListView) view.findViewById(R.id.lvNoteListContactDetailsScreen);
+//        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
+//        imageView.setImageResource(R.drawable.delight_won);
+//        lvNotesList.setEmptyView(imageView);
+        errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
+        errorScreenView.setErrorImage(R.drawable.delight_won);
+        errorScreenView.setErrorText(this.getResources().getString(R.string.em_notes_delight));
+        lvNotesList.setEmptyView(errorScreenView);
         Bundle bundle = this.getArguments();
         contactIDLong = bundle.getLong("someId");
         selectedContact = LSContact.findById(LSContact.class, contactIDLong);

@@ -19,7 +19,7 @@
             android:layout_height="80dp"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/temp_avatar"
+            android:background="@drawable/ic_account_circle"
             />
 
         <LinearLayout

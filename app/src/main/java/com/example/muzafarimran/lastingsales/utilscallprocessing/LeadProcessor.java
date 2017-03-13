@@ -14,12 +14,14 @@ import com.example.muzafarimran.lastingsales.utils.NotificationBuilder;
 public class LeadProcessor {
     public static final String TAG = "LeadProcessor";
 
-    public static void Process(Context mContext, LSCall call) {
+    public static void Process(Context mContext, LSCall call, boolean showNotification) {
         Log.d(TAG, "LeadProcessor: Process() Entered");
         // Check if type is incoming , outgoing or missed
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
             //Incoming
-            NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+            if(showNotification) {
+                NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+            }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
             InquiryManager.Remove(call);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
@@ -27,7 +29,9 @@ public class LeadProcessor {
 
         }else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING))  {
             //Outgoing
-            NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+            if(showNotification) {
+                NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+            }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
             InquiryManager.Remove(call);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);

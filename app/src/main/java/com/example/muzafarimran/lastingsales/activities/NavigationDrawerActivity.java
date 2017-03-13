@@ -27,17 +27,17 @@ import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
-import com.example.muzafarimran.lastingsales.fragments.AllCallsFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
-import com.example.muzafarimran.lastingsales.fragments.UntaggedContactsCallsFragment;
+import com.example.muzafarimran.lastingsales.fragments.UnlabeledContactsCallsFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.receivers.RecordingManager;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.example.muzafarimran.lastingsales.utils.CallRecord;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManager;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.List;
@@ -61,10 +61,17 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     TinyBus bus;
     //    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
     private ViewPager viewPager;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+
 //        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         Log.d(TAG, "onCreate: DB name: " +getDatabasePath("sugar_example").getAbsolutePath());
         setContentView(R.layout.activity_navigation_drawer);
@@ -95,7 +102,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         String url = sessionManager.getKeyLoginImagePath();
         Glide.with(this)
                 .load(url)
-                .error(R.drawable.temp_avatar)
+                .error(R.drawable.ic_account_circle)
                 .into(ivProfileImage);
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,14 +278,14 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         int id = item.getItemId();
         Intent intent;
         Bundle bundle = new Bundle();
-        if (id == R.id.nav_item_incoming_call) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, AllCallsFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Calls");
-            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-            intent = new Intent(getApplicationContext(), FrameActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
+//        if (id == R.id.nav_item_incoming_call) {
+//            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, AllCallsFragment.class.getName());
+//            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Calls");
+//            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+//            intent = new Intent(getApplicationContext(), FrameActivity.class);
+//            intent.putExtras(bundle);
+//            startActivity(intent);
+//        }
 //        else if (id == R.id.nav_item_outgoing_call) {
 //            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, OutgoingCallsFragment.class.getName());
 //            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Outgoing Calls");
@@ -287,8 +294,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            intent.putExtras(bundle);
 //            startActivity(intent);
 //        }
-        else if (id == R.id.nav_item_unlabeled_contacts) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UntaggedContactsCallsFragment.class.getName());
+        if (id == R.id.nav_item_unlabeled_contacts) {
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledContactsCallsFragment.class.getName());
             bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);
@@ -319,7 +326,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            intent.putExtras(bundle);
 //            startActivity(intent);
 //        }
-        else if (id == R.id.nav_item_feedback) {
+        else if (id == R.id.nav_item_refresh) {
 //            Intent tempIntent = new Intent(this, FireBaseMainActivity.class);
 //            startActivity(tempIntent);
             RecordingManager recordingManager = new RecordingManager();

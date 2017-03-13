@@ -13,7 +13,6 @@ import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -117,14 +116,14 @@ public class FollowupsListFragment extends Fragment {
         ArrayList<TempFollowUp> allTodaysAndUpcomingFollowupsOrdered = new ArrayList<>();
         Collections.sort(allTodaysFollowupsOrdered, new Comparator<TempFollowUp>() {
             @Override
-            public int compare(TempFollowUp tempFollowUp, TempFollowUp t1) {
-                return tempFollowUp.getDateTimeForFollowup().compareTo(t1.getDateTimeForFollowup());
+            public int compare(TempFollowUp TempFollowUp, TempFollowUp t1) {
+                return TempFollowUp.getDateTimeForFollowup().compareTo(t1.getDateTimeForFollowup());
             }
         });
         Collections.sort(followupsAfterToday, new Comparator<TempFollowUp>() {
             @Override
-            public int compare(TempFollowUp tempFollowUp, TempFollowUp t1) {
-                return tempFollowUp.getDateTimeForFollowup().compareTo(t1.getDateTimeForFollowup());
+            public int compare(TempFollowUp TempFollowUp, TempFollowUp t1) {
+                return TempFollowUp.getDateTimeForFollowup().compareTo(t1.getDateTimeForFollowup());
             }
         });
 
