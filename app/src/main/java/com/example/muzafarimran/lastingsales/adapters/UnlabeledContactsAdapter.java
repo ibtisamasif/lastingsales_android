@@ -16,12 +16,11 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
-import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,10 +31,8 @@ import static android.view.View.GONE;
 /**
  * Created by MUZAFAR IMRAN on 9/19/20
  */
-public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
+public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable {
 
-    private final static int TYPE_SEPARATOR = 0;
-    private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
     public Context mContext;
     public ShowContactCallDetails detailsListener = null;
@@ -48,7 +45,7 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
     private ShowDetailsDropDown showcalldetailslistener = null;
     private List<LSContact> filteredData;
 
-    public UntaggedContactsAdapter(Context c) {
+    public UnlabeledContactsAdapter(Context c) {
         this.mContext = c;
         if (mContacts == null) {
             mContacts = new ArrayList<>();
@@ -86,7 +83,7 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
 
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.untagged_contacts_list_item, parent, false);
+            convertView = mInflater.inflate(R.layout.unlabeled_contacts_list_item, parent, false);
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.call_name);
             holder.time = (TextView) convertView.findViewById(R.id.call_time);
@@ -130,9 +127,9 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
         holder.bSales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(mContext, AddLeadActivity.class);
-                myIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
-                myIntent.putExtra(AddLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, contact.getPhoneOne() + "");
+                Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
+                myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+                myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, contact.getPhoneOne() + "");
                 mContext.startActivity(myIntent);
             }
         });
@@ -140,9 +137,9 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
             @Override
             public void onClick(View view) {
                 String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-                contact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);
+                contact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
                 contact.save();
-                ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNTAGGED);
+                ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
                 setList(allUntaggedContacts);
                 Toast.makeText(mContext, "Added as Non-Business Contact!", Toast.LENGTH_SHORT).show();
             }
@@ -223,10 +220,6 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
         Button bSales;
     }
 
-    static class separatorHolder {
-        TextView text;
-    }
-
     /*
     * event handler for click on Name Wrapper layout
     * */
@@ -264,27 +257,6 @@ public class UntaggedContactsAdapter extends BaseAdapter implements Filterable {
         public void onClick(View v) {
             Intent myIntent = new Intent(mContext, ContactCallDetails.class);
             myIntent.putExtra("number", (String) v.getTag());
-            mContext.startActivity(myIntent);
-        }
-    }
-
-    /*
-    * event handler for click on name
-    * */
-    public class TagAContactClickListener implements View.OnClickListener {
-        String number;
-
-        public TagAContactClickListener(String number) {
-            this.number = number;
-        }
-
-        @Override
-        public void onClick(View v) {
-            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-            Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
             mContext.startActivity(myIntent);
         }
     }

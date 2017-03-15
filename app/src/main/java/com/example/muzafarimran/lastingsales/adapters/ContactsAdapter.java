@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -153,9 +153,9 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         holder.bSales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(mContext, AddLeadActivity.class);
-                myIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_CONVERT_NON_BUSINESS);
-                myIntent.putExtra(AddLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
+                myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_CONVERT_NON_BUSINESS);
+                myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
                 mContext.startActivity(myIntent);
             }
         });
@@ -164,7 +164,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 //            public void onClick(View view) {
 //                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
 //                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
-//                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
+//                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
 //                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
 //                mContext.startActivity(myIntent);
 //            }

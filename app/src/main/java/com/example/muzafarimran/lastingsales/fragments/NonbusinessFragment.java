@@ -53,7 +53,7 @@ public class NonbusinessFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        contactsAdapter = new ContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_PERSONAL);
+        contactsAdapter = new ContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_IGNORED);
         setHasOptionsMenu(true);
     }
 
@@ -75,7 +75,7 @@ public class NonbusinessFragment extends TabFragment {
     @Subscribe
     public void onPersonalContactAddedEventModel(PersonalContactAddedEventModel event) {
         Log.d(TAG, "onPersonalContactAddedEvent() called with: event = [" + event + "]");
-        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
+        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
         setList(contacts);
 //        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
@@ -91,7 +91,7 @@ public class NonbusinessFragment extends TabFragment {
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
+        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
         setList(contacts);
     }
 

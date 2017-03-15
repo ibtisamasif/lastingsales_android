@@ -27,6 +27,7 @@ import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
+import com.example.muzafarimran.lastingsales.fragments.BusinessFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
 import com.example.muzafarimran.lastingsales.fragments.UnlabeledContactsCallsFragment;
@@ -286,15 +287,15 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            intent.putExtras(bundle);
 //            startActivity(intent);
 //        }
-//        else if (id == R.id.nav_item_outgoing_call) {
-//            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, OutgoingCallsFragment.class.getName());
-//            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Outgoing Calls");
-//            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-//            intent = new Intent(getApplicationContext(), FrameActivity.class);
-//            intent.putExtras(bundle);
-//            startActivity(intent);
-//        }
-        if (id == R.id.nav_item_unlabeled_contacts) {
+        if (id == R.id.nav_item_business_contacts) {
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, BusinessFragment.class.getName());
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Business Contacts");
+            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+            intent = new Intent(getApplicationContext(), FrameActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_item_unlabeled_contacts) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledContactsCallsFragment.class.getName());
             bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);

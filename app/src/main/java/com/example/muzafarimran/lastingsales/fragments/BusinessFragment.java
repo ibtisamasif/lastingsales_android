@@ -11,11 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
-import com.example.muzafarimran.lastingsales.adapters.ColleagueContactsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.BusinessContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -30,20 +31,20 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * A simple {@link Fragment} subclass.
  */
-@Deprecated
-public class CollegueFragment extends TabFragment {
+
+public class BusinessFragment extends TabFragment {
 
     private static final String TAG = "ColleagueContactFrag";
     ListView listView = null;
-    ColleagueContactsAdapter colleagueContactsAdapter;
+    BusinessContactsAdapter businessContactsAdapter;
     MaterialSearchView searchView;
     ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
 
-    public static CollegueFragment newInstance(int page, String title) {
-        CollegueFragment fragmentFirst = new CollegueFragment();
+    public static BusinessFragment newInstance(int page, String title) {
+        BusinessFragment fragmentFirst = new BusinessFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
@@ -52,8 +53,8 @@ public class CollegueFragment extends TabFragment {
     }
 
     public void setList(List<LSContact> contacts) {
-        if (colleagueContactsAdapter != null) {
-            colleagueContactsAdapter.setList(contacts);
+        if (businessContactsAdapter != null) {
+            businessContactsAdapter.setList(contacts);
         }
     }
 
@@ -61,7 +62,7 @@ public class CollegueFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        colleagueContactsAdapter = new ColleagueContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_COLLEAGUE);
+        businessContactsAdapter = new BusinessContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_BUSINESS);
         setHasOptionsMenu(true);
     }
 
@@ -83,23 +84,22 @@ public class CollegueFragment extends TabFragment {
     @Subscribe
     public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
         Log.d(TAG, "onColleagueContactEvent() called with: event = [" + event + "]");
-        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
         setList(contacts);
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
     public void onBackPressedEventModel(BackPressedEventModel event) {
-        if (!event.backPressHandled && colleagueContactsAdapter.isDeleteFlow()) {
+        if (!event.backPressHandled && businessContactsAdapter.isDeleteFlow()) {
             event.backPressHandled = true;
-            colleagueContactsAdapter.setDeleteFlow(false);
+            businessContactsAdapter.setDeleteFlow(false);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
         setList(contacts);
     }
 
@@ -111,42 +111,42 @@ public class CollegueFragment extends TabFragment {
         floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu_collegue);
         floatingActionButtonAdd = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add_collegue);
         floatingActionButtonImport = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import_collegue);
-        colleagueContactsAdapter.setSupportFragmentManager(getFragmentManager());
+        businessContactsAdapter.setSupportFragmentManager(getFragmentManager());
         floatingActionMenu.setClosedOnTouchOutside(true);
 
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
-                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_COLLEAGUE);
+                floatingActionMenu.close(true);
+                Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
+                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
                 startActivity(intent);
             }
         });
         floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
-                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
-                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_COLLEAGUE);
+                floatingActionMenu.close(true);
+                Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
+                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
                 startActivity(intent);
             }
         });
 
         listView = (ListView) view.findViewById(R.id.collegue_contacts_list);
-        listView.setAdapter(colleagueContactsAdapter);
-//        this.inputSearch.addTextChangedListener(new CollegueFragment.addListenerOnTextChange());
+        listView.setAdapter(businessContactsAdapter);
+//        this.inputSearch.addTextChangedListener(new BusinessFragment.addListenerOnTextChange());
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                colleagueContactsAdapter.getFilter().filter(query);
+                businessContactsAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                colleagueContactsAdapter.getFilter().filter(newText);
+                businessContactsAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -180,8 +180,10 @@ public class CollegueFragment extends TabFragment {
         public void onClick(View v) {
             Intent myIntent = new Intent(getActivity(), TagNumberAndAddFollowupActivity.class);
             myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_COLLEAGUE);
+            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_BUSINESS);
             getActivity().startActivity(myIntent);
         }
     }
+
+
 }

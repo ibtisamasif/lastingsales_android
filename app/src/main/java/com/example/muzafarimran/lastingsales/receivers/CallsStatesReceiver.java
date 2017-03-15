@@ -203,7 +203,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
 //        Log.d(TAG, "onIncomingCallEnded: 0");
-//        if (personalContactCheck == null || !personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+//        if (personalContactCheck == null || !personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
 //            Log.d(TAG, "onIncomingCallEnded: 1");
 //            LSCall tempCall = new LSCall();
 //            tempCall.setContactNumber(internationalNumber);
@@ -226,7 +226,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            } else {
 ////            new untagged contact is created, saved, entered in call entry
 //                LSContact tempContact = new LSContact();
-//                tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
+//                tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
 //                tempContact.setPhoneOne(internationalNumber);
 //                tempContact.setContactName(phoneBookContactName);
 //                tempContact.save();
@@ -295,7 +295,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
 ////        Log.d(TAG, "onOutgoingCallEnded: 0");
-//        if (personalContactCheck == null || !personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+//        if (personalContactCheck == null || !personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
 ////            Log.d(TAG, "onOutgoingCallEnded: 1");
 //            LSCall tempCall = new LSCall();
 //            tempCall.setContactNumber(internationalNumber);
@@ -319,7 +319,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            } else {
 ////            new untagged contact is created, saved, entered in call entry
 //                LSContact tempContact = new LSContact();
-//                tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
+//                tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
 //                tempContact.setPhoneOne(internationalNumber);
 //                tempContact.setContactName(phoneBookContactName);
 //                tempContact.save();
@@ -384,7 +384,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //        endServiceAndCallPopup(ctx);
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
-//        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+//        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
 //            //Do nothing
 //            Log.d(TAG, "onMissedCall: Contact is Ignored.");
 //        } else {
@@ -493,7 +493,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
             mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx, number, contact_id));
 
-        } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+        } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
             mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
         } else if (tempContact == null) {

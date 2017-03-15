@@ -61,10 +61,7 @@ public class LostFragment extends  TabFragment{
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-        //Filtering out colleagues from list
-        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-        contacts.removeAll(allCollegues);
+        List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
         setList(contacts);
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
@@ -78,20 +75,14 @@ public class LostFragment extends  TabFragment{
 
     @Subscribe
     public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
-        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-        //Filtering out colleagues from list
-        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-        contacts.removeAll(allCollegues);
+        List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
         setList(contacts);
 //        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
     public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
-        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        //Filtering out colleagues from list
-        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-        contacts.removeAll(allCollegues);
+        List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
         setList(contacts);
 //        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }

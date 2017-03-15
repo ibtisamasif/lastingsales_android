@@ -35,8 +35,8 @@ import static android.view.View.GONE;
 /**
  * Created by lenovo 1 on 9/21/2016.
  */
-@Deprecated
-public class ColleagueContactsAdapter extends BaseAdapter implements Filterable {
+
+public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
@@ -56,7 +56,7 @@ public class ColleagueContactsAdapter extends BaseAdapter implements Filterable 
     private FragmentManager supportFragmentManager;
 
 
-    public ColleagueContactsAdapter(Context c, List<LSContact> contacts, String type) {
+    public BusinessContactsAdapter(Context c, List<LSContact> contacts, String type) {
         this.mContext = c;
         this.mContacts = contacts;
         if (mContacts == null) {
@@ -164,7 +164,7 @@ public class ColleagueContactsAdapter extends BaseAdapter implements Filterable 
                 ColleagueContactDeleteBottomSheetDialogFragment colleagueContactDeleteBottomSheetDialogFragment = new ColleagueContactDeleteBottomSheetDialogFragment();
                 colleagueContactDeleteBottomSheetDialogFragment.setPosition(position);
                 colleagueContactDeleteBottomSheetDialogFragment.show(getSupportFragmentManager(), colleagueContactDeleteBottomSheetDialogFragment.getTag());
-                colleagueContactDeleteBottomSheetDialogFragment.setColleagueContactsAdapter(ColleagueContactsAdapter.this);
+                colleagueContactDeleteBottomSheetDialogFragment.setBusinessContactsAdapter(BusinessContactsAdapter.this);
 
                 return true;
             }

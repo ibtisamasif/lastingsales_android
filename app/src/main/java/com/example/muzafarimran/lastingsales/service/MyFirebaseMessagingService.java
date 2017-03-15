@@ -57,8 +57,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         try {
 //                JSONObject json = new JSONObject(remoteMessage.getNotification().getBody().toString());
-            JSONObject json = new JSONObject(remoteMessage.getData().toString());
-            handleDataMessage(json);
+            if (sessionManager.isUserSignedIn()) {
+                JSONObject json = new JSONObject(remoteMessage.getData().toString());
+                handleDataMessage(json);
+            }
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
         }
@@ -109,22 +111,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String status = payload.getString("status");
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
-                    LSContact contact = new LSContact();
-                    contact.setServerId(id);
-                    contact.setContactName(name);
+
+                    LSContact tempContact = LSContact.getContactFromNumber(phone);
+                    if (tempContact != null) {
+                        tempContact.setServerId(id);
+                        tempContact.setContactName(name);
+                        tempContact.setPhoneOne(phone);
+                        tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
+                        tempContact.setContactSalesStatus(status);
+                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                        tempContact.save();
+                    } else {
+                        LSContact contact = new LSContact();
+                        contact.setServerId(id);
+                        contact.setContactName(name);
 //                  contact.setContactEmail(email);
-                    contact.setPhoneOne(phone);
+                        contact.setPhoneOne(phone);
 //                  contact.setContactAddress(address);
-                    contact.setContactType(LSContact.CONTACT_TYPE_SALES);
-                    contact.setContactSalesStatus(status);
-                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                    contact.save();
-                    Log.e(TAG, "Post From Local DB: " + contact.getContactName());
+                        contact.setContactType(LSContact.CONTACT_TYPE_SALES);
+                        contact.setContactSalesStatus(status);
+                        contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                        contact.save();
+                        Log.e(TAG, "Post From Local DB: " + contact.getContactName());
 //                  ColleagueContactAddedEventModel mCallEvent = new ColleagueContactAddedEventModel();
 //                  TinyBus bus = TinyBus.from(getApplicationContext());
 //                  bus.register(mCallEvent);
 //                  bus.post(mCallEvent);
-
+                    }
                 } else if (action.equals("put")) {
                     String id = payload.getString("id");
                     String name = payload.getString("name");

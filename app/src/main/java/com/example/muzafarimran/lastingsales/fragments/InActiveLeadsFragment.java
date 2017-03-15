@@ -77,17 +77,12 @@ public class InActiveLeadsFragment extends  TabFragment{
     public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
         List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
         setList(contacts);
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
     public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
-        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        //Filtering out colleagues from list
-        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-        contacts.removeAll(allCollegues);
+        List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
         setList(contacts);
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe

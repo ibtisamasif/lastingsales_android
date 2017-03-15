@@ -122,7 +122,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         bSave = (Button) findViewById(R.id.bSaveFollowupPopup);
         bSalesRadio = (Button) findViewById(R.id.bSalesRadio);
         bColleagueRadio = (Button) findViewById(R.id.bCollegueRadio);
-        llContactDetailsFollowupScreen = (LinearLayout) findViewById(R.id.llContactDetailsAddFollowupScreen);
+        llContactDetailsFollowupScreen = (LinearLayout) findViewById(R.id.llContactDetailsAddContactScreen);
         llContactType = (LinearLayout) findViewById(R.id.llContactType);
         // Cancel the Notifitcation appeared on call ending
         int notificationId = getIntent().getIntExtra("notificationId", 1);
@@ -279,7 +279,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         checkContact = LSContact.getContactFromNumber(intlNum);
 
                         if (checkContact != null) {
-                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
                                 String titleText = null;
                                 String noteText = null;
                                 TempFollowUp TempFollowUp = new TempFollowUp();
@@ -328,7 +328,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             tempContact.setPhoneOne(intlNum);
                             if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
                                 tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                            } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+                            } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
 //                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
                             }
                             tempContact.save();
@@ -381,7 +381,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);
                         if (checkContact != null) {
-                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
                                 String titleText = null;
                                 String noteText = null;
                                 TempFollowUp TempFollowUp = new TempFollowUp();
@@ -430,7 +430,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             tempContact.setContactType(selectedContactType);
                             if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
                                 tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                            } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+                            } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
 //                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
                             }
                             tempContact.save();
@@ -483,7 +483,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);
                         if (checkContact != null) {
-                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
                                 String titleText = null;
                                 String noteText = null;
                                 TempFollowUp TempFollowUp = new TempFollowUp();
@@ -534,7 +534,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                             //Modified by ibtisam
                             if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
                                 tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                            } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+                            } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
 //                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
                             }
                             //Modified by ibtisam
@@ -647,7 +647,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         tempContact.setContactType(selectedContactType);
                         if (selectedContactType.equals(LSContact.CONTACT_TYPE_SALES)) {
                             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                        } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+                        } else if (selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
 //                            tempContact.setContactSalesStatus(LSContact.CONTACT_TYPE_NONE);
                         }
                         tempContact.save();
@@ -767,7 +767,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         bColleagueRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectRadioButton(LSContact.CONTACT_TYPE_COLLEAGUE);
+                selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
             }
         });
     }
@@ -890,8 +890,8 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
             bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
             bSalesRadio.setTextColor(Color.WHITE);
             bColleagueRadio.setTextColor(Color.BLACK);
-        } else if (button.equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
-            selectedContactType = LSContact.CONTACT_TYPE_COLLEAGUE;
+        } else if (button.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+            selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
             bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
             bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
             bSalesRadio.setTextColor(Color.BLACK);

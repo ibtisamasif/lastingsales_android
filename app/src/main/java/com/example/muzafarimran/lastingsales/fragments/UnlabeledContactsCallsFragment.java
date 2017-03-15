@@ -15,7 +15,7 @@ import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.UntaggedContactsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.UnlabeledContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import de.halfbit.tinybus.TinyBus;
 public class UnlabeledContactsCallsFragment extends Fragment {
 
     private static final String TAG = "UntaggedCallFragment";
-    UntaggedContactsAdapter untaggedContactsAdapter;
+    UnlabeledContactsAdapter untaggedContactsAdapter;
     ListView listView = null;
     private List<LSContact> untaggedContacts = new ArrayList<>();
     private Bus mBus;
@@ -58,7 +58,7 @@ public class UnlabeledContactsCallsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        untaggedContactsAdapter = new UntaggedContactsAdapter(getContext());
+        untaggedContactsAdapter = new UnlabeledContactsAdapter(getContext());
         untaggedContactsAdapter.setList(untaggedContacts);
         setHasOptionsMenu(true);
     }
@@ -105,7 +105,7 @@ public class UnlabeledContactsCallsFragment extends Fragment {
 
     private void updateContactssList() {
 
-        List<LSContact> untaggedContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNTAGGED);
+        List<LSContact> untaggedContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
         this.untaggedContacts = untaggedContacts;
         setList(untaggedContacts);
     }

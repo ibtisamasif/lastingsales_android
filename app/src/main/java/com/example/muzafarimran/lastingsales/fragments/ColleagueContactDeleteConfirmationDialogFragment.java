@@ -7,15 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
-import com.example.muzafarimran.lastingsales.adapters.ColleagueContactsAdapter;
-import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
+import com.example.muzafarimran.lastingsales.adapters.BusinessContactsAdapter;
 
 /**
  * Created by ahmad on 19-Dec-16.
  */
 
 public class ColleagueContactDeleteConfirmationDialogFragment extends DialogFragment {
-    ColleagueContactsAdapter colleagueContactsAdapter;
+    BusinessContactsAdapter businessContactsAdapter;
     int position;
 
     @NonNull
@@ -28,7 +27,7 @@ public class ColleagueContactDeleteConfirmationDialogFragment extends DialogFrag
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        getColleagueContactsAdapter().deleteAtPosition(position);
+                        getBusinessContactsAdapter().deleteAtPosition(position);
                         dismiss();
                     }
                 })
@@ -42,12 +41,12 @@ public class ColleagueContactDeleteConfirmationDialogFragment extends DialogFrag
                 ;
     }
 
-    public ColleagueContactsAdapter getColleagueContactsAdapter() {
-        return colleagueContactsAdapter;
+    public BusinessContactsAdapter getBusinessContactsAdapter() {
+        return businessContactsAdapter;
     }
 
-    public void setColleagueContactsAdapter(ColleagueContactsAdapter colleagueContactsAdapter) {
-        this.colleagueContactsAdapter = colleagueContactsAdapter;
+    public void setBusinessContactsAdapter(BusinessContactsAdapter businessContactsAdapter) {
+        this.businessContactsAdapter = businessContactsAdapter;
     }
 
     public int getPosition() {

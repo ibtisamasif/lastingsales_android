@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -279,9 +279,9 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
 
         @Override
         public void onClick(View v) {
-            Intent myIntent = new Intent(mContext, AddLeadActivity.class);
-            myIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
-            myIntent.putExtra(AddLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
+            Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
+            myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+            myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
             mContext.startActivity(myIntent);
         }
     }

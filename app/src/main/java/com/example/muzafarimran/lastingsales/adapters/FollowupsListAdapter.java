@@ -19,6 +19,8 @@ import java.util.Calendar;
 /**
  * Created by ahmad on 01-Nov-16.
  */
+
+// will be depricated not yet
 @Deprecated
 public class FollowupsListAdapter extends ArrayAdapter<TempFollowUp> {
     LayoutInflater inflater;
@@ -67,7 +69,7 @@ public class FollowupsListAdapter extends ArrayAdapter<TempFollowUp> {
         String date = "" + cl.get(Calendar.DAY_OF_MONTH) + ":" + cl.get(Calendar.MONTH) + ":" + cl.get(Calendar.YEAR);
         String time = "" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE);
         // Populate the data into the template view using the data object
-        if(oneContact!=null) {
+        if (oneContact != null) {
             viewHolder.contactName.setText(oneContact.getContactName());
         }
         viewHolder.followupNote.setText(oneFollowup.getTitle());

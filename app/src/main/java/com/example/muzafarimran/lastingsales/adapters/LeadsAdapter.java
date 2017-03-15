@@ -66,7 +66,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.callClickListener = new CallClickListener(c);
         //Filtering out colleagues from list
-        if(type!=LSContact.CONTACT_TYPE_COLLEAGUE) {
+        if(type!=LSContact.CONTACT_TYPE_BUSINESS) {
             this.contactLeadType = type;
         }
         //TODO: correct the counting mechanism
@@ -168,7 +168,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
                 @Override
                 public boolean onLongClick(View view) {
                     deleteFlow = true;
-                    setList(LSContact.getContactsByLeadSalesStatus(contactLeadType));
+                    setList(LSContact.getSalesContactsByLeadSalesStatus(contactLeadType));
                     return true;
                 }
             });
@@ -196,7 +196,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
 //                    contact.delete();
                     DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
                     dataSenderAsync.execute();
-                    setList(LSContact.getContactsByLeadSalesStatus(contactLeadType));
+                    setList(LSContact.getSalesContactsByLeadSalesStatus(contactLeadType));
                     Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
                 }
             });

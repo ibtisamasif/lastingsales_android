@@ -17,7 +17,8 @@
         android:background="@drawable/shadow_borders3_white_bg"
         android:orientation="vertical"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/tvTitleFollowupPopup"
@@ -49,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
                     android:orientation="vertical"
-                    android:id="@+id/llContactDetailsAddFollowupScreen"
+                    android:id="@+id/llContactDetailsAddContactScreen"
                     >
 
 

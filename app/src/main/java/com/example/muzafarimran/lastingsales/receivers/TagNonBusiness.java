@@ -26,10 +26,10 @@ public class TagNonBusiness extends BroadcastReceiver {
         LSContact checkContact;
         checkContact = LSContact.getContactFromNumber(intlNum);
         if (checkContact != null) {
-            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
                 checkContact.setPhoneOne(contactPhone);
                 checkContact.setContactName(contactName);
-                checkContact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);
+                checkContact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
                 checkContact.save();
                 int notificationId = intent.getIntExtra("notificationId", 0);
                 NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -40,7 +40,7 @@ public class TagNonBusiness extends BroadcastReceiver {
             tempContact = new LSContact();
             tempContact.setPhoneOne(contactPhone);
             tempContact.setContactName(contactName);
-            tempContact.setContactType(LSContact.CONTACT_TYPE_PERSONAL);
+            tempContact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
             tempContact.save();
             int notificationId = intent.getIntExtra("notificationId", 0);
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
