@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.fragments.BusinessFragment;
-import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
+import com.example.muzafarimran.lastingsales.fragments.IgnoredFragment;
 import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
 import com.example.muzafarimran.lastingsales.fragments.UnlabeledContactsCallsFragment;
 
@@ -28,7 +28,7 @@ public class ContactsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return BusinessFragment.newInstance(1, "colleagues");
             case 3:
-                return NonbusinessFragment.newInstance(2, "nonbusiness");
+                return IgnoredFragment.newInstance(2, "nonbusiness");
             default:
                 return null;
         }

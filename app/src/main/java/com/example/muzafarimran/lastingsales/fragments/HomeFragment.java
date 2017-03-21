@@ -174,6 +174,7 @@ public class HomeFragment extends TabFragment {
     public void onResume() {
         super.onResume();
         updateHomeFigures();
+        setHasOptionsMenu(false);
     }
 
     private void updateHomeFigures() {
@@ -269,14 +270,12 @@ public class HomeFragment extends TabFragment {
         if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
             updateHomeFigures();
         }
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
     public void onContactTaggedFromUntaggedContactEventModel(ContactTaggedFromUntaggedContactEventModel event) {
         Log.d(TAG, "onNoteAddedEvent() called with: event = [" + event + "]");
         updateHomeFigures();
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Override
@@ -293,5 +292,4 @@ public class HomeFragment extends TabFragment {
         Log.d(TAG, "onStop() called");
         super.onStop();
     }
-
 }

@@ -17,6 +17,7 @@ import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.UnlabeledContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class UnlabeledContactsCallsFragment extends Fragment {
     private Bus mBus;
     private TinyBus bus;
     private ErrorScreenView errorScreenView;
+    private MaterialSearchView searchView;
 
     public static UnlabeledContactsCallsFragment newInstance(int page, String title) {
         UnlabeledContactsCallsFragment fragmentFirst = new UnlabeledContactsCallsFragment();
@@ -126,6 +128,19 @@ public class UnlabeledContactsCallsFragment extends Fragment {
         errorScreenView.setErrorImage(R.drawable.delight_inactive);
         errorScreenView.setErrorText(this.getResources().getString(R.string.em_unlabeled_delight));
         listView.setEmptyView(errorScreenView);
+        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                untaggedContactsAdapter.getFilter().filter(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                untaggedContactsAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return view;
     }
 

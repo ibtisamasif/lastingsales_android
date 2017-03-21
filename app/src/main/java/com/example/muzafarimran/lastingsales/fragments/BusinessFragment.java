@@ -34,7 +34,7 @@ import de.halfbit.tinybus.TinyBus;
 
 public class BusinessFragment extends TabFragment {
 
-    private static final String TAG = "ColleagueContactFrag";
+    private static final String TAG = "BusinessFragment";
     ListView listView = null;
     BusinessContactsAdapter businessContactsAdapter;
     MaterialSearchView searchView;
@@ -106,14 +106,12 @@ public class BusinessFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_collegue, container, false);
-
-        floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu_collegue);
-        floatingActionButtonAdd = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add_collegue);
-        floatingActionButtonImport = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import_collegue);
+        View view = inflater.inflate(R.layout.fragment_business, container, false);
+        floatingActionMenu = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu_business);
+        floatingActionButtonAdd = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_add_business);
+        floatingActionButtonImport = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_import_business);
         businessContactsAdapter.setSupportFragmentManager(getFragmentManager());
-        floatingActionMenu.setClosedOnTouchOutside(true);
-
+        floatingActionMenu.setClosedOnTouchOutside(true); // TODO still not working
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,7 +133,6 @@ public class BusinessFragment extends TabFragment {
 
         listView = (ListView) view.findViewById(R.id.collegue_contacts_list);
         listView.setAdapter(businessContactsAdapter);
-//        this.inputSearch.addTextChangedListener(new BusinessFragment.addListenerOnTextChange());
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -143,7 +140,6 @@ public class BusinessFragment extends TabFragment {
                 businessContactsAdapter.getFilter().filter(query);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 businessContactsAdapter.getFilter().filter(newText);

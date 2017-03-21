@@ -331,7 +331,6 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
         RelativeLayout user_details_wrapper;
         ImageButton deleteButton;
         LinearLayout contactDetailsDopDownLayout;
-//        Button detailsButton;
         ImageView moreButton;
         TextView salesLeadStatus;
         RelativeLayout statusRow;
@@ -357,20 +356,4 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
             mContext.startActivity(detailsActivityIntent);
         }
     }
-
-//    private class DetailsButtonClickListener implements View.OnClickListener {
-//        LSContact contact;
-//
-//        public DetailsButtonClickListener(LSContact contact) {
-//            this.contact = contact;
-//        }
-//
-//        @Override
-//        public void onClick(View view) {
-//            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
-//            long contactId = contact.getId();
-//            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-//            mContext.startActivity(detailsActivityIntent);
-//        }
-//    }
 }

@@ -10,18 +10,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.InquiriesAdapter;
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
+import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 
 import java.util.List;
 
-import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
@@ -34,8 +33,6 @@ public class InquiriesFragment extends SearchFragment {
     public static final String TAG = "InquiriesFragment";
     InquiriesAdapter inquiriesAdapter;
     ListView listView = null;
-    ImageView imageView;
-    private Bus mBus;
     private TinyBus bus;
     private ErrorScreenView errorScreenView;
 
@@ -72,9 +69,9 @@ public class InquiriesFragment extends SearchFragment {
 
     @Override
     public void onStop() {
-        bus.unregister(this);
-        Log.d(TAG, "onStop() called");
         super.onStop();
+        Log.d(TAG, "onStop() called");
+        bus.unregister(this);
     }
 
     @Subscribe
@@ -86,11 +83,30 @@ public class InquiriesFragment extends SearchFragment {
         }
     }
 
+    @Subscribe
+    public void onInquiryDeletedEventModel(InquiryDeletedEventModel event) {
+        List<LSInquiry> inquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+        setList(inquiries);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         List<LSInquiry> inquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
         setList(inquiries);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_calls, container, false);
+        errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
+        errorScreenView.setErrorImage(R.drawable.delight_lost);
+        errorScreenView.setErrorText(this.getResources().getString(R.string.em_inquiries_delight));
+        listView = (ListView) view.findViewById(R.id.calls_list);
+        listView.setAdapter(inquiriesAdapter);
+        listView.setEmptyView(errorScreenView);
+        setHasOptionsMenu(true);
+        return view;
     }
 
     @Override
@@ -101,20 +117,6 @@ public class InquiriesFragment extends SearchFragment {
         if(materialSearchView!=null) {
             materialSearchView.setMenuItem(item);
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_calls, container, false);
-//        imageView = (ImageView) view.findViewById(R.id.ivInquiry_contacts);
-//        imageView.setImageResource(R.drawable.delight_inactive);
-        errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
-        errorScreenView.setErrorImage(R.drawable.delight_lost);
-        errorScreenView.setErrorText(this.getResources().getString(R.string.em_inquiries_delight));
-        listView = (ListView) view.findViewById(R.id.calls_list);
-        listView.setAdapter(inquiriesAdapter);
-        listView.setEmptyView(errorScreenView);
-        return view;
     }
 
     @Override

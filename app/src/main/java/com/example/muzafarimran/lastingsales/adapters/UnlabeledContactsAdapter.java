@@ -92,11 +92,11 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
             holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
             holder.tvConnections = (TextView) convertView.findViewById(R.id.tvConnections);
             holder.tvLastContact = (TextView) convertView.findViewById(R.id.tvLastContact);
-            holder.bNonbusiness = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
+            holder.bIgnore = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
             holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
             this.showcalldetailslistener = new ShowDetailsDropDown(contact, holder.contactCallDetails);
             holder.bSales = (Button) convertView.findViewById(R.id.bSalesUtaggedItem);
-            holder.bNonbusiness = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
+            holder.bIgnore = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
 
             holder.call_icon.setOnClickListener(this.callClickListener);
             holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
@@ -118,8 +118,8 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
         } else {
             holder.name.setText(contact.getContactName());
         }
-        holder.bNonbusiness.setTag(number);
-        holder.bNonbusiness.setOnClickListener(detailsListener);
+        holder.bIgnore.setTag(number);
+        holder.bIgnore.setOnClickListener(detailsListener);
         holder.numberDetailTextView.setText(number);
         holder.call_name_time.setTag(position);
 //        holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(contact.getBeginTime()));
@@ -133,15 +133,14 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
                 mContext.startActivity(myIntent);
             }
         });
-        holder.bNonbusiness.setOnClickListener(new View.OnClickListener() {
+        holder.bIgnore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
                 contact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
                 contact.save();
                 ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
                 setList(allUntaggedContacts);
-                Toast.makeText(mContext, "Added as Non-Business Contact!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Added as Ignored Contact!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -216,7 +215,7 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
         TextView numberDetailTextView;
         TextView tvConnections;
         TextView tvLastContact;
-        Button bNonbusiness;
+        Button bIgnore;
         Button bSales;
     }
 
@@ -235,7 +234,6 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
 
         @Override
         public void onClick(View v) {
-
             if (expanded && noteDetails != null) {
                 noteDetails.setVisibility(View.GONE);
                 noteDetails = null;

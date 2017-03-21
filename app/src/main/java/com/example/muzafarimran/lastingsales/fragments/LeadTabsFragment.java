@@ -127,16 +127,15 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
 
     private void updateTabFigues() {
         //List Taken To Filter out Colleagues
-        ArrayList<LSContact> allCollegues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
         //Leads List
-        List<LSContact> allLeads = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        allLeads.removeAll(allCollegues);
+        List<LSContact> allLeads = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+
         //All Won
-        List<LSContact> allWon = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-        allWon.removeAll(allCollegues);
+        List<LSContact> allWon = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+
         //All Lost
-        List<LSContact> allLost = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-        allLost.removeAll(allCollegues);
+        List<LSContact> allLost = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+
         //InActive Leads List
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
         if (allLeads != null) {

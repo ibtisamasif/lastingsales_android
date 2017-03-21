@@ -91,7 +91,7 @@ public class LSContact extends SugarRecord {
     }
 
     public static List<LSContact> getAllInactiveLeadContacts() {
-        try { //TODO check weather below steps are required or not + change time before launching
+        try {
             ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getSalesContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
             ArrayList<LSContact> allInactiveLeads = new ArrayList<LSContact>();
             long milisecondsIn3Days = 259200000;

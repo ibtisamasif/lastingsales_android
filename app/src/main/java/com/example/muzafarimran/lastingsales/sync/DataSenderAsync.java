@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
@@ -76,6 +77,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     addCallsToServer();
                     addInquiriesToServer();
                     updateInquiriesToServer();
+                    deleteInquiriesFromServer();
                     addNotesToServer();
                     updateNotesToServer();
 //                    addFollowupsToServer();
@@ -518,6 +520,64 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateInquiry");
             }
         });
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void deleteInquiriesFromServer() {
+        List<LSInquiry> inquiriesList = null;
+        if (LSInquiry.count(LSInquiry.class) > 0) {
+            inquiriesList = LSInquiry.find(LSInquiry.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+            Log.d(TAG, "deleteInquiriesFromServer: count : " + inquiriesList.size());
+            for (LSInquiry oneInquiry : inquiriesList) {
+                Log.d(TAG, "Found Contact : " + oneInquiry.getContactName());
+                Log.d(TAG, "Server ID : " + oneInquiry.getServerId());
+                deleteInquiriesFromServerSync(oneInquiry);
+            }
+        }
+    }
+
+    public void deleteInquiriesFromServerSync(final LSInquiry inquiry) {
+//        Log.d(TAG, "deleteContactFromServerSync: DELETE LEAD SERVER ID : "+contact.getServerId());
+        final int MY_SOCKET_TIMEOUT_MS = 60000;
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        final String BASE_URL = MyURLs.DELETE_INQUIRY;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath("" + inquiry.getServerId())
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        StringRequest sr = new StringRequest(Request.Method.DELETE, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() delete inquiry called with: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+//                    Log.d(TAG, "onResponse: DeleteInquiry: "+jObj.toString());
+//                    if (responseCode == 200) {
+//                        JSONObject responseObject = jObj.getJSONObject("response");
+                    inquiry.delete();
+                    InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                    bus.post(mCallEvent);
+//                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteInquiry");
+            }
+        }) {
+        };
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

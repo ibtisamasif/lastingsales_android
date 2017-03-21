@@ -36,7 +36,7 @@ public class AddEditLeadActivity extends Activity {
     public static final String LAUNCH_MODE_ADD_NEW_CONTACT = "launch_mode_add_new_contact";
     public static final String LAUNCH_MODE_EDIT_EXISTING_CONTACT = "launch_mode_edit_existing_contact";
     public static final String LAUNCH_MODE_TAG_PHONE_NUMBER = "launch_mode_tag_phone_number";
-    public static final String LAUNCH_MODE_CONVERT_NON_BUSINESS = "launch_mode_convert_non_business";
+    public static final String LAUNCH_MODE_CONVERT_IGNORED = "launch_mode_convert_non_business";
     public static final String TAG_LAUNCH_MODE_PHONE_NUMBER = "phone_number";
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     private static final String TAG = "AddEditLeadActivity";
@@ -131,7 +131,7 @@ public class AddEditLeadActivity extends Activity {
             if (nameFromPhoneBook != null) {
                 etContactName.setText(nameFromPhoneBook);
             }
-        } else if (launchMode.equals(LAUNCH_MODE_CONVERT_NON_BUSINESS)) {
+        } else if (launchMode.equals(LAUNCH_MODE_CONVERT_IGNORED)) {
             llEmailAddress.setVisibility(View.GONE);
             tvTitleAddContact.setText(TITLE_EDIT_CONTACT);
             editingMode = false;
@@ -180,16 +180,26 @@ public class AddEditLeadActivity extends Activity {
                             if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
                                 checkContact.setContactName(contactName);
                                 checkContact.setPhoneOne(intlNum);
-                                checkContact.setContactType(LSContact.CONTACT_TYPE_SALES);
+                                checkContact.setContactType(selectedContactType);
                                 checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                                 checkContact.save();
-                                finish();
-                                Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
-                                long contactId = checkContact.getId();
-                                detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                                startActivity(detailsActivityIntent);
+                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                                    moveToContactDetailScreen(checkContact);
+                                } else {
+                                    //update inquiry as well if exists
+                                    LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
+                                    if (tempInquiry != null) {
+                                        tempInquiry.setContact(checkContact);
+                                        tempInquiry.save();
+                                        tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+                                        tempInquiry.save();
+                                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                                        dataSenderAsync.execute();
+                                    }
+                                }
                                 Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
+                                finish();
                             } else {
                                 Toast.makeText(AddEditLeadActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
                             }
@@ -197,19 +207,31 @@ public class AddEditLeadActivity extends Activity {
                             LSContact tempContact = new LSContact();
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(intlNum);
-                            tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
+                            tempContact.setContactType(selectedContactType);
                             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
-                            Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
-                            long contactId = tempContact.getId();
-                            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                            startActivity(detailsActivityIntent);
+                            //update inquiry as well if exists
+                            LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
+                            if (tempInquiry != null) {
+                                tempInquiry.setContact(tempContact);
+                                tempInquiry.save();
+                            }
+                            if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                                moveToContactDetailScreen(tempContact);
+                            } else {
+                                tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+                                tempInquiry.save();
+                                DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                                dataSenderAsync.execute();
+                            }
                             Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
-                        finish();
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
+                    AddNewContactProcessor.Process(AddEditLeadActivity.this, etContactName, etContactPhone, editingMode, selectedContactType);           //////////////////////////////////////////////////////////
+                } else if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
                     etContactName.setError(null);
                     etContactPhone.setError(null);
                     boolean validation = true;
@@ -235,12 +257,22 @@ public class AddEditLeadActivity extends Activity {
                                 checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                                 checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                                 checkContact.save();
-                                finish();
-                                Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
-                                long contactId = checkContact.getId();
-                                detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                                startActivity(detailsActivityIntent);
+                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                                    moveToContactDetailScreen(checkContact);
+                                } else {
+                                    //update inquiry as well if exists
+                                    LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
+                                    if (tempInquiry != null) {
+                                        tempInquiry.setContact(checkContact);
+                                        tempInquiry.save();
+                                        tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+                                        tempInquiry.save();
+                                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                                        dataSenderAsync.execute();
+                                    }
+                                }
                                 Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
+                                finish();
                             } else {
                                 Toast.makeText(AddEditLeadActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
                             }
@@ -252,12 +284,71 @@ public class AddEditLeadActivity extends Activity {
                             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
-                            finish();
-                            Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
-                            long contactId = tempContact.getId();
-                            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                            startActivity(detailsActivityIntent);
+                            //update inquiry as well if exists
+                            LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
+                            if (tempInquiry != null) {
+                                tempInquiry.setContact(tempContact);
+                                tempInquiry.save();
+                            }
+                            if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                                moveToContactDetailScreen(tempContact);
+                            } else {
+                                tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+                                tempInquiry.save();
+                                DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                                dataSenderAsync.execute();
+                            }
                             Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                } else if (launchMode.equals(LAUNCH_MODE_CONVERT_IGNORED)) {
+                    etContactName.setError(null);
+                    etContactPhone.setError(null);
+                    boolean validation = true;
+                    String contactName = etContactName.getText().toString();
+                    String contactPhone = etContactPhone.getText().toString();
+                    if (contactName.equals("") || contactName.length() < 3) {
+                        validation = false;
+                        etContactName.setError("Invalid Name!");
+                    }
+                    if (contactPhone.equals("") || contactPhone.length() < 3) {
+                        validation = false;
+                        etContactPhone.setError("Invalid Number!");
+                    }
+                    if (validation && !editingMode) {
+                        String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
+                        LSContact checkContact;
+                        checkContact = LSContact.getContactFromNumber(intlNum);
+                        if (checkContact != null) {
+                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+                                checkContact.setContactName(contactName);
+                                checkContact.setPhoneOne(intlNum);
+                                checkContact.setContactType(selectedContactType);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+                                checkContact.save();
+                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                                    moveToContactDetailScreen(checkContact);
+                                }
+                                Toast.makeText(AddEditLeadActivity.this, "Saved AS LEAD", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                Toast.makeText(AddEditLeadActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            LSContact tempContact = new LSContact();
+                            tempContact.setContactName(contactName);
+                            tempContact.setPhoneOne(intlNum);
+                            tempContact.setContactType(selectedContactType);
+                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+                            tempContact.save();
+                            if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                                moveToContactDetailScreen(tempContact);
+                            }
+                            Toast.makeText(AddEditLeadActivity.this, "Saved AS LEAD", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
@@ -287,124 +378,30 @@ public class AddEditLeadActivity extends Activity {
                         tempContact.setPhoneOne(intlNum);
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactEmail(contactEmail);
-                        if(tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+                        if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                         }
                         tempContact.save();
+                        if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                            moveToContactDetailScreen(tempContact);
+                        } else {
+                            //update inquiry as well if exists
+                            LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
+                            if (tempInquiry != null) {
+                                tempInquiry.setContact(tempContact);
+                                tempInquiry.save();
+                                tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+                                tempInquiry.save();
+                                DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                                dataSenderAsync.execute();
+                            }
+                        }
                         finish();
                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     }
                     SalesContactAddedEventModel mCallEvent = new SalesContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.post(mCallEvent);
-                } else if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
-                    etContactName.setError(null);
-                    etContactPhone.setError(null);
-                    boolean validation = true;
-                    String contactName = etContactName.getText().toString();
-                    String contactPhone = etContactPhone.getText().toString();
-                    if (contactName.equals("") || contactName.length() < 3) {
-                        validation = false;
-                        etContactName.setError("Invalid Name!");
-                    }
-                    if (contactPhone.equals("") || contactPhone.length() < 3) {
-                        validation = false;
-                        etContactPhone.setError("Invalid Number!");
-                    }
-                    if (validation && !editingMode) {
-                        String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
-                        LSContact checkContact;
-                        checkContact = LSContact.getContactFromNumber(intlNum);
-                        if (checkContact != null) {
-                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-                                checkContact.setContactName(contactName);
-                                checkContact.setPhoneOne(intlNum);
-                                checkContact.setContactType(selectedContactType);
-                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
-                                checkContact.save();
-                                finish();
-                                Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
-                                long contactId = checkContact.getId();
-                                detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                                startActivity(detailsActivityIntent);
-                                Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(AddEditLeadActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            LSContact tempContact = new LSContact();
-                            tempContact.setContactName(contactName);
-                            tempContact.setPhoneOne(intlNum);
-                            tempContact.setContactType(selectedContactType);
-                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
-                            tempContact.save();
-                            finish();
-                            //update inquiry as well if exists
-                            LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
-                            if (tempInquiry != null) {
-                                tempInquiry.setContact(tempContact);
-                                tempInquiry.save();
-                            }
-                            Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
-                            long contactId = tempContact.getId();
-                            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                            startActivity(detailsActivityIntent);
-                            Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } else if (launchMode.equals(LAUNCH_MODE_CONVERT_NON_BUSINESS)) {
-                    etContactName.setError(null);
-                    etContactPhone.setError(null);
-                    boolean validation = true;
-                    String contactName = etContactName.getText().toString();
-                    String contactPhone = etContactPhone.getText().toString();
-                    if (contactName.equals("") || contactName.length() < 3) {
-                        validation = false;
-                        etContactName.setError("Invalid Name!");
-                    }
-                    if (contactPhone.equals("") || contactPhone.length() < 3) {
-                        validation = false;
-                        etContactPhone.setError("Invalid Number!");
-                    }
-                    if (validation && !editingMode) {
-                        String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
-                        LSContact checkContact;
-                        checkContact = LSContact.getContactFromNumber(intlNum);
-                        if (checkContact != null) {
-                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
-                                checkContact.setContactName(contactName);
-                                checkContact.setPhoneOne(intlNum);
-                                checkContact.setContactType(selectedContactType);
-                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                                checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
-                                checkContact.save();
-                                finish();
-                                Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
-                                long contactId = checkContact.getId();
-                                detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                                startActivity(detailsActivityIntent);
-                                Toast.makeText(AddEditLeadActivity.this, "Saved AS LEAD", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(AddEditLeadActivity.this, "Already Exists", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            LSContact tempContact = new LSContact();
-                            tempContact.setContactName(contactName);
-                            tempContact.setPhoneOne(intlNum);
-                            tempContact.setContactType(selectedContactType);
-                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
-                            tempContact.save();
-                            finish();
-                            Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
-                            long contactId = tempContact.getId();
-                            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                            startActivity(detailsActivityIntent);
-                            Toast.makeText(AddEditLeadActivity.this, "Saved AS LEAD", Toast.LENGTH_SHORT).show();
-                        }
-                    }
                 }
                 DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
                 dataSenderAsync.execute();
@@ -422,6 +419,13 @@ public class AddEditLeadActivity extends Activity {
                 selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
             }
         });
+    }
+
+    private void moveToContactDetailScreen(LSContact contact) {
+        Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
+        long contactId = contact.getId();
+        detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
+        startActivity(detailsActivityIntent);
     }
 
     @Override
@@ -491,6 +495,7 @@ public class AddEditLeadActivity extends Activity {
         //Log.d(TAG, "Contact Phone Number: " + contactNumber);
         return contactNumber;
     }
+
     private void selectRadioButton(String button) {
         if (button.equals(LSContact.CONTACT_TYPE_SALES)) {
             selectedContactType = LSContact.CONTACT_TYPE_SALES;

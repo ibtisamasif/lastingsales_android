@@ -29,7 +29,7 @@ import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.fragments.BusinessFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
-import com.example.muzafarimran.lastingsales.fragments.NonbusinessFragment;
+import com.example.muzafarimran.lastingsales.fragments.IgnoredFragment;
 import com.example.muzafarimran.lastingsales.fragments.UnlabeledContactsCallsFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
@@ -304,7 +304,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             startActivity(intent);
         }
         else if (id == R.id.nav_item_personal_contacts) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, NonbusinessFragment.class.getName());
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, IgnoredFragment.class.getName());
             bundle.putString(FrameActivity.ACTIVITY_TITLE, "Ignored Contacts");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);

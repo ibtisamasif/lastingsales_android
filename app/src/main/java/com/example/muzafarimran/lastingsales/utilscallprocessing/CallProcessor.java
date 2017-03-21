@@ -25,6 +25,10 @@ class CallProcessor {
 
             LeadProcessor.Process(mContext, call, showNotification);
 
+        } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+            // Business Contact
+            BusinessProcessor.Process(mContext, call);
+
         } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
             // Contact is in Ignored list. Do Nothing
 

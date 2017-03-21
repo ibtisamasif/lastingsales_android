@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.muzafarimran.lastingsales">
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -45,7 +47,7 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receivers.TagNonBusiness">
+        <receiver android:name=".receivers.TagAsIgnored">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

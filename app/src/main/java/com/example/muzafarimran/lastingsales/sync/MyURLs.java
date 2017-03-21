@@ -11,6 +11,7 @@ public class MyURLs {
     public static String ADD_CALL = "http://staging.lastingsales.com/api/v1/call";
     public static String ADD_INQUIRY = "http://staging.lastingsales.com/api/v1/inquiries";
     public static String UPDATE_INQUIRY = "http://staging.lastingsales.com/api/v1/inquiries/";
+    public static String DELETE_INQUIRY = "http://staging.lastingsales.com/api/v1/inquiries/";
     public static String DELETE_CONTACT = "http://staging.lastingsales.com/api/v1/lead/";
     public static String UPDATE_CONTACT = "http://staging.lastingsales.com/api/v1/lead/";
     public static String UPDATE_NOTE = "http://staging.lastingsales.com/api/v1/lead/";

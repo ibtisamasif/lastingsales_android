@@ -11,7 +11,7 @@ import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.AddEditNoteActivity;
 import com.example.muzafarimran.lastingsales.activities.AddNewFollowUpsActivity;
 import com.example.muzafarimran.lastingsales.receivers.FollowupNotiCancelBtnReceiver;
-import com.example.muzafarimran.lastingsales.receivers.TagNonBusiness;
+import com.example.muzafarimran.lastingsales.receivers.TagAsIgnored;
 
 /**
  * Created by ibtisam on 12/6/2016.
@@ -69,7 +69,7 @@ public class CallEndNotification {
             intlNumber = "0";
         }
         //NonBusinessIntent
-        Intent nonBusinessIntent = new Intent(ctx, TagNonBusiness.class);
+        Intent nonBusinessIntent = new Intent(ctx, TagAsIgnored.class);
         nonBusinessIntent.putExtra("number", intlNumber);
         nonBusinessIntent.putExtra("name", number_or_name);
         nonBusinessIntent.putExtra("notificationId", NOTIFICATION_ID);
