@@ -1,9 +1,12 @@
 package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import java.util.Calendar;
@@ -12,8 +15,21 @@ import java.util.Calendar;
  * Created by ibtisam on 3/4/2017.
  */
 
-class InquiryManager {
+public class InquiryManager {
     public static final String TAG = "InquiryManager";
+
+    public static void RemoveByContact(Context context, LSContact tempContact){
+        //update inquiry as well if exists
+        LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(tempContact.getPhoneOne());
+        if (tempInquiry != null) {
+            tempInquiry.setContact(tempContact);
+            tempInquiry.save();
+            tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+            tempInquiry.save();
+            DataSenderAsync dataSenderAsync = new DataSenderAsync(context);
+            dataSenderAsync.execute();
+        }
+    }
 
     public static void Remove(LSCall call) {
         LSInquiry tempInquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());

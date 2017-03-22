@@ -16,18 +16,19 @@ class UnknownProcessor {
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
         // Check if type is incoming , outgoing or missed
+        //new untagged contact is created, saved, entered in call entry
+        LSContact tempContact = new LSContact();
+        tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
+        tempContact.setPhoneOne(call.getContactNumber());
+        tempContact.setContactName(call.getContactName());
+        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+        tempContact.save();
 
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() > 0L) {
             //Incoming with whome Agent have talked
             if (showNotification) {
                 NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
             }
-            //new untagged contact is created, saved, entered in call entry
-            LSContact tempContact = new LSContact();
-            tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
-            tempContact.setPhoneOne(call.getContactNumber());
-            tempContact.setContactName(call.getContactName());
-            tempContact.save();
             InquiryManager.Remove(call);
             // Call Saved
             call.setContact(tempContact);
@@ -45,12 +46,6 @@ class UnknownProcessor {
             if (showNotification) {
                 NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
             }
-            //new untagged contact is created, saved, entered in call entry
-            LSContact tempContact = new LSContact();
-            tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
-            tempContact.setPhoneOne(call.getContactNumber());
-            tempContact.setContactName(call.getContactName());
-            tempContact.save();
             InquiryManager.Remove(call);
             // Call Saved
             call.setContact(tempContact);
