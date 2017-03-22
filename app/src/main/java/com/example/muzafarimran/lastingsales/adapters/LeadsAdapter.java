@@ -66,7 +66,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.callClickListener = new CallClickListener(c);
         //Filtering out colleagues from list
-        if(type!=LSContact.CONTACT_TYPE_COLLEAGUE) {
+        if(type!=LSContact.CONTACT_TYPE_BUSINESS) {
             this.contactLeadType = type;
         }
         //TODO: correct the counting mechanism
@@ -168,7 +168,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
                 @Override
                 public boolean onLongClick(View view) {
                     deleteFlow = true;
-                    setList(LSContact.getContactsByLeadSalesStatus(contactLeadType));
+                    setList(LSContact.getSalesContactsByLeadSalesStatus(contactLeadType));
                     return true;
                 }
             });
@@ -196,7 +196,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
 //                    contact.delete();
                     DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
                     dataSenderAsync.execute();
-                    setList(LSContact.getContactsByLeadSalesStatus(contactLeadType));
+                    setList(LSContact.getSalesContactsByLeadSalesStatus(contactLeadType));
                     Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -331,7 +331,6 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
         RelativeLayout user_details_wrapper;
         ImageButton deleteButton;
         LinearLayout contactDetailsDopDownLayout;
-//        Button detailsButton;
         ImageView moreButton;
         TextView salesLeadStatus;
         RelativeLayout statusRow;
@@ -357,20 +356,4 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
             mContext.startActivity(detailsActivityIntent);
         }
     }
-
-//    private class DetailsButtonClickListener implements View.OnClickListener {
-//        LSContact contact;
-//
-//        public DetailsButtonClickListener(LSContact contact) {
-//            this.contact = contact;
-//        }
-//
-//        @Override
-//        public void onClick(View view) {
-//            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
-//            long contactId = contact.getId();
-//            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-//            mContext.startActivity(detailsActivityIntent);
-//        }
-//    }
 }

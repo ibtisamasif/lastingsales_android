@@ -15,8 +15,9 @@ import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.UntaggedContactsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.UnlabeledContactsAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +33,13 @@ import de.halfbit.tinybus.TinyBus;
 public class UnlabeledContactsCallsFragment extends Fragment {
 
     private static final String TAG = "UntaggedCallFragment";
-    UntaggedContactsAdapter untaggedContactsAdapter;
+    UnlabeledContactsAdapter untaggedContactsAdapter;
     ListView listView = null;
     private List<LSContact> untaggedContacts = new ArrayList<>();
     private Bus mBus;
     private TinyBus bus;
     private ErrorScreenView errorScreenView;
+    private MaterialSearchView searchView;
 
     public static UnlabeledContactsCallsFragment newInstance(int page, String title) {
         UnlabeledContactsCallsFragment fragmentFirst = new UnlabeledContactsCallsFragment();
@@ -58,7 +60,7 @@ public class UnlabeledContactsCallsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        untaggedContactsAdapter = new UntaggedContactsAdapter(getContext());
+        untaggedContactsAdapter = new UnlabeledContactsAdapter(getContext());
         untaggedContactsAdapter.setList(untaggedContacts);
         setHasOptionsMenu(true);
     }
@@ -105,7 +107,7 @@ public class UnlabeledContactsCallsFragment extends Fragment {
 
     private void updateContactssList() {
 
-        List<LSContact> untaggedContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNTAGGED);
+        List<LSContact> untaggedContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
         this.untaggedContacts = untaggedContacts;
         setList(untaggedContacts);
     }
@@ -126,6 +128,19 @@ public class UnlabeledContactsCallsFragment extends Fragment {
         errorScreenView.setErrorImage(R.drawable.delight_inactive);
         errorScreenView.setErrorText(this.getResources().getString(R.string.em_unlabeled_delight));
         listView.setEmptyView(errorScreenView);
+        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                untaggedContactsAdapter.getFilter().filter(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                untaggedContactsAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return view;
     }
 

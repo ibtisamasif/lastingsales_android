@@ -24,7 +24,7 @@ class UnknownProcessor {
             }
             //new untagged contact is created, saved, entered in call entry
             LSContact tempContact = new LSContact();
-            tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
+            tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
             tempContact.setPhoneOne(call.getContactNumber());
             tempContact.setContactName(call.getContactName());
             tempContact.save();
@@ -47,7 +47,7 @@ class UnknownProcessor {
             }
             //new untagged contact is created, saved, entered in call entry
             LSContact tempContact = new LSContact();
-            tempContact.setContactType(LSContact.CONTACT_TYPE_UNTAGGED);
+            tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
             tempContact.setPhoneOne(call.getContactNumber());
             tempContact.setContactName(call.getContactName());
             tempContact.save();

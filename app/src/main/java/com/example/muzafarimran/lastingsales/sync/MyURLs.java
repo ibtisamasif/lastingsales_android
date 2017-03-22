@@ -11,10 +11,12 @@ public class MyURLs {
     public static String ADD_CALL = "http://staging.lastingsales.com/api/v1/call";
     public static String ADD_INQUIRY = "http://staging.lastingsales.com/api/v1/inquiries";
     public static String UPDATE_INQUIRY = "http://staging.lastingsales.com/api/v1/inquiries/";
+    public static String DELETE_INQUIRY = "http://staging.lastingsales.com/api/v1/inquiries/";
     public static String DELETE_CONTACT = "http://staging.lastingsales.com/api/v1/lead/";
     public static String UPDATE_CONTACT = "http://staging.lastingsales.com/api/v1/lead/";
     public static String UPDATE_NOTE = "http://staging.lastingsales.com/api/v1/lead/";
     public static String UPDATE_AGENT = "http://staging.lastingsales.com/api/v1/user";
+    public static String GET_CONTACTS = "http://staging.lastingsales.com/api/v1/lead";
 
     public static final String FILE_UPLOAD_URL = "http://staging.lastingsales.com/api/v1/resource/recording";
 //    public static final String FILE_UPLOAD_URL = "http://54.91.47.130:3000/api/interviewee/img";

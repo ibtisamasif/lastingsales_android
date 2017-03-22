@@ -28,20 +28,14 @@ public class CallClickListener implements View.OnClickListener {
     public void onClick(View v) {
         if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
         }
-        String number = v.getTag().toString();
-//        ArrayList<LSCall> allCallsForThisNumber = LSCall.getCallsFromNumber(PhoneNumberAndCallUtils.numberToInterNationalNumber(number));
-//        if (allCallsForThisNumber != null) {
-//            for (LSCall oneCall : allCallsForThisNumber) {
-//                oneCall.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
-//                oneCall.setCountOfInquiries(49);
-//                oneCall.save();
-//            }
-//        }
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + number));
-        this.context.startActivity(intent);
-        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
-        TinyBus bus = TinyBus.from(context.getApplicationContext());
-        bus.post(mCallEvent);
+        if(v.getTag()!=null) {
+            String number = v.getTag().toString();
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:" + number));
+            this.context.startActivity(intent);
+            MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
+            TinyBus bus = TinyBus.from(context.getApplicationContext());
+            bus.post(mCallEvent);
+        }
     }
 }

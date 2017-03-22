@@ -9,8 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.ColleagueContactsAdapter;
-import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
+import com.example.muzafarimran.lastingsales.adapters.BusinessContactsAdapter;
 
 /**
  * Created by ahmad on 15-Dec-16.
@@ -19,7 +18,7 @@ import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
 public class ColleagueContactDeleteBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     int position;
-    ColleagueContactsAdapter colleagueContactsAdapter;
+    BusinessContactsAdapter businessContactsAdapter;
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
         @Override
@@ -53,7 +52,7 @@ public class ColleagueContactDeleteBottomSheetDialogFragment extends BottomSheet
                 ColleagueContactDeleteConfirmationDialogFragment colleagueContactDeleteConfirmationDialogFragment;
                 colleagueContactDeleteConfirmationDialogFragment = new ColleagueContactDeleteConfirmationDialogFragment();
                 colleagueContactDeleteConfirmationDialogFragment.setPosition(position);
-                colleagueContactDeleteConfirmationDialogFragment.setColleagueContactsAdapter(colleagueContactsAdapter);
+                colleagueContactDeleteConfirmationDialogFragment.setBusinessContactsAdapter(businessContactsAdapter);
                 colleagueContactDeleteConfirmationDialogFragment.show(getFragmentManager(),"Delete Confirm");
                 dismiss();
 
@@ -69,12 +68,12 @@ public class ColleagueContactDeleteBottomSheetDialogFragment extends BottomSheet
         }
     }
 
-    public ColleagueContactsAdapter getColleagueContactsAdapter() {
-        return colleagueContactsAdapter;
+    public BusinessContactsAdapter getBusinessContactsAdapter() {
+        return businessContactsAdapter;
     }
 
-    public void setColleagueContactsAdapter(ColleagueContactsAdapter colleagueContactsAdapter) {
-        this.colleagueContactsAdapter = colleagueContactsAdapter;
+    public void setBusinessContactsAdapter(BusinessContactsAdapter businessContactsAdapter) {
+        this.businessContactsAdapter = businessContactsAdapter;
     }
 
     public BottomSheetBehavior.BottomSheetCallback getmBottomSheetBehaviorCallback() {

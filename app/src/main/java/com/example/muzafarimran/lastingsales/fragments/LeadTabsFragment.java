@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.adapters.LeadsTabsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
@@ -65,16 +65,16 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
             @Override
             public void onClick(View view) {
                 floatingActionMenu.close(true);
-                Intent intent = new Intent(getContext(), AddLeadActivity.class);
-                intent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
+                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
                 startActivity(intent);
             }
         });
         floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddLeadActivity.class);
-                intent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
+                Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
+                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
                 startActivity(intent);
 
             }
@@ -116,7 +116,7 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
 
     @Override
     public void onTabSelectedEvent(int position, String tag) {
-        vpLeads.setCurrentItem(position);
+        vpLeads.setCurrentItem(position);  // TODO crash here samsung
     }
 
     @Subscribe
@@ -127,16 +127,15 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
 
     private void updateTabFigues() {
         //List Taken To Filter out Colleagues
-        ArrayList<LSContact> allCollegues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
         //Leads List
-        List<LSContact> allLeads = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        allLeads.removeAll(allCollegues);
+        List<LSContact> allLeads = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+
         //All Won
-        List<LSContact> allWon = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-        allWon.removeAll(allCollegues);
+        List<LSContact> allWon = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+
         //All Lost
-        List<LSContact> allLost = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-        allLost.removeAll(allCollegues);
+        List<LSContact> allLost = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+
         //InActive Leads List
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
         if (allLeads != null) {
@@ -168,4 +167,5 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
             }
         }
     }
+
 }

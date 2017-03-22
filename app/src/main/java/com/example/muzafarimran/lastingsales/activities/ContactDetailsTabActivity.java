@@ -199,9 +199,9 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.ic_action_edit:
-                Intent addContactScreenIntent = new Intent(getApplicationContext(), AddLeadActivity.class);
-                addContactScreenIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
-                addContactScreenIntent.putExtra(AddLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contactIdString);
+                Intent addContactScreenIntent = new Intent(getApplicationContext(), AddEditLeadActivity.class);
+                addContactScreenIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                addContactScreenIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contactIdString);
                 startActivity(addContactScreenIntent);
                 break;
             case android.R.id.home:

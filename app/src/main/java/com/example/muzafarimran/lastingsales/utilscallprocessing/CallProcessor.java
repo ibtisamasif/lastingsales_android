@@ -15,7 +15,7 @@ class CallProcessor {
 
         LSContact personalContactCheck = LSContact.getContactFromNumber(call.getContactNumber());
         // Check the category of call i.e UnLabeled , Lead or Ignored
-        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_UNTAGGED)) {
+        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
             // Unlabeled
 
             UnlabeledProcessor.Process(mContext, call, showNotification);
@@ -25,7 +25,11 @@ class CallProcessor {
 
             LeadProcessor.Process(mContext, call, showNotification);
 
-        } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+        } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+            // Business Contact
+            BusinessProcessor.Process(mContext, call);
+
+        } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
             // Contact is in Ignored list. Do Nothing
 
         } else {

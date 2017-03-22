@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
     private CallClickListener callClickListener = null;
     private showContactDetaislsListener showContactDetaislsListener = null;
     private String contactType;
-    private LinearLayout noteDetails;
+    private LinearLayout noteDetails = null;
     private FragmentManager supportFragmentManager;
 
 
@@ -61,7 +61,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         this.callClickListener = new CallClickListener(c);
         this.contactType = type;
         //TODO: correct the counting mechanism
-//        this.prospectCount = contacts.indexOf(new LSContact("Leads", null, "separator", null, null, null, null, null, null)) - 1;
         this.leadCount = mContacts.size() - this.prospectCount - 2;
     }
 
@@ -97,7 +96,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         final LSContact contact = (LSContact) getItem(position);
         ViewHolder holder = null;
         if (convertView == null) {
@@ -108,8 +106,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
-            holder.bSales = (Button) convertView.findViewById(R.id.bSalesNonbusinesstem);
-//            holder.bColleague = (Button) convertView.findViewById(R.id.bColleagueNonbusinessItem);
+            holder.bSales = (Button) convertView.findViewById(R.id.bSales);
             holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);
             holder.contactDetailsDopDownLayout.setVisibility(GONE);
             holder.call_icon.setOnClickListener(this.callClickListener);
@@ -153,23 +150,12 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         holder.bSales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(mContext, AddLeadActivity.class);
-                myIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_CONVERT_NON_BUSINESS);
-                myIntent.putExtra(AddLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
+                myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_CONVERT_IGNORED);
+                myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
                 mContext.startActivity(myIntent);
             }
         });
-//        holder.bColleague.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent myIntent = new Intent(mContext, TagNumberAndAddFollowupActivity.class);
-//                myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
-//                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_COLLEAGUE);
-//                myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
-//                mContext.startActivity(myIntent);
-//            }
-//        });
-
         return convertView;
     }
     // for searching
@@ -244,15 +230,6 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         ImageButton deleteButton;
         LinearLayout contactDetailsDopDownLayout;
         Button bSales;
-//        Button bColleague;
-    }
-
-    /*
-    * Hold references to separator tab
-    * */
-    static class separatorViewHolder {
-        TextView salesType;
-        TextView salesTypeCount;
     }
 
     /*
@@ -270,18 +247,15 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         @Override
         public void onClick(View v) {
 
-            if (noteDetails == null) {
-                noteDetails = detailsLayout;
-                noteDetails.setVisibility(View.VISIBLE);
+            if(expanded && noteDetails!=null){
+                noteDetails.setVisibility(View.GONE);
+                noteDetails = null;
+                expanded = false;
             }
-            if (noteDetails.getVisibility() == View.VISIBLE) {
-                noteDetails.setVisibility(GONE);
+            else {
                 noteDetails = detailsLayout;
-                noteDetails.setVisibility(View.VISIBLE);
-            } else {
-                noteDetails.setVisibility(GONE);
                 detailsLayout.setVisibility(View.VISIBLE);
-                noteDetails = detailsLayout;
+                expanded = true;
             }
         }
     }

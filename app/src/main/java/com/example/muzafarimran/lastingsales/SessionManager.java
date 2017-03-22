@@ -83,6 +83,8 @@ public class SessionManager {
 
     private void fetchData() {
         // TODO need to implement
+        AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
+        agentDataFetchAsync.execute();
     }
 
     private void deleteDataIfDifferentUser(String number) {
@@ -94,65 +96,23 @@ public class SessionManager {
 
     private void deleteAllUserData() {
         Log.d(TAG, "Different Agent: deleting data...");
-
         if (LSInquiry.count(LSInquiry.class) > 0) {
             LSInquiry.deleteAll(LSInquiry.class);
-//            List<LSInquiry> inquiryList = LSInquiry.listAll(LSInquiry.class);
-//            if (LSInquiry.count(LSInquiry.class) > 0) {
-//                for (LSInquiry inquiry : inquiryList) {
-//                    inquiry.delete();
-//                }
-//            }
         }
-
         if (LSCall.count(LSCall.class) > 0) {
             LSInquiry.deleteAll(LSCall.class);
-//            List<LSCall> callList = LSCall.listAll(LSCall.class);
-//            if (LSInquiry.count(LSCall.class) > 0) {
-//                for (LSCall call : callList) {
-//                    call.delete();
-//                }
-//            }
         }
-
         if (LSCallRecording.count(LSCallRecording.class) > 0) {
             LSCallRecording.deleteAll(LSCallRecording.class);
-//            List<LSCallRecording> recordingList = LSCallRecording.listAll(LSCallRecording.class);
-//            if (LSCallRecording.count(LSCallRecording.class) > 0) {
-//                for (LSCallRecording recording : recordingList) {
-//                    recording.delete();
-//                }
-//            }
         }
-
         if (LSContact.count(LSContact.class) > 0) {
             LSContact.deleteAll(LSContact.class);
-//            List<LSContact> contactList = LSContact.listAll(LSContact.class);
-//            if (LSContact.count(LSContact.class) > 0) {
-//                for (LSContact contact : contactList) {
-//                    contact.delete();
-//                }
-//            }
         }
-
         if (LSNote.count(LSNote.class) > 0) {
             LSNote.deleteAll(LSNote.class);
-//            List<LSNote> noteList = LSNote.listAll(LSNote.class);
-//            if (LSNote.count(LSNote.class) > 0) {
-//                for (LSNote note : noteList) {
-//                    note.delete();
-//                }
-//            }
         }
-
         if (TempFollowUp.count(TempFollowUp.class) > 0) {
             TempFollowUp.deleteAll(TempFollowUp.class);
-//            List<TempFollowUp> followupList = TempFollowUp.listAll(TempFollowUp.class);
-//            if (TempFollowUp.count(TempFollowUp.class) > 0) {
-//                for (TempFollowUp followup : followupList) {
-//                    followup.delete();
-//                }
-//            }
         }
     }
 
@@ -160,6 +120,7 @@ public class SessionManager {
      * saves the data of user in the Shared preffrences which later can be accessed to perform user specific operations
      */
     public void logoutUser() {
+        deleteAllUserData();
         setLoginTimestamp(00L);
         setLoginToken("");
         setKeyLoginFirstName("");

@@ -29,11 +29,11 @@ public class LSContact extends SugarRecord {
     @Ignore
     public static final String CONTACT_TYPE_SALES = "type_sales";
     @Ignore
-    public static final String CONTACT_TYPE_COLLEAGUE = "type_colleague";
+    public static final String CONTACT_TYPE_BUSINESS = "type_business";
     @Ignore
-    public static final String CONTACT_TYPE_PERSONAL = "type_personal";
+    public static final String CONTACT_TYPE_IGNORED = "type_personal";
     @Ignore
-    public static final String CONTACT_TYPE_UNTAGGED = "type_untagged";
+    public static final String CONTACT_TYPE_UNLABELED = "type_untagged";
 
     //    private int contactId;
     private String contactName;
@@ -74,6 +74,14 @@ public class LSContact extends SugarRecord {
         }
     }
 
+    public static List<LSContact> getSalesContactsByLeadSalesStatus(String leadType) {
+        try {
+            return LSContact.find(LSContact.class, "contact_sales_status = ? and contact_type = ? ", leadType, LSContact.CONTACT_TYPE_SALES);
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
+
     public static List<LSContact> getContactsByLeadSalesStatus(String leadType) {
         try {
             return LSContact.find(LSContact.class, "contact_sales_status = ? ", leadType);
@@ -83,10 +91,8 @@ public class LSContact extends SugarRecord {
     }
 
     public static List<LSContact> getAllInactiveLeadContacts() {
-        try { //TODO check weather below steps are required or not + change time before launching
-            ArrayList<LSContact> allColleagues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-            ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
-            allLeads.removeAll(allColleagues);
+        try {
+            ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getSalesContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
             ArrayList<LSContact> allInactiveLeads = new ArrayList<LSContact>();
             long milisecondsIn3Days = 259200000;
 //            long milliSecondsIn1Min = 30000; // 30 seconds for now
@@ -118,7 +124,7 @@ public class LSContact extends SugarRecord {
     public static List<LSContact> getSalesAndColleguesContacts() {
         try {
             ArrayList<LSContact> salesAndColleguesContacts = new ArrayList<LSContact>();
-            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
             ArrayList<LSContact> contactsSales = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
             salesAndColleguesContacts.addAll(contactsColleagues);
             salesAndColleguesContacts.addAll(contactsSales);
@@ -131,7 +137,7 @@ public class LSContact extends SugarRecord {
     public static List<LSContact> getAllContactsHavingNotes() {
         try {
             ArrayList<LSContact> contactsAllHavingNotes = new ArrayList<LSContact>();
-            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
             ArrayList<LSContact> contactsSales = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
             ArrayList<LSContact> contacts = new ArrayList<LSContact>();
             contacts = contactsSales;
@@ -151,7 +157,7 @@ public class LSContact extends SugarRecord {
     public static List<LSContact> getAllContactsNotHavingNotes() {
         try {
             ArrayList<LSContact> contactsAllNotHavingNotes = new ArrayList<LSContact>();
-            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
             ArrayList<LSContact> contactsSales = (ArrayList<LSContact>)LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
             ArrayList<LSContact> contacts = new ArrayList<LSContact>();
             contacts = contactsSales;

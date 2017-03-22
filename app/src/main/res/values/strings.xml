@@ -65,6 +65,7 @@
     <string name="navigation_drawer_title_contacts">Contacts</string>
     <string name="navigation_drawer_incoming">Calls</string>
     <string name="navigation_drawer_outgoing">Outgoing</string>
+    <string name="navigation_drawer_business">Business Contacts</string>
     <string name="navigation_drawer_unlabeled">Unlabeled Contacts</string>
     <string name="navigation_drawer_non_business">Ignored Contacts</string>
     <string name="add_new_contact">Add New Contact</string>

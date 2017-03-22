@@ -14,7 +14,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
@@ -201,9 +201,9 @@ public class SalesFragment extends SearchFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public List<LSContact> getAllArrangedContactsAccordingToLeadType() {
-        List<LSContact> contactsColle = LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-        List<LSContact> contactsPerso = LSContact.getContactsByType(LSContact.CONTACT_TYPE_PERSONAL);
+    public List<LSContact> getAllArrangedContactsAccordingToLeadType() { // TODO optimize this function. Crashed here too so must fix it.
+        List<LSContact> contactsColle = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
+        List<LSContact> contactsPerso = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
         List<LSContact> contactsToBeRemoved = new ArrayList<>();
         contactsToBeRemoved.addAll(contactsColle);
         contactsToBeRemoved.addAll(contactsPerso);
@@ -267,8 +267,8 @@ public class SalesFragment extends SearchFragment {
     public class ShowAddContactForm implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent myIntent = new Intent(getActivity(), AddLeadActivity.class);
-            myIntent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+            Intent myIntent = new Intent(getActivity(), AddEditLeadActivity.class);
+            myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
             getActivity().startActivity(myIntent);
         }
     }

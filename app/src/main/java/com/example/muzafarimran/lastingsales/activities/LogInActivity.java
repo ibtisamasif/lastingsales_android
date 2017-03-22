@@ -62,7 +62,7 @@ public class LogInActivity extends AppCompatActivity {
         tvEmail.getBackground().clearColorFilter();
         tvPassword.getBackground().clearColorFilter();
 //        hardcoding number and password for develoment speedup purposes
-//        tvEmail.setText("ibtiagent3@gmail.com");
+//        tvEmail.setText("ibtiagent2@gmail.com");
 //        tvPassword.setText("11111111");
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

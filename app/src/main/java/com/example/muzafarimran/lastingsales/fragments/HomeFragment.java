@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.events.ContactTaggedFromUntaggedContactEventModel;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
@@ -136,8 +136,8 @@ public class HomeFragment extends TabFragment {
             @Override
             public void onClick(View view) {
                 floatingActionMenu.close(true);
-                Intent intent = new Intent(getContext(), AddLeadActivity.class);
-                intent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
+                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
                 startActivity(intent);
 
 //                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
@@ -150,8 +150,8 @@ public class HomeFragment extends TabFragment {
             @Override
             public void onClick(View view) {
                 floatingActionMenu.close(true);
-                Intent intent = new Intent(getContext(), AddLeadActivity.class);
-                intent.putExtra(AddLeadActivity.ACTIVITY_LAUNCH_MODE, AddLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
+                Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
+                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
                 startActivity(intent);
 //                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
 //                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
@@ -174,11 +174,12 @@ public class HomeFragment extends TabFragment {
     public void onResume() {
         super.onResume();
         updateHomeFigures();
+        setHasOptionsMenu(false);
     }
 
     private void updateHomeFigures() {
-        ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNTAGGED);
-        ArrayList<LSContact> allCollegues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
+        ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
+        ArrayList<LSContact> allCollegues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
         ArrayList<LSContact> allFilteredContactsAsProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         allFilteredContactsAsProspects.removeAll(allCollegues);
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
@@ -269,14 +270,12 @@ public class HomeFragment extends TabFragment {
         if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
             updateHomeFigures();
         }
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
     public void onContactTaggedFromUntaggedContactEventModel(ContactTaggedFromUntaggedContactEventModel event) {
         Log.d(TAG, "onNoteAddedEvent() called with: event = [" + event + "]");
         updateHomeFigures();
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Override
@@ -293,5 +292,4 @@ public class HomeFragment extends TabFragment {
         Log.d(TAG, "onStop() called");
         super.onStop();
     }
-
 }

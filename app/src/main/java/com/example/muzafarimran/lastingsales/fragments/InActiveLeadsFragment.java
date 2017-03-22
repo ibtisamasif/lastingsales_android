@@ -14,7 +14,6 @@ import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class InActiveLeadsFragment extends  TabFragment{
     ListView listView = null;
 //    ImageView imageView;
     InActiveLeadsAdapter inActiveLeadsAdapter;
-    MaterialSearchView searchView;
+//    MaterialSearchView searchView;
     private TinyBus bus;
     private ErrorScreenView errorScreenView;
 
@@ -77,17 +76,12 @@ public class InActiveLeadsFragment extends  TabFragment{
     public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
         List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
         setList(contacts);
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
     public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
-        List<LSContact> contacts = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        //Filtering out colleagues from list
-        List<LSContact> allCollegues = (List<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_COLLEAGUE);
-        contacts.removeAll(allCollegues);
+        List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
         setList(contacts);
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe
@@ -111,21 +105,21 @@ public class InActiveLeadsFragment extends  TabFragment{
         errorScreenView.setErrorImage(R.drawable.delight_inactive);
         errorScreenView.setErrorText(this.getResources().getString(R.string.em_inactive_delight));
         listView.setEmptyView(errorScreenView);
-        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                inActiveLeadsAdapter.getFilter().filter(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                inActiveLeadsAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-        setHasOptionsMenu(true);
+//        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+//        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                inActiveLeadsAdapter.getFilter().filter(query);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                inActiveLeadsAdapter.getFilter().filter(newText);
+//                return false;
+//            }
+//        });
+//        setHasOptionsMenu(true);
         return view;
     }
 

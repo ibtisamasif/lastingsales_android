@@ -42,6 +42,9 @@ public class SyncStatus {
     public static final String SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED = "inquiry_attended_not_synced";
     public static final String SYNC_STATUS_INQUIRY_ATTENDED_SYNCED = "inquiry_attended_synced";
 
+    public static final String SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED = "inquiry_delete_not_synced";
+    public static final String SYNC_STATUS_INQUIRY_DELETE_SYNCED = "inquiry_delete_synced";
+
     public static final String SYNC_STATUS_RECORDING_NOT_SYNCED = "recording_not_synced";
     public static final String SYNC_STATUS_RECORDING_SYNCED = "recording_synced";
 }

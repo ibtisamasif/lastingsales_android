@@ -175,7 +175,7 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
 //                setList(LSContact.getContactsByType(contactType));
                 SalesContactDeleteBottomSheetDialogFragment salesContactDeleteBottomSheetDialogFragment = new SalesContactDeleteBottomSheetDialogFragment();
                 salesContactDeleteBottomSheetDialogFragment.setPosition(position);
-                salesContactDeleteBottomSheetDialogFragment.show(getSupportFragmentManager(), salesContactDeleteBottomSheetDialogFragment.getTag()); // TODO crash fixx huawei
+                salesContactDeleteBottomSheetDialogFragment.show(getSupportFragmentManager(), salesContactDeleteBottomSheetDialogFragment.getTag()); // TODO Crash on Long press
                 salesContactDeleteBottomSheetDialogFragment.setSalesAdapter(SalesAdapter.this);
                 return true;
             }

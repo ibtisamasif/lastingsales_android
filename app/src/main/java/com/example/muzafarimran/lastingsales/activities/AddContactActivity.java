@@ -108,7 +108,7 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
 //                    collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
 //                } else if (cat.equalsIgnoreCase("collegue") && cat != "") {
 //                    Log.d(TAG, "onCreate: Bundle Colleagues");
-//                    selectedContactType = LSContact.CONTACT_TYPE_COLLEAGUE;
+//                    selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
 //                    salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
 //                    collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
 //
@@ -141,7 +141,7 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
         collegueRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectedContactType = LSContact.CONTACT_TYPE_COLLEAGUE;
+                selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
                 salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
                 personalRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
@@ -150,7 +150,7 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
         personalRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectedContactType = LSContact.CONTACT_TYPE_PERSONAL;
+                selectedContactType = LSContact.CONTACT_TYPE_IGNORED;
                 salesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 collegueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_white_border));
                 personalRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
@@ -198,13 +198,13 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
                         bus.register(mCallEvent);
                         bus.post(mCallEvent);
                         Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
-                    } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+                    } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
                         ColleagueContactAddedEventModel mCallEvent = new ColleagueContactAddedEventModel();
                         TinyBus bus = TinyBus.from(getApplicationContext());
                         bus.register(mCallEvent);
                         bus.post(mCallEvent);
                         Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
-                    } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+                    } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
                         PersonalContactAddedEventModel mCallEvent = new PersonalContactAddedEventModel();
                         TinyBus bus = TinyBus.from(getApplicationContext());
                         bus.register(mCallEvent);
@@ -236,13 +236,13 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
                     bus.register(mCallEvent);
                     bus.post(mCallEvent);
                     Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
-                } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_COLLEAGUE)) {
+                } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
                     ColleagueContactAddedEventModel mCallEvent = new ColleagueContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.register(mCallEvent);
                     bus.post(mCallEvent);
                     Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
-                } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_PERSONAL)) {
+                } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
                     PersonalContactAddedEventModel mCallEvent = new PersonalContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.register(mCallEvent);
