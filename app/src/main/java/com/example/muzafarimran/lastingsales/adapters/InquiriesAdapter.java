@@ -100,7 +100,6 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
             holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
             holder.inquireyCount = (TextView) convertView.findViewById(R.id.inquireyCount);
             this.showcalldetailslistener = new ShowDetailsDropDown(inquiryCall, holder.contactCallDetails);
-            holder.bIgnore = (Button) convertView.findViewById(R.id.bIgnore);
             holder.bTag = (Button) convertView.findViewById(R.id.call_tag_btn);
             holder.call_icon.setOnClickListener(this.callClickListener);
             holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
@@ -151,7 +150,6 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
         holder.time.setText(PhoneNumberAndCallUtils.getTimeAgo(inquiryCall.getBeginTime(), mContext));
         holder.call_icon.setTag(mCalls.get(position).getContactNumber());
 
-        holder.bIgnore.setOnClickListener(new IgnoreAContactClickListener(inquiryCall));
         holder.bTag.setOnClickListener(new TagAContactClickListener(number));
 
         if (inquiryCall.getCountOfInquiries() > 0) {
@@ -226,7 +224,6 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
         RelativeLayout contactCallDetails;
         TextView numberDetailTextView;
         Button bContactCallsdetails;
-        Button bIgnore;
         Button bTag;
         TextView inquireyCount;
     }
@@ -289,25 +286,6 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
             myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
             myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, "");
             mContext.startActivity(myIntent);
-        }
-    }
-
-    private class IgnoreAContactClickListener implements View.OnClickListener {
-        LSInquiry inquiry;
-
-        public IgnoreAContactClickListener(LSInquiry inquiry) {
-            this.inquiry = inquiry;
-        }
-
-        @Override
-        public void onClick(View view) {
-            IgnoredContact.AddAsIgnoredContact(inquiry.getContactNumber(), inquiry.getContactName());
-            if(inquiry.getServerId()!=null) { //TODO if it is null it needs to get that in anyway.
-            inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
-            inquiry.save();
-            }
-            DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
-            dataSenderAsync.execute();
         }
     }
 }

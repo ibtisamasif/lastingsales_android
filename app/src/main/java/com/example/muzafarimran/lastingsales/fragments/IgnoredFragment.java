@@ -77,7 +77,6 @@ public class IgnoredFragment extends TabFragment {
         Log.d(TAG, "onPersonalContactAddedEvent() called with: event = [" + event + "]");
         List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
         setList(contacts);
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     @Subscribe

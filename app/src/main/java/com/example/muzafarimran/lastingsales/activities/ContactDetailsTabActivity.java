@@ -241,7 +241,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     }
 
 //    @Subscribe
-//    public void onSalesContactAddedEventModel(SalesContactAddedEventModel event) {
+//    public void onSalesContactAddedEventModel(LeadContactAddedEventModel event) {
 //        Log.d(TAG, "onSalesContactAddedEventModel: Called");
 //        toolbar.setTitle(selectedContact.getContactName());
 //        setSupportActionBar(toolbar);

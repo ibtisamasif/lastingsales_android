@@ -15,6 +15,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 
 import java.util.Calendar;
 
@@ -70,7 +71,6 @@ public class SessionManager {
     public void loginnUser(String userId, String token, Long timeStamp, String number, String firstName, String lastName, String imagePath) {
         Log.d(TAG, "loginnUser: ");
         deleteDataIfDifferentUser(number);
-        fetchData();
         setLoginNumber(number);
         setLoginToken(token);
         setLoginTimestamp(timeStamp);
@@ -78,6 +78,7 @@ public class SessionManager {
         setKeyLoginFirstName(firstName);
         setKeyLoginLastName(lastName);
         setKeyLoginImagePath(imagePath);
+        fetchData();
         editor.commit();
     }
 

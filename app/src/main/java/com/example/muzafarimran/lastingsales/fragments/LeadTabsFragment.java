@@ -14,6 +14,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.adapters.LeadsTabsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.github.clans.fab.FloatingActionButton;
@@ -109,7 +110,6 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
 
     @Override
     public void onStop() {
-
         Log.d(TAG, "onStop() called");
         super.onStop();
     }
@@ -117,6 +117,12 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
     @Override
     public void onTabSelectedEvent(int position, String tag) {
         vpLeads.setCurrentItem(position);  // TODO crash here samsung
+    }
+
+    @Subscribe
+    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
+        Log.d(TAG, "onSaleContactAddedEventModel() called with: event = [" + event + "]");
+        updateTabFigues();
     }
 
     @Subscribe

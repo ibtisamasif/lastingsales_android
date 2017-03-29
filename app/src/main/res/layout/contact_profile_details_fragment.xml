@@ -34,7 +34,8 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
-                    android:src="@drawable/ic_contact_detail_name_field" />
+                    android:src="@drawable/ic_contact_detail_name_field"
+                    android:tint="@color/colorPrimary"/>
 
                 <TextView
                     android:id="@+id/lead_name_text"
@@ -68,7 +69,8 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
-                    android:src="@drawable/ic_contact_detail_number_field" />
+                    android:src="@drawable/ic_contact_detail_number_field"
+                    android:tint="@color/colorPrimary"/>
 
                 <TextView
                     android:id="@+id/lead_number_text"
@@ -102,7 +104,8 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
-                    android:src="@drawable/ic_contact_detail_email_field" />
+                    android:src="@drawable/ic_contact_detail_email_field"
+                    android:tint="@color/colorPrimary"/>
 
                 <TextView
                     android:id="@+id/lead_email_text"
@@ -136,7 +139,8 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
-                    android:src="@drawable/ic_contact_detail_address_field" />
+                    android:src="@drawable/ic_contact_detail_address_field"
+                    android:tint="@color/colorPrimary"/>
 
                 <TextView
                     android:id="@+id/lead_address_text"
@@ -177,7 +181,8 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
-                    android:src="@drawable/ic_contact_detail_status_field" />
+                    android:src="@drawable/ic_contact_detail_status_field"
+                    android:tint="@color/colorPrimary"/>
 
 
                 <TextView

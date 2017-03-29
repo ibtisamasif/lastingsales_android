@@ -37,7 +37,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_account_circle"
-                        android:contentDescription="@string/lead_picture" />
+                        android:contentDescription="@string/lead_picture"
+                        android:tint="@color/colorPrimary"/>
 
                     <RelativeLayout
                         android:id="@+id/user_call_group_name_time"
@@ -100,7 +101,8 @@
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/ic_call_green" />
+                    android:src="@drawable/ic_call_green"
+                    android:tint="@color/colorPrimary"/>
 
             </RelativeLayout>
 
@@ -140,7 +142,7 @@
                         android:textSize="12dp" />
 
                     <Button
-                        android:id="@+id/bIgnore"
+                        android:id="@+id/call_tag_btn"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="100dp"
                         android:layout_height="27dp"
@@ -148,21 +150,7 @@
                         android:layout_toRightOf="@id/bContactCallsdetails"
                         android:background="@drawable/btn_primary"
                         android:radius="5dip"
-                        android:text="Ignore"
-                        android:textColor="#ffffff"
-                        android:textSize="12dp" />
-
-
-                    <Button
-                        android:id="@+id/call_tag_btn"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="100dp"
-                        android:layout_height="27dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@id/bIgnore"
-                        android:background="@drawable/btn_primary"
-                        android:radius="5dip"
-                        android:text="Add As Lead"
+                        android:text="Track"
                         android:textColor="#ffffff"
                         android:textSize="12dp" />
                 </RelativeLayout>

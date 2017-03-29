@@ -15,7 +15,7 @@ import com.example.muzafarimran.lastingsales.adapters.BusinessContactsAdapter;
  * Created by ahmad on 15-Dec-16.
  */
 
-public class ColleagueContactDeleteBottomSheetDialogFragment extends BottomSheetDialogFragment {
+public class BusinessContactDeleteBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     int position;
     BusinessContactsAdapter businessContactsAdapter;
@@ -49,11 +49,11 @@ public class ColleagueContactDeleteBottomSheetDialogFragment extends BottomSheet
         llDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ColleagueContactDeleteConfirmationDialogFragment colleagueContactDeleteConfirmationDialogFragment;
-                colleagueContactDeleteConfirmationDialogFragment = new ColleagueContactDeleteConfirmationDialogFragment();
-                colleagueContactDeleteConfirmationDialogFragment.setPosition(position);
-                colleagueContactDeleteConfirmationDialogFragment.setBusinessContactsAdapter(businessContactsAdapter);
-                colleagueContactDeleteConfirmationDialogFragment.show(getFragmentManager(),"Delete Confirm");
+                BusinessContactDeleteConfirmationDialogFragment businessContactDeleteConfirmationDialogFragment;
+                businessContactDeleteConfirmationDialogFragment = new BusinessContactDeleteConfirmationDialogFragment();
+                businessContactDeleteConfirmationDialogFragment.setPosition(position);
+                businessContactDeleteConfirmationDialogFragment.setBusinessContactsAdapter(businessContactsAdapter);
+                businessContactDeleteConfirmationDialogFragment.show(getFragmentManager(),"Delete Confirm");
                 dismiss();
 
             }

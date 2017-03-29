@@ -88,8 +88,7 @@
         <activity android:name=".activities.AddContactActivity" />
         <activity
             android:name=".activities.LSContactChooserActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AddNewFollowUpsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -101,7 +100,9 @@
         <activity android:name=".activities.NotesActivity" />
         <activity
             android:name=".activities.AddEditNoteActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base"
+            />
         <activity
             android:name=".activities.AlertDialogActivity"
             android:screenOrientation="portrait"

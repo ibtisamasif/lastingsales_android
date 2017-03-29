@@ -10,8 +10,8 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.LeadsAdapter;
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
-import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.List;
@@ -68,7 +68,7 @@ public class WonFragment extends TabFragment{
     }
 
     @Subscribe
-    public void onColleagueContactAddedEventModel(ColleagueContactAddedEventModel event) {
+    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
         List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
         setList(contacts);
     }

@@ -76,7 +76,7 @@ public class InquiriesFragment extends SearchFragment {
 
     @Subscribe
     public void onCallReceivedEventModel(MissedCallEventModel event) {
-        Log.d(TAG, "onInquiriesEvent() called with: event = [" + event + "]");
+        Log.d(TAG, "onMissedCallEvent() called with: event = [" + event + "]");
         if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
             List<LSInquiry> inquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
             setList(inquiries);

@@ -58,4 +58,9 @@
         <item name="android:textColor">#ffffff</item>
     </style>
 
+    <!-- Contextual ActionBar Used in Add/Edit Notes Screen-->
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+        <item name="android:actionModeBackground">@color/colorPrimary </item>
+    </style>
+
 </resources>

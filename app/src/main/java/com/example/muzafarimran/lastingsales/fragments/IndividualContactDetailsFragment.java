@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
@@ -208,7 +208,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
     }
 
     @Subscribe
-    public void onSalesContactAddedEventModel(SalesContactAddedEventModel event) {
+    public void onSalesContactAddedEventModel(LeadContactAddedEventModel event) {
         Log.d(TAG, "onSalesContactAddedEventModel: CalledInFrag");
 
     }
