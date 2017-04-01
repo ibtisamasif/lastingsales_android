@@ -18,9 +18,13 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
+import com.example.muzafarimran.lastingsales.activities.TypeManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,7 +67,7 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
 
     @Override
     public int getCount() {
-        return filteredData.size();
+        return filteredData.size();  // TODO crash here on searching bilal ignored contacts list
     }
 
     @Override
@@ -137,8 +141,16 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
         holder.bIgnore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String oldType = contact.getContactType();
+                String newType = LSContact.CONTACT_TYPE_IGNORED;
+                TypeManager.ConvertTo(mContext, contact, oldType, newType);
+                if (contact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || contact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                }
                 contact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
                 contact.save();
+                DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext.getApplicationContext());
+                dataSenderAsync.execute();
                 ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
                 setList(allUntaggedContacts);
                 Toast.makeText(mContext, "Added as Ignored Contact!", Toast.LENGTH_SHORT).show();

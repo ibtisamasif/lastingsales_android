@@ -96,18 +96,20 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
                         String contactName = jsonobject.getString("name");
                         String contactNumber = jsonobject.getString("phone");
                         String contactStatus = jsonobject.getString("status");
+                        String lead_type = jsonobject.getString("lead_type");
 
                         Log.d(TAG, "onResponse: ID: " + contactId);
                         Log.d(TAG, "onResponse: Name: " + contactName);
                         Log.d(TAG, "onResponse: Number: " + contactNumber);
                         Log.d(TAG, "onResponse: Status: " + contactStatus);
+                        Log.d(TAG, "onResponse: lead_type: " + lead_type);
 
                         if(LSContact.getContactFromNumber(contactNumber) == null) {
                             LSContact tempContact = new LSContact();
                             tempContact.setServerId(contactId);
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(contactNumber);
-                            tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
+                            tempContact.setContactType(lead_type);
                             tempContact.setContactSalesStatus(contactStatus);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                             tempContact.save();

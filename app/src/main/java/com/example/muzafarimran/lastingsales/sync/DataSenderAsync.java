@@ -98,7 +98,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
     private void addContactsToServer() {
         List<LSContact> contactsList = null;
         if (LSContact.count(LSContact.class) > 0) {
-            contactsList = LSContact.find(LSContact.class, "sync_status = ? and contact_type = ?", SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED, LSContact.CONTACT_TYPE_SALES);
+            contactsList = LSContact.find(LSContact.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
             Log.d(TAG, "addContactsToServer: count : " + contactsList.size());
             for (LSContact oneContact : contactsList) {
                 Log.d(TAG, "Found Contacts");
@@ -166,7 +166,13 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 
                 Map<String, String> params = new HashMap<String, String>();
 
-                params.put("name", "" + contact.getContactName());
+                if (contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+                    params.put("name", "Ignored Contact");
+                } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+                    params.put("name", "Unlabeled Contact");
+                } else {
+                    params.put("name", "" + contact.getContactName());
+                }
                 if (contact.getContactEmail() != null) {
                     params.put("email", "" + contact.getContactEmail());
                 }
@@ -176,6 +182,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 params.put("phone", "" + contact.getPhoneOne());
                 params.put("status", "" + contact.getContactSalesStatus());
                 params.put("api_token", "" + sessionManager.getLoginToken());
+                params.put("lead_type", "" + contact.getContactType());
                 return params;
             }
 
@@ -196,7 +203,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
     private void updateContactsToServer() {
         List<LSContact> contactsList = null;
         if (LSContact.count(LSContact.class) > 0) {
-            contactsList = LSContact.find(LSContact.class, "sync_status = ? and contact_type = ?", SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED, LSContact.CONTACT_TYPE_SALES);
+            contactsList = LSContact.find(LSContact.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
             Log.d(TAG, "updateContactsToServer: count : " + contactsList.size());
             for (LSContact oneContact : contactsList) {
                 Log.d(TAG, "Found Contact : " + oneContact.getContactName());
@@ -218,17 +225,26 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         if (contact.getContactAddress() != null) {
             address = contact.getContactAddress();
         }
-
+        String name;
+        if (contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+            name = "Ignored Contact";
+        }
+        else if(contact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)){
+            name = "Unlabeled Contact";
+        }else {
+            name = contact.getContactName();
+        }
         final String BASE_URL = MyURLs.UPDATE_CONTACT;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendPath("" + contact.getServerId())
-                .appendQueryParameter("name", "" + contact.getContactName())
+                .appendQueryParameter("name", "" + name)
                 .appendQueryParameter("email", "" + email)
                 .appendQueryParameter("phone", "" + contact.getPhoneOne())
                 .appendQueryParameter("address", "" + address)
                 .appendQueryParameter("status", "" + contact.getContactSalesStatus())
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .appendQueryParameter("lead_type", "" + contact.getContactType())
                 .build();
         final String myUrl = builtUri.toString();
         StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
@@ -809,7 +825,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
     private void deleteContactsFromServer() {
         List<LSContact> contactsList = null;
         if (LSContact.count(LSContact.class) > 0) {
-            contactsList = LSContact.find(LSContact.class, "sync_status = ? and contact_type = ?", SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED, LSContact.CONTACT_TYPE_SALES);
+            contactsList = LSContact.find(LSContact.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
             Log.d(TAG, "deleteContactsFromServer: count : " + contactsList.size());
             for (LSContact oneContact : contactsList) {
                 Log.d(TAG, "Found Contact : " + oneContact.getContactName());

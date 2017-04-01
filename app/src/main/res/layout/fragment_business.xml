@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -17,7 +17,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </ListView>
-    </LinearLayout>
+
+        <com.example.muzafarimran.lastingsales.customview.ErrorScreenView
+            android:id="@+id/ivleads_contacts_custom"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+        </com.example.muzafarimran.lastingsales.customview.ErrorScreenView>
+
+    </RelativeLayout>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/material_design_android_floating_action_menu_business"

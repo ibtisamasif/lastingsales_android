@@ -8,8 +8,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
+import android.widget.Toast;
+
+import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.migration.VersionManager;
+import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
+import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
+import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 
 import java.util.Date;
+
+import de.halfbit.tinybus.TinyBus;
 
 public abstract class CallReceiver extends BroadcastReceiver {
 
@@ -18,26 +29,51 @@ public abstract class CallReceiver extends BroadcastReceiver {
     private static Date callStartTime;
     private static boolean isIncoming;
     private static String savedNumber;  //because the passed incoming is only valid in ringing
+    private SessionManager sessionManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        callStartTime = new Date();
-        //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.
-        if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
-            savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
-        } else {
-            String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
-            String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
-            int state = 0;
-            if (stateStr.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
-                state = TelephonyManager.CALL_STATE_IDLE;
-            } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-                state = TelephonyManager.CALL_STATE_OFFHOOK;
-            } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-                state = TelephonyManager.CALL_STATE_RINGING;
-            }
-            onCallStateChanged(context, state, number);
+        VersionManager versionManager = new VersionManager(context);
+        if(!versionManager.runMigrations()){
+            // if migration has failed
+            Toast.makeText(context, "Migration Failed", Toast.LENGTH_SHORT).show();
         }
+        sessionManager = new SessionManager(context);
+        if (!sessionManager.isUserSignedIn()) {
+            return;
+        }
+        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(context);
+        theCallLogEngine.execute();
+        DataSenderAsync dataSenderAsync = new DataSenderAsync(context);
+        dataSenderAsync.execute();
+        IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
+        TinyBus inBus = TinyBus.from(context.getApplicationContext());
+        inBus.post(InCallEvent);
+        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
+        TinyBus mBus = TinyBus.from(context.getApplicationContext());
+        mBus.post(mCallEvent);
+        OutgoingCallEventModel outCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
+        TinyBus outBus = TinyBus.from(context.getApplicationContext());
+        outBus.post(outCallEvent);
+
+
+//        callStartTime = new Date();
+//        //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.
+//        if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
+//            savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
+//        } else {
+//            String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
+//            String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
+//            int state = 0;
+//            if (stateStr.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
+//                state = TelephonyManager.CALL_STATE_IDLE;
+//            } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+//                state = TelephonyManager.CALL_STATE_OFFHOOK;
+//            } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+//                state = TelephonyManager.CALL_STATE_RINGING;
+//            }
+//            onCallStateChanged(context, state, number);
+//        }
     }
 
     //Derived classes should override these to respond to specific events of interest

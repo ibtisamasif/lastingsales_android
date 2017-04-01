@@ -19,6 +19,8 @@ import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 
 import java.util.Calendar;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class SessionManager {
     public static final String TAG = "SessionManager";
@@ -32,6 +34,12 @@ public class SessionManager {
     private static final String KEY_LOGIN_LASTNAME = "user_login_lastname";
     private static final String KEY_LOGIN_IMAGEPATH = "user_login_imagepath";
     private static final String KEY_LOGIN_FIREBASE_REG_ID = "user_login_firebase_reg_id";
+
+    private static final String KEY_LOGIN_MODE = "user_login_mode";
+
+    public static final String MODE_NORMAL = "user_login_normal";
+    public static final String MODE_NEW_INSTALL = "user_login_new_install";
+    public static final String MODE_UPGRADE = "user_login_upgrade";
 
 
     // Sharedpref file name
@@ -52,7 +60,48 @@ public class SessionManager {
         editor = pref.edit();
     }
 
+    public void storeVersionCodeNow() {
+
+        final String PREFS_NAME = PREF_NAME;
+        final String PREF_VERSION_CODE_KEY = "version_code";
+        final int DOESNT_EXIST = -1;
+
+        // Get current version code
+        int currentVersionCode = 0;
+        try {
+            currentVersionCode = _context.getPackageManager().getPackageInfo(_context.getPackageName(), 0).versionCode;
+        } catch (android.content.pm.PackageManager.NameNotFoundException e) {
+            // handle exception
+            e.printStackTrace();
+        }
+
+        // Get saved version code
+        int savedVersionCode = pref.getInt(PREF_VERSION_CODE_KEY, DOESNT_EXIST);
+
+        // Check for first run or upgrade
+        if (currentVersionCode == savedVersionCode) {
+
+            // This is just a normal run
+            Log.d(TAG, "storeVersionCodeNow: NormalRun = 1");
+            setLoginMode(SessionManager.MODE_NORMAL);
+        } else if (savedVersionCode == DOESNT_EXIST) {
+
+            // TODO This is a new install (or the user cleared the shared preferences)
+            Log.d(TAG, "storeVersionCodeNow: NewInstall = 2");
+            setLoginMode(SessionManager.MODE_NEW_INSTALL);
+        } else if (currentVersionCode > savedVersionCode) {
+
+            // TODO This is an upgrade
+            Log.d(TAG, "storeVersionCodeNow: Upgrade = 3");
+            setLoginMode(SessionManager.MODE_UPGRADE);
+        }
+        // Update the shared preferences with the current version code
+        editor.putInt(PREF_VERSION_CODE_KEY, currentVersionCode);
+        editor.commit();
+    }
+
     public Boolean isUserSignedIn() {
+
         if (getLoginToken().equals("")) {
             return false;
         }
@@ -199,6 +248,15 @@ public class SessionManager {
 
     public void setKeyLoginFirebaseRegId(String token) {
         editor.putString(KEY_LOGIN_FIREBASE_REG_ID, token);
+        editor.commit();
+    }
+
+    public String getLoginMode() {
+        return pref.getString(KEY_LOGIN_MODE, "");
+    }
+
+    public void setLoginMode(String mode) {
+        editor.putString(KEY_LOGIN_MODE, mode);
         editor.commit();
     }
 }

@@ -179,11 +179,9 @@ public class HomeFragment extends TabFragment {
         setHasOptionsMenu(false);
     }
 
-    private void updateHomeFigures() { //TODO optimize this function
+    private void updateHomeFigures() {
         ArrayList<LSContact> allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
-        ArrayList<LSContact> allBusinessContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
-        ArrayList<LSContact> allInProgress = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        allInProgress.removeAll(allBusinessContacts);
+
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
 
         List<LSInquiry> allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();

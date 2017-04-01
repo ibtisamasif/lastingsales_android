@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
+import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
@@ -41,6 +42,7 @@ public class BusinessFragment extends TabFragment {
     FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
+    private ErrorScreenView errorScreenView;
 
     public static BusinessFragment newInstance(int page, String title) {
         BusinessFragment fragmentFirst = new BusinessFragment();
@@ -132,6 +134,10 @@ public class BusinessFragment extends TabFragment {
 
         listView = (ListView) view.findViewById(R.id.collegue_contacts_list);
         listView.setAdapter(businessContactsAdapter);
+        errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
+        errorScreenView.setErrorImage(R.drawable.delight_lost);
+        errorScreenView.setErrorText(this.getResources().getString(R.string.em_business_delight));
+        listView.setEmptyView(errorScreenView);
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
