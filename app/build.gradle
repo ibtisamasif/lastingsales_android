@@ -8,11 +8,19 @@ android {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 8
-        versionName "1.5"
+        versionCode 9
+        versionName "1.6"
         jackOptions {
             enabled false
         }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('E:/ibtii/work/Vivid/configuration data/lskey.jks')
+            storePassword "J7Z/}aB*6'r7q+A~"
+            keyAlias "lastingSales"
+            keyPassword "J7Z/}aB*6'r7q+A~"        }
     }
 
     buildTypes {
@@ -62,11 +70,10 @@ dependencies {
     compile 'com.google.firebase:firebase-core:10.2.0'
     compile 'com.google.firebase:firebase-messaging:10.2.0'
     compile 'com.google.firebase:firebase-crash:10.2.0'
-//    compile 'com.aykuttasil:callrecord:1.2.1'
+    //    compile 'com.aykuttasil:callrecord:1.2.1'
     compile files('libs/httpclient-4.3.6.jar')
     compile files('libs/httpcore-4.3.3.jar')
     compile files('libs/httpmime-4.3.6.jar')
     compile 'org.apache.commons:commons-lang3:3.5'
-
 }
 apply plugin: 'com.google.gms.google-services'

@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ import static android.view.View.GONE;
  * Created by MUZAFAR IMRAN on 9/19/20
  */
 public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable {
-
+    private static final String TAG = "UnlabeledContactsAdapte";
     private final static int ITEM_TYPES = 2;
     public Context mContext;
     public ShowContactCallDetails detailsListener = null;
@@ -48,6 +49,7 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
     private CallClickListener callClickListener = null;
     private ShowDetailsDropDown showcalldetailslistener = null;
     private List<LSContact> filteredData;
+
 
     public UnlabeledContactsAdapter(Context c) {
         this.mContext = c;
@@ -144,7 +146,9 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
                 String oldType = contact.getContactType();
                 String newType = LSContact.CONTACT_TYPE_IGNORED;
                 TypeManager.ConvertTo(mContext, contact, oldType, newType);
-                if (contact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || contact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+                if (contact.getSyncStatus() == null) {
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+                } else if (contact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || contact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                 }
                 contact.setContactType(LSContact.CONTACT_TYPE_IGNORED);

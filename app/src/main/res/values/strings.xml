@@ -70,7 +70,7 @@
     <string name="navigation_drawer_non_business">Ignored Contacts</string>
     <string name="add_new_contact">Add New Contact</string>
     <string name="title">Title</string>
-    <string name="non_busines_capital">Ignore</string>
+    <string name="non_busines_capital">IGNORE</string>
     <string name="colleague_capital">COLLEAGUE</string>
     <string name="salesCapital">TRACK</string>
     <string name="connections">Connections</string>
