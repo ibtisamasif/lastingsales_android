@@ -68,8 +68,8 @@ public class InProgressFragment extends TabFragment{
         bus.unregister(this);
     }
 
-    @Subscribe
-    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
+    @Subscribe(mode= Subscribe.Mode.Main)
+    public void onLeadContactAddedEventModel(LeadContactAddedEventModel event) {
         List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         setList(contacts);
     }

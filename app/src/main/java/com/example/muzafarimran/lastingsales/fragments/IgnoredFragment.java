@@ -77,7 +77,7 @@ public class IgnoredFragment extends TabFragment {
     @Subscribe
     public void onPersonalContactAddedEventModel(PersonalContactAddedEventModel event) {
         Log.d(TAG, "onPersonalContactAddedEvent() called with: event = [" + event + "]");
-        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
+        List<LSContact> contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_IGNORED);
         setList(contacts);
     }
 
@@ -92,7 +92,7 @@ public class IgnoredFragment extends TabFragment {
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
+        List<LSContact> contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_IGNORED);
         setList(contacts);
     }
 

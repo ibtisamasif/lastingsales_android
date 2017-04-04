@@ -6,6 +6,8 @@ import android.os.Build;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,8 +20,6 @@ import java.util.Objects;
 
 public class LSContact extends SugarRecord {
 
-//    @Ignore
-//    public static final String SALES_STATUS_PROSTPECT = "prospect";
     @Ignore
     public static final String SALES_STATUS_INPROGRESS = "InProgress";
     @Ignore
@@ -35,7 +35,6 @@ public class LSContact extends SugarRecord {
     @Ignore
     public static final String CONTACT_TYPE_UNLABELED = "type_untagged";
 
-    //    private int contactId;
     private String contactName;
     private String contactEmail;
     private String contactType;
@@ -66,6 +65,15 @@ public class LSContact extends SugarRecord {
         this.contactAddress = contactAddress;
     }
 
+    public static List<LSContact> getContactsByTypeInDescOrder(String type) {
+        try {
+            return Select.from(LSContact.class).where(Condition.prop("contact_type").eq(type)).orderBy("id DESC").list();
+//            return LSContact.find(LSContact.class, "contact_type = ? ", type);
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
+
     public static List<LSContact> getContactsByType(String type) {
         try {
             return LSContact.find(LSContact.class, "contact_type = ? ", type);
@@ -73,6 +81,15 @@ public class LSContact extends SugarRecord {
             return new ArrayList<LSContact>();
         }
     }
+
+
+//    public static List<LSContact> getContactsListArrangedByLastContacted(String leadType) {
+//        try {
+//            return LSContact.find(LSContact.class,  "contact_type = ? ", LSContact.CONTACT_TYPE_UNLABELED);
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
 
     public static List<LSContact> getSalesContactsByLeadSalesStatus(String leadType) {
         try {

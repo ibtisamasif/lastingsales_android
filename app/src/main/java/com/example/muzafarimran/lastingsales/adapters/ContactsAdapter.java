@@ -21,6 +21,7 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,10 +117,17 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
             ((ViewGroup) holder.user_details_wrapper.getParent()).removeView(contact_details);
         }
         holder.contactDetailsDopDownLayout.setVisibility(GONE);
-        if (contact.getContactName() != null) {
-            holder.name.setText(contact.getContactName());
-        } else {
+        if (contact.getContactName() == null) {
             holder.name.setText(contact.getPhoneOne());
+        } else if (contact.getContactName().equals("Ignored Contact")) {
+            String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, contact.getPhoneOne());
+            if (name != null) {
+                holder.name.setText(name);
+            } else {
+                holder.name.setText(contact.getPhoneOne());
+            }
+        } else {
+            holder.name.setText(contact.getContactName());
         }
         holder.user_details_wrapper.setTag(position);
         holder.number.setText(contact.getPhoneOne());
@@ -247,12 +255,11 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         @Override
         public void onClick(View v) {
 
-            if(expanded && noteDetails!=null){
+            if (expanded && noteDetails != null) {
                 noteDetails.setVisibility(View.GONE);
                 noteDetails = null;
                 expanded = false;
-            }
-            else {
+            } else {
                 noteDetails = detailsLayout;
                 detailsLayout.setVisibility(View.VISIBLE);
                 expanded = true;
