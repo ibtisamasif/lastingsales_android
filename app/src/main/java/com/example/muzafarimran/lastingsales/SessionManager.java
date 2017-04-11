@@ -12,6 +12,7 @@ import android.util.Log;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
@@ -132,7 +133,6 @@ public class SessionManager {
     }
 
     private void fetchData() {
-        // TODO need to implement
         AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
         agentDataFetchAsync.execute();
     }
@@ -163,6 +163,9 @@ public class SessionManager {
         }
         if (TempFollowUp.count(TempFollowUp.class) > 0) {
             TempFollowUp.deleteAll(TempFollowUp.class);
+        }
+        if (LSDynamicColumns.count(LSDynamicColumns.class) > 0) {
+            LSDynamicColumns.deleteAll(LSDynamicColumns.class);
         }
     }
 

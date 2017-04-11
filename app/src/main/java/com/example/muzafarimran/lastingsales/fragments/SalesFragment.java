@@ -214,7 +214,7 @@ public class SalesFragment extends SearchFragment {
         arrangedContacts.addAll(contactsLe);
         arrangedContacts.addAll(contactsLo);
         arrangedContacts.addAll(contactsWo);
-        arrangedContacts.removeAll(contactsToBeRemoved);
+        arrangedContacts.removeAll(contactsToBeRemoved); //crash note 4
 
         return arrangedContacts;
     }

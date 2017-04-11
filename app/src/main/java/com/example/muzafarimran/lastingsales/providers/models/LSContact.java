@@ -50,6 +50,8 @@ public class LSContact extends SugarRecord {
     private boolean detailsDropDownOpen;
     private String syncStatus;
     private String serverId;
+    private String dynamicValues;
+
 
     public LSContact() {
     }
@@ -289,43 +291,44 @@ public class LSContact extends SugarRecord {
         return allNotesOfThisContact;
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    @Override
-    public boolean equals(Object obj) {
-        LSContact c = (LSContact) obj;
-        return (
-                Objects.equals(c.getContactName(), this.contactName) &&
-                        Objects.equals(c.getContactEmail(), this.contactEmail) &&
-                        Objects.equals(c.getContactType(), this.contactType) &&
-                        Objects.equals(c.getPhoneOne(), this.phoneOne) &&
-                        Objects.equals(c.getPhoneTwo(), this.phoneTwo) &&
-                        Objects.equals(c.getContactCompany(), this.contactCompany) &&
-                        Objects.equals(c.getContactDescription(), this.contactDescription) &&
-                        Objects.equals(c.getContactAddress(), this.contactAddress) &&
-                        Objects.equals(c.getContactCreated_at(), this.contactCreated_at) &&
-                        Objects.equals(c.getContactUpdated_at(), this.contactUpdated_at) &&
-                        Objects.equals(c.getContactDeleted_at(), this.contactDeleted_at) &&
-                        Objects.equals(c.getContactSalesStatus(), this.contactSalesStatus)
-        );
-    }
 
-    @Override
-    public int hashCode() {
-        return
-                (this.contactName != null ? this.contactName.hashCode() : 0) +
-                        (this.contactEmail != null ? this.contactEmail.hashCode() : 0) +
-                        (this.contactType != null ? this.contactType.hashCode() : 0) +
-                        (this.phoneOne != null ? this.phoneOne.hashCode() : 0) +
-                        (this.phoneTwo != null ? this.phoneTwo.hashCode() : 0) +
-                        (this.contactCompany != null ? this.contactCompany.hashCode() : 0) +
-                        (this.contactDescription != null ? this.contactDescription.hashCode() : 0) +
-                        (this.contactAddress != null ? this.contactAddress.hashCode() : 0) +
-                        (this.contactCreated_at != null ? this.contactCreated_at.hashCode() : 0) +
-                        (this.contactUpdated_at != null ? this.contactUpdated_at.hashCode() : 0) +
-                        (this.contactDeleted_at != null ? this.contactDeleted_at.hashCode() : 0) +
-                        (this.contactSalesStatus != null ? this.contactSalesStatus.hashCode() : 0)
-                ;
-    }
+//    @TargetApi(Build.VERSION_CODES.KITKAT)
+//    @Override
+//    public boolean equals(Object obj) {
+//        LSContact c = (LSContact) obj;
+//        return (
+//                Objects.equals(c.getContactName(), this.contactName) &&
+//                        Objects.equals(c.getContactEmail(), this.contactEmail) &&
+//                        Objects.equals(c.getContactType(), this.contactType) &&
+//                        Objects.equals(c.getPhoneOne(), this.phoneOne) &&
+//                        Objects.equals(c.getPhoneTwo(), this.phoneTwo) &&
+//                        Objects.equals(c.getContactCompany(), this.contactCompany) &&
+//                        Objects.equals(c.getContactDescription(), this.contactDescription) &&
+//                        Objects.equals(c.getContactAddress(), this.contactAddress) &&
+//                        Objects.equals(c.getContactCreated_at(), this.contactCreated_at) &&
+//                        Objects.equals(c.getContactUpdated_at(), this.contactUpdated_at) &&
+//                        Objects.equals(c.getContactDeleted_at(), this.contactDeleted_at) &&
+//                        Objects.equals(c.getContactSalesStatus(), this.contactSalesStatus)
+//        );
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return
+//                (this.contactName != null ? this.contactName.hashCode() : 0) +
+//                        (this.contactEmail != null ? this.contactEmail.hashCode() : 0) +
+//                        (this.contactType != null ? this.contactType.hashCode() : 0) +
+//                        (this.phoneOne != null ? this.phoneOne.hashCode() : 0) +
+//                        (this.phoneTwo != null ? this.phoneTwo.hashCode() : 0) +
+//                        (this.contactCompany != null ? this.contactCompany.hashCode() : 0) +
+//                        (this.contactDescription != null ? this.contactDescription.hashCode() : 0) +
+//                        (this.contactAddress != null ? this.contactAddress.hashCode() : 0) +
+//                        (this.contactCreated_at != null ? this.contactCreated_at.hashCode() : 0) +
+//                        (this.contactUpdated_at != null ? this.contactUpdated_at.hashCode() : 0) +
+//                        (this.contactDeleted_at != null ? this.contactDeleted_at.hashCode() : 0) +
+//                        (this.contactSalesStatus != null ? this.contactSalesStatus.hashCode() : 0)
+//                ;
+//    }
 
     public boolean isDetailsDropDownOpen() {
         return detailsDropDownOpen;
@@ -444,6 +447,14 @@ public class LSContact extends SugarRecord {
 
     public void setServerId(String serverId) {
         this.serverId = serverId;
+    }
+
+    public String getDynamicValues() {
+        return dynamicValues;
+    }
+
+    public void setDynamicValues(String dynamicValues) {
+        this.dynamicValues = dynamicValues;
     }
 
     @Override

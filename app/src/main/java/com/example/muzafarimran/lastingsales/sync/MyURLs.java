@@ -18,6 +18,7 @@ public class MyURLs {
     public static String UPDATE_AGENT = "http://api.lastingsales.com/api/v1/user";
     public static String GET_CONTACTS = "http://api.lastingsales.com/api/v1/lead";
     public static String GET_NOTES = "http://api.lastingsales.com/api/v1/lead";
+    public static String GET_COLUMNS = "http://api.lastingsales.com/api/v1/column";
 
 
     public static final String FILE_UPLOAD_URL = "http://api.lastingsales.com/api/v1/resource/recording";

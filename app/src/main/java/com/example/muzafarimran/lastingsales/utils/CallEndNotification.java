@@ -98,7 +98,7 @@ public class CallEndNotification {
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(number_or_name)
                 .setTicker("Lasting Sales")
-                .setStyle(new Notification.BigTextStyle().bigText("Do You Want To Tag?"))
+                .setStyle(new Notification.BigTextStyle().bigText("Please Specify Your Business Call?"))
                 .setAutoCancel(true)
                 .addAction(R.drawable.ic_untrack_darkgray, "Ignore", pIntentNonBusiness)
                 .addAction(R.drawable.sales_icon_croped, "Track", pIntentSales)

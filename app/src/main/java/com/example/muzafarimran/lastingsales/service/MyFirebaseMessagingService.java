@@ -110,10 +110,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     String id = payload.getString("id");
                     String name = payload.getString("name");
-//                    String email = data.getString("email");  // Json Exception: No value for email
+                    String email = null;
+                    if (payload.has("email")) {
+                        email = data.getString("email");
+                    }
                     String phone = payload.getString("phone");
-//                    String address = data.getString("address");
+                    String address = null;
+                    if (payload.has("address")) {
+                        address = data.getString("address");
+                    }
                     String status = payload.getString("status");
+
+                    String dynamic_values = null;
+                    if (payload.has("dynamic_values")) {
+                        dynamic_values = payload.getString("dynamic_values");
+                    }
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
 
@@ -124,23 +135,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         tempContact.setPhoneOne(phone);
                         tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                         tempContact.setContactSalesStatus(status);
+                        if (dynamic_values != null) {
+                            tempContact.setDynamicValues(dynamic_values);
+                        }
                         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                         tempContact.save();
                     } else {
                         LSContact contact = new LSContact();
                         contact.setServerId(id);
                         contact.setContactName(name);
-//                  contact.setContactEmail(email);
+                        if (email != null) {
+                            contact.setContactEmail(email);
+                        }
                         contact.setPhoneOne(phone);
-//                  contact.setContactAddress(address);
+                        if (address != null) {
+                            contact.setContactAddress(address);
+                        }
                         contact.setContactType(LSContact.CONTACT_TYPE_SALES);
                         contact.setContactSalesStatus(status);
+                        if (dynamic_values != null) {
+                            contact.setDynamicValues(dynamic_values);
+                        }
                         contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                         contact.save();
                         Log.e(TAG, "Post From Local DB: " + contact.getContactName());
-                  LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                  TinyBus bus = TinyBus.from(getApplicationContext());
-                  bus.post(mCallEvent);
+                        LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                        TinyBus bus = TinyBus.from(getApplicationContext());
+                        bus.post(mCallEvent);
                     }
                 } else if (action.equals("put")) {
                     String id = payload.getString("id");
@@ -150,7 +171,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String address = payload.getString("address");
                     String status = payload.getString("status");
                     String lead_type = payload.getString("lead_type");
-
+                    String dynamic_values = null;
+                    if (payload.has("dynamic_values")) {
+                        dynamic_values = payload.getString("dynamic_values");
+                    }
 
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
@@ -160,11 +184,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     contact.setPhoneOne(phone);
                     contact.setContactAddress(address);
                     contact.setContactSalesStatus(status);
+                    if (dynamic_values != null) {
+                        contact.setDynamicValues(dynamic_values);
+                    }
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                     String oldType = contact.getContactType();
                     String newType = lead_type;
-                    TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType, "FCM");
-
+                    if (!oldType.equals(newType)) {
+                        TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType, "FCM");
+                    } else {
+                        contact.save();
+                    }
                     Log.e(TAG, "Put From Local DB: " + contact.getContactName());
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());

@@ -157,7 +157,6 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         }) {
             @Override
@@ -178,6 +177,9 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 }
                 if (contact.getContactAddress() != null) {
                     params.put("address", "" + contact.getContactAddress());
+                }
+                if (contact.getDynamicValues() != null) {
+                    params.put("address", "" + contact.getDynamicValues());
                 }
                 params.put("phone", "" + contact.getPhoneOne());
                 params.put("status", "" + contact.getContactSalesStatus());
@@ -245,6 +247,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 .appendQueryParameter("status", "" + contact.getContactSalesStatus())
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .appendQueryParameter("lead_type", "" + contact.getContactType())
+                .appendQueryParameter("dynamic_values", "" + contact.getDynamicValues())
                 .build();
         final String myUrl = builtUri.toString();
         StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
@@ -871,6 +874,18 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteContact");
+                try {
+                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                    int responseCode = jObj.getInt("responseCode");
+                    if (responseCode == 259) {
+                        contact.delete();
+                        LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
+                        TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                        bus.post(mCallEvent);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }) {
         };
