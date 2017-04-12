@@ -72,22 +72,28 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
+        agentDataFetchAsync.execute();
+
 //        ArrayList<LSCall> calls = (ArrayList<LSCall>) LSCall.getAllUniqueCallsInDescendingOrder();
 
         //Version Control
         VersionManager versionManager = new VersionManager(getApplicationContext());
         if(!versionManager.runMigrations()){
-         // if migration has failed
+            // if migration has failed
             Toast.makeText(getApplicationContext(), "Migration Failed", Toast.LENGTH_SHORT).show();
         }
-        /*
+
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Bundle bundle = new Bundle();
         //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle); */
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
 
 //        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+
+
+
         Log.d(TAG, "onCreate: DB name: " +getDatabasePath("sugar_example").getAbsolutePath());
 
         setContentView(R.layout.activity_navigation_drawer);

@@ -243,7 +243,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
         Display display = ((WindowManager) getActivity().getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int width = display.getWidth() / 2;
         Log.d(TAG, "Display SIZE: "+display);
-        List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
+        List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();// TODO if column is null dont render view
         Log.d(TAG, "onCreateView: Size: " + allColumns.size());
         for (int i = 0; i < allColumns.size(); i++) {
             LinearLayout l = new LinearLayout(getContext());

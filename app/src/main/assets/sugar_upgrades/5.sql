@@ -1,1 +1,1 @@
-alter table LS_CONTACT add dynamic_values text;
+--alter table LS_CONTACT add dynamic_values text;

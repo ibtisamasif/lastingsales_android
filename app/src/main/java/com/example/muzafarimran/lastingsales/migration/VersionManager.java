@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import java.util.List;
@@ -151,7 +152,42 @@ public class VersionManager {
                 return false;
             }
 
-        } else {
+        }
+        else if (version == 10) {
+            try {
+                sessionManager.storeVersionCodeNow();
+                Log.d(TAG, "func: Running Script for Dynamic Columns");
+                if (sessionManager.getLoginMode().equals(SessionManager.MODE_NORMAL)) {
+                    Log.d(TAG, "func: case1");
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_NEW_INSTALL)) {
+                    Log.d(TAG, "func: case2");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_UPGRADE)) {
+                    Log.d(TAG, "func: case3");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+//                    LSDynamicColumns lsDynamicColumns = new LSDynamicColumns();
+//                    lsDynamicColumns.setName("Name");
+//                    lsDynamicColumns.save();
+////                    lsDynamicColumns.delete();
+//
+//                    LSContact lsContact = new LSContact();
+//                    lsContact.setContactName("name");
+//                    lsContact.setDynamicValues("dynVal");
+//                    lsContact.save();
+//                    lsContact.delete();
+                    return true;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        else {
             return true;
         }
     }

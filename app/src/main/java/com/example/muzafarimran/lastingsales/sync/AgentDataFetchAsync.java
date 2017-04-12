@@ -105,6 +105,18 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
                         Log.d(TAG, "onResponse: updated_at: " + updated_at);
                         Log.d(TAG, "onResponse: company_id: " + company_id);
 
+//                        LSContact lsContact = new LSContact();
+//                        lsContact.setContactName("name");
+//                        lsContact.setDynamicValues("dynVal");
+//                        lsContact.save();
+//                        lsContact.delete();
+//
+//                        LSDynamicColumns lsDynamicColumns = new LSDynamicColumns();
+//                        lsDynamicColumns.setName("Name");
+//                        lsDynamicColumns.save();
+//                        Log.d(TAG, "CHECKKKKKKKKKKKKKKKKKKKKkkonResponse: "+lsDynamicColumns.getName());
+//                        lsDynamicColumns.delete();
+
                         LSDynamicColumns checkColumn = LSDynamicColumns.getColumnFromServerId(id);
                         if (checkColumn == null) {
                             LSDynamicColumns newColumn = new LSDynamicColumns();

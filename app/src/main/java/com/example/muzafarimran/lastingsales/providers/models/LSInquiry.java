@@ -34,15 +34,23 @@ public class LSInquiry extends SugarRecord {
     public LSInquiry() {
     }
 
-    public static List<LSInquiry> getAllPendingInquiriesInDescendingOrder (){
-        ArrayList<LSInquiry> allInquiries = (ArrayList<LSInquiry>) Select.from(LSInquiry.class).where(Condition.prop("status").eq(LSInquiry.INQUIRY_STATUS_PENDING)).orderBy("begin_time DESC").list();
-        return  allInquiries;
+    public static List<LSInquiry> getAllPendingInquiriesInDescendingOrder() {
+        try {
+            ArrayList<LSInquiry> allInquiries = (ArrayList<LSInquiry>) Select.from(LSInquiry.class).where(Condition.prop("status").eq(LSInquiry.INQUIRY_STATUS_PENDING)).orderBy("begin_time DESC").list();
+            return allInquiries;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-@Deprecated
-    public static List<LSInquiry> getAllInquiriesInDescendingOrder (){
-        ArrayList<LSInquiry> allInquiries = (ArrayList<LSInquiry>) Select.from(LSInquiry.class).orderBy("begin_time DESC").list();
-        return  allInquiries;
+    @Deprecated
+    public static List<LSInquiry> getAllInquiriesInDescendingOrder() {
+        try {
+            ArrayList<LSInquiry> allInquiries = (ArrayList<LSInquiry>) Select.from(LSInquiry.class).orderBy("begin_time DESC").list();
+            return allInquiries;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static LSInquiry getPendingInquiryByNumberIfExists(String number) {
