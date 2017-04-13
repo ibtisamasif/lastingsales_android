@@ -136,7 +136,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                         tempContact.setContactSalesStatus(status);
                         if (dynamic_values != null) {
-                            tempContact.setDynamic(dynamic_values);
+                            tempContact.setDynamicValues(dynamic_values);
                         }
                         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                         tempContact.save();
@@ -154,7 +154,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         contact.setContactType(LSContact.CONTACT_TYPE_SALES);
                         contact.setContactSalesStatus(status);
                         if (dynamic_values != null) {
-                            contact.setDynamic(dynamic_values);
+                            contact.setDynamicValues(dynamic_values);
                         }
                         contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                         contact.save();
@@ -185,7 +185,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     contact.setContactAddress(address);
                     contact.setContactSalesStatus(status);
                     if (dynamic_values != null) {
-                        contact.setDynamic(dynamic_values);
+                        contact.setDynamicValues(dynamic_values);
                     }
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                     String oldType = contact.getContactType();
@@ -200,6 +200,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.post(mCallEvent);
                 } else if (action.equals("delete")) {
+                    //TODO
                     String id = payload.getString("id");
                     LSContact contact = LSContact.getContactFromServerId(id);
                     Log.e(TAG, "handleDataMessage: contact: " + contact.toString());
@@ -227,6 +228,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     bus.post(mNoteAdded);
 
                 } else if (action.equals("put")) {
+                    // TODO Notes Update
                     Log.d(TAG, "handleDataMessage: NOTE PUT");
                     String id = payload.getString("id");
                     String description = payload.getString("description");
@@ -238,6 +240,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     bus.post(mNoteAdded);
 
                 } else if (action.equals("delete")) {
+                    // TODO Notes Delete
                     Log.d(TAG, "handleDataMessage: NOTE delete");
                     String id = payload.getString("id");
                     LSNote note = LSNote.getNoteByServerId(id);

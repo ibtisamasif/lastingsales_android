@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">LastingSales</string>
     <string name="title_activity_splash">LastingSales</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nameOfUser">Lorem Ipsum</string>
     <string name="viewPublicProfile">View public profile</string>
@@ -64,7 +65,7 @@
     <string name="navigation_drawer_title_contacts">Contacts</string>
     <string name="navigation_drawer_incoming">Calls</string>
     <string name="navigation_drawer_outgoing">Outgoing</string>
-    <string name="navigation_drawer_colleague">Colleague Contacts</string>
+    <string name="navigation_drawer_business">Business Contacts</string>
     <string name="navigation_drawer_unlabeled">Unlabeled Contacts</string>
     <string name="navigation_drawer_non_business">Ignored Contacts</string>
     <string name="add_new_contact">Add New Contact</string>

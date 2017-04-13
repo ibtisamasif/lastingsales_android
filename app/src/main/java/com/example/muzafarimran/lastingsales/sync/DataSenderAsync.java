@@ -165,16 +165,21 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 
                 Map<String, String> params = new HashMap<String, String>();
 
-                params.put("name", "" + contact.getContactName());
-
+                if (contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+                    params.put("name", "Ignored Contact");
+                } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+                    params.put("name", "Unlabeled Contact");
+                } else {
+                    params.put("name", "" + contact.getContactName());
+                }
                 if (contact.getContactEmail() != null) {
                     params.put("email", "" + contact.getContactEmail());
                 }
                 if (contact.getContactAddress() != null) {
                     params.put("address", "" + contact.getContactAddress());
                 }
-                if (contact.getDynamic() != null) {
-                    params.put("address", "" + contact.getDynamic());
+                if (contact.getDynamicValues() != null) {
+                    params.put("address", "" + contact.getDynamicValues());
                 }
                 params.put("phone", "" + contact.getPhoneOne());
                 params.put("status", "" + contact.getContactSalesStatus());
@@ -222,18 +227,27 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         if (contact.getContactAddress() != null) {
             address = contact.getContactAddress();
         }
+        String name;
+        if (contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+            name = "Ignored Contact";
+        }
+        else if(contact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)){
+            name = "Unlabeled Contact";
+        }else {
+            name = contact.getContactName();
+        }
         final String BASE_URL = MyURLs.UPDATE_CONTACT;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendPath("" + contact.getServerId())
-                .appendQueryParameter("name", "" + contact.getContactName())
+                .appendQueryParameter("name", "" + name)
                 .appendQueryParameter("email", "" + email)
                 .appendQueryParameter("phone", "" + contact.getPhoneOne())
                 .appendQueryParameter("address", "" + address)
                 .appendQueryParameter("status", "" + contact.getContactSalesStatus())
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .appendQueryParameter("lead_type", "" + contact.getContactType())
-                .appendQueryParameter("dynamic_values", "" + contact.getDynamic())
+                .appendQueryParameter("dynamic_values", "" + contact.getDynamicValues())
                 .build();
         final String myUrl = builtUri.toString();
         StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {

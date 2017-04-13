@@ -195,6 +195,7 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
                         tempContact.save();
                         LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                         TinyBus bus = TinyBus.from(getApplicationContext());
+                        bus.register(mCallEvent); //TODO why it is here it will crash app
                         bus.post(mCallEvent);
                         Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
                     } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.fragments.BusinessFragment;
 import com.example.muzafarimran.lastingsales.fragments.IgnoredFragment;
 import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
-import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
+import com.example.muzafarimran.lastingsales.fragments.UnlabeledContactsCallsFragment;
 
 @Deprecated
 public class ContactsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -24,7 +24,7 @@ public class ContactsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return SalesFragment.newInstance(0, "sales");
             case 1:
-                return UnlabeledFragment.newInstance(2, "Outgoing Calls");
+                return UnlabeledContactsCallsFragment.newInstance(2, "Outgoing Calls");
             case 2:
                 return BusinessFragment.newInstance(1, "colleagues");
             case 3:
