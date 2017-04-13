@@ -86,13 +86,9 @@ public class SessionManager {
             Log.d(TAG, "storeVersionCodeNow: NormalRun = 1");
             setLoginMode(SessionManager.MODE_NORMAL);
         } else if (savedVersionCode == DOESNT_EXIST) {
-
-            // TODO This is a new install (or the user cleared the shared preferences)
             Log.d(TAG, "storeVersionCodeNow: NewInstall = 2");
             setLoginMode(SessionManager.MODE_NEW_INSTALL);
         } else if (currentVersionCode > savedVersionCode) {
-
-            // TODO This is an upgrade
             Log.d(TAG, "storeVersionCodeNow: Upgrade = 3");
             setLoginMode(SessionManager.MODE_UPGRADE);
         }

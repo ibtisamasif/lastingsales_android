@@ -104,7 +104,7 @@ public class HomeFragment extends TabFragment {
             public void onClick(View view) {
                 Intent intent;
                 Bundle bundle = new Bundle();
-                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledContactsCallsFragment.class.getName());
+                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
                 bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
                 bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
                 intent = new Intent(getContext(), FrameActivity.class);

@@ -30,11 +30,11 @@ import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.fragments.BusinessFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.IgnoredFragment;
-import com.example.muzafarimran.lastingsales.fragments.UnlabeledContactsCallsFragment;
+import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -44,7 +44,6 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngin
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
@@ -75,8 +74,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
         agentDataFetchAsync.execute();
 
-//        ArrayList<LSCall> calls = (ArrayList<LSCall>) LSCall.getAllUniqueCallsInDescendingOrder();
-
         //Version Control
         VersionManager versionManager = new VersionManager(getApplicationContext());
         if(!versionManager.runMigrations()){
@@ -91,8 +88,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
 
 //        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
-
-
 
         Log.d(TAG, "onCreate: DB name: " +getDatabasePath("sugar_example").getAbsolutePath());
 
@@ -205,94 +200,11 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //                    break;
                 }
             }
-
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }
-
-//    private void func() {
-//
-//        PackageInfo pInfo = null;
-//        try {
-//            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        int version = pInfo.versionCode;
-//        Log.d(TAG, "func: version: " + version);
-//        // TODO add version code check here (SUPER DUPER DOOO IMPROTANT)
-//        if (sessionManager.storeVersionCodeNow() == 1) {
-//            Log.d(TAG, "func: case1");
-//            // Do first run stuff here then set 'firstrun' as false
-//            // using the following line to edit/commit prefs
-//            //mark all null ignored contacts
-//            List<LSContact> ignoredNullContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
-//            if (ignoredNullContacts != null) {
-//                Log.d(TAG, "found: size: " + ignoredNullContacts.size());
-//                for (LSContact oneContact : ignoredNullContacts) {
-//                    if (oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-//                        oneContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-//                        oneContact.setContactName("changed");
-//                    }
-//                    oneContact.save();
-//                }
-//            } else {
-//                Log.d(TAG, "not found");
-//            }
-//        }else if(sessionManager.storeVersionCodeNow() == 2){
-//            Log.d(TAG, "func: case2");
-//            // Do first run stuff here then set 'firstrun' as false
-//            // using the following line to edit/commit prefs
-//            //mark all null ignored contacts
-//            List<LSContact> ignoredNullContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
-//            if (ignoredNullContacts != null) {
-//                Log.d(TAG, "found: size: " + ignoredNullContacts.size());
-//                for (LSContact oneContact : ignoredNullContacts) {
-//                    if(oneContact.getSyncStatus() != null) {
-//                        if (oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-//                            Log.d(TAG, "func: if");
-//                            oneContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-//                            oneContact.setContactName("changed");
-//                            oneContact.save();
-//                        } else {
-//                            Log.d(TAG, "func: else");
-//                            oneContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
-//                            oneContact.save();
-//                        }
-//                    }
-//                    else {
-//                        oneContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
-//                        oneContact.save();
-//                    }
-//                }
-//            } else {
-//                Log.d(TAG, "not found");
-//            }
-//        }else if(sessionManager.storeVersionCodeNow() == 3){
-//            Log.d(TAG, "func: case3");
-//            // Do first run stuff here then set 'firstrun' as false
-//            // using the following line to edit/commit prefs
-//            //mark all null ignored contacts
-//            List<LSContact> ignoredNullContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
-//            if (ignoredNullContacts != null) {
-//                Log.d(TAG, "found: size: " + ignoredNullContacts.size());
-//                for (LSContact oneContact : ignoredNullContacts) {
-//                    if (oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-//                        oneContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-//                        oneContact.setContactName("changed");
-//                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-//                        dataSenderAsync.execute();
-//                    }
-//                    oneContact.save();
-//                }
-//            } else {
-//                Log.d(TAG, "not found");
-//            }
-//        }
-//    }
 
     @Override
     protected void onStart() {
@@ -381,14 +293,14 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //        }
         if (id == R.id.nav_item_business_contacts) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, BusinessFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Business Contacts");
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Colleague Contacts");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
         }
         else if (id == R.id.nav_item_unlabeled_contacts) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledContactsCallsFragment.class.getName());
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
             bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);

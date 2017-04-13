@@ -15,7 +15,7 @@ import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.UnlabeledContactsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.UnlabeledAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -30,10 +30,10 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UnlabeledContactsCallsFragment extends Fragment {
+public class UnlabeledFragment extends Fragment {
 
     private static final String TAG = "UntaggedCallFragment";
-    UnlabeledContactsAdapter untaggedContactsAdapter;
+    UnlabeledAdapter unlabeledAdapter;
     ListView listView = null;
     private List<LSContact> untaggedContacts = new ArrayList<>();
     private Bus mBus;
@@ -41,8 +41,8 @@ public class UnlabeledContactsCallsFragment extends Fragment {
     private ErrorScreenView errorScreenView;
     private MaterialSearchView searchView;
 
-    public static UnlabeledContactsCallsFragment newInstance(int page, String title) {
-        UnlabeledContactsCallsFragment fragmentFirst = new UnlabeledContactsCallsFragment();
+    public static UnlabeledFragment newInstance(int page, String title) {
+        UnlabeledFragment fragmentFirst = new UnlabeledFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
@@ -51,8 +51,8 @@ public class UnlabeledContactsCallsFragment extends Fragment {
     }
 
     public void setList(List<LSContact> contacts) {
-        if (untaggedContactsAdapter != null) {
-            untaggedContactsAdapter.setList(contacts);
+        if (unlabeledAdapter != null) {
+            unlabeledAdapter.setList(contacts);
         }
     }
 
@@ -60,8 +60,8 @@ public class UnlabeledContactsCallsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        untaggedContactsAdapter = new UnlabeledContactsAdapter(getContext());
-        untaggedContactsAdapter.setList(untaggedContacts);
+        unlabeledAdapter = new UnlabeledAdapter(getContext());
+        unlabeledAdapter.setList(untaggedContacts);
         setHasOptionsMenu(true);
     }
 
@@ -102,7 +102,6 @@ public class UnlabeledContactsCallsFragment extends Fragment {
         if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
             updateContactssList();
         }
-//        TinyBus.from(getActivity().getApplicationContext()).unregister(event);
     }
 
     private void updateContactssList() {
@@ -123,7 +122,7 @@ public class UnlabeledContactsCallsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
         listView = (ListView) view.findViewById(R.id.calls_list);
-        listView.setAdapter(untaggedContactsAdapter);
+        listView.setAdapter(unlabeledAdapter);
         errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
         errorScreenView.setErrorImage(R.drawable.delight_inactive);
         errorScreenView.setErrorText(this.getResources().getString(R.string.em_unlabeled_delight));
@@ -132,12 +131,12 @@ public class UnlabeledContactsCallsFragment extends Fragment {
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                untaggedContactsAdapter.getFilter().filter(query);
+                unlabeledAdapter.getFilter().filter(query);
                 return false;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                untaggedContactsAdapter.getFilter().filter(newText);
+                unlabeledAdapter.getFilter().filter(newText);
                 return false;
             }
         });

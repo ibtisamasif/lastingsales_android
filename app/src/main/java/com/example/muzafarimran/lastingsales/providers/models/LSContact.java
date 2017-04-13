@@ -1,8 +1,6 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
-import android.annotation.TargetApi;
 import android.database.sqlite.SQLiteException;
-import android.os.Build;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
@@ -12,7 +10,6 @@ import com.orm.query.Select;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by ahmad on 08-Nov-16.
@@ -50,7 +47,7 @@ public class LSContact extends SugarRecord {
     private boolean detailsDropDownOpen;
     private String syncStatus;
     private String serverId;
-    private String dynamicValues;
+    private String dynamic;
 
 
     public LSContact() {
@@ -449,12 +446,12 @@ public class LSContact extends SugarRecord {
         this.serverId = serverId;
     }
 
-    public String getDynamicValues() {
-        return dynamicValues;
+    public String getDynamic() {
+        return dynamic;
     }
 
-    public void setDynamicValues(String dynamicValues) {
-        this.dynamicValues = dynamicValues;
+    public void setDynamic(String dynamic) {
+        this.dynamic = dynamic;
     }
 
     @Override

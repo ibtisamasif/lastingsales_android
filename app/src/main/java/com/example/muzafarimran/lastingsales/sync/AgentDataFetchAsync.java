@@ -222,13 +222,13 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(contactNumber);
                             tempContact.setContactEmail(email);
-                            tempContact.setDynamicValues(dynamic_values);
+                            tempContact.setDynamic(dynamic_values);
                             tempContact.setContactType(lead_type);
                             tempContact.setContactSalesStatus(contactStatus);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                             tempContact.save();
-                            Log.d(TAG, "onResponse: gettingDynamic: "+tempContact.getDynamicValues());
-//                            fetchAgentNotesFunc(tempContact);
+                            Log.d(TAG, "onResponse: gettingDynamic: "+tempContact.getDynamic());
+                            fetchAgentNotesFunc(tempContact);
                         }
                     }
 

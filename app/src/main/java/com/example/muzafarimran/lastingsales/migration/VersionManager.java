@@ -3,14 +3,33 @@ package com.example.muzafarimran.lastingsales.migration;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
+import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by ibtisam on 4/1/2017.
@@ -152,8 +171,7 @@ public class VersionManager {
                 return false;
             }
 
-        }
-        else if (version == 10) {
+        } else if (version == 10) {
             try {
                 sessionManager.storeVersionCodeNow();
                 Log.d(TAG, "func: Running Script for Dynamic Columns");
@@ -169,16 +187,66 @@ public class VersionManager {
                     Log.d(TAG, "func: case3");
                     // Do first run stuff here then set 'firstrun' as false
                     // using the following line to edit/commit prefs
-//                    LSDynamicColumns lsDynamicColumns = new LSDynamicColumns();
-//                    lsDynamicColumns.setName("Name");
-//                    lsDynamicColumns.save();
-////                    lsDynamicColumns.delete();
-//
-//                    LSContact lsContact = new LSContact();
-//                    lsContact.setContactName("name");
-//                    lsContact.setDynamicValues("dynVal");
-//                    lsContact.save();
-//                    lsContact.delete();
+
+                    // get all contacts and update their dynamic column
+                    List<LSContact> allContacts = (List<LSContact>) LSContact.listAll(LSContact.class);
+                    Log.d(TAG, "onCreate: allContactsSize: " + allContacts.size());
+                    for (final LSContact oneContact : allContacts) {
+                        Log.d(TAG, "Fetching Only Dynamic Columns per Contact...");
+                        final int MY_SOCKET_TIMEOUT_MS = 60000;
+                        RequestQueue queue = Volley.newRequestQueue(mContext);
+                        final String BASE_URL = MyURLs.GET_CONTACTS;
+                        Uri builtUri = Uri.parse(BASE_URL)
+                                .buildUpon()
+                                .appendPath("" + oneContact.getServerId())
+                                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                                .build();
+                        final String myUrl = builtUri.toString();
+                        StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d(TAG, "onResponse() getContact: response = [" + response + "]");
+                                try {
+                                    JSONObject jObj = new JSONObject(response);
+                                    int responseCode = jObj.getInt("responseCode");
+//                    if (responseCode == 200) {
+                                    JSONObject responseObject = jObj.getJSONObject("response");
+                                    String dynamic_values = responseObject.getString("dynamic_values");
+                                    oneContact.setDynamic(dynamic_values);
+                                    oneContact.save();
+                                    Log.d(TAG, "onResponse: DynamicValue is " + oneContact.getDynamic());
+//                                }
+                                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                                    TinyBus bus = TinyBus.from(mContext);
+                                    bus.post(mCallEvent);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                error.printStackTrace();
+                                Log.d(TAG, "onErrorResponse: CouldNotSyncGETContacts");
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                return params;
+                            }
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<String, String>();
+                                return params;
+                            }
+                        };
+                        sr.setRetryPolicy(new DefaultRetryPolicy(
+                                MY_SOCKET_TIMEOUT_MS,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                        queue.add(sr);
+                    }
                     return true;
                 } else {
                     return true;
@@ -186,8 +254,7 @@ public class VersionManager {
             } catch (Exception e) {
                 return false;
             }
-        }
-        else {
+        } else {
             return true;
         }
     }

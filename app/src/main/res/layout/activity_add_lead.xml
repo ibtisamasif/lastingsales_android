@@ -75,7 +75,7 @@
                             android:background="@drawable/btn_primary"
                             android:radius="5dip"
                             android:tag="collegue_radio"
-                            android:text="Business"
+                            android:text="Colleague"
                             android:textColor="@color/white"
                             android:textSize="13sp"
                             />

@@ -36,7 +36,7 @@ import static android.view.View.GONE;
 /**
  * Created by MUZAFAR IMRAN on 9/19/20
  */
-public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable {
+public class UnlabeledAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = "UnlabeledContactsAdapte";
     private final static int ITEM_TYPES = 2;
     public Context mContext;
@@ -51,7 +51,7 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
     private List<LSContact> filteredData;
 
 
-    public UnlabeledContactsAdapter(Context c) {
+    public UnlabeledAdapter(Context c) {
         this.mContext = c;
         if (mContacts == null) {
             mContacts = new ArrayList<>();

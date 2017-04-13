@@ -39,7 +39,7 @@ public class InquiryManager {
             tempInquiry.setStatus(LSInquiry.INQUIRY_STATUS_ATTENDED);
             if (tempInquiry.getSyncStatus().equals(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED)) {
                 tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED);
-            } else { // TODO USELESS REMOVE IT
+            } else {
                 tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
             }
             tempInquiry.save();

@@ -218,12 +218,12 @@ public class IndividualContactDetailsFragment extends TabFragment {
                     }
                 }
 
-                mContact.setDynamicValues(dynamicColumnBuilder.buildJSON());
+                mContact.setDynamic(dynamicColumnBuilder.buildJSON());
                 if (mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                 }
                 mContact.save();
-                Log.d(TAG, "onClick: "+mContact.getDynamicValues());
+                Log.d(TAG, "onClick: "+mContact.getDynamic());
                 DataSenderAsync dataSenderAsync = new DataSenderAsync(getActivity());
                 dataSenderAsync.execute();
                 Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
@@ -338,12 +338,12 @@ public class IndividualContactDetailsFragment extends TabFragment {
         contactIDLong = bundle.getLong("someId");
         mContact = LSContact.findById(LSContact.class, contactIDLong);
         Log.d(TAG, "contactID: " + mContact.getId());
-        Log.d(TAG, "dynamicColumns: " + mContact.getDynamicValues());
+        Log.d(TAG, "dynamicColumns: " + mContact.getDynamic());
 
         try {
-            if (mContact.getDynamicValues() != null) {
-                dynamicColumnBuilder.parseJson(mContact.getDynamicValues());
-                Log.d(TAG, "dynamicColumnsJSONN: " + mContact.getDynamicValues());
+            if (mContact.getDynamic() != null) {
+                dynamicColumnBuilder.parseJson(mContact.getDynamic());
+                Log.d(TAG, "dynamicColumnsJSONN: " + mContact.getDynamic());
                 ArrayList<DynamicColumnBuilder.Column> dynColumns = dynamicColumnBuilder.getColumns();
                 for (DynamicColumnBuilder.Column oneDynamicColumns : dynColumns) {
                     if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
@@ -353,7 +353,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
                         EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
                         et.setText(oneDynamicColumns.value);
                     } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        //TODO implement spinner
                         Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
                         List<String> list = (List<String>) s.getTag();
                         int index = -1;
@@ -362,7 +361,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                                 index = i;
                             }
                         }
-                        if (mContact.getDynamicValues() != null && !mContact.getDynamicValues().equals("")) {
+                        if (mContact.getDynamic() != null && !mContact.getDynamic().equals("")) {
 
                             Log.d(TAG, "dynamicColumns: " + index);
                             s.setSelection(index, false);
@@ -436,17 +435,13 @@ public class IndividualContactDetailsFragment extends TabFragment {
                     break;
             }
         }
-
         @Override
-        public void onNothingSelected(AdapterView<?> arg0) {
-            // TODO Auto-generated method stub
+        public void onNothingSelected(AdapterView<?> parent) {
         }
-
     }
 
     @Subscribe
     public void onSalesContactAddedEventModel(LeadContactAddedEventModel event) {
         Log.d(TAG, "onSalesContactAddedEventModel: CalledInFrag");
-
     }
 }
