@@ -22,6 +22,8 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.fragments.BusinessContactDeleteBottomSheetDialogFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,9 +155,13 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                contact.setLeadDeleted(true);
+                contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
                 contact.delete();
                 setList(LSContact.getContactsByType(contactType));
                 Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
+                DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
+                dataSenderAsync.execute();
             }
         });
         holder.bSales.setOnClickListener(new View.OnClickListener() {
@@ -183,9 +189,14 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
     public void deleteAtPosition(int position) {
         LSContact contact = mContacts.get(position);
         mContacts.remove(position);
-        contact.delete();
+        contact.setLeadDeleted(true);
+        contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+        contact.save();
+//        contact.delete();
         setList(LSContact.getContactsByType(contactType));
-
+        Toast.makeText(mContext, "Contact Deleted", Toast.LENGTH_SHORT).show();
+        DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
+        dataSenderAsync.execute();
     }
     // for searching
     //TODO this method needs to be moved from here

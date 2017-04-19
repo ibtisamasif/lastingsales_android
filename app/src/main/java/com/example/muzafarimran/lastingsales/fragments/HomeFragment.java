@@ -28,6 +28,10 @@ import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -91,12 +95,22 @@ public class HomeFragment extends TabFragment {
                 ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "InActiveLeads");
 //                Intent intent;
 //                Bundle bundle = new Bundle();
-//                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, InActiveLeadsFragment.class.getName()); // Change
+//                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, InActiveLeadsFragment.class.getName());
 //                bundle.putString(FrameActivity.ACTIVITY_TITLE, "InActive Leads");
 //                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
 //                intent = new Intent(getContext(), FrameActivity.class);
 //                intent.putExtras(bundle);
 //                startActivity(intent);
+                String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
+                try {
+                    JSONObject props = new JSONObject();
+                    props.put("Gender", "Female");
+                    props.put("Logged in", false);
+                    mixpanel.track("InActive(Home)", props);
+                } catch (JSONException e) {
+                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                }
             }
         });
         llUnlabeledContainer.setOnClickListener(new View.OnClickListener() {
@@ -107,9 +121,20 @@ public class HomeFragment extends TabFragment {
                 bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
                 bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
                 bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
+                bundle.putString("mixpanel_source", "home");
                 intent = new Intent(getContext(), FrameActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
+                try {
+                    JSONObject props = new JSONObject();
+                    props.put("Gender", "Female");
+                    props.put("Logged in", false);
+                    mixpanel.track("Unlabeled(Home)", props);
+                } catch (JSONException e) {
+                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                }
             }
         });
         llinquriesContainer.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +150,16 @@ public class HomeFragment extends TabFragment {
 //                Intent intent = new Intent(getContext(), FrameActivity.class);
 //                intent.putExtras(bundle);
 //                startActivity(intent);
+                String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
+                try {
+                    JSONObject props = new JSONObject();
+                    props.put("Gender", "Female");
+                    props.put("Logged in", false);
+                    mixpanel.track("Inquiries(Home)", props);
+                } catch (JSONException e) {
+                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                }
             }
         });
 

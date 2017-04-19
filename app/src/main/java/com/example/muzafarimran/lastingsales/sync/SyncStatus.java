@@ -12,7 +12,7 @@ public class SyncStatus {
     public static final String SYNC_STATUS_LEAD_UPDATE_SYNCED = "lead_update_synced";
 
     //Lead Delete
-    public static final String SYNC_STATUS_LEAD_DELETE_NOT_SYNCED = "ead_delete_not_synced";
+    public static final String SYNC_STATUS_LEAD_DELETE_NOT_SYNCED = "ead_delete_not_synced"; //Cant fix this typo as the app is in production now
     public static final String SYNC_STATUS_LEAD_DELETE_SYNCED = "lead_delete_synced";  // Not Required as Lead will be Deleted
 
     //Note Add

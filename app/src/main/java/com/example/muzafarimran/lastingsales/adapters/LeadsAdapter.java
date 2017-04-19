@@ -191,6 +191,8 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
                             oneFollowup.delete();
                         }
                     }
+                    //contact is deleted and will be hard deleted on syncing.
+                    contact.setLeadDeleted(true);
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
                     contact.save();
 //                    contact.delete();

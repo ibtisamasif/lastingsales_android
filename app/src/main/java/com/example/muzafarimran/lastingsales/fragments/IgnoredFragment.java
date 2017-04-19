@@ -55,7 +55,7 @@ public class IgnoredFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        contactsAdapter = new ContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_IGNORED);
+        contactsAdapter = new ContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_IGNORED); // TODO remove this line as it populates all contacts have inprogress status including ignored,business
         setHasOptionsMenu(true);
     }
 
@@ -77,7 +77,7 @@ public class IgnoredFragment extends TabFragment {
     @Subscribe
     public void onPersonalContactAddedEventModel(PersonalContactAddedEventModel event) {
         Log.d(TAG, "onPersonalContactAddedEvent() called with: event = [" + event + "]");
-        List<LSContact> contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_IGNORED);
+        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
         setList(contacts);
     }
 
@@ -92,7 +92,7 @@ public class IgnoredFragment extends TabFragment {
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_IGNORED);
+        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
         setList(contacts);
     }
 

@@ -12,6 +12,7 @@ import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
@@ -38,7 +39,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.e(TAG, "MessageReceived");
         sessionManager = new SessionManager(getApplicationContext());
-
+        Log.d(TAG, "onMessageReceived: Firebase ID: "+sessionManager.getKeyLoginFirebaseRegId());
 //        Log.e(TAG, "From: " + remoteMessage.getFrom());
 //        Log.e(TAG, "From2: " + remoteMessage.getTo());
 //        Log.e(TAG, "From3: " + remoteMessage.getNotification());
@@ -179,6 +180,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
                     LSContact contact = LSContact.getContactFromServerId(id);
+                    String oldType = contact.getContactType();
                     contact.setContactName(name);
                     contact.setContactEmail(email);
                     contact.setPhoneOne(phone);
@@ -187,14 +189,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (dynamic_values != null) {
                         contact.setDynamic(dynamic_values);
                     }
+                    contact.setContactType(lead_type);
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                    String oldType = contact.getContactType();
-                    String newType = lead_type;
-                    if (!oldType.equals(newType)) {
-                        TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType, "FCM");
-                    } else {
-                        contact.save();
-                    }
+                    contact.save();
+                    String newType = contact.getContactType();
+                    TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType); //TODO no functionality in portal yet. Test it later.
                     Log.e(TAG, "Put From Local DB: " + contact.getContactName());
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
@@ -245,6 +244,70 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.post(mNoteAdded);
+                }
+            }
+
+            if (tag.equals("Column")) {
+                if (action.equals("post")) {
+                    String id = payload.getString("id");
+                    String column_type = payload.getString("column_type");
+                    String name = payload.getString("name");
+                    String default_value_options = payload.getString("default_value_options");
+                    String range = payload.getString("range");
+                    String created_by = payload.getString("created_by");
+                    String updated_by = payload.getString("updated_by");
+                    String created_at = payload.getString("created_at");
+                    String updated_at = payload.getString("updated_at");
+                    String company_id = payload.getString("company_id");
+                    LSDynamicColumns checkColumn = LSDynamicColumns.getColumnFromServerId(id);
+                    if (checkColumn == null) {
+                        LSDynamicColumns newColumn = new LSDynamicColumns();
+                        newColumn.setServerId(id);
+                        newColumn.setColumnType(column_type);
+                        newColumn.setName(name);
+                        newColumn.setDefaultValueOption(default_value_options);
+                        newColumn.setRange(range);
+                        newColumn.setCreated_by(created_by);
+                        newColumn.setUpdated_by(updated_by);
+                        newColumn.setCreated_at(created_at);
+                        newColumn.setUpdated_at(updated_at);
+                        newColumn.setCompanyId(company_id);
+                        newColumn.save();
+                    }
+
+                } else if (action.equals("put")) {
+                    //TODO implement column Edit
+                    String id = payload.getString("id");
+//                    String column_type = payload.getString("column_type"); // we do not change its type once created
+                    String name = payload.getString("name");
+                    String default_value_options = payload.getString("default_value_options");
+                    String range = payload.getString("range");
+                    String created_by = payload.getString("created_by");
+                    String updated_by = payload.getString("updated_by");
+                    String created_at = payload.getString("created_at");
+                    String updated_at = payload.getString("updated_at");
+                    String company_id = payload.getString("company_id");
+                    LSDynamicColumns tempColumn = LSDynamicColumns.getColumnFromServerId(id);
+                    if (tempColumn != null) {
+//                        tempColumn.setColumnType(column_type);
+                        tempColumn.setName(name);
+                        tempColumn.setDefaultValueOption(default_value_options);
+                        tempColumn.setRange(range);
+                        tempColumn.setCreated_by(created_by);
+                        tempColumn.setUpdated_by(updated_by);
+                        tempColumn.setCreated_at(created_at);
+                        tempColumn.setUpdated_at(updated_at);
+                        tempColumn.setCompanyId(company_id);
+                        tempColumn.save();
+                    }
+
+                }
+                else if (action.equals("delete")) {
+                    String id = payload.getString("id");
+                    LSDynamicColumns tempColumn = LSDynamicColumns.getColumnFromServerId(id);
+                    if (tempColumn != null) {
+                        tempColumn.delete();
+                    }
                 }
             }
 

@@ -21,6 +21,8 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
@@ -81,7 +83,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getCount() {
-        return this.filteredData.size(); // TODO crash here on searching bilal ignored contacts list
+        return this.filteredData.size();
     }
 
     @Override
@@ -119,7 +121,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         holder.contactDetailsDopDownLayout.setVisibility(GONE);
         if (contact.getContactName() == null) {
             holder.name.setText(contact.getPhoneOne());
-        } else if (contact.getContactName().equals("Ignored Contact")) {
+        } else if (contact.getContactName().equals("Ignored Contact") || contact.getContactName().equals("Unlabeled Contact")) {
             String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, contact.getPhoneOne());
             if (name != null) {
                 holder.name.setText(name);
@@ -150,9 +152,13 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                contact.delete();
+                contact.setLeadDeleted(true);
+                contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+                contact.save();
                 setList(LSContact.getContactsByType(contactType));
                 Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
+                DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
+                dataSenderAsync.execute();
             }
         });
         holder.bSales.setOnClickListener(new View.OnClickListener() {

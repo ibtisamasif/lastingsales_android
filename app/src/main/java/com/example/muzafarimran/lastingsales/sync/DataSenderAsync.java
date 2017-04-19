@@ -838,7 +838,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         StringRequest sr = new StringRequest(Request.Method.DELETE, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "onResponse() called with: response = [" + response + "]");
+                Log.d(TAG, "onResponse() called with: response (deleteContact) = [" + response + "]");
                 try {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");

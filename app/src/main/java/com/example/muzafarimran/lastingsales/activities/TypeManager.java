@@ -5,17 +5,19 @@ import android.content.Context;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 /**
+ * NO Syncing Should be written in this class or subclasses whatsoever
+ * This calls is only intended for after math of conversion of contact type.
  * Created by ibtisam on 3/21/2017.
  */
 
 public class TypeManager {
-    public static void ConvertTo(Context context, LSContact tempContact, String oldType, String newtype, String source ) {
+    public static void ConvertTo(Context context, LSContact tempContact, String oldType, String newtype ) {
 
         if (oldType.equals(LSContact.CONTACT_TYPE_SALES)) {
             // from sales to any type
-            LeadManager.convertTo(context, tempContact, newtype, source);
+            LeadManager.convertTo(context, tempContact, newtype);
 
-        } else if (oldType.equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+        } else if (oldType.equals(LSContact.CONTACT_TYPE_UNLABELED)) { //cleaned and checked
             // from unlabeled to any type
             UnlabeledManager.convertTo(context, tempContact, newtype);
 
