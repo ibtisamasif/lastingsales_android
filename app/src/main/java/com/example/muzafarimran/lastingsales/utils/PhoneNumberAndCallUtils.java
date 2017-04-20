@@ -146,7 +146,7 @@ public class PhoneNumberAndCallUtils {
     public static String getContactNameFromLocalPhoneBook(Context context, String phoneNumber) {
         ContentResolver cr = context.getContentResolver();
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null); //TODO Exception android.database.CursorWindowAllocationException: Cursor window could not be created from binder.
         if (cursor == null) {
             return null;
         }
@@ -154,9 +154,10 @@ public class PhoneNumberAndCallUtils {
         if (cursor.moveToFirst()) {
             contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
         }
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
+//        if (cursor != null && !cursor.isClosed()) {
+//            cursor.close();
+//        }
+        cursor.close();
         return contactName;
     }
 

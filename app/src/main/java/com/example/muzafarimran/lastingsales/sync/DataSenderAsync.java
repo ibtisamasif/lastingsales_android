@@ -296,7 +296,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 //                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
 
 //                    if (responseCode == 200) {
-                    JSONObject responseObject = jObj.getJSONObject("response");
+                    JSONObject responseObject = jObj.getJSONObject("response"); //TODO crashed here check response properly Caused by java.lang.OutOfMemoryError: Could not allocate JNI Env
                     String id = responseObject.getString("id");
                     String contactNumber = responseObject.getString("contact_number");
                     call.setServerId(id);

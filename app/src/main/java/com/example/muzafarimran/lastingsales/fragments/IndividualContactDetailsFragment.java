@@ -27,7 +27,9 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -217,7 +219,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
                         }
                     }
                 }
-
                 mContact.setDynamic(dynamicColumnBuilder.buildJSON());
                 if (mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
@@ -228,6 +229,15 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 dataSenderAsync.execute();
                 Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
+                try {
+                    JSONObject props = new JSONObject();
+                    props.put("Logged in", true);
+                    mixpanel.track("Dynamic Column Updated", props);
+                } catch (JSONException e) {
+                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                }
             }
         });
 

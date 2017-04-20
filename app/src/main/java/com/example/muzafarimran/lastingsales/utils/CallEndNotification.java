@@ -60,6 +60,7 @@ public class CallEndNotification {
         return notificationBuilder.build();
     }
 
+
     public static Notification createTagNotification(Context ctx, String intlNumber) {
         String number_or_name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, intlNumber);
         if (number_or_name == null) {
@@ -69,11 +70,11 @@ public class CallEndNotification {
             intlNumber = "0";
         }
         //NonBusinessIntent
-        Intent nonBusinessIntent = new Intent(ctx, TagAsIgnored.class);
-        nonBusinessIntent.putExtra("number", intlNumber);
-        nonBusinessIntent.putExtra("name", number_or_name);
-        nonBusinessIntent.putExtra("notificationId", NOTIFICATION_ID);
-        PendingIntent pIntentNonBusiness = PendingIntent.getBroadcast(ctx, (int) System.currentTimeMillis(), nonBusinessIntent, 0);
+        Intent IgnoredIntent = new Intent(ctx, TagAsIgnored.class);
+        IgnoredIntent.putExtra("number", intlNumber);
+        IgnoredIntent.putExtra("name", number_or_name);
+        IgnoredIntent.putExtra("notificationId", NOTIFICATION_ID);
+        PendingIntent pIntentNonBusiness = PendingIntent.getBroadcast(ctx, (int) System.currentTimeMillis(), IgnoredIntent, 0);
 
 //        //CollegueIntent
 //        Intent collegueIntent = new Intent(ctx, TagNumberAndAddFollowupActivity.class);
@@ -84,11 +85,12 @@ public class CallEndNotification {
 //        PendingIntent pIntentCollegue = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), collegueIntent, 0);
 
         //SalesIntent
-        Intent salesIntent = new Intent(ctx, AddEditLeadActivity.class);
-        salesIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
-        salesIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
-        salesIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, "");
-        PendingIntent pIntentSales = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), salesIntent, 0);
+        Intent leadIntent = new Intent(ctx, AddEditLeadActivity.class);
+        leadIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+        leadIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
+        leadIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, "");
+        leadIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_NOTIFICATION);
+        PendingIntent pIntentSales = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), leadIntent, 0);
 
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)
 //                    .setContentIntent(pIntentSales)

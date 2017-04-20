@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +23,12 @@ import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -48,6 +54,12 @@ public class AddEditLeadActivity extends Activity {
     private static final String TITLE_EDIT_CONTACT = "Edit Contact";
     private static final String TITLE_TAG_NUMBER = "Tag Number";
 
+    public static final String MIXPANEL_SOURCE = "mixpanel_source";
+
+    public static final String MIXPANEL_SOURCE_FAB = "fab";
+    public static final String MIXPANEL_SOURCE_NOTIFICATION = "notification";
+    public static final String MIXPANEL_SOURCE_UNLABELED = "unlabeled";
+
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
     String launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
     String selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
@@ -70,6 +82,7 @@ public class AddEditLeadActivity extends Activity {
     private String contactPhone;
     private String contactName;
     private String contactEmail;
+    private String mixpanelSource = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +115,14 @@ public class AddEditLeadActivity extends Activity {
             editingMode = false;
             // Redirected Import Contact to LAUNCH_MODE_EDIT_EXISTING_CONTACT
             launchMode = AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT;
+            mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         }
         if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
             populateCreateContactView();
+            mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
             populateUpdateContactView(bundle);
+            mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         }
 
         bSave.setOnClickListener(new View.OnClickListener() {
@@ -138,15 +154,12 @@ public class AddEditLeadActivity extends Activity {
                         finish();
                         //Saving contact in native phonebook as well
                         addContactInNativePhonebook(tempContact.getContactName(), tempContact.getPhoneOne());
-                        try{
-                            moveToContactDetailScreen(tempContact);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
+                        moveToContactDetailScreen(tempContact);
 
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
                     if (isValid(contactName, contactPhone, contactEmail)) {
+
                         LSContact tempContact = selectedContact;
                         String oldType = selectedContact.getContactType();
                         tempContact.setContactName(contactName);
@@ -168,9 +181,20 @@ public class AddEditLeadActivity extends Activity {
                             //Saving contact in native phonebook as well
                             addContactInNativePhonebook(tempContact.getContactName(), tempContact.getPhoneOne());
                         }
+                        finish();
+                        moveToContactDetailScreen(tempContact);
                     }
-                    finish();
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                }
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                try {
+                    JSONObject props = new JSONObject();
+                    props.put("Logged in", false);
+                    mixpanel.track("Lead from "+mixpanelSource, props);
+                    Log.d(TAG, "mixpanelSource: "+mixpanelSource);
+                } catch (JSONException e) {
+                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
                 }
                 LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                 TinyBus bus = TinyBus.from(getApplicationContext());

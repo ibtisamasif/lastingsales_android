@@ -17,7 +17,7 @@ public class TypeManager {
             // from sales to any type
             LeadManager.convertTo(context, tempContact, newtype);
 
-        } else if (oldType.equals(LSContact.CONTACT_TYPE_UNLABELED)) { //cleaned and checked
+        } else if (oldType.equals(LSContact.CONTACT_TYPE_UNLABELED)) {
             // from unlabeled to any type
             UnlabeledManager.convertTo(context, tempContact, newtype);
 
