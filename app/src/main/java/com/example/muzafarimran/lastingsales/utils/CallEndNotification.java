@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
@@ -12,6 +13,10 @@ import com.example.muzafarimran.lastingsales.activities.AddEditNoteActivity;
 import com.example.muzafarimran.lastingsales.activities.AddNewFollowUpsActivity;
 import com.example.muzafarimran.lastingsales.receivers.FollowupNotiCancelBtnReceiver;
 import com.example.muzafarimran.lastingsales.receivers.TagAsIgnored;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by ibtisam on 12/6/2016.
@@ -62,6 +67,15 @@ public class CallEndNotification {
 
 
     public static Notification createTagNotification(Context ctx, String intlNumber) {
+
+        String projectToken = MixpanelConfig.projectToken;
+        MixpanelAPI mixpanel = MixpanelAPI.getInstance(ctx, projectToken);
+        try {
+            mixpanel.track("Lead from notification - Shown");
+        } catch (Exception e) {
+            Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+        }
+
         String number_or_name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, intlNumber);
         if (number_or_name == null) {
             number_or_name = intlNumber;

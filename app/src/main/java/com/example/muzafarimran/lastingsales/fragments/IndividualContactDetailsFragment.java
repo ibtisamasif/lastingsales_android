@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,9 +49,9 @@ import de.halfbit.tinybus.TinyBus;
 public class IndividualContactDetailsFragment extends TabFragment {
 
     public static final String TAG = "IndividualConDetailFrag";
-    TextView tvName;
+    //    TextView tvName;
     TextView tvNumber;
-//    TextView tvEmail;
+    //    TextView tvEmail;
 //    TextView tvAddress;
     ListView listView = null;
     MaterialSearchView searchView;
@@ -101,9 +102,9 @@ public class IndividualContactDetailsFragment extends TabFragment {
         Bundle bundle = this.getArguments();
         contactIDLong = bundle.getLong("someId");
         mContact = LSContact.findById(LSContact.class, contactIDLong);
-        if (mContact != null && mContact.getContactName() != null) {
-            tvName.setText(mContact.getContactName());
-        }
+//        if (mContact != null && mContact.getContactName() != null) {
+//            tvName.setText(mContact.getContactName());
+//        }
         if (mContact != null && mContact.getPhoneOne() != null) {
             tvNumber.setText(mContact.getPhoneOne());
         }
@@ -141,7 +142,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.contact_profile_details_fragment, container, false);
-        tvName = (TextView) view.findViewById(R.id.tvName);
+//        tvName = (TextView) view.findViewById(R.id.tvName);
         tvNumber = (TextView) view.findViewById(R.id.tvNumber);
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
 //        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
@@ -224,7 +225,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                 }
                 mContact.save();
-                Log.d(TAG, "onClick: "+mContact.getDynamic());
+                Log.d(TAG, "onClick: " + mContact.getDynamic());
                 DataSenderAsync dataSenderAsync = new DataSenderAsync(getActivity());
                 dataSenderAsync.execute();
                 Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
@@ -252,7 +253,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
         ll = (LinearLayout) view.findViewById(R.id.contactDetailsDropDownLayoutinner);
         Display display = ((WindowManager) getActivity().getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int width = display.getWidth() / 2;
-        Log.d(TAG, "Display SIZE: "+display);
+        Log.d(TAG, "Display SIZE: " + display);
         List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();// TODO if column is null dont render view
         Log.d(TAG, "onCreateView: Size: " + allColumns.size());
         for (int i = 0; i < allColumns.size(); i++) {
@@ -260,13 +261,22 @@ public class IndividualContactDetailsFragment extends TabFragment {
             l.setFocusable(true);
             l.setFocusableInTouchMode(true);
             l.setOrientation(LinearLayout.HORIZONTAL);
+            l.setWeightSum(10);
+
+            LinearLayout.LayoutParams layoutParamsRow = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParamsRow.setMargins(0,5,0,5);
+            l.setLayoutParams(layoutParamsRow);
+
             if (allColumns.get(i).getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
                 Log.d(TAG, "dynamicColumns: matched text");
                 TextView tv = new TextView(getContext());
                 tv.setText(allColumns.get(i).getName());
+                tv.setPadding(15,15,15,15);
                 final EditText et = new EditText(getContext());
                 et.setTextColor(getResources().getColor(R.color.black));
+                et.setBackgroundResource(R.drawable.dynamic_border);
+                et.setPadding(15,15,15,15);
                 et.setText(allColumns.get(i).getDefaultValueOption());
                 et.setMinimumWidth(400);
                 String id = allColumns.get(i).getServerId();
@@ -278,17 +288,32 @@ public class IndividualContactDetailsFragment extends TabFragment {
 //                        et.getId();
 //                    }
 //                });
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
-                l.addView(tv, lp);
-                l.addView(et, lp);
+
+                LinearLayout l1 = new LinearLayout(getContext());
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp1.weight = 5;
+                l1.setLayoutParams(lp1);
+                l1.addView(tv);
+
+                LinearLayout l2 = new LinearLayout(getContext());
+                LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp2.weight = 5;
+                l2.setLayoutParams(lp2);
+                l2.addView(et);
+
+                l.addView(l1);
+                l.addView(l2);
                 ll.addView(l);
 
             } else if (allColumns.get(i).getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
                 Log.d(TAG, "dynamicColumns: matched number");
                 TextView tv = new TextView(getContext());
                 tv.setText(allColumns.get(i).getName());
+                tv.setPadding(15,15,15,15);
                 final EditText et = new EditText(getContext());
                 et.setTextColor(getResources().getColor(R.color.black));
+                et.setBackgroundResource(R.drawable.dynamic_border);
+                et.setPadding(15,15,15,15);
                 et.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et.setText(allColumns.get(i).getDefaultValueOption());
                 et.setMinimumWidth(400);
@@ -299,14 +324,26 @@ public class IndividualContactDetailsFragment extends TabFragment {
 //                        Toast.makeText(getActivity(), "Number field clicked: " + et.getId() + " " + et.getTag() + " " + et.getText(), Toast.LENGTH_SHORT).show();
 //                    }
 //                });
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
-                l.addView(tv, lp);
-                l.addView(et, lp);
+                LinearLayout l1 = new LinearLayout(getContext());
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp1.weight = 5;
+                l1.setLayoutParams(lp1);
+                l1.addView(tv);
+
+                LinearLayout l2 = new LinearLayout(getContext());
+                LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp2.weight = 5;
+                l2.setLayoutParams(lp2);
+                l2.addView(et);
+
+                l.addView(l1);
+                l.addView(l2);
                 ll.addView(l);
             } else if (allColumns.get(i).getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
                 Log.d(TAG, "dynamicColumns: matched single");
                 TextView tv = new TextView(getContext());
                 tv.setText(allColumns.get(i).getName());
+                tv.setPadding(15,15,15,15);
                 Spinner s = new Spinner(getContext());
                 s.setId(Integer.parseInt(allColumns.get(i).getServerId()));
                 List<String> list = new ArrayList<String>();
@@ -315,7 +352,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
 
                 try {
                     JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
-                    list.add("");
+                    list.add("Select Below");
                     for (int j = 0; j < jsonarray.length(); j++) {
                         String jsonobject = jsonarray.getString(j);
                         list.add(jsonobject);
@@ -327,11 +364,29 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, list);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 s.setAdapter(dataAdapter);
-                LinearLayout.LayoutParams lpTotalLayout = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT);
-                double d = display.getWidth()/2.4;
-                LinearLayout.LayoutParams lpSpinner = new LinearLayout.LayoutParams((int)d, LinearLayout.LayoutParams.MATCH_PARENT);
-                l.addView(tv, lpTotalLayout);
-                l.addView(s, lpSpinner);
+
+                LinearLayout.LayoutParams lpSpinner = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lpSpinner.setMargins(0, 20, 0, 0);
+
+                RelativeLayout relativeLayout = new RelativeLayout(getContext());
+                relativeLayout.setBackgroundResource(R.drawable.dynamic_border);
+                relativeLayout.addView(s,lpSpinner);
+
+                LinearLayout l1 = new LinearLayout(getContext());
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp1.weight = 5;
+                l1.setLayoutParams(lp1);
+                l1.addView(tv);
+
+                LinearLayout l2 = new LinearLayout(getContext());
+                LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp2.weight = 5;
+                l2.setLayoutParams(lp2);
+                l2.addView(relativeLayout);
+
+                l.addView(l1);
+                l.addView(l2);
+
                 ll.addView(l);
             }
         }
@@ -340,8 +395,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
 // Populating LEAD data
 //////////////////////////////////////////////////////////////
 
-        Log.d(TAG, "Populating Lead Data");
-        Log.d(TAG, "Populating Lead Data");
         Log.d(TAG, "Populating Lead Data");
 
         Bundle bundle = this.getArguments();
@@ -445,6 +498,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                     break;
             }
         }
+
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
         }

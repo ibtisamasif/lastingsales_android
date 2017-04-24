@@ -96,8 +96,6 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
-            holder.tvConnections = (TextView) convertView.findViewById(R.id.tvConnections);
-            holder.tvLastContact = (TextView) convertView.findViewById(R.id.tvLastContact);
             holder.bIgnore = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
             holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
             this.showcalldetailslistener = new ShowDetailsDropDown(contact, holder.contactCallDetails);
@@ -160,23 +158,6 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
                 Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
             }
         });
-
-        ArrayList<LSCall> allCallsForThisNumber = LSCall.getCallsFromNumber(PhoneNumberAndCallUtils.numberToInterNationalNumber(contact.getPhoneOne()));
-        if (allCallsForThisNumber != null && allCallsForThisNumber.size() > 0) {
-            holder.tvConnections.setText("" + allCallsForThisNumber.size() + "");
-        } else {
-            holder.tvConnections.setText("" + 0 + "");
-        }
-        if (allCallsForThisNumber != null && allCallsForThisNumber.size() > 0) {
-            LSCall latestCall = allCallsForThisNumber.get(allCallsForThisNumber.size() - 1);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(latestCall.getBeginTime());
-            String lastContact = calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-"
-                    + calendar.get(Calendar.YEAR) + " " + calendar.get(Calendar.HOUR_OF_DAY) + " : " + calendar.get(Calendar.MINUTE);
-            holder.tvLastContact.setText("" + lastContact + "");
-        } else {
-            holder.tvLastContact.setText("" + "Never+" + "");
-        }
         return convertView;
     }
 
@@ -230,8 +211,6 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
         RelativeLayout call_name_time;
         RelativeLayout contactCallDetails;
         TextView numberDetailTextView;
-        TextView tvConnections;
-        TextView tvLastContact;
         Button bIgnore;
         Button bSales;
     }

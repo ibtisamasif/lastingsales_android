@@ -100,10 +100,10 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         }
 
         // Obtain the FirebaseAnalytics instance.
-//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-//        Bundle bundle = new Bundle();
-//        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
-//        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
 
 
         Log.d(TAG, "onCreate: DB name: " +getDatabasePath("sugar_example").getAbsolutePath());
@@ -338,7 +338,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         }
         else if (id == R.id.nav_item_unlabeled_contacts) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
@@ -347,7 +347,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
             try {
                 JSONObject props = new JSONObject();
-                props.put("Gender", "Female");
                 props.put("Logged in", false);
                 mixpanel.track("Unlabeled(Drawer)", props);
             } catch (JSONException e) {

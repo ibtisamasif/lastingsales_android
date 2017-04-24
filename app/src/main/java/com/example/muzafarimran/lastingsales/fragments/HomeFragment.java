@@ -120,7 +120,7 @@ public class HomeFragment extends TabFragment {
                 Intent intent;
                 Bundle bundle = new Bundle();
                 bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
-                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
+                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
                 bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
                 bundle.putString("mixpanel_source", "home");
                 intent = new Intent(getContext(), FrameActivity.class);

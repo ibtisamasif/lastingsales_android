@@ -11,14 +11,16 @@ import android.widget.LinearLayout;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.activities.AboutActivity;
 import com.example.muzafarimran.lastingsales.activities.FollowupsActivity;
 import com.example.muzafarimran.lastingsales.activities.NotesActivity;
 
 //Fragment agent Profile
 public class MoreFragment extends TabFragment {
 
-    LinearLayout llFollowUp, llNotes, llLogOut;
+    private LinearLayout llFollowUp, llNotes,llAbout, llLogOut;
     SessionManager sessionManager;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class MoreFragment extends TabFragment {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
         llFollowUp = (LinearLayout) view.findViewById(R.id.llFollowUpsMoreScreen);
         llNotes = (LinearLayout) view.findViewById(R.id.llNotesMoreFragment);
+        llAbout = (LinearLayout) view.findViewById(R.id.llAboutMoreFragment);
         llLogOut = (LinearLayout) view.findViewById(R.id.llLogOutMoreScreen);
         sessionManager = new SessionManager(getContext());
         setOnClickListeners();
@@ -49,6 +52,12 @@ public class MoreFragment extends TabFragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getContext(), NotesActivity.class));
+            }
+        });
+        llAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), AboutActivity.class));
             }
         });
         llLogOut.setOnClickListener(new View.OnClickListener() {

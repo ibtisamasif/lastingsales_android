@@ -167,6 +167,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
                 Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
                 myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
                 myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_BUSINESS);
                 mContext.startActivity(myIntent);
             }
         });

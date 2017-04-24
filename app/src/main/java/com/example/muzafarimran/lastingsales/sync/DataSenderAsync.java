@@ -108,7 +108,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
     }
 
     public void addContactToServerSync(final LSContact contact) {
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_CONTACT, new Response.Listener<String>() {
             @Override
@@ -174,7 +174,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                     params.put("address", "" + contact.getContactAddress());
                 }
                 if (contact.getDynamic() != null) {
-                    params.put("address", "" + contact.getDynamic());
+                    params.put("dynamic_values", "" + contact.getDynamic());
                 }
                 params.put("phone", "" + contact.getPhoneOne());
                 params.put("status", "" + contact.getContactSalesStatus());
@@ -190,10 +190,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 return params;
             }
         };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -214,7 +214,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         String email = "";
         String address = "";
 
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
         if (contact.getContactEmail() != null) {
             email = contact.getContactEmail();
@@ -262,10 +262,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             }
         }) {
         };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -284,7 +284,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 
     public void addCallToServerSync(final LSCall call) {
 
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_CALL, new Response.Listener<String>() {
             @Override
@@ -370,10 +370,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 return params;
             }
         };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -392,7 +392,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 
     public void addInquiryToServerSync(final LSInquiry inquiry) {
 
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_INQUIRY, new Response.Listener<String>() {
             @Override
@@ -463,10 +463,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 return params;
             }
         };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -486,7 +486,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 
     public void updateInquiryToServerSync(final LSInquiry inquiry) {
 
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
 
         final String BASE_URL = MyURLs.UPDATE_INQUIRY;
@@ -525,10 +525,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateInquiry");
             }
         });
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -547,7 +547,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 
     public void deleteInquiriesFromServerSync(final LSInquiry inquiry) {
 //        Log.d(TAG, "deleteContactFromServerSync: DELETE LEAD SERVER ID : "+contact.getServerId());
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
         final String BASE_URL = MyURLs.DELETE_INQUIRY;
         Uri builtUri = Uri.parse(BASE_URL)
@@ -583,10 +583,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             }
         }) {
         };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -606,7 +606,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
     public void addNoteToServerSync(final LSNote note) {
 //        Log.d(TAG, "LeadLocalIdOfNote: " + note.getContactOfNote().getId());
 //        Log.d(TAG, "LeadServerIdOfNote: " + note.getContactOfNote().getServerId());
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_NOTE + note.getContactOfNote().getServerId() + "/notes", new Response.Listener<String>() {
             @Override
@@ -670,10 +670,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 return params;
             }
         };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -693,7 +693,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
     public void updateNoteToServerSync(final LSNote note) {
         Log.d(TAG, "LeadLocalIdOfNote: " + note.getContactOfNote().getId());
         Log.d(TAG, "LeadServerIdOfNote: " + note.getContactOfNote().getServerId());
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
         final String BASE_URL = MyURLs.UPDATE_NOTE;
         Uri builtUri = Uri.parse(BASE_URL)
@@ -733,10 +733,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             }
         }) {
         };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -755,7 +755,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
     public void addFollowupToServerSync(final TempFollowUp followup) {
         Log.d(TAG, "LeadLocalIdOfFollowup: " + followup.getContact().getId());
         Log.d(TAG, "LeadServerIdOfFollowup: " + followup.getContact().getServerId());
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_FOLLOWUP + followup.getContact().getServerId() + "/followup", new Response.Listener<String>() {
             @Override
@@ -804,10 +804,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 return params;
             }
         };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -826,7 +826,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 
     public void deleteContactFromServerSync(final LSContact contact) {
 //        Log.d(TAG, "deleteContactFromServerSync: DELETE LEAD SERVER ID : "+contact.getServerId());
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(mContext);
         final String BASE_URL = MyURLs.DELETE_CONTACT;
         Uri builtUri = Uri.parse(BASE_URL)
@@ -875,10 +875,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             }
         }) {
         };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 

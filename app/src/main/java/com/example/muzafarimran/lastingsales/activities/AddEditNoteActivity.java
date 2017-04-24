@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,11 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -59,6 +65,17 @@ public class AddEditNoteActivity extends AppCompatActivity {
         etContactNote = (EditText) findViewById(R.id.contact_note_add_note);
         bOk = (Button) findViewById(R.id.ok_add_note);
         bCancel = (Button) findViewById(R.id.cancel_add_note);
+
+
+        String projectToken = MixpanelConfig.projectToken;
+        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+        try {
+            JSONObject props = new JSONObject();
+            props.put("Logged in", true);
+            mixpanel.track("Notes - Activity Opened", props);
+        } catch (JSONException e) {
+            Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+        }
 
         Bundle bundle = getIntent().getExtras();
         Long noteIdLong = 0l;
@@ -118,12 +135,30 @@ public class AddEditNoteActivity extends AppCompatActivity {
                     DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
                     dataSenderAsync.execute();
                 }
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                try {
+                    JSONObject props = new JSONObject();
+                    props.put("Logged in", true);
+                    mixpanel.track("Notes - Created", props);
+                } catch (JSONException e) {
+                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                }
             }
         });
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                try {
+                    JSONObject props = new JSONObject();
+                    props.put("Logged in", true);
+                    mixpanel.track("Notes - Activity Canceled", props);
+                } catch (JSONException e) {
+                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                }
             }
         });
 

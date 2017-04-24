@@ -59,6 +59,8 @@ public class AddEditLeadActivity extends Activity {
     public static final String MIXPANEL_SOURCE_FAB = "fab";
     public static final String MIXPANEL_SOURCE_NOTIFICATION = "notification";
     public static final String MIXPANEL_SOURCE_UNLABELED = "unlabeled";
+    public static final String MIXPANEL_SOURCE_IGNORE = "ignore";
+    public static final String MIXPANEL_SOURCE_BUSINESS = "business";
 
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
     String launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
@@ -125,6 +127,22 @@ public class AddEditLeadActivity extends Activity {
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         }
 
+        try {
+            if (mixpanelSource.equals(MIXPANEL_SOURCE_NOTIFICATION)) {
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                try {
+                    JSONObject props = new JSONObject();
+                    props.put("type", "track");
+                    mixpanel.track("Lead from notification - clicked", props);
+                } catch (Exception e) {
+                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,7 +195,7 @@ public class AddEditLeadActivity extends Activity {
                         // The contact will never be saved again in the flow.
                         TypeManager.ConvertTo(getApplicationContext(), selectedContact, oldType, newType);
                         String checkContactInLocalPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), intlNum);
-                        if(checkContactInLocalPhonebook == null){
+                        if (checkContactInLocalPhonebook == null) {
                             //Saving contact in native phonebook as well
                             addContactInNativePhonebook(tempContact.getContactName(), tempContact.getPhoneOne());
                         }
@@ -191,8 +209,8 @@ public class AddEditLeadActivity extends Activity {
                 try {
                     JSONObject props = new JSONObject();
                     props.put("Logged in", false);
-                    mixpanel.track("Lead from "+mixpanelSource, props);
-                    Log.d(TAG, "mixpanelSource: "+mixpanelSource);
+                    mixpanel.track("Lead from " + mixpanelSource, props);
+                    Log.d(TAG, "mixpanelSource: " + mixpanelSource);
                 } catch (JSONException e) {
                     Log.e("MYAPP", "Unable to add properties to JSONObject", e);
                 }
@@ -234,7 +252,7 @@ public class AddEditLeadActivity extends Activity {
         String company = "";
         String jobTitle = "";
 
-        ArrayList<ContentProviderOperation> ops = new ArrayList < ContentProviderOperation > ();
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 
         ops.add(ContentProviderOperation.newInsert(
                 ContactsContract.RawContacts.CONTENT_URI)
@@ -341,13 +359,12 @@ public class AddEditLeadActivity extends Activity {
         } else if (num != null && !num.equals("")) {
             selectedContact = LSContact.getContactFromNumber(num);
         }
-        if (selectedContact.getContactName() != null && !selectedContact.getContactName().equals("")) {
+        if (selectedContact.getContactName() != null) { //TODO crash motorola
             if (selectedContact.getContactName().equals("Unlabeled Contact") || selectedContact.getContactName().equals("Ignored Contact")) {
                 String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), selectedContact.getPhoneOne());
                 if (name != null) {
                     etContactName.setText(name);
-                }
-                else {
+                } else {
                     etContactName.setText("");
                 }
             } else {
