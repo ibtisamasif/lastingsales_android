@@ -254,8 +254,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempRecording.setSyncStatus(SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
 //            tempRecording.save();
 ////            Log.d(TAG, "onIncomingCallEnded: File Location2: " + tempRecording.getAudioPath());
-//            DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
-//            dataSenderAsync.execute();
+//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//            dataSenderAsync.run();
 //            IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
 //            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
 //            bus.post(mCallEvent);
@@ -276,8 +276,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         Log.d("IncomingCallReceiver", "onIncomingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
         TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
         theCallLogEngine.execute();
-        DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
-        dataSenderAsync.execute();
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+        dataSenderAsync.run();
         IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         bus.post(mCallEvent);
@@ -348,8 +348,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempRecording.setSyncStatus(SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
 //            tempRecording.save();
 ////            Log.d(TAG, "onOutgoingCallEnded: File Location2: " + tempRecording.getAudioPath());
-//            DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
-//            dataSenderAsync.execute();
+//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//            dataSenderAsync.run();
 //            OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
 //            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
 //            bus.post(mCallEvent);
@@ -369,8 +369,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         Log.d("OutgoingCallReceiver", "onOutgoingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
         TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
         theCallLogEngine.execute();
-        DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
-        dataSenderAsync.execute();
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+        dataSenderAsync.run();
         OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         bus.post(mCallEvent);
@@ -433,8 +433,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //                newInquiry.save();
 //                Log.d(TAG, "onMissedCall: newInquiry: " + newInquiry.toString());
 //            }
-//            DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
-//            dataSenderAsync.execute();
+//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//            dataSenderAsync.run();
 //            MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
 //            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
 //            bus.post(mCallEvent);
@@ -454,8 +454,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         Log.d("MissedCallReceiver", "onMissedCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
         TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
         theCallLogEngine.execute();
-        DataSenderAsync dataSenderAsync = new DataSenderAsync(ctx);
-        dataSenderAsync.execute();
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+        dataSenderAsync.run();
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
         TinyBus bus = TinyBus.from(ctx.getApplicationContext());
         bus.post(mCallEvent);

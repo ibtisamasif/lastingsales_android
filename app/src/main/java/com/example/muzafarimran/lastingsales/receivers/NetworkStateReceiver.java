@@ -21,8 +21,8 @@ public class NetworkStateReceiver extends BroadcastReceiver {
             NetworkInfo ni = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
             if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
                 Log.d(TAG, "Network " + ni.getTypeName() + " connected");
-                DataSenderAsync dataSenderAsync = new DataSenderAsync(context);
-                dataSenderAsync.execute();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
+                dataSenderAsync.run();
             } else if (intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
                 Log.d(TAG, "There's no network connectivity");
             }

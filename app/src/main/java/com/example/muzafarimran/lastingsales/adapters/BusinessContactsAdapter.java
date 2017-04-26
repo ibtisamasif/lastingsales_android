@@ -22,6 +22,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.fragments.BusinessContactDeleteBottomSheetDialogFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
@@ -128,7 +129,11 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
             ((ViewGroup) holder.user_details_wrapper.getParent()).removeView(contact_details);
         }
         holder.contactTagDropDownLayout.setVisibility(GONE);
-        holder.name.setText(contact.getContactName());
+        if (contact.getContactName().equals("null")) {
+            holder.name.setText("");
+        } else {
+            holder.name.setText(contact.getContactName());
+        }
         holder.user_details_wrapper.setTag(position);
         holder.number.setText(contact.getPhoneOne());
         holder.user_details_wrapper.setOnClickListener(new showContactDetaislsListener(contact, holder.contactTagDropDownLayout));
@@ -155,13 +160,18 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                contact.setLeadDeleted(true);
-                contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
-                contact.delete();
-                setList(LSContact.getContactsByType(contactType));
-                Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
-                DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
-                dataSenderAsync.execute();
+                LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
+//                if (checkInquiry == null) {
+                    contact.setLeadDeleted(true);
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+                    contact.delete();
+                    setList(LSContact.getContactsByType(contactType));
+                    Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
+                    dataSenderAsync.run();
+//                } else {
+//                    Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
         holder.bSales.setOnClickListener(new View.OnClickListener() {
@@ -196,8 +206,8 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
 //        contact.delete();
         setList(LSContact.getContactsByType(contactType));
         Toast.makeText(mContext, "Contact Deleted", Toast.LENGTH_SHORT).show();
-        DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
-        dataSenderAsync.execute();
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
+        dataSenderAsync.run();
     }
     // for searching
     //TODO this method needs to be moved from here

@@ -118,8 +118,8 @@ public class AddEditNoteActivity extends AppCompatActivity {
                     selectedNote.save();
                     finish();
                     Toast.makeText(AddEditNoteActivity.this, "Note Edited", Toast.LENGTH_SHORT).show();
-                    DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-                    dataSenderAsync.execute();
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                    dataSenderAsync.run();
 
                 } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_NOTE)) {
                     LSNote note = new LSNote();
@@ -132,8 +132,8 @@ public class AddEditNoteActivity extends AppCompatActivity {
                     bus.post(mNoteAdded);
                     finish();
                     Toast.makeText(getApplicationContext(), "Note Added", Toast.LENGTH_SHORT).show();
-                    DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-                    dataSenderAsync.execute();
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                    dataSenderAsync.run();
                 }
                 String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);

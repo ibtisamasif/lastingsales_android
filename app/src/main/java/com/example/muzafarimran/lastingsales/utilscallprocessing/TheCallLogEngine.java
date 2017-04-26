@@ -82,7 +82,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     tempCall.setBeginTime(Long.parseLong(callDate));
                     tempCall.setDuration(Long.parseLong(callDuration));
 
-                    if (callType.equals("1")) {             //Incoming
+                    if (callType.equals("1") && tempCall.getDuration() > 0L) {           //Incoming
 
                         tempCall.setType(LSCall.CALL_TYPE_INCOMING);
 
@@ -95,7 +95,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     } else if (callType.equals("3")) {      //Missed
                         tempCall.setType(LSCall.CALL_TYPE_MISSED);
                     }
-                    else if (callType.equals("5")) {        // incoming Rejected
+                    else if (callType.equals("5")|| callType.equals("1") && tempCall.getDuration() == 0L) {        // incoming Rejected
                         tempCall.setType(LSCall.CALL_TYPE_REJECTED);
                     }
 

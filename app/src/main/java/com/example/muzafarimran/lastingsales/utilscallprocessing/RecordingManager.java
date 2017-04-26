@@ -52,8 +52,8 @@ public class RecordingManager extends AsyncTask<Object, Void, Void> {
                                 oneRecording.setServerIdOfCall(oneCall.getServerId());
                                 oneRecording.save();
                                 Log.d(TAG, "doInBackground: ServerIdOfCallFromLSCallRecording: "+oneRecording.getServerIdOfCall());
-//                                DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-//                                dataSenderAsync.execute();
+//                                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+//                                dataSenderAsync.run();
                             }
                         }
                     }

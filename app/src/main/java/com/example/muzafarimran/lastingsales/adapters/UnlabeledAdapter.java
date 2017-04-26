@@ -115,6 +115,8 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
         }
         if (contact.getContactName() == null) {
             holder.name.setText(contact.getPhoneOne());
+        } else if (contact.getContactName().equals("null")) {
+            holder.name.setText("");
         } else if (contact.getContactName().equals("Unlabeled Contact") || contact.getContactName().equals("Ignored Contact")) {
             String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, contact.getPhoneOne());
             if (name != null) {
@@ -151,8 +153,8 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
                 contact.save();
                 String newType = LSContact.CONTACT_TYPE_IGNORED;
                 TypeManager.ConvertTo(mContext, contact, oldType, newType);
-                DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext.getApplicationContext());
-                dataSenderAsync.execute();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
+                dataSenderAsync.run();
                 ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
                 setList(allUntaggedContacts);
                 Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();

@@ -21,6 +21,7 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -121,6 +122,8 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         holder.contactDetailsDopDownLayout.setVisibility(GONE);
         if (contact.getContactName() == null) {
             holder.name.setText(contact.getPhoneOne());
+        } else if (contact.getContactName().equals("null")) {
+            holder.name.setText("");
         } else if (contact.getContactName().equals("Ignored Contact") || contact.getContactName().equals("Unlabeled Contact")) {
             String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, contact.getPhoneOne());
             if (name != null) {
@@ -152,13 +155,18 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
+//                if (checkInquiry == null) {
                 contact.setLeadDeleted(true);
                 contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
                 contact.save();
                 setList(LSContact.getContactsByType(contactType));
                 Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
-                DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
-                dataSenderAsync.execute();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
+                dataSenderAsync.run();
+//                }else {
+//                    Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
         holder.bSales.setOnClickListener(new View.OnClickListener() {

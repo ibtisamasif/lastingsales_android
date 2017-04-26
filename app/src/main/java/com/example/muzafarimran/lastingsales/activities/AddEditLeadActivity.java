@@ -172,8 +172,7 @@ public class AddEditLeadActivity extends Activity {
                         finish();
                         //Saving contact in native phonebook as well
                         addContactInNativePhonebook(tempContact.getContactName(), tempContact.getPhoneOne());
-                        moveToContactDetailScreen(tempContact);
-
+                        moveToContactDetailScreenIfNeeded(tempContact);
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
                     if (isValid(contactName, contactPhone, contactEmail)) {
@@ -200,7 +199,7 @@ public class AddEditLeadActivity extends Activity {
                             addContactInNativePhonebook(tempContact.getContactName(), tempContact.getPhoneOne());
                         }
                         finish();
-                        moveToContactDetailScreen(tempContact);
+                        moveToContactDetailScreenIfNeeded(tempContact);
                     }
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                 }
@@ -217,8 +216,8 @@ public class AddEditLeadActivity extends Activity {
                 LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                 TinyBus bus = TinyBus.from(getApplicationContext());
                 bus.post(mCallEvent);
-                DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-                dataSenderAsync.execute();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                dataSenderAsync.run();
             }
         });
 
@@ -359,7 +358,7 @@ public class AddEditLeadActivity extends Activity {
         } else if (num != null && !num.equals("")) {
             selectedContact = LSContact.getContactFromNumber(num);
         }
-        if (selectedContact.getContactName() != null) { //TODO crash motorola
+        if (selectedContact.getContactName() != null) { //TODO crash on deleting the contact of inquiry and then tagging the inquiry
             if (selectedContact.getContactName().equals("Unlabeled Contact") || selectedContact.getContactName().equals("Ignored Contact")) {
                 String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), selectedContact.getPhoneOne());
                 if (name != null) {
@@ -405,11 +404,13 @@ public class AddEditLeadActivity extends Activity {
         return true;
     }
 
-    private void moveToContactDetailScreen(LSContact contact) {
-        Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
-        long contactId = contact.getId();
-        detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-        startActivity(detailsActivityIntent);
+    private void moveToContactDetailScreenIfNeeded(LSContact contact) {
+        if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+            Intent detailsActivityIntent = new Intent(AddEditLeadActivity.this, ContactDetailsTabActivity.class);
+            long contactId = contact.getId();
+            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
+            startActivity(detailsActivityIntent);
+        }
     }
 
     @Override

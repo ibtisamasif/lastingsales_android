@@ -31,8 +31,8 @@ public class InquiryManager {
             tempInquiry.save();
             tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
             tempInquiry.save();
-            DataSenderAsync dataSenderAsync = new DataSenderAsync(context);
-            dataSenderAsync.execute();
+            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
+            dataSenderAsync.run();
         }
     }
 

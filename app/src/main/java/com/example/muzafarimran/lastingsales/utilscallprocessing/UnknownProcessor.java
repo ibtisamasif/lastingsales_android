@@ -19,7 +19,6 @@ class UnknownProcessor {
     public static final String TAG = "UnknownProcessor";
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
-        // Check if type is incoming , outgoing or missed
         //new untagged contact is created, saved, entered in call entry
         LSContact tempContact = new LSContact();
         tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
@@ -27,7 +26,7 @@ class UnknownProcessor {
         tempContact.setContactName(call.getContactName());
         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
         tempContact.save();
-
+        // Check if type is incoming , outgoing or missed
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() > 0L) {
             //Incoming with whome Agent have talked
             if (showNotification) {
@@ -42,10 +41,6 @@ class UnknownProcessor {
             MissedCallEventModel mCallEventModel = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
             TinyBus bus = TinyBus.from(mContext.getApplicationContext());
             bus.post(mCallEventModel);
-        } else if (call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-            //Incoming
-            call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
-            call.save();
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) && call.getDuration() > 0L) {
             //Outgoing with whome Agent have talked
@@ -61,6 +56,7 @@ class UnknownProcessor {
             MissedCallEventModel mCallEventModel = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
             TinyBus bus = TinyBus.from(mContext.getApplicationContext());
             bus.post(mCallEventModel);
+
         } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
             //Outgoing
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
@@ -82,7 +78,7 @@ class UnknownProcessor {
             TinyBus bus = TinyBus.from(mContext.getApplicationContext());
             bus.post(mCallEventModel);
 
-        } else if (call.getType().equals(LSCall.CALL_TYPE_REJECTED)) {
+        } else if (call.getType().equals(LSCall.CALL_TYPE_REJECTED) || call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() == 0L) {
             //Incoming Rejected
             InquiryManager.CreateOrUpdate(call);
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);

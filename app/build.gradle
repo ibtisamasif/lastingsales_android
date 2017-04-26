@@ -8,8 +8,8 @@ android {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 14
-        versionName "1.11"
+        versionCode 15
+        versionName "1.12"
         jackOptions {
             enabled false
         }
@@ -20,7 +20,8 @@ android {
             storeFile file('E:/ibtii/work/Vivid/configuration data/lskey.jks')
             storePassword "J7Z/}aB*6'r7q+A~"
             keyAlias "lastingSales"
-            keyPassword "J7Z/}aB*6'r7q+A~"        }
+            keyPassword "J7Z/}aB*6'r7q+A~"
+        }
     }
 
     buildTypes {
@@ -62,7 +63,7 @@ dependencies {
     compile 'com.github.satyan:sugar:1.4'
     compile 'com.googlecode.libphonenumber:libphonenumber:7.7.3'
     compile 'de.halfbit:tinybus:3.0.2'
-    compile 'com.android.volley:volley:1.0.0'
+    //    compile 'com.android.volley:volley:1.0.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.github.clans:fab:1.6.4'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
@@ -76,8 +77,8 @@ dependencies {
     compile files('libs/httpmime-4.3.6.jar')
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'com.google.code.gson:gson:2.8.0'
-//    compile 'com.google.android.gms:play-services:10.2.0'
+    //    compile 'com.google.android.gms:play-services:10.2.0'
     compile 'com.mixpanel.android:mixpanel-android:5.0.1'
-
+    compile project(':volley-master')
 }
 apply plugin: 'com.google.gms.google-services'

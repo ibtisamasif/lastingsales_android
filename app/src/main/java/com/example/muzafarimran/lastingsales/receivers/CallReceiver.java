@@ -44,8 +44,8 @@ public abstract class CallReceiver extends BroadcastReceiver {
         }
         TheCallLogEngine theCallLogEngine = new TheCallLogEngine(context);
         theCallLogEngine.execute();
-        DataSenderAsync dataSenderAsync = new DataSenderAsync(context);
-        dataSenderAsync.execute();
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
+        dataSenderAsync.run();
         IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
         TinyBus inBus = TinyBus.from(context.getApplicationContext());
         inBus.post(InCallEvent);

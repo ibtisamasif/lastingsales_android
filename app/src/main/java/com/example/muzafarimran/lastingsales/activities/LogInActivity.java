@@ -18,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
@@ -77,8 +78,8 @@ public class LogInActivity extends AppCompatActivity {
         tvEmail.getBackground().clearColorFilter();
         tvPassword.getBackground().clearColorFilter();
 //        hardcoding number and password for develoment speedup purposes
-//        tvEmail.setText("ibtiagent4@gmail.com");
-//        tvPassword.setText("11111111");
+//        tvEmail.setText("ibtiagent6@gmail.com");
+//        tvPassword.setText("111111");
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,7 +122,8 @@ public class LogInActivity extends AppCompatActivity {
 
     public void makeLoginRequest(final Activity activity, final String number, final String password) {
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(activity);
+        RequestQueue queue = Volley.newRequestQueue(activity, new HurlStack());
+//        RequestQueue queue = Volley.newRequestQueue(activity);
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -223,12 +225,12 @@ public class LogInActivity extends AppCompatActivity {
                 return params;
             }
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+////                params.put("Content-Type", "application/x-www-form-urlencoded");
+//                return params;
+//            }
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
@@ -266,8 +268,8 @@ public class LogInActivity extends AppCompatActivity {
 //                        recordingManager.execute();
                         TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
                         theCallLogEngine.execute();
-                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-                        dataSenderAsync.execute();
+                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                        dataSenderAsync.run();
 
 
                     }
@@ -288,8 +290,8 @@ public class LogInActivity extends AppCompatActivity {
 //                recordingManager.execute();
                 TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
                 theCallLogEngine.execute();
-                DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-                dataSenderAsync.execute();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                dataSenderAsync.run();
             }
         }) {
         };
