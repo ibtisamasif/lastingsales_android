@@ -11,7 +11,7 @@ public class MixpanelConfig {
 
 
     // Bilals Mixpanel
-    public static final String projectToken = "65aa007738fd72706b95318cd83858ff";
+    public static final String projectToken = "4dfb4998f4c1cf123ab750ab59a47082";
 
 
 }
