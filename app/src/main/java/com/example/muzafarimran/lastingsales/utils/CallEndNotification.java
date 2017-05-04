@@ -85,8 +85,9 @@ public class CallEndNotification {
 
         //SalesIntent
         Intent salesIntent = new Intent(ctx, AddEditLeadActivity.class);
-        salesIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+        salesIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
         salesIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
+        salesIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, "");
         PendingIntent pIntentSales = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), salesIntent, 0);
 
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)

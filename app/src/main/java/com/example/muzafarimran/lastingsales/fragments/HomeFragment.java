@@ -64,7 +64,7 @@ public class HomeFragment extends TabFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         tvInquiriesValue = (TextView) view.findViewById(R.id.tvInquriesValue);
         tvUntaggedContacts = (TextView) view.findViewById(R.id.tvUntaggeContactsVal);

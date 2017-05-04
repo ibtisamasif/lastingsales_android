@@ -19,14 +19,12 @@ class BusinessProcessor {
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
             //Incoming
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
-            InquiryManager.Remove(call);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
 
         }else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING))  {
             //Outgoing
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
-            InquiryManager.Remove(call);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
 
@@ -38,13 +36,11 @@ class BusinessProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_MISSED)){
             //Missed
-            InquiryManager.CreateOrUpdate(call);
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
         } else if (call.getType().equals(LSCall.CALL_TYPE_REJECTED)) {
             //Incoming Rejected
-            InquiryManager.CreateOrUpdate(call);
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();

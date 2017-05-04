@@ -128,8 +128,9 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
-                myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+                myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
                 myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, contact.getPhoneOne() + "");
+                myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, "");
                 mContext.startActivity(myIntent);
             }
         });
