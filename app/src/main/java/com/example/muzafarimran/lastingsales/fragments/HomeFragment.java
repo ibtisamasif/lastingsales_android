@@ -26,6 +26,7 @@ import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -101,7 +102,7 @@ public class HomeFragment extends TabFragment {
 //                intent = new Intent(getContext(), FrameActivity.class);
 //                intent.putExtras(bundle);
 //                startActivity(intent);
-                String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+                String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
                 try {
                     JSONObject props = new JSONObject();
@@ -119,13 +120,13 @@ public class HomeFragment extends TabFragment {
                 Intent intent;
                 Bundle bundle = new Bundle();
                 bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
-                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
+                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
                 bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
                 bundle.putString("mixpanel_source", "home");
                 intent = new Intent(getContext(), FrameActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
-                String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+                String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
                 try {
                     JSONObject props = new JSONObject();
@@ -150,7 +151,7 @@ public class HomeFragment extends TabFragment {
 //                Intent intent = new Intent(getContext(), FrameActivity.class);
 //                intent.putExtras(bundle);
 //                startActivity(intent);
-                String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+                String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
                 try {
                     JSONObject props = new JSONObject();
@@ -175,12 +176,8 @@ public class HomeFragment extends TabFragment {
                 floatingActionMenu.close(true);
                 Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
                 intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                intent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_FAB);
                 startActivity(intent);
-
-//                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
-//                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-//                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
-//                startActivity(intent);
             }
         });
         floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
@@ -189,12 +186,8 @@ public class HomeFragment extends TabFragment {
                 floatingActionMenu.close(true);
                 Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
                 intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
+                intent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_FAB);
                 startActivity(intent);
-//                Intent intent = new Intent(getContext(), TagNumberAndAddFollowupActivity.class);
-//                intent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_IMPORT_CONTACT);
-//                intent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_SALES);
-//                startActivity(intent);
-
             }
         });
         //Bundle bundle = new Bundle();

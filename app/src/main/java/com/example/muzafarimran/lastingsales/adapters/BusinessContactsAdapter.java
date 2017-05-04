@@ -50,7 +50,7 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
     private CallClickListener callClickListener = null;
     private showContactDetaislsListener showContactDetaislsListener = null;
     private String contactType;
-    private LinearLayout noteDetails;
+    private RelativeLayout noteDetails;
     private FragmentManager supportFragmentManager;
 
 
@@ -116,7 +116,7 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
             holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
-            holder.contactTagDropDownLayout = (LinearLayout) convertView.findViewById(R.id.contactTagDropDownLayout);
+            holder.contactTagDropDownLayout = (RelativeLayout) convertView.findViewById(R.id.contactTagDropDownLayout);
             holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
             holder.bIgnore = (Button) convertView.findViewById(R.id.contactDropDownIgnoreButton);
             holder.bSales = (Button) convertView.findViewById(R.id.contactDropDownAddAsLeadButton);
@@ -170,6 +170,7 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
                 Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
                 myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
                 myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_IGNORE);
                 mContext.startActivity(myIntent);
             }
         });
@@ -274,7 +275,7 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
         ImageButton deleteButton;
         Button bIgnore;
         Button bSales;
-        LinearLayout contactTagDropDownLayout;
+        RelativeLayout contactTagDropDownLayout;
     }
 
     /*
@@ -282,9 +283,9 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
     * */
     public class showContactDetaislsListener implements View.OnClickListener {
         LSContact contact;
-        LinearLayout detailsLayout;
+        RelativeLayout detailsLayout;
 
-        public showContactDetaislsListener(LSContact contact, LinearLayout layout) {
+        public showContactDetaislsListener(LSContact contact, RelativeLayout layout) {
             this.contact = contact;
             this.detailsLayout = layout;
         }

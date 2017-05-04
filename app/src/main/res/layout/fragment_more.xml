@@ -114,10 +114,10 @@
             />
 
         <LinearLayout
+            android:id="@+id/llAboutMoreFragment"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:orientation="horizontal"
-
             >
 
             <TextView

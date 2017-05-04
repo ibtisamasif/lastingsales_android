@@ -100,6 +100,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="nosensor" />
         <activity android:name=".activities.NotesActivity" />
+        <activity android:name=".activities.AboutActivity" />
         <activity
             android:name=".activities.AddEditNoteActivity"
             android:screenOrientation="portrait"

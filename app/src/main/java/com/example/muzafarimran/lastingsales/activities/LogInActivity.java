@@ -26,9 +26,11 @@ import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
+import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManager;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +56,7 @@ public class LogInActivity extends AppCompatActivity {
 
 //        Version Control
         VersionManager versionManager = new VersionManager(getApplicationContext());
-        if(!versionManager.runMigrations()){
+        if (!versionManager.runMigrations()) {
             // if migration has failed
             Toast.makeText(getApplicationContext(), "Migration Failed", Toast.LENGTH_SHORT).show();
         }
@@ -144,6 +146,13 @@ public class LogInActivity extends AppCompatActivity {
                         String api_token = responseObject.getString("api_token");
                         String role_id = responseObject.getString("role_id");
 
+                        JSONObject companyObject = responseObject.getJSONObject("company");
+                        String company_id = companyObject.getString("id");
+                        String company_name = companyObject.getString("name");
+
+                        JSONObject roleObject = responseObject.getJSONObject("role");
+                        String role_role = roleObject.getString("role");
+
                         String completeImagePath = MyURLs.IMAGE_URL + image_path;
                         sessionManager.loginnUser(user_id, api_token, Calendar.getInstance().getTimeInMillis(), number, firstname, lastname, completeImagePath);
                         sessionManager.getKeyLoginFirebaseRegId();
@@ -154,6 +163,28 @@ public class LogInActivity extends AppCompatActivity {
 
                         Log.d(TAG, "onResponse: " + response);
                         Toast.makeText(activity, "" + user_id, Toast.LENGTH_SHORT).show();
+                        try {
+                            String projectToken = MixpanelConfig.projectToken;
+                            MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                            mixpanel.identify(user_id);
+                            mixpanel.getPeople().identify(user_id);
+
+                            JSONObject props = new JSONObject();
+
+                            props.put("$first_name", ""+firstname);
+                            props.put("$last_name", ""+lastname);
+                            props.put("$email", ""+email);
+                            props.put("role", ""+role_role);
+                            props.put("company_name", ""+company_name);
+                            props.put("company_id", ""+company_id);
+                            props.put("activated", "yes");
+
+                            mixpanel.getPeople().set(props);
+
+                            mixpanel.track("User Logged in", props);
+                        } catch (JSONException e) {
+                            Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -178,7 +209,7 @@ public class LogInActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(activity, "Server Error.", Toast.LENGTH_SHORT).show();
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

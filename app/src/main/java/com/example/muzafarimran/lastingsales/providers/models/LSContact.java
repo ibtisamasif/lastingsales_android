@@ -76,10 +76,11 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getContactsByType(String type) {
         try {
-            return Select.from(LSContact.class)
-                    .where(Condition.prop("contact_type").eq(type),
-                            Condition.prop("is_lead_deleted").eq(0))
-                    .list();
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = ? ", type);
+//            return Select.from(LSContact.class)
+//                    .where(Condition.prop("contact_type").eq(type),
+//                            Condition.prop("is_lead_deleted").eq(0))
+//                    .list();
 //            return LSContact.find(LSContact.class, "contact_type = ? ", type);
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
@@ -96,11 +97,13 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getSalesContactsByLeadSalesStatus(String leadType) {
         try {
-            return Select.from(LSContact.class)
-                    .where(Condition.prop("contact_sales_status").eq(leadType),
-                            Condition.prop("contact_type").eq(LSContact.CONTACT_TYPE_SALES),
-                            Condition.prop("is_lead_deleted").eq(0))
-                    .list();
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = ? and contact_sales_status = ? ", LSContact.CONTACT_TYPE_SALES, leadType);
+//            return Select.from(LSContact.class)
+//                    .where(Condition.prop("contact_sales_status").eq(leadType),
+//                            Condition.prop("contact_type").eq(LSContact.CONTACT_TYPE_SALES),
+//                            Condition.prop("is_lead_deleted").eq(0),
+//                            Condition.prop("is_lead_deleted").eq(null))
+//                    .list();
 //            return LSContact.find(LSContact.class, "contact_sales_status = ? and contact_type = ? ", leadType, LSContact.CONTACT_TYPE_SALES);
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
@@ -114,7 +117,6 @@ public class LSContact extends SugarRecord {
                     .where(Condition.prop("contact_sales_status").eq(leadType),
                             Condition.prop("contact_type").eq(LSContact.CONTACT_TYPE_SALES),
                             Condition.prop("is_lead_deleted").eq(1))
-//                            Condition.prop("is_lead_deleted").eq(null))
                     .list();
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();

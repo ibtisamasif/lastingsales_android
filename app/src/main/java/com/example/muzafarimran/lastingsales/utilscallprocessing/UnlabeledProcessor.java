@@ -23,7 +23,7 @@ public class UnlabeledProcessor {
                 NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
             }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
-            InquiryManager.Remove(call);
+            InquiryManager.Remove(mContext, call);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
             MissedCallEventModel mCallEventModel = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
@@ -36,7 +36,7 @@ public class UnlabeledProcessor {
                 NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
             }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
-            InquiryManager.Remove(call);
+            InquiryManager.Remove(mContext, call);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
             MissedCallEventModel mCallEventModel = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);

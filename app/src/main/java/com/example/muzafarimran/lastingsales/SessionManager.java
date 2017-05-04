@@ -81,13 +81,14 @@ public class SessionManager {
 
         // Check for first run or upgrade
         if (currentVersionCode == savedVersionCode) {
-
             // This is just a normal run
             Log.d(TAG, "storeVersionCodeNow: NormalRun = 1");
             setLoginMode(SessionManager.MODE_NORMAL);
+
         } else if (savedVersionCode == DOESNT_EXIST) {
             Log.d(TAG, "storeVersionCodeNow: NewInstall = 2");
             setLoginMode(SessionManager.MODE_NEW_INSTALL);
+
         } else if (currentVersionCode > savedVersionCode) {
             Log.d(TAG, "storeVersionCodeNow: Upgrade = 3");
             setLoginMode(SessionManager.MODE_UPGRADE);

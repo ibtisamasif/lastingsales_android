@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 
@@ -77,19 +78,16 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         super.onCreate(savedInstanceState);
 
 
-        String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
-//        String projectToken = Integer.toString(R.string.mixpanel_key);
+        String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
 
         try {
             JSONObject props = new JSONObject();
-            props.put("Gender", "Female");
-            props.put("Logged in", false);
+            props.put("Logged in", true);
             mixpanel.track("Home Screen Opened", props);
         } catch (JSONException e) {
             Log.e("MYAPP", "Unable to add properties to JSONObject", e);
         }
-
 
         AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
         agentDataFetchAsync.execute();
@@ -107,7 +105,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
 
-//        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
 
         Log.d(TAG, "onCreate: DB name: " +getDatabasePath("sugar_example").getAbsolutePath());
 
@@ -183,7 +180,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //                        tab.setIcon(R.drawable.ic_home_white_48dp);
                         getSupportActionBar().setTitle("Inquiries");
                         UpdateBadge();
-                        String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+                        String projectToken = MixpanelConfig.projectToken;
                         MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
                         try {
                             JSONObject props = new JSONObject();
@@ -328,29 +325,28 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
-            String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+            String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
             try {
                 JSONObject props = new JSONObject();
                 props.put("Gender", "Female");
                 props.put("Logged in", false);
-                mixpanel.track("Business(Drawer)", props);
+                mixpanel.track("Colleague(Drawer)", props);
             } catch (JSONException e) {
                 Log.e("MYAPP", "Unable to add properties to JSONObject", e);
             }
         }
         else if (id == R.id.nav_item_unlabeled_contacts) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Contacts");
+            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
-            String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+            String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
             try {
                 JSONObject props = new JSONObject();
-                props.put("Gender", "Female");
                 props.put("Logged in", false);
                 mixpanel.track("Unlabeled(Drawer)", props);
             } catch (JSONException e) {
@@ -364,7 +360,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
-            String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+            String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
             try {
                 JSONObject props = new JSONObject();

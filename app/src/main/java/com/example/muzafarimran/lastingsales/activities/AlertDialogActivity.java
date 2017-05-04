@@ -60,33 +60,37 @@ public class AlertDialogActivity extends Activity {
         // dialog layout
         View view = inflater.inflate(R.layout.popup_alert_dialog_layout, null);
         TextView message = (TextView) view.findViewById(R.id.followup_popup_note_text);
-        message.setText(tempFollowUp.getTitle()); // TODO crashes here on deleting lead after setting up a followup of that lead
-        TextView contactName = (TextView) view.findViewById(R.id.followup_alert_popup_name);
-        contactName.setText(tempFollowUp.getContact().getContactName()); // TODO crash here too
-        ImageButton callButton = (ImageButton) view.findViewById(R.id.followup_alert_call_button);
-        callButton.setTag(tempFollowUp.getContact().getPhoneOne());
-        callButton.setOnClickListener(new CallClickListener(this));
-        builder.setTitle("Followup Due");
-        builder.setCancelable(false);
-        builder.setView(view)
-                // Add action buttons
-                .setPositiveButton("Open", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                AlertDialogActivity.this.finish();
+        try {
+            message.setText(tempFollowUp.getTitle()); // TODO crashes here on deleting lead after setting up a followup of that lead
+            TextView contactName = (TextView) view.findViewById(R.id.followup_alert_popup_name);
+            contactName.setText(tempFollowUp.getContact().getContactName()); // TODO crash here too
+            ImageButton callButton = (ImageButton) view.findViewById(R.id.followup_alert_call_button);
+            callButton.setTag(tempFollowUp.getContact().getPhoneOne());
+            callButton.setOnClickListener(new CallClickListener(this));
+            builder.setTitle("Followup Due");
+            builder.setCancelable(false);
+            builder.setView(view)
+                    // Add action buttons
+                    .setPositiveButton("Open", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    AlertDialogActivity.this.finish();
+                                }
                             }
-                        }
-                ).setNegativeButton("Close", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
+                    ).setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
 
-                AlertDialogActivity.this.finish();
-            }
-        });
-        builder.create();
-        builder.show();
-        NotificationCompat.Builder notificationCommon = buildNotificationCommon(getApplicationContext());
-        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotifyMgr.notify(001, notificationCommon.build());
+                    AlertDialogActivity.this.finish();
+                }
+            });
+            builder.create();
+            builder.show();
+            NotificationCompat.Builder notificationCommon = buildNotificationCommon(getApplicationContext());
+            NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            mNotifyMgr.notify(001, notificationCommon.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

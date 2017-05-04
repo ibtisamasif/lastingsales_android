@@ -203,6 +203,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 addContactScreenIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
                 addContactScreenIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contactIdString);
                 startActivity(addContactScreenIntent);
+                finish();
                 break;
             case android.R.id.home:
                 onBackPressed();

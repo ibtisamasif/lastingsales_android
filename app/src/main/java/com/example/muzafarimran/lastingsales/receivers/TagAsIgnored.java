@@ -4,6 +4,12 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+
+import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONObject;
 
 /**
  * Created by ibtisam on 12/14/2016.
@@ -20,5 +26,15 @@ public class TagAsIgnored extends BroadcastReceiver {
         int notificationId = intent.getIntExtra("notificationId", 0);
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(notificationId);
+
+        String projectToken = MixpanelConfig.projectToken;
+        MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
+        try {
+            JSONObject props = new JSONObject();
+            props.put("type", "ignored");
+            mixpanel.track("Lead from notification - clicked",props);
+        } catch (Exception e) {
+            Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+        }
     }
 }

@@ -33,7 +33,7 @@ class UnknownProcessor {
             if (showNotification) {
                 NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
             }
-            InquiryManager.Remove(call);
+            InquiryManager.Remove(mContext, call);
             // Call Saved
             call.setContact(tempContact);
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
@@ -52,7 +52,7 @@ class UnknownProcessor {
             if (showNotification) {
                 NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
             }
-            InquiryManager.Remove(call);
+            InquiryManager.Remove(mContext, call);
             // Call Saved
             call.setContact(tempContact);
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);

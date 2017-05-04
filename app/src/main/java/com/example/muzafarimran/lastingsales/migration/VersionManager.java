@@ -20,6 +20,8 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -247,6 +249,46 @@ public class VersionManager {
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                         queue.add(sr);
                     }
+                    return true;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        } else if (version == 14) {
+            try {
+                sessionManager.storeVersionCodeNow();
+                Log.d(TAG, "func: Running Script for Mixpanel");
+                if (sessionManager.getLoginMode().equals(SessionManager.MODE_NORMAL)) {
+                    Log.d(TAG, "func: case1");
+                    try {
+                        String projectToken = MixpanelConfig.projectToken;
+                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
+                        mixpanel.identify(sessionManager.getKeyLoginId()); //user_id
+                        mixpanel.getPeople().identify(sessionManager.getKeyLoginId());
+
+                        JSONObject props = new JSONObject();
+
+                        props.put("$first_name", ""+sessionManager.getKeyLoginFirstName());
+                        props.put("$last_name", ""+sessionManager.getKeyLoginLastName());
+                        props.put("activated", "yes");
+                        mixpanel.getPeople().set(props);
+
+                        mixpanel.track("User Logged in", props);
+                    } catch (JSONException e) {
+                        Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                    }
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_NEW_INSTALL)) {
+                    Log.d(TAG, "func: case2");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_UPGRADE)) {
+                    Log.d(TAG, "func: case3");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
                     return true;
                 } else {
                     return true;

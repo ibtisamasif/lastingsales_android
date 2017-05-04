@@ -36,10 +36,10 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = NotesFragmentNew.newInstance(1, NotesFragmentNew.TAG, id);
                 break;
             case 2:
-                fragment = IndividualCallLogsFragment.newInstance(2, IndividualCallLogsFragment.TAG, id);
+                fragment = FollowupInContactDetailsFragment.newInstance(2, FollowupInContactDetailsFragment.TAG, id);
                 break;
             case 3:
-                fragment = FollowupInContactDetailsFragment.newInstance(3, FollowupInContactDetailsFragment.TAG, id);
+                fragment = IndividualCallLogsFragment.newInstance(3, IndividualCallLogsFragment.TAG, id);
                 break;
         }
         return fragment;
@@ -58,9 +58,9 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return "Notes";
             case 2:
-                return "Calls";
-            case 3:
                 return "Followup";
+            case 3:
+                return "Calls";
             default:
                 return null;
         }
