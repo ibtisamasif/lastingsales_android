@@ -18,6 +18,10 @@ import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -54,6 +58,7 @@ public class InquiriesFragment extends SearchFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() called");
         setRetainInstance(true);
         inquiriesAdapter = new InquiriesAdapter(getContext());
         setHasOptionsMenu(true);
@@ -92,6 +97,7 @@ public class InquiriesFragment extends SearchFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume() called");
         List<LSInquiry> inquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
         setList(inquiries);
     }

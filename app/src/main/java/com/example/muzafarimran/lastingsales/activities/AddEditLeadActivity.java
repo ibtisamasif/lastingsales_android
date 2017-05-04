@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,6 +24,8 @@ import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+
+import java.util.ArrayList;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -269,6 +272,14 @@ public class AddEditLeadActivity extends Activity {
                         tempContact.save();
                         Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
                         finish();
+                        //Saving contact in native phonebook as well
+                        addContactInNativePhonebook(tempContact.getContactName(), tempContact.getPhoneOne());
+                        try{
+                            moveToContactDetailScreen(tempContact);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
                         if (checkContact != null) {
                             if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
                                 checkContact.setContactName(contactName);
@@ -491,7 +502,12 @@ public class AddEditLeadActivity extends Activity {
                         tempContact.save();
                         String newType = selectedContact.getContactType();
                         // The contact will never be saved again in the flow.
-                        TypeManager.ConvertTo(getApplicationContext(), selectedContact, oldType, newType, "LOCAL");
+                        TypeManager.ConvertTo(getApplicationContext(), selectedContact, oldType, newType);
+                        String checkContactInLocalPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), intlNum);
+                        if(checkContactInLocalPhonebook == null){
+                            //Saving contact in native phonebook as well
+                            addContactInNativePhonebook(tempContact.getContactName(), tempContact.getPhoneOne());
+                        }
                     }
                     finish();
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
@@ -525,6 +541,105 @@ public class AddEditLeadActivity extends Activity {
         });
     }
 
+    private void addContactInNativePhonebook(String name, String number) {
+        String DisplayName = name;
+        String MobileNumber = number;
+        String HomeNumber = "";
+        String WorkNumber = "";
+        String emailID = "";
+        String company = "";
+        String jobTitle = "";
+
+        ArrayList<ContentProviderOperation> ops = new ArrayList < ContentProviderOperation > ();
+
+        ops.add(ContentProviderOperation.newInsert(
+                ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                .build());
+
+        //------------------------------------------------------ Names
+        if (DisplayName != null) {
+            ops.add(ContentProviderOperation.newInsert(
+                    ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                    .withValue(
+                            ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                            DisplayName).build());
+        }
+
+        //------------------------------------------------------ Mobile Number
+        if (MobileNumber != null) {
+            ops.add(ContentProviderOperation.
+                    newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, MobileNumber)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                    .build());
+        }
+
+        //------------------------------------------------------ Home Numbers
+        if (HomeNumber != null) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, HomeNumber)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
+                    .build());
+        }
+
+        //------------------------------------------------------ Work Numbers
+        if (WorkNumber != null) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, WorkNumber)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
+                    .build());
+        }
+
+        //------------------------------------------------------ Email
+        if (emailID != null) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Email.DATA, emailID)
+                    .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
+                    .build());
+        }
+
+        //------------------------------------------------------ Organization
+        if (!company.equals("") && !jobTitle.equals("")) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, company)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, jobTitle)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
+                    .build());
+        }
+
+        // Asking the Contact provider to create a new contact
+        try {
+            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void populateCreateContactView() {
         llEmailAddress.setVisibility(View.GONE);
         tvTitleAddContact.setText(TITLE_ADD_NEW_CONTACT);
@@ -543,10 +658,20 @@ public class AddEditLeadActivity extends Activity {
             selectedContact = LSContact.getContactFromNumber(num);
         }
         if (selectedContact.getContactName() != null && !selectedContact.getContactName().equals("")) {
-            etContactName.setText(selectedContact.getContactName());
+            if (selectedContact.getContactName().equals("Unlabeled Contact") || selectedContact.getContactName().equals("Ignored Contact")) {
+                String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), selectedContact.getPhoneOne());
+                if (name != null) {
+                    etContactName.setText(name);
+                }
+                else {
+                    etContactName.setText("");
+                }
+            } else {
+                etContactName.setText(selectedContact.getContactName());
+            }
             selectRadioButton(selectedContact.getContactType());
         } else {
-            etContactName.setText("UNKNOWN");
+            etContactName.setText("");
         }
         if (selectedContact.getContactEmail() != null && !selectedContact.getContactEmail().equals("")) {
             etContactEmail.setText(selectedContact.getContactEmail());

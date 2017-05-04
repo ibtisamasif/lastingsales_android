@@ -50,7 +50,7 @@ public class LostFragment extends  TabFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        leadsAdapter = new LeadsAdapter(getContext(), null, LSContact.SALES_STATUS_CLOSED_LOST);
+        leadsAdapter = new LeadsAdapter(getContext(), null, LSContact.SALES_STATUS_CLOSED_LOST);// TODO remove this line as it populates all contacts have inprogress status including ignored,business
         setHasOptionsMenu(true);
     }
 

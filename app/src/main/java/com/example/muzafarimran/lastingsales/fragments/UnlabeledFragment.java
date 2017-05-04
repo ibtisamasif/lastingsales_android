@@ -18,6 +18,10 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.UnlabeledAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +119,7 @@ public class UnlabeledFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume() called");
         updateContactssList();
     }
 

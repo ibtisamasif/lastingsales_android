@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.lastingsales.agent"
-        minSdkVersion 17
+        minSdkVersion 16
         targetSdkVersion 22
-        versionCode 11
-        versionName "1.8"
+        versionCode 13
+        versionName "2.0"
         jackOptions {
             enabled false
         }
@@ -51,12 +51,12 @@ android {
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
-    compile 'com.android.support:support-v4:25.1.0'
-    compile 'com.android.support:palette-v7:25.1.0'
-    compile 'com.android.support:cardview-v7:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:palette-v7:25.3.1'
+    compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.wdullaer:materialdatetimepicker:2.5.0'
     testCompile 'junit:junit:4.12'
     compile 'com.github.satyan:sugar:1.4'
@@ -76,5 +76,8 @@ dependencies {
     compile files('libs/httpmime-4.3.6.jar')
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'com.google.code.gson:gson:2.8.0'
+//    compile 'com.google.android.gms:play-services:10.2.0'
+    compile 'com.mixpanel.android:mixpanel-android:5.0.1'
+
 }
 apply plugin: 'com.google.gms.google-services'

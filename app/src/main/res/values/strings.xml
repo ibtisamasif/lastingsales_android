@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">LastingSales</string>
+    <string name="mixpanel_key">347487b41c2e70ed4dcef0f8454ad710</string>
     <string name="title_activity_splash">LastingSales</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nameOfUser">Lorem Ipsum</string>
@@ -92,7 +93,7 @@
     <string name="em_inquiries_delight">Nothing in Inquiries</string>
     <string name="em_unlabeled_delight">Nothing in Unlabeled</string>
     <string name="em_all_delight">Nothing in Leads</string>
-    <string name="em_ignored_delight">Ignored Contacts are your friend and family. They are not Tracked!</string>
+    <string name="em_ignored_delight">Ignored Contacts are your Friend and Family contacts. They are not Tracked!</string>
     <string name="em_business_delight">Business Contacts are people who are not your customers!</string>
 
 </resources>

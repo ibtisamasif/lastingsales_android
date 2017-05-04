@@ -49,7 +49,7 @@ public class WonFragment extends TabFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        leadsAdapter = new LeadsAdapter(getContext(), null, LSContact.SALES_STATUS_CLOSED_WON);
+        leadsAdapter = new LeadsAdapter(getContext(), null, LSContact.SALES_STATUS_CLOSED_WON); // TODO remove this line as it populates all contacts have inprogress status including ignored,business
     }
 
     @Override

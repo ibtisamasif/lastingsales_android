@@ -11,46 +11,19 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
  */
 
 class LeadManager {
-    public static void convertTo(Context context, LSContact tempContact, String newtype, String source) {
+    public static void convertTo(Context context, LSContact tempContact, String newtype) {
 
         // from sales to ignored
         if(newtype.equals(LSContact.CONTACT_TYPE_IGNORED)){
-
-            if (source.equals("FCM")){
                 InquiryManager.RemoveByContact(context,tempContact);
-                tempContact.setContactType(newtype);
-                tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                tempContact.save();
-            }else if(source.equals("LOCAL")) {
-                InquiryManager.RemoveByContact(context,tempContact);
-                if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                    tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                }
-                tempContact.save();
-            }
 
             // from sales to business
         }else if(newtype.equals(LSContact.CONTACT_TYPE_BUSINESS)){
-            if (source.equals("FCM")){
-                tempContact.setContactType(newtype);
-                tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                tempContact.save();
-            }else if(source.equals("LOCAL")) {
                 InquiryManager.RemoveByContact(context, tempContact);
-                if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                    tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                }
-                tempContact.save();
-            }
+
             // from sales to unlabeled
         }else if(newtype.equals(LSContact.CONTACT_TYPE_UNLABELED)){
 
-            if (source.equals("FCM")){
-                tempContact.setContactType(newtype);
-                tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                tempContact.save();
-            }else if(source.equals("LOCAL")) {
-            }
         }
     }
 }

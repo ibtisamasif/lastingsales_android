@@ -1,5 +1,8 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -34,7 +37,6 @@ import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -43,6 +45,9 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManage
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -70,6 +75,21 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+//        String projectToken = Integer.toString(R.string.mixpanel_key);
+        MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
+
+        try {
+            JSONObject props = new JSONObject();
+            props.put("Gender", "Female");
+            props.put("Logged in", false);
+            mixpanel.track("Home Screen Opened", props);
+        } catch (JSONException e) {
+            Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+        }
+
 
         AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
         agentDataFetchAsync.execute();
@@ -163,6 +183,16 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //                        tab.setIcon(R.drawable.ic_home_white_48dp);
                         getSupportActionBar().setTitle("Inquiries");
                         UpdateBadge();
+                        String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                        try {
+                            JSONObject props = new JSONObject();
+                            props.put("Gender", "Female");
+                            props.put("Logged in", false);
+                            mixpanel.track("Unlabeled(Tab)", props);
+                        } catch (JSONException e) {
+                            Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                        }
                         break;
                     case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
@@ -298,6 +328,16 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
+            String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+            MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+            try {
+                JSONObject props = new JSONObject();
+                props.put("Gender", "Female");
+                props.put("Logged in", false);
+                mixpanel.track("Business(Drawer)", props);
+            } catch (JSONException e) {
+                Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+            }
         }
         else if (id == R.id.nav_item_unlabeled_contacts) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
@@ -306,6 +346,16 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
+            String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+            MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+            try {
+                JSONObject props = new JSONObject();
+                props.put("Gender", "Female");
+                props.put("Logged in", false);
+                mixpanel.track("Unlabeled(Drawer)", props);
+            } catch (JSONException e) {
+                Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+            }
         }
         else if (id == R.id.nav_item_personal_contacts) {
             bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, IgnoredFragment.class.getName());
@@ -314,6 +364,16 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             intent = new Intent(getApplicationContext(), FrameActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
+            String projectToken = "347487b41c2e70ed4dcef0f8454ad710";
+            MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+            try {
+                JSONObject props = new JSONObject();
+                props.put("Gender", "Female");
+                props.put("Logged in", false);
+                mixpanel.track("Ignored(Drawer)", props);
+            } catch (JSONException e) {
+                Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+            }
         }
 //        else if (id == R.id.nav_item_followups) {
 //            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsListFragment.class.getName());

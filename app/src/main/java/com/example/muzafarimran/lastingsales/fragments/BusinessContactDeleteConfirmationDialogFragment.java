@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
+import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.BusinessContactsAdapter;
 
 /**
@@ -21,7 +22,7 @@ public class BusinessContactDeleteConfirmationDialogFragment extends DialogFragm
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-//                .setIcon(R.drawable.lasting_sales_logo)
+                .setIcon(getResources().getDrawable(R.drawable.lasting_sales_logo))
                 .setTitle("Confirm Delete")
                 .setMessage("Do you want to delete this contact ?")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -37,8 +38,7 @@ public class BusinessContactDeleteConfirmationDialogFragment extends DialogFragm
                         dismiss();
                     }
                 })
-                .create()
-                ;
+                .create();
     }
 
     public BusinessContactsAdapter getBusinessContactsAdapter() {

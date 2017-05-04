@@ -62,7 +62,7 @@ public class BusinessFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        businessContactsAdapter = new BusinessContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_BUSINESS);
+        businessContactsAdapter = new BusinessContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_BUSINESS); // TODO remove this line as it populates all contacts have inprogress status including ignored,business
         setHasOptionsMenu(true);
     }
 

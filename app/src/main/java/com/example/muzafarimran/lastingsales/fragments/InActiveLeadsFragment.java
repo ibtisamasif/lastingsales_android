@@ -23,6 +23,7 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * Created by ibtisam on 12/17/2016.
  */
+
 public class InActiveLeadsFragment extends  TabFragment{
 
     public static final String TAG = "InActiveLeadsFragment";
