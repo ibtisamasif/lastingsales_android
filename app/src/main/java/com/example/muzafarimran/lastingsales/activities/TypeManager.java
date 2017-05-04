@@ -9,11 +9,11 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
  */
 
 public class TypeManager {
-    public static void ConvertTo(Context context, LSContact tempContact, String oldType, String newtype) {
+    public static void ConvertTo(Context context, LSContact tempContact, String oldType, String newtype, String source ) {
 
         if (oldType.equals(LSContact.CONTACT_TYPE_SALES)) {
             // from sales to any type
-            LeadManager.convertTo(context, tempContact, newtype);
+            LeadManager.convertTo(context, tempContact, newtype, source);
 
         } else if (oldType.equals(LSContact.CONTACT_TYPE_UNLABELED)) {
             // from unlabeled to any type

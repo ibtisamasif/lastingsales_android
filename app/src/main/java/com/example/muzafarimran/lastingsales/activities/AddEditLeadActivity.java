@@ -491,7 +491,7 @@ public class AddEditLeadActivity extends Activity {
                         tempContact.save();
                         String newType = selectedContact.getContactType();
                         // The contact will never be saved again in the flow.
-                        TypeManager.ConvertTo(getApplicationContext(), selectedContact, oldType, newType);
+                        TypeManager.ConvertTo(getApplicationContext(), selectedContact, oldType, newType, "LOCAL");
                     }
                     finish();
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();

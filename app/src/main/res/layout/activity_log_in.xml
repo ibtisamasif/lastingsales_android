@@ -35,14 +35,15 @@
                 android:layout_height="180dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="2dp"
+                android:layout_gravity="center"
                 app:srcCompat="@drawable/login_logo" />
 
             <LinearLayout
                 android:id="@+id/numberParentLoginScreen"
                 android:layout_width="270dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="2dp"
                 android:background="@color/half_white2"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -67,7 +68,7 @@
                 android:id="@+id/passwordParentlayoutLoginScreen"
                 android:layout_width="270dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:background="@color/half_white2"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -94,7 +95,7 @@
                 android:id="@+id/loginButtonLoginScreen"
                 android:layout_width="270dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/btn_secondary"
                 android:text="Sign In"
                 android:layout_gravity="center"/>

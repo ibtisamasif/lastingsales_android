@@ -34,6 +34,7 @@ import com.example.muzafarimran.lastingsales.fragments.UnlabeledContactsCallsFra
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
+import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -43,6 +44,7 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngin
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
@@ -69,6 +71,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        ArrayList<LSCall> calls = (ArrayList<LSCall>) LSCall.getAllUniqueCallsInDescendingOrder();
+
         //Version Control
         VersionManager versionManager = new VersionManager(getApplicationContext());
         if(!versionManager.runMigrations()){

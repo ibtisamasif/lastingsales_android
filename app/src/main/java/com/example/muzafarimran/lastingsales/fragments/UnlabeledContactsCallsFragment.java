@@ -107,7 +107,7 @@ public class UnlabeledContactsCallsFragment extends Fragment {
 
     private void updateContactssList() {
 
-        List<LSContact> untaggedContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
+        List<LSContact> untaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
         this.untaggedContacts = untaggedContacts;
         setList(untaggedContacts);
     }

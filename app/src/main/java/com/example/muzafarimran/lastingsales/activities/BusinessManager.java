@@ -23,6 +23,7 @@ class BusinessManager {
             // from business to sales
         }else if(newtype.equals(LSContact.CONTACT_TYPE_SALES)){
 
+            tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
             if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                 tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
             }
@@ -30,6 +31,11 @@ class BusinessManager {
 
             // from business to unlabeled
         }else if(newtype.equals(LSContact.CONTACT_TYPE_UNLABELED)){
+            tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
+            if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+                tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+            }
+            tempContact.save();
         }
     }
 }

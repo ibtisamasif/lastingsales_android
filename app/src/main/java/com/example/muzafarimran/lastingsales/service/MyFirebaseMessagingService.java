@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.MainActivity;
+import com.example.muzafarimran.lastingsales.activities.TypeManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
@@ -148,6 +149,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String phone = payload.getString("phone");
                     String address = payload.getString("address");
                     String status = payload.getString("status");
+                    String lead_type = payload.getString("lead_type");
+
+
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
                     LSContact contact = LSContact.getContactFromServerId(id);
@@ -157,7 +161,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     contact.setContactAddress(address);
                     contact.setContactSalesStatus(status);
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                    contact.save();
+                    String oldType = contact.getContactType();
+                    String newType = lead_type;
+                    TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType, "FCM");
+
                     Log.e(TAG, "Put From Local DB: " + contact.getContactName());
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());

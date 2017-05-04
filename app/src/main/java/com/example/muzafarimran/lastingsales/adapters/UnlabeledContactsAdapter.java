@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ import static android.view.View.GONE;
  * Created by MUZAFAR IMRAN on 9/19/20
  */
 public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable {
-
+    private static final String TAG = "UnlabeledContactsAdapte";
     private final static int ITEM_TYPES = 2;
     public Context mContext;
     public ShowContactCallDetails detailsListener = null;
@@ -48,6 +49,7 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
     private CallClickListener callClickListener = null;
     private ShowDetailsDropDown showcalldetailslistener = null;
     private List<LSContact> filteredData;
+
 
     public UnlabeledContactsAdapter(Context c) {
         this.mContext = c;
@@ -114,8 +116,11 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
             ((ViewGroup) holder.call_name_time.getParent().getParent()).removeView(call_details);
         }
         if (contact.getContactName() == null) {
-            if (contact.getContactName() != null) {
-                holder.name.setText(contact.getContactName());
+            holder.name.setText(contact.getPhoneOne());
+        } else if (contact.getContactName().equals("Unlabeled Contact")) {
+            String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, contact.getPhoneOne());
+            if (name != null) {
+                holder.name.setText(name);
             } else {
                 holder.name.setText(contact.getPhoneOne());
             }
@@ -143,12 +148,7 @@ public class UnlabeledContactsAdapter extends BaseAdapter implements Filterable 
             public void onClick(View view) {
                 String oldType = contact.getContactType();
                 String newType = LSContact.CONTACT_TYPE_IGNORED;
-                TypeManager.ConvertTo(mContext, contact, oldType, newType);
-                if (contact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || contact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                }
-                contact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
-                contact.save();
+                TypeManager.ConvertTo(mContext, contact, oldType, newType, "LOCAL");
                 DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext.getApplicationContext());
                 dataSenderAsync.execute();
                 ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);

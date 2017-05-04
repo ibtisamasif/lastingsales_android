@@ -76,30 +76,27 @@ public class LSCall extends SugarRecord {
         }
     }
 
-    public static ArrayList<LSCall> getUniqueCallsWithoutContacts() {
-        ArrayList<LSCall> untaggedCalls = new ArrayList<>();
-        ArrayList<LSCall> allCalls = null;
-        allCalls = (ArrayList<LSCall>) listAll(LSCall.class);
-//        calls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact").eq("null")).orderBy("contact_number DESC").list();
-//        calls = (ArrayList<LSCall>) LSCall.findWithQuery(LSCall.class, "SELECT * from LS_CALL ");
-//        calls = (ArrayList<LSCall>) LSCall.findWithQuery(LSCall.class, "SELECT * from LS_CALL where contact = null GROUP BY contact_number");
-//        calls = (ArrayList<LSCall>) LSCall.find(LSCall.class,"contact = ?","null");
-        for (LSCall oneCall : allCalls) {
-            if (oneCall.getContact() == null && !oneCall.getType().equals(LSCall.CALL_TYPE_MISSED)) {
-                untaggedCalls.add(oneCall);
+    public static List<LSCall> getArrangedUniqueCallsWithUnlabeledContacts() {
+        List<LSCall> unlabeledCalls = new ArrayList<>();
+        List<LSCall> allArrangedCalls = getAllCallsInDescendingOrder();
+        for (LSCall oneCall : allArrangedCalls) {
+            if (oneCall.getContact() != null && !oneCall.getContact().getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+                unlabeledCalls.add(oneCall);
             }
         }
         /*for (LSCall oneCall : calls) {
             LSCall.
         }*/
 
-        return untaggedCalls;
+        return unlabeledCalls;
     }
 
+    @Deprecated
     public static List<LSCall> getCallsByType(String type) {
         return LSCall.find(LSCall.class, "type = ? ", type);
     }
-@Deprecated
+
+    @Deprecated
     public static List<LSCall> getCallsByInquiryHandledStateInDescendingOrder(int state) {
         ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("inquiry_handled_state").eq(state)).orderBy("begin_time DESC").list();
         return allCalls;
@@ -141,6 +138,13 @@ public class LSCall extends SugarRecord {
     };
 
 */
+    public static ArrayList<LSCall> getAllUniqueCallsInDescendingOrder() {
+
+        ArrayList<LSCall> allCalls = (ArrayList<LSCall>)LSCall.findWithQuery(LSCall.class, "Select DISTINCT contact_number from LS_CALL ORDER BY begin_time DESC");
+//        ArrayList<LSCall> allCalls = (ArrayList<LSCall>)LSCall.findWithQuery(LSCall.class, "Select * from LS_CALL_RECORDING where sync_status = 'recording_not_synced' and server_id_of_call IS NOT NULL");
+//        ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).orderBy("begin_time DESC").list();
+        return allCalls;
+    }
 
     public static List<LSCall> getAllCallsInDescendingOrder() {
         ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).orderBy("begin_time DESC").list();
@@ -218,6 +222,7 @@ public class LSCall extends SugarRecord {
     public void setCountOfInquiries(int countOfInquiries) {
         this.countOfInquiries = countOfInquiries;
     }
+
     public String getSyncStatus() {
         return syncStatus;
     }
