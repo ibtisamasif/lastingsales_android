@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.lastingsales.agent"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 22
-        versionCode 9
-        versionName "1.6"
+        versionCode 11
+        versionName "1.8"
         jackOptions {
             enabled false
         }
@@ -75,5 +75,6 @@ dependencies {
     compile files('libs/httpcore-4.3.3.jar')
     compile files('libs/httpmime-4.3.6.jar')
     compile 'org.apache.commons:commons-lang3:3.5'
+    compile 'com.google.code.gson:gson:2.8.0'
 }
 apply plugin: 'com.google.gms.google-services'

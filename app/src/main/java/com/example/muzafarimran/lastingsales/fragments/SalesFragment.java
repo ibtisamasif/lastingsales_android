@@ -202,19 +202,13 @@ public class SalesFragment extends SearchFragment {
     }
 
     public List<LSContact> getAllArrangedContactsAccordingToLeadType() { // TODO optimize this function. Crashed here too so must fix it.
-        List<LSContact> contactsColle = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
-        List<LSContact> contactsPerso = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
-        List<LSContact> contactsToBeRemoved = new ArrayList<>();
-        contactsToBeRemoved.addAll(contactsColle);
-        contactsToBeRemoved.addAll(contactsPerso);
         List<LSContact> arrangedContacts = new ArrayList<>();
-        List<LSContact> contactsLe = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        List<LSContact> contactsLo = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-        List<LSContact> contactsWo = LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+        List<LSContact> contactsLe = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+        List<LSContact> contactsLo = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+        List<LSContact> contactsWo = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
         arrangedContacts.addAll(contactsLe);
         arrangedContacts.addAll(contactsLo);
         arrangedContacts.addAll(contactsWo);
-        arrangedContacts.removeAll(contactsToBeRemoved);
 
         return arrangedContacts;
     }

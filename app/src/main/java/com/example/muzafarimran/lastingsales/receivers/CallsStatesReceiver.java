@@ -45,7 +45,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
     public static final String OUTGOINGCALL_CONTACT_NOTE_ID = "outgoing_contact_note_id";
     public static final String INCOMINGCALL_CONTACT_NOTE_ID = "incoming_contact_note_id";
     private static final String TAG = "CallsStatesReceiver";
-    public static String mAudio_FilePath;  //TODO this one
+    public static String mAudio_FilePath;
     public static String mAudio_FolderName = "LastingSales";
     public static String mAudio_FileName = "";
     public static MediaRecorder recorder;
@@ -78,7 +78,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
         if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-            String lsDirectory = Environment.getExternalStorageDirectory() + "/" + mAudio_FolderName; // TODO clean the code
+            String lsDirectory = Environment.getExternalStorageDirectory() + "/" + mAudio_FolderName;
             pathFileObserver = new PathFileObserver(lsDirectory);
             pathFileObserver.startWatching();
             try {
@@ -210,7 +210,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempCall.setType(LSCall.CALL_TYPE_INCOMING);
 //            tempCall.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
 //            tempCall.setBeginTime(start.getTime());
-//            tempCall.setAudioPath(mAudio_FilePath); //TODO Need to pass to engine
+//            tempCall.setAudioPath(mAudio_FilePath);
 //            String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
 //            if (phoneBookContactName == null) {
 //                tempCall.setContactName(null);
@@ -335,7 +335,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //                tempInquiry.setStatus(LSInquiry.INQUIRY_STATUS_ATTENDED);
 //                if (tempInquiry.getSyncStatus().equals(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED)) {
 //                    tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED);
-//                } else { // TODO check if else is needed or not.
+//                } else {
 //                    tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
 //                    Toast.makeText(ctx, "Let me know when this Toast Appears", Toast.LENGTH_SHORT).show();
 //                }

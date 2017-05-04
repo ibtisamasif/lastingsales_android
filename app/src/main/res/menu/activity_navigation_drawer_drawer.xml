@@ -18,7 +18,7 @@
     <group android:id="@+id/contacts">
         <item
             android:id="@+id/nav_item_business_contacts"
-            android:title="@string/navigation_drawer_business"
+            android:title="@string/navigation_drawer_colleague"
             android:icon="@drawable/ic_business"/>
         <item
             android:id="@+id/nav_item_unlabeled_contacts"

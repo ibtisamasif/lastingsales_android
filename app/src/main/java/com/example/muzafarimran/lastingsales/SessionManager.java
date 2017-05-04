@@ -12,6 +12,7 @@ import android.util.Log;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
@@ -85,13 +86,9 @@ public class SessionManager {
             Log.d(TAG, "storeVersionCodeNow: NormalRun = 1");
             setLoginMode(SessionManager.MODE_NORMAL);
         } else if (savedVersionCode == DOESNT_EXIST) {
-
-            // TODO This is a new install (or the user cleared the shared preferences)
             Log.d(TAG, "storeVersionCodeNow: NewInstall = 2");
             setLoginMode(SessionManager.MODE_NEW_INSTALL);
         } else if (currentVersionCode > savedVersionCode) {
-
-            // TODO This is an upgrade
             Log.d(TAG, "storeVersionCodeNow: Upgrade = 3");
             setLoginMode(SessionManager.MODE_UPGRADE);
         }
@@ -132,7 +129,6 @@ public class SessionManager {
     }
 
     private void fetchData() {
-        // TODO need to implement
         AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
         agentDataFetchAsync.execute();
     }
@@ -163,6 +159,9 @@ public class SessionManager {
         }
         if (TempFollowUp.count(TempFollowUp.class) > 0) {
             TempFollowUp.deleteAll(TempFollowUp.class);
+        }
+        if (LSDynamicColumns.count(LSDynamicColumns.class) > 0) {
+            LSDynamicColumns.deleteAll(LSDynamicColumns.class);
         }
     }
 

@@ -8,225 +8,243 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-    <LinearLayout
+    <ScrollView
         android:id="@+id/contactDetailsDropDownLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/user_call_group_wrapper"
         android:orientation="vertical"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:scrollIndicators="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/contactDetailsDropDownLayoutinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/lead_name_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:paddingRight="10dp"
-                    android:src="@drawable/ic_contact_detail_name_field"
-                    android:tint="@color/colorPrimary"/>
-
-                <TextView
-                    android:id="@+id/lead_name_text"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/lead_name_icon"
-                    android:layout_toRightOf="@+id/lead_name_icon"
-                    android:text="Name"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:layout_marginTop="10dp">
 
-                <TextView
-                    android:id="@+id/tvName"
-                    android:layout_width="500dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/lead_name_text"
-                    android:gravity="center|right" />
+                    <ImageView
+                        android:id="@+id/lead_name_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/ic_contact_detail_name_field"
+                        android:tint="@color/colorPrimary" />
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/lead_name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/lead_name_icon"
+                        android:layout_toRightOf="@+id/lead_name_icon"
+                        android:text="Name"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="500dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/lead_name_text"
+                        android:gravity="center|right" />
 
-                <ImageView
-                    android:id="@+id/lead_number_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:paddingRight="10dp"
-                    android:src="@drawable/ic_contact_detail_number_field"
-                    android:tint="@color/colorPrimary"/>
+                </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/lead_number_text"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/lead_number_icon"
-                    android:layout_toRightOf="@+id/lead_number_icon"
-                    android:text="Number"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:layout_marginTop="10dp">
 
-                <TextView
-                    android:id="@+id/tvNumber"
-                    android:layout_width="500dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/lead_number_text"
-                    android:gravity="center|right" />
+                    <ImageView
+                        android:id="@+id/lead_number_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/ic_contact_detail_number_field"
+                        android:tint="@color/colorPrimary" />
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/lead_number_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/lead_number_icon"
+                        android:layout_toRightOf="@+id/lead_number_icon"
+                        android:text="Number"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                    <TextView
+                        android:id="@+id/tvNumber"
+                        android:layout_width="500dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/lead_number_text"
+                        android:gravity="center|right" />
 
-                <ImageView
-                    android:id="@+id/lead_email_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:paddingRight="10dp"
-                    android:src="@drawable/ic_contact_detail_email_field"
-                    android:tint="@color/colorPrimary"/>
+                </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/lead_email_text"
-                    android:layout_width="wrap_content"
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp">-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/lead_email_icon"-->
+                        <!--android:layout_width="30dp"-->
+                        <!--android:layout_height="30dp"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:paddingRight="10dp"-->
+                        <!--android:src="@drawable/ic_contact_detail_email_field"-->
+                        <!--android:tint="@color/colorPrimary" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/lead_email_text"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:layout_toEndOf="@+id/lead_email_icon"-->
+                        <!--android:layout_toRightOf="@+id/lead_email_icon"-->
+                        <!--android:text="Email"-->
+                        <!--android:textColor="@color/black"-->
+                        <!--android:textSize="12sp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tvEmail"-->
+                        <!--android:layout_width="500dp"-->
+                        <!--android:layout_height="40dp"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:layout_toRightOf="@+id/lead_email_text"-->
+                        <!--android:gravity="center|right" />-->
+
+                <!--</RelativeLayout>-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp">-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/lead_address_icon"-->
+                        <!--android:layout_width="30dp"-->
+                        <!--android:layout_height="30dp"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:paddingRight="10dp"-->
+                        <!--android:src="@drawable/ic_contact_detail_address_field"-->
+                        <!--android:tint="@color/colorPrimary" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/lead_address_text"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:layout_toEndOf="@+id/lead_address_icon"-->
+                        <!--android:layout_toRightOf="@+id/lead_address_icon"-->
+                        <!--android:text="Address"-->
+                        <!--android:textColor="@color/black"-->
+                        <!--android:textSize="12sp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tvAddress"-->
+                        <!--android:layout_width="500dp"-->
+                        <!--android:layout_height="40dp"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:layout_toRightOf="@+id/lead_address_text"-->
+                        <!--android:gravity="center|right" />-->
+
+                <!--</RelativeLayout>-->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/darkGray"></RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/lead_status_row"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/lead_email_icon"
-                    android:layout_toRightOf="@+id/lead_email_icon"
-                    android:text="Email"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:layout_marginBottom="0dp">
 
-                <TextView
-                    android:id="@+id/tvEmail"
-                    android:layout_width="500dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/lead_email_text"
-                    android:gravity="center|right" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <ImageView
-                    android:id="@+id/lead_address_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:paddingRight="10dp"
-                    android:src="@drawable/ic_contact_detail_address_field"
-                    android:tint="@color/colorPrimary"/>
-
-                <TextView
-                    android:id="@+id/lead_address_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/lead_address_icon"
-                    android:layout_toRightOf="@+id/lead_address_icon"
-                    android:text="Address"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tvAddress"
-                    android:layout_width="500dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/lead_address_text"
-                    android:gravity="center|right" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/darkGray"></RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/lead_status_row"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp">
-
-                <ImageView
-                    android:id="@+id/lead_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:paddingRight="10dp"
-                    android:src="@drawable/ic_contact_detail_status_field"
-                    android:tint="@color/colorPrimary"/>
+                    <ImageView
+                        android:id="@+id/lead_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/ic_contact_detail_status_field"
+                        android:tint="@color/colorPrimary" />
 
 
-                <TextView
-                    android:id="@+id/lead_status_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/lead_icon"
-                    android:layout_toRightOf="@+id/lead_icon"
-                    android:text="Status"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/lead_status_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/lead_icon"
+                        android:layout_toRightOf="@+id/lead_icon"
+                        android:text="Status"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
 
-                <Spinner
-                    android:id="@+id/lead_status_spinner"
-                    android:layout_width="500dp"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/lead_status_label"
-                    android:layout_marginTop="50dp" />
+                    <Spinner
+                        android:id="@+id/lead_status_spinner"
+                        android:layout_width="500dp"
+                        android:layout_height="40dp"
+                        android:layout_below="@id/lead_status_label"
+                        android:layout_marginTop="50dp" />
 
-            </RelativeLayout>
+                </RelativeLayout>
 
-            <Button
-                android:id="@+id/contactDetailsSaveButton"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="120dp"
-                android:layout_height="30dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/darkGray"></RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/btn_transparent_white_border"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="4dp"
-                android:radius="5dip"
-                android:tag="personal_radio"
-                android:text="Save"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:layout_marginTop="16dp">
 
+                <Button
+                    android:id="@+id/contactDetailsSaveButton"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="160dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/btn_primary"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="4dp"
+                    android:radius="5dip"
+                    android:tag="personal_radio"
+                    android:text="Save"
+                    android:textSize="14sp" />
+            </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>
