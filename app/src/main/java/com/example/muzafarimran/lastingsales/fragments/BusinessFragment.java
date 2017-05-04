@@ -38,7 +38,6 @@ public class BusinessFragment extends TabFragment {
     ListView listView = null;
     BusinessContactsAdapter businessContactsAdapter;
     MaterialSearchView searchView;
-    ShowAddContactForm showaddcontactform = new ShowAddContactForm();
     FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
@@ -166,20 +165,4 @@ public class BusinessFragment extends TabFragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /*
-    * event handler for click on add contact cta
-    * */
-    public class ShowAddContactForm implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            Intent myIntent = new Intent(getActivity(), TagNumberAndAddFollowupActivity.class);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE , TagNumberAndAddFollowupActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-            myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE , LSContact.CONTACT_TYPE_BUSINESS);
-            getActivity().startActivity(myIntent);
-        }
-    }
-
-
 }

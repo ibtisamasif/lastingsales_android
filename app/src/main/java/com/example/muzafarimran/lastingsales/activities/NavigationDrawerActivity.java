@@ -34,6 +34,7 @@ import com.example.muzafarimran.lastingsales.fragments.UnlabeledContactsCallsFra
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.utils.CallRecord;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManager;
@@ -217,7 +218,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
     @Subscribe
     public void onCallReceivedEventModel(MissedCallEventModel event) {
-        Log.d(TAG, "NavionMissedCallEvent() called with: event = [" + event + "]");
+        Log.d(TAG, "onMissedCallEvent() called with: event = [" + event + "]");
         if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
             UpdateBadge();
         }
@@ -330,6 +331,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         else if (id == R.id.nav_item_refresh) {
 //            Intent tempIntent = new Intent(this, FireBaseMainActivity.class);
 //            startActivity(tempIntent);
+            AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
+            agentDataFetchAsync.execute();
             RecordingManager recordingManager = new RecordingManager();
             recordingManager.execute();
             TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());

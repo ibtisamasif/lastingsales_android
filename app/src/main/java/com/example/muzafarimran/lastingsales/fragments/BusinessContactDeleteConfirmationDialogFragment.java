@@ -13,7 +13,7 @@ import com.example.muzafarimran.lastingsales.adapters.BusinessContactsAdapter;
  * Created by ahmad on 19-Dec-16.
  */
 
-public class ColleagueContactDeleteConfirmationDialogFragment extends DialogFragment {
+public class BusinessContactDeleteConfirmationDialogFragment extends DialogFragment {
     BusinessContactsAdapter businessContactsAdapter;
     int position;
 

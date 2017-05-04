@@ -8,6 +8,8 @@ import android.util.Log;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.MainActivity;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
@@ -17,6 +19,8 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by Ravi Tamada on 08/08/16.
@@ -133,10 +137,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                         contact.save();
                         Log.e(TAG, "Post From Local DB: " + contact.getContactName());
-//                  ColleagueContactAddedEventModel mCallEvent = new ColleagueContactAddedEventModel();
-//                  TinyBus bus = TinyBus.from(getApplicationContext());
-//                  bus.register(mCallEvent);
-//                  bus.post(mCallEvent);
+                  LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                  TinyBus bus = TinyBus.from(getApplicationContext());
+                  bus.post(mCallEvent);
                     }
                 } else if (action.equals("put")) {
                     String id = payload.getString("id");
@@ -156,12 +159,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                     contact.save();
                     Log.e(TAG, "Put From Local DB: " + contact.getContactName());
+                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                    TinyBus bus = TinyBus.from(getApplicationContext());
+                    bus.post(mCallEvent);
                 } else if (action.equals("delete")) {
                     //TODO
                     String id = payload.getString("id");
                     LSContact contact = LSContact.getContactFromServerId(id);
                     Log.e(TAG, "handleDataMessage: contact: " + contact.toString());
                     contact.delete();
+                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                    TinyBus bus = TinyBus.from(getApplicationContext());
+                    bus.post(mCallEvent);
                 }
             }
 
@@ -177,6 +186,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     tempNote.setContactOfNote(LSContact.getContactFromServerId(lead_id));
                     tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
                     tempNote.save();
+                    NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
+                    TinyBus bus = TinyBus.from(getApplicationContext());
+                    bus.post(mNoteAdded);
 
                 } else if (action.equals("put")) {
                     // TODO Notes Update
@@ -186,6 +198,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     LSNote note = LSNote.getNoteByServerId(id);
                     note.setNoteText(description);
                     note.save();
+                    NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
+                    TinyBus bus = TinyBus.from(getApplicationContext());
+                    bus.post(mNoteAdded);
 
                 } else if (action.equals("delete")) {
                     // TODO Notes Delete
@@ -193,6 +208,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String id = payload.getString("id");
                     LSNote note = LSNote.getNoteByServerId(id);
                     note.delete();
+                    NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
+                    TinyBus bus = TinyBus.from(getApplicationContext());
+                    bus.post(mNoteAdded);
                 }
             }
 

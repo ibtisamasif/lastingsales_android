@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.events.ColleagueContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.PersonalContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -193,9 +193,9 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
                     if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                         tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                         tempContact.save();
-                        SalesContactAddedEventModel mCallEvent = new SalesContactAddedEventModel();
+                        LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                         TinyBus bus = TinyBus.from(getApplicationContext());
-                        bus.register(mCallEvent);
+                        bus.register(mCallEvent); //TODO why it is here it will crash app
                         bus.post(mCallEvent);
                         Log.d(TAG, "onSaveContact() called with: Name = [" + tempContact.getContactName() + "], number = [" + tempContact.getPhoneOne() + "], type = [" + tempContact.getContactType() + "]");
                     } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
@@ -231,7 +231,7 @@ public class AddContactActivity extends AppCompatActivity implements View.OnClic
 //                    updating all previous calls of this contact adding contact to call and removing contact name
                 updateAllCallsOfThisContact(tempContact);
                 if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                    SalesContactAddedEventModel mCallEvent = new SalesContactAddedEventModel();
+                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.register(mCallEvent);
                     bus.post(mCallEvent);

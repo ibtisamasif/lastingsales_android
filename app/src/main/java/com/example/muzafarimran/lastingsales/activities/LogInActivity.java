@@ -22,8 +22,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManager;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,8 +65,8 @@ public class LogInActivity extends AppCompatActivity {
         tvEmail.getBackground().clearColorFilter();
         tvPassword.getBackground().clearColorFilter();
 //        hardcoding number and password for develoment speedup purposes
-//        tvEmail.setText("ibtiagent2@gmail.com");
-//        tvPassword.setText("11111111");
+        tvEmail.setText("ibtiagent2@gmail.com");
+        tvPassword.setText("11111111");
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,6 +220,13 @@ public class LogInActivity extends AppCompatActivity {
                         JSONObject responseObject = jObj.getJSONObject("response");
                         Log.d(TAG, "onResponse : FirebaseLocalRegID : " + sessionManager.getKeyLoginFirebaseRegId());
                         Log.d(TAG, "onResponse : FirebaseServerRegID : " + responseObject.getString("device_id"));
+
+                        RecordingManager recordingManager = new RecordingManager();
+                        recordingManager.execute();
+                        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+                        theCallLogEngine.execute();
+                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                        dataSenderAsync.execute();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -230,6 +240,13 @@ public class LogInActivity extends AppCompatActivity {
                 }
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAgentFirebaseRegId");
+
+                RecordingManager recordingManager = new RecordingManager();
+                recordingManager.execute();
+                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+                theCallLogEngine.execute();
+                DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+                dataSenderAsync.execute();
             }
         }) {
         };

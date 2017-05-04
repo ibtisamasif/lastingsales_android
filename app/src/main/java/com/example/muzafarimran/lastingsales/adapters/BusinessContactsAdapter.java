@@ -20,8 +20,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
-import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
-import com.example.muzafarimran.lastingsales.fragments.ColleagueContactDeleteBottomSheetDialogFragment;
+import com.example.muzafarimran.lastingsales.fragments.BusinessContactDeleteBottomSheetDialogFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -141,10 +140,10 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
             public boolean onLongClick(View view) {
 //                deleteFlow = true;
 //                setList(LSContact.getContactsByType(contactType));
-                ColleagueContactDeleteBottomSheetDialogFragment colleagueContactDeleteBottomSheetDialogFragment = new ColleagueContactDeleteBottomSheetDialogFragment();
-                colleagueContactDeleteBottomSheetDialogFragment.setPosition(position);
-                colleagueContactDeleteBottomSheetDialogFragment.show(getSupportFragmentManager(), colleagueContactDeleteBottomSheetDialogFragment.getTag());
-                colleagueContactDeleteBottomSheetDialogFragment.setBusinessContactsAdapter(BusinessContactsAdapter.this);
+                BusinessContactDeleteBottomSheetDialogFragment businessContactDeleteBottomSheetDialogFragment = new BusinessContactDeleteBottomSheetDialogFragment();
+                businessContactDeleteBottomSheetDialogFragment.setPosition(position);
+                businessContactDeleteBottomSheetDialogFragment.show(getSupportFragmentManager(), businessContactDeleteBottomSheetDialogFragment.getTag());
+                businessContactDeleteBottomSheetDialogFragment.setBusinessContactsAdapter(BusinessContactsAdapter.this);
 
                 return true;
             }
@@ -290,38 +289,6 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
                 detailsLayout.setVisibility(View.VISIBLE);
                 expanded = true;
             }
-        }
-    }
-
-    private class IgnoreButtonClickListener implements View.OnClickListener {
-        LSContact contact;
-
-        public IgnoreButtonClickListener(LSContact contact) {
-            this.contact = contact;
-        }
-
-        @Override
-        public void onClick(View view) {
-            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
-            long contactId = contact.getId();
-            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-            mContext.startActivity(detailsActivityIntent);
-        }
-    }
-
-    private class AddAsLeadButtonClickListener implements View.OnClickListener {
-        LSContact contact;
-
-        public AddAsLeadButtonClickListener(LSContact contact) {
-            this.contact = contact;
-        }
-
-        @Override
-        public void onClick(View view) {
-            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
-            long contactId = contact.getId();
-            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-            mContext.startActivity(detailsActivityIntent);
         }
     }
 }

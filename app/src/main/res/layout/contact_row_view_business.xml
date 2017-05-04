@@ -33,6 +33,7 @@
                 android:paddingLeft="0dp"
                 android:src="@drawable/ic_account_circle"
                 android:layout_centerVertical="true"
+                android:tint="@color/colorPrimary"
                 />
 
             <RelativeLayout
@@ -85,6 +86,7 @@
             android:paddingRight="10dp"
             android:scaleType="fitEnd"
             android:src="@drawable/ic_call_green"
+            android:tint="@color/darkGreen"
             />
 
     </RelativeLayout>
@@ -139,7 +141,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="4dp"
                 android:radius="5dip"
-                android:text="Add As Lead"
+                android:text="TRACK"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 />

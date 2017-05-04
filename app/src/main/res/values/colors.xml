@@ -15,7 +15,7 @@
 
 
     <color name="darkBlue">#4f41bc</color>
-    <color name="colorAccent">#195351</color>
+    <color name="colorAccent">@color/colorPrimary</color>
     <color name="lightGray">#F0F0F0</color>
     <color name="darkGray">#d0898989</color>
     <color name="white">#FFFFFF</color>
@@ -57,6 +57,7 @@
     <color name="button_state_pressed">@color/blueDark</color>
     <color name="button_state_focused">@color/blueDark</color>
     <color name="blue_transparent">#440000bc</color>
+    <color name="color_action_mode_bg">#009688</color>
 
 
 </resources>

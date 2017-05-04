@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.example.muzafarimran.lastingsales.events.ContactTaggedFromUntaggedCon
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
+import com.example.muzafarimran.lastingsales.events.UnlabeledContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -43,9 +45,9 @@ public class HomeFragment extends TabFragment {
     private TextView tvInquiriesValue;
     private TextView tvInactiveLeadsValue;
     private TextView tvUntaggedContacts;
-    private LinearLayout llInActiveLeadsContainer;
-    private LinearLayout llUntaggedContainer;
-    private LinearLayout llinquriesContainer;
+    private CardView llInActiveLeadsContainer;
+    private CardView llUnlabeledContainer;
+    private CardView llinquriesContainer;
     //    private LinearLayout llshadow1;
 //    private LinearLayout llshadow2;
 //    private LinearLayout llshadow3;
@@ -70,11 +72,11 @@ public class HomeFragment extends TabFragment {
         tvUntaggedContacts = (TextView) view.findViewById(R.id.tvUntaggeContactsVal);
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
 
-        llinquriesContainer = (LinearLayout) view.findViewById(R.id.llinquriesContainer);
+        llinquriesContainer = (CardView) view.findViewById(R.id.llinquriesContainer);
 //        llshadow1 = (LinearLayout) view.findViewById(R.id.llshadow1);
-        llUntaggedContainer = (LinearLayout) view.findViewById(R.id.llUntaggedContactsContainer);
+        llUnlabeledContainer = (CardView) view.findViewById(R.id.llUnlabeledContactsContainer);
 //        llshadow2 = (LinearLayout) view.findViewById(R.id.llshadow2);
-        llInActiveLeadsContainer = (LinearLayout) view.findViewById(R.id.llInActiveLeadsContactsContainer);
+        llInActiveLeadsContainer = (CardView) view.findViewById(R.id.llInActiveLeadsContactsContainer);
 //        llshadow3 = (LinearLayout) view.findViewById(R.id.llshadow3);
         llshadow4 = (LinearLayout) view.findViewById(R.id.llshadow4);
 
@@ -97,7 +99,7 @@ public class HomeFragment extends TabFragment {
 //                startActivity(intent);
             }
         });
-        llUntaggedContainer.setOnClickListener(new View.OnClickListener() {
+        llUnlabeledContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent;
@@ -177,11 +179,11 @@ public class HomeFragment extends TabFragment {
         setHasOptionsMenu(false);
     }
 
-    private void updateHomeFigures() {
-        ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
-        ArrayList<LSContact> allCollegues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
-        ArrayList<LSContact> allFilteredContactsAsProspects = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        allFilteredContactsAsProspects.removeAll(allCollegues);
+    private void updateHomeFigures() { //TODO optimize this function
+        ArrayList<LSContact> allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
+        ArrayList<LSContact> allBusinessContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
+        ArrayList<LSContact> allInProgress = (ArrayList<LSContact>) LSContact.getContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+        allInProgress.removeAll(allBusinessContacts);
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
 
         List<LSInquiry> allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
@@ -198,12 +200,12 @@ public class HomeFragment extends TabFragment {
             tvInquiriesValue.setText(0);
         }
 
-        if (allUntaggedContacts != null) {
-            if (allUntaggedContacts.size() > 0) {
-                llUntaggedContainer.setVisibility(View.VISIBLE);
-                tvUntaggedContacts.setText("" + allUntaggedContacts.size());
+        if (allUnlabeledContacts != null) {
+            if (allUnlabeledContacts.size() > 0) {
+                llUnlabeledContainer.setVisibility(View.VISIBLE);
+                tvUntaggedContacts.setText("" + allUnlabeledContacts.size());
             } else {
-                llUntaggedContainer.setVisibility(View.GONE);
+                llUnlabeledContainer.setVisibility(View.GONE);
 //                llshadow2.setVisibility(View.GONE);
             }
         } else {
@@ -248,6 +250,8 @@ public class HomeFragment extends TabFragment {
         }
     }
 
+
+
     @Subscribe
     public void onCallReceivedEventModel(MissedCallEventModel event) {
         Log.d(TAG, "onMissedCallEvent() called with: event = [" + event + "]");
@@ -276,6 +280,12 @@ public class HomeFragment extends TabFragment {
     public void onContactTaggedFromUntaggedContactEventModel(ContactTaggedFromUntaggedContactEventModel event) {
         Log.d(TAG, "onNoteAddedEvent() called with: event = [" + event + "]");
         updateHomeFigures();
+    }
+
+    @Subscribe
+    public void onUnlabeledContactAddedEventModel(UnlabeledContactAddedEventModel event) {
+        Log.d(TAG, "onUnlabeledContactAddedEventModel() called with: event = [" + event + "]");
+            updateHomeFigures();
     }
 
     @Override

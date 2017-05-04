@@ -18,7 +18,7 @@ import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
-import com.example.muzafarimran.lastingsales.events.SalesContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class SalesFragment extends SearchFragment {
     }
 
     @Subscribe
-    public void onSalesContactAddedEventModel(SalesContactAddedEventModel event) {
+    public void onSalesContactAddedEventModel(LeadContactAddedEventModel event) {
         Log.d(TAG, "onSalesContactAddedEvent() called with: event = [" + event + "]");
         List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
         setList(contacts);
