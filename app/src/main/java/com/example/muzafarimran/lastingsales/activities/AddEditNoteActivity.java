@@ -1,5 +1,8 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import android.app.ActionBar;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -50,6 +53,8 @@ public class AddEditNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_note);
+        android.support.v7.app.ActionBar bar = getSupportActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
         tvContactName = (TextView) findViewById(R.id.contact_name_add_note);
         etContactNote = (EditText) findViewById(R.id.contact_note_add_note);
         bOk = (Button) findViewById(R.id.ok_add_note);

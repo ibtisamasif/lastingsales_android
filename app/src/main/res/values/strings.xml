@@ -93,5 +93,7 @@
     <string name="em_inquiries_delight">Nothing in Inquiries</string>
     <string name="em_unlabeled_delight">Nothing in Unlabeled</string>
     <string name="em_all_delight">Nothing in Leads</string>
+    <string name="em_ignored_delight">Ignored Contacts are your friend and family. They are not Tracked!</string>
+    <string name="em_business_delight">Business Contacts are people who are not your customers!</string>
 
 </resources>

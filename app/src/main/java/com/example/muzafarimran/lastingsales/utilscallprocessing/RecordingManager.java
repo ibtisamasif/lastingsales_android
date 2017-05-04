@@ -25,11 +25,11 @@ public class RecordingManager extends AsyncTask<Object, Void, Void> {
 
     @Override
     protected Void doInBackground(Object... params) {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         // get all unsynced recording
         List<LSCallRecording> recordingList = null;
         if (LSCallRecording.count(LSCallRecording.class) > 0) {

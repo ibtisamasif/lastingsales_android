@@ -80,7 +80,7 @@ public class ContactsAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getCount() {
-        return this.filteredData.size();
+        return this.filteredData.size(); // TODO crash here on searching bilal ignored contacts list
     }
 
     @Override

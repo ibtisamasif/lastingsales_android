@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.PersonalContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
@@ -33,6 +34,7 @@ public class IgnoredFragment extends TabFragment {
     EditText inputSearch;
     MaterialSearchView searchView;
     private TinyBus bus;
+    private ErrorScreenView errorScreenView;
 
     public static IgnoredFragment newInstance(int page, String title) {
         IgnoredFragment fragmentFirst = new IgnoredFragment();
@@ -101,6 +103,10 @@ public class IgnoredFragment extends TabFragment {
         listView = (ListView) view.findViewById(R.id.personal_contacts_list);
         inputSearch = (EditText) (getActivity().findViewById(R.id.search_box));
         listView.setAdapter(contactsAdapter);
+        errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
+        errorScreenView.setErrorImage(R.drawable.delight_home);
+        errorScreenView.setErrorText(this.getResources().getString(R.string.em_ignored_delight));
+        listView.setEmptyView(errorScreenView);
         searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override

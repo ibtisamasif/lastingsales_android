@@ -33,6 +33,7 @@ import com.example.muzafarimran.lastingsales.fragments.IgnoredFragment;
 import com.example.muzafarimran.lastingsales.fragments.UnlabeledContactsCallsFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
+import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -68,6 +69,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Version Control
+        VersionManager versionManager = new VersionManager(getApplicationContext());
+        if(!versionManager.runMigrations()){
+         // if migration has failed
+            Toast.makeText(getApplicationContext(), "Migration Failed", Toast.LENGTH_SHORT).show();
+        }
+
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Bundle bundle = new Bundle();
@@ -76,6 +84,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
 //        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         Log.d(TAG, "onCreate: DB name: " +getDatabasePath("sugar_example").getAbsolutePath());
+
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,6 +103,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
             finish();
         }
+
         LinearLayout navHeader = (LinearLayout) navigationView.getHeaderView(0);
         ivProfileImage = (ImageView) navHeader.findViewById(R.id.ivProfileImgNavBar);
         tvProfileName = (TextView) navHeader.findViewById(R.id.tvProfileNameNavBar);
@@ -190,18 +200,88 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
             }
         });
-
-//        callRecord = new CallRecord.Builder(this)
-//                .setRecordFileName("CallRecordFile")
-//                .setRecordDirName("Record_" + new java.text.SimpleDateFormat("dd-MM-yyyy HH-mm-ss", Locale.US))
-//                .setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-//                .setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
-//                .setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION)
-//                .setShowSeed(false)
-//                .buildService();
-//        callRecord.startCallRecordService();
-
     }
+
+//    private void func() {
+//
+//        PackageInfo pInfo = null;
+//        try {
+//            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        int version = pInfo.versionCode;
+//        Log.d(TAG, "func: version: " + version);
+//        // TODO add version code check here (SUPER DUPER DOOO IMPROTANT)
+//        if (sessionManager.storeVersionCodeNow() == 1) {
+//            Log.d(TAG, "func: case1");
+//            // Do first run stuff here then set 'firstrun' as false
+//            // using the following line to edit/commit prefs
+//            //mark all null ignored contacts
+//            List<LSContact> ignoredNullContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
+//            if (ignoredNullContacts != null) {
+//                Log.d(TAG, "found: size: " + ignoredNullContacts.size());
+//                for (LSContact oneContact : ignoredNullContacts) {
+//                    if (oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                        oneContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                        oneContact.setContactName("changed");
+//                    }
+//                    oneContact.save();
+//                }
+//            } else {
+//                Log.d(TAG, "not found");
+//            }
+//        }else if(sessionManager.storeVersionCodeNow() == 2){
+//            Log.d(TAG, "func: case2");
+//            // Do first run stuff here then set 'firstrun' as false
+//            // using the following line to edit/commit prefs
+//            //mark all null ignored contacts
+//            List<LSContact> ignoredNullContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
+//            if (ignoredNullContacts != null) {
+//                Log.d(TAG, "found: size: " + ignoredNullContacts.size());
+//                for (LSContact oneContact : ignoredNullContacts) {
+//                    if(oneContact.getSyncStatus() != null) {
+//                        if (oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                            Log.d(TAG, "func: if");
+//                            oneContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                            oneContact.setContactName("changed");
+//                            oneContact.save();
+//                        } else {
+//                            Log.d(TAG, "func: else");
+//                            oneContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+//                            oneContact.save();
+//                        }
+//                    }
+//                    else {
+//                        oneContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+//                        oneContact.save();
+//                    }
+//                }
+//            } else {
+//                Log.d(TAG, "not found");
+//            }
+//        }else if(sessionManager.storeVersionCodeNow() == 3){
+//            Log.d(TAG, "func: case3");
+//            // Do first run stuff here then set 'firstrun' as false
+//            // using the following line to edit/commit prefs
+//            //mark all null ignored contacts
+//            List<LSContact> ignoredNullContacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
+//            if (ignoredNullContacts != null) {
+//                Log.d(TAG, "found: size: " + ignoredNullContacts.size());
+//                for (LSContact oneContact : ignoredNullContacts) {
+//                    if (oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || oneContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                        oneContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                        oneContact.setContactName("changed");
+//                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
+//                        dataSenderAsync.execute();
+//                    }
+//                    oneContact.save();
+//                }
+//            } else {
+//                Log.d(TAG, "not found");
+//            }
+//        }
+//    }
 
     @Override
     protected void onStart() {
