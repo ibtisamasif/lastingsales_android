@@ -54,6 +54,11 @@
             android:icon="@drawable/ic_refresh"
             android:title="@string/refresh" />
 
+        <item
+            android:id="@+id/nav_item_about"
+            android:icon="@drawable/ic_info"
+            android:title="@string/about" />
+
     </group>
 
     <group android:id="@+id/logout">

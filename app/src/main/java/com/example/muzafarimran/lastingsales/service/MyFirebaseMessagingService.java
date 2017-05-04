@@ -39,7 +39,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.e(TAG, "MessageReceived");
         sessionManager = new SessionManager(getApplicationContext());
-        Log.d(TAG, "onMessageReceived: Firebase ID: "+sessionManager.getKeyLoginFirebaseRegId());
+        Log.d(TAG, "onMessageReceived: Firebase ID: " + sessionManager.getKeyLoginFirebaseRegId());
 //        Log.e(TAG, "From: " + remoteMessage.getFrom());
 //        Log.e(TAG, "From2: " + remoteMessage.getTo());
 //        Log.e(TAG, "From3: " + remoteMessage.getNotification());
@@ -198,6 +198,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.post(mCallEvent);
+
                 } else if (action.equals("delete")) {
                     String id = payload.getString("id");
                     LSContact contact = LSContact.getContactFromServerId(id);
@@ -249,17 +250,48 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             if (tag.equals("Column")) {
                 if (action.equals("post")) {
-                    String id = payload.getString("id");
-                    String column_type = payload.getString("column_type");
-                    String name = payload.getString("name");
-                    String default_value_options = payload.getString("default_value_options");
-                    String range = payload.getString("range");
-                    String created_by = payload.getString("created_by");
-                    String updated_by = payload.getString("updated_by");
-                    String created_at = payload.getString("created_at");
-                    String updated_at = payload.getString("updated_at");
-                    String company_id = payload.getString("company_id");
+                    String id = "";
+                    if(payload.has("id")){
+                        id = payload.getString("id");
+                    }
+                    String column_type = "";
+                    if(payload.has("column_type")){
+                        column_type = payload.getString("column_type");
+                    }
+                    String name = "";
+                    if(payload.has("name")){
+                        name = payload.getString("name");
+                    }
+                    String default_value_options = "";
+                    if(payload.has("default_value_options")){
+                        default_value_options = payload.getString("default_value_options");
+                    }
+                    String range = "";
+                    if (payload.has("range")) {
+                        range = payload.getString("range");
+                    }
+                    String created_by = "";
+                    if (payload.has("created_by")) {
+                        created_by = payload.getString("created_by");
+                    }
+                    String updated_by = "";
+                    if (payload.has("updated_by")) {
+                        updated_by = payload.getString("updated_by");
+                    }
+                    String created_at = "";
+                    if (payload.has("created_at")) {
+                        created_at = payload.getString("created_at");
+                    }
+                    String updated_at = "";
+                    if (payload.has("updated_at")) {
+                        updated_at = payload.getString("updated_at");
+                    }
+                    String company_id = "";
+                    if (payload.has("company_id")) {
+                        company_id = payload.getString("company_id");
+                    }
                     LSDynamicColumns checkColumn = LSDynamicColumns.getColumnFromServerId(id);
+
                     if (checkColumn == null) {
                         LSDynamicColumns newColumn = new LSDynamicColumns();
                         newColumn.setServerId(id);
@@ -276,20 +308,50 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
 
                 } else if (action.equals("put")) {
-                    //TODO implement column Edit
-                    String id = payload.getString("id");
-//                    String column_type = payload.getString("column_type"); // we do not change its type once created
-                    String name = payload.getString("name");
-                    String default_value_options = payload.getString("default_value_options");
-                    String range = payload.getString("range");
-                    String created_by = payload.getString("created_by");
-                    String updated_by = payload.getString("updated_by");
-                    String created_at = payload.getString("created_at");
-                    String updated_at = payload.getString("updated_at");
-                    String company_id = payload.getString("company_id");
+                    String id = "";
+                    if(payload.has("id")){
+                        id = payload.getString("id");
+                    }
+                    String column_type = "";
+                    if(payload.has("column_type")){
+                        column_type = payload.getString("column_type");
+                    }
+                    String name = "";
+                    if(payload.has("name")){
+                        name = payload.getString("name");
+                    }
+                    String default_value_options = "";
+                    if(payload.has("default_value_options")){
+                        default_value_options = payload.getString("default_value_options");
+                    }
+                    String range = "";
+                    if (payload.has("range")) {
+                        range = payload.getString("range");
+                    }
+                    String created_by = "";
+                    if (payload.has("created_by")) {
+                        created_by = payload.getString("created_by");
+                    }
+                    String updated_by = "";
+                    if (payload.has("updated_by")) {
+                        updated_by = payload.getString("updated_by");
+                    }
+                    String created_at = "";
+                    if (payload.has("created_at")) {
+                        created_at = payload.getString("created_at");
+                    }
+                    String updated_at = "";
+                    if (payload.has("updated_at")) {
+                        updated_at = payload.getString("updated_at");
+                    }
+                    String company_id = "";
+                    if (payload.has("company_id")) {
+                        company_id = payload.getString("company_id");
+                    }
+
                     LSDynamicColumns tempColumn = LSDynamicColumns.getColumnFromServerId(id);
                     if (tempColumn != null) {
-//                        tempColumn.setColumnType(column_type);
+                        tempColumn.setColumnType(column_type);
                         tempColumn.setName(name);
                         tempColumn.setDefaultValueOption(default_value_options);
                         tempColumn.setRange(range);
@@ -301,8 +363,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         tempColumn.save();
                     }
 
-                }
-                else if (action.equals("delete")) {
+                } else if (action.equals("delete")) {
                     String id = payload.getString("id");
                     LSDynamicColumns tempColumn = LSDynamicColumns.getColumnFromServerId(id);
                     if (tempColumn != null) {

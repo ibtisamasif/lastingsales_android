@@ -19,9 +19,8 @@ import org.json.JSONObject;
 class UnlabeledManager {
     public static void convertTo(Context context, LSContact tempContact, String newtype) {
 
-        // from unlabeled to sales
         if (newtype.equals(LSContact.CONTACT_TYPE_SALES)) {
-
+            // from unlabeled to sales
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
             try {
@@ -32,11 +31,9 @@ class UnlabeledManager {
             } catch (JSONException e) {
                 Log.e("MYAPP", "Unable to add properties to JSONObject", e);
             }
-
-            // from unlabeled to business
         } else if (newtype.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+            // from unlabeled to business
             InquiryManager.RemoveByContact(context, tempContact);
-
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
             try {
@@ -48,10 +45,9 @@ class UnlabeledManager {
                 Log.e("MYAPP", "Unable to add properties to JSONObject", e);
             }
 
-            // from unlabeled to ignored
         } else if (newtype.equals(LSContact.CONTACT_TYPE_IGNORED)) {
+            // from unlabeled to ignored
             InquiryManager.RemoveByContact(context, tempContact);
-
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
             try {

@@ -147,8 +147,8 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                         TempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_ADDED_NOT_SYNCED);
                         TempFollowUp.save();
                         setAlarm(getApplicationContext(), TempFollowUp);
-                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-                        dataSenderAsync.execute();
+                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                        dataSenderAsync.run();
                     }
                     finish();
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
@@ -175,8 +175,8 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                         TempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_EDIT_NOT_SYNCED);
                         TempFollowUp.save();
                         setAlarm(getApplicationContext(), TempFollowUp);
-                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-                        dataSenderAsync.execute();
+                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                        dataSenderAsync.run();
                     }
                     finish();
                     Toast.makeText(AddNewFollowUpsActivity.this, "Followup Added", Toast.LENGTH_SHORT).show();

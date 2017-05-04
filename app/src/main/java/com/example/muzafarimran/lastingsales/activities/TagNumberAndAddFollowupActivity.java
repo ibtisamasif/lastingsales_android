@@ -739,8 +739,8 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                         TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
                         TempFollowUp.save();
                         setAlarm(getApplicationContext(), TempFollowUp);
-                        DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-                        dataSenderAsync.execute();
+                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                        dataSenderAsync.run();
                     }
                     finish();
                 }

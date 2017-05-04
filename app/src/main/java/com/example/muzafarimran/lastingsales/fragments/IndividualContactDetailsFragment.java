@@ -226,8 +226,8 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 }
                 mContact.save();
                 Log.d(TAG, "onClick: " + mContact.getDynamic());
-                DataSenderAsync dataSenderAsync = new DataSenderAsync(getActivity());
-                dataSenderAsync.execute();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getActivity());
+                dataSenderAsync.run();
                 Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
                 String projectToken = MixpanelConfig.projectToken;
@@ -473,28 +473,28 @@ public class IndividualContactDetailsFragment extends TabFragment {
 
     private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            DataSenderAsync dataSenderNew = new DataSenderAsync(getActivity().getApplicationContext());
+            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getActivity().getApplicationContext());
             switch (pos) {
                 case 0:
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
                     Toast.makeText(parent.getContext(), "Status Changed to InProgress", Toast.LENGTH_SHORT).show();
-                    dataSenderNew.execute();
+                    dataSenderAsync.run();
                     break;
                 case 1:
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
                     Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
-                    dataSenderNew.execute();
+                    dataSenderAsync.run();
                     break;
                 case 2:
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
                     Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
-                    dataSenderNew.execute();
+                    dataSenderAsync.run();
                     break;
             }
         }

@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
@@ -48,51 +48,108 @@ import java.util.Map;
 
 import de.halfbit.tinybus.TinyBus;
 
-public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
+public class DataSenderAsync {
     public static final String TAG = "DataSenderAsync";
-    Context mContext;
-    SessionManager sessionManager;
-    long totalSize = 0;
+    private static DataSenderAsync instance = null;
+    private static int currentState = 1;
+    private static final int IDLE = 1;
+    private static final int PENDING = 2;
 
-    public DataSenderAsync(Context context) {
+    private static boolean firstThreadIsRunning = false;
+    private Context mContext;
+    private SessionManager sessionManager;
+    private long totalSize = 0;
+    private static RequestQueue queue;
+    private final int MY_TIMEOUT_MS = 2500;
+    private final int MY_MAX_RETRIES = 0;
+
+    protected DataSenderAsync(Context context) {
         mContext = context;
+        queue = Volley.newRequestQueue(mContext);
+        firstThreadIsRunning = false;
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        sessionManager = new SessionManager(mContext);
-    }
-
-    @Override
-    protected Void doInBackground(Object... params) {
-        try {
-            if (NetworkAccess.isNetworkAvailable(mContext)) {
-                if (sessionManager.isUserSignedIn()) {
-                    Log.d(TAG, "Syncing");
-                    Log.d(TAG, "Token : " + sessionManager.getLoginToken());
-                    Log.d(TAG, "user_id : " + sessionManager.getKeyLoginId());
-                    addContactsToServer();
-                    updateContactsToServer();
-                    addCallsToServer();
-                    addInquiriesToServer();
-                    updateInquiriesToServer();
-                    deleteInquiriesFromServer();
-                    addNotesToServer();
-                    updateNotesToServer();
-//                    addFollowupsToServer();
-                    deleteContactsFromServer();
-                    if (NetworkAccess.isWifiConnected(mContext)) {
-                        addRecordingToServer();
-                    }
-                }
-            } else {
-                Log.d(TAG, "SyncNoInternet");
+    public static DataSenderAsync getInstance(Context context) {
+        final Context appContext = context.getApplicationContext();
+        if (instance == null) {
+//            synchronized ((Object) firstThreadIsRunning){ //TODO make it thread safe
+            if (!firstThreadIsRunning) {
+                firstThreadIsRunning = true;
+                instance = new DataSenderAsync(appContext);
             }
-        } catch (Exception e) {
-            Log.d(TAG, "SyncingException: " + e.getMessage());
+//            }
         }
-        return null;
+        return instance;
+    }
+
+    public void run() {
+        Log.d(TAG, "run: ");
+        if (currentState == IDLE) {
+            currentState = PENDING;
+            Log.d(TAG, "run: InsideRUNING"+this.toString());
+            queue.setmAllFinishedListener(new RequestQueue.AllFinishedListener() {
+                @Override
+                public void onAllFinished() {
+                    currentState = IDLE;
+                    Log.d(TAG, "onRequestFinished: EVERYTHING COMPLETED");
+                }
+            });
+            new AsyncTask<Object, Void, Void>() {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    sessionManager = new SessionManager(mContext);
+                }
+
+                @Override
+                protected Void doInBackground(Object... params) {
+                    try {
+//                        if (NetworkAccess.isNetworkAvailable(mContext)) {
+                        if (sessionManager.isUserSignedIn()) {
+                            Log.d(TAG, "Syncing");
+                            Log.d(TAG, "Token : " + sessionManager.getLoginToken());
+                            Log.d(TAG, "user_id : " + sessionManager.getKeyLoginId());
+                            addContactsToServer();
+                            updateContactsToServer();
+                            addCallsToServer();
+                            addInquiriesToServer();
+                            updateInquiriesToServer();
+                            deleteInquiriesFromServer();
+                            addNotesToServer();
+                            updateNotesToServer();
+                            addFollowupsToServer();
+                            deleteContactsFromServer();
+                            if (NetworkAccess.isWifiConnected(mContext)) {
+                                addRecordingToServer();
+                            }
+                        }
+//                        }
+                        else {
+                            Log.d(TAG, "SyncNoInternet");
+                        }
+                    } catch (Exception e) {
+                        Log.d(TAG, "SyncingException: " + e.getMessage());
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onProgressUpdate(Void... values) {
+                    super.onProgressUpdate(values);
+                }
+
+                //this method is executed when doInBackground function finishes
+                @Override
+                protected void onPostExecute(Void result) {
+                    if(currentState != PENDING){
+                        currentState = IDLE;
+                    }
+                    Log.d(TAG, "onPostExecute: Stopped");
+                }
+            }.execute();
+        } else {
+            Log.d(TAG, "run: NotRunning");
+        }
     }
 
     private void addContactsToServer() {
@@ -101,15 +158,14 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             contactsList = LSContact.find(LSContact.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
             Log.d(TAG, "addContactsToServer: count : " + contactsList.size());
             for (LSContact oneContact : contactsList) {
-                Log.d(TAG, "Found Contacts");
+                Log.d(TAG, "Found Contacts " + oneContact.getPhoneOne());
                 addContactToServerSync(oneContact);
             }
         }
     }
 
-    public void addContactToServerSync(final LSContact contact) {
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
+    private void addContactToServerSync(final LSContact contact) {
+        currentState = PENDING;
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_CONTACT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -182,18 +238,11 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 params.put("lead_type", "" + contact.getContactType());
                 return params;
             }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
         };
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -210,12 +259,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         }
     }
 
-    public void updateContactToServerSync(final LSContact contact) {
+    private void updateContactToServerSync(final LSContact contact) {
+        currentState = PENDING;
         String email = "";
         String address = "";
-
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
         if (contact.getContactEmail() != null) {
             email = contact.getContactEmail();
         }
@@ -262,10 +309,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             }
         }) {
         };
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -276,16 +323,14 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             callsList = LSCall.find(LSCall.class, "sync_status = ?", SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             Log.d(TAG, "addCallsToServer: count : " + callsList.size());
             for (LSCall oneCall : callsList) {
-                Log.d(TAG, "Found Call");
+                Log.d(TAG, "Found Call " + oneCall.getContactNumber());
                 addCallToServerSync(oneCall);
             }
         }
     }
 
-    public void addCallToServerSync(final LSCall call) {
-
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
+    private void addCallToServerSync(final LSCall call) {
+        currentState = PENDING;
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_CALL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -322,6 +367,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+//                Log.d(TAG, "onErrorResponse: statusCode: "+error.networkResponse.statusCode);
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddCall");
 //                try {
 //                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
@@ -347,6 +393,11 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 } else {
                     duration = "1";
                 }
+
+                String durration = PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss");
+                String date = PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "yyyy-MM-dd");
+
+
                 params.put("duration", "" + duration);
                 params.put("contact_number", "" + call.getContactNumber());
                 params.put("call_type", "" + call.getType());
@@ -354,6 +405,9 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 params.put("from_time", "" + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss"));
 //                Log.d(TAG, "getParams: "+PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss"));
                 params.put("api_token", "" + sessionManager.getLoginToken());
+
+                Log.d(TAG, "getParams: " + params.toString());
+
 //                params.put("duration", ""+call.getDuration());
 //                params.put("contact_number", ""+call.getContactNumber());
 //                params.put("call_type", ""+call.getType());
@@ -362,18 +416,11 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 //                params.put("api_token", ""+sessionManager.getLoginToken());
                 return params;
             }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
         };
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -390,10 +437,8 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         }
     }
 
-    public void addInquiryToServerSync(final LSInquiry inquiry) {
-
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
+    private void addInquiryToServerSync(final LSInquiry inquiry) {
+        currentState = PENDING;
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_INQUIRY, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -455,18 +500,11 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 params.put("api_token", "" + sessionManager.getLoginToken());
                 return params;
             }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
         };
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -484,11 +522,8 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         }
     }
 
-    public void updateInquiryToServerSync(final LSInquiry inquiry) {
-
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
-
+    private void updateInquiryToServerSync(final LSInquiry inquiry) {
+        currentState = PENDING;
         final String BASE_URL = MyURLs.UPDATE_INQUIRY;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
@@ -525,10 +560,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateInquiry");
             }
         });
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -545,10 +580,8 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         }
     }
 
-    public void deleteInquiriesFromServerSync(final LSInquiry inquiry) {
-//        Log.d(TAG, "deleteContactFromServerSync: DELETE LEAD SERVER ID : "+contact.getServerId());
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
+    private void deleteInquiriesFromServerSync(final LSInquiry inquiry) {
+        currentState = PENDING;
         final String BASE_URL = MyURLs.DELETE_INQUIRY;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
@@ -583,10 +616,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             }
         }) {
         };
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -603,11 +636,8 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         }
     }
 
-    public void addNoteToServerSync(final LSNote note) {
-//        Log.d(TAG, "LeadLocalIdOfNote: " + note.getContactOfNote().getId());
-//        Log.d(TAG, "LeadServerIdOfNote: " + note.getContactOfNote().getServerId());
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
+    private void addNoteToServerSync(final LSNote note) {
+        currentState = PENDING;
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_NOTE + note.getContactOfNote().getServerId() + "/notes", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -662,18 +692,11 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 params.put("api_token", "" + sessionManager.getLoginToken());
                 return params;
             }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
         };
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -690,11 +713,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         }
     }
 
-    public void updateNoteToServerSync(final LSNote note) {
+    private void updateNoteToServerSync(final LSNote note) {
+        currentState = PENDING;
         Log.d(TAG, "LeadLocalIdOfNote: " + note.getContactOfNote().getId());
         Log.d(TAG, "LeadServerIdOfNote: " + note.getContactOfNote().getServerId());
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
         final String BASE_URL = MyURLs.UPDATE_NOTE;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
@@ -733,10 +755,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             }
         }) {
         };
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -752,11 +774,10 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         }
     }
 
-    public void addFollowupToServerSync(final TempFollowUp followup) {
+    private void addFollowupToServerSync(final TempFollowUp followup) {
+        currentState = PENDING;
         Log.d(TAG, "LeadLocalIdOfFollowup: " + followup.getContact().getId());
         Log.d(TAG, "LeadServerIdOfFollowup: " + followup.getContact().getServerId());
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_FOLLOWUP + followup.getContact().getServerId() + "/followup", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -796,18 +817,11 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
                 params.put("api_token", "" + sessionManager.getLoginToken());
                 return params;
             }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
         };
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
@@ -824,10 +838,9 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
         }
     }
 
-    public void deleteContactFromServerSync(final LSContact contact) {
+    private void deleteContactFromServerSync(final LSContact contact) {
+        currentState = PENDING;
 //        Log.d(TAG, "deleteContactFromServerSync: DELETE LEAD SERVER ID : "+contact.getServerId());
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
         final String BASE_URL = MyURLs.DELETE_CONTACT;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
@@ -875,15 +888,14 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
             }
         }) {
         };
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
 
-    public void addRecordingToServer() {
-
+    private void addRecordingToServer() {
         List<LSCallRecording> recordingList = null;
         if (LSCallRecording.count(LSCallRecording.class) > 0) {
             recordingList = LSCallRecording.findWithQuery(LSCallRecording.class, "Select * from LS_CALL_RECORDING where sync_status = 'recording_not_synced' and server_id_of_call IS NOT NULL");
@@ -899,6 +911,7 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 
     @SuppressWarnings("deprecation")
     private void addRecordingToServer(LSCallRecording recording) {
+        currentState = PENDING;
         Log.d(TAG, "uploadFile: Path: " + recording.getAudioPath());
 //        String filePath = "/storage/emulated/0/Pictures/Android File Upload/myrec.amr";
         String responseString = null;
@@ -1031,14 +1044,4 @@ public class DataSenderAsync extends AsyncTask<Object, Void, Void> {
 //        return responseString;
 //
 //    }
-
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        super.onProgressUpdate(values);
-    }
-
-    //this method is executed when doInBackground function finishes
-    @Override
-    protected void onPostExecute(Void result) {
-    }
 }

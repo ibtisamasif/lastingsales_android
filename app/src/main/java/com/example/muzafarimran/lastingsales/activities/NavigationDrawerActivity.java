@@ -396,9 +396,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             recordingManager.execute();
             TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
             theCallLogEngine.execute();
-            DataSenderAsync dataSenderAsync = new DataSenderAsync(getApplicationContext());
-            dataSenderAsync.execute();
+            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+            dataSenderAsync.run();
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+
+        }  else if (id == R.id.nav_item_about) {
+            Intent aboutIntent = new Intent(this, AboutActivity.class);
+            startActivity(aboutIntent);
         } else if (id == R.id.nav_item_logout) {
             sessionManager.logoutUser();
             startActivity(new Intent(this, LogInActivity.class));

@@ -22,6 +22,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -37,7 +38,7 @@ import static android.view.View.GONE;
  * Created by ibtisam on 12/17/2016.
  */
 
-public class LeadsAdapter extends BaseAdapter implements Filterable{
+public class LeadsAdapter extends BaseAdapter implements Filterable {
 
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
@@ -66,7 +67,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.callClickListener = new CallClickListener(c);
         //Filtering out colleagues from list
-        if(type!=LSContact.CONTACT_TYPE_BUSINESS) {
+        if (type != LSContact.CONTACT_TYPE_BUSINESS) {
             this.contactLeadType = type;
         }
         //TODO: correct the counting mechanism
@@ -113,135 +114,144 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
     public View getView(int position, View convertView, ViewGroup parent) {
 
         final LSContact contact = (LSContact) getItem(position);
-            ViewHolder holder = null;
-            if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.contact_row_view, parent, false);
-                holder = new ViewHolder();
-                holder.name = (TextView) convertView.findViewById(R.id.contact_name);
-                holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
-                holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
+        ViewHolder holder = null;
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.contact_row_view, parent, false);
+            holder = new ViewHolder();
+            holder.name = (TextView) convertView.findViewById(R.id.contact_name);
+            holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
+            holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
 
-                holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
+            holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
 
-                holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
-                holder.lastContactText = (TextView) convertView.findViewById(R.id.last_contact_text);
-                holder.numberCallsText = (TextView) convertView.findViewById(R.id.calls_text);
-                holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);
+            holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
+            holder.lastContactText = (TextView) convertView.findViewById(R.id.last_contact_text);
+            holder.numberCallsText = (TextView) convertView.findViewById(R.id.calls_text);
+            holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);
 
 //                holder.detailsButton = (Button) convertView.findViewById(R.id.contactDetailsDropDownDetailsButton);
 
-                holder.moreButton = (ImageView) convertView.findViewById(R.id.ivMoreButtonContactsDetailsDropDown);
+            holder.moreButton = (ImageView) convertView.findViewById(R.id.ivMoreButtonContactsDetailsDropDown);
 
-                holder.salesLeadStatus = (TextView) convertView.findViewById(R.id.status_text);
-                holder.statusRow = (RelativeLayout) convertView.findViewById(R.id.status_row);
-                holder.contactDetailsDopDownLayout.setVisibility(GONE);
-                convertView.setTag(holder);
-                holder.call_icon.setOnClickListener(this.callClickListener);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-                ((ViewGroup) holder.user_details_wrapper.getParent()).removeView(contact_details);
-            }
+            holder.salesLeadStatus = (TextView) convertView.findViewById(R.id.status_text);
+            holder.statusRow = (RelativeLayout) convertView.findViewById(R.id.status_row);
             holder.contactDetailsDopDownLayout.setVisibility(GONE);
-            String timeAgoString;
-            String numberOfCalls;
-            ArrayList<LSCall> allCalls = LSCall.getCallsFromNumber(contact.getPhoneOne());
-            if (allCalls == null || allCalls.size() == 0) {
-                timeAgoString = "Never";
-                numberOfCalls = 0 + "";
-            } else {
-                LSCall latestCall = allCalls.get(allCalls.size() - 1);
-                timeAgoString = PhoneNumberAndCallUtils.getTimeAgo(latestCall.getBeginTime(), mContext);
-                numberOfCalls = allCalls.size() + "";
-            }
-            holder.lastContactText.setText(timeAgoString);
-            holder.numberCallsText.setText(numberOfCalls);
+            convertView.setTag(holder);
+            holder.call_icon.setOnClickListener(this.callClickListener);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+            ((ViewGroup) holder.user_details_wrapper.getParent()).removeView(contact_details);
+        }
+        holder.contactDetailsDopDownLayout.setVisibility(GONE);
+        String timeAgoString;
+        String numberOfCalls;
+        ArrayList<LSCall> allCalls = LSCall.getCallsFromNumber(contact.getPhoneOne());
+        if (allCalls == null || allCalls.size() == 0) {
+            timeAgoString = "Never";
+            numberOfCalls = 0 + "";
+        } else {
+            LSCall latestCall = allCalls.get(allCalls.size() - 1);
+            timeAgoString = PhoneNumberAndCallUtils.getTimeAgo(latestCall.getBeginTime(), mContext);
+            numberOfCalls = allCalls.size() + "";
+        }
+        holder.lastContactText.setText(timeAgoString);
+        holder.numberCallsText.setText(numberOfCalls);
+        if (contact.getContactName().equals("null")) {
+            holder.name.setText("");
+        } else {
             holder.name.setText(contact.getContactName());
-            holder.user_details_wrapper.setTag(position);
-            holder.number.setText(contact.getPhoneOne());
-            holder.user_details_wrapper.setOnClickListener(new showContactDetaislsListener(contact, holder.contactDetailsDopDownLayout));
-            if (!deleteFlow) {
-                holder.deleteButton.setVisibility(GONE);
-            } else {
-                holder.deleteButton.setVisibility(View.VISIBLE);
+        }
+        holder.user_details_wrapper.setTag(position);
+        holder.number.setText(contact.getPhoneOne());
+        holder.user_details_wrapper.setOnClickListener(new showContactDetaislsListener(contact, holder.contactDetailsDopDownLayout));
+        if (!deleteFlow) {
+            holder.deleteButton.setVisibility(GONE);
+        } else {
+            holder.deleteButton.setVisibility(View.VISIBLE);
+        }
+        holder.user_details_wrapper.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                deleteFlow = true;
+                setList(LSContact.getSalesContactsByLeadSalesStatus(contactLeadType));
+                return true;
             }
-            holder.user_details_wrapper.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    deleteFlow = true;
-                    setList(LSContact.getSalesContactsByLeadSalesStatus(contactLeadType));
-                    return true;
-                }
-            });
-            holder.call_icon.setTag(mContacts.get(position).getPhoneOne());
+        });
+        holder.call_icon.setTag(mContacts.get(position).getPhoneOne());
 //              Deletes the contact, queries db and updates local list plus notifies adapter
-            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Flushing Notes Of lead
-                    List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(contact.getId());
-                    if(allNotesOfThisContact!=null && allNotesOfThisContact.size()>0){
-                        for(LSNote oneNote : allNotesOfThisContact){
-                            oneNote.delete();
-                        }
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
+//                    if (checkInquiry == null) {
+                //Flushing Notes Of lead
+                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(contact.getId());
+                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
+                    for (LSNote oneNote : allNotesOfThisContact) {
+                        oneNote.delete();
                     }
-                    //Flushing Followup Of lead
-                    List<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getFollowupsByContactId(contact.getId());
-                    if(allFollowupsOfThisContact!=null && allFollowupsOfThisContact.size()>0){
-                        for(TempFollowUp oneFollowup : allFollowupsOfThisContact){
-                            oneFollowup.delete();
-                        }
-                    }
-                    //contact is deleted and will be hard deleted on syncing.
-                    contact.setLeadDeleted(true);
-                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
-                    contact.save();
-//                    contact.delete();
-                    DataSenderAsync dataSenderAsync = new DataSenderAsync(mContext);
-                    dataSenderAsync.execute();
-                    setList(LSContact.getSalesContactsByLeadSalesStatus(contactLeadType));
-                    Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
                 }
-            });
+                //Flushing Followup Of lead
+                List<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getFollowupsByContactId(contact.getId());
+                if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
+                    for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
+                        oneFollowup.delete();
+                    }
+                }
+                //contact is deleted and will be hard deleted on syncing.
+                contact.setLeadDeleted(true);
+                contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+                contact.save();
+//                    contact.delete();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
+                dataSenderAsync.run();
+                setList(LSContact.getSalesContactsByLeadSalesStatus(contactLeadType));
+                Toast.makeText(mContext, "Lead Deleted!", Toast.LENGTH_SHORT).show();
+//                    }else {
+//                        Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
+//                    }
+            }
+        });
 
 //            holder.detailsButton.setOnClickListener(new DetailsButtonClickListener(contact));
 
-            final View moreView = holder.moreButton;
-            holder.moreButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupMenu popupMenu = new android.widget.PopupMenu(mContext, moreView);
-                    popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            switch (menuItem.getItemId()) {
+        final View moreView = holder.moreButton;
+        holder.moreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new android.widget.PopupMenu(mContext, moreView);
+                popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
 //                                case R.id.lead_type_prospect:
 //                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_PROSTPECT);
 //                                    contact.save();
 //                                    notifyDataSetChanged();
 //                                    break;
-                                case R.id.lead_type_lead:
-                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                                    contact.save();
-                                    notifyDataSetChanged();
-                                    break;
-                                case R.id.lead_type_closed_won:
-                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-                                    contact.save();
-                                    notifyDataSetChanged();
-                                    break;
-                                case R.id.lead_type_closed_lost:
-                                    contact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-                                    contact.save();
-                                    notifyDataSetChanged();
-                                    break;
-                            }
-                            return false;
+                            case R.id.lead_type_lead:
+                                contact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+                                contact.save();
+                                notifyDataSetChanged();
+                                break;
+                            case R.id.lead_type_closed_won:
+                                contact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+                                contact.save();
+                                notifyDataSetChanged();
+                                break;
+                            case R.id.lead_type_closed_lost:
+                                contact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+                                contact.save();
+                                notifyDataSetChanged();
+                                break;
                         }
-                    });
-                    popupMenu.inflate(R.menu.sales_tab_contact_lead_types);
-                    popupMenu.show();
-                }
-            });
+                        return false;
+                    }
+                });
+                popupMenu.inflate(R.menu.sales_tab_contact_lead_types);
+                popupMenu.show();
+            }
+        });
 
         if (contact.getContactType() != null) {
             if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
@@ -321,6 +331,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable{
             }
         };
     }
+
     /*
     * Hold references to sub views
     * */
