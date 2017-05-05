@@ -34,7 +34,7 @@
         <item name="android:textColorPrimary">#ffffff</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- Style Used NavigationDrawerActivity Only Drawer -->
     <style name="AppTheme.NoActionBar">
@@ -53,6 +53,7 @@
         <item name="android:textColor">#ffffff</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="collapsedappbar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#ffffff</item>
@@ -60,8 +61,13 @@
 
     <!-- Contextual ActionBar Used in Add/Edit Notes Screen ActionBar and Contextual Action Bar-->
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
-        <item name="android:actionModeBackground">@color/colorPrimary </item>
+        <item name="android:actionModeBackground">@color/colorPrimary</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="MyTransparentTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
     </style>
 
 </resources>

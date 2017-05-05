@@ -11,6 +11,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.AddEditNoteActivity;
 import com.example.muzafarimran.lastingsales.activities.AddNewFollowUpsActivity;
+import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.receivers.FollowupNotiCancelBtnReceiver;
 import com.example.muzafarimran.lastingsales.receivers.TagAsIgnored;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -40,6 +41,10 @@ public class CallEndNotification {
         cancelIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent cancelpIntent = PendingIntent.getBroadcast(ctx, (int) System.currentTimeMillis(), cancelIntent, 0);
 
+        Intent detailsActivityIntent = new Intent(ctx, ContactDetailsTabActivity.class);
+        detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contact_id + "");
+        PendingIntent pDetailsActivityIntent = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), detailsActivityIntent, 0);
+
         Intent intentNote = new Intent(ctx, AddEditNoteActivity.class);
         intentNote.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_ADD_NEW_NOTE);
         intentNote.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact_id);
@@ -51,6 +56,7 @@ public class CallEndNotification {
         PendingIntent pIntentFollow = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intentFollow, 0);
 
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)
+                .setContentIntent(pDetailsActivityIntent)
                 .setSmallIcon(R.drawable.ic_notification_small)
                 .setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_notification))
                 .setPriority(Notification.PRIORITY_MAX)
@@ -62,6 +68,7 @@ public class CallEndNotification {
 //                .setFullScreenIntent(pIntentFollow, true)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setAutoCancel(true);
+
         return notificationBuilder.build();
     }
 
@@ -71,9 +78,9 @@ public class CallEndNotification {
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(ctx, projectToken);
         try {
-            mixpanel.track("Lead from notification - Shown");
+            mixpanel.track("Lead From Notification - Shown");
         } catch (Exception e) {
-            Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+            Log.e("mixpanel", "Unable to add properties to JSONObject", e);
         }
 
         String number_or_name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, intlNumber);

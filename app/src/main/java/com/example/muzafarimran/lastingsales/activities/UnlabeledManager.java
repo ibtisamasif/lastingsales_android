@@ -23,42 +23,19 @@ class UnlabeledManager {
             // from unlabeled to sales
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
-            try {
-                JSONObject props = new JSONObject();
-                props.put("Gender", "Female");
-                props.put("Logged in", false);
-                mixpanel.track("Unlabeled To Lead", props);
-            } catch (JSONException e) {
-                Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-            }
+            mixpanel.track("Unlabeled To Lead");
         } else if (newtype.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
             // from unlabeled to business
             InquiryManager.RemoveByContact(context, tempContact);
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
-            try {
-                JSONObject props = new JSONObject();
-                props.put("Gender", "Female");
-                props.put("Logged in", false);
-                mixpanel.track("Unlabeled To Colleague", props);
-            } catch (JSONException e) {
-                Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-            }
-
+            mixpanel.track("Unlabeled To Colleague");
         } else if (newtype.equals(LSContact.CONTACT_TYPE_IGNORED)) {
             // from unlabeled to ignored
             InquiryManager.RemoveByContact(context, tempContact);
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
-            try {
-                JSONObject props = new JSONObject();
-                props.put("Gender", "Female");
-                props.put("Logged in", false);
-                mixpanel.track("Unlabeled To Ignored", props);
-            } catch (JSONException e) {
-                Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-            }
-
+            mixpanel.track("Unlabeled To Ignored");
         }
     }
 }

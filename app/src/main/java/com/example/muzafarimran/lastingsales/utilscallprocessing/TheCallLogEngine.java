@@ -49,7 +49,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
 
             managedCursor.moveToLast();
             do {
-                if(managedCursor.isFirst()){
+                if (managedCursor.isFirst()) {
                     Log.d(TAG, "CallLogFunc: Cursor is at First Now");
                     showNotification = true;
                 }
@@ -94,12 +94,14 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
 
                     } else if (callType.equals("3")) {      //Missed
                         tempCall.setType(LSCall.CALL_TYPE_MISSED);
-                    }
-                    else if (callType.equals("5")|| callType.equals("1") && tempCall.getDuration() == 0L) {        // incoming Rejected
+                    } else if (callType.equals("5") || callType.equals("1") && tempCall.getDuration() == 0L) {        // Incoming Rejected
                         tempCall.setType(LSCall.CALL_TYPE_REJECTED);
                     }
-
-                    CallProcessor.Process(mContext, tempCall, showNotification);
+                    try {
+                        CallProcessor.Process(mContext, tempCall, showNotification);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             } while (managedCursor.moveToPrevious());
         } catch (Exception e) {

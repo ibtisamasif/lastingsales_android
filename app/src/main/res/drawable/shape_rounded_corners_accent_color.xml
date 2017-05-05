@@ -9,8 +9,8 @@
     <corners
         android:bottomLeftRadius="@dimen/corners_radius_size_edittext_bg"
         android:bottomRightRadius="@dimen/corners_radius_size_edittext_bg"
-        android:topLeftRadius="@dimen/corners_radius_size_edittext_bg"
-        android:topRightRadius="@dimen/corners_radius_size_edittext_bg" />
+        android:topLeftRadius="@dimen/corners_radius_size_textview_bg"
+        android:topRightRadius="@dimen/corners_radius_size_textview_bg" />
     <!-- Specify the margins that all content inside the drawable must adhere to -->
     <padding
         android:bottom="2dp"

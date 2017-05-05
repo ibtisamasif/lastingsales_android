@@ -2,8 +2,12 @@ package com.example.muzafarimran.lastingsales.utils;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
+import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.TagNotificationDialogActivity;
+import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 /**
@@ -23,12 +27,29 @@ public class NotificationBuilder {
             mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx, intlNumber, contact_id));
 
         } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
+            Intent intent = new Intent(ctx, TagNotificationDialogActivity.class);
+            intent.putExtra(TagNotificationDialogActivity.ACTIVITY_LAUNCH_MODE, TagNotificationDialogActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
+            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""+tempContact.getId()); //backward compatibility & May be needed in future
+//            intent.putExtra(TagNotificationDialogActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_NOTIFICATION);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ctx.startActivity(intent);
+//            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
+
         } else if (tempContact == null) {
-            Log.d(ctx.getClass().getName(), "showTagNumberPopupIfNeeded: tempContact is NULL");
-            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
+            Intent intent = new Intent(ctx, TagNotificationDialogActivity.class);
+            intent.putExtra(TagNotificationDialogActivity.ACTIVITY_LAUNCH_MODE, TagNotificationDialogActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
+            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
+//            intent.putExtra(TagNotificationDialogActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_NOTIFICATION);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ctx.startActivity(intent);
+//            Log.d(ctx.getClass().getName(), "showTagNumberPopupIfNeeded: tempContact is NULL");
+//            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
         }
     }
 }

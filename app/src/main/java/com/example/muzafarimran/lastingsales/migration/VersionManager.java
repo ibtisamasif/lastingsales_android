@@ -275,9 +275,9 @@ public class VersionManager {
                         props.put("activated", "yes");
                         mixpanel.getPeople().set(props);
 
-                        mixpanel.track("User Logged in", props);
+                        mixpanel.track("User Logged in", props); //Dont look backwards :D
                     } catch (JSONException e) {
-                        Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                        Log.e("mixpanel", "Unable to add properties to JSONObject", e);
                     }
                     return true;
                 } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_NEW_INSTALL)) {
@@ -296,7 +296,45 @@ public class VersionManager {
             } catch (Exception e) {
                 return false;
             }
-        } else {
+        }  else if (version == 16) {
+            try {
+                sessionManager.storeVersionCodeNow();
+                Log.d(TAG, "func: Running Script for Mixpanel");
+                if (sessionManager.getLoginMode().equals(SessionManager.MODE_NORMAL)) {
+                    Log.d(TAG, "func: case1");
+                    try {
+                        String projectToken = MixpanelConfig.projectToken;
+                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
+                        mixpanel.identify(sessionManager.getKeyLoginId()); //user_id
+                        mixpanel.getPeople().identify(sessionManager.getKeyLoginId());
+
+                        JSONObject props = new JSONObject();
+
+                        props.put("$first_name", ""+sessionManager.getKeyLoginFirstName());
+                        props.put("$last_name", ""+sessionManager.getKeyLoginLastName());
+                        props.put("activated", "yes");
+                        mixpanel.getPeople().set(props);
+                    } catch (JSONException e) {
+                        Log.e("mixpanel", "Unable to add properties to JSONObject", e);
+                    }
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_NEW_INSTALL)) {
+                    Log.d(TAG, "func: case2");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_UPGRADE)) {
+                    Log.d(TAG, "func: case3");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    return true;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        }else {
             return true;
         }
     }

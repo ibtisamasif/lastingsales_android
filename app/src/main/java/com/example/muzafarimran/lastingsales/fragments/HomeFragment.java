@@ -102,16 +102,9 @@ public class HomeFragment extends TabFragment {
 //                intent = new Intent(getContext(), FrameActivity.class);
 //                intent.putExtras(bundle);
 //                startActivity(intent);
-                String projectToken = MixpanelConfig.projectToken;
-                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
-                try {
-                    JSONObject props = new JSONObject();
-                    props.put("Gender", "Female");
-                    props.put("Logged in", false);
-                    mixpanel.track("InActive(Home)", props);
-                } catch (JSONException e) {
-                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-                }
+//                String projectToken = MixpanelConfig.projectToken;
+//                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
+//                mixpanel.track("InActive(Home)");
             }
         });
         llUnlabeledContainer.setOnClickListener(new View.OnClickListener() {
@@ -122,20 +115,19 @@ public class HomeFragment extends TabFragment {
                 bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
                 bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
                 bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
-                bundle.putString("mixpanel_source", "home");
                 intent = new Intent(getContext(), FrameActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
-                String projectToken = MixpanelConfig.projectToken;
-                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
-                try {
-                    JSONObject props = new JSONObject();
-                    props.put("Gender", "Female");
-                    props.put("Logged in", false);
-                    mixpanel.track("Unlabeled(Home)", props);
-                } catch (JSONException e) {
-                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-                }
+//                String projectToken = MixpanelConfig.projectToken;
+//                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
+//                try {
+//                    JSONObject props = new JSONObject();
+//                    props.put("Gender", "Female");
+//                    props.put("Logged in", false);
+//                    mixpanel.track("Unlabeled(Home)", props);
+//                } catch (JSONException e) {
+//                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+//                }
             }
         });
         llinquriesContainer.setOnClickListener(new View.OnClickListener() {
@@ -151,16 +143,16 @@ public class HomeFragment extends TabFragment {
 //                Intent intent = new Intent(getContext(), FrameActivity.class);
 //                intent.putExtras(bundle);
 //                startActivity(intent);
-                String projectToken = MixpanelConfig.projectToken;
-                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
-                try {
-                    JSONObject props = new JSONObject();
-                    props.put("Gender", "Female");
-                    props.put("Logged in", false);
-                    mixpanel.track("Inquiries(Home)", props);
-                } catch (JSONException e) {
-                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-                }
+//                String projectToken = MixpanelConfig.projectToken;
+//                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
+//                try {
+//                    JSONObject props = new JSONObject();
+//                    props.put("Gender", "Female");
+//                    props.put("Logged in", false);
+//                    mixpanel.track("Inquiries(Home)", props);
+//                } catch (JSONException e) {
+//                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+//                }
             }
         });
 
@@ -277,7 +269,6 @@ public class HomeFragment extends TabFragment {
     }
 
 
-
     @Subscribe
     public void onCallReceivedEventModel(MissedCallEventModel event) {
         Log.d(TAG, "onMissedCallEvent() called with: event = [" + event + "]");
@@ -311,7 +302,7 @@ public class HomeFragment extends TabFragment {
     @Subscribe
     public void onUnlabeledContactAddedEventModel(UnlabeledContactAddedEventModel event) {
         Log.d(TAG, "onUnlabeledContactAddedEventModel() called with: event = [" + event + "]");
-            updateHomeFigures();
+        updateHomeFigures();
     }
 
     @Override

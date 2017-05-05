@@ -75,7 +75,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerVertical="true"
-                        android:paddingRight="10dp"
+                        android:paddingRight="8dp"
                         android:src="@drawable/ic_contact_detail_number_field"
                         android:tint="@color/colorPrimary" />
 
@@ -135,40 +135,40 @@
 
                 <!--</RelativeLayout>-->
 
-                <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="10dp">-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp">
 
-                    <!--<ImageView-->
-                        <!--android:id="@+id/lead_address_icon"-->
-                        <!--android:layout_width="30dp"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:paddingRight="10dp"-->
-                        <!--android:src="@drawable/ic_contact_detail_address_field"-->
-                        <!--android:tint="@color/colorPrimary" />-->
+                    <ImageView
+                        android:id="@+id/lead_address_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="12dp"
+                        android:src="@drawable/ic_contact_detail_address_field"
+                        android:tint="@color/colorPrimary" />
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/lead_address_text"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_toEndOf="@+id/lead_address_icon"-->
-                        <!--android:layout_toRightOf="@+id/lead_address_icon"-->
-                        <!--android:text="Address"-->
-                        <!--android:textColor="@color/black"-->
-                        <!--android:textSize="12sp" />-->
+                    <TextView
+                        android:id="@+id/lead_address_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/lead_address_icon"
+                        android:layout_toRightOf="@+id/lead_address_icon"
+                        android:text="Address"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvAddress"-->
-                        <!--android:layout_width="500dp"-->
-                        <!--android:layout_height="40dp"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_toRightOf="@+id/lead_address_text"-->
-                        <!--android:gravity="center|right" />-->
+                    <TextView
+                        android:id="@+id/tvAddress"
+                        android:layout_width="500dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/lead_address_text"
+                        android:gravity="center|right" />
 
-                <!--</RelativeLayout>-->
+                </RelativeLayout>
 
                 <!--<RelativeLayout-->
                     <!--android:layout_width="match_parent"-->

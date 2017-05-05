@@ -23,7 +23,7 @@ import java.util.Calendar;
 public class InquiryManager {
     public static final String TAG = "InquiryManager";
 
-    public static void RemoveByContact(Context context, LSContact tempContact){
+    public static void RemoveByContact(Context context, LSContact tempContact) {
         //update inquiry as well if exists
         LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(tempContact.getPhoneOne());
         if (tempInquiry != null) {
@@ -51,13 +51,7 @@ public class InquiryManager {
 
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
-            try {
-                JSONObject props = new JSONObject();
-                props.put("Logged in", false);
-                mixpanel.track("Inquiry Followed", props);
-            } catch (JSONException e) {
-                Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-            }
+            mixpanel.track("Inquiry Followed");
         }
     }
 

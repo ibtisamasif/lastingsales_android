@@ -1,8 +1,11 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -52,7 +55,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
     //    TextView tvName;
     TextView tvNumber;
     //    TextView tvEmail;
-//    TextView tvAddress;
+    TextView tvAddress;
     ListView listView = null;
     MaterialSearchView searchView;
     private Long contactIDLong;
@@ -111,9 +114,9 @@ public class IndividualContactDetailsFragment extends TabFragment {
 //        if (mContact != null && mContact.getContactEmail() != null) {
 //            tvEmail.setText(mContact.getContactEmail());
 //        }
-//        if (mContact != null && mContact.getContactAddress() != null) {
-//            tvAddress.setText(mContact.getContactAddress());
-//        }
+        if (mContact != null && mContact.getContactAddress() != null) {
+            tvAddress.setText(mContact.getContactAddress());
+        }
         if (mContact != null && mContact.getContactType() != null) {
             if (mContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                 if (mContact.getContactSalesStatus() != null && !mContact.getContactSalesStatus().equals("")) {
@@ -145,7 +148,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
 //        tvName = (TextView) view.findViewById(R.id.tvName);
         tvNumber = (TextView) view.findViewById(R.id.tvNumber);
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
-//        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
+        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
         bSave = (Button) view.findViewById(R.id.contactDetailsSaveButton);
 //        bSave.setVisibility(View.GONE);
         bSave.setOnClickListener(new View.OnClickListener() {
@@ -232,13 +235,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 getActivity().finish();
                 String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
-                try {
-                    JSONObject props = new JSONObject();
-                    props.put("Logged in", true);
-                    mixpanel.track("Dynamic Column Updated", props);
-                } catch (JSONException e) {
-                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-                }
+                mixpanel.track("Dynamic Column Updated");
             }
         });
 
@@ -264,7 +261,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
             l.setWeightSum(10);
 
             LinearLayout.LayoutParams layoutParamsRow = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParamsRow.setMargins(0,5,0,5);
+            layoutParamsRow.setMargins(0, 5, 0, 5);
             l.setLayoutParams(layoutParamsRow);
 
             if (allColumns.get(i).getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
@@ -272,23 +269,29 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 Log.d(TAG, "dynamicColumns: matched text");
                 TextView tv = new TextView(getContext());
                 tv.setText(allColumns.get(i).getName());
-                tv.setPadding(15,15,15,15);
+                tv.setPadding(15, 15, 15, 15);
                 final EditText et = new EditText(getContext());
                 et.setTextColor(getResources().getColor(R.color.black));
                 et.setBackgroundResource(R.drawable.dynamic_border);
-                et.setPadding(15,15,15,15);
+                et.setPadding(15, 15, 15, 15);
                 et.setText(allColumns.get(i).getDefaultValueOption());
                 et.setMinimumWidth(400);
                 String id = allColumns.get(i).getServerId();
                 et.setTag(id);
-//                et.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(getActivity(), "Text field clicked: " + et.getId() + " " + et.getTag() + " " + et.getText(), Toast.LENGTH_SHORT).show();
-//                        et.getId();
-//                    }
-//                });
+                et.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
 
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        bSave.setVisibility(View.VISIBLE);
+                    }
+                });
                 LinearLayout l1 = new LinearLayout(getContext());
                 LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
                 lp1.weight = 5;
@@ -309,21 +312,29 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 Log.d(TAG, "dynamicColumns: matched number");
                 TextView tv = new TextView(getContext());
                 tv.setText(allColumns.get(i).getName());
-                tv.setPadding(15,15,15,15);
+                tv.setPadding(15, 15, 15, 15);
                 final EditText et = new EditText(getContext());
                 et.setTextColor(getResources().getColor(R.color.black));
                 et.setBackgroundResource(R.drawable.dynamic_border);
-                et.setPadding(15,15,15,15);
+                et.setPadding(15, 15, 15, 15);
                 et.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et.setText(allColumns.get(i).getDefaultValueOption());
                 et.setMinimumWidth(400);
                 et.setTag(allColumns.get(i).getServerId());
-//                et.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(getActivity(), "Number field clicked: " + et.getId() + " " + et.getTag() + " " + et.getText(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+                et.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        bSave.setVisibility(View.VISIBLE);
+                    }
+                });
                 LinearLayout l1 = new LinearLayout(getContext());
                 LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
                 lp1.weight = 5;
@@ -343,7 +354,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 Log.d(TAG, "dynamicColumns: matched single");
                 TextView tv = new TextView(getContext());
                 tv.setText(allColumns.get(i).getName());
-                tv.setPadding(15,15,15,15);
+                tv.setPadding(15, 15, 15, 15);
                 Spinner s = new Spinner(getContext());
                 s.setId(Integer.parseInt(allColumns.get(i).getServerId()));
                 List<String> list = new ArrayList<String>();
@@ -370,7 +381,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
 
                 RelativeLayout relativeLayout = new RelativeLayout(getContext());
                 relativeLayout.setBackgroundResource(R.drawable.dynamic_border);
-                relativeLayout.addView(s,lpSpinner);
+                relativeLayout.addView(s, lpSpinner);
 
                 LinearLayout l1 = new LinearLayout(getContext());
                 LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -416,7 +427,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                         EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
                         et.setText(oneDynamicColumns.value);
                     } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
+                        final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
                         List<String> list = (List<String>) s.getTag();
                         int index = -1;
                         for (int i = 0; i < list.size(); i++) {
@@ -429,6 +440,12 @@ public class IndividualContactDetailsFragment extends TabFragment {
                             Log.d(TAG, "dynamicColumns: " + index);
                             s.setSelection(index, false);
                         }
+                        s.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
+                            }
+                        });
                     }
                 }
             }
@@ -436,9 +453,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
             e.printStackTrace();
         }
 //////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
-
-
 //////////////////////////////////////////////////////////////
     }
 
@@ -497,6 +511,17 @@ public class IndividualContactDetailsFragment extends TabFragment {
                     dataSenderAsync.run();
                     break;
             }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+    }
+
+    private class DynamicSpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            bSave.setVisibility(View.VISIBLE);
         }
 
         @Override

@@ -87,10 +87,10 @@
                     android:layout_marginRight="16dp"
                     android:layout_toLeftOf="@id/call_icon"
                     android:layout_toStartOf="@id/call_icon"
-                    android:background="@color/redDark"
+                    android:background="@drawable/inquiry_count_round"
                     android:gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     tools:text="50" />
 
                 <ImageView

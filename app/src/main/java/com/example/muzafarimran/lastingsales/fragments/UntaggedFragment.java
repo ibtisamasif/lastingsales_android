@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.IgnoredAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -52,8 +52,8 @@ public class UntaggedFragment extends TabFragment {
         ListView listView = null;
         view = inflater.inflate(R.layout.fragment_untagged, container, false);
         listView = (ListView) view.findViewById(R.id.untagged_contacts_list);
-        ContactsAdapter contactsAdapter = new ContactsAdapter(getContext(), this.untaggedContacts, LSContact.CONTACT_TYPE_IGNORED);
-        listView.setAdapter(contactsAdapter);
+        IgnoredAdapter ignoredAdapter = new IgnoredAdapter(getContext(), this.untaggedContacts, LSContact.CONTACT_TYPE_IGNORED);
+        listView.setAdapter(ignoredAdapter);
         return view;
     }
 }

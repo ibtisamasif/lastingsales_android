@@ -14,6 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.calendar.CalendarHelper;
+import com.example.muzafarimran.lastingsales.calendar.CalenderActivity;
+import com.example.muzafarimran.lastingsales.calendar.MyCalendarEvent;
+import com.example.muzafarimran.lastingsales.calendar.MyDateTimeStamp;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
@@ -61,6 +65,10 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
     private LSContact selectedContact = null;
     private TempFollowUp selectedFollowup = null;
     private TextView tvTitleFollowupPopup;
+    private String lastDayOfMonth;
+    private String lastDayOfYear;
+    private String otherEditText;
+    String myCurrentDateTime = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +155,44 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                         TempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_ADDED_NOT_SYNCED);
                         TempFollowUp.save();
                         setAlarm(getApplicationContext(), TempFollowUp);
+
+                            long selected_year = (long)(mYear);
+                            long selected_month = (long)(mMonth+1);
+                            long selected_day = (long)(mDay);
+                            long selected_hour = (long)(mHour);
+                            long selected_minute = (long)(mMinute);
+
+                            String mySelectedDateTime =  selected_year
+                                    +String.format("-%02d",selected_month)+String.format("-%02d",selected_day)
+                                    +String.format(" %02d",selected_hour)+String.format(":%02d",selected_minute);
+
+                            String endDatetime =  selected_year
+                                    +String.format("-%02d",selected_month)+String.format("-%02d",selected_day)
+                                    +String.format(" %02d",selected_hour)+String.format(":%02d",selected_minute+30)+":00";
+
+                            long selectedDateTime = MyDateTimeStamp.dateTimeLong(mySelectedDateTime+":00");
+                            long currentDateTime = MyDateTimeStamp.dateTimeLong(myCurrentDateTime+":00");
+                            if (!mySelectedDateTime.equals(myCurrentDateTime) && selectedDateTime > currentDateTime){
+                                String title = "LastingSales "+selectedContact.getContactName()+"("+selectedContact.getPhoneOne()+")";
+                                String location = "";
+                                String startDatetime = mySelectedDateTime+":00";
+                                String description = titleText;
+                                try {
+
+                                    int calendarID = (int)contactIdLong;
+                                    MyCalendarEvent.setGoogleEvent(AddNewFollowUpsActivity.this, startDatetime, endDatetime, title, description, location, calendarID);
+
+                                    Log.d(TAG, "ID: "+calendarID);
+                                    Log.d(TAG, "Title: "+title);
+                                    Log.d(TAG, "Descr: "+description);
+                                    Log.d(TAG, "Start: "+startDatetime);
+                                    Log.d(TAG, "End: "+endDatetime);
+                                    Log.d(TAG, "Location: "+location);
+                                }
+                                catch (Exception e){
+                                    Log.d(TAG, ""+e);
+                                }
+                            }
                         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                         dataSenderAsync.run();
                     }
@@ -168,13 +214,51 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                         dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, mDay);
                         dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, mHour);
                         dateTimeForFollowup.set(Calendar.MINUTE, mMinute);
-//                TempFollowUp TempFollowUp = new TempFollowUp(note, dateAndTimeForAlarm.getTimeInMillis(), selectedLSContact);
                         TempFollowUp.setContact(selectedContact);
                         TempFollowUp.setTitle(titleText);
                         TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
                         TempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_EDIT_NOT_SYNCED);
                         TempFollowUp.save();
                         setAlarm(getApplicationContext(), TempFollowUp);
+
+//
+//                        long selected_year = (long)(mYear);
+//                        long selected_month = (long)(mMonth+1);
+//                        long selected_day = (long)(mDay);
+//                        long selected_hour = (long)(mHour);
+//                        long selected_minute = (long)(mMinute);
+//
+//                        String mySelectedDateTime =  selected_year
+//                                +String.format("-%02d",selected_month)+String.format("-%02d",selected_day)
+//                                +String.format(" %02d",selected_hour)+String.format(":%02d",selected_minute);
+//
+//                        String endDatetime =  selected_year
+//                                +String.format("-%02d",selected_month)+String.format("-%02d",selected_day)
+//                                +String.format(" %02d",selected_hour)+String.format(":%02d",selected_minute+30)+":00";
+//
+//                        long selectedDateTime = MyDateTimeStamp.dateTimeLong(mySelectedDateTime+":00");
+//                        long currentDateTime = MyDateTimeStamp.dateTimeLong(myCurrentDateTime+":00");
+//                        if (!mySelectedDateTime.equals(myCurrentDateTime) && selectedDateTime > currentDateTime){
+//                            String title = "LastingSales "+selectedContact.getContactName()+"("+selectedContact.getPhoneOne()+")";
+//                            String location = "";
+//                            String startDatetime = mySelectedDateTime+":00";
+//                            String description = titleText;
+//                            try {
+//
+//                                int calendarID = (int)contactIdLong;
+//                                MyCalendarEvent.setGoogleEvent(AddNewFollowUpsActivity.this, startDatetime, endDatetime, title, description, location, calendarID);
+//
+//                                Log.d(TAG, "ID: "+calendarID);
+//                                Log.d(TAG, "Title: "+title);
+//                                Log.d(TAG, "Descr: "+description);
+//                                Log.d(TAG, "Start: "+startDatetime);
+//                                Log.d(TAG, "End: "+endDatetime);
+//                                Log.d(TAG, "Location: "+location);
+//                            }
+//                            catch (Exception e){
+//                                Log.d(TAG, ""+e);
+//                            }
+//                        }
                         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                         dataSenderAsync.run();
                     }

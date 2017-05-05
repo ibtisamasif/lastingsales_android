@@ -49,7 +49,7 @@
         fab:menu_colorPressed="@color/fab_contact_menu_pressed"
         fab:menu_colorRipple="#99d4d4d4"
         fab:menu_fab_size="normal"
-        fab:menu_icon="@drawable/fab_add"
+        fab:menu_icon="@drawable/ic_person_add_white"
         fab:menu_labels_colorNormal="@color/fab_contact_menu_text_background_normal"
         fab:menu_labels_colorPressed="@color/fab_contact_menu_text_background_pressed"
         fab:menu_labels_colorRipple="#66efecec"

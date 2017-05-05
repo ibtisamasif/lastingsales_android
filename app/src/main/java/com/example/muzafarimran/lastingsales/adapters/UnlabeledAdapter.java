@@ -33,9 +33,6 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
-/**
- * Created by MUZAFAR IMRAN on 9/19/20
- */
 public class UnlabeledAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = "UnlabeledContactsAdapte";
     private final static int ITEM_TYPES = 2;
@@ -96,10 +93,10 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
-            holder.bIgnore = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
             holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
             this.showcalldetailslistener = new ShowDetailsDropDown(contact, holder.contactCallDetails);
             holder.bSales = (Button) convertView.findViewById(R.id.bSalesUtaggedItem);
+            holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bContactCallsdetails);
             holder.bIgnore = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
 
             holder.call_icon.setOnClickListener(this.callClickListener);
@@ -128,7 +125,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
             holder.name.setText(contact.getContactName());
         }
         holder.bIgnore.setTag(number);
-        holder.bIgnore.setOnClickListener(detailsListener);
+        holder.bContactCallsdetails.setTag(number);
         holder.numberDetailTextView.setText(number);
         holder.call_name_time.setTag(position);
 //        holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(contact.getBeginTime()));
@@ -144,6 +141,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
                 mContext.startActivity(myIntent);
             }
         });
+        holder.bContactCallsdetails.setOnClickListener(detailsListener);
         holder.bIgnore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,7 +153,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
                 TypeManager.ConvertTo(mContext, contact, oldType, newType);
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
                 dataSenderAsync.run();
-                ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
+                ArrayList<LSContact> allUntaggedContacts = (ArrayList<LSContact>) LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
                 setList(allUntaggedContacts);
                 Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
             }
@@ -215,6 +213,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
         TextView numberDetailTextView;
         Button bIgnore;
         Button bSales;
+        public Button bContactCallsdetails;
     }
 
     /*

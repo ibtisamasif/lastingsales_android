@@ -69,14 +69,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-        try {
-            JSONObject props = new JSONObject();
-            props.put("Logged in", true);
-            mixpanel.track("Notes - Activity Opened", props);
-        } catch (JSONException e) {
-            Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-        }
-
+        mixpanel.track("Notes - Activity Opened");
         Bundle bundle = getIntent().getExtras();
         Long noteIdLong = 0l;
 
@@ -137,13 +130,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
                 }
                 String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                try {
-                    JSONObject props = new JSONObject();
-                    props.put("Logged in", true);
-                    mixpanel.track("Notes - Created", props);
-                } catch (JSONException e) {
-                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-                }
+                mixpanel.track("Notes - Created");
             }
         });
         bCancel.setOnClickListener(new View.OnClickListener() {
@@ -152,13 +139,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
                 finish();
                 String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                try {
-                    JSONObject props = new JSONObject();
-                    props.put("Logged in", true);
-                    mixpanel.track("Notes - Activity Canceled", props);
-                } catch (JSONException e) {
-                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-                }
+                mixpanel.track("Notes - Activity Canceled");
             }
         });
 

@@ -12,7 +12,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +19,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
-import com.example.muzafarimran.lastingsales.fragments.BusinessContactDeleteBottomSheetDialogFragment;
+import com.example.muzafarimran.lastingsales.fragments.ColleagueContactDeleteBottomSheetDialogFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -147,10 +146,10 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
             public boolean onLongClick(View view) {
 //                deleteFlow = true;
 //                setList(LSContact.getContactsByType(contactType));
-                BusinessContactDeleteBottomSheetDialogFragment businessContactDeleteBottomSheetDialogFragment = new BusinessContactDeleteBottomSheetDialogFragment();
-                businessContactDeleteBottomSheetDialogFragment.setPosition(position);
-                businessContactDeleteBottomSheetDialogFragment.show(getSupportFragmentManager(), businessContactDeleteBottomSheetDialogFragment.getTag());
-                businessContactDeleteBottomSheetDialogFragment.setBusinessContactsAdapter(BusinessContactsAdapter.this);
+                ColleagueContactDeleteBottomSheetDialogFragment colleagueContactDeleteBottomSheetDialogFragment = new ColleagueContactDeleteBottomSheetDialogFragment();
+                colleagueContactDeleteBottomSheetDialogFragment.setPosition(position);
+                colleagueContactDeleteBottomSheetDialogFragment.show(getSupportFragmentManager(), colleagueContactDeleteBottomSheetDialogFragment.getTag());
+                colleagueContactDeleteBottomSheetDialogFragment.setBusinessContactsAdapter(BusinessContactsAdapter.this);
 
                 return true;
             }
@@ -180,7 +179,7 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
                 Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
                 myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
                 myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
-                myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_IGNORE);
+                myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_COLLEAGUE);
                 mContext.startActivity(myIntent);
             }
         });

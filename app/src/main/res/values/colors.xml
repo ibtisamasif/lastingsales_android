@@ -23,7 +23,8 @@
     <color name="half_white2">#25ffffff</color>
     <color name="black">#000000</color>
     <color name="totem_blue">#212e48</color>
-    <color name="transpartent_black">#77000000</color>
+    <color name="transpartent_black">#76000000</color>
+    <color name="transpartent">#00000000</color>
     <color name="tag_contact_background">#ffffff</color>
     <color name="tag_contact_text_color">#333333</color>
 

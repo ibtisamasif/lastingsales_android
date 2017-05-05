@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.muzafarimran.lastingsales">
 
+    <!--<uses-permission android:name="android.permission.READ_SYNC_STATS" />-->
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -21,7 +23,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+    <uses-permission
+        android:name="android.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
     <!--<uses-permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" />-->
 
     <application
@@ -104,8 +108,7 @@
         <activity
             android:name=".activities.AddEditNoteActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base"
-            />
+            android:theme="@style/AppTheme.Base" />
         <activity
             android:name=".activities.AlertDialogActivity"
             android:screenOrientation="portrait"
@@ -113,7 +116,7 @@
         <activity
             android:name=".activities.LogInActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
 
         <activity android:name=".activities.ContactDetailsActivity" />
@@ -150,6 +153,15 @@
         </activity>
 
         <activity
+            android:name=".calendar.CalenderActivity"
+            android:label="Google Calendar API Android Quickstart">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
             android:name=".activities.NavigationDrawerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
@@ -161,18 +173,25 @@
         </activity>
 
         <activity
+            android:name=".activities.TagNotificationDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyTransparentTheme">
+        </activity>
+
+        <activity
             android:name=".activities.FireBaseMainActivity"
             android:label="@string/title_main_activity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
         <activity
             android:name=".activities.FrameActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activities.TagNumberAndAddFollowupActivity"
             android:screenOrientation="portrait"
@@ -197,12 +216,12 @@
         </service>
 
         <!--<service android:name=".chatheadbubble.BubblesService"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="false" />-->
+        <!--android:enabled="true"-->
+        <!--android:exported="false" />-->
 
         <!--<service-->
-            <!--android:name=".service.CallRecordService"-->
-            <!--android:exported="true"/>-->
+        <!--android:name=".service.CallRecordService"-->
+        <!--android:exported="true"/>-->
 
     </application>
 

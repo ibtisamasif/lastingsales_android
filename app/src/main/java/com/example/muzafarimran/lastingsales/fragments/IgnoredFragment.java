@@ -15,7 +15,7 @@ import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.PersonalContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.ContactsAdapter;
+import com.example.muzafarimran.lastingsales.adapters.IgnoredAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -30,7 +30,7 @@ import de.halfbit.tinybus.TinyBus;
 public class IgnoredFragment extends TabFragment {
     private static final String TAG = "PersonalContactFragment";
     ListView listView = null;
-    ContactsAdapter contactsAdapter;
+    IgnoredAdapter ignoredAdapter;
     EditText inputSearch;
     MaterialSearchView searchView;
     private TinyBus bus;
@@ -46,8 +46,8 @@ public class IgnoredFragment extends TabFragment {
     }
 
     public void setList(List<LSContact> contacts) {
-        if (contactsAdapter != null) {
-            contactsAdapter.setList(contacts);
+        if (ignoredAdapter != null) {
+            ignoredAdapter.setList(contacts);
         }
     }
 
@@ -55,7 +55,7 @@ public class IgnoredFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        contactsAdapter = new ContactsAdapter(getContext(), null, LSContact.CONTACT_TYPE_IGNORED); // TODO remove this line as it populates all contacts have inprogress status including ignored,business
+        ignoredAdapter = new IgnoredAdapter(getContext(), null, LSContact.CONTACT_TYPE_IGNORED); // TODO remove this line as it populates all contacts have inprogress status including ignored,business
         setHasOptionsMenu(true);
     }
 
@@ -83,9 +83,9 @@ public class IgnoredFragment extends TabFragment {
 
     @Subscribe
     public void onBackPressedEventModel(BackPressedEventModel event) {
-        if (!event.backPressHandled && contactsAdapter.isDeleteFlow()) {
+        if (!event.backPressHandled && ignoredAdapter.isDeleteFlow()) {
             event.backPressHandled = true;
-            contactsAdapter.setDeleteFlow(false);
+            ignoredAdapter.setDeleteFlow(false);
         }
     }
 
@@ -102,7 +102,7 @@ public class IgnoredFragment extends TabFragment {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
         listView = (ListView) view.findViewById(R.id.personal_contacts_list);
         inputSearch = (EditText) (getActivity().findViewById(R.id.search_box));
-        listView.setAdapter(contactsAdapter);
+        listView.setAdapter(ignoredAdapter);
         errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
         errorScreenView.setErrorImage(R.drawable.delight_home);
         errorScreenView.setErrorText(this.getResources().getString(R.string.em_ignored_delight));
@@ -111,13 +111,13 @@ public class IgnoredFragment extends TabFragment {
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                contactsAdapter.getFilter().filter(query);
+                ignoredAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                contactsAdapter.getFilter().filter(newText);
+                ignoredAdapter.getFilter().filter(newText);
                 return false;
             }
         });

@@ -18,9 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,14 +77,14 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
     private Uri uriContact;
     private String contactID;
     private EditText etContactName;
-    private EditText etContactPhone;
+    private TextView tvContactPhone;
     private Button bSave;
-    private ImageView ibAddNote;
-    private ImageView ibAddFollowup;
-    private RelativeLayout addNoteActionLayout;
-    private RelativeLayout addFollowupActionLayout;
-    private LinearLayout noteContainerLayout;
-    private LinearLayout followupContainerLayout;
+//    private ImageView ibAddNote;
+//    private ImageView ibAddFollowup;
+//    private RelativeLayout addNoteActionLayout;
+//    private RelativeLayout addFollowupActionLayout;
+//    private LinearLayout noteContainerLayout;
+//    private LinearLayout followupContainerLayout;
     private LinearLayout llContactDetailsFollowupScreen;
     private LinearLayout llContactType;
     private LayoutInflater inflater;
@@ -111,13 +109,13 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         year = month = day = hour = minute = 0;
         tvTitleFollowupPopup = (TextView) findViewById(R.id.tvTitleFollowupPopup);
         etContactName = (EditText) findViewById(R.id.etNameFollowupPopup);
-        etContactPhone = (EditText) findViewById(R.id.etNumberFollowupPopup);
-        ibAddNote = (ImageView) findViewById(R.id.ivAddNote);
-        ibAddFollowup = (ImageView) findViewById(R.id.ivAddFollowup);
-        addNoteActionLayout = (RelativeLayout) findViewById(R.id.addNoteActionLayout);
-        addFollowupActionLayout = (RelativeLayout) findViewById(R.id.addFollowupActionLayout);
-        noteContainerLayout = (LinearLayout) findViewById(R.id.noteContainerLayout);
-        followupContainerLayout = (LinearLayout) findViewById(R.id.followupContainer);
+        tvContactPhone = (TextView) findViewById(R.id.etNumberFollowupPopup);
+//        ibAddNote = (ImageView) findViewById(R.id.ivAddNote);
+//        ibAddFollowup = (ImageView) findViewById(R.id.ivAddFollowup);
+//        addNoteActionLayout = (RelativeLayout) findViewById(R.id.addNoteActionLayout);
+//        addFollowupActionLayout = (RelativeLayout) findViewById(R.id.addFollowupActionLayout);
+//        noteContainerLayout = (LinearLayout) findViewById(R.id.noteContainerLayout);
+//        followupContainerLayout = (LinearLayout) findViewById(R.id.followupContainer);
         Button bCancel = (Button) findViewById(R.id.bCancelFollowupPopup);
         bSave = (Button) findViewById(R.id.bSaveFollowupPopup);
         bSalesRadio = (Button) findViewById(R.id.bSalesRadio);
@@ -166,7 +164,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
             } else {
                 etContactName.setText("UNKNOWN");
             }
-            etContactPhone.setText(selectedContact.getPhoneOne());
+            tvContactPhone.setText(selectedContact.getPhoneOne());
         }
 //        if launch mode is tag untagged contact then the contact is already temporarily saved but with
 //        untagged type. and contact id and selected new contact tupe is passed to this activity
@@ -182,7 +180,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
             selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
             preSelectedContactType = selectedContactType;
             etContactName.setText(selectedContact.getContactName());
-            etContactPhone.setText(selectedContact.getPhoneOne());
+            tvContactPhone.setText(selectedContact.getPhoneOne());
         }
 //        if launch mode is tag number then number is gotten out of bundle so it can be searched in
 //        phonebook and the number can be populated in the editText Field
@@ -196,7 +194,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
             phoneNumberFromLastActivity = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
             String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(phoneNumberFromLastActivity);
             String nameFromPhoneBook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), internationalNumber);
-            etContactPhone.setText(internationalNumber);
+            tvContactPhone.setText(internationalNumber);
             if (nameFromPhoneBook != null) {
                 etContactName.setText(nameFromPhoneBook);
             }
@@ -207,7 +205,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
             tvTitleFollowupPopup.setText(TITLE_EDIT_FOLLOWUP);
             llContactDetailsFollowupScreen.setVisibility(View.GONE);
-            addNoteActionLayout.setVisibility(View.GONE);
+//            addNoteActionLayout.setVisibility(View.GONE);
             editingMode = true;
             String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
             if (id != null && !id.equals("")) {
@@ -219,7 +217,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
             }
             selectedContact = LSContact.findById(LSContact.class, contactIdLong);
             selectedFollowup = TempFollowUp.findById(TempFollowUp.class, followupIdLong);
-            showAddFollowupLayout();
+//            showAddFollowupLayout();
             setDateTimeFromMiliseconds(selectedFollowup.getDateTimeForFollowup());
             if (etFollowupTitleText != null) {
                 etFollowupTitleText.setText(selectedFollowup.getTitle());
@@ -227,14 +225,14 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_FOLLOWUP)) {
             tvTitleFollowupPopup.setText(TITLE_ADD_FOLLOWUP);
             llContactDetailsFollowupScreen.setVisibility(View.GONE);
-            addNoteActionLayout.setVisibility(View.GONE);
+//            addNoteActionLayout.setVisibility(View.GONE);
             editingMode = false;
             String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
             if (id != null && !id.equals("")) {
                 contactIdLong = Long.parseLong(id);
             }
             selectedContact = LSContact.findById(LSContact.class, contactIdLong);
-            showAddFollowupLayout();
+//            showAddFollowupLayout();
         } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
             llContactType.setVisibility(View.GONE);
             tvTitleFollowupPopup.setText(TITLE_ADD_NEW_CONTACT);
@@ -261,17 +259,17 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
             public void onClick(View view) {
                 if (launchMode.equals(LAUNCH_MODE_IMPORT_CONTACT)) {
                     etContactName.setError(null);
-                    etContactPhone.setError(null);
+                    tvContactPhone.setError(null);
                     boolean validation = true;
                     String contactName = etContactName.getText().toString();
-                    String contactPhone = etContactPhone.getText().toString();
+                    String contactPhone = tvContactPhone.getText().toString();
                     if (contactName.equals("") || contactName.length() < 3) {
                         validation = false;
                         etContactName.setError("Invalid Name!");
                     }
                     if (contactPhone.equals("") || contactPhone.length() < 3) {
                         validation = false;
-                        etContactPhone.setError("Invalid Number!");
+                        tvContactPhone.setError("Invalid Number!");
                     }
                     if (validation && !editingMode) {
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
@@ -364,17 +362,17 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
                     etContactName.setError(null);
-                    etContactPhone.setError(null);
+                    tvContactPhone.setError(null);
                     boolean validation = true;
                     String contactName = etContactName.getText().toString();
-                    String contactPhone = etContactPhone.getText().toString();
+                    String contactPhone = tvContactPhone.getText().toString();
                     if (contactName.equals("") || contactName.length() < 3) {
                         validation = false;
                         etContactName.setError("Invalid Name!");
                     }
                     if (contactPhone.equals("") || contactPhone.length() < 3) {
                         validation = false;
-                        etContactPhone.setError("Invalid Number!");
+                        tvContactPhone.setError("Invalid Number!");
                     }
                     if (validation && !editingMode) {
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
@@ -466,17 +464,17 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
                     etContactName.setError(null);
-                    etContactPhone.setError(null);
+                    tvContactPhone.setError(null);
                     boolean validation = true;
                     String contactName = etContactName.getText().toString();
-                    String contactPhone = etContactPhone.getText().toString();
+                    String contactPhone = tvContactPhone.getText().toString();
                     if (contactName.equals("") || contactName.length() < 3) {
                         validation = false;
                         etContactName.setError("Invalid Name!");
                     }
                     if (contactPhone.equals("") || contactPhone.length() < 3) {
                         validation = false;
-                        etContactPhone.setError("Invalid Number!");
+                        tvContactPhone.setError("Invalid Number!");
                     }
                     if (validation && !editingMode) {
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
@@ -571,17 +569,17 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
                     etContactName.setError(null);
-                    etContactPhone.setError(null);
+                    tvContactPhone.setError(null);
                     boolean validation = true;
                     String contactName = etContactName.getText().toString();
-                    String contactPhone = etContactPhone.getText().toString();
+                    String contactPhone = tvContactPhone.getText().toString();
                     if (contactName.equals("") || contactName.length() < 3) {
                         validation = false;
                         etContactName.setError("Invalid Name!");
                     }
                     if (contactPhone.equals("") || contactPhone.length() < 3) {
                         validation = false;
-                        etContactPhone.setError("Invalid Number!");
+                        tvContactPhone.setError("Invalid Number!");
                     }
                     if (validation && editingMode) {
                         //modified by ibtisam
@@ -624,17 +622,17 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_TAG_UNTAGGED_CONTACT)) {
                     etContactName.setError(null);
-                    etContactPhone.setError(null);
+                    tvContactPhone.setError(null);
                     boolean validation = true;
                     String contactName = etContactName.getText().toString();
-                    String contactPhone = etContactPhone.getText().toString();
+                    String contactPhone = tvContactPhone.getText().toString();
                     if (contactName.equals("") || contactName.length() < 3) {
                         validation = false;
                         etContactName.setError("Invalid Name!");
                     }
                     if (contactPhone.equals("") || contactPhone.length() < 3) {
                         validation = false;
-                        etContactPhone.setError("Invalid Number!");
+                        tvContactPhone.setError("Invalid Number!");
                     }
                     if (validation && editingMode) {
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
@@ -746,18 +744,18 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
                 }
             }
         });
-        ibAddNote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAddNoteLayout();
-            }
-        });
-        ibAddFollowup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAddFollowupLayout();
-            }
-        });
+//        ibAddNote.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showAddNoteLayout();
+//            }
+//        });
+//        ibAddFollowup.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showAddFollowupLayout();
+//            }
+//        });
         bSalesRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -772,94 +770,94 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         });
     }
 
-    private void showAddNoteLayout() {
-        scaleView(addNoteActionLayout, 1f, 0f);
-        addNoteActionLayout.setVisibility(View.GONE);
-        LinearLayout addNoteLayout = (LinearLayout) inflater.inflate(R.layout.section_note_body_layout_followup_screen, noteContainerLayout, false);
-        scaleView(addNoteLayout, 0f, 1f);
-        noteContainerLayout.addView(addNoteLayout);
-        etNoteText = (EditText) findViewById(R.id.etNoteTextFollowupPopup);
-    }
-
-    private void showAddFollowupLayout() {
-        addFollowupActionLayout.setVisibility(View.GONE);
-        LinearLayout addFollowupLayout = (LinearLayout) inflater.inflate(R.layout.section_followup_body_followup_screen, followupContainerLayout, false);
-        followupContainerLayout.addView(addFollowupLayout);
-        bOneWeek = (Button) findViewById(R.id.bOneWeekFollowupPopup);
-        bThreeDays = (Button) findViewById(R.id.bThreeDaysFollowupPopup);
-        bTomorrow = (Button) findViewById(R.id.bTomorrowFollowupPopup);
-        bDate = (Button) findViewById(R.id.bDateFollowupPopup);
-        bTime = (Button) findViewById(R.id.bTimeFollowupPopup);
-        etFollowupTitleText = (EditText) findViewById(R.id.etTitleTextFollowupPopup);
-        Calendar now = Calendar.getInstance();
-
-        if (bTomorrow != null) {
-            bTomorrow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Calendar now = Calendar.getInstance();
-                    now.add(Calendar.DAY_OF_MONTH, 1);
-                    setDateTimeFromMiliseconds(now.getTimeInMillis());
-                    day = now.get(Calendar.DAY_OF_MONTH);
-                    month = (now.get(Calendar.MONTH));
-                    year = now.get(Calendar.YEAR);
-                }
-            });
-        }
-        if (bThreeDays != null) {
-            bThreeDays.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Calendar now = Calendar.getInstance();
-                    now.add(Calendar.DAY_OF_MONTH, 3);
-                    setDateTimeFromMiliseconds(now.getTimeInMillis());
-                    day = now.get(Calendar.DAY_OF_MONTH);
-                    month = (now.get(Calendar.MONTH));
-                    year = now.get(Calendar.YEAR);
-                }
-            });
-        }
-        if (bOneWeek != null) {
-            bOneWeek.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Calendar now = Calendar.getInstance();
-                    now.add(Calendar.DAY_OF_MONTH, 7);
-                    setDateTimeFromMiliseconds(now.getTimeInMillis());
-                    day = now.get(Calendar.DAY_OF_MONTH);
-                    month = (now.get(Calendar.MONTH));
-                    year = now.get(Calendar.YEAR);
-                }
-            });
-        }
-        day = now.get(Calendar.DAY_OF_MONTH);
-        month = (now.get(Calendar.MONTH));
-        year = now.get(Calendar.YEAR);
-        hour = now.get(Calendar.HOUR_OF_DAY);
-        minute = now.get(Calendar.MINUTE);
-        setDateTimeFromMiliseconds(now.getTimeInMillis());
-        bDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar now = Calendar.getInstance();
-                DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(TagNumberAndAddFollowupActivity.this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.setCancelable(false);
-                datePickerDialog.setTitle("Select Date for Followup");
-                datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
-            }
-        });
-        bTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar now = Calendar.getInstance();
-                TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(TagNumberAndAddFollowupActivity.this, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);
-                timePickerDialog.setCancelable(false);
-                timePickerDialog.setTitle("Select Time for Followup");
-                timePickerDialog.setMinTime(now.HOUR_OF_DAY, now.MINUTE, now.SECOND);
-                timePickerDialog.show(getFragmentManager(), "Timepickerdialog");
-            }
-        });
-    }
+//    private void showAddNoteLayout() {
+//        scaleView(addNoteActionLayout, 1f, 0f);
+//        addNoteActionLayout.setVisibility(View.GONE);
+//        LinearLayout addNoteLayout = (LinearLayout) inflater.inflate(R.layout.section_note_body_layout_followup_screen, noteContainerLayout, false);
+//        scaleView(addNoteLayout, 0f, 1f);
+//        noteContainerLayout.addView(addNoteLayout);
+//        etNoteText = (EditText) findViewById(R.id.etNoteTextFollowupPopup);
+//    }
+//
+//    private void showAddFollowupLayout() {
+//        addFollowupActionLayout.setVisibility(View.GONE);
+//        LinearLayout addFollowupLayout = (LinearLayout) inflater.inflate(R.layout.section_followup_body_followup_screen, followupContainerLayout, false);
+//        followupContainerLayout.addView(addFollowupLayout);
+//        bOneWeek = (Button) findViewById(R.id.bOneWeekFollowupPopup);
+//        bThreeDays = (Button) findViewById(R.id.bThreeDaysFollowupPopup);
+//        bTomorrow = (Button) findViewById(R.id.bTomorrowFollowupPopup);
+//        bDate = (Button) findViewById(R.id.bDateFollowupPopup);
+//        bTime = (Button) findViewById(R.id.bTimeFollowupPopup);
+//        etFollowupTitleText = (EditText) findViewById(R.id.etTitleTextFollowupPopup);
+//        Calendar now = Calendar.getInstance();
+//
+//        if (bTomorrow != null) {
+//            bTomorrow.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Calendar now = Calendar.getInstance();
+//                    now.add(Calendar.DAY_OF_MONTH, 1);
+//                    setDateTimeFromMiliseconds(now.getTimeInMillis());
+//                    day = now.get(Calendar.DAY_OF_MONTH);
+//                    month = (now.get(Calendar.MONTH));
+//                    year = now.get(Calendar.YEAR);
+//                }
+//            });
+//        }
+//        if (bThreeDays != null) {
+//            bThreeDays.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Calendar now = Calendar.getInstance();
+//                    now.add(Calendar.DAY_OF_MONTH, 3);
+//                    setDateTimeFromMiliseconds(now.getTimeInMillis());
+//                    day = now.get(Calendar.DAY_OF_MONTH);
+//                    month = (now.get(Calendar.MONTH));
+//                    year = now.get(Calendar.YEAR);
+//                }
+//            });
+//        }
+//        if (bOneWeek != null) {
+//            bOneWeek.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Calendar now = Calendar.getInstance();
+//                    now.add(Calendar.DAY_OF_MONTH, 7);
+//                    setDateTimeFromMiliseconds(now.getTimeInMillis());
+//                    day = now.get(Calendar.DAY_OF_MONTH);
+//                    month = (now.get(Calendar.MONTH));
+//                    year = now.get(Calendar.YEAR);
+//                }
+//            });
+//        }
+//        day = now.get(Calendar.DAY_OF_MONTH);
+//        month = (now.get(Calendar.MONTH));
+//        year = now.get(Calendar.YEAR);
+//        hour = now.get(Calendar.HOUR_OF_DAY);
+//        minute = now.get(Calendar.MINUTE);
+//        setDateTimeFromMiliseconds(now.getTimeInMillis());
+//        bDate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Calendar now = Calendar.getInstance();
+//                DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(TagNumberAndAddFollowupActivity.this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+//                datePickerDialog.setCancelable(false);
+//                datePickerDialog.setTitle("Select Date for Followup");
+//                datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
+//            }
+//        });
+//        bTime.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Calendar now = Calendar.getInstance();
+//                TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(TagNumberAndAddFollowupActivity.this, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);
+//                timePickerDialog.setCancelable(false);
+//                timePickerDialog.setTitle("Select Time for Followup");
+//                timePickerDialog.setMinTime(now.HOUR_OF_DAY, now.MINUTE, now.SECOND);
+//                timePickerDialog.show(getFragmentManager(), "Timepickerdialog");
+//            }
+//        });
+//    }
 
     private void setDateTimeFromMiliseconds(Long miliSeconds) {
         Calendar now = Calendar.getInstance();
@@ -916,10 +914,10 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
             }
 //            retrieveContactPhoto();
             etContactName.setText(name);
-            etContactPhone.setText(number);
+            tvContactPhone.setText(number);
 //            etContactEmail.setText(email);
             if (PhoneNumberAndCallUtils.isNumeric(name)) {
-                etContactPhone.setText(number);
+                tvContactPhone.setText(number);
                 etContactName.setText("");
             }
         }

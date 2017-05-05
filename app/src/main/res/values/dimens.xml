@@ -1,12 +1,14 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_notification_popup">1dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_text_margin_left">15dp</dimen>
     <dimen name="normalMargin">10dp</dimen>
     <!--UIOCALL popup stuff-->
-    <dimen name="corners_radius_size">1dp</dimen>
+    <dimen name="corners_radius_size">16dp</dimen>
+    <dimen name="corners_radius_size_textview_bg">2dp</dimen>
     <dimen name="corners_radius_size_edittext_bg">0dp</dimen>
     <dimen name="corners_radius_size_promo_button">3dp</dimen>
 

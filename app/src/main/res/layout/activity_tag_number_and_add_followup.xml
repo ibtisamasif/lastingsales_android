@@ -1,38 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_tag_number"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transpartent_black"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="650dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_gravity="center"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp"
         android:animateLayoutChanges="true"
         android:background="@drawable/shadow_borders3_white_bg"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvTitleFollowupPopup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_rounded_corners_accent_color"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="@string/add_new_contact"
-            android:textColor="@color/white"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rounded_corners_accent_color"
+                android:animateLayoutChanges="true"
+                android:orientation="horizontal"
+                android:weightSum="0">
 
+                <TextView
+                    android:id="@+id/tvTitleFollowupPopup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:gravity="left"
+                    android:padding="12dp"
+                    android:text="Save Contact"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/bClose"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingRight="12dp"
+                    android:layout_weight="9"
+                    android:background="@color/blueDark"
+                    android:src="@drawable/ic_close_white"/>
+
+            </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -41,82 +58,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
 
                 <LinearLayout
+                    android:id="@+id/llContactDetailsAddContactScreen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
-                    android:orientation="vertical"
-                    android:id="@+id/llContactDetailsAddContactScreen"
-                    >
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/name"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            />
-
-                        <EditText
-                            android:id="@+id/etNameFollowupPopup"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/shape_borders_rounded_corners_primary_color_white_fill"
-                            android:inputType="textPersonName"
-                            android:padding="8dp"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            tools:text="David Abraham"
-                            />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:orientation="horizontal"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/number"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            />
-
-                        <EditText
-                            android:id="@+id/etNumberFollowupPopup"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/shape_borders_rounded_corners_primary_color_white_fill"
-                            android:inputType="phone"
-                            android:padding="8dp"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            tools:text="+92 336 1124888"
-                            />
-                    </LinearLayout>
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/llContactType"
@@ -125,8 +75,7 @@
                         android:layout_margin="8dp"
                         android:layout_marginBottom="30dp"
                         android:layout_weight="0.13"
-                        android:orientation="horizontal"
-                        >
+                        android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/bCollegueRadio"
@@ -142,10 +91,9 @@
                             android:paddingTop="5dp"
                             android:radius="5dip"
                             android:tag="sales_radio"
-                            android:text="COLLEGUE"
+                            android:text="COLLEAGUE"
                             android:textColor="@color/black"
-                            android:textSize="13sp"
-                            />
+                            android:textSize="13sp" />
 
                         <Button
                             android:id="@+id/bSalesRadio"
@@ -161,117 +109,176 @@
                             android:paddingTop="5dp"
                             android:radius="5dip"
                             android:tag="collegue_radio"
-                            android:text="SALES"
+                            android:text="LEAD"
                             android:textColor="#ffffff"
-                            android:textSize="13sp"
-                            />
+                            android:textSize="13sp" />
 
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_margin="16dp"
-                        android:background="@color/colorAccent"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/number"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/etNumberFollowupPopup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_weight="1"
+
+                            android:inputType="phone"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            tools:text="+92 301 4775234" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/name"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/etNameFollowupPopup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_borders_rounded_corners_primary_color_white_fill"
+                            android:inputType="textPersonName"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            tools:text="David Abraham" />
+                    </LinearLayout>
+
+
+
+
+                    <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:layout_margin="16dp"-->
+                    <!--android:background="@color/colorAccent"-->
+                    <!--android:orientation="vertical">-->
+                    <!--</LinearLayout>-->
 
                 </LinearLayout>
                 <!--contact Details  end here-->
-                <RelativeLayout
-                    android:id="@+id/addNoteActionLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="20dp"
-                    android:orientation="horizontal"
-                    >
+                <!--<RelativeLayout-->
+                <!--android:id="@+id/addNoteActionLayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--&gt;-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:text="@string/add_note"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        />
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:text="@string/add_note"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="20sp"-->
+                <!--/>-->
 
-                    <ImageView
-                        android:id="@+id/ivAddNote"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity=""
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/ic_plus_xxl"
-                        />
+                <!--<ImageView-->
+                <!--android:id="@+id/ivAddNote"-->
+                <!--android:layout_width="35dp"-->
+                <!--android:layout_height="35dp"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_gravity=""-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:src="@drawable/ic_plus_xxl"-->
+                <!--/>-->
 
-                </RelativeLayout>
+                <!--</RelativeLayout>-->
 
-                <LinearLayout
-                    android:id="@+id/noteContainerLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:animateLayoutChanges="true"
-                    android:orientation="horizontal"
-                    >
+                <!--<LinearLayout-->
+                <!--android:id="@+id/noteContainerLayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:animateLayoutChanges="true"-->
+                <!--android:orientation="horizontal"-->
+                <!--&gt;-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
 
 
-                <RelativeLayout
-                    android:id="@+id/addFollowupActionLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:orientation="horizontal"
-                    >
+                <!--<RelativeLayout-->
+                <!--android:id="@+id/addFollowupActionLayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--&gt;-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:text="@string/add_followup"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        />
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:text="@string/add_followup"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="20sp"-->
+                <!--/>-->
 
-                    <ImageView
-                        android:id="@+id/ivAddFollowup"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity=""
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/ic_plus_xxl"
-                        />
+                <!--<ImageView-->
+                <!--android:id="@+id/ivAddFollowup"-->
+                <!--android:layout_width="35dp"-->
+                <!--android:layout_height="35dp"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_gravity=""-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:src="@drawable/ic_plus_xxl"-->
+                <!--/>-->
 
-                </RelativeLayout>
+                <!--</RelativeLayout>-->
 
-                <LinearLayout
-                    android:id="@+id/followupContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:animateLayoutChanges="true"
-                    android:orientation="vertical"
-                    >
+                <!--<LinearLayout-->
+                <!--android:id="@+id/followupContainer"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="8dp"-->
+                <!--android:animateLayoutChanges="true"-->
+                <!--android:orientation="vertical"-->
+                <!--&gt;-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="2"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/bCancelFollowupPopup"
@@ -281,13 +288,12 @@
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="8dp"
                         android:layout_weight="1"
-                        android:background="@drawable/btn_secondary"
+                        android:background="@drawable/btn_primary2"
                         android:padding="0dp"
                         android:radius="5dip"
-                        android:text="@string/cancel"
+                        android:text="IGNORE"
                         android:textColor="#ffffff"
-                        android:textSize="15sp"
-                        />
+                        android:textSize="15sp" />
 
                     <Button
                         android:id="@+id/bSaveFollowupPopup"
@@ -297,13 +303,12 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="4dp"
                         android:layout_weight="1"
-                        android:background="@drawable/btn_secondary"
+                        android:background="@drawable/btn_primary"
                         android:padding="0dp"
                         android:radius="5dip"
-                        android:text="@string/save"
+                        android:text="SAVE"
                         android:textColor="#ffffff"
-                        android:textSize="15sp"
-                        />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
             </LinearLayout>

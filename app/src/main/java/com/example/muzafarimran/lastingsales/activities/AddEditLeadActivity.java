@@ -56,11 +56,12 @@ public class AddEditLeadActivity extends Activity {
 
     public static final String MIXPANEL_SOURCE = "mixpanel_source";
 
-    public static final String MIXPANEL_SOURCE_FAB = "fab";
-    public static final String MIXPANEL_SOURCE_NOTIFICATION = "notification";
-    public static final String MIXPANEL_SOURCE_UNLABELED = "unlabeled";
-    public static final String MIXPANEL_SOURCE_IGNORE = "ignore";
-    public static final String MIXPANEL_SOURCE_BUSINESS = "business";
+    public static final String MIXPANEL_SOURCE_FAB = "Fab";
+    public static final String MIXPANEL_SOURCE_NOTIFICATION = "Notification";
+    public static final String MIXPANEL_SOURCE_UNLABELED = "Unlabeled";
+    public static final String MIXPANEL_SOURCE_IGNORE = "Ignored";
+    public static final String MIXPANEL_SOURCE_COLLEAGUE = "Colleague";
+
 
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
     String launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
@@ -84,7 +85,7 @@ public class AddEditLeadActivity extends Activity {
     private String contactPhone;
     private String contactName;
     private String contactEmail;
-    private String mixpanelSource = "";
+    private String mixpanelSource = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,9 +135,9 @@ public class AddEditLeadActivity extends Activity {
                 try {
                     JSONObject props = new JSONObject();
                     props.put("type", "track");
-                    mixpanel.track("Lead from notification - clicked", props);
+                    mixpanel.track("Lead From Notification - Clicked", props);
                 } catch (Exception e) {
-                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                    Log.e("mixpanel", "Unable to add properties to JSONObject", e);
                 }
             }
         } catch (Exception e) {
@@ -171,7 +172,7 @@ public class AddEditLeadActivity extends Activity {
                         Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
                         finish();
                         //Saving contact in native phonebook as well
-                        addContactInNativePhonebook(tempContact.getContactName(), tempContact.getPhoneOne());
+                        PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), tempContact.getContactName(), tempContact.getPhoneOne());
                         moveToContactDetailScreenIfNeeded(tempContact);
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
@@ -196,22 +197,18 @@ public class AddEditLeadActivity extends Activity {
                         String checkContactInLocalPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), intlNum);
                         if (checkContactInLocalPhonebook == null) {
                             //Saving contact in native phonebook as well
-                            addContactInNativePhonebook(tempContact.getContactName(), tempContact.getPhoneOne());
+                            PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), tempContact.getContactName(), tempContact.getPhoneOne());
                         }
                         finish();
                         moveToContactDetailScreenIfNeeded(tempContact);
                     }
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                 }
-                String projectToken = MixpanelConfig.projectToken;
-                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                try {
-                    JSONObject props = new JSONObject();
-                    props.put("Logged in", false);
-                    mixpanel.track("Lead from " + mixpanelSource, props);
+                if (mixpanelSource != null) {
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                    mixpanel.track("Lead From " + mixpanelSource);
                     Log.d(TAG, "mixpanelSource: " + mixpanelSource);
-                } catch (JSONException e) {
-                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
                 }
                 LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                 TinyBus bus = TinyBus.from(getApplicationContext());
@@ -242,109 +239,12 @@ public class AddEditLeadActivity extends Activity {
         });
     }
 
-    private void addContactInNativePhonebook(String name, String number) {
-        String DisplayName = name;
-        String MobileNumber = number;
-        String HomeNumber = "";
-        String WorkNumber = "";
-        String emailID = "";
-        String company = "";
-        String jobTitle = "";
-
-        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
-
-        ops.add(ContentProviderOperation.newInsert(
-                ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
-                .build());
-
-        //------------------------------------------------------ Names
-        if (DisplayName != null) {
-            ops.add(ContentProviderOperation.newInsert(
-                    ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                    .withValue(
-                            ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
-                            DisplayName).build());
-        }
-
-        //------------------------------------------------------ Mobile Number
-        if (MobileNumber != null) {
-            ops.add(ContentProviderOperation.
-                    newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, MobileNumber)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
-                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-                    .build());
-        }
-
-        //------------------------------------------------------ Home Numbers
-        if (HomeNumber != null) {
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, HomeNumber)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
-                            ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
-                    .build());
-        }
-
-        //------------------------------------------------------ Work Numbers
-        if (WorkNumber != null) {
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, WorkNumber)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
-                            ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
-                    .build());
-        }
-
-        //------------------------------------------------------ Email
-        if (emailID != null) {
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Email.DATA, emailID)
-                    .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
-                    .build());
-        }
-
-        //------------------------------------------------------ Organization
-        if (!company.equals("") && !jobTitle.equals("")) {
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, company)
-                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
-                    .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, jobTitle)
-                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
-                    .build());
-        }
-
-        // Asking the Contact provider to create a new contact
-        try {
-            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void populateCreateContactView() {
         llEmailAddress.setVisibility(View.GONE);
         tvTitleAddContact.setText(TITLE_ADD_NEW_CONTACT);
         editingMode = false;
+        selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
     }
 
     private void populateUpdateContactView(Bundle bundle) {

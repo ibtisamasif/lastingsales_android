@@ -185,7 +185,7 @@ public class LogInActivity extends AppCompatActivity {
 
                             mixpanel.track("User Logged in", props);
                         } catch (JSONException e) {
-                            Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+                            Log.e("mixpanel", "Unable to add properties to JSONObject", e);
                         }
                     }
                 } catch (JSONException e) {
