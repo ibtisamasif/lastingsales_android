@@ -29,7 +29,7 @@ public class NotificationBuilder {
         } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
             Intent intent = new Intent(ctx, TagNotificationDialogActivity.class);
             intent.putExtra(TagNotificationDialogActivity.ACTIVITY_LAUNCH_MODE, TagNotificationDialogActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
-            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
             intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
             intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""+tempContact.getId()); //backward compatibility & May be needed in future
 //            intent.putExtra(TagNotificationDialogActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_NOTIFICATION);
@@ -41,7 +41,7 @@ public class NotificationBuilder {
         } else if (tempContact == null) {
             Intent intent = new Intent(ctx, TagNotificationDialogActivity.class);
             intent.putExtra(TagNotificationDialogActivity.ACTIVITY_LAUNCH_MODE, TagNotificationDialogActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
-            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
             intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
             intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
 //            intent.putExtra(TagNotificationDialogActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_NOTIFICATION);

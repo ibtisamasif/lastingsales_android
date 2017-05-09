@@ -20,8 +20,8 @@ public class AboutActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         textViewNumber = (TextView) findViewById(R.id.textViewNumber);
-        textViewNumber.setText("03111308308");
         textViewVersion = (TextView) findViewById(R.id.textViewVersion);
+        textViewNumber.setText("03111308308");
         try {
             String currentVersionCode = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
             textViewVersion.setText(currentVersionCode);

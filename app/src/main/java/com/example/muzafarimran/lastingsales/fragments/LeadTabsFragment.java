@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
@@ -37,7 +41,6 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
     FloatingActionMenu floatingActionMenu;
     private TabLayout tabs;
     private ViewPager vpLeads;
-    private Bus mBus;
     private TinyBus bus;
 
     @Override

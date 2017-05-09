@@ -152,14 +152,14 @@
             <!--</intent-filter>-->
         </activity>
 
-        <activity
-            android:name=".calendar.CalenderActivity"
-            android:label="Google Calendar API Android Quickstart">
+        <!--<activity-->
+            <!--android:name=".calendar.CalenderActivity"-->
+            <!--android:label="Google Calendar API Android Quickstart">-->
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
-        </activity>
+        <!--</activity>-->
 
         <activity
             android:name=".activities.NavigationDrawerActivity"
@@ -175,7 +175,8 @@
         <activity
             android:name=".activities.TagNotificationDialogActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyTransparentTheme">
+            android:theme="@style/MyTransparentTheme"
+            android:launchMode="singleInstance">
         </activity>
 
         <activity

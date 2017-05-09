@@ -1,11 +1,8 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import android.app.ActionBar;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,9 +17,6 @@ import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -48,7 +42,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
     TextView tvContactName;
     EditText etContactNote;
-    Button bOk, bCancel;
+    Button bSave, bCancel;
     View view;
     LSNote selectedNote;
     LSContact selectedContact;
@@ -63,7 +57,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
         bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
         tvContactName = (TextView) findViewById(R.id.contact_name_add_note);
         etContactNote = (EditText) findViewById(R.id.contact_note_add_note);
-        bOk = (Button) findViewById(R.id.ok_add_note);
+        bSave = (Button) findViewById(R.id.ok_add_note);
         bCancel = (Button) findViewById(R.id.cancel_add_note);
 
 
@@ -100,37 +94,39 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
         }
 
-        bOk.setOnClickListener(new View.OnClickListener() {
+        bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_NOTE)) {
-                    selectedNote.setNoteText(etContactNote.getText().toString());
-                    if (selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED) || selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_EDIT_SYNCED)) {
-                        selectedNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_EDIT_NOT_SYNCED);
-                    }
-                    selectedNote.save();
-                    finish();
-                    Toast.makeText(AddEditNoteActivity.this, "Note Edited", Toast.LENGTH_SHORT).show();
-                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-                    dataSenderAsync.run();
+                if (etContactNote.getText().toString() != null) {
+                    if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_NOTE)) {
+                        selectedNote.setNoteText(etContactNote.getText().toString());
+                        if (selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED) || selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_EDIT_SYNCED)) {
+                            selectedNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_EDIT_NOT_SYNCED);
+                        }
+                        selectedNote.save();
+                        finish();
+                        Toast.makeText(AddEditNoteActivity.this, "Note Edited", Toast.LENGTH_SHORT).show();
+                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                        dataSenderAsync.run();
 
-                } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_NOTE)) {
-                    LSNote note = new LSNote();
-                    note.setContactOfNote(selectedContact);
-                    note.setNoteText(etContactNote.getText().toString());
-                    note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_NOT_SYNCED);
-                    note.save();
-                    NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
-                    TinyBus bus = TinyBus.from(getApplicationContext());
-                    bus.post(mNoteAdded);
-                    finish();
-                    Toast.makeText(getApplicationContext(), "Note Added", Toast.LENGTH_SHORT).show();
-                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-                    dataSenderAsync.run();
+                    } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_NOTE)) {
+                        LSNote note = new LSNote();
+                        note.setContactOfNote(selectedContact);
+                        note.setNoteText(etContactNote.getText().toString());
+                        note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_NOT_SYNCED);
+                        note.save();
+                        NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
+                        TinyBus bus = TinyBus.from(getApplicationContext());
+                        bus.post(mNoteAdded);
+                        finish();
+                        Toast.makeText(getApplicationContext(), "Note Added", Toast.LENGTH_SHORT).show();
+                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                        dataSenderAsync.run();
+                    }
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                    mixpanel.track("Notes - Created");
                 }
-                String projectToken = MixpanelConfig.projectToken;
-                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                mixpanel.track("Notes - Created");
             }
         });
         bCancel.setOnClickListener(new View.OnClickListener() {

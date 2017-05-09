@@ -14,8 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.calendar.CalendarHelper;
-import com.example.muzafarimran.lastingsales.calendar.CalenderActivity;
 import com.example.muzafarimran.lastingsales.calendar.MyCalendarEvent;
 import com.example.muzafarimran.lastingsales.calendar.MyDateTimeStamp;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -180,7 +178,7 @@ public class AddNewFollowUpsActivity extends Activity implements TimePickerDialo
                                 try {
 
                                     int calendarID = (int)contactIdLong;
-                                    MyCalendarEvent.setGoogleEvent(AddNewFollowUpsActivity.this, startDatetime, endDatetime, title, description, location, calendarID);
+//                                    MyCalendarEvent.setGoogleEvent(AddNewFollowUpsActivity.this, startDatetime, endDatetime, title, description, location, calendarID);
 
                                     Log.d(TAG, "ID: "+calendarID);
                                     Log.d(TAG, "Title: "+title);

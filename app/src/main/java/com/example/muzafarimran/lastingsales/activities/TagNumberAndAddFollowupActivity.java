@@ -116,7 +116,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
 //        addFollowupActionLayout = (RelativeLayout) findViewById(R.id.addFollowupActionLayout);
 //        noteContainerLayout = (LinearLayout) findViewById(R.id.noteContainerLayout);
 //        followupContainerLayout = (LinearLayout) findViewById(R.id.followupContainer);
-        Button bCancel = (Button) findViewById(R.id.bCancelFollowupPopup);
+//        Button bCancel = (Button) findViewById(R.id.bCancelFollowupPopup);
         bSave = (Button) findViewById(R.id.bSaveFollowupPopup);
         bSalesRadio = (Button) findViewById(R.id.bSalesRadio);
         bColleagueRadio = (Button) findViewById(R.id.bCollegueRadio);
@@ -248,12 +248,12 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         } else {
             selectRadioButton(LSContact.CONTACT_TYPE_SALES);
         }
-        bCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+//        bCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
+import com.google.firebase.crash.FirebaseCrash;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 
@@ -96,6 +97,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         Bundle bundle = new Bundle();
         //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+//        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
 
 
         Log.d(TAG, "onCreate: DB name: " + getDatabasePath("sugar_example").getAbsolutePath());
@@ -401,6 +403,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             sessionManager.logoutUser();
             startActivity(new Intent(this, LogInActivity.class));
             finish();
+            String projectToken = MixpanelConfig.projectToken;
+            MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
+            mixpanel.track("User Logged Out");
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

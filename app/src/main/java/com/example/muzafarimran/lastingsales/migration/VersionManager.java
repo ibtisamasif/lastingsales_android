@@ -56,6 +56,22 @@ public class VersionManager {
         }
         int version = pInfo.versionCode;
         Log.d(TAG, "func: version: " + version);
+        try {
+            Log.d(TAG, "runMigrations: MixPanel Instantiated");
+            String projectToken = MixpanelConfig.projectToken;
+            MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
+            mixpanel.identify(sessionManager.getKeyLoginId()); //user_id
+            mixpanel.getPeople().identify(sessionManager.getKeyLoginId());
+
+            JSONObject props = new JSONObject();
+
+            props.put("$first_name", "" + sessionManager.getKeyLoginFirstName());
+            props.put("$last_name", "" + sessionManager.getKeyLoginLastName());
+            props.put("activated", "yes");
+            mixpanel.getPeople().set(props);
+        } catch (JSONException e) {
+            Log.e("mixpanel", "Unable to add properties to JSONObject", e);
+        }
         // no return should be out of IF ELSE condition ever :: application might consider migrations successful otherwise
         if (version == 7) {
             sessionManager.storeVersionCodeNow();
@@ -237,6 +253,7 @@ public class VersionManager {
                                 Map<String, String> params = new HashMap<String, String>();
                                 return params;
                             }
+
                             @Override
                             public Map<String, String> getHeaders() throws AuthFailureError {
                                 Map<String, String> params = new HashMap<String, String>();
@@ -270,8 +287,8 @@ public class VersionManager {
 
                         JSONObject props = new JSONObject();
 
-                        props.put("$first_name", ""+sessionManager.getKeyLoginFirstName());
-                        props.put("$last_name", ""+sessionManager.getKeyLoginLastName());
+                        props.put("$first_name", "" + sessionManager.getKeyLoginFirstName());
+                        props.put("$last_name", "" + sessionManager.getKeyLoginLastName());
                         props.put("activated", "yes");
                         mixpanel.getPeople().set(props);
 
@@ -296,7 +313,7 @@ public class VersionManager {
             } catch (Exception e) {
                 return false;
             }
-        }  else if (version == 16) {
+        } else if (version == 16) {
             try {
                 sessionManager.storeVersionCodeNow();
                 Log.d(TAG, "func: Running Script for Mixpanel");
@@ -310,8 +327,8 @@ public class VersionManager {
 
                         JSONObject props = new JSONObject();
 
-                        props.put("$first_name", ""+sessionManager.getKeyLoginFirstName());
-                        props.put("$last_name", ""+sessionManager.getKeyLoginLastName());
+                        props.put("$first_name", "" + sessionManager.getKeyLoginFirstName());
+                        props.put("$last_name", "" + sessionManager.getKeyLoginLastName());
                         props.put("activated", "yes");
                         mixpanel.getPeople().set(props);
                     } catch (JSONException e) {
@@ -334,7 +351,7 @@ public class VersionManager {
             } catch (Exception e) {
                 return false;
             }
-        }else {
+        } else {
             return true;
         }
     }

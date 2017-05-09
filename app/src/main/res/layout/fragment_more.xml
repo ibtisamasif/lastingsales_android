@@ -162,30 +162,30 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightGray"
-            />
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="@color/lightGray"-->
+            <!--/>-->
 
-        <LinearLayout
-            android:id="@+id/llLogOutMoreScreen"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:orientation="horizontal"
-            android:background="@drawable/selector_layout_click_gray_bg"
-            >
+        <!--<LinearLayout-->
+            <!--android:id="@+id/llLogOutMoreScreen"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="45dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:background="@drawable/selector_layout_click_gray_bg"-->
+            <!--&gt;-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/list_text_margin_left"
-                android:text="Log Out"
-                android:textSize="12dp"
-                />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="@dimen/list_text_margin_left"-->
+                <!--android:text="Log Out"-->
+                <!--android:textSize="12dp"-->
+                <!--/>-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
 
     </LinearLayout>

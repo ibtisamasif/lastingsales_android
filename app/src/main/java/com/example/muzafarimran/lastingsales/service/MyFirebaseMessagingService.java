@@ -193,7 +193,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                     contact.save();
                     String newType = contact.getContactType();
-                    TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType); //TODO no functionality in portal yet. Test it later.
+                    TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType);
                     Log.e(TAG, "Put From Local DB: " + contact.getContactName());
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());

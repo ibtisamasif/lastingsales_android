@@ -18,7 +18,7 @@ import com.example.muzafarimran.lastingsales.activities.NotesActivity;
 //Fragment agent Profile
 public class MoreFragment extends TabFragment {
 
-    private LinearLayout llFollowUp, llNotes,llAbout, llLogOut;
+    private LinearLayout llFollowUp, llNotes,llAbout;
     SessionManager sessionManager;
 
 
@@ -34,7 +34,7 @@ public class MoreFragment extends TabFragment {
         llFollowUp = (LinearLayout) view.findViewById(R.id.llFollowUpsMoreScreen);
         llNotes = (LinearLayout) view.findViewById(R.id.llNotesMoreFragment);
         llAbout = (LinearLayout) view.findViewById(R.id.llAboutMoreFragment);
-        llLogOut = (LinearLayout) view.findViewById(R.id.llLogOutMoreScreen);
+//        llLogOut = (LinearLayout) view.findViewById(R.id.llLogOutMoreScreen);
         sessionManager = new SessionManager(getContext());
         setOnClickListeners();
         setHasOptionsMenu(true);
@@ -60,14 +60,14 @@ public class MoreFragment extends TabFragment {
                 startActivity(new Intent(getContext(), AboutActivity.class));
             }
         });
-        llLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                sessionManager.logoutUser();
-//                startActivity(new Intent(getContext(), LogInActivity.class));
-//                getActivity().finish();
-            }
-        });
+//        llLogOut.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                sessionManager.logoutUser();
+////                startActivity(new Intent(getContext(), LogInActivity.class));
+////                getActivity().finish();
+//            }
+//        });
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
@@ -33,6 +34,7 @@ public abstract class CallReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("TheCallLog", "onReceive: Called");
         VersionManager versionManager = new VersionManager(context);
         if(!versionManager.runMigrations()){
             // if migration has failed
