@@ -53,7 +53,11 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     Log.d(TAG, "CallLogFunc: Cursor is at First Now");
                     showNotification = true;
                 }
-                String callId = managedCursor.getString(id); // TODO crash here if call log is empty since exception is handled so only execution is disturbed
+                Log.d(TAG, "CallLogFunc: Index: "+managedCursor.getPosition());
+                if(managedCursor.getPosition() == -1){
+                    return;
+                }
+                String callId = managedCursor.getString(id);
                 String callNumber = managedCursor.getString(numbers);
                 String callName = managedCursor.getString(name);
                 String callType = managedCursor.getString(type);

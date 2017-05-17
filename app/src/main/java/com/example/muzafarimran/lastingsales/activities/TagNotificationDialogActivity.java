@@ -57,38 +57,24 @@ import java.util.Calendar;
 
 import de.halfbit.tinybus.TinyBus;
 
-public class TagNotificationDialogActivity extends Activity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class TagNotificationDialogActivity extends Activity {
     public static final String TAG = "TagNotificationDialog";
     //    Constants
     public static final String ACTIVITY_LAUNCH_MODE = "activity_launch_mode";
 
-    public static final String LAUNCH_MODE_IMPORT_CONTACT = "launch_mode_import_contact_from_phonebook";
     public static final String LAUNCH_MODE_ADD_NEW_CONTACT = "launch_mode_add_new_contact";
     public static final String LAUNCH_MODE_EDIT_EXISTING_CONTACT = "launch_mode_edit_existing_contact";
     public static final String LAUNCH_MODE_TAG_PHONE_NUMBER = "launch_mode_tag_phone_number";
-    public static final String LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP = "launch_mode_edit_existing_followup";
-    public static final String LAUNCH_MODE_ADD_NEW_FOLLOWUP = "launch_mode_add_new_followup";
-    public static final String LAUNCH_MODE_TAG_UNTAGGED_CONTACT = "launch_mode_tag_untagged_contact";
 
     public static final String TAG_LAUNCH_MODE_PHONE_NUMBER = "phone_number";
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     public static final String TAG_LAUNCH_MODE_CONTACT_TYPE = "contact_type";
-    public static final String TAG_LAUNCH_MODE_FOLLOWUP_ID = "followup_id";
-
-    private static final String TITLE_IMPORT_CONTACT = "Import Contact";
-    private static final String TITLE_ADD_NEW_CONTACT = "Add Contact";
-    private static final String TITLE_EDIT_CONTACT = "Edit Contact";
-    private static final String TITLE_ADD_FOLLOWUP = "Add Followup";
-    private static final String TITLE_EDIT_FOLLOWUP = "Edit Followup";
-    private static final String TITLE_TAG_NUMBER = "Tag Number";
-    private static final String TITLE_TAG_UNTAGGED_CONTACT = "Tag Untagged";
 
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
     String launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
     String selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
     boolean editingMode = false;
     long contactIdLong = -1;
-    long followupIdLong = -1;
     String phoneNumberFromLastActivity;
     String preSelectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
     int year, month, day, hour, minute;
@@ -97,59 +83,24 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
     private EditText etContactName;
     private TextView etContactPhone;
     private Button bSave;
-//    private Button bIgnore;
     private ImageButton bClose;
     private CheckBox cbIgnore;
-    //    private ImageView ibAddNote;
-//    private ImageView ibAddFollowup;
-//    private RelativeLayout addNoteActionLayout;
-//    private RelativeLayout addFollowupActionLayout;
-//    private LinearLayout noteContainerLayout;
-//    private LinearLayout followupContainerLayout;
     private LinearLayout llContactDetailsFollowupScreen;
     private LinearLayout llContactType;
     private LayoutInflater inflater;
-    private EditText etNoteText;
-    private EditText etFollowupTitleText;
-    private Button bOneWeek;
-    private Button bThreeDays;
-    private Button bTomorrow;
-    private Button bDate;
-    private Button bTime;
     private Button bColleagueRadio;
     private Button bSalesRadio;
     private LSContact selectedContact = null;
-    private TempFollowUp selectedFollowup = null;
-//    Toolbar toolbar;
-//    ActionBar actionBar;
-//    private TextView tvTitleFollowupPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_number_and_add_followup);
-//        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        toolbar.setTitle("Add Contact");
-//        setSupportActionBar(toolbar);
-//        actionBar = getSupportActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
         inflater = getLayoutInflater();
         year = month = day = hour = minute = 0;
-//        tvTitleFollowupPopup = (TextView) findViewById(R.id.tvTitleFollowupPopup);
         etContactName = (EditText) findViewById(R.id.etNameFollowupPopup);
         etContactPhone = (TextView) findViewById(R.id.etNumberFollowupPopup);
-//        ibAddNote = (ImageView) findViewById(R.id.ivAddNote);
-//        ibAddFollowup = (ImageView) findViewById(R.id.ivAddFollowup);
-//        addNoteActionLayout = (RelativeLayout) findViewById(R.id.addNoteActionLayout);
-//        addFollowupActionLayout = (RelativeLayout) findViewById(R.id.addFollowupActionLayout);
-//        noteContainerLayout = (LinearLayout) findViewById(R.id.noteContainerLayout);
-//        followupContainerLayout = (LinearLayout) findViewById(R.id.followupContainer);
-//        bIgnore = (Button) findViewById(R.id.bCancelFollowupPopup);
-//        bIgnore.setVisibility(View.GONE);
         bSave = (Button) findViewById(R.id.bSaveFollowupPopup);
         bClose = (ImageButton) findViewById(R.id.bClose);
         cbIgnore = (CheckBox) findViewById(R.id.cbIgnore);
@@ -157,7 +108,6 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
         bColleagueRadio = (Button) findViewById(R.id.bCollegueRadio);
         llContactDetailsFollowupScreen = (LinearLayout) findViewById(R.id.llContactDetailsAddContactScreen);
         llContactType = (LinearLayout) findViewById(R.id.llContactType);
-//        bClose.setBackgroundResource(R.drawable.ic_close_white);
         // Cancel the Notifitcation appeared on call ending
         int notificationId = getIntent().getIntExtra("notificationId", 1);
         if (notificationId != 0) {
@@ -175,35 +125,10 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
         if (bundle != null) {
             launchMode = bundle.getString(ACTIVITY_LAUNCH_MODE);
         }
-//        if launch mode is edit existing contact then geting id of contact so its data can be populated
-        if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
-            Log.d(TAG, "onCreate: Existing");
-//            tvTitleFollowupPopup.setText(TITLE_EDIT_CONTACT);
-            editingMode = true;
-            String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
-            if (id != null && !id.equals("")) {
-                contactIdLong = Long.parseLong(id);
-            }
-            selectedContact = LSContact.findById(LSContact.class, contactIdLong);
-            String tempContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
-            if (tempContactType == null || tempContactType.equals("")) {
-                selectedContactType = selectedContact.getContactType();
-            } else {
-                selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
-            }
-            preSelectedContactType = selectedContactType;
-            if (selectedContact.getContactName() != null && !selectedContact.getContactName().equals("")) {
-                etContactName.setText(selectedContact.getContactName());
-            } else {
-                etContactName.setText("UNKNOWN");
-            }
-            etContactPhone.setText(selectedContact.getPhoneOne());
-        }
 //        if launch mode is tag number then number is gotten out of bundle so it can be searched in
 //        phonebook and the number can be populated in the editText Field
         else if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
             Log.d(TAG, "onCreate: Tag Number");
-//            tvTitleFollowupPopup.setText(TITLE_TAG_NUMBER);
             phoneNumberFromLastActivity = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
             selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
             preSelectedContactType = selectedContactType;
@@ -224,61 +149,26 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
         } else {
             selectRadioButton(LSContact.CONTACT_TYPE_SALES);
         }
+        etContactName.setSelection(etContactName.getText().length());
 
-        try{
-            etContactName.setSelection(etContactName.getText().length());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         cbIgnore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d(TAG, "onCheckedChanged: "+isChecked);
-                if(isChecked){
+                Log.d(TAG, "onCheckedChanged: " + isChecked);
+                if (isChecked) {
                     bSalesRadio.setEnabled(false);
                     bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
                     bSalesRadio.setTextColor(Color.GRAY);
                     bColleagueRadio.setEnabled(false);
                     bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
                     bColleagueRadio.setTextColor(Color.GRAY);
-                }else {
+                } else {
                     bSalesRadio.setEnabled(true);
                     bColleagueRadio.setEnabled(true);
                     selectRadioButton(selectedContactType);
                 }
             }
         });
-//        bIgnore.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                etContactName.setError(null);
-//                etContactPhone.setError(null);
-//                boolean validation = true;
-//                String contactName = etContactName.getText().toString();
-//                String contactPhone = etContactPhone.getText().toString();
-//                if (contactName.equals("") || contactName.length() < 3) {
-//                    validation = false;
-//                    etContactName.setError("Invalid Name!");
-//                }
-//                if (contactPhone.equals("") || contactPhone.length() < 3) {
-//                    validation = false;
-//                    etContactPhone.setError("Invalid Number!");
-//                }
-//                if (validation && !editingMode) {
-//                    IgnoredContact.AddAsIgnoredContact(contactPhone, contactName);
-//                    String projectToken = MixpanelConfig.projectToken;
-//                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-//                    try {
-//                        JSONObject props = new JSONObject();
-//                        props.put("type", "ignored");
-//                        mixpanel.track("Lead From Dialog - Clicked",props);
-//                    } catch (Exception e) {
-//                        Log.e("mixpanel", "Unable to add properties to JSONObject", e);
-//                    }
-//                    finish();
-//                }
-//            }
-//        });
         bClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -292,30 +182,19 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
                     Log.d(TAG, "onClick: Checked");
                     etContactName.setError(null);
                     etContactPhone.setError(null);
-                    boolean validation = true;
                     String contactName = etContactName.getText().toString();
                     String contactPhone = etContactPhone.getText().toString();
-                    if (contactName.equals("") || contactName.length() < 3) {
-                        validation = false;
-                        etContactName.setError("Invalid Name!");
+                    IgnoredContact.AddAsIgnoredContact(contactPhone, contactName);
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                    try {
+                        JSONObject props = new JSONObject();
+                        props.put("type", "ignored");
+                        mixpanel.track("Lead From Dialog - Clicked", props);
+                    } catch (Exception e) {
+                        Log.e("mixpanel", "Unable to add properties to JSONObject", e);
                     }
-                    if (contactPhone.equals("") || contactPhone.length() < 3) {
-                        validation = false;
-                        etContactPhone.setError("Invalid Number!");
-                    }
-                    if (validation && !editingMode) {
-                        IgnoredContact.AddAsIgnoredContact(contactPhone, contactName);
-                        String projectToken = MixpanelConfig.projectToken;
-                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                        try {
-                            JSONObject props = new JSONObject();
-                            props.put("type", "ignored");
-                            mixpanel.track("Lead From Dialog - Clicked", props);
-                        } catch (Exception e) {
-                            Log.e("mixpanel", "Unable to add properties to JSONObject", e);
-                        }
-                        finish();
-                    }
+                    finish();
                 } else {
                     Log.d(TAG, "onClick: Not Checked");
                     if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
@@ -338,13 +217,11 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
                             checkContact = LSContact.getContactFromNumber(intlNum);
                             if (checkContact != null) {
                                 if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-                                    String titleText = null;
-                                    String noteText = null;
-                                    TempFollowUp TempFollowUp = new TempFollowUp();
                                     checkContact.setContactName(contactName);
                                     checkContact.setPhoneOne(intlNum);
                                     checkContact.setContactType(selectedContactType);
                                     checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+                                    checkContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                                     if (checkContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || checkContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                                         checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                                     }
@@ -353,33 +230,6 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
                                     if (checkContactInLocalPhonebook == null) {
                                         //Saving contact in native phonebook as well
                                         PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), checkContact.getContactName(), checkContact.getPhoneOne());
-                                    }
-                                    if (etNoteText != null) {
-                                        noteText = etNoteText.getText().toString();
-                                        if (!noteText.isEmpty() && !noteText.equals("")) {
-                                            LSNote tempNote = new LSNote();
-                                            tempNote.setNoteText(noteText);
-                                            tempNote.setContactOfNote(checkContact);
-                                            tempNote.save();
-                                        }
-                                    }
-                                    if (etFollowupTitleText != null) {
-                                        titleText = etFollowupTitleText.getText().toString();
-                                        TempFollowUp.setTitle(titleText);
-                                    } else {
-                                        titleText = "Empty";
-                                    }
-                                    if (year != 0 && day != 0 && hour != 0 && minute != 0) {
-                                        Calendar dateTimeForFollowup = Calendar.getInstance();
-                                        dateTimeForFollowup.set(Calendar.YEAR, year);
-                                        dateTimeForFollowup.set(Calendar.MONTH, month);
-                                        dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
-                                        dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
-                                        dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                                        TempFollowUp.setContact(checkContact);
-                                        TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                                        TempFollowUp.save();
-                                        setAlarm(getApplicationContext(), TempFollowUp);
                                     }
                                     String projectToken = MixpanelConfig.projectToken;
                                     MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
@@ -395,14 +245,12 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
                                 }
                                 Toast.makeText(TagNotificationDialogActivity.this, "Already Exists Converted Successfully", Toast.LENGTH_SHORT).show();
                             } else {
-                                String titleText = null;
-                                String noteText = null;
-                                TempFollowUp TempFollowUp = new TempFollowUp();
                                 LSContact tempContact = new LSContact();
                                 tempContact.setContactName(contactName);
                                 tempContact.setPhoneOne(intlNum);
                                 tempContact.setContactType(selectedContactType);
                                 tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+                                checkContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                                 if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                                     tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                                 }
@@ -411,33 +259,6 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
                                 if (checkContactInLocalPhonebook == null) {
                                     //Saving contact in native phonebook as well
                                     PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), checkContact.getContactName(), checkContact.getPhoneOne());
-                                }
-                                if (etNoteText != null) {
-                                    noteText = etNoteText.getText().toString();
-                                    if (!noteText.isEmpty() && !noteText.equals("")) {
-                                        LSNote tempNote = new LSNote();
-                                        tempNote.setNoteText(noteText);
-                                        tempNote.setContactOfNote(tempContact);
-                                        tempNote.save();
-                                    }
-                                }
-                                if (etFollowupTitleText != null) {
-                                    titleText = etFollowupTitleText.getText().toString();
-                                    TempFollowUp.setTitle(titleText);
-                                } else {
-                                    titleText = "Empty";
-                                }
-                                if (year != 0 && day != 0 && hour != 0 && minute != 0) {
-                                    Calendar dateTimeForFollowup = Calendar.getInstance();
-                                    dateTimeForFollowup.set(Calendar.YEAR, year);
-                                    dateTimeForFollowup.set(Calendar.MONTH, month);
-                                    dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
-                                    dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
-                                    dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                                    TempFollowUp.setContact(tempContact);
-                                    TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                                    TempFollowUp.save();
-                                    setAlarm(getApplicationContext(), TempFollowUp);
                                 }
                                 String projectToken = MixpanelConfig.projectToken;
                                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
@@ -452,90 +273,10 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
                                 finish();
                             }
                         }
-                    } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
-                        etContactName.setError(null);
-                        etContactPhone.setError(null);
-                        boolean validation = true;
-                        String contactName = etContactName.getText().toString();
-                        String contactPhone = etContactPhone.getText().toString();
-                        if (contactName.equals("") || contactName.length() < 3) {
-                            validation = false;
-                            etContactName.setError("Invalid Name!");
-                        }
-                        if (contactPhone.equals("") || contactPhone.length() < 3) {
-                            validation = false;
-                            etContactPhone.setError("Invalid Number!");
-                        }
-                        if (validation && editingMode) {
-                            //modified by ibtisam
-                            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
-                            String titleText = null;
-                            String noteText = null;
-                            TempFollowUp TempFollowUp = new TempFollowUp();
-                            LSContact tempContact = selectedContact;
-                            tempContact.setContactName(contactName);
-                            tempContact.setPhoneOne(intlNum);
-                            tempContact.save();
-                            String checkContactInLocalPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), intlNum);
-                            if (checkContactInLocalPhonebook == null) {
-                                //Saving contact in native phonebook as well
-                                PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), tempContact.getContactName(), tempContact.getPhoneOne());
-                            }
-                            if (etNoteText != null) {
-                                noteText = etNoteText.getText().toString();
-                                if (!noteText.isEmpty() && !noteText.equals("")) {
-                                    LSNote tempNote = new LSNote();
-                                    tempNote.setNoteText(noteText);
-                                    tempNote.setContactOfNote(tempContact);
-                                    tempNote.save();
-                                }
-                            }
-                            if (etFollowupTitleText != null) {
-                                titleText = etFollowupTitleText.getText().toString();
-                                TempFollowUp.setTitle(titleText);
-                            } else {
-                                titleText = "Empty";
-                            }
-                            if (year != 0 && day != 0 && hour != 0 && minute != 0) {
-                                Calendar dateTimeForFollowup = Calendar.getInstance();
-                                dateTimeForFollowup.set(Calendar.YEAR, year);
-                                dateTimeForFollowup.set(Calendar.MONTH, month);
-                                dateTimeForFollowup.set(Calendar.DAY_OF_MONTH, day);
-                                dateTimeForFollowup.set(Calendar.HOUR_OF_DAY, hour);
-                                dateTimeForFollowup.set(Calendar.MINUTE, minute);
-                                TempFollowUp.setContact(tempContact);
-                                TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
-                                TempFollowUp.save();
-                                setAlarm(getApplicationContext(), TempFollowUp);
-                            }
-                            String projectToken = MixpanelConfig.projectToken;
-                            MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                            try {
-                                JSONObject props = new JSONObject();
-                                props.put("type", "track");
-                                mixpanel.track("Lead From Dialog - Clicked", props);
-                                mixpanel.track("Lead From Dialog");
-                            } catch (Exception e) {
-                                Log.e("mixpanel", "Unable to add properties to JSONObject", e);
-                            }
-                            finish();
-                        }
                     }
                 }
             }
         });
-//        ibAddNote.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showAddNoteLayout();
-//            }
-//        });
-//        ibAddFollowup.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showAddFollowupLayout();
-//            }
-//        });
         bSalesRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -548,117 +289,6 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
                 selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
             }
         });
-    }
-
-//    private void showAddNoteLayout() {
-//        scaleView(addNoteActionLayout, 1f, 0f);
-//        addNoteActionLayout.setVisibility(View.GONE);
-//        LinearLayout addNoteLayout = (LinearLayout) inflater.inflate(R.layout.section_note_body_layout_followup_screen, noteContainerLayout, false);
-//        scaleView(addNoteLayout, 0f, 1f);
-//        noteContainerLayout.addView(addNoteLayout);
-//        etNoteText = (EditText) findViewById(R.id.etNoteTextFollowupPopup);
-//    }
-//
-//    private void showAddFollowupLayout() {
-//        addFollowupActionLayout.setVisibility(View.GONE);
-//        LinearLayout addFollowupLayout = (LinearLayout) inflater.inflate(R.layout.section_followup_body_followup_screen, followupContainerLayout, false);
-//        followupContainerLayout.addView(addFollowupLayout);
-//        bOneWeek = (Button) findViewById(R.id.bOneWeekFollowupPopup);
-//        bThreeDays = (Button) findViewById(R.id.bThreeDaysFollowupPopup);
-//        bTomorrow = (Button) findViewById(R.id.bTomorrowFollowupPopup);
-//        bDate = (Button) findViewById(R.id.bDateFollowupPopup);
-//        bTime = (Button) findViewById(R.id.bTimeFollowupPopup);
-//        etFollowupTitleText = (EditText) findViewById(R.id.etTitleTextFollowupPopup);
-//        Calendar now = Calendar.getInstance();
-//
-//        if (bTomorrow != null) {
-//            bTomorrow.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Calendar now = Calendar.getInstance();
-//                    now.add(Calendar.DAY_OF_MONTH, 1);
-//                    setDateTimeFromMiliseconds(now.getTimeInMillis());
-//                    day = now.get(Calendar.DAY_OF_MONTH);
-//                    month = (now.get(Calendar.MONTH));
-//                    year = now.get(Calendar.YEAR);
-//                }
-//            });
-//        }
-//        if (bThreeDays != null) {
-//            bThreeDays.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Calendar now = Calendar.getInstance();
-//                    now.add(Calendar.DAY_OF_MONTH, 3);
-//                    setDateTimeFromMiliseconds(now.getTimeInMillis());
-//                    day = now.get(Calendar.DAY_OF_MONTH);
-//                    month = (now.get(Calendar.MONTH));
-//                    year = now.get(Calendar.YEAR);
-//                }
-//            });
-//        }
-//        if (bOneWeek != null) {
-//            bOneWeek.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Calendar now = Calendar.getInstance();
-//                    now.add(Calendar.DAY_OF_MONTH, 7);
-//                    setDateTimeFromMiliseconds(now.getTimeInMillis());
-//                    day = now.get(Calendar.DAY_OF_MONTH);
-//                    month = (now.get(Calendar.MONTH));
-//                    year = now.get(Calendar.YEAR);
-//                }
-//            });
-//        }
-//        day = now.get(Calendar.DAY_OF_MONTH);
-//        month = (now.get(Calendar.MONTH));
-//        year = now.get(Calendar.YEAR);
-//        hour = now.get(Calendar.HOUR_OF_DAY);
-//        minute = now.get(Calendar.MINUTE);
-//        setDateTimeFromMiliseconds(now.getTimeInMillis());
-//        bDate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Calendar now = Calendar.getInstance();
-//                DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(TagNotificationDialogActivity.this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
-//                datePickerDialog.setCancelable(false);
-//                datePickerDialog.setTitle("Select Date for Followup");
-//                datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
-//            }
-//        });
-//        bTime.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Calendar now = Calendar.getInstance();
-//                TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(TagNotificationDialogActivity.this, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);
-//                timePickerDialog.setCancelable(false);
-//                timePickerDialog.setTitle("Select Time for Followup");
-//                timePickerDialog.setMinTime(now.HOUR_OF_DAY, now.MINUTE, now.SECOND);
-//                timePickerDialog.show(getFragmentManager(), "Timepickerdialog");
-//            }
-//        });
-//    }
-
-    private void setDateTimeFromMiliseconds(Long miliSeconds) {
-        Calendar now = Calendar.getInstance();
-        now.setTimeInMillis(miliSeconds);
-        if (bDate != null) {
-            String date = now.get(Calendar.DAY_OF_MONTH) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.YEAR);
-            bDate.setText(date);
-        }
-        if (bTime != null) {
-            bTime.setText(now.get(Calendar.HOUR_OF_DAY) + " : " + now.get(Calendar.MINUTE));
-        }
-    }
-
-    public void scaleView(View v, float startScale, float endScale) {
-        Animation anim = new ScaleAnimation(
-                1f, 1f, // Start and end values for the X axis scaling
-                startScale, endScale, // Start and end values for the Y axis scaling
-                Animation.RELATIVE_TO_SELF, 0f, // Pivot point of X scaling
-                Animation.RELATIVE_TO_SELF, 1f); // Pivot point of Y scaling
-        anim.setFillAfter(true); // Needed to keep the result of the animation
-        v.startAnimation(anim);
     }
 
     private void selectRadioButton(String button) {
@@ -680,22 +310,12 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String email = "";
         if (requestCode == REQUEST_CODE_PICK_CONTACTS && resultCode == RESULT_OK) {
             uriContact = data.getData();
             String name = retrieveContactName();
             String number = retrieveContactNumber();
-            try {
-//                email = retrieveContactEmail();
-//                email = getContactDetailsEmail();
-            } catch (Exception e) {
-                e.printStackTrace();
-                email = "";
-            }
-//            retrieveContactPhoto();
             etContactName.setText(name);
             etContactPhone.setText(number);
-//            etContactEmail.setText(email);
             if (PhoneNumberAndCallUtils.isNumeric(name)) {
                 etContactPhone.setText(number);
                 etContactName.setText("");
@@ -743,53 +363,6 @@ public class TagNotificationDialogActivity extends Activity implements TimePicke
         cursorPhone.close();
         //Log.d(TAG, "Contact Phone Number: " + contactNumber);
         return contactNumber;
-    }
-
-    @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        if (bTime != null) {
-            bTime.setText(hourOfDay + ":" + minute);
-            hour = hourOfDay;
-            minute = minute;
-        }
-    }
-
-    @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year + "";
-        if (bDate != null) {
-            bDate.setText(date);
-            this.year = year;
-            this.month = monthOfYear;
-            this.day = dayOfMonth;
-        }
-    }
-
-    public void setAlarm(Context context, TempFollowUp TempFollowUp) {
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent;
-        int interval = 8000;
-//        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
-        Calendar dateAndTimeForAlarm = Calendar.getInstance();
-        /*int mYear = dateForFollowUp.get(Calendar.YEAR);
-        int mMonth = dateForFollowUp.get(Calendar.MONTH);
-        int mDay = dateForFollowUp.get(Calendar.DAY_OF_MONTH);
-        int mHour = timeForFollowUp.get(Calendar.HOUR_OF_DAY);
-        int mMinute = timeForFollowUp.get(Calendar.MINUTE);
-        int seconds = 0;*/
-        dateAndTimeForAlarm.set(year, month, day, hour, minute, 0);
-        Intent aint = new Intent(context, AlarmReceiver.class);
-//        String note = etNote.getText().toString();
-//        String note = "Hello";
-        aint.putExtra("followupid", TempFollowUp.getId() + "");
-//        aint.putExtra("message","This is message from followup");
-        pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(TempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
-                         /* Retrieve a PendingIntent that will perform a broadcast */
-//        Intent alarmIntent = new Intent(activity, AlarmReceiver.class);
-//        pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, 0);
-//        manager.setExact(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
-        manager.set(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
-        Toast.makeText(context, "Alarm Set", Toast.LENGTH_SHORT).show();
     }
 
     @Override

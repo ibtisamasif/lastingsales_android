@@ -173,7 +173,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
             @Override
             public boolean onLongClick(View view) {
                 deleteFlow = true;
-                setList(LSContact.getSalesContactsByLeadSalesStatus(contactLeadType));
+                setList(LSContact.getArrangedSalesContactsByLeadSalesStatus(contactLeadType));
                 return true;
             }
         });
@@ -205,7 +205,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
 //                    contact.delete();
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
                 dataSenderAsync.run();
-                setList(LSContact.getSalesContactsByLeadSalesStatus(contactLeadType));
+                setList(LSContact.getArrangedSalesContactsByLeadSalesStatus(contactLeadType));
                 Toast.makeText(mContext, "Lead Deleted!", Toast.LENGTH_SHORT).show();
 //                    }else {
 //                        Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();

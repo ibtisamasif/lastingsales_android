@@ -203,9 +203,9 @@ public class SalesFragment extends SearchFragment {
 
     public List<LSContact> getAllArrangedContactsAccordingToLeadType() { // TODO optimize this function. Crashed here too so must fix it.
         List<LSContact> arrangedContacts = new ArrayList<>();
-        List<LSContact> contactsLe = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        List<LSContact> contactsLo = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-        List<LSContact> contactsWo = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+        List<LSContact> contactsLe = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+        List<LSContact> contactsLo = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+        List<LSContact> contactsWo = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
         arrangedContacts.addAll(contactsLe);
         arrangedContacts.addAll(contactsLo);
         arrangedContacts.addAll(contactsWo);

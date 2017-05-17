@@ -26,13 +26,8 @@ import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,7 +44,7 @@ public class HomeFragment extends TabFragment {
     private static final String TAG = "HomeFragment";
     private TextView tvInquiriesValue;
     private TextView tvInactiveLeadsValue;
-    private TextView tvUntaggedContacts;
+    private TextView tvUnlabeledContacts;
     private CardView llInActiveLeadsContainer;
     private CardView llUnlabeledContainer;
     private CardView llinquriesContainer;
@@ -74,7 +69,7 @@ public class HomeFragment extends TabFragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         tvInquiriesValue = (TextView) view.findViewById(R.id.tvInquriesValue);
-        tvUntaggedContacts = (TextView) view.findViewById(R.id.tvUntaggeContactsVal);
+        tvUnlabeledContacts = (TextView) view.findViewById(R.id.tvUntaggeContactsVal);
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
 
         llinquriesContainer = (CardView) view.findViewById(R.id.llinquriesContainer);
@@ -114,7 +109,7 @@ public class HomeFragment extends TabFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
                 bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
-                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
+                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
                 intent = new Intent(getContext(), FrameActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -183,7 +178,7 @@ public class HomeFragment extends TabFragment {
             }
         });
         //Bundle bundle = new Bundle();
-        //bundle.putString(NotesFragmentNew.CONTACT_ID, selectedContact.getId().toString());
+        //bundle.putString(NotesFragment.CONTACT_ID, selectedContact.getId().toString());
         followupsTodayListFragment = new FollowupsTodayListFragment();
         //followupsTodayListFragment.setArguments(bundle);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -221,13 +216,13 @@ public class HomeFragment extends TabFragment {
         if (allUnlabeledContacts != null) {
             if (allUnlabeledContacts.size() > 0) {
                 llUnlabeledContainer.setVisibility(View.VISIBLE);
-                tvUntaggedContacts.setText("" + allUnlabeledContacts.size());
+                tvUnlabeledContacts.setText("" + allUnlabeledContacts.size());
             } else {
                 llUnlabeledContainer.setVisibility(View.GONE);
 //                llshadow2.setVisibility(View.GONE);
             }
         } else {
-            tvUntaggedContacts.setText(0);
+            tvUnlabeledContacts.setText(0);
         }
 
         if (allInactiveLeads != null) {

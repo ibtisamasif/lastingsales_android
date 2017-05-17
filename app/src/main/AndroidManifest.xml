@@ -40,7 +40,7 @@
             android:value="sugar_example.db" />
         <meta-data
             android:name="VERSION"
-            android:value="6" />
+            android:value="7" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -96,7 +96,7 @@
             android:name=".activities.LSContactChooserActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.AddNewFollowUpsActivity"
+            android:name=".activities.AddEditFollowUpsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="nosensor" />
         <activity
@@ -216,9 +216,9 @@
             </intent-filter>
         </service>
 
-        <!--<service android:name=".chatheadbubble.BubblesService"-->
-        <!--android:enabled="true"-->
-        <!--android:exported="false" />-->
+        <service android:name=".chatheadbubble.BubblesService"
+        android:enabled="true"
+        android:exported="false" />
 
         <!--<service-->
         <!--android:name=".service.CallRecordService"-->

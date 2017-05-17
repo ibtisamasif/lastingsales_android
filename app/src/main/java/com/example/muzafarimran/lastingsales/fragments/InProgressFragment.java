@@ -56,7 +56,7 @@ public class InProgressFragment extends TabFragment{
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+        List<LSContact> contacts = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         setList(contacts);
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
@@ -70,13 +70,13 @@ public class InProgressFragment extends TabFragment{
 
     @Subscribe(mode= Subscribe.Mode.Main)
     public void onLeadContactAddedEventModel(LeadContactAddedEventModel event) {
-        List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+        List<LSContact> contacts = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         setList(contacts);
     }
 
     @Subscribe
     public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
-        List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+        List<LSContact> contacts = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         setList(contacts);
     }
 

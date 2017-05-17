@@ -26,6 +26,7 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * A simple {@link Fragment} subclass.
  */
+@Deprecated
 public class OutgoingCallsFragment extends Fragment {
 
     public static final String TAG = "OutgoingCallFragment";

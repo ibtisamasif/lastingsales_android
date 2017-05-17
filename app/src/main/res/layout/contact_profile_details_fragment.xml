@@ -31,37 +31,37 @@
                 android:orientation="vertical">
 
                 <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="10dp">-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp">-->
 
-                    <!--<ImageView-->
-                        <!--android:id="@+id/lead_name_icon"-->
-                        <!--android:layout_width="30dp"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:paddingRight="10dp"-->
-                        <!--android:src="@drawable/ic_contact_detail_name_field"-->
-                        <!--android:tint="@color/colorPrimary" />-->
+                <!--<ImageView-->
+                <!--android:id="@+id/lead_name_icon"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:src="@drawable/ic_contact_detail_name_field"-->
+                <!--android:tint="@color/colorPrimary" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/lead_name_text"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_toEndOf="@+id/lead_name_icon"-->
-                        <!--android:layout_toRightOf="@+id/lead_name_icon"-->
-                        <!--android:text="Name"-->
-                        <!--android:textColor="@color/black"-->
-                        <!--android:textSize="12sp" />-->
+                <!--<TextView-->
+                <!--android:id="@+id/lead_name_text"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toEndOf="@+id/lead_name_icon"-->
+                <!--android:layout_toRightOf="@+id/lead_name_icon"-->
+                <!--android:text="Name"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="12sp" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvName"-->
-                        <!--android:layout_width="500dp"-->
-                        <!--android:layout_height="40dp"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_toRightOf="@+id/lead_name_text"-->
-                        <!--android:gravity="center|right" />-->
+                <!--<TextView-->
+                <!--android:id="@+id/tvName"-->
+                <!--android:layout_width="500dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toRightOf="@+id/lead_name_text"-->
+                <!--android:gravity="center|right" />-->
 
                 <!--</RelativeLayout>-->
 
@@ -88,7 +88,7 @@
                         android:layout_toRightOf="@+id/lead_number_icon"
                         android:text="Number"
                         android:textColor="@color/black"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvNumber"
@@ -101,37 +101,37 @@
                 </RelativeLayout>
 
                 <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="10dp">-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp">-->
 
-                    <!--<ImageView-->
-                        <!--android:id="@+id/lead_email_icon"-->
-                        <!--android:layout_width="30dp"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:paddingRight="10dp"-->
-                        <!--android:src="@drawable/ic_contact_detail_email_field"-->
-                        <!--android:tint="@color/colorPrimary" />-->
+                <!--<ImageView-->
+                <!--android:id="@+id/lead_email_icon"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:src="@drawable/ic_contact_detail_email_field"-->
+                <!--android:tint="@color/colorPrimary" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/lead_email_text"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_toEndOf="@+id/lead_email_icon"-->
-                        <!--android:layout_toRightOf="@+id/lead_email_icon"-->
-                        <!--android:text="Email"-->
-                        <!--android:textColor="@color/black"-->
-                        <!--android:textSize="12sp" />-->
+                <!--<TextView-->
+                <!--android:id="@+id/lead_email_text"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toEndOf="@+id/lead_email_icon"-->
+                <!--android:layout_toRightOf="@+id/lead_email_icon"-->
+                <!--android:text="Email"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="12sp" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvEmail"-->
-                        <!--android:layout_width="500dp"-->
-                        <!--android:layout_height="40dp"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_toRightOf="@+id/lead_email_text"-->
-                        <!--android:gravity="center|right" />-->
+                <!--<TextView-->
+                <!--android:id="@+id/tvEmail"-->
+                <!--android:layout_width="500dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toRightOf="@+id/lead_email_text"-->
+                <!--android:gravity="center|right" />-->
 
                 <!--</RelativeLayout>-->
 
@@ -171,68 +171,75 @@
                 </RelativeLayout>
 
                 <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="1dp"-->
-                    <!--android:layout_marginTop="20dp"-->
-                    <!--android:background="@color/darkGray"></RelativeLayout>-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:background="@color/darkGray"></RelativeLayout>-->
 
                 <RelativeLayout
                     android:id="@+id/lead_status_row"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp">
+                    android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:id="@+id/lead_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerVertical="true"
-                        android:paddingRight="10dp"
-                        android:src="@drawable/ic_contact_detail_status_field"
-                        android:tint="@color/colorPrimary" />
-
-
-                    <TextView
-                        android:id="@+id/lead_status_label"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/lead_icon"
-                        android:layout_toRightOf="@+id/lead_icon"
-                        android:text="Status"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
-
-                    <RelativeLayout
-                        android:layout_alignParentRight="true"
-                        android:layout_width="160dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight=".28"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
-                        <Spinner
-                            android:id="@+id/lead_status_spinner"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="center"
-                            android:background="@drawable/dynamic_border"
-                            android:gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:spinnerMode="dropdown" />
+                            android:layout_weight="4.20">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
+                            <ImageView
+                                android:id="@+id/lead_icon"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:paddingRight="10dp"
+                                android:src="@drawable/ic_contact_detail_status_field"
+                                android:tint="@color/colorPrimary" />
+
+
+                            <TextView
+                                android:id="@+id/lead_status_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Status"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="120dp"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/drop" />
+                            android:layout_weight="5">
 
-                    </RelativeLayout>
+                            <RelativeLayout
+                                android:layout_width="160dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight=".28"
+                                android:orientation="horizontal">
 
+                                <Spinner
+                                    android:id="@+id/lead_status_spinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:background="@drawable/dynamic_border"
+                                    android:gravity="center"
+                                    android:spinnerMode="dropdown" />
+
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -244,20 +251,27 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/lead_details"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/lead_details"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvDefaultText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="There is no Dynamic Column!"/>
 
                 <Button
                     android:id="@+id/contactDetailsSaveButton"

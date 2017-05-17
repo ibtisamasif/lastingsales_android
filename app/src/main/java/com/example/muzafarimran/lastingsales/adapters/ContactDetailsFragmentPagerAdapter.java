@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.fragments.FollowupInContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.IndividualCallLogsFragment;
 import com.example.muzafarimran.lastingsales.fragments.IndividualContactDetailsFragment;
-import com.example.muzafarimran.lastingsales.fragments.NotesFragmentNew;
+import com.example.muzafarimran.lastingsales.fragments.NotesFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
 /**
@@ -33,7 +33,7 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = IndividualContactDetailsFragment.newInstance(0, IndividualContactDetailsFragment.TAG, id);
                 break;
             case 1:
-                fragment = NotesFragmentNew.newInstance(1, NotesFragmentNew.TAG, id);
+                fragment = NotesFragment.newInstance(1, NotesFragment.TAG, id);
                 break;
             case 2:
                 fragment = FollowupInContactDetailsFragment.newInstance(2, FollowupInContactDetailsFragment.TAG, id);

@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddNewFollowUpsActivity;
+import com.example.muzafarimran.lastingsales.activities.AddEditFollowUpsActivity;
 import com.example.muzafarimran.lastingsales.fragments.FollowupsTodayListFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
@@ -71,9 +71,9 @@ public class FollowupsTodayListAdapter extends BaseAdapter implements StickyList
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent myIntent = new Intent(context, AddNewFollowUpsActivity.class);
-                    myIntent.putExtra(AddNewFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddNewFollowUpsActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
-                    myIntent.putExtra(AddNewFollowUpsActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, oneFollowup.getId() + "");
+                    Intent myIntent = new Intent(context, AddEditFollowUpsActivity.class);
+                    myIntent.putExtra(AddEditFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddEditFollowUpsActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
+                    myIntent.putExtra(AddEditFollowUpsActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, oneFollowup.getId() + "");
                     context.startActivity(myIntent);
                     notifyDataSetChanged();
                 }

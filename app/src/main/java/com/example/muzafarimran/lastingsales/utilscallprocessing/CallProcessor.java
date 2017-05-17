@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.orm.dsl.Ignore;
 
 /**
  * Created by ibtisam on 3/4/2017.
@@ -31,7 +32,7 @@ class CallProcessor {
 
         } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
             // Contact is in Ignored list. Do Nothing
-
+            // TODO reminder. No ignored processor hence contact updatedAt will not be updated upon call.
         } else {
             // new call
             UnknownProcessor.Process(mContext, call, showNotification);

@@ -6,23 +6,23 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.fragments.NotesListFragment;
+import com.example.muzafarimran.lastingsales.fragments.NotesListFragmentOld;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 
 @Deprecated
 public class NotesActivity extends AppCompatActivity {
 
     public static final int ADD_NOTE_REQUEST_CODE = 13;
-    NotesListFragment notesListFragment;
+    NotesListFragmentOld notesListFragmentOld;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
         if (savedInstanceState == null) {
-            notesListFragment = new NotesListFragment();
+            notesListFragmentOld = new NotesListFragmentOld();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container_notes_activity, notesListFragment);
+            transaction.replace(R.id.fragment_container_notes_activity, notesListFragmentOld);
             transaction.commit();
         }
     }

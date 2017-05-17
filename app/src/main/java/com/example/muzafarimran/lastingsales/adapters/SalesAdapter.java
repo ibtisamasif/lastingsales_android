@@ -347,7 +347,6 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        //TODO
         // set header text
         SalesFragment obj = new SalesFragment();
         if (getHeaderId(position) == 0) {

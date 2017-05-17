@@ -2,18 +2,18 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 20
-        versionName "1.17"
+        versionCode 21
+        versionName "1.18"
         jackOptions {
             enabled false
         }
-        multiDexEnabled false
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -54,21 +54,21 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
-    //    compile ('com.google.android.gms:play-services-auth:10.2.1') {
-    //        exclude group: 'org.apache.httpcomponents'
-    //        exclude group: 'com.google.guava'
-    //    }
-    //    compile 'pub.devrel:easypermissions:0.2.1'
-    //    compile('com.google.api-client:google-api-client-android:1.22.0') {
-    //        exclude group: 'org.apache.httpcomponents'
-    //        exclude group: 'com.google.guava'
-    //    }
-    //    compile('com.google.apis:google-api-services-calendar:v3-rev243-1.22.0') {
-    //        exclude group: 'org.apache.httpcomponents'
-    //        exclude group: 'com.android.support'
-    //        exclude module: 'support-annotations'
-    //        exclude group: 'com.google.guava'
-    //    }
+        compile ('com.google.android.gms:play-services-auth:10.2.1') {
+            exclude group: 'org.apache.httpcomponents'
+//            exclude group: 'com.google.guava'
+        }
+        compile 'pub.devrel:easypermissions:0.2.1'
+        compile('com.google.api-client:google-api-client-android:1.22.0') {
+            exclude group: 'org.apache.httpcomponents'
+//            exclude group: 'com.google.guava'
+        }
+        compile('com.google.apis:google-api-services-calendar:v3-rev243-1.22.0') {
+            exclude group: 'org.apache.httpcomponents'
+//            exclude group: 'com.android.support'
+//            exclude module: 'support-annotations'
+//            exclude group: 'com.google.guava'
+        }
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
@@ -94,6 +94,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.mixpanel.android:mixpanel-android:5.0.1'
     compile project(':volley-master')
-//    compile 'com.google.gms:google-services:3.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

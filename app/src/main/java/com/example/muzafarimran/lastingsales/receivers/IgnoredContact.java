@@ -5,6 +5,8 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
+import java.util.Calendar;
+
 /**
  * Created by ibtisam on 3/16/2017.
  */
@@ -21,6 +23,7 @@ public class IgnoredContact {
                     checkContact.setPhoneOne(contactPhone);
                     checkContact.setContactName(contactName);
                     checkContact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
+                    checkContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                     checkContact.save();
                 }
             } else {
@@ -28,6 +31,7 @@ public class IgnoredContact {
                 tempContact.setPhoneOne(contactPhone);
                 tempContact.setContactName(contactName);
                 tempContact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
+                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                 tempContact.save();
             }
         }

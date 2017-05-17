@@ -1,40 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contact_row"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingBottom="0dp"
-    android:paddingTop="10dp"
-    >
+    android:paddingTop="10dp">
 
     <RelativeLayout
         android:id="@+id/user_call_group_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        >
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground">
 
         <RelativeLayout
             android:id="@+id/user_call_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:paddingBottom="10dp"
-            >
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <ImageView
                 android:id="@+id/user_avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:paddingLeft="0dp"
                 android:src="@drawable/ic_account_circle"
-                android:layout_centerVertical="true"
-                android:tint="@color/colorPrimary"
-                />
+                android:tint="@color/colorPrimary" />
 
             <RelativeLayout
 
@@ -43,24 +40,22 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/user_avatar"
-                android:paddingLeft="15dp"
-                >
+                android:paddingLeft="15dp">
 
                 <TextView
                     android:id="@+id/contact_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="name"
                     android:textSize="15sp"
-                    />
+                    tools:text="name" />
 
                 <TextView
                     android:id="@+id/contactNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contact_name"
-                    tools:text="time"
-                    android:textSize="10sp"/>
+                    android:textSize="10sp"
+                    tools:text="time" />
 
             </RelativeLayout>
         </RelativeLayout>
@@ -86,29 +81,25 @@
             android:paddingRight="10dp"
             android:scaleType="fitEnd"
             android:src="@drawable/ic_call_green"
-            android:tint="@color/darkGreen"
-            />
+            android:tint="@color/darkGreen" />
 
     </RelativeLayout>
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/contactTagDropDownLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_call_group_wrapper"
         android:layout_marginTop="4dp"
         android:padding="10dp"
-        android:paddingBottom="0dp"
-        >
+        android:paddingBottom="0dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
             android:layout_centerVertical="true"
-            >
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/contactDropDownIgnoreButton"
@@ -123,8 +114,8 @@
                 android:radius="5dip"
                 android:text="Ignore"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                />
+                android:textSize="14sp" />
+
             <Button
                 android:id="@+id/contactDropDownAddAsLeadButton"
                 style="?android:attr/borderlessButtonStyle"
@@ -139,8 +130,7 @@
                 android:radius="5dip"
                 android:text="TRACK"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                />
+                android:textSize="14sp" />
         </LinearLayout>
 
     </RelativeLayout>

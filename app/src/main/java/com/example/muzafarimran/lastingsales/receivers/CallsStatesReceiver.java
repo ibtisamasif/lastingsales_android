@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleHelper;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
@@ -62,64 +63,64 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
             return;
         }
         Toast.makeText(ctx, "Incoming call started", Toast.LENGTH_SHORT).show();
-        if (wakeLock == null) {
-            powerManager = (PowerManager) ctx.getSystemService(POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
-            wakeLock.acquire();
-            Log.d(TAG, "onIncomingCallStarted: Wakelock Aquired");
-        }
-        if (recorder != null && isRecordStarted) {
-            Log.d(TAG, "onIncomingCallStarted: RecorderStop");
-            recorder.stop();
-            isRecordStarted = false;
-        }
+//        if (wakeLock == null) {
+//            powerManager = (PowerManager) ctx.getSystemService(POWER_SERVICE);
+//            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+//            wakeLock.acquire();
+//            Log.d(TAG, "onIncomingCallStarted: Wakelock Aquired");
+//        }
+//        if (recorder != null && isRecordStarted) {
+//            Log.d(TAG, "onIncomingCallStarted: RecorderStop");
+//            recorder.stop();
+//            isRecordStarted = false;
+//        }
 
-//        checkShowCallPopup(ctx, number);
-        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
-        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-            String lsDirectory = Environment.getExternalStorageDirectory() + "/" + mAudio_FolderName;
-            pathFileObserver = new PathFileObserver(lsDirectory);
-            pathFileObserver.startWatching();
-            try {
-                String myDirectory = Environment.getExternalStorageDirectory() + "/" + mAudio_FolderName;
-                File sampleDir = new File(myDirectory.toString());
-                if (!sampleDir.exists()) {
-                    sampleDir.mkdirs();
-                }
-                mAudio_FileName = PhoneNumberAndCallUtils.generateUniqueFileName(mAudio_FileName);
-                mAudio_FilePath = sampleDir.getAbsolutePath() + "/" + mAudio_FileName + ".amr";
-                recorder = new MediaRecorder();
-                recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-                recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                recorder.setOutputFile(sampleDir.getAbsolutePath() + "/" + mAudio_FileName + ".amr");
-                //recorder.setOutputFile("/storage/emulated/0/LastingSalesRecordings/abc.amr");
-                recorder.prepare();
-
-                if (recorder != null && !isRecordStarted) {
-                    recorder.start();
-                    isRecordStarted = true;
-                    Log.d(TAG, "onIncomingCallStarted: RecorderStart");
-                }
-            } catch (IllegalStateException | IOException e) {
-                e.printStackTrace();
-                Log.e(TAG, "error while preparing recording", e);
-                // You might want to inform the user too, with a Toast
-            }
-
-//            Log.d(TAG, "onOutgoingCallStarted: File Location: " + mAudio_FilePath);
-
-            LSCallRecording tempRecording = new LSCallRecording();
-//            tempRecording.setLocalIdOfCall("" + tempCall.getId());
-            Log.d(TAG, "onIncomingCallStarted: File Location1: " + mAudio_FilePath);
-            tempRecording.setContactNumber(internationalNumber);
-            tempRecording.setBeginTime(start.getTime());
-            tempRecording.setAudioPath("" + mAudio_FilePath);
-            tempRecording.setSyncStatus(SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
-            tempRecording.save();
-            Log.d(TAG, "onIncomingCallStarted: RecordingBeginTime " + tempRecording.getBeginTime());
-        }
+        checkShowCallPopup(ctx, number);
+//        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+//        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
+//        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+//            String lsDirectory = Environment.getExternalStorageDirectory() + "/" + mAudio_FolderName;
+//            pathFileObserver = new PathFileObserver(lsDirectory);
+//            pathFileObserver.startWatching();
+//            try {
+//                String myDirectory = Environment.getExternalStorageDirectory() + "/" + mAudio_FolderName;
+//                File sampleDir = new File(myDirectory.toString());
+//                if (!sampleDir.exists()) {
+//                    sampleDir.mkdirs();
+//                }
+//                mAudio_FileName = PhoneNumberAndCallUtils.generateUniqueFileName(mAudio_FileName);
+//                mAudio_FilePath = sampleDir.getAbsolutePath() + "/" + mAudio_FileName + ".amr";
+//                recorder = new MediaRecorder();
+//                recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+//                recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+//                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+//                recorder.setOutputFile(sampleDir.getAbsolutePath() + "/" + mAudio_FileName + ".amr");
+//                //recorder.setOutputFile("/storage/emulated/0/LastingSalesRecordings/abc.amr");
+//                recorder.prepare();
+//
+//                if (recorder != null && !isRecordStarted) {
+//                    recorder.start();
+//                    isRecordStarted = true;
+//                    Log.d(TAG, "onIncomingCallStarted: RecorderStart");
+//                }
+//            } catch (IllegalStateException | IOException e) {
+//                e.printStackTrace();
+//                Log.e(TAG, "error while preparing recording", e);
+//                // You might want to inform the user too, with a Toast
+//            }
+//
+////            Log.d(TAG, "onOutgoingCallStarted: File Location: " + mAudio_FilePath);
+//
+//            LSCallRecording tempRecording = new LSCallRecording();
+////            tempRecording.setLocalIdOfCall("" + tempCall.getId());
+//            Log.d(TAG, "onIncomingCallStarted: File Location1: " + mAudio_FilePath);
+//            tempRecording.setContactNumber(internationalNumber);
+//            tempRecording.setBeginTime(start.getTime());
+//            tempRecording.setAudioPath("" + mAudio_FilePath);
+//            tempRecording.setSyncStatus(SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
+//            tempRecording.save();
+//            Log.d(TAG, "onIncomingCallStarted: RecordingBeginTime " + tempRecording.getBeginTime());
+//        }
     }
 
     @Override
@@ -129,67 +130,67 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
             return;
         }
         Toast.makeText(ctx, "Outgoing call started", Toast.LENGTH_SHORT).show();
-        Log.d("LSTime", "onOutgoingCallStarted: CallReceiverLog BeginTime: " + start.getTime());
-        if (wakeLock == null) {
-            powerManager = (PowerManager) ctx.getSystemService(POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
-            wakeLock.acquire();
-            Log.d(TAG, "onOutgoingCallStarted: Wakelock Aquired");
-        }
-
-        if (recorder != null && isRecordStarted) {
-            Log.d(TAG, "onOutgoingCallStarted: RecorderStop");
-            recorder.stop();
-            isRecordStarted = false;
-        }
-//        checkShowCallPopup(ctx, number);
-        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
-        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-            String lsDirectory = Environment.getExternalStorageDirectory() + "/" + mAudio_FolderName;
-            pathFileObserver = new PathFileObserver(lsDirectory);
-            pathFileObserver.startWatching();
-
-            try {
-                String myDirectory = Environment.getExternalStorageDirectory() + "/" + mAudio_FolderName;
-                File sampleDir = new File(myDirectory.toString());
-                if (!sampleDir.exists()) {
-                    sampleDir.mkdirs();
-                }
-                mAudio_FileName = PhoneNumberAndCallUtils.generateUniqueFileName(mAudio_FileName);
-                mAudio_FilePath = sampleDir.getAbsolutePath() + "/" + mAudio_FileName + ".amr";
-                recorder = new MediaRecorder();
-                recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-                recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                recorder.setOutputFile(sampleDir.getAbsolutePath() + "/" + mAudio_FileName + ".amr");
-//                Log.d(TAG, "onOutgoingCallStarted: myDir: " + sampleDir.getAbsolutePath());
-                // recorder.setOutputFile("/storage/emulated/0/LastingSalesRecordings/abc.amr");
-                recorder.prepare();
-
-                if (recorder != null && !isRecordStarted) {
-                    recorder.start();
-                    isRecordStarted = true;
-                    Log.d(TAG, "onOutgoingCallStarted: RecorderStart");
-                }
-            } catch (IllegalStateException | IOException e) {
-                e.printStackTrace();
-                Log.e(TAG, "error while preparing recording", e);
-                // You might want to inform the user too, with a Toast
-            }
-
-//            Log.d(TAG, "onOutgoingCallStarted: File Location: " + mAudio_FilePath);
-
-            LSCallRecording tempRecording = new LSCallRecording();
-//            tempRecording.setLocalIdOfCall("" + tempCall.getId());
-            Log.d(TAG, "onOutgoingCallStarted: File Location1: " + mAudio_FilePath);
-            tempRecording.setContactNumber(internationalNumber);
-            tempRecording.setBeginTime(start.getTime());
-            tempRecording.setAudioPath("" + mAudio_FilePath);
-            tempRecording.setSyncStatus(SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
-            tempRecording.save();
-            Log.d(TAG, "onOutgoingCallStarted: RecordingBeginTime " + tempRecording.getBeginTime());
-        }
+//        Log.d("LSTime", "onOutgoingCallStarted: CallReceiverLog BeginTime: " + start.getTime());
+//        if (wakeLock == null) {
+//            powerManager = (PowerManager) ctx.getSystemService(POWER_SERVICE);
+//            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+//            wakeLock.acquire();
+//            Log.d(TAG, "onOutgoingCallStarted: Wakelock Aquired");
+//        }
+//
+//        if (recorder != null && isRecordStarted) {
+//            Log.d(TAG, "onOutgoingCallStarted: RecorderStop");
+//            recorder.stop();
+//            isRecordStarted = false;
+//        }
+        checkShowCallPopup(ctx, number);
+//        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+//        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
+//        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+//            String lsDirectory = Environment.getExternalStorageDirectory() + "/" + mAudio_FolderName;
+//            pathFileObserver = new PathFileObserver(lsDirectory);
+//            pathFileObserver.startWatching();
+//
+//            try {
+//                String myDirectory = Environment.getExternalStorageDirectory() + "/" + mAudio_FolderName;
+//                File sampleDir = new File(myDirectory.toString());
+//                if (!sampleDir.exists()) {
+//                    sampleDir.mkdirs();
+//                }
+//                mAudio_FileName = PhoneNumberAndCallUtils.generateUniqueFileName(mAudio_FileName);
+//                mAudio_FilePath = sampleDir.getAbsolutePath() + "/" + mAudio_FileName + ".amr";
+//                recorder = new MediaRecorder();
+//                recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+//                recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+//                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+//                recorder.setOutputFile(sampleDir.getAbsolutePath() + "/" + mAudio_FileName + ".amr");
+////                Log.d(TAG, "onOutgoingCallStarted: myDir: " + sampleDir.getAbsolutePath());
+//                // recorder.setOutputFile("/storage/emulated/0/LastingSalesRecordings/abc.amr");
+//                recorder.prepare();
+//
+//                if (recorder != null && !isRecordStarted) {
+//                    recorder.start();
+//                    isRecordStarted = true;
+//                    Log.d(TAG, "onOutgoingCallStarted: RecorderStart");
+//                }
+//            } catch (IllegalStateException | IOException e) {
+//                e.printStackTrace();
+//                Log.e(TAG, "error while preparing recording", e);
+//                // You might want to inform the user too, with a Toast
+//            }
+//
+////            Log.d(TAG, "onOutgoingCallStarted: File Location: " + mAudio_FilePath);
+//
+//            LSCallRecording tempRecording = new LSCallRecording();
+////            tempRecording.setLocalIdOfCall("" + tempCall.getId());
+//            Log.d(TAG, "onOutgoingCallStarted: File Location1: " + mAudio_FilePath);
+//            tempRecording.setContactNumber(internationalNumber);
+//            tempRecording.setBeginTime(start.getTime());
+//            tempRecording.setAudioPath("" + mAudio_FilePath);
+//            tempRecording.setSyncStatus(SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
+//            tempRecording.save();
+//            Log.d(TAG, "onOutgoingCallStarted: RecordingBeginTime " + tempRecording.getBeginTime());
+//        }
     }
 
     @Override
@@ -199,7 +200,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
             return;
         }
 //        showTagNumberPopupIfNeeded(ctx, number);
-//        endServiceAndCallPopup(ctx);
+        endServiceAndCallPopup(ctx);
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
 //        Log.d(TAG, "onIncomingCallEnded: 0");
@@ -260,27 +261,27 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
 //            bus.post(mCallEvent);
 //        }
-        if (recorder != null && isRecordStarted) {
-            recorder.stop();
-            recorder.reset();
-            recorder.release();
-            isRecordStarted = false;
-            Log.d(TAG, "onIncomingCallEnded: RecorderStopped");
-        }
-
-        if (wakeLock != null && wakeLock.isHeld()) {
-            wakeLock.release();
-            wakeLock = null;
-            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
-        }
+//        if (recorder != null && isRecordStarted) {
+//            recorder.stop();
+//            recorder.reset();
+//            recorder.release();
+//            isRecordStarted = false;
+//            Log.d(TAG, "onIncomingCallEnded: RecorderStopped");
+//        }
+//
+//        if (wakeLock != null && wakeLock.isHeld()) {
+//            wakeLock.release();
+//            wakeLock = null;
+//            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
+//        }
         Log.d("IncomingCallReceiver", "onIncomingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
-        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
-        theCallLogEngine.execute();
-        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
-        dataSenderAsync.run();
-        IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
-        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
-        bus.post(mCallEvent);
+//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+//        theCallLogEngine.execute();
+//        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//        dataSenderAsync.run();
+//        IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
+//        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+//        bus.post(mCallEvent);
     }
 
     @Override
@@ -291,7 +292,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         }
         Toast.makeText(ctx, "Outgoing call Ended", Toast.LENGTH_SHORT).show();
 //        showTagNumberPopupIfNeeded(ctx, number);
-//        endServiceAndCallPopup(ctx);
+        endServiceAndCallPopup(ctx);
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
 ////        Log.d(TAG, "onOutgoingCallEnded: 0");
@@ -354,26 +355,26 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
 //            bus.post(mCallEvent);
 //        }
-        if (recorder != null && isRecordStarted) {
-            recorder.stop();
-            recorder.reset();
-            recorder.release();
-            isRecordStarted = false;
-            Log.d(TAG, "onOutgoingCallEnded: RecorderStopped");
-        }
-        if (wakeLock != null && wakeLock.isHeld()) {
-            wakeLock.release();
-            wakeLock = null;
-            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
-        }
+//        if (recorder != null && isRecordStarted) {
+//            recorder.stop();
+//            recorder.reset();
+//            recorder.release();
+//            isRecordStarted = false;
+//            Log.d(TAG, "onOutgoingCallEnded: RecorderStopped");
+//        }
+//        if (wakeLock != null && wakeLock.isHeld()) {
+//            wakeLock.release();
+//            wakeLock = null;
+//            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
+//        }
         Log.d("OutgoingCallReceiver", "onOutgoingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
-        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
-        theCallLogEngine.execute();
-        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
-        dataSenderAsync.run();
-        OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
-        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
-        bus.post(mCallEvent);
+//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+//        theCallLogEngine.execute();
+//        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//        dataSenderAsync.run();
+//        OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
+//        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+//        bus.post(mCallEvent);
 
     }
 
@@ -381,7 +382,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
     protected void onMissedCall(Context ctx, String number, Date start) {
         Toast.makeText(ctx, "Missed Call Detected", Toast.LENGTH_SHORT).show();
 //        showTagNumberPopupIfNeeded(ctx, number);
-//        endServiceAndCallPopup(ctx);
+        endServiceAndCallPopup(ctx);
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
 //        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
@@ -439,29 +440,30 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
 //            bus.post(mCallEvent);
 //        }
-        if (recorder != null && isRecordStarted) {
-            recorder.stop();
-            recorder.reset();
-            recorder.release();
-            isRecordStarted = false;
-            Log.d(TAG, "onMissedCall: RecorderStopped");
-        }
-        if (wakeLock != null && wakeLock.isHeld()) {
-            wakeLock.release();
-            wakeLock = null;
-            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
-        }
+//        if (recorder != null && isRecordStarted) {
+//            recorder.stop();
+//            recorder.reset();
+//            recorder.release();
+//            isRecordStarted = false;
+//            Log.d(TAG, "onMissedCall: RecorderStopped");
+//        }
+//        if (wakeLock != null && wakeLock.isHeld()) {
+//            wakeLock.release();
+//            wakeLock = null;
+//            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
+//        }
         Log.d("MissedCallReceiver", "onMissedCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
-        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
-        theCallLogEngine.execute();
-        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
-        dataSenderAsync.run();
-        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
-        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
-        bus.post(mCallEvent);
+//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+//        theCallLogEngine.execute();
+//        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//        dataSenderAsync.run();
+//        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
+//        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+//        bus.post(mCallEvent);
     }
 
     public void checkShowCallPopup(Context ctx, String number) {
+        Log.wtf(TAG, "checkShowCallPopup: ");
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         LSContact oneContact;
         oneContact = LSContact.getContactFromNumber(internationalNumber);
@@ -470,16 +472,23 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
             notesForContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(oneContact.getId());
             if (notesForContact != null && notesForContact.size() > 0) {
                 notesForContact.size();
-                Intent intent = new Intent(ctx, PopupUIService.class);
-                intent.putExtra(OUTGOINGCALL_CONTACT_NOTE_ID, notesForContact.get(notesForContact.size() - 1).getId() + "");
-                ctx.startService(intent);
+
+                BubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId());
+
+//                Intent intent = new Intent(ctx, PopupUIService.class);
+//                intent.putExtra(OUTGOINGCALL_CONTACT_NOTE_ID, notesForContact.get(notesForContact.size() - 1).getId() + "");
+//                ctx.startService(intent);
             }
         }
     }
 
     private void endServiceAndCallPopup(Context ctx) {
-        Intent intent = new Intent(ctx, PopupUIService.class);
-        ctx.stopService(intent);
+
+        BubbleHelper.getInstance(ctx).hide();
+
+//        Log.wtf(TAG, "endServiceAndCallPopup: ");
+//        Intent intent = new Intent(ctx, PopupUIService.class);
+//        ctx.stopService(intent);
     }
 
     private void showTagNumberPopupIfNeeded(Context ctx, String number) {
@@ -489,9 +498,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 
         if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
             String name = tempContact.getContactName();
-            Long contact_id = tempContact.getId();
             mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx, number, contact_id));
+            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx, number, tempContact));
 
         } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
             mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);

@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.fragments.NotesFragmentNew;
-import com.example.muzafarimran.lastingsales.fragments.NotesListFragment;
+import com.example.muzafarimran.lastingsales.fragments.NotesFragment;
+import com.example.muzafarimran.lastingsales.fragments.NotesListFragmentOld;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
@@ -43,8 +43,8 @@ public class ContactDetailsActivity extends AppCompatActivity {
     private TextView tvAddressTitle;
 //    private ListView lvNotesList;
     private FrameLayout notesListHolderFrameLayout;
-    private NotesListFragment notesListFragment;
-    private NotesFragmentNew notesFragmentNew;
+    private NotesListFragmentOld notesListFragmentOld;
+    private NotesFragment notesFragment;
     private LinearLayout llFolloupNoteRow;
     private LinearLayout llFolloupDateTimeRow;
     private TextView tvFollowupNoteText;
@@ -136,22 +136,22 @@ public class ContactDetailsActivity extends AppCompatActivity {
 
         // Ibtisam working here
 //        ArrayList<LSNote> allNotesOfThisContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(selectedContact.getId());
-//        lvNotesList.setAdapter(new NotesListAdapter(getApplicationContext(),allNotesOfThisContact));
+//        lvNotesList.setAdapter(new NotesListAdapterOld(getApplicationContext(),allNotesOfThisContact));
 
 //        if (savedInstanceState == null) {
-//            notesListFragment = new NotesListFragment();
+//            notesListFragmentOld = new NotesListFragmentOld();
 //            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.replace(R.id.notesListHolderFrameLayout, notesListFragment);
+//            transaction.replace(R.id.notesListHolderFrameLayout, notesListFragmentOld);
 //            transaction.commit();
 //        }
 
         if (savedInstanceState == null) {
             Bundle bundle = new Bundle();
-            bundle.putString(NotesFragmentNew.CONTACT_ID, selectedContact.getId().toString());
-            notesFragmentNew = new NotesFragmentNew();
-            notesFragmentNew.setArguments(bundle);
+            bundle.putString(NotesFragment.CONTACT_ID, selectedContact.getId().toString());
+            notesFragment = new NotesFragment();
+            notesFragment.setArguments(bundle);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.notesListHolderFrameLayout, notesFragmentNew);
+            transaction.replace(R.id.notesListHolderFrameLayout, notesFragment);
             transaction.commit();
         }
 

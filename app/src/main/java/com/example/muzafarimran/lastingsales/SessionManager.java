@@ -1,9 +1,5 @@
 package com.example.muzafarimran.lastingsales;
 
-/**
- * Created by ahmad on 15-Feb-16.
- */
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -35,6 +31,12 @@ public class SessionManager {
     private static final String KEY_LOGIN_LASTNAME = "user_login_lastname";
     private static final String KEY_LOGIN_IMAGEPATH = "user_login_imagepath";
     private static final String KEY_LOGIN_FIREBASE_REG_ID = "user_login_firebase_reg_id";
+    private static final String KEY_LOGIN_EMAIL = "user_login_email";
+    private static final String KEY_LOGIN_COMPANY_ID = "user_login_company_id";
+    private static final String KEY_LOGIN_COMPANY_NAME = "user_login_company_name";
+    private static final String KEY_LOGIN_ROLE_ID = "user_login_role_id";
+    private static final String KEY_LOGIN_ROLE_NAME = "user_login_role_name";
+
 
     private static final String KEY_LOGIN_MODE = "user_login_mode";
 
@@ -48,7 +50,7 @@ public class SessionManager {
     // Shared Preferences
     SharedPreferences pref;
     // Editor for Shared preferences
-    Editor editor;
+    SharedPreferences.Editor editor;
     // Context
     Context _context;
     // Shared pref mode
@@ -115,7 +117,7 @@ public class SessionManager {
         return true;
     }
 
-    public void loginnUser(String userId, String token, Long timeStamp, String number, String firstName, String lastName, String imagePath) {
+    public void loginnUser(String userId, String token, Long timeStamp, String number, String firstName, String lastName, String imagePath, String email, String company_id, String company_name, String role_id, String role_role) {
         Log.d(TAG, "loginnUser: ");
         deleteDataIfDifferentUser(number);
         setLoginNumber(number);
@@ -125,6 +127,11 @@ public class SessionManager {
         setKeyLoginFirstName(firstName);
         setKeyLoginLastName(lastName);
         setKeyLoginImagePath(imagePath);
+        setKeyLoginEmail(email);
+        setKeyLoginCompanyId(company_id);
+        setKeyLoginCompanyName(company_name);
+        setKeyLoginRoleId(role_id);
+        setKeyLoginRoleName(role_role);
         fetchData();
         editor.commit();
     }
@@ -257,6 +264,51 @@ public class SessionManager {
 
     public void setLoginMode(String mode) {
         editor.putString(KEY_LOGIN_MODE, mode);
+        editor.commit();
+    }
+
+    public String getKeyLoginEmail() {
+        return pref.getString(KEY_LOGIN_EMAIL, "");
+    }
+
+    public void setKeyLoginEmail(String email) {
+        editor.putString(KEY_LOGIN_EMAIL, email);
+        editor.commit();
+    }
+
+    public String getKeyLoginCompanyId() {
+        return pref.getString(KEY_LOGIN_COMPANY_ID, "");
+    }
+
+    public void setKeyLoginCompanyId(String id) {
+        editor.putString(KEY_LOGIN_COMPANY_ID, id);
+        editor.commit();
+    }
+
+    public String getKeyLoginCompanyName() {
+        return pref.getString(KEY_LOGIN_COMPANY_NAME, "");
+    }
+
+    public void setKeyLoginCompanyName(String name) {
+        editor.putString(KEY_LOGIN_COMPANY_NAME, name);
+        editor.commit();
+    }
+
+    public String getKeyLoginRoleId() {
+        return pref.getString(KEY_LOGIN_ROLE_ID, "");
+    }
+
+    public void setKeyLoginRoleId(String email) {
+        editor.putString(KEY_LOGIN_ROLE_ID, email);
+        editor.commit();
+    }
+
+    public String getKeyLoginRoleName() {
+        return pref.getString(KEY_LOGIN_ROLE_NAME, "");
+    }
+
+    public void setKeyLoginRoleName(String name) {
+        editor.putString(KEY_LOGIN_ROLE_NAME, name);
         editor.commit();
     }
 }

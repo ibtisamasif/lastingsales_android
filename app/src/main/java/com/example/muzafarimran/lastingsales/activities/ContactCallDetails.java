@@ -1,7 +1,10 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -35,6 +38,11 @@ public class ContactCallDetails extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+//        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        toolbar.setNavigationIcon(upArrow);
+
         bTagButton = (Button) findViewById(R.id.b_tag_individual_contact_call_screen);
         Intent intent = getIntent();
         this.number = intent.getStringExtra("number");
@@ -96,5 +104,4 @@ public class ContactCallDetails extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

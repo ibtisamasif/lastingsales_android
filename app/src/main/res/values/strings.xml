@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LastingSales</string>
+    <string name="app_name"> LastingSales</string>
     <string name="mixpanel_key">347487b41c2e70ed4dcef0f8454ad710</string>
     <string name="title_activity_splash">LastingSales</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>

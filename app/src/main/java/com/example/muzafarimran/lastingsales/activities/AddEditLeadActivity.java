@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -168,6 +169,7 @@ public class AddEditLeadActivity extends Activity {
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+                        tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                         tempContact.save();
                         Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
                         finish();
@@ -184,6 +186,7 @@ public class AddEditLeadActivity extends Activity {
                         tempContact.setPhoneOne(intlNum);
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactEmail(contactEmail);
+                        tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                         if (tempContact.getContactSalesStatus() == null) {
                             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                         }

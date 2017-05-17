@@ -22,6 +22,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 import de.halfbit.tinybus.TinyBus;
 
 /**
@@ -126,6 +128,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (payload.has("dynamic_values")) {
                         dynamic_values = payload.getString("dynamic_values");
                     }
+//                    String created_at = null;
+//                    if (payload.has("created_at")) {
+//                        created_at = payload.getString("created_at");
+//                    }
+//                    String updated_at = null;
+//                    if (payload.has("updated_at")) {
+//                        updated_at = payload.getString("updated_at");
+//                    }
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
 
@@ -136,10 +146,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         tempContact.setPhoneOne(phone);
                         tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                         tempContact.setContactSalesStatus(status);
+//                        tempContact.setContactUpdated_at(Calendar.getInstance().getTimeInMillis()+"");
                         if (dynamic_values != null) {
                             tempContact.setDynamic(dynamic_values);
                         }
                         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+//                        if(created_at != null){
+//                            tempContact.setContactCreated_at(created_at);
+//                        }
+//                        if(updated_at != null){
+//                            tempContact.setContactUpdated_at(updated_at);
+//                        }
                         tempContact.save();
                     } else {
                         LSContact contact = new LSContact();
@@ -154,6 +171,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         }
                         contact.setContactType(LSContact.CONTACT_TYPE_SALES);
                         contact.setContactSalesStatus(status);
+//                        if(created_at != null){
+//                            tempContact.setContactCreated_at(created_at);
+//                        }
+//                        if(updated_at != null){
+//                            tempContact.setContactUpdated_at(updated_at);
+//                        }
                         if (dynamic_values != null) {
                             contact.setDynamic(dynamic_values);
                         }
@@ -172,11 +195,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String address = payload.getString("address");
                     String status = payload.getString("status");
                     String lead_type = payload.getString("lead_type");
+                    String created_at = null;
+//                    if(payload.has("created_at")){
+//                        created_at = payload.getString("created_at");
+//                    }
+//                    String updated_at = null;
+//                    if(payload.has("updated_at")){
+//                        updated_at = payload.getString("updated_at");
+//                    }
                     String dynamic_values = null;
                     if (payload.has("dynamic_values")) {
                         dynamic_values = payload.getString("dynamic_values");
                     }
-
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
                     LSContact contact = LSContact.getContactFromServerId(id);
@@ -190,6 +220,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         contact.setDynamic(dynamic_values);
                     }
                     contact.setContactType(lead_type);
+//                    if(updated_at != null){
+//                        contact.setContactUpdated_at(updated_at);
+//                    }
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                     contact.save();
                     String newType = contact.getContactType();

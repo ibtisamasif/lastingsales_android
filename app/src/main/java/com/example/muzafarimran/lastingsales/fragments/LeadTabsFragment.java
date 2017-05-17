@@ -4,15 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.OvershootInterpolator;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
@@ -27,7 +23,6 @@ import com.github.clans.fab.FloatingActionMenu;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
@@ -137,13 +132,13 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
     private void updateTabFigues() {
         //List Taken To Filter out Colleagues
         //Leads List
-        List<LSContact> allLeads = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+        List<LSContact> allLeads = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
 
         //All Won
-        List<LSContact> allWon = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+        List<LSContact> allWon = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
 
         //All Lost
-        List<LSContact> allLost = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+        List<LSContact> allLost = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
 
         //InActive Leads List
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();

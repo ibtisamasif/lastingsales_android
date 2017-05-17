@@ -141,22 +141,25 @@ public class LogInActivity extends AppCompatActivity {
                         String firstname = responseObject.getString("firstname");
                         String lastname = responseObject.getString("lastname");
                         String email = responseObject.getString("email");
-                        String hash_key = responseObject.getString("hash_key");
+//                        String hash_key = responseObject.getString("hash_key");
                         String phone = responseObject.getString("phone");
                         String image = responseObject.getString("image");
+//                        String created_by = responseObject.getString("created_by");
+//                        String updated_by = responseObject.getString("updated_by");
                         String image_path = responseObject.getString("image_path");
                         String api_token = responseObject.getString("api_token");
-                        String role_id = responseObject.getString("role_id");
+
 
                         JSONObject companyObject = responseObject.getJSONObject("company");
                         String company_id = companyObject.getString("id");
                         String company_name = companyObject.getString("name");
 
                         JSONObject roleObject = responseObject.getJSONObject("role");
+                        String role_id = roleObject.getString("id");
                         String role_role = roleObject.getString("role");
 
                         String completeImagePath = MyURLs.IMAGE_URL + image_path;
-                        sessionManager.loginnUser(user_id, api_token, Calendar.getInstance().getTimeInMillis(), number, firstname, lastname, completeImagePath);
+                        sessionManager.loginnUser(user_id, api_token, Calendar.getInstance().getTimeInMillis(), number, firstname, lastname, completeImagePath, email, company_id, company_name, role_id, role_role);
                         sessionManager.getKeyLoginFirebaseRegId();
                         updateAgentFirebaseIdToServer(activity);
 
@@ -173,12 +176,12 @@ public class LogInActivity extends AppCompatActivity {
 
                             JSONObject props = new JSONObject();
 
-                            props.put("$first_name", ""+firstname);
-                            props.put("$last_name", ""+lastname);
-                            props.put("$email", ""+email);
-                            props.put("role", ""+role_role);
-                            props.put("company_name", ""+company_name);
-                            props.put("company_id", ""+company_id);
+                            props.put("$first_name", "" + firstname);
+                            props.put("$last_name", "" + lastname);
+                            props.put("$email", "" + email);
+                            props.put("role", "" + role_role);
+                            props.put("company_name", "" + company_name);
+                            props.put("company_id", "" + company_id);
                             props.put("activated", "yes");
 
                             mixpanel.getPeople().set(props);
@@ -201,15 +204,19 @@ public class LogInActivity extends AppCompatActivity {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse() called with: error = [" + error + "]");
                 if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
-                    Toast.makeText(getApplicationContext(), "No Internet Connectivity", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
                 } else {
                     try {
-                        if (error.networkResponse.statusCode == 400) {
-                            Toast.makeText(activity, "Wrong Password.", Toast.LENGTH_SHORT).show();
-                        } else if (error.networkResponse.statusCode == 404) {
-                            Toast.makeText(activity, "User Does not Exist.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(activity, "Server Error.", Toast.LENGTH_SHORT).show();
+                        if (error.networkResponse != null) {
+                            if (error.networkResponse.statusCode == 400) {
+                                Toast.makeText(activity, "Wrong Password.", Toast.LENGTH_SHORT).show();
+                            } else if (error.networkResponse.statusCode == 404) {
+                                Toast.makeText(activity, "User Does not Exist.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(activity, "Server Error.", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Poor Internet Connectivity", Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

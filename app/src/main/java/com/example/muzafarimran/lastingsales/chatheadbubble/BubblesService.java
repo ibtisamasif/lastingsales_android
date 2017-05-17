@@ -53,13 +53,7 @@ public class BubblesService extends Service {
     public boolean onUnbind(Intent intent) {
         if(mbbl!=null)
         recycleBubble(mbbl);
-
-
-
-
-
         return super.onUnbind(intent);
-
 }
 
     private void recycleBubble(final BubbleLayout bubble) {
@@ -148,8 +142,6 @@ public class BubblesService extends Service {
 
     public void removeBubble(BubbleLayout bubbl) {
         if (mbbl!=null) {
-
-
             recycleBubble(mbbl);
         }
 

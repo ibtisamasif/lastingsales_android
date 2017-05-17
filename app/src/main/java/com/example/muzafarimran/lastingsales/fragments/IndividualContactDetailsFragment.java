@@ -54,6 +54,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
     public static final String TAG = "IndividualConDetailFrag";
     //    TextView tvName;
     TextView tvNumber;
+    TextView tvDefaultText;
     //    TextView tvEmail;
     TextView tvAddress;
     ListView listView = null;
@@ -149,7 +150,9 @@ public class IndividualContactDetailsFragment extends TabFragment {
         tvNumber = (TextView) view.findViewById(R.id.tvNumber);
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
         tvAddress = (TextView) view.findViewById(R.id.tvAddress);
+        tvDefaultText = (TextView) view.findViewById(R.id.tvDefaultText);
         bSave = (Button) view.findViewById(R.id.contactDetailsSaveButton);
+        tvDefaultText.setVisibility(View.GONE);
 //        bSave.setVisibility(View.GONE);
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,6 +231,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                 }
                 mContact.save();
+                Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onClick: " + mContact.getDynamic());
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getActivity());
                 dataSenderAsync.run();
@@ -253,6 +257,10 @@ public class IndividualContactDetailsFragment extends TabFragment {
         Log.d(TAG, "Display SIZE: " + display);
         List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();// TODO if column is null dont render view
         Log.d(TAG, "onCreateView: Size: " + allColumns.size());
+        if(allColumns == null || allColumns.size() == 0){
+            tvDefaultText.setVisibility(View.VISIBLE);
+            bSave.setVisibility(View.GONE);
+        }
         for (int i = 0; i < allColumns.size(); i++) {
             LinearLayout l = new LinearLayout(getContext());
             l.setFocusable(true);

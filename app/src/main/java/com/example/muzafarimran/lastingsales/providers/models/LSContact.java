@@ -49,6 +49,7 @@ public class LSContact extends SugarRecord {
     private String serverId;
     private String dynamic;
     private boolean isLeadDeleted;
+    private Long updatedAt;
 
 
     public LSContact() {
@@ -67,8 +68,7 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getContactsByTypeInDescOrder(String type) {
         try {
-            return Select.from(LSContact.class).where(Condition.prop("contact_type").eq(type)).orderBy("id DESC").list();
-//            return LSContact.find(LSContact.class, "contact_type = ? ", type);
+            return Select.from(LSContact.class).where(Condition.prop("contact_type").eq(type)).orderBy("updated_at DESC").list();
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
@@ -94,10 +94,10 @@ public class LSContact extends SugarRecord {
 //            return new ArrayList<LSContact>();
 //        }
 //    }
-
-    public static List<LSContact> getSalesContactsByLeadSalesStatus(String leadType) {
+//"SELECT * FROM " + NamingHelper.toSQLName(type) + " ORDER BY ID ASC LIMIT 1"
+    public static List<LSContact> getArrangedSalesContactsByLeadSalesStatus(String leadType) {
         try {
-            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = ? and contact_sales_status = ? ", LSContact.CONTACT_TYPE_SALES, leadType);
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' and contact_sales_status = '"+leadType+"'"+"ORDER BY updated_at DESC");
 //            return Select.from(LSContact.class)
 //                    .where(Condition.prop("contact_sales_status").eq(leadType),
 //                            Condition.prop("contact_type").eq(LSContact.CONTACT_TYPE_SALES),
@@ -133,7 +133,7 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getAllInactiveLeadContacts() {
         try {
-            ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getSalesContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
+            ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getArrangedSalesContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
             ArrayList<LSContact> allInactiveLeads = new ArrayList<LSContact>();
             long milisecondsIn3Days = 259200000;
 //            long milliSecondsIn1Min = 30000; // 30 seconds for now
@@ -422,29 +422,37 @@ public class LSContact extends SugarRecord {
     public void setContactAddress(String contactAddress) {
         this.contactAddress = contactAddress;
     }
-
+    @Deprecated
     public String getContactCreated_at() {
         return contactCreated_at;
     }
-
+    @Deprecated
     public void setContactCreated_at(String contactCreated_at) {
         this.contactCreated_at = contactCreated_at;
     }
-
+    @Deprecated
     public String getContactUpdated_at() {
         return contactUpdated_at;
     }
-
+    @Deprecated
     public void setContactUpdated_at(String contactUpdated_at) {
         this.contactUpdated_at = contactUpdated_at;
     }
-
+    @Deprecated
     public String getContactDeleted_at() {
         return contactDeleted_at;
     }
-
+    @Deprecated
     public void setContactDeleted_at(String contactDeleted_at) {
         this.contactDeleted_at = contactDeleted_at;
+    }
+
+    public Long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getContactSalesStatus() {

@@ -60,9 +60,10 @@
     </style>
 
     <!-- Contextual ActionBar Used in Add/Edit Notes Screen ActionBar and Contextual Action Bar-->
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionModeBackground">@color/colorPrimary</item>
         <item name="android:textColor">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="MyTransparentTheme" parent="Theme.AppCompat.Dialog.Alert">

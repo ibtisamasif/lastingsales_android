@@ -225,13 +225,20 @@ public class BusinessContactsAdapter extends BaseAdapter implements Filterable {
                     List<LSContact> filterResultsData = new ArrayList<>();
                     //int length = charSequence.length();
                     for (int i = 0; i < mContacts.size(); i++) {
-                        if (mContacts.get(i).getContactName() != null && mContacts.get(i).getContactName().toLowerCase().contains(((String) charSequence).toLowerCase())) {
+                        if (mContacts.get(i).getContactName() != null && mContacts.get(i).getContactName().replaceAll("\\s+","").toLowerCase().contains(((String) charSequence).toLowerCase().replaceAll("\\s+",""))) {
                             filterResultsData.add(mContacts.get(i));
                             continue;
                         }
-                        if (mContacts.get(i).getPhoneOne().toLowerCase().contains(((String) charSequence).toLowerCase())) {
+                        if (mContacts.get(i).getPhoneOne().replaceAll("\\s+","").toLowerCase().contains(((String) charSequence).toLowerCase().replaceAll("\\s+",""))) {
                             filterResultsData.add(mContacts.get(i));
                         }
+//                        if (mContacts.get(i).getContactName() != null && mContacts.get(i).getContactName().toLowerCase().contains(((String) charSequence).toLowerCase())) {
+//                            filterResultsData.add(mContacts.get(i));
+//                            continue;
+//                        }
+//                        if (mContacts.get(i).getPhoneOne().toLowerCase().contains(((String) charSequence).toLowerCase())) {
+//                            filterResultsData.add(mContacts.get(i));
+//                        }
                     }
                     results.values = filterResultsData;
                     results.count = filterResultsData.size();

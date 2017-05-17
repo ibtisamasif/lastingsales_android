@@ -9,6 +9,8 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.NotificationBuilder;
 
+import java.util.Calendar;
+
 import de.halfbit.tinybus.TinyBus;
 
 /**
@@ -25,6 +27,7 @@ class UnknownProcessor {
         tempContact.setPhoneOne(call.getContactNumber());
         tempContact.setContactName(call.getContactName());
         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+        tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
         tempContact.save();
         // Check if type is incoming , outgoing or missed
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() > 0L) {

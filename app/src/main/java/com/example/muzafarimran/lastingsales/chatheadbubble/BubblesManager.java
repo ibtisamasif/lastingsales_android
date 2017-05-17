@@ -80,11 +80,9 @@ public class BubblesManager {
     public void initialize() {
         Intent serviceIntent = new Intent(context, BubblesService.class);
 
-        context.startService(serviceIntent);
-        context.bindService(serviceIntent, bubbleServiceConnection,
+        context.getApplicationContext().startService(serviceIntent);
+        context.getApplicationContext().bindService(serviceIntent, bubbleServiceConnection,
                 Context.BIND_AUTO_CREATE);
-
-
     }
 
     public void recycle() {

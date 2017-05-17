@@ -5,8 +5,11 @@ import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.NotificationBuilder;
+
+import java.util.Calendar;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -19,6 +22,11 @@ public class LeadProcessor {
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
         Log.d(TAG, "LeadProcessor: Process() Entered");
+        LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());
+        if(contact != null){
+            contact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+            contact.save();
+        }
         // Check if type is incoming , outgoing or missed
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() > 0L) {
             //Incoming

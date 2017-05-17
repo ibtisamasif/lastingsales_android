@@ -57,7 +57,7 @@ public class LostFragment extends  TabFragment{
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+        List<LSContact> contacts = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
         setList(contacts);
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
@@ -71,13 +71,13 @@ public class LostFragment extends  TabFragment{
 
     @Subscribe
     public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
-        List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+        List<LSContact> contacts = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
         setList(contacts);
     }
 
     @Subscribe
     public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
-        List<LSContact> contacts = LSContact.getSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+        List<LSContact> contacts = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
         setList(contacts);
     }
 
