@@ -28,7 +28,7 @@ public class UnlabeledProcessor {
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() > 0L) {
             //Incoming
             if(showNotification) {
-                NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
             InquiryManager.Remove(mContext, call);
@@ -41,7 +41,7 @@ public class UnlabeledProcessor {
         } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
             //Outgoing
             if(showNotification) {
-                NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
             InquiryManager.Remove(mContext, call);

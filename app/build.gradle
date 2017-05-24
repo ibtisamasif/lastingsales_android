@@ -8,14 +8,13 @@ android {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 21
-        versionName "1.18"
+        versionCode 23
+        versionName "1.20"
         jackOptions {
             enabled false
         }
         multiDexEnabled true
     }
-
     signingConfigs {
         debug {
             storeFile file('E:/ibtii/work/Vivid/configuration data/lskey.jks')
@@ -24,14 +23,16 @@ android {
             keyPassword "J7Z/}aB*6'r7q+A~"
         }
     }
-
     buildTypes {
         release {
+//            debuggable false
             minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             debuggable true
+//            minifyEnabled true
         }
     }
     packagingOptions {
@@ -47,28 +48,29 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
     compileOptions {
-        targetCompatibility 1.7
-        sourceCompatibility 1.7
+        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_7
     }
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
-        compile ('com.google.android.gms:play-services-auth:10.2.1') {
-            exclude group: 'org.apache.httpcomponents'
-//            exclude group: 'com.google.guava'
-        }
-        compile 'pub.devrel:easypermissions:0.2.1'
-        compile('com.google.api-client:google-api-client-android:1.22.0') {
-            exclude group: 'org.apache.httpcomponents'
-//            exclude group: 'com.google.guava'
-        }
-        compile('com.google.apis:google-api-services-calendar:v3-rev243-1.22.0') {
-            exclude group: 'org.apache.httpcomponents'
-//            exclude group: 'com.android.support'
-//            exclude module: 'support-annotations'
-//            exclude group: 'com.google.guava'
-        }
+    compile('com.google.android.gms:play-services-auth:10.2.4') {
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'com.google.guava'
+    }
+    compile 'pub.devrel:easypermissions:0.2.1'
+    compile('com.google.api-client:google-api-client-android:1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'com.google.guava'
+    }
+    compile('com.google.apis:google-api-services-calendar:v3-rev243-1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'com.android.support'
+        exclude module: 'support-annotations'
+        exclude group: 'com.google.guava'
+    }
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
@@ -77,6 +79,7 @@ dependencies {
     compile 'com.wdullaer:materialdatetimepicker:2.5.0'
     testCompile 'junit:junit:4.12'
     compile 'com.github.satyan:sugar:1.4'
+    compile 'com.github.satyan:sugar:-SNAPSHOT'
     compile 'com.googlecode.libphonenumber:libphonenumber:7.7.3'
     compile 'de.halfbit:tinybus:3.0.2'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'

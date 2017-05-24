@@ -322,7 +322,9 @@ public class RequestQueue {
             try {
 //                Log.d("DataSender", "Size " + mCurrentRequests.size());
                 if (mCurrentRequests.size() <= 0) {
-                    mAllFinishedListener.onAllFinished();
+                    if (mAllFinishedListener !=null ){ //TODO finalize the check
+                        mAllFinishedListener.onAllFinished();
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

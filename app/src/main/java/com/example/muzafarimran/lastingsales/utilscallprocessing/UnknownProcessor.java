@@ -33,7 +33,7 @@ class UnknownProcessor {
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() > 0L) {
             //Incoming with whome Agent have talked
             if (showNotification) {
-                NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             InquiryManager.Remove(mContext, call);
             // Call Saved
@@ -48,7 +48,7 @@ class UnknownProcessor {
         } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) && call.getDuration() > 0L) {
             //Outgoing with whome Agent have talked
             if (showNotification) {
-                NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             InquiryManager.Remove(mContext, call);
             // Call Saved

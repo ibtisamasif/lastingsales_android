@@ -30,27 +30,26 @@
             android:weightSum="1.0">
 
             <ImageView
-                android:id="@+id/ivLogoLoginScreen"
                 android:layout_width="wrap_content"
                 android:layout_height="180dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="2dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="2dp"
                 app:srcCompat="@drawable/login_logo" />
 
             <LinearLayout
                 android:id="@+id/numberParentLoginScreen"
                 android:layout_width="270dp"
                 android:layout_height="40dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="2dp"
                 android:background="@color/half_white2"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/numberLoginScreen"
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/lightGray"
@@ -68,14 +67,14 @@
                 android:id="@+id/passwordParentlayoutLoginScreen"
                 android:layout_width="270dp"
                 android:layout_height="40dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:background="@color/half_white2"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/passwordLoginScreen"
+                    android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/lightGray"
@@ -83,8 +82,8 @@
                     android:imeOptions="actionGo"
                     android:inputType="textPassword|textNoSuggestions"
                     android:maxLines="1"
-                    android:paddingStart="8dp"
                     android:paddingLeft="8dp"
+                    android:paddingStart="8dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textSize="20sp" />
@@ -95,10 +94,36 @@
                 android:id="@+id/loginButtonLoginScreen"
                 android:layout_width="270dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/btn_secondary"
-                android:text="Sign In"
-                android:layout_gravity="center"/>
+                android:text="Sign In" />
+
+            <LinearLayout
+                android:id="@+id/llSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:background="@color/half_white2"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Not a member?" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Sign up now."
+                    android:textColor="@color/blueLighter" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

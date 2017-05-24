@@ -42,6 +42,7 @@ public class MyCalendarEvent {
         }
     }
 
+    @Deprecated
     public static void calendarFunction(Context context) {
         Calendar cal = Calendar.getInstance();
         if (Build.VERSION.SDK_INT >= 14) {
@@ -53,7 +54,7 @@ public class MyCalendarEvent {
                     .putExtra(CalendarContract.Events.DESCRIPTION, "Integration of google calendar with lastingSales android app")
                     .putExtra(CalendarContract.Events.EVENT_LOCATION, "Arfa Tower")
                     .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
-                    .putExtra(Intent.EXTRA_EMAIL, "mannan541@live.com");
+                    .putExtra(Intent.EXTRA_EMAIL, "ibtisamasif@gmail.com");
             context.startActivity(intent);
         }
         else {

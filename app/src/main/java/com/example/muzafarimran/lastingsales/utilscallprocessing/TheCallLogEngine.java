@@ -65,10 +65,10 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                 Date callDayTime = new Date(Long.valueOf(callDate));
                 String callDuration = managedCursor.getString(duration);
 
-                if (LSCall.ifExist(callId)) {
-                    Log.d(TAG, "Exists: ");
-                    continue;
-                } else {
+//                if (LSCall.ifExist(callId)) {
+//                    Log.d(TAG, "Exists: ");
+//                    continue;
+//                } else {
                     Log.d(TAG, "CallId: " + callId);
                     Log.d(TAG, "CallNumber: " + callNumber);
                     Log.d(TAG, "CallName: " + callName);
@@ -107,7 +107,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
+//                }
             } while (managedCursor.moveToPrevious());
         } catch (Exception e) {
             e.printStackTrace();

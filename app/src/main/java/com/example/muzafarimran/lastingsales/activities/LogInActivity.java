@@ -9,10 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,12 +24,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
-import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManager;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -44,8 +42,8 @@ public class LogInActivity extends AppCompatActivity {
 
     public static final String TAG = "LogInActivity";
     ProgressDialog pdLoading;
-    RequestQueue requestQueue;
-    TextView tvEmail, tvPassword;
+    EditText etEmail, etPassword;
+    LinearLayout llSignup;
     String email, password;
     Button loginButton;
     SessionManager sessionManager;
@@ -67,27 +65,28 @@ public class LogInActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), NavigationDrawerActivity.class));
             finish();
         }
-
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
         //this method will be running on UI thread
         pdLoading.setMessage("Please Wait...");
         loginButton = (Button) findViewById(R.id.loginButtonLoginScreen);
-        tvEmail = (TextView) findViewById(R.id.numberLoginScreen);
-        tvPassword = (TextView) findViewById(R.id.passwordLoginScreen);
-        tvEmail.getBackground().clearColorFilter();
-        tvPassword.getBackground().clearColorFilter();
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        llSignup = (LinearLayout) findViewById(R.id.llSignup);
+        etEmail.getBackground().clearColorFilter();
+        etPassword.getBackground().clearColorFilter();
+
 //        hardcoding number and password for develoment speedup purposes
-//        tvEmail.setText("ibtiagent6@gmail.com");
-//        tvPassword.setText("111111");
+//        etEmail.setText("ibtiagent21@gmail.com");
+//        etPassword.setText("111111");
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvEmail.setError(null);
-                tvPassword.setError(null);
+                etEmail.setError(null);
+                etPassword.setError(null);
                 Boolean emailVarified = true, passwordVarified = true;
-                email = tvEmail.getText().toString();
-                password = tvPassword.getText().toString();
+                email = etEmail.getText().toString();
+                password = etPassword.getText().toString();
 
                 if (email.length() < 7) {
                     emailVarified = false;
@@ -99,15 +98,23 @@ public class LogInActivity extends AppCompatActivity {
 //                    passwordVarified = false;
 //                }
                 if (!emailVarified) {
-                    tvEmail.setError("Invalid Email!");
+                    etEmail.setError("Invalid Email!");
                 }
                 if (!passwordVarified) {
-                    tvPassword.setError("Invalid Password!");
+                    etPassword.setError("Invalid Password!");
                 }
                 if (emailVarified && passwordVarified) {
                     pdLoading.show();
                     makeLoginRequest(LogInActivity.this, email, password);
                 }
+            }
+        });
+
+        llSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+                Toast.makeText(LogInActivity.this, "Signup", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -149,23 +156,33 @@ public class LogInActivity extends AppCompatActivity {
                         String image_path = responseObject.getString("image_path");
                         String api_token = responseObject.getString("api_token");
 
-
-                        JSONObject companyObject = responseObject.getJSONObject("company");
-                        String company_id = companyObject.getString("id");
-                        String company_name = companyObject.getString("name");
-
-                        JSONObject roleObject = responseObject.getJSONObject("role");
-                        String role_id = roleObject.getString("id");
-                        String role_role = roleObject.getString("role");
+                        String company_id = null;
+                        String company_name = null;
+                        if (responseObject.has("company_id") && !responseObject.isNull("company_id")){
+                            JSONObject companyObject = responseObject.getJSONObject("company");
+                            company_id = companyObject.getString("id");
+                            company_name = companyObject.getString("name");
+                        }
+                        String role_id = null;
+                        String role_role = null;
+                        if (responseObject.has("role_id") && !responseObject.isNull("role_id")){
+                            JSONObject roleObject = responseObject.getJSONObject("role");
+                            role_id = roleObject.getString("id");
+                            role_role = roleObject.getString("role");
+                        }
 
                         String completeImagePath = MyURLs.IMAGE_URL + image_path;
                         sessionManager.loginnUser(user_id, api_token, Calendar.getInstance().getTimeInMillis(), number, firstname, lastname, completeImagePath, email, company_id, company_name, role_id, role_role);
-                        sessionManager.getKeyLoginFirebaseRegId();
+                        sessionManager.getKeyLoginFirebaseRegId(); // Todo something fishy here
                         updateAgentFirebaseIdToServer(activity);
 
-                        activity.startActivity(new Intent(activity, NavigationDrawerActivity.class));
-                        activity.finish();
-
+                        if(company_id == null){
+                            activity.startActivity(new Intent(activity, CreateCompanyActivity.class));
+                            activity.finish();
+                        }else {
+                            activity.startActivity(new Intent(activity, NavigationDrawerActivity.class));
+                            activity.finish();
+                        }
                         Log.d(TAG, "onResponse: " + response);
                         Toast.makeText(activity, "" + user_id, Toast.LENGTH_SHORT).show();
                         try {
@@ -231,13 +248,6 @@ public class LogInActivity extends AppCompatActivity {
                 params.put("password", password);
                 return params;
             }
-
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-////                params.put("Content-Type", "application/x-www-form-urlencoded");
-//                return params;
-//            }
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,

@@ -67,6 +67,7 @@ public class TagNotificationDialogActivity extends Activity {
     public static final String LAUNCH_MODE_TAG_PHONE_NUMBER = "launch_mode_tag_phone_number";
 
     public static final String TAG_LAUNCH_MODE_PHONE_NUMBER = "phone_number";
+    public static final String TAG_LAUNCH_MODE_CONTACT_NAME = "contact_name";
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     public static final String TAG_LAUNCH_MODE_CONTACT_TYPE = "contact_type";
 
@@ -76,6 +77,7 @@ public class TagNotificationDialogActivity extends Activity {
     boolean editingMode = false;
     long contactIdLong = -1;
     String phoneNumberFromLastActivity;
+    String contactNameFromLastActivity;
     String preSelectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
     int year, month, day, hour, minute;
     private Uri uriContact;
@@ -127,17 +129,19 @@ public class TagNotificationDialogActivity extends Activity {
         }
 //        if launch mode is tag number then number is gotten out of bundle so it can be searched in
 //        phonebook and the number can be populated in the editText Field
-        else if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
+        if (launchMode.equals(LAUNCH_MODE_TAG_PHONE_NUMBER)) {
             Log.d(TAG, "onCreate: Tag Number");
             phoneNumberFromLastActivity = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
+            contactNameFromLastActivity = bundle.getString(TAG_LAUNCH_MODE_CONTACT_NAME);
             selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
             preSelectedContactType = selectedContactType;
             editingMode = false;
-            phoneNumberFromLastActivity = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
             String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(phoneNumberFromLastActivity);
             String nameFromPhoneBook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), internationalNumber);
             etContactPhone.setText(internationalNumber);
-            if (nameFromPhoneBook != null) {
+            if (contactNameFromLastActivity != null) {
+                etContactName.setText(contactNameFromLastActivity);
+            } else if (nameFromPhoneBook != null) {
                 etContactName.setText(nameFromPhoneBook);
             }
 //            populating name and phone number below after findVieByIDs have been called

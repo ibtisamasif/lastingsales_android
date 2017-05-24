@@ -19,7 +19,7 @@
             android:background="@drawable/shape_rounded_corners_accent_color"
             android:gravity="center"
             android:padding="12dp"
-            android:text="@string/popup_title_add_new_followup"
+            android:text="@string/popup_title_add_new_reminder"
             android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold" />

@@ -58,7 +58,7 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return "Notes";
             case 2:
-                return "Followup";
+                return "Reminder";
             case 3:
                 return "Calls";
             default:

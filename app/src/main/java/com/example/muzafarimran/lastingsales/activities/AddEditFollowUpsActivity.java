@@ -38,8 +38,8 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
     public static final String LAUNCH_MODE_ADD_NEW_FOLLOWUP = "launch_mode_add_new_followup";
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     public static final String TAG_LAUNCH_MODE_FOLLOWUP_ID = "followup_id";
-    private static final String TITLE_ADD_FOLLOWUP = "Add Followup";
-    private static final String TITLE_EDIT_FOLLOWUP = "Edit Followup";
+    private static final String TITLE_ADD_FOLLOWUP = "Add Reminder";
+    private static final String TITLE_EDIT_FOLLOWUP = "Edit Reminder";
 
     String launchMode = LAUNCH_MODE_ADD_NEW_FOLLOWUP;
 
@@ -178,7 +178,7 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
                             try {
 
                                 int calendarID = (int) contactIdLong;
-                                    MyCalendarEvent.setGoogleEvent(AddEditFollowUpsActivity.this, startDatetime, endDatetime, title, description, location, calendarID);
+                                MyCalendarEvent.setGoogleEvent(AddEditFollowUpsActivity.this, startDatetime, endDatetime, title, description, location, calendarID);
 
                                 Log.d(TAG, "ID: " + calendarID);
                                 Log.d(TAG, "Title: " + title);
@@ -218,44 +218,42 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
                         TempFollowUp.save();
                         setAlarm(getApplicationContext(), TempFollowUp);
 
-//
-//                        long selected_year = (long)(mYear);
-//                        long selected_month = (long)(mMonth+1);
-//                        long selected_day = (long)(mDay);
-//                        long selected_hour = (long)(mHour);
-//                        long selected_minute = (long)(mMinute);
-//
-//                        String mySelectedDateTime =  selected_year
-//                                +String.format("-%02d",selected_month)+String.format("-%02d",selected_day)
-//                                +String.format(" %02d",selected_hour)+String.format(":%02d",selected_minute);
-//
-//                        String endDatetime =  selected_year
-//                                +String.format("-%02d",selected_month)+String.format("-%02d",selected_day)
-//                                +String.format(" %02d",selected_hour)+String.format(":%02d",selected_minute+30)+":00";
-//
-//                        long selectedDateTime = MyDateTimeStamp.dateTimeLong(mySelectedDateTime+":00");
-//                        long currentDateTime = MyDateTimeStamp.dateTimeLong(myCurrentDateTime+":00");
-//                        if (!mySelectedDateTime.equals(myCurrentDateTime) && selectedDateTime > currentDateTime){
-//                            String title = "LastingSales "+selectedContact.getContactName()+"("+selectedContact.getPhoneOne()+")";
-//                            String location = "";
-//                            String startDatetime = mySelectedDateTime+":00";
-//                            String description = titleText;
-//                            try {
-//
-//                                int calendarID = (int)contactIdLong;
-//                                MyCalendarEvent.setGoogleEvent(AddEditFollowUpsActivity.this, startDatetime, endDatetime, title, description, location, calendarID);
-//
-//                                Log.d(TAG, "ID: "+calendarID);
-//                                Log.d(TAG, "Title: "+title);
-//                                Log.d(TAG, "Descr: "+description);
-//                                Log.d(TAG, "Start: "+startDatetime);
-//                                Log.d(TAG, "End: "+endDatetime);
-//                                Log.d(TAG, "Location: "+location);
-//                            }
-//                            catch (Exception e){
-//                                Log.d(TAG, ""+e);
-//                            }
-//                        }
+                        long selected_year = (long)(mYear);
+                        long selected_month = (long)(mMonth+1);
+                        long selected_day = (long)(mDay);
+                        long selected_hour = (long)(mHour);
+                        long selected_minute = (long)(mMinute);
+
+                        String mySelectedDateTime =  selected_year
+                                +String.format("-%02d",selected_month)+String.format("-%02d",selected_day)
+                                +String.format(" %02d",selected_hour)+String.format(":%02d",selected_minute);
+
+                        String endDatetime =  selected_year
+                                +String.format("-%02d",selected_month)+String.format("-%02d",selected_day)
+                                +String.format(" %02d",selected_hour)+String.format(":%02d",selected_minute+30)+":00";
+
+                        long selectedDateTime = MyDateTimeStamp.dateTimeLong(mySelectedDateTime+":00");
+                        long currentDateTime = MyDateTimeStamp.dateTimeLong(myCurrentDateTime+":00");
+                        if (!mySelectedDateTime.equals(myCurrentDateTime) && selectedDateTime > currentDateTime){
+                            String title = "LastingSales "+selectedContact.getContactName()+"("+selectedContact.getPhoneOne()+")";
+                            String location = "";
+                            String startDatetime = mySelectedDateTime+":00";
+                            String description = titleText;
+                            try {
+                                int calendarID = (int)contactIdLong;
+                                MyCalendarEvent.setGoogleEvent(AddEditFollowUpsActivity.this, startDatetime, endDatetime, title, description, location, calendarID);
+
+                                Log.d(TAG, "ID: "+calendarID);
+                                Log.d(TAG, "Title: "+title);
+                                Log.d(TAG, "Descr: "+description);
+                                Log.d(TAG, "Start: "+startDatetime);
+                                Log.d(TAG, "End: "+endDatetime);
+                                Log.d(TAG, "Location: "+location);
+                            }
+                            catch (Exception e){
+                                Log.d(TAG, ""+e);
+                            }
+                        }
                         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                         dataSenderAsync.run();
                     }
@@ -324,7 +322,7 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
                 Calendar now = Calendar.getInstance();
                 DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(AddEditFollowUpsActivity.this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.setCancelable(false);
-                datePickerDialog.setTitle("Select Date for Followup");
+                datePickerDialog.setTitle("Select Date for Reminder");
                 datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
             }
         });
@@ -334,7 +332,7 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
                 Calendar now = Calendar.getInstance();
                 TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(AddEditFollowUpsActivity.this, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);
                 timePickerDialog.setCancelable(false);
-                timePickerDialog.setTitle("Select Time for Followup");
+                timePickerDialog.setTitle("Select Time for Reminder");
                 timePickerDialog.setMinTime(now.HOUR_OF_DAY, now.MINUTE, now.SECOND);
                 timePickerDialog.show(getFragmentManager(), "Timepickerdialog");
             }

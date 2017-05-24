@@ -4,6 +4,8 @@ public class MyURLs {
 
 //    public static String LOGIN_URL_OLD = "http://api.lastingsales.com/api/auth/login";
     public static String LOGIN_URL = "http://api.lastingsales.com/api/v1/auth/login";
+    public static String SIGNUP_URL = "http://staging.lastingsales.com/api/v1/auth/register"; //TODO staging currently
+    public static String ADD_COMPANY_URL = "http://staging.lastingsales.com/api/v1/company"; //TODO staging currently
     public static String IMAGE_URL = "http://api.lastingsales.com/";
     public static String ADD_CONTACT = "http://api.lastingsales.com/api/v1/lead";
     public static String ADD_FOLLOWUP = "http://api.lastingsales.com/api/v1/lead/"; //SampleFormatComplete ADD_FOLLOWUP = "http://staging.lastingsales.com/api/v1/lead/85/followup";

@@ -148,7 +148,7 @@ public class DataSenderAsync {
                 }
             }.execute();
         } else {
-            Log.d(TAG, "run: NotRunning");
+            Log.d(TAG, "run: NotRunning"); //TODO Qmobile was falling here
         }
     }
 
@@ -367,6 +367,7 @@ public class DataSenderAsync {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+//                Log.d(TAG, "onErrorResponse: error.networkResponse.data " +(new String(error.networkResponse.data)));
 //                Log.d(TAG, "onErrorResponse: statusCode: "+error.networkResponse.statusCode);
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddCall");
 //                try {

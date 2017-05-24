@@ -15,9 +15,9 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
  */
 
 public class NotificationBuilder {
-     public static void showTagNumberPopup(Context ctx, String number) {
+     public static void showTagNumberPopup(Context ctx, String contactName, String contactNumber) {
         NotificationManager mNotificationManager;
-        String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+        String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactNumber);
         LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
 
         if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
@@ -30,6 +30,7 @@ public class NotificationBuilder {
             intent.putExtra(TagNotificationDialogActivity.ACTIVITY_LAUNCH_MODE, TagNotificationDialogActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
             intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
             intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
+            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, contactName);
             intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""+tempContact.getId()); //backward compatibility & May be needed in future
 //            intent.putExtra(TagNotificationDialogActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_NOTIFICATION);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -42,6 +43,7 @@ public class NotificationBuilder {
             intent.putExtra(TagNotificationDialogActivity.ACTIVITY_LAUNCH_MODE, TagNotificationDialogActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
             intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
             intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, intlNumber);
+            intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, contactName);
             intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
 //            intent.putExtra(TagNotificationDialogActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_NOTIFICATION);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

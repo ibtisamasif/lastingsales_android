@@ -81,7 +81,7 @@ public class AddEditLeadActivity extends Activity {
     private Button bColleagueRadio;
     private Button bSalesRadio;
     private Uri uriContact;
-    private String contactID;
+    //    private String contactID;
     private LSContact selectedContact = null;
     private String contactPhone;
     private String contactName;
@@ -359,10 +359,9 @@ public class AddEditLeadActivity extends Activity {
 
     private String retrieveContactNumber() {
         String contactNumber = null;
+        String contactID = null;
         // getting contacts ID
-        Cursor cursorID = getContentResolver().query(uriContact,
-                new String[]{ContactsContract.Contacts._ID},
-                null, null, null);
+        Cursor cursorID = getContentResolver().query(uriContact, new String[]{ContactsContract.Contacts._ID}, null, null, null);
         if (cursorID.moveToFirst()) {
             contactID = cursorID.getString(cursorID.getColumnIndex(ContactsContract.Contacts._ID));
         }
@@ -371,10 +370,57 @@ public class AddEditLeadActivity extends Activity {
         Cursor cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
                 ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
-                        ContactsContract.CommonDataKinds.Phone.TYPE + " = " +
-                        ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
+                        ContactsContract.CommonDataKinds.Phone.TYPE + " = " + ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                 new String[]{contactID},
                 null);
+        if (cursorPhone.moveToFirst()) {
+            contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        }
+        if (contactNumber == null || contactNumber.equals("")) {
+            cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
+                            ContactsContract.CommonDataKinds.Phone.TYPE + " = " + ContactsContract.CommonDataKinds.Phone.TYPE_MAIN
+                    ,
+                    new String[]{contactID},
+                    null);
+        }
+        if (cursorPhone.moveToFirst()) {
+            contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        }
+        if (contactNumber == null || contactNumber.equals("")) {
+            cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
+                            ContactsContract.CommonDataKinds.Phone.TYPE + " = " + ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+                    ,
+                    new String[]{contactID},
+                    null);
+        }
+        if (cursorPhone.moveToFirst()) {
+            contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        }
+        if (contactNumber == null || contactNumber.equals("")) {
+            cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
+                            ContactsContract.CommonDataKinds.Phone.TYPE + " = " + ContactsContract.CommonDataKinds.Phone.TYPE_HOME
+                    ,
+                    new String[]{contactID},
+                    null);
+        }
+        if (cursorPhone.moveToFirst()) {
+            contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        }
+        if (contactNumber == null || contactNumber.equals("")) {
+            cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
+                            ContactsContract.CommonDataKinds.Phone.TYPE + " = " + ContactsContract.CommonDataKinds.Phone.TYPE_OTHER
+                    ,
+                    new String[]{contactID},
+                    null);
+        }
         if (cursorPhone.moveToFirst()) {
             contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
         }
