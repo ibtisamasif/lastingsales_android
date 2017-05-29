@@ -62,6 +62,7 @@ public class AddEditLeadActivity extends Activity {
     public static final String MIXPANEL_SOURCE_UNLABELED = "Unlabeled";
     public static final String MIXPANEL_SOURCE_IGNORE = "Ignored";
     public static final String MIXPANEL_SOURCE_COLLEAGUE = "Colleague";
+    public static final String MIXPANEL_SOURCE_INQUIRY = "Inquiry";
 
 
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
@@ -123,6 +124,14 @@ public class AddEditLeadActivity extends Activity {
         }
         if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
             populateCreateContactView();
+            String num = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
+            if(num != null){
+                etContactPhone.setText(num);
+                String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(this, num);
+                if(name != null){
+                    etContactName.setText(name);
+                }
+            }
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
             populateUpdateContactView(bundle);

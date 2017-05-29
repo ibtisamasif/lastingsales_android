@@ -15,6 +15,8 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 
+//Deprecated but still in use
+@Deprecated
 public class LSContactChooserActivity extends AppCompatActivity  {
     public static final String LAUNCH_MODE_ALL_CONTACTS = "launch_mode_all_contacts";
     public static final String LAUNCH_MODE_CONTACTS_COLLEGUES_AND_SALES = "collegues_and_sales";

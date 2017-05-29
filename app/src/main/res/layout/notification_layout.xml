@@ -19,17 +19,17 @@
 
         >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="2dp"
-            android:background="@drawable/bubble_counter_bkg"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:text="1"
-            android:textColor="#fff"
-            android:textSize="15sp" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="2dp"-->
+            <!--android:layout_marginTop="2dp"-->
+            <!--android:background="@drawable/bubble_counter_bkg"-->
+            <!--android:paddingLeft="4dp"-->
+            <!--android:paddingRight="4dp"-->
+            <!--android:text="1"-->
+            <!--android:textColor="#fff"-->
+            <!--android:textSize="15sp" />-->
 
 
         <LinearLayout
@@ -109,9 +109,7 @@
                 <!--android:layout_centerVertical="true"-->
                 <!--android:layout_marginLeft="5dp"-->
                 <!--android:background="@drawable/close_icon"-->
-
                 <!--/>-->
-
 
             </RelativeLayout>
         </LinearLayout>

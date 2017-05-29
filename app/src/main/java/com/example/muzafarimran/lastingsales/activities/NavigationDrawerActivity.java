@@ -227,15 +227,15 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-        theCallLogEngine.execute();
+//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+//        theCallLogEngine.execute();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         bus = TinyBus.from(this.getApplicationContext());
-        bus.register(this);
+        bus.register(this); //TODO Caused by: java.lang.IllegalStateException: You must call this method from the same thread, in which TinyBus was created. Created: Thread[AsyncTask #2,5,main], current thread: Thread[main,5,main]
     }
 
     @Override

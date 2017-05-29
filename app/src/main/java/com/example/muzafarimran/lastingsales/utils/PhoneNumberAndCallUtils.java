@@ -127,6 +127,32 @@ public class PhoneNumberAndCallUtils {
         }
     }
 
+     // TODO under development
+    public static String getTimeDuration(long time, Context ctx) {
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000;
+        }
+        long now = Calendar.getInstance().getTimeInMillis();
+        if (time > now || time <= 0) {
+            return null;
+        }
+        final long diff = now - time;
+        if (diff < MINUTE_MILLIS) {
+            return diff/1000 + "s";
+        } else if (diff < 60 * MINUTE_MILLIS) {
+            return (diff/1000)/60 + "m";
+        } else if (diff < 90 * MINUTE_MILLIS) {
+            return "an hour ago";
+        } else if (diff < 24 * HOUR_MILLIS) {
+            return diff / HOUR_MILLIS + " hours ago";
+        } else if (diff < 48 * HOUR_MILLIS) {
+            return "yesterday";
+        } else {
+            return diff / DAY_MILLIS + " days ago";
+        }
+    }
+
     public static String currentDateTime() {
         Date curDate = new Date();
         SimpleDateFormat format = new SimpleDateFormat();

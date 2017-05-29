@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +36,10 @@ import static android.view.View.GONE;
  * Created by lenovo 1 on 9/21/2016.
  */
 public class IgnoredAdapter extends BaseAdapter implements Filterable {
-    private final static int TYPE_SEPARATOR = 0;
-    private final static int TYPE_ITEM = 1;
-    private final static int ITEM_TYPES = 2;
+    private static final String TAG = "IgnoredAdapter";
+    private static final int TYPE_SEPARATOR = 0;
+    private static final int TYPE_ITEM = 1;
+    private static final int ITEM_TYPES = 2;
     View contact_details = null;
     boolean deleteFlow = false;
     Boolean expanded = false;
@@ -80,6 +82,11 @@ public class IgnoredAdapter extends BaseAdapter implements Filterable {
     @Override
     public int getViewTypeCount() {
         return ITEM_TYPES;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return TYPE_ITEM;
     }
 
     @Override

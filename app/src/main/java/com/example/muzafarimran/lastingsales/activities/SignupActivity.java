@@ -79,11 +79,11 @@ public class SignupActivity extends AppCompatActivity {
         // hardcoding for develoment speedup purposes
         etFirstName.setText("ibti");
         etLastName.setText("agent");
-        etEmail.setText("ibtiagent20@gmail.com");
+        etEmail.setText("ibtiagent23@gmail.com");
         etPassword.setText("111111");
         etConfimPassword.setText("111111");
         etMobile.setText("03014775234");
-        etCompany.setText("TheDesignerX20");
+        etCompany.setText("TheDesignerX23");
 
         llLogin.setOnClickListener(new View.OnClickListener() {
             @Override

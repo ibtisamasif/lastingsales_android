@@ -11,7 +11,6 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.sql.Date;
 
-
 /**
  * Created by ibtisam on 3/3/2017.
  */
@@ -19,7 +18,7 @@ import java.sql.Date;
 public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     public static final String TAG = "TheCallLogEngine";
     Context mContext;
-
+    private boolean reRun = true;
 
     public TheCallLogEngine(Context context) {
         this.mContext = context;
@@ -38,6 +37,11 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
 
     public void CallLogFunc() {
         boolean showNotification = false;
+
+        if (LSCall.getCallHavingLatestCallLogId() != null) {
+            Log.d(TAG, "getLatestCallLogId: " + LSCall.getCallHavingLatestCallLogId().toString());
+        }
+
         Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, "date DESC limit 10");
         try {
             int id = managedCursor.getColumnIndex(CallLog.Calls._ID);
@@ -53,8 +57,8 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     Log.d(TAG, "CallLogFunc: Cursor is at First Now");
                     showNotification = true;
                 }
-                Log.d(TAG, "CallLogFunc: Index: "+managedCursor.getPosition());
-                if(managedCursor.getPosition() == -1){
+                Log.d(TAG, "CallLogFunc: Index: " + managedCursor.getPosition());
+                if (managedCursor.getPosition() == -1) {
                     return;
                 }
                 String callId = managedCursor.getString(id);
@@ -65,15 +69,17 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                 Date callDayTime = new Date(Long.valueOf(callDate));
                 String callDuration = managedCursor.getString(duration);
 
-//                if (LSCall.ifExist(callId)) {
-//                    Log.d(TAG, "Exists: ");
-//                    continue;
-//                } else {
+                if (LSCall.ifExist(callId)) {
+                    Log.d(TAG, "ID: " + callId);
+                    Log.d(TAG, "Exists: ");
+                    reRun = false;
+                    continue;
+                } else {
                     Log.d(TAG, "CallId: " + callId);
                     Log.d(TAG, "CallNumber: " + callNumber);
                     Log.d(TAG, "CallName: " + callName);
                     Log.d(TAG, "callType: " + callType);
-                    Log.d("LSTime", "callBeginTimeLong: " + callDate);
+                    Log.d(TAG, "callBeginTimeLong: " + callDate);
                     Log.d(TAG, "callDate: " + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Long.parseLong(callDate)));
                     Log.d(TAG, "callDayTime: " + callDayTime);
                     Log.d(TAG, "callDuration: " + callDuration);
@@ -107,12 +113,15 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-//                }
+                }
             } while (managedCursor.moveToPrevious());
+            if (reRun) {
+                CallLogFunc();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(managedCursor != null ){
+            if (managedCursor != null) {
                 managedCursor.close();
             }
         }

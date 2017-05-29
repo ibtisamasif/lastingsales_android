@@ -56,6 +56,8 @@ public class IndividualContactCallAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.ind_call_view, parent, false);
             holder = new ViewHolder();
+            holder.call_type = (TextView) convertView.findViewById(R.id.call_type);
+            holder.tvDuration = (TextView) convertView.findViewById(R.id.tvDuration);
             holder.time_passed = (TextView) convertView.findViewById(R.id.call_time_passed);
             holder.time = (TextView) convertView.findViewById(R.id.call_time);
             holder.call_icon = (ImageView) convertView.findViewById(R.id.ind_call_icon);
@@ -63,12 +65,19 @@ public class IndividualContactCallAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.time.setText(PhoneNumberAndCallUtils.getTimeAgo(call.getBeginTime(), mContext));
-        //TODO calculate the time difference
-        holder.time_passed.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime()));
+        holder.call_type.setText(call.getType());
+        if (call.getType().equals("unanswered") || call.getType().equals("outgoing") || call.getType().equals("incoming")){
+            String duration = String.format("%s",call.getDuration()); // TODO duration is only in seconds yet
+            holder.tvDuration.setText(duration+"s");
+        }
+        holder.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime()));
+        holder.time_passed.setText(PhoneNumberAndCallUtils.getTimeAgo(call.getBeginTime(), mContext));
         switch (call.getType()) {
             case "missed":
                 holder.call_icon.setImageResource(R.drawable.missed_call_icon_ind);
+                break;
+            case "rejected":
+                holder.call_icon.setImageResource(R.drawable.call_icon_incoming_ind);
                 break;
             case "incoming":
                 holder.call_icon.setImageResource(R.drawable.call_icon_incoming_ind);
@@ -76,11 +85,16 @@ public class IndividualContactCallAdapter extends BaseAdapter {
             case "outgoing":
                 holder.call_icon.setImageResource(R.drawable.call_icon_out_going_ind);
                 break;
+            case "unanswered":
+                holder.call_icon.setImageResource(R.drawable.call_icon_out_going_ind);
+                break;
         }
         return convertView;
     }
 
     static class ViewHolder {
+        TextView call_type;
+        TextView tvDuration;
         TextView time_passed;
         TextView time;
         ImageView call_icon;

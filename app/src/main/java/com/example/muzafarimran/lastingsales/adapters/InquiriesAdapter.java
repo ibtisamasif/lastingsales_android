@@ -19,6 +19,7 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -100,9 +101,10 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
             holder.bTag = (Button) convertView.findViewById(R.id.call_tag_btn);
             holder.call_icon.setOnClickListener(this.callClickListener);
             holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
-            if (inquiryCall.getContact() != null) {
-                holder.bTag.setVisibility(GONE);
-            }
+            holder.bTag.setVisibility(GONE);
+//            if (inquiryCall.getContact() != null) {
+//                holder.bTag.setVisibility(GONE);
+//            }
             holder.contactCallDetails.setVisibility(GONE);
             convertView.setTag(holder);
         } else {
@@ -129,6 +131,11 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
                 Log.d(TAG, "getView: else 2" + number);
                 holder.name.setText(inquiryCall.getContact().getContactName());
             }
+        }
+        LSContact checkContact = LSContact.getContactFromNumber(number);
+        if (checkContact == null || !checkContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)){
+            Log.wtf(TAG, "getView: checkContact Null");
+            holder.bTag.setVisibility(View.VISIBLE);
         }
         holder.bContactCallsdetails.setTag(number);
         holder.bContactCallsdetails.setOnClickListener(detailsListener);
@@ -278,12 +285,21 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
 
         @Override
         public void onClick(View v) {
-            Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
-            myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
-            myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
-            myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, "");
-            myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_COLLEAGUE);
-            mContext.startActivity(myIntent);
+            LSContact checkContact = LSContact.getContactFromNumber(number);
+            if (checkContact == null){
+                Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
+                myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
+                myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_INQUIRY);
+                mContext.startActivity(myIntent);
+            }else {
+                Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
+                myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
+                myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, "");
+                myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_INQUIRY);
+                mContext.startActivity(myIntent);
+            }
         }
     }
 }

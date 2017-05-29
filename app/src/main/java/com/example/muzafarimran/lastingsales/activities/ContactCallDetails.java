@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -27,9 +28,13 @@ import java.util.ArrayList;
 import static android.view.View.GONE;
 
 public class ContactCallDetails extends AppCompatActivity {
+    private static  final String TAG = "ContactCallDetails";
     Button bTagButton;
     private String number = "";
     private String name = "";
+    private IndividualContactCallAdapter indadapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +76,7 @@ public class ContactCallDetails extends AppCompatActivity {
     }
 
     private void setUpList() {
-        ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();
+        ArrayList<LSCall> allCallsOfThisContact = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();
         CallClickListener callClickListener = new CallClickListener(ContactCallDetails.this);
         ((TextView) (this.findViewById(R.id.call_numbe_ind))).setText(this.number);
         String contactName = this.name;
@@ -84,7 +89,11 @@ public class ContactCallDetails extends AppCompatActivity {
         }
         ((TextView) (this.findViewById(R.id.contact_name_ind))).setText(contactName);
         ListView listview = (ListView) this.findViewById(R.id.calls_list);
-        IndividualContactCallAdapter indadapter = new IndividualContactCallAdapter(ContactCallDetails.this, allCalls);
+        indadapter = new IndividualContactCallAdapter(ContactCallDetails.this, allCallsOfThisContact);
+        Log.d(TAG, "setUpList: Size "+allCallsOfThisContact.size());
+        for(LSCall oneCall: allCallsOfThisContact) {
+            Log.d(TAG, "setUpList: " + oneCall.toString());
+        }
         listview.setAdapter(indadapter);
     }
 

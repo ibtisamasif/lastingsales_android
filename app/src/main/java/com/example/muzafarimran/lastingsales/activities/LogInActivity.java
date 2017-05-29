@@ -77,8 +77,8 @@ public class LogInActivity extends AppCompatActivity {
         etPassword.getBackground().clearColorFilter();
 
 //        hardcoding number and password for develoment speedup purposes
-//        etEmail.setText("ibtiagent21@gmail.com");
-//        etPassword.setText("111111");
+        etEmail.setText("ibtiagent22@gmail.com");
+        etPassword.setText("111111");
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
