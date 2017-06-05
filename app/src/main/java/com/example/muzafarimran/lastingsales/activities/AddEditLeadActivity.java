@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import android.app.Activity;
 import android.app.NotificationManager;
-import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,14 +22,12 @@ import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import de.halfbit.tinybus.TinyBus;

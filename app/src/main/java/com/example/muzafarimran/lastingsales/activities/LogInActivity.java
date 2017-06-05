@@ -26,7 +26,7 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
-import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -77,8 +77,8 @@ public class LogInActivity extends AppCompatActivity {
         etPassword.getBackground().clearColorFilter();
 
 //        hardcoding number and password for develoment speedup purposes
-        etEmail.setText("ibtiagent22@gmail.com");
-        etPassword.setText("111111");
+//        etEmail.setText("khurramrahim@gmail.com");
+//        etPassword.setText("111111");
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -308,6 +308,19 @@ public class RequestQueue {
         }
     }
 
+    public void isIdle() {
+        try {
+            Log.d("DataSender", "Size " + mCurrentRequests.size());
+            if (mCurrentRequests.size() <= 0) {
+                if (mAllFinishedListener != null) {
+                    mAllFinishedListener.onAllFinished();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Called from {@link Request#finish(String)}, indicating that processing of the given request
      * has finished.
@@ -322,7 +335,7 @@ public class RequestQueue {
             try {
 //                Log.d("DataSender", "Size " + mCurrentRequests.size());
                 if (mCurrentRequests.size() <= 0) {
-                    if (mAllFinishedListener !=null ){ //TODO finalize the check
+                    if (mAllFinishedListener != null) { //TODO finalize the check
                         mAllFinishedListener.onAllFinished();
                     }
                 }

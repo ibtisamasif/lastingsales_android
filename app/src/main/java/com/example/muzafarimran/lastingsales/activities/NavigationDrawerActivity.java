@@ -1,7 +1,6 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
-import com.google.firebase.crash.FirebaseCrash;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 
@@ -48,9 +47,6 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngin
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
@@ -77,7 +73,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-                String projectToken = MixpanelConfig.projectToken;
+        String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
         mixpanel.track("Home Screen Opened");
         AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
@@ -90,12 +86,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             Toast.makeText(getApplicationContext(), "Migration Failed", Toast.LENGTH_SHORT).show();
         }
 
-        // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundle = new Bundle();
-        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
-//        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+//        // Obtain the FirebaseAnalytics instance.
+//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        Bundle bundle = new Bundle();
+//        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
+//        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+////        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
 
 
         Log.d(TAG, "onCreate: DB name: " + getDatabasePath("sugar_example").getAbsolutePath());
@@ -120,6 +116,10 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         if (!sessionManager.isUserSignedIn()) {
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
             finish();
+        } else {
+            TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+            theCallLogEngine.execute();
+            Log.d(TAG, "TheCallLogEngine: Started from Drawer");
         }
 
         LinearLayout navHeader = (LinearLayout) navigationView.getHeaderView(0);
@@ -173,7 +173,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 switch (tab.getPosition()) {
                     case 0:
 //                        tab.setIcon(R.drawable.ic_home_white_48dp);
-                        getSupportActionBar().setTitle(" Inquiries");
+                        getSupportActionBar().setTitle("  Inquiries");
                         UpdateBadge();
 //                        String projectToken = MixpanelConfig.projectToken;
 //                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
@@ -188,13 +188,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                         break;
                     case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        getSupportActionBar().setTitle(" Home");
+                        getSupportActionBar().setTitle("  Home");
                         UpdateBadge();
 //                        ((TextView)(toolbar.findViewById(R.id.title))).setText("CALL LOGS");
                         break;
                     case 2:
 //                        tab.setIcon(R.drawable.menu_icon_contact_selected);
-                        getSupportActionBar().setTitle(" Sales Leads");
+                        getSupportActionBar().setTitle("  Sales Leads");
                         UpdateBadge();
                         // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                         break;
@@ -227,8 +227,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-//        theCallLogEngine.execute();
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.AddEditNoteActivity;
 import com.example.muzafarimran.lastingsales.activities.AddEditFollowUpsActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.receivers.FollowupNotiCancelBtnReceiver;
 import com.example.muzafarimran.lastingsales.receivers.TagAsIgnored;

@@ -7,6 +7,7 @@ import android.provider.CallLog;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.sql.Date;
@@ -25,6 +26,12 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        Log.d("testlog", "TheCallLogEngine onPreExecute:");
+    }
+
+    @Override
     protected Void doInBackground(Object... objects) {
         try {
             Thread.sleep(1000);
@@ -35,14 +42,33 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
         return null;
     }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        Log.d("testlog", "TheCallLogEngine onPostExecute:");
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
+        dataSenderAsync.run();
+    }
+
     public void CallLogFunc() {
         boolean showNotification = false;
 
-        if (LSCall.getCallHavingLatestCallLogId() != null) {
-            Log.d(TAG, "getLatestCallLogId: " + LSCall.getCallHavingLatestCallLogId().toString());
-        }
+        String latestCallQuery;
+        Cursor managedCursor;
 
-        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, "date DESC limit 10");
+        if (LSCall.getCallHavingLatestCallLogId() != null) {
+            Log.d(TAG, "getLatestCallLogId: " + LSCall.getCallHavingLatestCallLogId().getCallLogId());
+            latestCallQuery = "_id >= " + LSCall.getCallHavingLatestCallLogId().getCallLogId();
+            managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,latestCallQuery , null, "date DESC");
+        }
+        else {
+            latestCallQuery = null;
+            managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,latestCallQuery , null, "date DESC limit 10");
+        }
+//        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,latestCallQuery , null, "date DESC limit 10");
+//        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, "_id >= 1" , null, "date DESC limit 100");
+//        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, "_id = " + LSCall.getCallHavingLatestCallLogId().getCallLogId() , null, "date DESC limit 10");
+
         try {
             int id = managedCursor.getColumnIndex(CallLog.Calls._ID);
             int numbers = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);

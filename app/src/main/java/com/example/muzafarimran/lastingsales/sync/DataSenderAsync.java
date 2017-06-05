@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -62,6 +63,15 @@ public class DataSenderAsync {
     private static RequestQueue queue;
     private final int MY_TIMEOUT_MS = 2500;
     private final int MY_MAX_RETRIES = 0;
+    private PostExecuteListener DataSenderOnPostExecuteListener = null;
+
+    public PostExecuteListener getDataSenderOnPostExecuteListener() {
+        return DataSenderOnPostExecuteListener;
+    }
+
+    public void setDataSenderOnPostExecuteListener(PostExecuteListener dataSenderOnPostExecuteListener) {
+        this.DataSenderOnPostExecuteListener = dataSenderOnPostExecuteListener;
+    }
 
     protected DataSenderAsync(Context context) {
         mContext = context;
@@ -86,7 +96,7 @@ public class DataSenderAsync {
         Log.d(TAG, "run: ");
         if (currentState == IDLE) {
             currentState = PENDING;
-            Log.d(TAG, "run: InsideRUNING"+this.toString());
+            Log.d(TAG, "run: InsideRUNING" + this.toString());
             queue.setmAllFinishedListener(new RequestQueue.AllFinishedListener() {
                 @Override
                 public void onAllFinished() {
@@ -99,6 +109,7 @@ public class DataSenderAsync {
                 protected void onPreExecute() {
                     super.onPreExecute();
                     sessionManager = new SessionManager(mContext);
+                    Log.d("testlog", "DataSenderAsync onPreExecute: ");
                 }
 
                 @Override
@@ -141,9 +152,15 @@ public class DataSenderAsync {
                 //this method is executed when doInBackground function finishes
                 @Override
                 protected void onPostExecute(Void result) {
-                    if(currentState != PENDING){
-                        currentState = IDLE;
+                    if (DataSenderOnPostExecuteListener != null) {
+                        Log.d("testlog", "DataSenderAsync onPostExecuteListener:");
+                        DataSenderOnPostExecuteListener.onPostExecuteListener();
                     }
+                    queue.isIdle();
+//                    if (currentState != PENDING) {
+//                        Log.d(TAG, "onPostExecuteListener: currentState: " + currentState);
+//                        currentState = IDLE;
+//                    }
                     Log.d(TAG, "onPostExecute: Stopped");
                 }
             }.execute();
@@ -202,7 +219,7 @@ public class DataSenderAsync {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddContact");
                 try {
-                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data)); //TODO diff response.
                     int responseCode = jObj.getInt("responseCode");
                     if (responseCode == 409) {
                         JSONObject responseObject = jObj.getJSONObject("response");
@@ -341,7 +358,7 @@ public class DataSenderAsync {
 //                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
 
 //                    if (responseCode == 200) {
-                    JSONObject responseObject = jObj.getJSONObject("response"); //TODO crashed here check response properly Caused by java.lang.OutOfMemoryError: Could not allocate JNI Env
+                    JSONObject responseObject = jObj.getJSONObject("response"); //TODO crashed here check response properly Caused by java.lang.OutOfMemoryError: Could not allocate JNI Env //onResponse() Add Call: response = [{"responseCode":"200","response":"error while generating message"}]
                     String id = responseObject.getString("id");
                     String contactNumber = responseObject.getString("contact_number");
                     call.setServerId(id);
@@ -368,20 +385,19 @@ public class DataSenderAsync {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
 //                Log.d(TAG, "onErrorResponse: error.networkResponse.data " +(new String(error.networkResponse.data)));
-//                Log.d(TAG, "onErrorResponse: statusCode: "+error.networkResponse.statusCode);
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddCall");
-//                try {
-//                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-//                    int responseCode = jObj.getInt("responseCode");
-//                    if (responseCode == 409) {
-//                        JSONObject responseObject = jObj.getJSONObject("response");
-//                        call.setServerId(responseObject.getString("id"));
-//                        call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_SYNCED);
-//                        call.save();
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    if (error.networkResponse != null) {
+                        Log.d(TAG, "onErrorResponse: statusCode: " + error.networkResponse.statusCode);
+                        if (error.networkResponse.statusCode == 409) {
+//                            call.setServerId(responseObject.getString("id"));
+                            call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_SYNCED);
+                            call.save();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }) {
             @Override
@@ -395,26 +411,13 @@ public class DataSenderAsync {
                     duration = "1";
                 }
 
-                String durration = PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss");
-                String date = PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "yyyy-MM-dd");
-
-
                 params.put("duration", "" + duration);
                 params.put("contact_number", "" + call.getContactNumber());
                 params.put("call_type", "" + call.getType());
                 params.put("date", "" + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "yyyy-MM-dd"));
                 params.put("from_time", "" + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss"));
-//                Log.d(TAG, "getParams: "+PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss"));
                 params.put("api_token", "" + sessionManager.getLoginToken());
-
                 Log.d(TAG, "getParams: " + params.toString());
-
-//                params.put("duration", ""+call.getDuration());
-//                params.put("contact_number", ""+call.getContactNumber());
-//                params.put("call_type", ""+call.getType());
-//                params.put("date", "2017-06-20");
-//                params.put("from_time", ""+call.getBeginTime());
-//                params.put("api_token", ""+sessionManager.getLoginToken());
                 return params;
             }
         };
@@ -471,6 +474,8 @@ public class DataSenderAsync {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddInquiry");
                 try {
+                    Log.d(TAG, "onErrorResponse: error.networkResponse.data: " + error.networkResponse.data);
+                    Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
                     JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
                     int responseCode = jObj.getInt("responseCode");
                     JSONObject responseObject = jObj.getJSONObject("response");

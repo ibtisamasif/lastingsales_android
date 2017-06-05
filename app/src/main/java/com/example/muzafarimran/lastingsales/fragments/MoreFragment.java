@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
@@ -20,6 +21,7 @@ public class MoreFragment extends TabFragment {
 
     private LinearLayout llFollowUp, llNotes,llAbout;
     SessionManager sessionManager;
+    private TextView tvNameOfUserMoreScreen;
 
 
     @Override
@@ -31,11 +33,13 @@ public class MoreFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
+        tvNameOfUserMoreScreen = (TextView) view.findViewById(R.id.tvNameOfUserMoreScreen);
         llFollowUp = (LinearLayout) view.findViewById(R.id.llFollowUpsMoreScreen);
         llNotes = (LinearLayout) view.findViewById(R.id.llNotesMoreFragment);
         llAbout = (LinearLayout) view.findViewById(R.id.llAboutMoreFragment);
 //        llLogOut = (LinearLayout) view.findViewById(R.id.llLogOutMoreScreen);
         sessionManager = new SessionManager(getContext());
+        tvNameOfUserMoreScreen.setText(sessionManager.getKeyLoginFirstName() + " " + sessionManager.getKeyLoginLastName());
         setOnClickListeners();
         setHasOptionsMenu(true);
         return view;

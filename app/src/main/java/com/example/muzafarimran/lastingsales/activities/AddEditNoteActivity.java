@@ -16,7 +16,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utils.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import de.halfbit.tinybus.TinyBus;

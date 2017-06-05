@@ -120,9 +120,11 @@ public class PhoneNumberAndCallUtils {
             return "an hour ago";
         } else if (diff < 24 * HOUR_MILLIS) {
             return diff / HOUR_MILLIS + " hours ago";
-        } else if (diff < 48 * HOUR_MILLIS) {
-            return "yesterday";
-        } else {
+        }
+//        else if (diff < 48 * HOUR_MILLIS) {
+//            return "yesterday";
+//        }
+        else {
             return diff / DAY_MILLIS + " days ago";
         }
     }

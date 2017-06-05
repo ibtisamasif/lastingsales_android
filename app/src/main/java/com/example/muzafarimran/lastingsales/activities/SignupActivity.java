@@ -77,13 +77,13 @@ public class SignupActivity extends AppCompatActivity {
         etPassword.getBackground().clearColorFilter();
 
         // hardcoding for develoment speedup purposes
-        etFirstName.setText("ibti");
-        etLastName.setText("agent");
-        etEmail.setText("ibtiagent23@gmail.com");
-        etPassword.setText("111111");
-        etConfimPassword.setText("111111");
-        etMobile.setText("03014775234");
-        etCompany.setText("TheDesignerX23");
+//        etFirstName.setText("ibti");
+//        etLastName.setText("agent");
+//        etEmail.setText("ibtiagent23@gmail.com");
+//        etPassword.setText("111111");
+//        etConfimPassword.setText("111111");
+//        etMobile.setText("03014775234");
+//        etCompany.setText("TheDesignerX23");
 
         llLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +128,7 @@ public class SignupActivity extends AppCompatActivity {
                 if (confirmpassword.length() < 4) {
                     confirmpasswordVarified = false;
                 }
-                if (company.length() < 7) {
+                if (company.length() < 4) {
                     companyVarified = false;
                 }
                 if (mobile.length() < 11) {
@@ -155,11 +155,11 @@ public class SignupActivity extends AppCompatActivity {
                 if (!passwordMatchingVerified) {
                     etConfimPassword.setError("Mismatched!");
                 }
-                if (!companyVarified) {
-                    etCompany.setError("Invalid Landline Number!");
-                }
                 if (!mobileVarified) {
                     etMobile.setError("Invalid Mobile Number!");
+                }
+                if (!companyVarified) {
+                    etCompany.setError("Invalid Company Name!");
                 }
                 if (firstnameVarified && lastnameVarified && emailVarified && passwordVarified && confirmpasswordVarified && passwordMatchingVerified && companyVarified && mobileVarified) {
                     pdLoading.show();
@@ -195,7 +195,7 @@ public class SignupActivity extends AppCompatActivity {
                         String image_path = responseObject.getString("image_path");
                         String completeImagePath = MyURLs.IMAGE_URL + image_path;
                         sessionManager.setLoginToken(api_token);
-                        Toast.makeText(activity, "Creating Company Now", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Successfully Signup", Toast.LENGTH_SHORT).show();
                         makeCreateCompanyRequest(SignupActivity.this, com);
 //                        activity.startActivity(new Intent(activity, CreateCompanyActivity.class));
 //                        activity.finish();
@@ -271,7 +271,7 @@ public class SignupActivity extends AppCompatActivity {
                     int responseCode = jObj.getInt("responseCode");
 
                     if (responseCode == 200) {
-                        Toast.makeText(activity, "Company Created Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Successfully Created Company", Toast.LENGTH_SHORT).show();
                         activity.startActivity(new Intent(activity, LogInActivity.class));
                         activity.finish();
                     }

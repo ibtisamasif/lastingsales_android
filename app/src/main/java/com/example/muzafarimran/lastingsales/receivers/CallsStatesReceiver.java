@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRecorder;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.FileObserver;
 import android.os.PowerManager;
@@ -15,6 +16,7 @@ import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleHelper;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
+import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -121,6 +123,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempRecording.save();
 //            Log.d(TAG, "onIncomingCallStarted: RecordingBeginTime " + tempRecording.getBeginTime());
 //        }
+        Log.d("testlog", "onIncomingCallStarted: End Line");
     }
 
     @Override
@@ -191,10 +194,11 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempRecording.save();
 //            Log.d(TAG, "onOutgoingCallStarted: RecordingBeginTime " + tempRecording.getBeginTime());
 //        }
+        Log.d("testlog", "onOutgoingCallStarted: End Line");
     }
 
     @Override
-    protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end) {
+    protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end, final Intent intent) {
         sessionManager = new SessionManager(ctx);
         if (!sessionManager.isUserSignedIn()) {
             return;
@@ -282,10 +286,28 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //        IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
 //        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
 //        bus.post(mCallEvent);
+
+        final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+        theCallLogEngine.execute();
+        IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
+        TinyBus inBus = TinyBus.from(ctx.getApplicationContext());
+        inBus.post(InCallEvent);
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+        dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
+            @Override
+            public void onPostExecuteListener() {
+                Log.d("testlog", "onPostExecuteListener: I AM Listened");
+                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED ) {
+                    Log.d("testlog", "TheCallLogEngine Completed: completeWakefulIntent");
+                    CallReceiver.completeWakefulIntent(intent);
+                }
+            }
+        });
+        Log.d("testlog", "onIncomingCallEnded: End Line");
     }
 
     @Override
-    protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end) {
+    protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end, final Intent intent) {
         sessionManager = new SessionManager(ctx);
         if (!sessionManager.isUserSignedIn()) {
             return;
@@ -375,11 +397,27 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //        OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
 //        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
 //        bus.post(mCallEvent);
-
+        final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+        theCallLogEngine.execute();
+        OutgoingCallEventModel outCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
+        TinyBus outBus = TinyBus.from(ctx.getApplicationContext());
+        outBus.post(outCallEvent);
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+        dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
+            @Override
+            public void onPostExecuteListener() {
+                Log.d("testlog", "onPostExecuteListener: I AM Listened");
+                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED ) {
+                    Log.d("testlog", "TheCallLogEngine Completed: completeWakefulIntent");
+                    CallReceiver.completeWakefulIntent(intent);
+                }
+            }
+        });
+        Log.d("testlog", "onOutgoingCallEnded: End Line");
     }
 
     @Override
-    protected void onMissedCall(Context ctx, String number, Date start) {
+    protected void onMissedCall(Context ctx, String number, Date start, final Intent intent) {
         Toast.makeText(ctx, "Missed Call Detected", Toast.LENGTH_SHORT).show();
 //        showTagNumberPopupIfNeeded(ctx, number);
         endServiceAndCallPopup(ctx);
@@ -460,6 +498,23 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
 //        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
 //        bus.post(mCallEvent);
+        final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+        theCallLogEngine.execute();
+        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
+        TinyBus mBus = TinyBus.from(ctx.getApplicationContext());
+        mBus.post(mCallEvent);
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+        dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
+            @Override
+            public void onPostExecuteListener() {
+                Log.d("testlog", "onPostExecuteListener: I AM Listened");
+                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED ) {
+                    Log.d("testlog", "TheCallLogEngine Completed: completeWakefulIntent");
+                    CallReceiver.completeWakefulIntent(intent);
+                }
+            }
+        });
+        Log.d("testlog", "onMissedCall: End Line");
     }
 
     public void checkShowCallPopup(Context ctx, String number) {
