@@ -95,7 +95,7 @@ public class LSContact extends SugarRecord {
 //        }
 //    }
 //"SELECT * FROM " + NamingHelper.toSQLName(type) + " ORDER BY ID ASC LIMIT 1"
-    public static List<LSContact> getArrangedSalesContactsByLeadSalesStatus(String leadType) {
+    public static List<LSContact> getDateArrangedSalesContactsByLeadSalesStatus(String leadType) {
         try {
             return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' and contact_sales_status = '"+leadType+"'"+"ORDER BY updated_at DESC");
 //            return Select.from(LSContact.class)
@@ -108,6 +108,18 @@ public class LSContact extends SugarRecord {
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
+    }
+
+    public static List<LSContact> getAllTypeArrangedContactsAccordingToLeadType() { // TODO optimize this function. Crashed here too so must fix it.
+        List<LSContact> arrangedContacts = new ArrayList<>();
+        List<LSContact> contactsLe = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+        List<LSContact> contactsLo = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+        List<LSContact> contactsWo = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+        arrangedContacts.addAll(contactsLe);
+        arrangedContacts.addAll(contactsLo);
+        arrangedContacts.addAll(contactsWo);
+
+        return arrangedContacts;
     }
 
     // This method is to be used for developer purpose only i.e. to find if there
@@ -133,7 +145,7 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getAllInactiveLeadContacts() {
         try {
-            ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getArrangedSalesContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
+            ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getDateArrangedSalesContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
             ArrayList<LSContact> allInactiveLeads = new ArrayList<LSContact>();
             long milisecondsIn3Days = 259200000;
 //            long milliSecondsIn1Min = 30000; // 30 seconds for now

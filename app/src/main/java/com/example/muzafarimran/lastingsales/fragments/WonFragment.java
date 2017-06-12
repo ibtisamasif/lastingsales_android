@@ -55,7 +55,7 @@ public class WonFragment extends TabFragment{
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
         setList(contacts);
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
@@ -69,13 +69,13 @@ public class WonFragment extends TabFragment{
 
     @Subscribe
     public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
-        List<LSContact> contacts = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
         setList(contacts);
     }
 
     @Subscribe
     public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
-        List<LSContact> contacts = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
         setList(contacts);
     }
 
@@ -118,6 +118,6 @@ public class WonFragment extends TabFragment{
 //
 //    @Override
 //    protected void onSearch(String query) {
-//        leadsAdapter.getFilter().filter(query);
+//        allAdapter.getFilter().filter(query);
 //    }
 }

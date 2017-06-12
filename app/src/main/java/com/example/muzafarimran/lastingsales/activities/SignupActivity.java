@@ -259,7 +259,7 @@ public class SignupActivity extends AppCompatActivity {
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(activity, new HurlStack());
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_COMPANY_URL, new Response.Listener<String>() {
-            @Override
+                @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() called with: response = [" + response + "]");
                 pdLoading.dismiss();
@@ -271,6 +271,8 @@ public class SignupActivity extends AppCompatActivity {
                     int responseCode = jObj.getInt("responseCode");
 
                     if (responseCode == 200) {
+                        sessionManager.setKeyInitCompanyCreated("yes");
+                        sessionManager.setKeyInitAccountTypeSelected("individual");
                         Toast.makeText(activity, "Successfully Created Company", Toast.LENGTH_SHORT).show();
                         activity.startActivity(new Intent(activity, LogInActivity.class));
                         activity.finish();

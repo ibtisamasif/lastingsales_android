@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.adapters.LeadsTabsFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.customview.CustomViewPager;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
@@ -35,7 +36,7 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
     FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     FloatingActionMenu floatingActionMenu;
     private TabLayout tabs;
-    private ViewPager vpLeads;
+    private CustomViewPager vpLeads;
     private TinyBus bus;
 
     @Override
@@ -48,7 +49,8 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_leads_tabs, container, false);
         tabs = (TabLayout) view.findViewById(R.id.lead_types);
-        vpLeads = (ViewPager) view.findViewById(R.id.vp_leads_types);
+        vpLeads = (CustomViewPager) view.findViewById(R.id.vp_leads_types);
+        vpLeads.setPagingEnabled(false); // Disabled Swiping Effect
         LeadsTabsFragmentPagerAdapter adp = new LeadsTabsFragmentPagerAdapter(getChildFragmentManager());
         vpLeads.setAdapter(adp);
         tabs.setupWithViewPager(vpLeads);
@@ -131,43 +133,54 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
 
     private void updateTabFigues() {
         //List Taken To Filter out Colleagues
+//        //Leads List
+        List<LSContact> allLeads = LSContact.getAllTypeArrangedContactsAccordingToLeadType();
+
         //Leads List
-        List<LSContact> allLeads = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+        List<LSContact> allInProgress = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
 
         //All Won
-        List<LSContact> allWon = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+        List<LSContact> allWon = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
 
         //All Lost
-        List<LSContact> allLost = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+        List<LSContact> allLost = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
 
         //InActive Leads List
         ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
+
         if (allLeads != null) {
             if (allLeads.size() > 0) {
-                tabs.getTabAt(0).setText("InProgress" + " (" + allLeads.size() + ")");
+                tabs.getTabAt(0).setText("All" + " (" + allLeads.size() + ")");
             } else {
-                tabs.getTabAt(0).setText("InProgress" + " (" + 0 + ")");
+                tabs.getTabAt(0).setText("All" + " (" + 0 + ")");
+            }
+        }
+        if (allInProgress != null) {
+            if (allInProgress.size() > 0) {
+                tabs.getTabAt(1).setText("InProgress" + " (" + allInProgress.size() + ")");
+            } else {
+                tabs.getTabAt(1).setText("InProgress" + " (" + 0 + ")");
             }
         }
         if (allWon != null) {
             if (allWon.size() > 0) {
-                tabs.getTabAt(1).setText("Won" + " (" + allWon.size() + ")");
+                tabs.getTabAt(2).setText("Won" + " (" + allWon.size() + ")");
             } else {
-                tabs.getTabAt(1).setText("Won" + " (" + 0 + ")");
+                tabs.getTabAt(2).setText("Won" + " (" + 0 + ")");
             }
         }
         if (allLost != null) {
             if (allLost.size() > 0) {
-                tabs.getTabAt(2).setText("Lost" + " (" + allLost.size() + ")");
+                tabs.getTabAt(3).setText("Lost" + " (" + allLost.size() + ")");
             } else {
-                tabs.getTabAt(2).setText("Lost" + " (" + 0 + ")");
+                tabs.getTabAt(3).setText("Lost" + " (" + 0 + ")");
             }
         }
         if (allInactiveLeads != null) {
             if (allInactiveLeads.size() > 0) {
-                tabs.getTabAt(3).setText("InActive" + " (" + allInactiveLeads.size() + ")");
+                tabs.getTabAt(4).setText("InActive" + " (" + allInactiveLeads.size() + ")");
             } else {
-                tabs.getTabAt(3).setText("InActive" + " (" + 0 + ")");
+                tabs.getTabAt(4).setText("InActive" + " (" + 0 + ")");
             }
         }
     }

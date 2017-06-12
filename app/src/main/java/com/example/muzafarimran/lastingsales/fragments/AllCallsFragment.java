@@ -181,7 +181,7 @@ public class AllCallsFragment extends TabFragment {
                             case R.id.filter_all:
 //                                List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
 //                                setList(contacts);
-//                                callsadapter.setList(getAllArrangedContactsAccordingToLeadType());
+//                                callsadapter.setList(getAllTypeArrangedContactsAccordingToLeadType());
                                 Toast.makeText(getActivity(), "All", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.filter_prospects:

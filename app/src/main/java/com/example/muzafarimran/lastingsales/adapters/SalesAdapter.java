@@ -40,6 +40,7 @@ import static android.view.View.GONE;
  * Created by lenovo 1 on 9/21/2016.
  */
 
+
 public class SalesAdapter extends BaseAdapter implements Filterable, StickyListHeadersAdapter {
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
@@ -119,9 +120,10 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
             convertView = mInflater.inflate(R.layout.contact_row_view, parent, false);
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.contact_name);
+            holder.contact_status = (TextView) convertView.findViewById(R.id.contact_status);
             holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
-            holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
+            holder.user_details_wrapper = (LinearLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
             holder.lastContactText = (TextView) convertView.findViewById(R.id.last_contact_text);
             holder.numberCallsText = (TextView) convertView.findViewById(R.id.calls_text);
@@ -160,6 +162,7 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         holder.lastContactText.setText(timeAgoString);
         holder.numberCallsText.setText(numberOfCalls);
         holder.name.setText(contact.getContactName());
+        holder.contact_status.setText(contact.getContactSalesStatus());
         holder.user_details_wrapper.setTag(position);
         holder.number.setText(contact.getPhoneOne());
         holder.user_details_wrapper.setOnClickListener(new showContactDetaislsListener(contact, holder.contactDetailsDopDownLayout));
@@ -171,8 +174,8 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         holder.user_details_wrapper.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-//                deleteFlow = true;
-//                setList(LSContact.getContactsByType(contactType));
+                deleteFlow = true;
+                setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
                 SalesContactDeleteBottomSheetDialogFragment salesContactDeleteBottomSheetDialogFragment = new SalesContactDeleteBottomSheetDialogFragment();
                 salesContactDeleteBottomSheetDialogFragment.setPosition(position);
                 salesContactDeleteBottomSheetDialogFragment.show(getSupportFragmentManager(), salesContactDeleteBottomSheetDialogFragment.getTag()); // TODO Crash on Long press
@@ -184,7 +187,7 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
             @Override
             public boolean onLongClick(View view) {
                 deleteFlow = true;
-                setList(LSContact.getContactsByType(contactType));
+                setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
                 return true;
             }
         });*/
@@ -195,7 +198,7 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
             @Override
             public void onClick(View view) {
                 contact.delete();
-                setList(LSContact.getContactsByType(contactType));
+                setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
                 Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -269,13 +272,13 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         LSContact contact = mContacts.get(position);
         mContacts.remove(position);
         contact.delete();
-        setList(LSContact.getContactsByType(contactType));
+        setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
 
     }
 
     public void disableDeleteMode() {
         deleteFlow = false;
-        setList(LSContact.getContactsByType(contactType));
+        setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
     }
 
     @Override
@@ -403,13 +406,14 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
         TextView lastContactText;
         TextView numberCallsText;
         ImageView call_icon;
-        RelativeLayout user_details_wrapper;
+        LinearLayout user_details_wrapper;
         ImageButton deleteButton;
         LinearLayout contactDetailsDopDownLayout;
         Button detailsButton;
         ImageView moreButton;
         TextView salesLeadStatus;
         RelativeLayout statusRow;
+        TextView contact_status;
     }
 
     /*

@@ -21,7 +21,6 @@ import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.WeakHashMap;
 
@@ -34,6 +33,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
  * A simple {@link Fragment} subclass.
  */
 
+@Deprecated
 public class SalesFragment extends SearchFragment {
 
     public static final String TAG = "SalesContactFragment";
@@ -104,7 +104,7 @@ public class SalesFragment extends SearchFragment {
         super.onResume();
 //        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
 //        setList(contacts);
-        setList(getAllArrangedContactsAccordingToLeadType());
+        setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
     }
 
     @Override
@@ -172,7 +172,7 @@ public class SalesFragment extends SearchFragment {
                             case R.id.filter_all:
 //                                List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
 //                                setList(contacts);
-                                salesAdapter.setList(getAllArrangedContactsAccordingToLeadType());
+                                salesAdapter.setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
                                 Toast.makeText(getActivity(), "Filter All", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.filter_leads:
@@ -201,21 +201,11 @@ public class SalesFragment extends SearchFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public List<LSContact> getAllArrangedContactsAccordingToLeadType() { // TODO optimize this function. Crashed here too so must fix it.
-        List<LSContact> arrangedContacts = new ArrayList<>();
-        List<LSContact> contactsLe = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        List<LSContact> contactsLo = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-        List<LSContact> contactsWo = LSContact.getArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-        arrangedContacts.addAll(contactsLe);
-        arrangedContacts.addAll(contactsLo);
-        arrangedContacts.addAll(contactsWo);
 
-        return arrangedContacts;
-    }
 
     public  int countLeads(){
         int count = 0;
-        List<LSContact> arrangedContacts = getAllArrangedContactsAccordingToLeadType();
+        List<LSContact> arrangedContacts = LSContact.getAllTypeArrangedContactsAccordingToLeadType();
         if(arrangedContacts!=null){
             for (int i = 0; i < arrangedContacts.size() ; i++) {
                 if(arrangedContacts.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_INPROGRESS)){
@@ -229,7 +219,7 @@ public class SalesFragment extends SearchFragment {
     }
     public int countClosedLost(){
         int count = 0;
-        List<LSContact> arrangedContacts = getAllArrangedContactsAccordingToLeadType();
+        List<LSContact> arrangedContacts = LSContact.getAllTypeArrangedContactsAccordingToLeadType();
         if(arrangedContacts!=null){
             for (int i = 0; i < arrangedContacts.size() ; i++) {
                 if(arrangedContacts.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_LOST)){
@@ -243,7 +233,7 @@ public class SalesFragment extends SearchFragment {
     }
     public int countClosedWon(){
         int count = 0;
-        List<LSContact> arrangedContacts = getAllArrangedContactsAccordingToLeadType();
+        List<LSContact> arrangedContacts = LSContact.getAllTypeArrangedContactsAccordingToLeadType();
         if(arrangedContacts!=null){
             for (int i = 0; i < arrangedContacts.size() ; i++) {
                 if(arrangedContacts.get(i).getContactSalesStatus().equals(LSContact.SALES_STATUS_CLOSED_WON)){

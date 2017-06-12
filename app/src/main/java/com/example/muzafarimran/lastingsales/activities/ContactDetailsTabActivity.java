@@ -15,6 +15,7 @@ import android.view.View;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
+import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import de.halfbit.tinybus.TinyBus;
@@ -26,9 +27,13 @@ import de.halfbit.tinybus.TinyBus;
 public class ContactDetailsTabActivity extends AppCompatActivity {
     public static final String TAG = "ContactDetailsTab";
     public static final String KEY_CONTACT_ID = "contact_id";
+    public static final String KEY_SET_SELECTED_TAB = "key_set_selected_tab";
+    public static final String SET_SELECTED_TAB_FOLLOWUP = "tab_selected_followup";
+
     ViewPager viewPager;
     FloatingActionButton floatingActionButton;
     private String contactIdString = "0";
+    private String selectedTab = "";
     private LSContact selectedContact;
     private TinyBus bus;
     Toolbar toolbar;
@@ -43,15 +48,6 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-//        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbarCollapse);
-//        collapsingToolbarLayout.setTitle("Lorem Ipsum");
-//        collapsingToolbarLayout.setTitleEnabled(true);
-//        dynamicToolbarColor();
-//        toolbarTextAppernce();
-
-//        tvName = (TextView) findViewById(R.id.tvNameOfUserContactDetailsScreen);
-//        tvNumberOne = (TextView) findViewById(R.id.tvPhoneOneOfUserContactDetailsScreen);
 
         Bundle extras = getIntent().getExtras();
         Long contactIDLong;
@@ -77,32 +73,15 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
             }
         }
 
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId(), selectedContact.getPhoneOne()));
-
-        //Disable touch event of scroll view to scroll viewpager
-//        viewPager.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                viewPager.getParent().requestDisallowInterceptTouchEvent(true);
-//                return false;
-//            }
-//        });
-//        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                viewPager.getParent().requestDisallowInterceptTouchEvent(true);
-//            }
-//        });
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(viewPager);
-//        tabLayout.getTabAt(0).setIcon(R.drawable.menu_icon_details);
-//        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone_selected);
-//        tabLayout.getTabAt(2).setIcon(R.drawable.menu_icon_contact);
-//        tabLayout.getTabAt(3).setIcon(R.drawable.add_contact_notes_field_icon_unselected);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -161,24 +140,14 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
-//    private void dynamicToolbarColor() {
-//
-//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.temp_avatar);
-//        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-//            @Override
-//            public void onGenerated(Palette palette) {
-//                collapsingToolbarLayout.setContentScrimColor(getResources().getColor(R.color.collapsing_toolbar_effect));
-//                collapsingToolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.darkBlue));
-//            }
-//        });
-//    }
-//
-//    private void toolbarTextAppernce() {
-//        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.collapsedappbar);
-//        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.expandedappbar);
-//    }
+        if (extras != null) {
+            selectedTab = extras.getString(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB);
+            if (selectedTab != null && selectedTab != "") {
+                viewPager.setCurrentItem(2, true);
+            }
+        }
+    }
 
     public void onBackPressed() {
         super.onBackPressed();
@@ -240,11 +209,4 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         toolbar.setTitle(selectedContact.getContactName());
         setSupportActionBar(toolbar);
     }
-
-//    @Subscribe
-//    public void onSalesContactAddedEventModel(LeadContactAddedEventModel event) {
-//        Log.d(TAG, "onSalesContactAddedEventModel: Called");
-//        toolbar.setTitle(selectedContact.getContactName());
-//        setSupportActionBar(toolbar);
-//    }
 }

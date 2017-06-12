@@ -37,6 +37,12 @@ public class SessionManager {
     private static final String KEY_LOGIN_ROLE_ID = "user_login_role_id";
     private static final String KEY_LOGIN_ROLE_NAME = "user_login_role_name";
 
+    public static final String KEY_INIT_COMPLETED = "init_completed";
+    public static final String KEY_INIT_TEAM_ADDED = "init_team_added";
+    public static final String KEY_INIT_APP_DOWNLOADED = "init_app_downloaded";
+    public static final String KEY_INIT_COMPANY_CREATED = "init_company_created";
+    public static final String KEY_INIT_ACCOUNT_TYPE_SELECTED = "init_account_type_selected";
+
 
     private static final String KEY_LOGIN_MODE = "user_login_mode";
 
@@ -309,6 +315,52 @@ public class SessionManager {
 
     public void setKeyLoginRoleName(String name) {
         editor.putString(KEY_LOGIN_ROLE_NAME, name);
+        editor.commit();
+    }
+
+
+    public String getKeyInitCompleted() {
+        return pref.getString(KEY_INIT_COMPLETED, "");
+    }
+
+    public void setKeyInitCompleted(String boolVal) {
+        editor.putString(KEY_INIT_COMPLETED, boolVal);
+        editor.commit();
+    }
+
+    public String getKeyInitTeamAdded() {
+        return pref.getString(KEY_INIT_TEAM_ADDED, "");
+    }
+
+    public void setKeyInitTeamAdded(String boolVal) {
+        editor.putString(KEY_INIT_TEAM_ADDED, boolVal);
+        editor.commit();
+    }
+
+    public String getKeyInitAppDownloaded() {
+        return pref.getString(KEY_INIT_APP_DOWNLOADED, "");
+    }
+
+    public void setKeyInitAppDownloaded(String boolVal) {
+        editor.putString(KEY_INIT_APP_DOWNLOADED, boolVal);
+        editor.commit();
+    }
+
+    public String getKeyInitCompanyCreated() {
+        return pref.getString(KEY_INIT_COMPANY_CREATED, "");
+    }
+
+    public void setKeyInitCompanyCreated(String boolVal) {
+        editor.putString(KEY_INIT_COMPANY_CREATED, boolVal);
+        editor.commit();
+    }
+
+    public String getKeyInitAccountTypeSelected() {
+        return pref.getString(KEY_INIT_ACCOUNT_TYPE_SELECTED, "");
+    }
+
+    public void setKeyInitAccountTypeSelected(String type) {
+        editor.putString(KEY_INIT_ACCOUNT_TYPE_SELECTED, type);
         editor.commit();
     }
 }

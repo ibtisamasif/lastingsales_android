@@ -1,98 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contact_row"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingBottom="0dp"
-    android:paddingTop="10dp"
-    >
+    android:paddingTop="10dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/user_call_group_wrapper"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
-        android:background="?attr/selectableItemBackground">
+        android:orientation="horizontal"
+        android:weightSum="10">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/user_call_group"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp"
-            >
+            android:layout_marginLeft="8dp"
+            android:layout_weight="4">
 
             <ImageView
                 android:id="@+id/user_avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:paddingLeft="0dp"
                 android:src="@drawable/ic_account_circle"
-                android:layout_centerVertical="true"
-                android:tint="@color/colorPrimary"
-                />
+                android:tint="@color/colorPrimary" />
 
             <RelativeLayout
 
                 android:id="@+id/user_call_group_name_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center"
                 android:layout_toRightOf="@id/user_avatar"
-                android:paddingLeft="15dp"
-                >
+                android:paddingLeft="8dp">
 
                 <TextView
                     android:id="@+id/contact_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="name"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textSize="15sp"
-                    />
+                    tools:text="name" />
 
                 <TextView
                     android:id="@+id/contactNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contact_name"
-                    tools:text="time"
-                    android:textSize="10sp"/>
+                    android:textSize="10sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="time" />
 
             </RelativeLayout>
-        </RelativeLayout>
+        </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/deleteButtonContactRow"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/call_icon"
-            android:background="@drawable/trash_circle_red_128"
+        <LinearLayout
+            android:id="@+id/user_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
 
-            />
+            <ImageButton
+                android:id="@+id/deleteButtonContactRow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/trash_circle_red_128"
 
+                />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/call_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingRight="10dp"
-            android:scaleType="fitEnd"
-            android:src="@drawable/ic_call_green"
-            android:tint="@color/darkGreen"
-            />
+        <LinearLayout
+            android:id="@+id/user_status"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="2.5"
+            android:gravity="center">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/contact_status"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dynamic_border"
+                android:gravity="center"
+                android:padding="2dp"
+                android:textSize="14sp"
+                tools:text="InProgress" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llcontact_followup"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1.25"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/contact_followup"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_followup_black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/user_call_icon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1.25"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/call_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitEnd"
+                android:src="@drawable/ic_call_green"
+                android:tint="@color/darkGreen" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/contactDetailsDropDownLayout"
@@ -103,21 +146,18 @@
         android:orientation="vertical"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:paddingTop="10dp"
-        >
+        android:paddingTop="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/status_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                >
+                android:layout_marginBottom="10dp">
 
                 <ImageView
                     android:id="@+id/status_icon"
@@ -125,10 +165,9 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
-                    android:src="@drawable/ic_plain_status_white"/>
+                    android:src="@drawable/ic_plain_status_white" />
 
-                <TextView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/status_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -136,18 +175,15 @@
                     android:layout_toRightOf="@id/status_icon"
                     android:text="@string/status"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
-                    />
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_alignParentRight="true"
-                    >
+                    android:orientation="horizontal">
 
-                    <TextView
-                        xmlns:android="http://schemas.android.com/apk/res/android"
+                    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/status_text"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
@@ -158,8 +194,7 @@
                         android:scaleType="fitEnd"
                         android:text="Prospect"
                         android:textColor="#ffffff"
-                        android:textSize="12sp"
-                        />
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/ivMoreButtonContactsDetailsDropDown"
@@ -168,8 +203,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/ic_down_white"
-                        />
+                        android:src="@drawable/ic_down_white" />
 
                 </LinearLayout>
 
@@ -179,8 +213,7 @@
                 android:id="@+id/number_calls"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                >
+                android:layout_marginBottom="10dp">
 
                 <ImageView
                     android:id="@+id/calls_icon"
@@ -188,10 +221,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
-                    android:src="@drawable/number_calls_icon"/>
+                    android:src="@drawable/number_calls_icon" />
 
-                <TextView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/calls_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -199,11 +231,9 @@
                     android:layout_toRightOf="@id/calls_icon"
                     android:text="@string/calls"
                     android:textColor="#ffffff"
-                    android:textSize="12sp"
-                    />
+                    android:textSize="12sp" />
 
-                <TextView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/calls_text"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
@@ -213,8 +243,7 @@
                     android:scaleType="fitEnd"
                     android:text="4"
                     android:textColor="#ffffff"
-                    android:textSize="12sp"
-                    />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -222,8 +251,7 @@
                 android:id="@+id/last_contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                >
+                android:layout_marginBottom="10dp">
 
                 <ImageView
                     android:id="@+id/last_contact_icon"
@@ -231,11 +259,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingRight="10dp"
-                    android:src="@drawable/last_contact_icon"
-                    />
+                    android:src="@drawable/last_contact_icon" />
 
-                <TextView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/last_contact_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -243,11 +269,9 @@
                     android:layout_toRightOf="@id/last_contact_icon"
                     android:text="Last Contact"
                     android:textColor="#ffffff"
-                    android:textSize="12sp"
-                    />
+                    android:textSize="12sp" />
 
-                <TextView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/last_contact_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -256,8 +280,7 @@
                     android:scaleType="fitEnd"
                     android:text="2 Days Ago"
                     android:textColor="#ffffff"
-                    android:textSize="12sp"
-                    />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -277,8 +300,7 @@
                 android:tag="personal_radio"
                 android:text="@string/details"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                />
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>

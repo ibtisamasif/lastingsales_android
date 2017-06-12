@@ -9,7 +9,6 @@ import android.os.Environment;
 import android.os.FileObserver;
 import android.os.PowerManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleHelper;
@@ -64,7 +63,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         if (!sessionManager.isUserSignedIn()) {
             return;
         }
-        Toast.makeText(ctx, "Incoming call started", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(ctx, "Incoming call started", Toast.LENGTH_SHORT).show();
 //        if (wakeLock == null) {
 //            powerManager = (PowerManager) ctx.getSystemService(POWER_SERVICE);
 //            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
@@ -132,7 +131,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         if (!sessionManager.isUserSignedIn()) {
             return;
         }
-        Toast.makeText(ctx, "Outgoing call started", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(ctx, "Outgoing call started", Toast.LENGTH_SHORT).show();
 //        Log.d("LSTime", "onOutgoingCallStarted: CallReceiverLog BeginTime: " + start.getTime());
 //        if (wakeLock == null) {
 //            powerManager = (PowerManager) ctx.getSystemService(POWER_SERVICE);
@@ -278,7 +277,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            wakeLock = null;
 //            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
 //        }
-        Log.d("IncomingCallReceiver", "onIncomingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
+        Log.d(TAG, "onIncomingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
 //        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
 //        theCallLogEngine.execute();
 //        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
@@ -312,7 +311,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         if (!sessionManager.isUserSignedIn()) {
             return;
         }
-        Toast.makeText(ctx, "Outgoing call Ended", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(ctx, "Outgoing call Ended", Toast.LENGTH_SHORT).show();
 //        showTagNumberPopupIfNeeded(ctx, number);
         endServiceAndCallPopup(ctx);
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
@@ -389,7 +388,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            wakeLock = null;
 //            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
 //        }
-        Log.d("OutgoingCallReceiver", "onOutgoingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
+        Log.d(TAG, "onOutgoingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
 //        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
 //        theCallLogEngine.execute();
 //        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
@@ -418,7 +417,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 
     @Override
     protected void onMissedCall(Context ctx, String number, Date start, final Intent intent) {
-        Toast.makeText(ctx, "Missed Call Detected", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(ctx, "Missed Call Detected", Toast.LENGTH_SHORT).show();
 //        showTagNumberPopupIfNeeded(ctx, number);
         endServiceAndCallPopup(ctx);
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);

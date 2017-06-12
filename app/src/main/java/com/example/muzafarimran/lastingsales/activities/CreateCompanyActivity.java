@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,14 +25,19 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by ibtisam on 5/19/2017.
@@ -116,6 +123,7 @@ public class CreateCompanyActivity extends AppCompatActivity {
 
                     if (responseCode == 200) {
                         Toast.makeText(activity, "Company Created Successfully", Toast.LENGTH_SHORT).show();
+//                        makeGetUserInfoRequest(CreateCompanyActivity.this);
                         activity.startActivity(new Intent(activity, LogInActivity.class));
                         activity.finish();
                     }
@@ -140,7 +148,7 @@ public class CreateCompanyActivity extends AppCompatActivity {
                                 JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
 //                                int responseCode = jObj.getInt("responseCode");
                                 String response = jObj.getString("response");
-                                Toast.makeText(activity, ""+response, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "" + response, Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(activity, "Server Error.", Toast.LENGTH_SHORT).show();
                             }
@@ -167,5 +175,63 @@ public class CreateCompanyActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
+
+//    private void makeGetUserInfoRequest(final Activity mContext) {
+//
+//        Log.d(TAG, "makeGetUserInfoRequest: getting...");
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        RequestQueue queue = Volley.newRequestQueue(mContext);
+//        final String BASE_URL = MyURLs.GET_USER_INFO;
+//        Uri builtUri = Uri.parse(BASE_URL)
+//                .buildUpon()
+//                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+//                .build();
+//        final String myUrl = builtUri.toString();
+//        Log.d(TAG, "makeGetUserInfoRequest: MYURL: " + myUrl);
+//        StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                Log.d(TAG, "makeGetUserInfoRequest onResponse(): "+ response);
+//                try {
+//                    JSONObject jObj = new JSONObject(response);
+//                    int responseCode = jObj.getInt("responseCode");
+//                    if (responseCode == 200) {
+//                        Toast.makeText(getApplicationContext(), "Initialized User Info Successfully", Toast.LENGTH_SHORT).show();
+//                        makeGetUserInfoRequest(CreateCompanyActivity.this);
+////                        activity.startActivity(new Intent(activity, LogInActivity.class));
+////                        activity.finish();
+//                    }
+//
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                error.printStackTrace();
+//                Log.d(TAG, "onErrorResponse: CouldNotGetUserInfo");
+//            }
+//        }) {
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<String, String>();
+//                return params;
+//            }
+//
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+////                params.put("Content-Type", "application/x-www-form-urlencoded");
+//                return params;
+//            }
+//        };
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        queue.add(sr);
+//    }
 
 }

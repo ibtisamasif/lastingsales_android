@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.muzafarimran.lastingsales.fragments.AllFragment;
 import com.example.muzafarimran.lastingsales.fragments.InProgressFragment;
 import com.example.muzafarimran.lastingsales.fragments.InActiveLeadsFragment;
 import com.example.muzafarimran.lastingsales.fragments.LostFragment;
-import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
 import com.example.muzafarimran.lastingsales.fragments.WonFragment;
 
 /**
@@ -26,15 +26,15 @@ public class LeadsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return InProgressFragment.newInstance(0, InProgressFragment.TAG);
+                return AllFragment.newInstance(0, AllFragment.TAG);
             case 1:
-                return WonFragment.newInstance(1, WonFragment.TAG);
+                return InProgressFragment.newInstance(1, InProgressFragment.TAG);
             case 2:
-                return LostFragment.newInstance(2, LostFragment.TAG);
+                return WonFragment.newInstance(2, WonFragment.TAG);
             case 3:
-                return InActiveLeadsFragment.newInstance(3, InActiveLeadsFragment.TAG);
+                return LostFragment.newInstance(3, LostFragment.TAG);
             case 4:
-                return SalesFragment.newInstance(4, SalesFragment.TAG);
+                return InActiveLeadsFragment.newInstance(4, InActiveLeadsFragment.TAG);
             default:
                 return null;
         }
@@ -49,15 +49,16 @@ public class LeadsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Leads";
-            case 1:
-                return "Won";
-            case 2:
-                return "Lost";
-            case 3:
-                return "InActive";
-            case 4:
                 return "All";
+            case 1:
+                return "InProgress";
+            case 2:
+                return "Won";
+            case 3:
+                return "Lost";
+            case 4:
+                return "InActive";
+
             default:
                 return null;
         }

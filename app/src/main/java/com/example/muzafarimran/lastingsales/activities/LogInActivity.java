@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -134,7 +135,7 @@ public class LogInActivity extends AppCompatActivity {
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "onResponse() called with: response = [" + response + "]");
+                Log.d(TAG, "onResponse() makeLoginRequest called with: response = [" + response + "]");
 //                pdLoading.dismiss();
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -158,28 +159,77 @@ public class LogInActivity extends AppCompatActivity {
 
                         String company_id = null;
                         String company_name = null;
-                        if (responseObject.has("company_id") && !responseObject.isNull("company_id")){
+                        if (responseObject.has("company_id") && !responseObject.isNull("company_id")) {
                             JSONObject companyObject = responseObject.getJSONObject("company");
                             company_id = companyObject.getString("id");
                             company_name = companyObject.getString("name");
                         }
                         String role_id = null;
                         String role_role = null;
-                        if (responseObject.has("role_id") && !responseObject.isNull("role_id")){
+                        if (responseObject.has("role_id") && !responseObject.isNull("role_id")) {
                             JSONObject roleObject = responseObject.getJSONObject("role");
                             role_id = roleObject.getString("id");
                             role_role = roleObject.getString("role");
                         }
 
+
+                        JSONObject returnInitJson = null;
+                        if (responseObject.has("config") && !responseObject.isNull("config")) {
+                            String config = responseObject.getString("config");
+                            Log.d(TAG, "onResponse: config: " + config);
+
+                            JSONObject jsonobject = new JSONObject(config);
+
+                            String init_completed = jsonobject.getString("init_completed");
+                            String init_team_added = jsonobject.getString("init_team_added");
+                            String init_app_downloaded = jsonobject.getString("init_app_downloaded");
+                            String init_company_created = jsonobject.getString("init_company_created");
+                            String init_account_type_selected = jsonobject.getString("init_account_type_selected");
+
+                            Log.d(TAG, "init_completed: " + init_completed);
+                            Log.d(TAG, "init_team_added: " + init_team_added);
+                            Log.d(TAG, "init_app_downloaded: " + init_app_downloaded);
+                            Log.d(TAG, "init_company_created: " + init_company_created);
+                            Log.d(TAG, "init_account_type_selected: " + init_account_type_selected);
+
+//                            sessionManager.setKeyInitCompleted(init_completed);
+//                            sessionManager.setKeyInitTeamAdded(init_team_added);
+//                            sessionManager.setKeyInitAppDownloaded(init_app_downloaded);
+//                            sessionManager.setKeyInitCompanyCreated(init_company_created);
+//                            sessionManager.setKeyInitAccountTypeSelected(init_account_type_selected);
+
+                            //Changing Values
+                            sessionManager.setKeyInitCompleted("yes");
+                            sessionManager.setKeyInitAppDownloaded("yes");
+
+                            returnInitJson = new JSONObject();
+                            try {
+                                returnInitJson.put(SessionManager.KEY_INIT_COMPLETED, sessionManager.getKeyInitCompleted());
+                                returnInitJson.put(SessionManager.KEY_INIT_TEAM_ADDED, sessionManager.getKeyInitTeamAdded());
+                                returnInitJson.put(SessionManager.KEY_INIT_APP_DOWNLOADED, sessionManager.getKeyInitAppDownloaded());
+                                returnInitJson.put(SessionManager.KEY_INIT_COMPANY_CREATED, sessionManager.getKeyInitCompanyCreated());
+                                returnInitJson.put(SessionManager.KEY_INIT_ACCOUNT_TYPE_SELECTED, sessionManager.getKeyInitAccountTypeSelected());
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.d(TAG, "JSONException: " + e);
+                            }
+
+                            Log.d(TAG, "returnInitJson: " + returnInitJson);
+//                            updateFirebaseIdAndInitConfigMakeRequest(LogInActivity.this, returnInitJson);
+
+                        }
+
                         String completeImagePath = MyURLs.IMAGE_URL + image_path;
                         sessionManager.loginnUser(user_id, api_token, Calendar.getInstance().getTimeInMillis(), number, firstname, lastname, completeImagePath, email, company_id, company_name, role_id, role_role);
-                        sessionManager.getKeyLoginFirebaseRegId(); // Todo something fishy here
-                        updateAgentFirebaseIdToServer(activity);
+                        sessionManager.getKeyLoginFirebaseRegId();
+                        updateFirebaseIdAndInitConfigMakeRequest(LogInActivity.this, returnInitJson);
+//                        updateAgentFirebaseIdToServer(activity);
 
-                        if(company_id == null){
+                        if (company_id == null) {
                             activity.startActivity(new Intent(activity, CreateCompanyActivity.class));
                             activity.finish();
-                        }else {
+                        } else {
                             activity.startActivity(new Intent(activity, NavigationDrawerActivity.class));
                             activity.finish();
                         }
@@ -232,7 +282,7 @@ public class LogInActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(activity, "Server Error.", Toast.LENGTH_SHORT).show();
                             }
-                        }else {
+                        } else {
                             Toast.makeText(getApplicationContext(), "Poor Internet Connectivity", Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
@@ -256,20 +306,32 @@ public class LogInActivity extends AppCompatActivity {
         queue.add(sr);
     }
 
-    public void updateAgentFirebaseIdToServer(final Activity activity) {
+    private void updateFirebaseIdAndInitConfigMakeRequest(Activity activity, @Nullable JSONObject returnInitJson) {
+
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         RequestQueue queue = Volley.newRequestQueue(activity);
         final String BASE_URL = MyURLs.UPDATE_AGENT;
-        Uri builtUri = Uri.parse(BASE_URL)
-                .buildUpon()
-                .appendQueryParameter("device_id", "" + sessionManager.getKeyLoginFirebaseRegId())
-                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
-                .build();
+        Uri builtUri;
+        if (returnInitJson != null) {
+            builtUri = Uri.parse(BASE_URL)
+                    .buildUpon()
+                    .appendQueryParameter("config", "" + returnInitJson)
+                    .appendQueryParameter("device_id", "" + sessionManager.getKeyLoginFirebaseRegId())
+                    .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                    .build();
+
+        }else {
+            builtUri = Uri.parse(BASE_URL)
+                    .buildUpon()
+                    .appendQueryParameter("device_id", "" + sessionManager.getKeyLoginFirebaseRegId())
+                    .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                    .build();
+        }
         final String myUrl = builtUri.toString();
         StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "onResponse() updateAgent: response = [" + response + "]");
+                Log.d(TAG, "onResponse() updateFirebaseIdAndInitConfigMakeRequest: response = [" + response + "]");
                 try {
                     if (pdLoading != null && pdLoading.isShowing()) {
                         pdLoading.dismiss();
@@ -281,14 +343,10 @@ public class LogInActivity extends AppCompatActivity {
                         Log.d(TAG, "onResponse : FirebaseLocalRegID : " + sessionManager.getKeyLoginFirebaseRegId());
                         Log.d(TAG, "onResponse : FirebaseServerRegID : " + responseObject.getString("device_id"));
 
-//                        RecordingManager recordingManager = new RecordingManager();
-//                        recordingManager.execute();
                         TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
                         theCallLogEngine.execute();
                         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                         dataSenderAsync.run();
-
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -301,7 +359,7 @@ public class LogInActivity extends AppCompatActivity {
                     pdLoading.dismiss();
                 }
                 error.printStackTrace();
-                Log.d(TAG, "onErrorResponse: CouldNotSyncAgentFirebaseRegId");
+                Log.d(TAG, "onErrorResponse: CouldNotUpdateInitConfigMakeRequest OR CouldNotSyncAgentFirebaseRegId");
 
 //                RecordingManager recordingManager = new RecordingManager();
 //                recordingManager.execute();
@@ -317,5 +375,69 @@ public class LogInActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
+
     }
+
+//    public void updateAgentFirebaseIdToServer(final Activity activity) {
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        RequestQueue queue = Volley.newRequestQueue(activity);
+//        final String BASE_URL = MyURLs.UPDATE_AGENT;
+//        Uri builtUri = Uri.parse(BASE_URL)
+//                .buildUpon()
+//                .appendQueryParameter("device_id", "" + sessionManager.getKeyLoginFirebaseRegId())
+//                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+//                .build();
+//        final String myUrl = builtUri.toString();
+//        StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                Log.d(TAG, "onResponse() updateAgent: response = [" + response + "]");
+//                try {
+//                    if (pdLoading != null && pdLoading.isShowing()) {
+//                        pdLoading.dismiss();
+//                    }
+//                    JSONObject jObj = new JSONObject(response);
+//                    int responseCode = jObj.getInt("responseCode");
+//                    if (responseCode == 200) {
+//                        JSONObject responseObject = jObj.getJSONObject("response");
+//                        Log.d(TAG, "onResponse : FirebaseLocalRegID : " + sessionManager.getKeyLoginFirebaseRegId());
+//                        Log.d(TAG, "onResponse : FirebaseServerRegID : " + responseObject.getString("device_id"));
+//
+////                        RecordingManager recordingManager = new RecordingManager();
+////                        recordingManager.execute();
+//                        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+//                        theCallLogEngine.execute();
+//                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+//                        dataSenderAsync.run();
+//
+//
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                if (pdLoading != null && pdLoading.isShowing()) {
+//                    pdLoading.dismiss();
+//                }
+//                error.printStackTrace();
+//                Log.d(TAG, "onErrorResponse: CouldNotSyncAgentFirebaseRegId");
+//
+////                RecordingManager recordingManager = new RecordingManager();
+////                recordingManager.execute();
+//                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+//                theCallLogEngine.execute();
+//                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+//                dataSenderAsync.run();
+//            }
+//        }) {
+//        };
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        queue.add(sr);
+//    }
 }

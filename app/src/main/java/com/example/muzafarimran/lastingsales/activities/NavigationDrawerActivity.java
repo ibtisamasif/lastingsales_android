@@ -86,12 +86,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             Toast.makeText(getApplicationContext(), "Migration Failed", Toast.LENGTH_SHORT).show();
         }
 
-//        // Obtain the FirebaseAnalytics instance.
-//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-//        Bundle bundle = new Bundle();
-//        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
-//        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
-////        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+//        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
 
 
         Log.d(TAG, "onCreate: DB name: " + getDatabasePath("sugar_example").getAbsolutePath());
@@ -101,7 +101,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_notification_small);
+        getSupportActionBar().setLogo(R.drawable.ic_notification_small1);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
@@ -173,7 +173,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 switch (tab.getPosition()) {
                     case 0:
 //                        tab.setIcon(R.drawable.ic_home_white_48dp);
-                        getSupportActionBar().setTitle("  Inquiries");
+                        getSupportActionBar().setTitle("Inquiries");
                         UpdateBadge();
 //                        String projectToken = MixpanelConfig.projectToken;
 //                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
@@ -188,13 +188,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                         break;
                     case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        getSupportActionBar().setTitle("  Home");
+                        getSupportActionBar().setTitle("Home");
                         UpdateBadge();
 //                        ((TextView)(toolbar.findViewById(R.id.title))).setText("CALL LOGS");
                         break;
                     case 2:
 //                        tab.setIcon(R.drawable.menu_icon_contact_selected);
-                        getSupportActionBar().setTitle("  Sales Leads");
+                        getSupportActionBar().setTitle("Sales Leads");
                         UpdateBadge();
                         // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                         break;
@@ -431,7 +431,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             public void onPageSelected(int position) {
                 if (position == 2) {
                     TabSelectedListener tabSelectedListener = (TabSelectedListener) ((SampleFragmentPagerAdapter) viewPager.getAdapter()).getItem(position);
-                    tabSelectedListener.onTabSelectedEvent(3, "");
+                    tabSelectedListener.onTabSelectedEvent(4, "");
                 }
                 viewPager.removeOnPageChangeListener(this);
             }

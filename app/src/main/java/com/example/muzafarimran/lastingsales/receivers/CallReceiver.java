@@ -27,7 +27,7 @@ import java.util.Date;
 import de.halfbit.tinybus.TinyBus;
 
 public abstract class CallReceiver extends WakefulBroadcastReceiver{
-
+    private static final String TAG = "CallReceiver";
     //The receiver will be recreated whenever android feels like it.  We need a static variable to remember data between instantiations
     private static int lastState = TelephonyManager.CALL_STATE_IDLE;
     private static Date callStartTime;
@@ -38,7 +38,8 @@ public abstract class CallReceiver extends WakefulBroadcastReceiver{
     @Override
     public void onReceive(Context context, final Intent intent) {
         callStartTime = new Date();
-        Log.d("testlog", "onReceive: Called");
+        Log.d(TAG, "onReceive: Called");
+//        Log.d("testlog", "onReceive: Called");
         VersionManager versionManager = new VersionManager(context);
         if (!versionManager.runMigrations()) {
             // if migration has failed
