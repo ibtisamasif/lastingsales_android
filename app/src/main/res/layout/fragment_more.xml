@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/lightGray"
-              android:orientation="vertical"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightGray"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginTop="15dp"
         android:background="@color/white"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/ic_account_circle"
-            />
+            android:src="@drawable/ic_account_circle"
+            android:tint="@color/colorPrimary" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/list_text_margin_left"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvNameOfUserMoreScreen"
@@ -36,16 +33,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/nameOfUser"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ViewPublicProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/viewPublicProfile"
-                android:textSize="12dp"
-                />
+                android:textSize="12dp" />
 
 
         </LinearLayout>
@@ -59,17 +54,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/white"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/llFollowUpsMoreScreen"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:clickable="true"
-            android:orientation="horizontal"
             android:background="@drawable/selector_layout_click_gray_bg"
-            >
+            android:clickable="true"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -77,24 +70,21 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/list_text_margin_left"
                 android:text="@string/followUps"
-                android:textSize="12dp"
-                />
+                android:textSize="12dp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/lightGray"
-            />
+            android:background="@color/lightGray" />
 
         <LinearLayout
             android:id="@+id/llNotesMoreFragment"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:orientation="horizontal"
             android:background="@drawable/selector_layout_click_gray_bg"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,23 +92,20 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/list_text_margin_left"
                 android:text="@string/notes"
-                android:textSize="12dp"
-                />
+                android:textSize="12dp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/lightGray"
-            />
+            android:background="@color/lightGray" />
 
         <LinearLayout
             android:id="@+id/llAboutMoreFragment"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -126,8 +113,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/list_text_margin_left"
                 android:text="@string/about"
-                android:textSize="12dp"
-                />
+                android:textSize="12dp" />
 
         </LinearLayout>
 
@@ -142,14 +128,12 @@
         android:layout_marginTop="20dp"
         android:background="@color/white"
 
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -157,33 +141,32 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/list_text_margin_left"
                 android:text="Basic Settings"
-                android:textSize="12dp"
-                />
+                android:textSize="12dp" />
 
         </LinearLayout>
 
         <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="@color/lightGray"-->
-            <!--/>-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/lightGray"-->
+        <!--/>-->
 
         <!--<LinearLayout-->
-            <!--android:id="@+id/llLogOutMoreScreen"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="45dp"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:background="@drawable/selector_layout_click_gray_bg"-->
-            <!--&gt;-->
+        <!--android:id="@+id/llLogOutMoreScreen"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="45dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:background="@drawable/selector_layout_click_gray_bg"-->
+        <!--&gt;-->
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_marginLeft="@dimen/list_text_margin_left"-->
-                <!--android:text="Log Out"-->
-                <!--android:textSize="12dp"-->
-                <!--/>-->
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginLeft="@dimen/list_text_margin_left"-->
+        <!--android:text="Log Out"-->
+        <!--android:textSize="12dp"-->
+        <!--/>-->
 
         <!--</LinearLayout>-->
 

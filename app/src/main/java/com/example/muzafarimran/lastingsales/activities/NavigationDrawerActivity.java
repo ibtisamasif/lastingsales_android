@@ -1,6 +1,8 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 

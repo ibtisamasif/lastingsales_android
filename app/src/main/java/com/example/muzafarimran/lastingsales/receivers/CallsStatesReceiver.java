@@ -122,7 +122,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempRecording.save();
 //            Log.d(TAG, "onIncomingCallStarted: RecordingBeginTime " + tempRecording.getBeginTime());
 //        }
-        Log.d("testlog", "onIncomingCallStarted: End Line");
+        Log.d("testlog", "onIncomingCallStarted:");
     }
 
     @Override
@@ -193,7 +193,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempRecording.save();
 //            Log.d(TAG, "onOutgoingCallStarted: RecordingBeginTime " + tempRecording.getBeginTime());
 //        }
-        Log.d("testlog", "onOutgoingCallStarted: End Line");
+        Log.d("testlog", "onOutgoingCallStarted:");
     }
 
     @Override
@@ -302,7 +302,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
                 }
             }
         });
-        Log.d("testlog", "onIncomingCallEnded: End Line");
+        Log.d("testlog", "onIncomingCallEnded:");
     }
 
     @Override
@@ -412,7 +412,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
                 }
             }
         });
-        Log.d("testlog", "onOutgoingCallEnded: End Line");
+        Log.d("testlog", "onOutgoingCallEnded:");
     }
 
     @Override

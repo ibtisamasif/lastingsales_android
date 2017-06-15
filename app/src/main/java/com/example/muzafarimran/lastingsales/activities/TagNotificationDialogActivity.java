@@ -75,6 +75,7 @@ public class TagNotificationDialogActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: ");
+        Log.d("testlog", "onCreate: DIALOG BOX SHOWN");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_number_and_add_followup);
         inflater = getLayoutInflater();
@@ -369,6 +370,11 @@ public class TagNotificationDialogActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        finish();
+        Log.d(TAG, "onPause: TagNotificationDialogActivity");
+        Log.d("testlog", "onPause: TagNotificationDialogActivity");
+        if(hasWindowFocus()){
+            finish();
+            Log.d("testlog", "onPause: Finish() TagNotificationDialogActivity");
+        }
     }
 }

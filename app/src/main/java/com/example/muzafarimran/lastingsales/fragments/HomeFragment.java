@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
@@ -48,10 +49,6 @@ public class HomeFragment extends TabFragment {
     private CardView llInActiveLeadsContainer;
     private CardView llUnlabeledContainer;
     private CardView llinquriesContainer;
-    //    private LinearLayout llshadow1;
-//    private LinearLayout llshadow2;
-//    private LinearLayout llshadow3;
-    private LinearLayout llshadow4;
     private FrameLayout followupsListHolderFrameLayout;
     private FollowupsTodayListFragment followupsTodayListFragment;
     private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
@@ -73,12 +70,8 @@ public class HomeFragment extends TabFragment {
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
 
         llinquriesContainer = (CardView) view.findViewById(R.id.llinquriesContainer);
-//        llshadow1 = (LinearLayout) view.findViewById(R.id.llshadow1);
         llUnlabeledContainer = (CardView) view.findViewById(R.id.llUnlabeledContactsContainer);
-//        llshadow2 = (LinearLayout) view.findViewById(R.id.llshadow2);
         llInActiveLeadsContainer = (CardView) view.findViewById(R.id.llInActiveLeadsContactsContainer);
-//        llshadow3 = (LinearLayout) view.findViewById(R.id.llshadow3);
-        llshadow4 = (LinearLayout) view.findViewById(R.id.llshadow4);
 
         followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
 

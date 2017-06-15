@@ -39,7 +39,7 @@ public abstract class CallReceiver extends WakefulBroadcastReceiver{
     public void onReceive(Context context, final Intent intent) {
         callStartTime = new Date();
         Log.d(TAG, "onReceive: Called");
-//        Log.d("testlog", "onReceive: Called");
+        Log.d("testlog", "CallReceiver onReceive(): Called");
         VersionManager versionManager = new VersionManager(context);
         if (!versionManager.runMigrations()) {
             // if migration has failed
