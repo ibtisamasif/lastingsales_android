@@ -33,7 +33,7 @@ import android.util.AttributeSet;
 import com.example.muzafarimran.lastingsales.R;
 
 class BubbleTrashLayout extends BubbleBaseLayout {
-    public static final int VIBRATION_DURATION_IN_MS = 70;
+    public static final int VIBRATION_DURATION_IN_MS = 40;
     private boolean magnetismApplied = false;
     private boolean attachedToWindow = false;
 

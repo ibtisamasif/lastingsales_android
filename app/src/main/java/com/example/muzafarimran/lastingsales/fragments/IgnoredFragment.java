@@ -1,7 +1,10 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
@@ -54,6 +58,7 @@ public class IgnoredFragment extends TabFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() Called");
         setRetainInstance(true);
         ignoredAdapter = new IgnoredAdapter(getContext(), null, LSContact.CONTACT_TYPE_IGNORED); // TODO remove this line as it populates all contacts have inprogress status including ignored,business
         setHasOptionsMenu(true);
@@ -77,7 +82,7 @@ public class IgnoredFragment extends TabFragment {
     @Subscribe
     public void onPersonalContactAddedEventModel(PersonalContactAddedEventModel event) {
         Log.d(TAG, "onPersonalContactAddedEvent() called with: event = [" + event + "]");
-        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
+        List<LSContact> contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_IGNORED);
         setList(contacts);
     }
 
@@ -92,13 +97,15 @@ public class IgnoredFragment extends TabFragment {
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
+        Log.d(TAG, "onResume() Called");
+        List<LSContact> contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_IGNORED);
         setList(contacts);
+        new ListPopulateAsync().execute();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onResume() Called");
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
         listView = (ListView) view.findViewById(R.id.personal_contacts_list);
         inputSearch = (EditText) (getActivity().findViewById(R.id.search_box));
@@ -127,6 +134,7 @@ public class IgnoredFragment extends TabFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.d(TAG, "onDestroyView() Called");
         listView = null;
     }
 
@@ -140,5 +148,46 @@ public class IgnoredFragment extends TabFragment {
         }
         return super.onOptionsItemSelected(item);
     }
+    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
+        List<LSContact> contacts;
+//        ProgressDialog progressDialog;
 
+        ListPopulateAsync() {
+            super();
+//            progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "onPreExecute: ");
+//            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_IGNORED);
+            SystemClock.sleep(200);
+            return (null);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: " + item);
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            setList(contacts);
+            Log.d(TAG, "onPostExecute: ");
+//            Toast.makeText(getContext(), "onPostExecuteIgnored", Toast.LENGTH_SHORT).show();
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+        }
+    }
 }

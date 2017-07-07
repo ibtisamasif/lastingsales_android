@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -53,6 +55,7 @@ public class SignupActivity extends AppCompatActivity {
     private String mobile;
     private LinearLayout llLogin;
     private SessionManager sessionManager;
+    private TextView tvPrivacyPolicy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,7 @@ public class SignupActivity extends AppCompatActivity {
         etConfimPassword = (EditText) findViewById(R.id.etConfimPassword);
         etMobile = (EditText) findViewById(R.id.etMobile);
         etCompany = (EditText) findViewById(R.id.etCompany);
+        tvPrivacyPolicy = (TextView) findViewById(R.id.tvPrivacyPolicy);
         llLogin = (LinearLayout) findViewById(R.id.llLogin);
         btSignup = (Button) findViewById(R.id.btSignup);
         etEmail.getBackground().clearColorFilter();
@@ -84,6 +88,15 @@ public class SignupActivity extends AppCompatActivity {
 //        etConfimPassword.setText("111111");
 //        etMobile.setText("03014775234");
 //        etCompany.setText("TheDesignerX23");
+
+        tvPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(MyURLs.PRIVACY_POLICY));
+                startActivity(i);
+            }
+        });
 
         llLogin.setOnClickListener(new View.OnClickListener() {
             @Override

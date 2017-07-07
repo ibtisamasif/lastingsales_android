@@ -1,10 +1,15 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.LeadsAdapter;
@@ -13,6 +18,7 @@ import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 
 import java.util.List;
 
@@ -23,7 +29,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 12/29/2016.
  */
 
-public class LostFragment extends  TabFragment{
+public class LostFragment extends TabFragment {
 
     public static final String TAG = "LostFragment";
     ListView listView = null;
@@ -57,8 +63,9 @@ public class LostFragment extends  TabFragment{
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-        setList(contacts);
+//        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+//        setList(contacts);
+        new ListPopulateAsync().execute();
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -109,7 +116,7 @@ public class LostFragment extends  TabFragment{
         listView = null;
     }
 
-//    @Override
+    //    @Override
 //    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 //        super.onCreateOptionsMenu(menu, inflater);
 //        inflater.inflate(R.menu.search_options_menu, menu);
@@ -123,4 +130,46 @@ public class LostFragment extends  TabFragment{
 //    protected void onSearch(String query) {
 //        allAdapter.getFilter().filter(query);
 //    }
+    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
+        List<LSContact> contacts;
+//        ProgressDialog progressDialog;
+
+        ListPopulateAsync() {
+            super();
+//            progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "onPreExecute: ");
+//            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+            SystemClock.sleep(200);
+            return (null);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: " + item);
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            setList(contacts);
+            Log.d(TAG, "onPostExecute: ");
+//            Toast.makeText(getContext(), "onPostExecuteLost", Toast.LENGTH_SHORT).show();
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+        }
+    }
 }

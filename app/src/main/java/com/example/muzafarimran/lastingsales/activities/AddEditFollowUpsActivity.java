@@ -152,7 +152,7 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
                         TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
                         TempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_ADDED_NOT_SYNCED);
                         TempFollowUp.save();
-                        setAlarm(getApplicationContext(), TempFollowUp);
+//                        setAlarm(getApplicationContext(), TempFollowUp);
 
                         long selected_year = (long) (mYear);
                         long selected_month = (long) (mMonth + 1);
@@ -216,7 +216,7 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
                         TempFollowUp.setDateTimeForFollowup(dateTimeForFollowup.getTimeInMillis());
                         TempFollowUp.setSyncStatus(SyncStatus.SYNC_STATUS_FOLLOWUP_EDIT_NOT_SYNCED);
                         TempFollowUp.save();
-                        setAlarm(getApplicationContext(), TempFollowUp);
+//                        setAlarm(getApplicationContext(), TempFollowUp);
 
                         long selected_year = (long)(mYear);
                         long selected_month = (long)(mMonth+1);
@@ -235,7 +235,7 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
                         long selectedDateTime = MyDateTimeStamp.dateTimeLong(mySelectedDateTime+":00");
                         long currentDateTime = MyDateTimeStamp.dateTimeLong(myCurrentDateTime+":00");
                         if (!mySelectedDateTime.equals(myCurrentDateTime) && selectedDateTime > currentDateTime){
-                            String title = "LastingSales "+selectedContact.getContactName()+"("+selectedContact.getPhoneOne()+")";
+                            String title = "LastingSales "+selectedContact.getContactName()+"("+selectedContact.getPhoneOne()+")"; //crash reported
                             String location = "";
                             String startDatetime = mySelectedDateTime+":00";
                             String description = titleText;
@@ -263,7 +263,6 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
             }
         });
     }
-
 
     private void showAddFollowupLayout() {
 
@@ -371,7 +370,7 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
         }
     }
 
-    public void setAlarm(Context context, TempFollowUp TempFollowUp) {
+    public void setAlarm(Context context, TempFollowUp tempFollowUp) {
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent;
         int interval = 8000;
@@ -387,17 +386,17 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
         Log.d(TAG, "Set Alarm func: Year=" + mYear + " Month=" + mMonth + " DAY=" + mDay + " Hour=" + mHour + " Minute=" + mMinute);
         Intent aint = new Intent(context, AlarmReceiver.class);
 
-        aint.putExtra("followupid", TempFollowUp.getId() + "");
+        aint.putExtra("followupid", tempFollowUp.getId() + "");
 //        aint.putExtra("message","This is message from followup");
-        pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(TempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(tempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
                          /* Retrieve a PendingIntent that will perform a broadcast */
 //        Intent alarmIntent = new Intent(activity, AlarmReceiver.class);
 //        pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, 0);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            // Do something for lollipop and above versions
+            // Do something for KITKAT and above versions
             manager.setExact(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent); //TODO Battery draining function
         } else {
-            // do something for phones running an SDK before lollipop
+            // do something for phones running an SDK before KITKAT
             manager.set(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
         }
         Toast.makeText(context, "Alarm Set", Toast.LENGTH_SHORT).show();

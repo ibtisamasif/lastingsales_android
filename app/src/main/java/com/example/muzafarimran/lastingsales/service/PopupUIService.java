@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.service;
 
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -7,13 +8,19 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,30 +29,73 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.activities.TagNotificationDialogActivity;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.receivers.CallsStatesReceiver;
+import com.example.muzafarimran.lastingsales.receivers.IgnoredContact;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONObject;
+
+import java.util.Calendar;
 
 
 public class PopupUIService extends Service {
 
+
+    public static final String TAG = "TagNotificationDialog";
+    //    Constants
+    public static final String ACTIVITY_LAUNCH_MODE = "activity_launch_mode";
+
+    public static final String LAUNCH_MODE_ADD_NEW_CONTACT = "launch_mode_add_new_contact";
+    public static final String LAUNCH_MODE_EDIT_EXISTING_CONTACT = "launch_mode_edit_existing_contact";
+    public static final String LAUNCH_MODE_TAG_PHONE_NUMBER = "launch_mode_tag_phone_number";
+
+    public static final String TAG_LAUNCH_MODE_PHONE_NUMBER = "phone_number";
+    public static final String TAG_LAUNCH_MODE_CONTACT_NAME = "contact_name";
+    public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
+    public static final String TAG_LAUNCH_MODE_CONTACT_TYPE = "contact_type";
+
+    private static final int REQUEST_CODE_PICK_CONTACTS = 10;
+    String launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
+    String selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
+    String phoneNumberFromLastActivity;
+    String contactNameFromLastActivity;
+    String preSelectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
+    private Uri uriContact;
+    private String contactID;
+    private EditText etContactName;
+    private TextView etContactPhone;
+    private Button bSave;
+    private ImageButton bClose;
+    private CheckBox cbIgnore;
+    private LinearLayout llContactDetailsFollowupScreen;
+    private LinearLayout llContactType;
+    private LayoutInflater inflater;
+    private Button bColleagueRadio;
+    private Button bSalesRadio;
+
+
     public static final Integer TIMES_RETRY_ALL_FILE_DOWNLOADS = 1;
     public static Intent thisIntent;
     WindowManager wm;
-    LinearLayout popupMainLayout;
-    LayoutInflater inflater;
+    //    LinearLayout popupMainLayout;
     Context serviceContext;
     TextView tvNoteText;
-    ImageView banner;
+    //    ImageView banner;
     ImageView logoSmall;
-    ImageButton closeButton;
     ImageButton closeButtonShrunkView;
     Boolean isCarouselHidden = false;
     String selectedNumber;
-    Long noteIdLong = null;
+    //    Long noteIdLong = null;
     private View largeInflatedView;
     private LinearLayout sliderParentLayout;
     private WindowManager.LayoutParams params;
     private WindowManager.LayoutParams shrunkParams;
+    private ImageButton closeButton;
 
     public static String getLocalFilePathFromFileName(String fileName, Context _context) {
         String path = _context.getFilesDir().getAbsolutePath() + "/" + fileName;
@@ -61,12 +111,12 @@ public class PopupUIService extends Service {
     public int onStartCommand(final Intent intent, int flags, int startId) {
         super.onCreate();
         serviceContext = this;
-        Bundle bundle = intent.getExtras();
-        String noteIdString;
-        if (bundle != null) {
-            noteIdString = bundle.getString(CallsStatesReceiver.OUTGOINGCALL_CONTACT_NOTE_ID);
-            if (noteIdString != null && !noteIdString.equals("")) {
-                noteIdLong = Long.parseLong(noteIdString);
+        if (intent != null) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                phoneNumberFromLastActivity = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
+                contactNameFromLastActivity = bundle.getString(TAG_LAUNCH_MODE_CONTACT_NAME);
+                selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
             }
         }
         executeServiceWork();
@@ -78,31 +128,227 @@ public class PopupUIService extends Service {
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         largeInflatedView = inflater.inflate(R.layout.uiocall_popup_large_layout, null);
         initializeAllViewsFromThisParentView(largeInflatedView);
-        ImageButton closeButton = (ImageButton) largeInflatedView.findViewById(R.id.closeImageButton);
-        popupMainLayout = (LinearLayout) largeInflatedView.findViewById(R.id.popupMainLayout);
-        closeButton.setOnClickListener(getHideButtonClickListener());
-        initializeAllViewsFromThisParentView(largeInflatedView);
-        banner.setOnClickListener(getLargeLogoClickListener());
-        banner.setScaleType(ImageView.ScaleType.FIT_XY);
+//        closeButton = (ImageButton) largeInflatedView.findViewById(R.id.bClose);
+//        closeButton.setOnClickListener(getHideButtonClickListener());
+
+//        banner.setOnClickListener(getLargeLogoClickListener());
+//        banner.setScaleType(ImageView.ScaleType.FIT_XY);
         wm.addView(largeInflatedView, params);
     }
 
     private void initializeAllViewsFromThisParentView(View largeInflatedView) {
-        tvNoteText = (TextView) largeInflatedView.findViewById(R.id.tvNoteTextUIOCallPopup);
-        LSNote tempNote = null;
-        if (noteIdLong != null) {
-            tempNote = LSNote.findById(LSNote.class, noteIdLong);
-            tvNoteText.setText(tempNote.getNoteText());
+
+        etContactName = (EditText) largeInflatedView.findViewById(R.id.etNameFollowupPopup);
+        etContactPhone = (TextView) largeInflatedView.findViewById(R.id.etNumberFollowupPopup);
+        bSave = (Button) largeInflatedView.findViewById(R.id.bSaveFollowupPopup);
+        bClose = (ImageButton) largeInflatedView.findViewById(R.id.bClose);
+        cbIgnore = (CheckBox) largeInflatedView.findViewById(R.id.cbIgnore);
+        bSalesRadio = (Button) largeInflatedView.findViewById(R.id.bSalesRadio);
+        bColleagueRadio = (Button) largeInflatedView.findViewById(R.id.bCollegueRadio);
+        llContactDetailsFollowupScreen = (LinearLayout) largeInflatedView.findViewById(R.id.llContactDetailsAddContactScreen);
+        llContactType = (LinearLayout) largeInflatedView.findViewById(R.id.llContactType);
+
+//        if launch mode is tag number then number is gotten out of bundle so it can be searched in
+//        phonebook and the number can be populated in the editText Field
+        Log.d(TAG, "onCreate: Tag Number");
+        preSelectedContactType = selectedContactType;
+        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(phoneNumberFromLastActivity);
+        String nameFromPhoneBook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), internationalNumber);
+        etContactPhone.setText(internationalNumber);
+        if (contactNameFromLastActivity != null) {
+            etContactName.setText(contactNameFromLastActivity);
+        } else if (nameFromPhoneBook != null) {
+            etContactName.setText(nameFromPhoneBook);
         }
-        banner = (ImageView) largeInflatedView.findViewById(R.id.imBanner);
+//            populating name and phone number below after findVieByIDs have been called
+
+//      updating selected Radio button on UI
+        selectRadioButton(selectedContactType);
+        if (preSelectedContactType != null) {
+            selectRadioButton(preSelectedContactType);
+        } else {
+            selectRadioButton(LSContact.CONTACT_TYPE_SALES);
+        }
+        etContactName.setSelection(etContactName.getText().length());
+
+        cbIgnore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d(TAG, "onCheckedChanged: " + isChecked);
+                if (isChecked) {
+                    bSalesRadio.setEnabled(false);
+                    bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
+                    bSalesRadio.setTextColor(Color.GRAY);
+                    bColleagueRadio.setEnabled(false);
+                    bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
+                    bColleagueRadio.setTextColor(Color.GRAY);
+                } else {
+                    bSalesRadio.setEnabled(true);
+                    bColleagueRadio.setEnabled(true);
+                    selectRadioButton(selectedContactType);
+                }
+            }
+        });
+        bClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopThisService();
+                System.exit(0);
+                Toast.makeText(serviceContext, "Closed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        bSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (cbIgnore.isChecked()) {
+                    Log.d(TAG, "onClick: Checked");
+                    etContactName.setError(null);
+                    etContactPhone.setError(null);
+                    String contactName = etContactName.getText().toString();
+                    String contactPhone = etContactPhone.getText().toString();
+                    IgnoredContact.AddAsIgnoredContact(getApplicationContext(), contactPhone, contactName); //TODO centralize convertion in one class
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                    try {
+                        JSONObject props = new JSONObject();
+                        props.put("type", "ignored");
+                        mixpanel.track("Lead From Dialog - Clicked", props);
+                    } catch (Exception e) {
+                        Log.e("mixpanel", "Unable to add properties to JSONObject", e);
+                    }
+                    stopThisService();
+                    System.exit(0);
+                    Toast.makeText(serviceContext, "Finish", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "onClick: Not Checked");
+                    etContactName.setError(null);
+                    etContactPhone.setError(null);
+                    boolean validation = true;
+                    String contactName = etContactName.getText().toString();
+                    String contactPhone = etContactPhone.getText().toString();
+                    if (contactName.equals("") || contactName.length() < 3) {
+                        validation = false;
+                        etContactName.setError("Invalid Name!");
+                    }
+                    if (contactPhone.equals("") || contactPhone.length() < 3) {
+                        validation = false;
+                        etContactPhone.setError("Invalid Number!");
+                    }
+                    if (validation) {
+                        String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
+                        LSContact checkContact;
+                        checkContact = LSContact.getContactFromNumber(intlNum);
+                        Log.d("testlog", "onClick: CheckContactType :" + checkContact.getContactType());
+                        if (checkContact != null) {
+                            if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+                                checkContact.setContactName(contactName);
+                                checkContact.setPhoneOne(intlNum);
+                                checkContact.setContactType(selectedContactType);
+                                checkContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+                                checkContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+                                if (checkContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || checkContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+                                    checkContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                                }
+                                checkContact.save();
+                                String checkContactInLocalPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), intlNum);
+                                if (checkContactInLocalPhonebook == null) {
+                                    //Saving contact in native phonebook as well
+                                    PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), checkContact.getContactName(), checkContact.getPhoneOne());
+                                }
+                                String projectToken = MixpanelConfig.projectToken;
+                                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                                try {
+                                    JSONObject props = new JSONObject();
+                                    props.put("type", "track");
+                                    mixpanel.track("Lead From Dialog - Clicked", props);
+                                    mixpanel.track("Lead From Dialog");
+                                } catch (Exception e) {
+                                    Log.e("mixpanel", "Unable to add properties to JSONObject", e);
+                                }
+                                stopThisService();
+                                System.exit(0);
+                                Toast.makeText(serviceContext, "Finish", Toast.LENGTH_SHORT).show();
+                            }
+                            Toast.makeText(serviceContext, "Already Exists Converted Successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            LSContact tempContact = new LSContact();
+                            tempContact.setContactName(contactName);
+                            tempContact.setPhoneOne(intlNum);
+                            tempContact.setContactType(selectedContactType);
+                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+                            tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+                            if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+                                tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                            }
+                            tempContact.save();
+                            String checkContactInLocalPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), intlNum);
+                            if (checkContactInLocalPhonebook == null) {
+                                //Saving contact in native phonebook as well
+                                PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), checkContact.getContactName(), checkContact.getPhoneOne());
+                            }
+                            String projectToken = MixpanelConfig.projectToken;
+                            MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                            try {
+                                JSONObject props = new JSONObject();
+                                props.put("type", "track");
+                                mixpanel.track("Lead From Dialog - Clicked", props);
+                                mixpanel.track("Lead From Dialog");
+                            } catch (Exception e) {
+                                Log.e("mixpanel", "Unable to add properties to JSONObject", e);
+                            }
+                            stopThisService();
+                            System.exit(0);
+                            Toast.makeText(serviceContext, "Finish", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+        });
+        bSalesRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectRadioButton(LSContact.CONTACT_TYPE_SALES);
+            }
+        });
+        bColleagueRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
+            }
+        });
+
+
+//        tvNoteText = (TextView) largeInflatedView.findViewById(R.id.tvNoteTextUIOCallPopup);
+//        LSNote tempNote = null;
+//        if (noteIdLong != null) {
+//            tempNote = LSNote.findById(LSNote.class, noteIdLong);
+//            tvNoteText.setText(tempNote.getNoteText());
+//        }
+//        tvNoteText.setText("Test Msg");
+//        banner = (ImageView) largeInflatedView.findViewById(R.id.imBanner);
+    }
+
+    private void selectRadioButton(String button) {
+        if (button.equals(LSContact.CONTACT_TYPE_SALES)) {
+            selectedContactType = LSContact.CONTACT_TYPE_SALES;
+            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
+            bSalesRadio.setTextColor(Color.WHITE);
+            bColleagueRadio.setTextColor(Color.BLACK);
+        } else if (button.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+            selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
+            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
+            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+            bSalesRadio.setTextColor(Color.BLACK);
+            bColleagueRadio.setTextColor(Color.WHITE);
+        }
     }
 
     public View.OnTouchListener getOnTouchListenerDragDrop(final View shrunkView) {
@@ -123,7 +369,7 @@ public class PopupUIService extends Service {
                             WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
                             WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
                                     WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH |
-                                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                                    WindowManager.LayoutParams.FLAG_DIM_BEHIND,
                             PixelFormat.TRANSLUCENT);
                     params.gravity = Gravity.TOP | Gravity.LEFT;
                     wm.updateViewLayout(largeInflatedView, params);
@@ -185,22 +431,22 @@ public class PopupUIService extends Service {
                 final LinearLayout mainView = (LinearLayout) largeInflatedView;
                 mainView.removeAllViews();
                 inflatedView = inflater.inflate(R.layout.uiocall_popup_large_layout, null);
-                closeButton = (ImageButton) inflatedView.findViewById(R.id.closeImageButton);
-                closeButton.setOnClickListener(getHideButtonClickListener());
+                bClose = (ImageButton) inflatedView.findViewById(R.id.bClose);
+                bClose.setOnClickListener(getHideButtonClickListener());
                 initializeAllViewsFromThisParentView(inflatedView);
-                banner.setScaleType(ImageView.ScaleType.FIT_XY);
-                banner.setOnClickListener(getLargeLogoClickListener());
+//                banner.setScaleType(ImageView.ScaleType.FIT_XY);
+//                banner.setOnClickListener(getLargeLogoClickListener());
                 ((LinearLayout) largeInflatedView).addView(inflatedView);
             }
         };
     }
 
-    public void onDestroy() {
-        wm.removeView(largeInflatedView);
-        super.onDestroy();
+//    public void onDestroy() {
+//        wm.removeView(largeInflatedView);
+//        super.onDestroy();
 //        stopThisService();
 //        System.exit(0);
-    }
+//    }
 
     public void stopThisService() {
         ((Service) serviceContext).stopSelf();
@@ -210,7 +456,7 @@ public class PopupUIService extends Service {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                onDestroy();
+                onDestroy();
                 Toast.makeText(serviceContext, "Clicked Close Button", Toast.LENGTH_SHORT).show();
             }
         };

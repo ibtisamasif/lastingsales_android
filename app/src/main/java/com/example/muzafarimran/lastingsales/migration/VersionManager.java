@@ -1,6 +1,9 @@
 package com.example.muzafarimran.lastingsales.migration;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -17,14 +20,17 @@ import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.receivers.InquiriesDayEndAlarmReceiver;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +72,7 @@ public class VersionManager {
             props.put("$first_name", "" + sessionManager.getKeyLoginFirstName());
             props.put("$last_name", "" + sessionManager.getKeyLoginLastName());
             props.put("activated", "yes");
+            props.put("Last Activity", "" + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
             mixpanel.getPeople().set(props);
         } catch (JSONException e) {
             Log.e("mixpanel", "Unable to add properties to JSONObject", e);
@@ -349,7 +356,50 @@ public class VersionManager {
             } catch (Exception e) {
                 return false;
             }
-        } else {
+        } else if (version == 31) {
+            try {
+                sessionManager.storeVersionCodeNow();
+                Log.d(TAG, "func: Running Script for Mixpanel");
+                if (sessionManager.getLoginMode().equals(SessionManager.MODE_NORMAL)) {
+                    Log.d(TAG, "func: case1");
+
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_NEW_INSTALL)) {
+                    Log.d(TAG, "func: case2");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    Log.d("Inquiry", "onResume: Inquiry Alarm Added");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY, 15); // For 4 PM or 5 PM
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+                    PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, new Intent(mContext, InquiriesDayEndAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                    AlarmManager am = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+                    am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_UPGRADE)) {
+                    Log.d(TAG, "func: case3");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    Log.d("Inquiry", "onResume: Inquiry Alarm Added");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY, 16); // For 4 PM or 5 PM
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+                    PendingIntent pi = PendingIntent.getBroadcast(mContext.getApplicationContext(), 0, new Intent(mContext.getApplicationContext(), InquiriesDayEndAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                    AlarmManager am = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+                    am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+
+                    return true;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        else {
             return true;
         }
     }

@@ -78,8 +78,9 @@ public class LogInActivity extends AppCompatActivity {
         etPassword.getBackground().clearColorFilter();
 
 //        hardcoding number and password for develoment speedup purposes
-//        etEmail.setText("khurramrahim@gmail.com");
+//        etEmail.setText("ibtiagent24@gmail.com");
 //        etPassword.setText("111111");
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -236,10 +237,17 @@ public class LogInActivity extends AppCompatActivity {
                         Log.d(TAG, "onResponse: " + response);
                         Toast.makeText(activity, "" + user_id, Toast.LENGTH_SHORT).show();
                         try {
+
                             String projectToken = MixpanelConfig.projectToken;
                             MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                            mixpanel.identify(user_id);
-                            mixpanel.getPeople().identify(user_id);
+                            MixpanelAPI.People people = mixpanel.getPeople();
+                            people.identify(user_id);
+                            people.initPushHandling("44843550731");
+
+//                            String projectToken = MixpanelConfig.projectToken;
+//                            MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+//                            mixpanel.identify(user_id);
+//                            mixpanel.getPeople().identify(user_id);
 
                             JSONObject props = new JSONObject();
 

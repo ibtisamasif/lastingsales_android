@@ -22,7 +22,7 @@ public class TagAsIgnored extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String contactPhone = intent.getStringExtra("number");
         String contactName = intent.getStringExtra("name");
-        IgnoredContact.AddAsIgnoredContact(contactPhone, contactName);
+        IgnoredContact.AddAsIgnoredContact(context, contactPhone, contactName);
         int notificationId = intent.getIntExtra("notificationId", 0);
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(notificationId);

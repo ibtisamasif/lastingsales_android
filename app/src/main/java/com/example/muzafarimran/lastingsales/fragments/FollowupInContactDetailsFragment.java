@@ -37,7 +37,7 @@ public class FollowupInContactDetailsFragment extends TabFragment {
     TextView tvFollowupNoteText;
     TextView tvFollowupDateTime;
     ImageButton ibEditFollowup;
-    FrameLayout followupsListHolderFrameLayout;
+//    FrameLayout followupsListHolderFrameLayout;
     //    private String number = "";
     private Long contactIDLong;
     private LSContact selectedContact;
@@ -76,7 +76,7 @@ public class FollowupInContactDetailsFragment extends TabFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_followup_contact_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_followup_contact_details, container, false); //TODO crash on note 2 outOfMemory
 
         addFollowupBtn = (Button) view.findViewById(R.id.bAddFollowupContactDetailsScreen);
         llFolloupNoteRow = (LinearLayout) view.findViewById(R.id.followupNoteRow);
@@ -84,7 +84,7 @@ public class FollowupInContactDetailsFragment extends TabFragment {
         ibEditFollowup = (ImageButton) view.findViewById(R.id.ibEditFollowupButton);
         tvFollowupNoteText = (TextView) view.findViewById(R.id.followupNoteText);
         tvFollowupDateTime = (TextView) view.findViewById(R.id.followupDateTimeText);
-        followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
+//        followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
         Bundle bundle = this.getArguments();
         contactIDLong = bundle.getLong("someId");
         selectedContact = LSContact.findById(LSContact.class, contactIDLong);

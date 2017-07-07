@@ -40,7 +40,7 @@ public class BubblesService extends Service {
     private BubblesServiceBinder binder = new BubblesServiceBinder();
     private BubbleLayout mbbl;
     //private List<BubbleLayout> bubbles = new ArrayList<>();
-    private BubbleTrashLayout bubblesTrash;
+//    private BubbleTrashLayout bubblesTrash;
     private WindowManager windowManager;
     private BubblesLayoutCoordinator layoutCoordinator;
 
@@ -85,24 +85,24 @@ public class BubblesService extends Service {
         addViewToWindow(bubble);
     }
 
-    void addTrash(int trashLayoutResourceId) {
-        if (trashLayoutResourceId != 0) {
-            bubblesTrash = new BubbleTrashLayout(this);
-            bubblesTrash.setWindowManager(windowManager);
-            bubblesTrash.setViewParams(buildLayoutParamsForTrash());
-            bubblesTrash.setVisibility(View.GONE);
-            LayoutInflater.from(this).inflate(trashLayoutResourceId, bubblesTrash, true);
-            addViewToWindow(bubblesTrash);
-            initializeLayoutCoordinator();
-        }
-    }
+//    void addTrash(int trashLayoutResourceId) {
+//        if (trashLayoutResourceId != 0) {
+//            bubblesTrash = new BubbleTrashLayout(this);
+//            bubblesTrash.setWindowManager(windowManager);
+//            bubblesTrash.setViewParams(buildLayoutParamsForTrash());
+//            bubblesTrash.setVisibility(View.GONE);
+//            LayoutInflater.from(this).inflate(trashLayoutResourceId, bubblesTrash, true);
+//            addViewToWindow(bubblesTrash);
+//            initializeLayoutCoordinator();
+//        }
+//    }
 
-    private void initializeLayoutCoordinator() {
-        layoutCoordinator = new BubblesLayoutCoordinator.Builder(this)
-                .setWindowManager(getWindowManager())
-                .setTrashView(bubblesTrash)
-                .build();
-    }
+//    private void initializeLayoutCoordinator() {
+//        layoutCoordinator = new BubblesLayoutCoordinator.Builder(this)
+//                .setWindowManager(getWindowManager())
+//                .setTrashView(bubblesTrash)
+//                .build();
+//    }
 
     private void addViewToWindow(final BubbleBaseLayout view) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {

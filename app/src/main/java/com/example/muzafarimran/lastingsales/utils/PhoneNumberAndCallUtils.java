@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.telephony.PhoneNumberUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
@@ -16,6 +18,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,6 +63,11 @@ public class PhoneNumberAndCallUtils {
         }
         return s;
     }
+
+//    public static String numberToInterNationalE164FormatNumber(String inputString) { // Will review in future
+//        String s = PhoneNumberUtils.formatNumberToE164(inputString, "PK");
+//        return s;
+//    }
 
     public static long secondsFromStartAndEndDates(Date startDate, Date endDate) {
         long diffInMs = endDate.getTime() - startDate.getTime();
@@ -129,7 +137,7 @@ public class PhoneNumberAndCallUtils {
         }
     }
 
-     // TODO under development
+    // TODO under development
     public static String getTimeDuration(long time, Context ctx) {
         if (time < 1000000000000L) {
             // if timestamp given in seconds, convert to millis
@@ -141,9 +149,9 @@ public class PhoneNumberAndCallUtils {
         }
         final long diff = now - time;
         if (diff < MINUTE_MILLIS) {
-            return diff/1000 + "s";
+            return diff / 1000 + "s";
         } else if (diff < 60 * MINUTE_MILLIS) {
-            return (diff/1000)/60 + "m";
+            return (diff / 1000) / 60 + "m";
         } else if (diff < 90 * MINUTE_MILLIS) {
             return "an hour ago";
         } else if (diff < 24 * HOUR_MILLIS) {
@@ -301,5 +309,13 @@ public class PhoneNumberAndCallUtils {
                 oneCall.save();
             }
         }
+    }
+
+    public static long getMillisFromSqlFormattedDate(String last_call1) throws ParseException {
+        String myDate1 = last_call1;
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = sdf1.parse(myDate1);
+        long millis1 = date1.getTime();
+        return millis1;
     }
 }

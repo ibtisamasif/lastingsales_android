@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
@@ -10,8 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,10 @@ import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.SimpleShowcaseEventListener;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -49,13 +56,12 @@ public class HomeFragment extends TabFragment {
     private CardView llInActiveLeadsContainer;
     private CardView llUnlabeledContainer;
     private CardView llinquriesContainer;
-    private FrameLayout followupsListHolderFrameLayout;
+//    private FrameLayout followupsListHolderFrameLayout;
     private FollowupsTodayListFragment followupsTodayListFragment;
     private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     private FloatingActionMenu floatingActionMenu;
-
     private TinyBus bus;
-//    public ViewPager mViewPager, vpLeads;
+    private ShowcaseView sv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,15 +74,11 @@ public class HomeFragment extends TabFragment {
         tvInquiriesValue = (TextView) view.findViewById(R.id.tvInquriesValue);
         tvUnlabeledContacts = (TextView) view.findViewById(R.id.tvUntaggeContactsVal);
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
-
         llinquriesContainer = (CardView) view.findViewById(R.id.llinquriesContainer);
         llUnlabeledContainer = (CardView) view.findViewById(R.id.llUnlabeledContactsContainer);
         llInActiveLeadsContainer = (CardView) view.findViewById(R.id.llInActiveLeadsContactsContainer);
-
-        followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
-
+//        followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
         updateHomeFigures();
-
         llInActiveLeadsContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,13 +172,13 @@ public class HomeFragment extends TabFragment {
                 startActivity(intent);
             }
         });
-        //Bundle bundle = new Bundle();
-        //bundle.putString(NotesFragment.CONTACT_ID, selectedContact.getId().toString());
-        followupsTodayListFragment = new FollowupsTodayListFragment();
-        //followupsTodayListFragment.setArguments(bundle);
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.followupsListHolderFrameLayout, followupsTodayListFragment);
-        transaction.commit();
+//        //Bundle bundle = new Bundle();
+//        //bundle.putString(NotesFragment.CONTACT_ID, selectedContact.getId().toString());
+//        followupsTodayListFragment = new FollowupsTodayListFragment();
+//        //followupsTodayListFragment.setArguments(bundle);
+//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//        transaction.replace(R.id.followupsListHolderFrameLayout, followupsTodayListFragment);
+//        transaction.commit();
         return view;
     }
 
@@ -307,4 +309,29 @@ public class HomeFragment extends TabFragment {
         Log.d(TAG, "onStop() called");
         super.onStop();
     }
+
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+//        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+//        lps.setMargins(margin, margin, margin, margin);
+//
+//        sv = new ShowcaseView.Builder(getActivity())
+//                .withMaterialShowcase()
+//                .setStyle(R.style.MyCustomShowcaseTheme)
+//                .setTarget(new ViewTarget(floatingActionMenu))
+//                .setContentTitle("Wellcome!")
+//                .setContentText("You can make Leads from here!")
+////                .hideOnTouchOutside()
+//                .replaceEndButton(R.layout.view_custom_button)
+//                .build();
+//        sv.setButtonPosition(lps);
+//        sv.setShouldCentreText(true);
+//        sv.show();
+//
+//
+//    }
 }

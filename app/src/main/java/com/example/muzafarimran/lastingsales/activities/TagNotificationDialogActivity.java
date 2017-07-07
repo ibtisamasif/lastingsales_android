@@ -53,11 +53,9 @@ public class TagNotificationDialogActivity extends Activity {
     String launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
     String selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
     boolean editingMode = false;
-    long contactIdLong = -1;
     String phoneNumberFromLastActivity;
     String contactNameFromLastActivity;
     String preSelectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
-    int year, month, day, hour, minute;
     private Uri uriContact;
     private String contactID;
     private EditText etContactName;
@@ -70,7 +68,6 @@ public class TagNotificationDialogActivity extends Activity {
     private LayoutInflater inflater;
     private Button bColleagueRadio;
     private Button bSalesRadio;
-    private LSContact selectedContact = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +76,6 @@ public class TagNotificationDialogActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_number_and_add_followup);
         inflater = getLayoutInflater();
-        year = month = day = hour = minute = 0;
         etContactName = (EditText) findViewById(R.id.etNameFollowupPopup);
         etContactPhone = (TextView) findViewById(R.id.etNumberFollowupPopup);
         bSave = (Button) findViewById(R.id.bSaveFollowupPopup);
@@ -167,7 +163,7 @@ public class TagNotificationDialogActivity extends Activity {
                     etContactPhone.setError(null);
                     String contactName = etContactName.getText().toString();
                     String contactPhone = etContactPhone.getText().toString();
-                    IgnoredContact.AddAsIgnoredContact(contactPhone, contactName);
+                    IgnoredContact.AddAsIgnoredContact(getApplicationContext(), contactPhone, contactName); //TODO centralize convertion in one class
                     String projectToken = MixpanelConfig.projectToken;
                     MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
                     try {
@@ -233,7 +229,7 @@ public class TagNotificationDialogActivity extends Activity {
                                 tempContact.setPhoneOne(intlNum);
                                 tempContact.setContactType(selectedContactType);
                                 tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                                checkContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+                                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                                 if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                                     tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                                 }
@@ -367,14 +363,14 @@ public class TagNotificationDialogActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause: TagNotificationDialogActivity");
-        Log.d("testlog", "onPause: TagNotificationDialogActivity");
-        if(hasWindowFocus()){
-            finish();
-            Log.d("testlog", "onPause: Finish() TagNotificationDialogActivity");
-        }
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        Log.d(TAG, "onPause: TagNotificationDialogActivity");
+//        Log.d("testlog", "onPause: TagNotificationDialogActivity");
+//        if(hasWindowFocus()){
+//            finish();
+//            Log.d("testlog", "onPause: Finish() TagNotificationDialogActivity");
+//        }
+//    }
 }

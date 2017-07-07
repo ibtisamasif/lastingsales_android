@@ -230,57 +230,56 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/llColumnsHomeScreen"
-        android:layout_marginTop="6dp">
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/llColumnsHomeScreen"-->
+        <!--android:layout_marginTop="6dp">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
 
-            <LinearLayout
-                android:layout_width="232dp"
-                android:layout_height="1dp"
-                android:layout_gravity="right"
-                android:layout_marginTop="20dp"
-                android:background="@color/lightGray"></LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:layout_width="232dp"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:background="@color/lightGray"></LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="0.5"
-                android:orientation="horizontal">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:orientation="horizontal">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="vertical">-->
 
-                    <TextView
-                        android:id="@+id/upcoming_inquriess"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Upcoming Followups"
-                        android:textAllCaps="true"
-                        android:textColor="@color/darkGray"
-                        android:textSize="10sp" />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Upcoming Followups"-->
+                        <!--android:textAllCaps="true"-->
+                        <!--android:textColor="@color/darkGray"-->
+                        <!--android:textSize="10sp" />-->
 
-                    <FrameLayout
-                        android:id="@+id/followupsListHolderFrameLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="600dp"
-                        android:layout_marginTop="2dp" />
+                    <!--<FrameLayout-->
+                        <!--android:id="@+id/followupsListHolderFrameLayout"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="600dp"-->
+                        <!--android:layout_marginTop="2dp" />-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
 
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+    <!--</ScrollView>-->
 
 
     <com.github.clans.fab.FloatingActionMenu

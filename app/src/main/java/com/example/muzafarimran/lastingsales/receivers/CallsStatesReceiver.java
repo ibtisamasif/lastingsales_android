@@ -5,37 +5,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.FileObserver;
 import android.os.PowerManager;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.activities.TagNotificationDialogActivity;
 import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleHelper;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
-import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.service.PopupUIService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.CallEndNotification;
 import com.example.muzafarimran.lastingsales.utils.PathFileObserver;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManager;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
 import de.halfbit.tinybus.TinyBus;
-
-import static android.content.Context.POWER_SERVICE;
 
 /**
  * Created by ahmad on 08-Nov-16.
@@ -56,6 +50,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
     private static PowerManager.WakeLock wakeLock = null;
     private static PathFileObserver pathFileObserver;
     private SessionManager sessionManager;
+    private static boolean isBubbleShown = false;
 
     @Override
     protected void onIncomingCallStarted(Context ctx, String number, Date start) {
@@ -75,8 +70,10 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            recorder.stop();
 //            isRecordStarted = false;
 //        }
-
-        checkShowCallPopup(ctx, number);
+        if (!isBubbleShown) {
+            isBubbleShown = true;
+            checkShowCallPopupFlyer(ctx, number);
+        }
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
 //        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
@@ -145,7 +142,10 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            recorder.stop();
 //            isRecordStarted = false;
 //        }
-        checkShowCallPopup(ctx, number);
+        if (!isBubbleShown) {
+            isBubbleShown = true;
+            checkShowCallPopupFlyer(ctx, number);
+        }
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
 //        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
@@ -203,7 +203,10 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
             return;
         }
 //        showTagNumberPopupIfNeeded(ctx, number);
-        endServiceAndCallPopup(ctx);
+        if (isBubbleShown) {
+            endServiceAndCallPopupFlyer(ctx);
+            isBubbleShown = false;
+        }
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
 //        Log.d(TAG, "onIncomingCallEnded: 0");
@@ -296,7 +299,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
             @Override
             public void onPostExecuteListener() {
                 Log.d("testlog", "onPostExecuteListener: I AM Listened");
-                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED ) {
+                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED) {
                     Log.d("testlog", "TheCallLogEngine Completed: completeWakefulIntent");
                     CallReceiver.completeWakefulIntent(intent);
                 }
@@ -313,7 +316,11 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         }
 //        Toast.makeText(ctx, "Outgoing call Ended", Toast.LENGTH_SHORT).show();
 //        showTagNumberPopupIfNeeded(ctx, number);
-        endServiceAndCallPopup(ctx);
+        if (isBubbleShown) {
+            endServiceAndCallPopupFlyer(ctx);
+            isBubbleShown = false;
+        }
+
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
 ////        Log.d(TAG, "onOutgoingCallEnded: 0");
@@ -406,7 +413,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
             @Override
             public void onPostExecuteListener() {
                 Log.d("testlog", "onPostExecuteListener: I AM Listened");
-                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED ) {
+                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED) {
                     Log.d("testlog", "TheCallLogEngine Completed: completeWakefulIntent");
                     CallReceiver.completeWakefulIntent(intent);
                 }
@@ -419,7 +426,10 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
     protected void onMissedCall(Context ctx, String number, Date start, final Intent intent) {
 //        Toast.makeText(ctx, "Missed Call Detected", Toast.LENGTH_SHORT).show();
 //        showTagNumberPopupIfNeeded(ctx, number);
-        endServiceAndCallPopup(ctx);
+        if (isBubbleShown) {
+            endServiceAndCallPopupFlyer(ctx);
+            isBubbleShown = false;
+        }
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact personalContactCheck = LSContact.getContactFromNumber(internationalNumber);
 //        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
@@ -507,7 +517,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
             @Override
             public void onPostExecuteListener() {
                 Log.d("testlog", "onPostExecuteListener: I AM Listened");
-                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED ) {
+                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED) {
                     Log.d("testlog", "TheCallLogEngine Completed: completeWakefulIntent");
                     CallReceiver.completeWakefulIntent(intent);
                 }
@@ -516,8 +526,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         Log.d("testlog", "onMissedCall: End Line");
     }
 
-    public void checkShowCallPopup(Context ctx, String number) {
-        Log.wtf(TAG, "checkShowCallPopup: ");
+    public void checkShowCallPopupFlyer(Context ctx, String number) {
+        Log.wtf(TAG, "checkShowCallPopupFlyer: ");
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
         LSContact oneContact;
         oneContact = LSContact.getContactFromNumber(internationalNumber);
@@ -527,22 +537,38 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
             if (notesForContact != null && notesForContact.size() > 0) {
                 notesForContact.size();
 
-                BubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId());
+                BubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId(), internationalNumber, oneContact);
 
 //                Intent intent = new Intent(ctx, PopupUIService.class);
 //                intent.putExtra(OUTGOINGCALL_CONTACT_NOTE_ID, notesForContact.get(notesForContact.size() - 1).getId() + "");
 //                ctx.startService(intent);
+            } else {
+                BubbleHelper.getInstance(ctx).show(internationalNumber);
             }
+        } else {
+            BubbleHelper.getInstance(ctx).show(internationalNumber);
         }
     }
 
-    private void endServiceAndCallPopup(Context ctx) {
+    private void endServiceAndCallPopupFlyer(Context ctx) {
 
         BubbleHelper.getInstance(ctx).hide();
 
-//        Log.wtf(TAG, "endServiceAndCallPopup: ");
+//        Log.wtf(TAG, "endServiceAndCallPopupFlyer: ");
 //        Intent intent = new Intent(ctx, PopupUIService.class);
 //        ctx.stopService(intent);
+    }
+
+    public void checkShowCallPopupOld(Context ctx, String name, String number) {
+        Log.wtf(TAG, "checkShowCallPopupOld: ");
+        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+//        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+        Intent intent = new Intent(ctx, PopupUIService.class);
+        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
+        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
+        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
+        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
+        ctx.startService(intent);
     }
 
     private void showTagNumberPopupIfNeeded(Context ctx, String number) {

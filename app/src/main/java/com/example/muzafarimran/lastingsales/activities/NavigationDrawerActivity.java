@@ -1,13 +1,18 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
+import com.example.muzafarimran.lastingsales.receivers.InquiriesDayEndAlarmReceiver;
+import com.example.muzafarimran.lastingsales.receivers.InquiryAlarmReceiver;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +21,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +39,6 @@ import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
-import com.example.muzafarimran.lastingsales.fragments.BusinessFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.IgnoredFragment;
 import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
@@ -49,6 +54,7 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngin
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.util.Calendar;
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
@@ -229,6 +235,15 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+        Bundle bundle1 = getIntent().getExtras();
+        if (bundle1 != null) {
+            String tab = bundle1.getString("SELECTED_TAB");
+            if (tab != null) {
+                if (tab.equals("INQUIRIES_TAB")) {
+                    viewPager.setCurrentItem(0, true);
+                }
+            }
+        }
     }
 
     @Override
@@ -236,6 +251,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         super.onStart();
         bus = TinyBus.from(this.getApplicationContext());
         bus.register(this); //TODO Caused by: java.lang.IllegalStateException: You must call this method from the same thread, in which TinyBus was created. Created: Thread[AsyncTask #2,5,main], current thread: Thread[main,5,main]
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
     }
 
     @Override
@@ -317,7 +338,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            startActivity(intent);
 //        }
         if (id == R.id.nav_item_business_contacts) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, BusinessFragment.class.getName());
+            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, ColleagueFragment.class.getName());
             bundle.putString(FrameActivity.ACTIVITY_TITLE, "Colleague Contacts");
             bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
             intent = new Intent(getApplicationContext(), FrameActivity.class);

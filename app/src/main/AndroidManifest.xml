@@ -22,8 +22,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" />
+    <permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 
     <application
         android:name="com.example.muzafarimran.lastingsales.providers.Sugar"
@@ -68,6 +68,22 @@
         </receiver>
         <receiver
             android:name=".receivers.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--</intent-filter>-->
+        </receiver>
+        <receiver
+            android:name=".receivers.InquiryAlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--</intent-filter>-->
+        </receiver>
+        <receiver
+            android:name=".receivers.InquiriesDayEndAlarmReceiver"
             android:enabled="true"
             android:exported="true">
             <!--<intent-filter>-->
@@ -120,6 +136,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyAlertDialogStyle" />
         <activity
+            android:name=".activities.AlarmAlertDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyAlertDialogStyle" />
+        <activity
             android:name=".activities.LogInActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
@@ -141,7 +161,10 @@
 
         <service
             android:name=".service.PopupUIService"
-            android:enabled="true">
+            android:enabled="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyTransparentTheme">
             <intent-filter>
                 <action android:name="inez.apps.customincomingcallscreen.MyService" />
                 <action android:name="android.intent.action.MAIN" />
@@ -212,6 +235,7 @@
         <activity
             android:name=".activities.AddEditLeadActivity"
             android:screenOrientation="portrait"
+            android:noHistory="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
 

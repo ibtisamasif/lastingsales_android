@@ -1,11 +1,16 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.InActiveLeadsAdapter;
@@ -14,6 +19,7 @@ import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 
 import java.util.List;
 
@@ -60,8 +66,9 @@ public class InActiveLeadsFragment extends  TabFragment{
     @Override
     public void onResume() {
         super.onResume();
-        List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
-        setList(contacts);
+//        List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
+//        setList(contacts);
+        new ListPopulateAsync().execute();
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -141,4 +148,46 @@ public class InActiveLeadsFragment extends  TabFragment{
         return super.onOptionsItemSelected(item);
     }
 
+    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
+        List<LSContact> contacts;
+//        ProgressDialog progressDialog;
+
+        ListPopulateAsync() {
+            super();
+//            progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "onPreExecute: ");
+//            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            contacts = LSContact.getAllInactiveLeadContacts();
+            SystemClock.sleep(200);
+            return (null);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: "+item);
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            setList(contacts);
+            Log.d(TAG, "onPostExecute: ");
+//            Toast.makeText(getContext(), "onPostExecuteInActive", Toast.LENGTH_SHORT).show();
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+        }
+    }
 }

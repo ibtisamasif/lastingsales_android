@@ -1,10 +1,18 @@
 package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
+import com.example.muzafarimran.lastingsales.receivers.InquiryAlarmReceiver;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
@@ -51,7 +59,7 @@ public class InquiryManager {
         }
     }
 
-    public static void CreateOrUpdate(LSCall call) {
+    public static void CreateOrUpdate(Context context, LSCall call) {
         LSInquiry tempInquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());
         if (tempInquiry != null) {
             tempInquiry.setCountOfInquiries(tempInquiry.getCountOfInquiries() + 1);

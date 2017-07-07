@@ -1,7 +1,10 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.InquiriesAdapter;
@@ -18,6 +22,7 @@ import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
@@ -92,8 +97,9 @@ public class InquiriesFragment extends SearchFragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume() called");
-        List<LSInquiry> inquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-        setList(inquiries);
+//        List<LSInquiry> contacts = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+//        setList(contacts);
+        new ListPopulateAsync().execute();
     }
 
     @Override
@@ -114,7 +120,7 @@ public class InquiriesFragment extends SearchFragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_options_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
-        if(materialSearchView!=null) {
+        if (materialSearchView != null) {
             materialSearchView.setMenuItem(item);
         }
     }
@@ -122,5 +128,48 @@ public class InquiriesFragment extends SearchFragment {
     @Override
     protected void onSearch(String query) {
         inquiriesAdapter.getFilter().filter(query);
+    }
+
+    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
+        List<LSInquiry> inquiries;
+//        ProgressDialog progressDialog;
+
+        ListPopulateAsync() {
+            super();
+//            progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "onPreExecute: ");
+//            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            inquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+            SystemClock.sleep(200);
+            return (null);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: "+item);
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            setList(inquiries);
+            Log.d(TAG, "onPostExecute: ");
+//            Toast.makeText(getContext(), "onPostExecuteInquries", Toast.LENGTH_SHORT).show();
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+        }
     }
 }

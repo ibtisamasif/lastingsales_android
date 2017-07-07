@@ -1,10 +1,15 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.AllAdapter;
@@ -14,6 +19,7 @@ import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 
 import java.util.List;
 
@@ -49,6 +55,7 @@ public class AllFragment extends TabFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() called");
         setRetainInstance(true);
         allAdapter = new AllAdapter(getContext(), null, LSContact.CONTACT_TYPE_SALES);
     }
@@ -56,7 +63,9 @@ public class AllFragment extends TabFragment{
     @Override
     public void onResume() {
         super.onResume();
-        setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
+        Log.d(TAG, "onResume() called");
+//        setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
+        new ListPopulateAsync().execute();
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -64,6 +73,7 @@ public class AllFragment extends TabFragment{
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause() called");
         bus.unregister(this);
     }
 
@@ -87,6 +97,7 @@ public class AllFragment extends TabFragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView() called");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_leads, container, false);
         listView = (ListView) view.findViewById(R.id.leads_contacts_list);
@@ -101,6 +112,7 @@ public class AllFragment extends TabFragment{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.d(TAG, "onDestroyView() called");
         listView = null;
     }
 
@@ -118,4 +130,47 @@ public class AllFragment extends TabFragment{
 //    protected void onSearch(String query) {
 //        allAdapter.getFilter().filter(query);
 //    }
+
+    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
+        List<LSContact> contacts;
+//        ProgressDialog progressDialog;
+
+        ListPopulateAsync() {
+            super();
+//            progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "onPreExecute: ");
+//            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            contacts = LSContact.getAllTypeArrangedContactsAccordingToLeadType();
+            SystemClock.sleep(200);
+            return (null);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: " + item);
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            setList(contacts);
+            Log.d(TAG, "onPostExecute: ");
+//            Toast.makeText(getContext(), "onPostExecuteAll", Toast.LENGTH_SHORT).show();
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+        }
+    }
 }

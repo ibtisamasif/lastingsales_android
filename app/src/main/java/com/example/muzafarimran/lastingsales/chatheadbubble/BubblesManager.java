@@ -53,7 +53,7 @@ public class BubblesManager {
         public void onServiceConnected(ComponentName name, IBinder service) {
             BubblesService.BubblesServiceBinder binder = (BubblesService.BubblesServiceBinder)service;
             BubblesManager.this.bubblesService = binder.getService();
-            configureBubblesService();
+//            configureBubblesService();
             bounded = true;
             if (listener != null) {
                 listener.onInitialized();
@@ -73,9 +73,9 @@ public class BubblesManager {
         this.context = context;
     }
 
-    private void configureBubblesService() {
-        bubblesService.addTrash(trashLayoutResourceId);
-    }
+//    private void configureBubblesService() {
+//        bubblesService.addTrash(trashLayoutResourceId);
+//    }
 
     public void initialize() {
         Intent serviceIntent = new Intent(context, BubblesService.class);
