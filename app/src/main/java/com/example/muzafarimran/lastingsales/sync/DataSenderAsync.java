@@ -162,6 +162,7 @@ public class DataSenderAsync {
 //                        currentState = IDLE;
 //                    }
                     Log.d(TAG, "onPostExecute: Stopped");
+                    Log.d("testlog", "onPostExecute:");
                 }
             }.execute();
         } else {
@@ -219,8 +220,8 @@ public class DataSenderAsync {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddContact");
                 try {
-                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data)); //TODO diff response.
-                    int responseCode = jObj.getInt("responseCode");
+                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data)); //TODO diff response. //Oasis issue
+                    int responseCode = jObj.getInt("responseCode");  // here too
                     if (responseCode == 409) {
                         JSONObject responseObject = jObj.getJSONObject("response");
                         contact.setServerId(responseObject.getString("id"));
@@ -477,7 +478,7 @@ public class DataSenderAsync {
                     Log.d(TAG, "onErrorResponse: error.networkResponse.data: " + error.networkResponse.data);
                     Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
                     JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                    int responseCode = jObj.getInt("responseCode");
+                    int responseCode = jObj.getInt("responseCode"); // TODO oasis issue
                     JSONObject responseObject = jObj.getJSONObject("response");
                     String id = responseObject.getString("id");
                     String contactNumber = responseObject.getString("contact_number");
