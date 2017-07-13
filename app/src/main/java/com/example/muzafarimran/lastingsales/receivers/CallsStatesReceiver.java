@@ -19,6 +19,7 @@ import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.service.PopupUIService;
+import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.utils.CallEndNotification;
 import com.example.muzafarimran.lastingsales.utils.PathFileObserver;
@@ -548,6 +549,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         } else {
             BubbleHelper.getInstance(ctx).show(internationalNumber);
         }
+        Intent intent = new Intent(ctx, CallDetectionService.class);
+        ctx.startService(intent);
     }
 
     private void endServiceAndCallPopupFlyer(Context ctx) {

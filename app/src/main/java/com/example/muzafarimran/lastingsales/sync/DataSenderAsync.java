@@ -161,8 +161,8 @@ public class DataSenderAsync {
 //                        Log.d(TAG, "onPostExecuteListener: currentState: " + currentState);
 //                        currentState = IDLE;
 //                    }
-                    Log.d(TAG, "onPostExecute: Stopped");
-                    Log.d("testlog", "onPostExecute:");
+                    Log.d(TAG, "DataSenderAsync onPostExecute:");
+                    Log.d("testlog", "DataSenderAsync onPostExecute:");
                 }
             }.execute();
         } else {

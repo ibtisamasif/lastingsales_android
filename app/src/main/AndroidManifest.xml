@@ -23,7 +23,10 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" />
-    <permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+
+    <permission
+        android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
 
     <application
         android:name="com.example.muzafarimran.lastingsales.providers.Sugar"
@@ -61,10 +64,10 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".receivers.CallsStatesReceiver">
-            <intent-filter android:priority="999">
-                <action android:name="android.intent.action.PHONE_STATE" />
-                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
-            </intent-filter>
+            <!--<intent-filter android:priority="999">-->
+                <!--<action android:name="android.intent.action.PHONE_STATE" />-->
+                <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
+            <!--</intent-filter>-->
         </receiver>
         <receiver
             android:name=".receivers.AlarmReceiver"
@@ -98,11 +101,13 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+        <receiver
+            android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
                 <category android:name="com.example.muzafarimran.lastingsales" />
             </intent-filter>
         </receiver>
@@ -171,6 +176,18 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".service.CallDetectionService"
+            android:enabled="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyTransparentTheme">
+            <!--<intent-filter>-->
+                <!--<action android:name="inez.apps.customincomingcallscreen.MyService" />-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--</intent-filter>-->
+        </service>
+
         <activity
             android:name=".activities.TagNumberActivity"
             android:screenOrientation="portrait"
@@ -234,8 +251,8 @@
 
         <activity
             android:name=".activities.AddEditLeadActivity"
-            android:screenOrientation="portrait"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
 

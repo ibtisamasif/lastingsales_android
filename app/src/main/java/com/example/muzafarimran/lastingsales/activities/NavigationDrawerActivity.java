@@ -2,17 +2,12 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
-import com.example.muzafarimran.lastingsales.receivers.InquiriesDayEndAlarmReceiver;
-import com.example.muzafarimran.lastingsales.receivers.InquiryAlarmReceiver;
+import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -21,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,7 +48,6 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngin
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.util.Calendar;
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
@@ -74,13 +67,31 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     TabLayout tabLayout;
     TabLayout.Tab tab1;
     TinyBus bus;
-    //    private tabSelectedListener tabselectedlistener = new tabSelectedListener();
     private ViewPager viewPager;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+//            public void uncaughtException(Thread thread, Throwable ex) {
+//                Log.d(TAG, "uncaughtException: ");
+//                Log.d("testlog", "uncaughtException: ");
+//                Intent launchIntent = new Intent(getIntent());
+//                PendingIntent pending = PendingIntent.getActivity(NavigationDrawerActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 2000, pending);
+//                defaultHandler.uncaughtException(thread, ex);
+//                System.exit(2);
+//                Log.d("testlog", "uncaughtException: exit");
+//            }
+//        });
+
+        Intent intent = new Intent(NavigationDrawerActivity.this, CallDetectionService.class);
+        startService(intent);
+
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
         mixpanel.track("Home Screen Opened");
