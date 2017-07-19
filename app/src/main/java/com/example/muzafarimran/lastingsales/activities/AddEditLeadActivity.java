@@ -89,7 +89,7 @@ public class AddEditLeadActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_lead);
+        setContentView(R.layout.activity_add_edit_lead);
         tvTitleAddContact = (TextView) findViewById(R.id.tvTitleAddContact);
         etContactName = (EditText) findViewById(R.id.etNameAddLead);
         etContactPhone = (EditText) findViewById(R.id.etNumberAddLead);
@@ -115,7 +115,7 @@ public class AddEditLeadActivity extends Activity {
             startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), REQUEST_CODE_PICK_CONTACTS);
             tvTitleAddContact.setText(TITLE_IMPORT_CONTACT);
             editingMode = false;
-            // Redirected Import Contact to LAUNCH_MODE_EDIT_EXISTING_CONTACT
+            // Redirected Import Contact to LAUNCH_MODE_ADD_NEW_CONTACT
             launchMode = AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT;
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         }
@@ -325,7 +325,7 @@ public class AddEditLeadActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String email = "";
+//        String email = "";
         if (requestCode == REQUEST_CODE_PICK_CONTACTS && resultCode == RESULT_OK) {
             uriContact = data.getData();
             String name = retrieveContactName();
@@ -335,7 +335,7 @@ public class AddEditLeadActivity extends Activity {
 //                email = getContactDetailsEmail();
             } catch (Exception e) {
                 e.printStackTrace();
-                email = "";
+//                email = "";
             }
 //            retrieveContactPhoto();
             etContactName.setText(name);

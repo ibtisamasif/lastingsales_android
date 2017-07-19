@@ -95,7 +95,7 @@
         </receiver>
         <receiver
             android:name=".receivers.DeviceBootReceiver"
-            android:enabled="false">
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -165,7 +165,7 @@
         <activity android:name=".activities.NotesByContactsActivity2" />
 
         <service
-            android:name=".service.PopupUIService"
+            android:name=".service.AddEditLeadService"
             android:enabled="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
@@ -228,7 +228,8 @@
             android:name=".activities.TagNotificationDialogActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/MyTransparentTheme"></activity>
+            android:theme="@style/MyTransparentTheme">
+        </activity>
 
         <activity
             android:name=".activities.FireBaseMainActivity"
@@ -251,7 +252,6 @@
 
         <activity
             android:name=".activities.AddEditLeadActivity"
-            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
@@ -269,7 +269,7 @@
         </service>
 
         <service
-            android:name=".chatheadbubble.BubblesService"
+            android:name=".service.BubblesService"
             android:enabled="true"
             android:exported="false" />
 

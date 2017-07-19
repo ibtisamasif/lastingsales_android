@@ -201,8 +201,9 @@ public class BubbleHelper extends AppCompatActivity {
                     int responseCode = jObj.getInt("responseCode");
                     JSONObject response = jObj.getJSONObject("response");
                     JSONArray dataArray = response.getJSONArray("data");
-
-                    for (int i = 0; i < dataArray.length(); i++) {
+                    Log.d(TAG, "onResponse: dataArray Lenght: " + dataArray.length());
+//                    for (int i = 0; i < dataArray.length(); i++) {
+                    if (dataArray.length() > 0) {
                         JSONObject jsonobject0 = dataArray.getJSONObject(0);
                         String last_call0 = jsonobject0.getString("last_call");
                         String user_id0 = jsonobject0.getString("user_id");
@@ -233,7 +234,8 @@ public class BubbleHelper extends AppCompatActivity {
                             tvCallerHistoryLastCallDateTime0.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), "dd-MMM-yyyy"));
 //                            tvCallerHistoryLastCallTimeAgo0.setText(PhoneNumberAndCallUtils.getTimeAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0) , context));
                         }
-
+                    }
+                    if (dataArray.length() > 1) {
                         JSONObject jsonobject1 = dataArray.getJSONObject(1);
                         String last_call1 = jsonobject1.getString("last_call");
                         String user_id1 = jsonobject1.getString("user_id");
@@ -257,10 +259,11 @@ public class BubbleHelper extends AppCompatActivity {
                             } else {
                                 tvCallerHistoryName1.setText("Last contacted you");
                             }
-                            tvCallerHistoryLastCallDateTime1.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), "dd-MMM-yyyy"));
+                            tvCallerHistoryLastCallDateTime1.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), "dd-MMM-yyyy"));
 //                            tvCallerHistoryLastCallTimeAgo1.setText(PhoneNumberAndCallUtils.getTimeAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0) , context));
                         }
                     }
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (ParseException e) {

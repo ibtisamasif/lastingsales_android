@@ -29,12 +29,12 @@ import android.util.AttributeSet;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-class BubbleBaseLayout extends FrameLayout {
+public class BubbleBaseLayout extends FrameLayout {
     private WindowManager windowManager;
     private WindowManager.LayoutParams params;
     private BubblesLayoutCoordinator layoutCoordinator;
 
-    void setLayoutCoordinator(BubblesLayoutCoordinator layoutCoordinator) {
+    public void setLayoutCoordinator(BubblesLayoutCoordinator layoutCoordinator) {
         this.layoutCoordinator = layoutCoordinator;
     }
 
@@ -42,7 +42,7 @@ class BubbleBaseLayout extends FrameLayout {
         return layoutCoordinator;
     }
 
-    void setWindowManager(WindowManager windowManager) {
+    public void setWindowManager(WindowManager windowManager) {
         this.windowManager = windowManager;
     }
 
@@ -50,11 +50,11 @@ class BubbleBaseLayout extends FrameLayout {
         return this.windowManager;
     }
 
-    void setViewParams(WindowManager.LayoutParams params) {
+    public void setViewParams(WindowManager.LayoutParams params) {
         this.params = params;
     }
 
-    WindowManager.LayoutParams getViewParams() {
+    public WindowManager.LayoutParams getViewParams() {
         return this.params;
     }
 

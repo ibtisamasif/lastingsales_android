@@ -7,7 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
@@ -16,12 +19,14 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationDrawerActivity;
 import com.example.muzafarimran.lastingsales.activities.TagNotificationDialogActivity;
 import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleHelper;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
+import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -77,9 +82,8 @@ public class CallDetectionService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG, "CallDetectionService onStartCommand()");
         Log.d("testlog", "onStartCommand()");
-        showForegroundNotification("app is running");
-
-        Toast.makeText(getApplicationContext(),"LS Running", Toast.LENGTH_LONG).show();
+        showForegroundNotification("app is running. Click to open");
+//        Toast.makeText(getApplicationContext(),"LS Running", Toast.LENGTH_LONG).show();
         return START_REDELIVER_INTENT;
     }
 
@@ -303,7 +307,7 @@ public class CallDetectionService extends Service {
         BubbleHelper.getInstance(ctx).hide();
 
 //        Log.wtf(TAG, "endServiceAndCallPopupFlyer: ");
-//        Intent intent = new Intent(ctx, PopupUIService.class);
+//        Intent intent = new Intent(ctx, AddEditLeadService.class);
 //        ctx.stopService(intent);
     }
 
@@ -311,7 +315,7 @@ public class CallDetectionService extends Service {
         Log.wtf(TAG, "checkShowCallPopupOld: ");
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-        Intent intent = new Intent(ctx, PopupUIService.class);
+        Intent intent = new Intent(ctx, AddEditLeadService.class);
         intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
         intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
         intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
@@ -322,24 +326,41 @@ public class CallDetectionService extends Service {
     private void showForegroundNotification(String contentText) {
         // Create intent that will bring our app to the front, as if it was tapped in the app
         // launcher
-        Intent showTaskIntent = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
+        Intent showTaskIntent = new Intent(this, NavigationDrawerActivity.class);
         showTaskIntent.setAction(Intent.ACTION_MAIN);
         showTaskIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         showTaskIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, showTaskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(
-                getApplicationContext(),
-                0,
-                showTaskIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent inquiriesIntent = new Intent(this, NavigationDrawerActivity.class);
+        inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
+        PendingIntent pIntentInquiries = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), inquiriesIntent, 0);
 
-        Notification notification = new Notification.Builder(getApplicationContext())
+        Intent unlabeledIntent = new Intent(this, FrameActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
+        bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
+        bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+        unlabeledIntent.putExtras(bundle);
+//        unlabeledIntent.putExtra(AddEditFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddEditFollowUpsActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
+//        unlabeledIntent.putExtra(AddEditFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId());
+        PendingIntent pIntentUnlabeled = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), unlabeledIntent, 0);
+
+        Notification notification = new Notification.Builder(this)
+                .setContentIntent(contentIntent)
                 .setContentTitle("LastingSales")
+                .setTicker("LastingSales")
                 .setContentText(contentText)
                 .setSmallIcon(R.drawable.ic_notification)
-                .setWhen(System.currentTimeMillis())
-                .setContentIntent(contentIntent)
+                .setLargeIcon(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification), 128, 80, false))
+                .setWhen(0)
+//                .setWhen(System.currentTimeMillis())
+                .addAction(R.drawable.ic_notification_phone_missed_24dp, "Inquiries", pIntentInquiries)
+                .addAction(R.drawable.ic_notification_unlabeled_24dp, "Unlabeled", pIntentUnlabeled)
+                .setOngoing(true)
+                .setPriority(Notification.PRIORITY_MAX)
                 .build();
+        //actually run the notification
         startForeground(NOTIFICATION_ID, notification);
     }
 

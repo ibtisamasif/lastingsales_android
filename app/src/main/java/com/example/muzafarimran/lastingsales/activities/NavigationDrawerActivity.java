@@ -89,9 +89,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            }
 //        });
 
-        Intent intent = new Intent(NavigationDrawerActivity.this, CallDetectionService.class);
-        startService(intent);
-
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
         mixpanel.track("Home Screen Opened");
@@ -136,6 +133,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
             finish();
         } else {
+            Intent intent = new Intent(NavigationDrawerActivity.this, CallDetectionService.class);
+            startService(intent);
             TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
             theCallLogEngine.execute();
             Log.d(TAG, "TheCallLogEngine: Started from Drawer");

@@ -220,7 +220,7 @@ public class DataSenderAsync {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddContact");
                 try {
-                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data)); //TODO diff response. //Oasis issue
+                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data)); //TODO diff response. //Oasis issue (api issue)
                     int responseCode = jObj.getInt("responseCode");  // here too
                     if (responseCode == 409) {
                         JSONObject responseObject = jObj.getJSONObject("response");

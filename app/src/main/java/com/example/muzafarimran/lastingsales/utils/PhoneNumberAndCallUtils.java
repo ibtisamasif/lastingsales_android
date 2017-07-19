@@ -53,15 +53,20 @@ public class PhoneNumberAndCallUtils {
     }
 
     public static String numberToInterNationalNumber(String inputString) {
-        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
-        String s = null;
-        try {
-            Phonenumber.PhoneNumber pkNumberProto = phoneNumberUtil.parse(inputString, "PK");
-            s = phoneNumberUtil.format(pkNumberProto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
-        } catch (NumberParseException e) {
-            e.printStackTrace();
+        if (inputString != null) {
+            PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+            String s = null;
+            try {
+                Phonenumber.PhoneNumber pkNumberProto = phoneNumberUtil.parse(inputString, "PK");
+                s = phoneNumberUtil.format(pkNumberProto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+            } catch (NumberParseException e) {
+                e.printStackTrace();
+            }
+            return s;
         }
-        return s;
+        else {
+            return null;
+        }
     }
 
 //    public static String numberToInterNationalE164FormatNumber(String inputString) { // Will review in future

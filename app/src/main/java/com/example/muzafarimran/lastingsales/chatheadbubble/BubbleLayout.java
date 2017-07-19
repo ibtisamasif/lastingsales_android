@@ -27,12 +27,9 @@ package com.example.muzafarimran.lastingsales.chatheadbubble;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Context;
-import android.graphics.Point;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
@@ -85,7 +82,7 @@ public class BubbleLayout extends BubbleBaseLayout {
         this.shouldStickToWall = shouldStick;
     }
 
-    void notifyBubbleRemoved() {
+    public void notifyBubbleRemoved() {
         if (onBubbleRemoveListener != null) {
             onBubbleRemoveListener.onBubbleRemoved(this);
         }

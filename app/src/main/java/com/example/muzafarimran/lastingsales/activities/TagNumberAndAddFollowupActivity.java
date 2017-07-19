@@ -104,7 +104,7 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tag_number_and_add_followup);
+        setContentView(R.layout.activity_tag_notification_dialog);
         inflater = getLayoutInflater();
         year = month = day = hour = minute = 0;
         tvTitleFollowupPopup = (TextView) findViewById(R.id.tvTitleFollowupPopup);

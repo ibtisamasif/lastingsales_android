@@ -177,7 +177,7 @@
                     android:background="@color/lightGray"
                     android:hint="Mobile Number"
                     android:imeOptions="actionNext"
-                    android:inputType="textNoSuggestions"
+                    android:inputType="number"
                     android:maxLines="1"
                     android:paddingLeft="8dp"
                     android:textColor="@color/black"

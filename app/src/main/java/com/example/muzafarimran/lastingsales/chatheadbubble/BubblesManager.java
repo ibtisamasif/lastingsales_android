@@ -30,6 +30,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
+import com.example.muzafarimran.lastingsales.service.BubblesService;
+
 public class BubblesManager {
     private static BubblesManager INSTANCE;
     private Context context;

@@ -18,7 +18,7 @@ import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.service.PopupUIService;
+import com.example.muzafarimran.lastingsales.service.AddEditLeadService;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.utils.CallEndNotification;
@@ -540,7 +540,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 
                 BubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId(), internationalNumber, oneContact);
 
-//                Intent intent = new Intent(ctx, PopupUIService.class);
+//                Intent intent = new Intent(ctx, AddEditLeadService.class);
 //                intent.putExtra(OUTGOINGCALL_CONTACT_NOTE_ID, notesForContact.get(notesForContact.size() - 1).getId() + "");
 //                ctx.startService(intent);
             } else {
@@ -558,7 +558,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         BubbleHelper.getInstance(ctx).hide();
 
 //        Log.wtf(TAG, "endServiceAndCallPopupFlyer: ");
-//        Intent intent = new Intent(ctx, PopupUIService.class);
+//        Intent intent = new Intent(ctx, AddEditLeadService.class);
 //        ctx.stopService(intent);
     }
 
@@ -566,7 +566,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         Log.wtf(TAG, "checkShowCallPopupOld: ");
         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-        Intent intent = new Intent(ctx, PopupUIService.class);
+        Intent intent = new Intent(ctx, AddEditLeadService.class);
         intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
         intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
         intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);

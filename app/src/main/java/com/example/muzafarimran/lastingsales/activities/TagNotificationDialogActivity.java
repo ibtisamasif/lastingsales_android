@@ -74,7 +74,7 @@ public class TagNotificationDialogActivity extends Activity {
         Log.d(TAG, "onCreate: ");
         Log.d("testlog", "onCreate: DIALOG BOX SHOWN");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tag_number_and_add_followup);
+        setContentView(R.layout.activity_tag_notification_dialog);
         inflater = getLayoutInflater();
         etContactName = (EditText) findViewById(R.id.etNameFollowupPopup);
         etContactPhone = (TextView) findViewById(R.id.etNumberFollowupPopup);
