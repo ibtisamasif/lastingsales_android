@@ -115,14 +115,14 @@ public class BubblesService extends Service {
         });
     }
 
-    private WindowManager.LayoutParams buildLayoutParamsForBubble(int x, int y) {
+    private WindowManager.LayoutParams buildLayoutParamsForBubble(int x, int y) { // final flyer layout code
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_PHONE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSPARENT);
-        params.gravity = Gravity.TOP | Gravity.START;
+        params.gravity = Gravity.CENTER | Gravity.START;
         params.x = x;
         params.y = y;
         return params;

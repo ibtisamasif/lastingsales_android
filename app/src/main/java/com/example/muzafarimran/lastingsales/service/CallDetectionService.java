@@ -82,7 +82,7 @@ public class CallDetectionService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG, "CallDetectionService onStartCommand()");
         Log.d("testlog", "onStartCommand()");
-        showForegroundNotification("app is running. Click to open");
+        showForegroundNotification("Click to open");
 //        Toast.makeText(getApplicationContext(),"LS Running", Toast.LENGTH_LONG).show();
         return START_REDELIVER_INTENT;
     }

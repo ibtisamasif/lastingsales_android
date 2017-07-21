@@ -18,6 +18,7 @@
     <color name="colorAccent">@color/colorPrimary</color>
     <color name="lightGray">#F0F0F0</color>
     <color name="darkGray">#d0898989</color>
+    <color name="darkerGray">#444444</color>
     <color name="white">#FFFFFF</color>
     <color name="half_white">#bcffffff</color>
     <color name="half_white2">#25ffffff</color>

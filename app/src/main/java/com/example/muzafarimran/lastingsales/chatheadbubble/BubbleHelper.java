@@ -122,7 +122,7 @@ public class BubbleHelper extends AppCompatActivity {
         });
 
         // add bubble view into bubble manager
-        bubblesManager.addBubble(bubbleView, 500, 600);
+        bubblesManager.addBubble(bubbleView, 0, 0);
 
         fetchCustomerHistory(number);
     }
@@ -169,7 +169,7 @@ public class BubbleHelper extends AppCompatActivity {
         });
 
         // add bubble view into bubble manager
-        bubblesManager.addBubble(bubbleView, 500, 600);
+        bubblesManager.addBubble(bubbleView, 0, 0);
 
         fetchCustomerHistory(number);
     }

@@ -1,8 +1,10 @@
 package com.example.muzafarimran.lastingsales.service;
 
+import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,6 +40,7 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.List;
 
 
 public class AddEditLeadService extends Service {
@@ -50,10 +54,10 @@ public class AddEditLeadService extends Service {
     public static final String TAG_LAUNCH_MODE_CONTACT_NAME = "contact_name";
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     public static final String TAG_LAUNCH_MODE_CONTACT_TYPE = "contact_type";
-    String selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
+    String selectedContactType = LSContact.CONTACT_TYPE_SALES;
     String phoneNumberFromLastActivity;
     String contactNameFromLastActivity;
-    String preSelectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
+    String preSelectedContactType = LSContact.CONTACT_TYPE_SALES;
     private EditText etContactName;
     private TextView etContactPhone;
     private Button bSave;
@@ -71,6 +75,7 @@ public class AddEditLeadService extends Service {
     private View largeInflatedView;
     private WindowManager.LayoutParams params;
     private WindowManager.LayoutParams shrunkParams;
+    private Button bNo;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -122,11 +127,13 @@ public class AddEditLeadService extends Service {
         etContactPhone = (TextView) largeInflatedView.findViewById(R.id.etNumberFollowupPopup);
         bSave = (Button) largeInflatedView.findViewById(R.id.bSaveFollowupPopup);
         bClose = (ImageButton) largeInflatedView.findViewById(R.id.bClose);
+        bNo = (Button) largeInflatedView.findViewById(R.id.bNo);
         cbIgnore = (CheckBox) largeInflatedView.findViewById(R.id.cbIgnore);
         bSalesRadio = (Button) largeInflatedView.findViewById(R.id.bSalesRadio);
         bColleagueRadio = (Button) largeInflatedView.findViewById(R.id.bCollegueRadio);
         llContactDetailsFollowupScreen = (LinearLayout) largeInflatedView.findViewById(R.id.llContactDetailsAddContactScreen);
         llContactType = (LinearLayout) largeInflatedView.findViewById(R.id.llContactType);
+        llContactType.setVisibility(View.GONE); // Temporary
 
 //        if launch mode is tag number then number is gotten out of bundle so it can be searched in
 //        phonebook and the number can be populated in the editText Field
@@ -178,6 +185,15 @@ public class AddEditLeadService extends Service {
                 Toast.makeText(serviceContext, "Closed!", Toast.LENGTH_SHORT).show();
             }
         });
+        bNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopSelf();
+//                stopThisService();
+//                System.exit(0);
+                Toast.makeText(serviceContext, "Added to Unlabeled!", Toast.LENGTH_SHORT).show();
+            }
+        });
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -220,7 +236,7 @@ public class AddEditLeadService extends Service {
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);
-                        Log.d("testlog", "onClick: CheckContactType :" + checkContact.getContactType());
+//                        Log.d("testlog", "onClick: CheckContactType :" + checkContact.getContactType());
                         if (checkContact != null) {
                             if (checkContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
                                 checkContact.setContactName(contactName);
@@ -252,6 +268,7 @@ public class AddEditLeadService extends Service {
 //                                System.exit(0);
                                 Toast.makeText(serviceContext, "Finish", Toast.LENGTH_SHORT).show();
                             }
+                            stopSelf();
                             Toast.makeText(serviceContext, "Already Exists Converted Successfully", Toast.LENGTH_SHORT).show();
                         } else {
                             LSContact tempContact = new LSContact();
@@ -418,6 +435,14 @@ public class AddEditLeadService extends Service {
         };
     }
 
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//
+//        if(keyCode == KeyEvent.KEYCODE_HOME)
+//        {
+//            stopSelf();
+//        }
+//    });
 
     @Override
     public void onDestroy() {
