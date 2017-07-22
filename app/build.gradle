@@ -8,8 +8,8 @@ android {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 43
-        versionName "1.40"
+        versionCode 44
+        versionName "1.41"
         jackOptions {
             enabled false
         }
