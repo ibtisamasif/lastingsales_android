@@ -50,14 +50,12 @@ public class CallDetectionService extends Service {
     private static final int NOTIFICATION_ID = 1;
     private BroadcastReceiver mReceiver;
 
-
     private static int lastState = TelephonyManager.CALL_STATE_IDLE;
     private static Date callStartTime;
     private static boolean isIncoming;
     private static String savedNumber;  //because the passed incoming is only valid in ringing
     private SessionManager sessionManager;
     private static boolean isBubbleShown = false;
-
 
     @Nullable
     @Override
@@ -69,7 +67,6 @@ public class CallDetectionService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "CallDetectionService onCreate()");
-
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.intent.action.NEW_OUTGOING_CALL");
         filter.addAction("android.intent.action.PHONE_STATE");
@@ -77,14 +74,13 @@ public class CallDetectionService extends Service {
         registerReceiver(receiver, filter);
     }
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG, "CallDetectionService onStartCommand()");
         Log.d("testlog", "onStartCommand()");
         showForegroundNotification("Click to open");
 //        Toast.makeText(getApplicationContext(),"LS Running", Toast.LENGTH_LONG).show();
-        return START_REDELIVER_INTENT;
+        return START_STICKY;
     }
 
     @Override
@@ -93,7 +89,6 @@ public class CallDetectionService extends Service {
         Log.i(TAG, "CallDetectionService onDestroy()");
         unregisterReceiver(mReceiver);
     }
-
 
     final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -311,17 +306,17 @@ public class CallDetectionService extends Service {
 //        ctx.stopService(intent);
     }
 
-    public void checkShowCallPopupOld(Context ctx, String name, String number) {
-        Log.wtf(TAG, "checkShowCallPopupOld: ");
-        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-//        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-        Intent intent = new Intent(ctx, AddEditLeadService.class);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
-        ctx.startService(intent);
-    }
+//    public void checkShowCallPopupOld(Context ctx, String name, String number) {
+//        Log.wtf(TAG, "checkShowCallPopupNew: ");
+//        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+////        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+//        Intent intent = new Intent(ctx, AddEditLeadService.class);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
+//        ctx.startService(intent);
+//    }
 
     private void showForegroundNotification(String contentText) {
         // Create intent that will bring our app to the front, as if it was tapped in the app
@@ -363,5 +358,4 @@ public class CallDetectionService extends Service {
         //actually run the notification
         startForeground(NOTIFICATION_ID, notification);
     }
-
 }

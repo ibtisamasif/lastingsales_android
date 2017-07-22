@@ -1,17 +1,12 @@
 package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-
-import com.example.muzafarimran.lastingsales.activities.TagNotificationDialogActivity;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.UnlabeledContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.service.AddEditLeadService;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.utils.CallEndTagBoxService;
 
 import java.util.Calendar;
 
@@ -37,7 +32,7 @@ class UnknownProcessor {
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() > 0L) {
             //Incoming with whome Agent have talked
             if (showNotification) {
-                checkShowCallPopupOld(mContext, call.getContactName(), call.getContactNumber());
+                CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             InquiryManager.Remove(mContext, call);
@@ -53,7 +48,7 @@ class UnknownProcessor {
         } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) && call.getDuration() > 0L) {
             //Outgoing with whome Agent have talked
             if (showNotification) {
-                checkShowCallPopupOld(mContext, call.getContactName(), call.getContactNumber());
+                CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             InquiryManager.Remove(mContext, call);
@@ -103,15 +98,15 @@ class UnknownProcessor {
         bus.post(mCallEvent);
     }
 
-    private static void checkShowCallPopupOld(Context ctx, String name, String number) {
-        Log.wtf("testlog", "UnknownProcessor checkShowCallPopupOld: ");
-        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-//        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-        Intent intent = new Intent(ctx, AddEditLeadService.class);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
-        ctx.startService(intent);
-    }
+//    private static void checkShowCallPopupOld(Context ctx, String name, String number) {
+//        Log.wtf("testlog", "UnknownProcessor checkShowCallPopupNew: ");
+//        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+////        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+//        Intent intent = new Intent(ctx, AddEditLeadService.class);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
+//        ctx.startService(intent);
+//    }
 }

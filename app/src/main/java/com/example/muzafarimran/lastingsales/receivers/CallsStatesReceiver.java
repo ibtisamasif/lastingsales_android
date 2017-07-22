@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.receivers;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRecorder;
@@ -10,7 +9,6 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.activities.TagNotificationDialogActivity;
 import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleHelper;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
@@ -18,10 +16,8 @@ import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.service.AddEditLeadService;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.utils.CallEndNotification;
 import com.example.muzafarimran.lastingsales.utils.PathFileObserver;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManager;
@@ -562,37 +558,37 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //        ctx.stopService(intent);
     }
 
-    public void checkShowCallPopupOld(Context ctx, String name, String number) {
-        Log.wtf(TAG, "checkShowCallPopupOld: ");
-        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-//        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-        Intent intent = new Intent(ctx, AddEditLeadService.class);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
-        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
-        ctx.startService(intent);
-    }
+//    public void checkShowCallPopupNew(Context ctx, String name, String number) {
+//        Log.wtf(TAG, "checkShowCallPopupNew: ");
+//        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+////        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+//        Intent intent = new Intent(ctx, AddEditLeadService.class);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
+//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
+//        ctx.startService(intent);
+//    }
 
-    private void showTagNumberPopupIfNeeded(Context ctx, String number) {
-        NotificationManager mNotificationManager;
-        String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-        LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
-
-        if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-            String name = tempContact.getContactName();
-            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx, number, tempContact));
-
-        } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
-        } else if (tempContact == null) {
-            Log.d(TAG, "showTagNumberPopupIfNeeded: tempContact is NULL");
-            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
-        }
-    }
+//    private void showTagNumberPopupIfNeeded(Context ctx, String number) {
+//        NotificationManager mNotificationManager;
+//        String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+//        LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
+//
+//        if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+//            String name = tempContact.getContactName();
+//            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx, number, tempContact));
+//
+//        } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+//            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
+//        } else if (tempContact == null) {
+//            Log.d(TAG, "showTagNumberPopupIfNeeded: tempContact is NULL");
+//            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
+//        }
+//    }
 
     @Override
     public void onEvent(int event, String path) {
