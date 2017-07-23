@@ -429,7 +429,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
             mixpanel.track("Refreshed");
             Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
-
+        } else if (id == R.id.nav_item_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
         } else if (id == R.id.nav_item_about) {
             Intent aboutIntent = new Intent(this, AboutActivity.class);
             startActivity(aboutIntent);

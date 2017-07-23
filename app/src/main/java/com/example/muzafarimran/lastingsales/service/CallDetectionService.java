@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationDrawerActivity;
 import com.example.muzafarimran.lastingsales.activities.TagNotificationDialogActivity;
@@ -56,6 +57,7 @@ public class CallDetectionService extends Service {
     private static String savedNumber;  //because the passed incoming is only valid in ringing
     private SessionManager sessionManager;
     private static boolean isBubbleShown = false;
+    private SettingsManager settingsManager;
 
     @Nullable
     @Override
@@ -66,6 +68,7 @@ public class CallDetectionService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        settingsManager = new SettingsManager(getApplicationContext());
         Log.i(TAG, "CallDetectionService onCreate()");
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.intent.action.NEW_OUTGOING_CALL");
@@ -278,22 +281,24 @@ public class CallDetectionService extends Service {
 
     public void checkShowCallPopupFlyer(Context ctx, String number) {
         Log.wtf(TAG, "checkShowCallPopupFlyer: ");
-        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-        LSContact oneContact;
-        oneContact = LSContact.getContactFromNumber(internationalNumber);
-        ArrayList<LSNote> notesForContact = null;
-        if (oneContact != null) {
-            notesForContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(oneContact.getId());
-            if (notesForContact != null && notesForContact.size() > 0) {
-                notesForContact.size();
+        if(settingsManager.getKeyStateFlyer()){
+            String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+            LSContact oneContact;
+            oneContact = LSContact.getContactFromNumber(internationalNumber);
+            ArrayList<LSNote> notesForContact = null;
+            if (oneContact != null) {
+                notesForContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(oneContact.getId());
+                if (notesForContact != null && notesForContact.size() > 0) {
+                    notesForContact.size();
 
-                BubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId(), internationalNumber, oneContact);
+                    BubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId(), internationalNumber, oneContact);
 
+                } else {
+                    BubbleHelper.getInstance(ctx).show(internationalNumber);
+                }
             } else {
                 BubbleHelper.getInstance(ctx).show(internationalNumber);
             }
-        } else {
-            BubbleHelper.getInstance(ctx).show(internationalNumber);
         }
     }
 
