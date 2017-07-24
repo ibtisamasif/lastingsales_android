@@ -6,12 +6,12 @@ import de.halfbit.tinybus.Produce;
  * Created by ibtisam on 1/24/2017.
  */
 
-public class LeadContactDeletedEventModel {
-    public LeadContactDeletedEventModel() {
+public class ContactDeletedEventModel {
+    public ContactDeletedEventModel() {
     }
 
     @Produce
-    public LeadContactDeletedEventModel geLastCallReceivedEvent() {
+    public ContactDeletedEventModel geLastCallReceivedEvent() {
         return this;
     }
 }

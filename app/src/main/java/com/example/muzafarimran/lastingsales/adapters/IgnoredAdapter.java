@@ -167,10 +167,10 @@ public class IgnoredAdapter extends BaseAdapter implements Filterable {
                 contact.setLeadDeleted(true);
                 contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
                 contact.save();
-                setList(LSContact.getContactsByTypeInDescOrder(contactType));
-                Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
                 dataSenderAsync.run();
+                setList(LSContact.getContactsByTypeInDescOrder(contactType));
+                Toast.makeText(mContext, "Contact Deleted!", Toast.LENGTH_SHORT).show();
 //                }else {
 //                    Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
 //                }

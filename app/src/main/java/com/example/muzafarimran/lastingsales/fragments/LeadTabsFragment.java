@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.adapters.LeadsTabsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.customview.CustomViewPager;
-import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -126,8 +125,8 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
     }
 
     @Subscribe
-    public void onLeadContactDeletedEventModel(LeadContactDeletedEventModel event) {
-        Log.d(TAG, "LeadContactDeletedEventModel() called with: event = [" + event + "]");
+    public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
+        Log.d(TAG, "ContactDeletedEventModel() called with: event = [" + event + "]");
         updateTabFigues();
     }
 

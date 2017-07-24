@@ -141,7 +141,7 @@
                             android:id="@+id/tvNoteTextUIOCallPopup"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="20dp"
+                            android:layout_marginBottom="1dp"
                             android:layout_below="@+id/tvNoteHeading"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="20dp"
@@ -160,8 +160,8 @@
 
                     <ImageButton
                         android:id="@+id/ibClose"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:background="@drawable/close_icon" />
                 </LinearLayout>
@@ -201,7 +201,8 @@
                             android:layout_weight="2.5"
                             android:maxLines="3"
                             android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:text="Last contacted with me"/>
 
                         <TextView
                             android:id="@+id/tvCallerHistoryLastCallDateTime0"
@@ -215,7 +216,8 @@
                             android:layout_weight="2.5"
                             android:maxLines="3"
                             android:textColor="@color/black"
-                            android:textSize="12sp"/>
+                            android:textSize="12sp"
+                            android:text="24-Jul-2017"/>
 
                         <!--<TextView-->
                             <!--android:id="@+id/tvCallerHistoryLastCallTimeAgo0"-->
@@ -239,12 +241,12 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="2.5"
                             android:maxLines="3"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="14sp"
+                            android:text="Last contacted Ibtisam Asif"/>
 
                         <TextView
                             android:id="@+id/tvCallerHistoryLastCallDateTime1"
@@ -258,7 +260,8 @@
                             android:layout_weight="2.5"
                             android:maxLines="3"
                             android:textColor="@color/black"
-                            android:textSize="12sp"/>
+                            android:textSize="12sp"
+                            android:text="24-Jul-2017"/>
 
                         <!--<TextView-->
                             <!--android:id="@+id/tvCallerHistoryLastCallTimeAgo1"-->

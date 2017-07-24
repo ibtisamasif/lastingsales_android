@@ -1,7 +1,6 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -13,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.PersonalContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.IgnoredAdapter;
@@ -82,6 +81,12 @@ public class IgnoredFragment extends TabFragment {
     @Subscribe
     public void onPersonalContactAddedEventModel(PersonalContactAddedEventModel event) {
         Log.d(TAG, "onPersonalContactAddedEvent() called with: event = [" + event + "]");
+        List<LSContact> contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_IGNORED);
+        setList(contacts);
+    }
+
+    @Subscribe
+    public void onContactDeletedEventModel(ContactDeletedEventModel event) {
         List<LSContact> contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_IGNORED);
         setList(contacts);
     }

@@ -229,7 +229,7 @@ public class BubbleHelper extends AppCompatActivity {
                             if (!user_id0.equals(sessionManager.getKeyLoginId())) {
                                 tvCallerHistoryName0.setText("Last contacted " + firstname0 + " " + lastname0);
                             } else {
-                                tvCallerHistoryName0.setText("Last contacted you");
+                                tvCallerHistoryName0.setText("Last contacted with me");
                             }
                             tvCallerHistoryLastCallDateTime0.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), "dd-MMM-yyyy"));
 //                            tvCallerHistoryLastCallTimeAgo0.setText(PhoneNumberAndCallUtils.getTimeAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0) , context));
@@ -257,7 +257,7 @@ public class BubbleHelper extends AppCompatActivity {
                             if (!user_id1.equals(sessionManager.getKeyLoginId())) {
                                 tvCallerHistoryName1.setText("Last contacted " + firstname1 + " " + lastname1);
                             } else {
-                                tvCallerHistoryName1.setText("Last contacted you");
+                                tvCallerHistoryName1.setText("Last contacted with me");
                             }
                             tvCallerHistoryLastCallDateTime1.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), "dd-MMM-yyyy"));
 //                            tvCallerHistoryLastCallTimeAgo1.setText(PhoneNumberAndCallUtils.getTimeAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0) , context));

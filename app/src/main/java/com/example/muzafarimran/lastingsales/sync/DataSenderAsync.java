@@ -15,7 +15,7 @@ import com.android.volley.toolbox.Volley;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
-import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
@@ -867,7 +867,7 @@ public class DataSenderAsync {
 //                    if (responseCode == 200) {
 //                        JSONObject responseObject = jObj.getJSONObject("response");
                     contact.delete();
-                    LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
+                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                     TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                     bus.post(mCallEvent);
 //                    }
@@ -885,7 +885,7 @@ public class DataSenderAsync {
                     int responseCode = jObj.getInt("responseCode");
                     if (responseCode == 259) {
                         contact.delete();
-                        LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
+                        ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                         TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                         bus.post(mCallEvent);
                     }

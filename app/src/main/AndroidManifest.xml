@@ -65,8 +65,8 @@
         </receiver>
         <receiver android:name=".receivers.CallsStatesReceiver">
             <!--<intent-filter android:priority="999">-->
-                <!--<action android:name="android.intent.action.PHONE_STATE" />-->
-                <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
+            <!--<action android:name="android.intent.action.PHONE_STATE" />-->
+            <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
             <!--</intent-filter>-->
         </receiver>
         <receiver
@@ -130,9 +130,15 @@
             android:name=".activities.FollowupsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="nosensor" />
-        <activity android:name=".activities.NotesActivity" />
-        <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".activities.AboutActivity" />
+        <activity
+            android:name=".activities.NotesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.AboutActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AddEditNoteActivity"
             android:screenOrientation="portrait"
@@ -163,7 +169,9 @@
             android:name=".activities.ContactDetailsTabActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".activities.NotesByContactsActivity2" />
+        <activity
+            android:name=".activities.NotesByContactsActivity2"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.AddEditLeadService"
@@ -184,8 +192,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyTransparentTheme">
             <!--<intent-filter>-->
-                <!--<action android:name="inez.apps.customincomingcallscreen.MyService" />-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<action android:name="inez.apps.customincomingcallscreen.MyService" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
             <!--</intent-filter>-->
         </service>
 
@@ -229,8 +237,7 @@
             android:name=".activities.TagNotificationDialogActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/MyTransparentTheme">
-        </activity>
+            android:theme="@style/MyTransparentTheme"></activity>
 
         <activity
             android:name=".activities.FireBaseMainActivity"
