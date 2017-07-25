@@ -80,6 +80,10 @@ public class BubbleHelper extends AppCompatActivity {
         tvName = (TextView) bubbleView.findViewById(R.id.tvName);
         tvName.setText(number);
         ibClose = (ImageButton) bubbleView.findViewById(R.id.ibClose);
+        tvCallerHistoryName0.setText("");
+        tvCallerHistoryLastCallDateTime0.setText("");
+        tvCallerHistoryName1.setText("");
+        tvCallerHistoryLastCallDateTime1.setText("");
         ibClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +144,10 @@ public class BubbleHelper extends AppCompatActivity {
         tvName = (TextView) bubbleView.findViewById(R.id.tvName);
         tvName.setText(number);
         ibClose = (ImageButton) bubbleView.findViewById(R.id.ibClose);
+        tvCallerHistoryName0.setText("");
+        tvCallerHistoryLastCallDateTime0.setText("");
+        tvCallerHistoryName1.setText("");
+        tvCallerHistoryLastCallDateTime1.setText("");
         ibClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
