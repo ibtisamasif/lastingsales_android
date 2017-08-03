@@ -134,9 +134,9 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
 
                         }
                     }
-                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                    TinyBus bus = TinyBus.from(mContext);
-                    bus.post(mCallEvent);
+//                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+//                    TinyBus bus = TinyBus.from(mContext);
+//                    bus.post(mCallEvent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

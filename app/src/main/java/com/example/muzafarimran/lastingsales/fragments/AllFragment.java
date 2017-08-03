@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
@@ -54,6 +56,8 @@ public class AllFragment extends TabFragment{
         Log.d(TAG, "onCreate() called");
         setRetainInstance(true);
         allAdapter = new AllAdapter(getContext(), null, LSContact.CONTACT_TYPE_SALES);
+        List<LSContact> contacts = LSContact.getDateArrangedSalesContacts("0");
+        setList(contacts);
     }
 
     @Override
@@ -61,7 +65,7 @@ public class AllFragment extends TabFragment{
         super.onResume();
         Log.d(TAG, "onResume() called");
 //        setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
-        new ListPopulateAsync().execute();
+//        new ListPopulateAsync().execute();
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -73,14 +77,17 @@ public class AllFragment extends TabFragment{
         bus.unregister(this);
     }
 
+    //    @Subscribe(mode = Subscribe.Mode.Main)
     @Subscribe
-    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
-        setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
+    public void onLeadContactAddedEventModel(LeadContactAddedEventModel event) {
+        Log.d(TAG, "onLeadContactAddedEventModel: ");
+        setList(LSContact.getDateArrangedSalesContacts());
     }
 
     @Subscribe
     public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
-        setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
+        Log.d(TAG, "onLeadContactDeletedEventModel: ");
+        setList(LSContact.getDateArrangedSalesContacts());
     }
 
     @Subscribe
@@ -102,6 +109,41 @@ public class AllFragment extends TabFragment{
         errorScreenView.setErrorImage(R.drawable.delight_all);
         errorScreenView.setErrorText(this.getResources().getString(R.string.em_all_delight));
         listView.setEmptyView(errorScreenView);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int currentVisibleItemCount;
+            private int currentScrollState;
+            private int currentFirstVisibleItem;
+            private int totalItem;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                Log.d(TAG, "onScrollStateChanged: ");
+                // TODO Auto-generated method stub
+                this.currentScrollState = scrollState;
+                this.isScrollCompleted();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                Log.d(TAG, "onScroll: ");
+                // TODO Auto-generated method stub
+                this.currentFirstVisibleItem = firstVisibleItem;
+                this.currentVisibleItemCount = visibleItemCount;
+                this.totalItem = totalItemCount;
+
+
+            }
+
+            private void isScrollCompleted() {
+                Log.d(TAG, "isScrollCompleted: ");
+                if (totalItem - currentFirstVisibleItem == currentVisibleItemCount && this.currentScrollState == SCROLL_STATE_IDLE) {
+
+                    Log.d(TAG, "isScrollCompleted: END OF LIST FETCHING NEW RECORDS");
+                    new ListPopulateAsync().execute();
+
+                }
+            }
+        });
         return view;
     }
 
@@ -129,26 +171,26 @@ public class AllFragment extends TabFragment{
 
     class ListPopulateAsync extends AsyncTask<Void, String, Void> {
         List<LSContact> contacts;
-//        ProgressDialog progressDialog;
+        ProgressDialog progressDialog;
 
         ListPopulateAsync() {
             super();
-//            progressDialog = new ProgressDialog(getContext());
-//            progressDialog.setTitle("Loading data");
-//            //this method will be running on UI thread
-//            progressDialog.setMessage("Please Wait...");
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Loading data");
+            //this method will be running on UI thread
+            progressDialog.setMessage("Please Wait...");
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.d(TAG, "onPreExecute: ");
-//            progressDialog.show();
+            progressDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... unused) {
-            contacts = LSContact.getAllTypeArrangedContactsAccordingToLeadType();
+            contacts = LSContact.getDateArrangedSalesContacts();
             SystemClock.sleep(200);
             return (null);
         }
@@ -164,9 +206,9 @@ public class AllFragment extends TabFragment{
             setList(contacts);
             Log.d(TAG, "onPostExecute: ");
 //            Toast.makeText(getContext(), "onPostExecuteAll", Toast.LENGTH_SHORT).show();
-//            if (progressDialog != null && progressDialog.isShowing()) {
-//                progressDialog.dismiss();
-//            }
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
     }
 }

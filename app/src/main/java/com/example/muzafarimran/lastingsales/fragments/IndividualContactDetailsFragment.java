@@ -536,7 +536,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
     }
 
     @Subscribe
-    public void onSalesContactAddedEventModel(LeadContactAddedEventModel event) {
-        Log.d(TAG, "onSalesContactAddedEventModel: CalledInFrag");
+    public void onLeadContactAddedEventModel(LeadContactAddedEventModel event) {
+        Log.d(TAG, "onLeadContactAddedEventModel: CalledInFrag");
     }
 }

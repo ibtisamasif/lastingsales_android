@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -63,6 +64,7 @@ public class InActiveLeadsFragment extends  TabFragment{
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: ");
 //        List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
 //        setList(contacts);
         new ListPopulateAsync().execute();
@@ -73,18 +75,21 @@ public class InActiveLeadsFragment extends  TabFragment{
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause: ");
         bus.unregister(this);
     }
 
 
     @Subscribe
-    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
+    public void onLeadContactAddedEventModel(LeadContactAddedEventModel event) {
+        Log.d(TAG, "onLeadContactAddedEventModel: ");
         List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
         setList(contacts);
     }
 
     @Subscribe
     public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
+        Log.d(TAG, "onLeadContactDeletedEventModel: ");
         List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
         setList(contacts);
     }
@@ -101,6 +106,7 @@ public class InActiveLeadsFragment extends  TabFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.fragment_leads, container, false);
         listView = (ListView) view.findViewById(R.id.leads_contacts_list);
 //        imageView = (ImageView) view.findViewById(R.id.ivleads_contacts);
@@ -131,6 +137,7 @@ public class InActiveLeadsFragment extends  TabFragment{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.d(TAG, "onDestroyView: ");
         listView = null;
     }
 
@@ -147,21 +154,21 @@ public class InActiveLeadsFragment extends  TabFragment{
 
     class ListPopulateAsync extends AsyncTask<Void, String, Void> {
         List<LSContact> contacts;
-//        ProgressDialog progressDialog;
+        ProgressDialog progressDialog;
 
         ListPopulateAsync() {
             super();
-//            progressDialog = new ProgressDialog(getContext());
-//            progressDialog.setTitle("Loading data");
-//            //this method will be running on UI thread
-//            progressDialog.setMessage("Please Wait...");
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Loading data");
+            //this method will be running on UI thread
+            progressDialog.setMessage("Please Wait...");
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.d(TAG, "onPreExecute: ");
-//            progressDialog.show();
+            progressDialog.show();
         }
 
         @Override
@@ -182,9 +189,9 @@ public class InActiveLeadsFragment extends  TabFragment{
             setList(contacts);
             Log.d(TAG, "onPostExecute: ");
 //            Toast.makeText(getContext(), "onPostExecuteInActive", Toast.LENGTH_SHORT).show();
-//            if (progressDialog != null && progressDialog.isShowing()) {
-//                progressDialog.dismiss();
-//            }
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
     }
 }

@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales.providers;
 
 import android.util.Log;
 
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;

@@ -16,6 +16,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -132,10 +133,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                    if (payload.has("created_at")) {
 //                        created_at = payload.getString("created_at");
 //                    }
-//                    String updated_at = null;
-//                    if (payload.has("updated_at")) {
-//                        updated_at = payload.getString("updated_at");
-//                    }
+                    String updated_at = null;
+                    if (payload.has("updated_at")) {
+                        updated_at = payload.getString("updated_at");
+                    }
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
 
@@ -154,9 +155,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                        if(created_at != null){
 //                            tempContact.setContactCreated_at(created_at);
 //                        }
-//                        if(updated_at != null){
-//                            tempContact.setContactUpdated_at(updated_at);
-//                        }
+                        if (updated_at != null) {
+                            tempContact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
+                        }
                         tempContact.save();
                     } else {
                         LSContact contact = new LSContact();
@@ -174,9 +175,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                        if(created_at != null){
 //                            tempContact.setContactCreated_at(created_at);
 //                        }
-//                        if(updated_at != null){
-//                            tempContact.setContactUpdated_at(updated_at);
-//                        }
+                        if (updated_at != null) {
+                            contact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
+                        }
                         if (dynamic_values != null) {
                             contact.setDynamic(dynamic_values);
                         }
@@ -199,10 +200,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                    if(payload.has("created_at")){
 //                        created_at = payload.getString("created_at");
 //                    }
-//                    String updated_at = null;
-//                    if(payload.has("updated_at")){
-//                        updated_at = payload.getString("updated_at");
-//                    }
+                    String updated_at = null;
+                    if(payload.has("updated_at")){
+                        updated_at = payload.getString("updated_at");
+                    }
                     String dynamic_values = null;
                     if (payload.has("dynamic_values")) {
                         dynamic_values = payload.getString("dynamic_values");
@@ -220,9 +221,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         contact.setDynamic(dynamic_values);
                     }
                     contact.setContactType(lead_type);
-//                    if(updated_at != null){
-//                        contact.setContactUpdated_at(updated_at);
-//                    }
+                    if (updated_at != null) {
+                        contact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
+                    }
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                     contact.save();
                     String newType = contact.getContactType();
@@ -284,19 +285,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (tag.equals("Column")) {
                 if (action.equals("post")) {
                     String id = "";
-                    if(payload.has("id")){
+                    if (payload.has("id")) {
                         id = payload.getString("id");
                     }
                     String column_type = "";
-                    if(payload.has("column_type")){
+                    if (payload.has("column_type")) {
                         column_type = payload.getString("column_type");
                     }
                     String name = "";
-                    if(payload.has("name")){
+                    if (payload.has("name")) {
                         name = payload.getString("name");
                     }
                     String default_value_options = "";
-                    if(payload.has("default_value_options")){
+                    if (payload.has("default_value_options")) {
                         default_value_options = payload.getString("default_value_options");
                     }
                     String range = "";
@@ -342,19 +343,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 } else if (action.equals("put")) {
                     String id = "";
-                    if(payload.has("id")){
+                    if (payload.has("id")) {
                         id = payload.getString("id");
                     }
                     String column_type = "";
-                    if(payload.has("column_type")){
+                    if (payload.has("column_type")) {
                         column_type = payload.getString("column_type");
                     }
                     String name = "";
-                    if(payload.has("name")){
+                    if (payload.has("name")) {
                         name = payload.getString("name");
                     }
                     String default_value_options = "";
-                    if(payload.has("default_value_options")){
+                    if (payload.has("default_value_options")) {
                         default_value_options = payload.getString("default_value_options");
                     }
                     String range = "";
@@ -446,8 +447,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                }
 //            }
         } catch (JSONException e) {
+            e.printStackTrace();
             Log.e(TAG, "Json Exception: " + e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             Log.e(TAG, "Exception: " + e.getMessage());
         }
     }

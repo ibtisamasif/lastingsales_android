@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
@@ -54,7 +56,8 @@ public class LostFragment extends TabFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         leadsAdapter = new LeadsAdapter(getContext(), null, LSContact.SALES_STATUS_CLOSED_LOST);// TODO remove this line as it populates all contacts have inprogress status including ignored,business
-        setHasOptionsMenu(true);
+        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST, "0");
+        setList(contacts);
     }
 
     @Override
@@ -62,7 +65,7 @@ public class LostFragment extends TabFragment {
         super.onResume();
 //        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
 //        setList(contacts);
-        new ListPopulateAsync().execute();
+//        new ListPopulateAsync().execute();
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -74,13 +77,15 @@ public class LostFragment extends TabFragment {
     }
 
     @Subscribe
-    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
+    public void onLeadContactAddedEventModel(LeadContactAddedEventModel event) {
+        Log.d(TAG, "onLeadContactAddedEventModel: ");
         List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
         setList(contacts);
     }
 
     @Subscribe
     public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
+        Log.d(TAG, "onLeadContactDeletedEventModel: ");
         List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
         setList(contacts);
     }
@@ -97,6 +102,7 @@ public class LostFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.fragment_leads, container, false);
         listView = (ListView) view.findViewById(R.id.leads_contacts_list);
         listView.setAdapter(leadsAdapter);
@@ -104,6 +110,41 @@ public class LostFragment extends TabFragment {
         errorScreenView.setErrorImage(R.drawable.delight_lost);
         errorScreenView.setErrorText(this.getResources().getString(R.string.em_lost_delight));
         listView.setEmptyView(errorScreenView);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int currentVisibleItemCount;
+            private int currentScrollState;
+            private int currentFirstVisibleItem;
+            private int totalItem;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                Log.d(TAG, "onScrollStateChanged: ");
+                // TODO Auto-generated method stub
+                this.currentScrollState = scrollState;
+                this.isScrollCompleted();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                Log.d(TAG, "onScroll: ");
+                // TODO Auto-generated method stub
+                this.currentFirstVisibleItem = firstVisibleItem;
+                this.currentVisibleItemCount = visibleItemCount;
+                this.totalItem = totalItemCount;
+
+
+            }
+
+            private void isScrollCompleted() {
+                Log.d(TAG, "isScrollCompleted: ");
+                if (totalItem - currentFirstVisibleItem == currentVisibleItemCount && this.currentScrollState == SCROLL_STATE_IDLE) {
+
+                    Log.d(TAG, "isScrollCompleted: END OF LIST FETCHING NEW RECORDS");
+                    new ListPopulateAsync().execute();
+
+                }
+            }
+        });
         return view;
     }
 
@@ -129,21 +170,21 @@ public class LostFragment extends TabFragment {
 //    }
     class ListPopulateAsync extends AsyncTask<Void, String, Void> {
         List<LSContact> contacts;
-//        ProgressDialog progressDialog;
+        ProgressDialog progressDialog;
 
         ListPopulateAsync() {
             super();
-//            progressDialog = new ProgressDialog(getContext());
-//            progressDialog.setTitle("Loading data");
-//            //this method will be running on UI thread
-//            progressDialog.setMessage("Please Wait...");
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Loading data");
+            //this method will be running on UI thread
+            progressDialog.setMessage("Please Wait...");
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.d(TAG, "onPreExecute: ");
-//            progressDialog.show();
+            progressDialog.show();
         }
 
         @Override
@@ -164,9 +205,9 @@ public class LostFragment extends TabFragment {
             setList(contacts);
             Log.d(TAG, "onPostExecute: ");
 //            Toast.makeText(getContext(), "onPostExecuteLost", Toast.LENGTH_SHORT).show();
-//            if (progressDialog != null && progressDialog.isShowing()) {
-//                progressDialog.dismiss();
-//            }
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
     }
 }

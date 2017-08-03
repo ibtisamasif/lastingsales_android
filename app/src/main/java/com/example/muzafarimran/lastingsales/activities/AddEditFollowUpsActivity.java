@@ -394,7 +394,8 @@ public class AddEditFollowUpsActivity extends Activity implements TimePickerDial
 //        pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, 0);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             // Do something for KITKAT and above versions
-            manager.setExact(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent); //TODO Battery draining function
+            manager.set(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
+//            manager.setExact(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent); //TODO Battery draining function
         } else {
             // do something for phones running an SDK before KITKAT
             manager.set(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);

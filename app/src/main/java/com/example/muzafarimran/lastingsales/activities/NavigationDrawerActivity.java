@@ -2,10 +2,14 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -92,8 +96,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
         mixpanel.track("Home Screen Opened");
-        AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
-        agentDataFetchAsync.execute();
+
+        long contactCount = LSContact.count(LSContact.class);
+        if ( contactCount < 1) {
+            Log.d(TAG, "onCreate: LSContact.count " + contactCount);
+            AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
+            agentDataFetchAsync.execute();
+        }
 
         //Version Control
         VersionManager versionManager = new VersionManager(getApplicationContext());
@@ -135,9 +144,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         } else {
             Intent intent = new Intent(NavigationDrawerActivity.this, CallDetectionService.class);
             startService(intent);
-            TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-            theCallLogEngine.execute();
-            Log.d(TAG, "TheCallLogEngine: Started from Drawer");
+//            TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+//            theCallLogEngine.execute();
+//            Log.d(TAG, "TheCallLogEngine: Started from Drawer");
         }
 
         LinearLayout navHeader = (LinearLayout) navigationView.getHeaderView(0);

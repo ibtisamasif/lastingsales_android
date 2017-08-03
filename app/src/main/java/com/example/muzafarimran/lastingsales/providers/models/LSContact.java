@@ -94,22 +94,40 @@ public class LSContact extends SugarRecord {
 //            return new ArrayList<LSContact>();
 //        }
 //    }
-//"SELECT * FROM " + NamingHelper.toSQLName(type) + " ORDER BY ID ASC LIMIT 1"
-    public static List<LSContact> getDateArrangedSalesContactsByLeadSalesStatus(String leadType) {
+
+    public static List<LSContact> getDateArrangedSalesContacts() {
         try {
-            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' and contact_sales_status = '"+leadType+"'"+"ORDER BY updated_at DESC");
-//            return Select.from(LSContact.class)
-//                    .where(Condition.prop("contact_sales_status").eq(leadType),
-//                            Condition.prop("contact_type").eq(LSContact.CONTACT_TYPE_SALES),
-//                            Condition.prop("is_lead_deleted").eq(0),
-//                            Condition.prop("is_lead_deleted").eq(null))
-//                    .list();
-//            return LSContact.find(LSContact.class, "contact_sales_status = ? and contact_type = ? ", leadType, LSContact.CONTACT_TYPE_SALES);
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' ORDER BY updated_at DESC");
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
     }
 
+    public static List<LSContact> getDateArrangedSalesContacts(String offset) {
+        try {
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' ORDER BY updated_at DESC LIMIT 10 OFFSET " + offset);
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
+
+    public static List<LSContact> getDateArrangedSalesContactsByLeadSalesStatus(String leadType) {
+        try {
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' and contact_sales_status = '" + leadType + "'" + " ORDER BY updated_at DESC");
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
+
+    public static List<LSContact> getDateArrangedSalesContactsByLeadSalesStatus(String leadType, String offset) {
+        try {
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' and contact_sales_status = '" + leadType + "'" + " ORDER BY updated_at DESC LIMIT 10 OFFSET " + offset);
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
+
+    @Deprecated
     public static List<LSContact> getAllTypeArrangedContactsAccordingToLeadType() { // TODO optimize this function. Crashed here too so must fix it.
         List<LSContact> arrangedContacts = new ArrayList<>();
         List<LSContact> contactsLe = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
@@ -118,7 +136,6 @@ public class LSContact extends SugarRecord {
         arrangedContacts.addAll(contactsLe);
         arrangedContacts.addAll(contactsLo);
         arrangedContacts.addAll(contactsWo);
-
         return arrangedContacts;
     }
 
@@ -434,26 +451,32 @@ public class LSContact extends SugarRecord {
     public void setContactAddress(String contactAddress) {
         this.contactAddress = contactAddress;
     }
+
     @Deprecated
     public String getContactCreated_at() {
         return contactCreated_at;
     }
+
     @Deprecated
     public void setContactCreated_at(String contactCreated_at) {
         this.contactCreated_at = contactCreated_at;
     }
+
     @Deprecated
     public String getContactUpdated_at() {
         return contactUpdated_at;
     }
+
     @Deprecated
     public void setContactUpdated_at(String contactUpdated_at) {
         this.contactUpdated_at = contactUpdated_at;
     }
+
     @Deprecated
     public String getContactDeleted_at() {
         return contactDeleted_at;
     }
+
     @Deprecated
     public void setContactDeleted_at(String contactDeleted_at) {
         this.contactDeleted_at = contactDeleted_at;

@@ -119,8 +119,8 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
     }
 
     @Subscribe
-    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
-        Log.d(TAG, "onSaleContactAddedEventModel() called with: event = [" + event + "]");
+    public void onLeadContactAddedEventModel(LeadContactAddedEventModel event) {
+        Log.d(TAG, "onLeadContactAddedEventModel() called with: event = [" + event + "]");
         updateTabFigues();
     }
 

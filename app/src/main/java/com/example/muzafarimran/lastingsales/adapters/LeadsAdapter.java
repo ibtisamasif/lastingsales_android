@@ -55,8 +55,6 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
     private int leadCount = 0;
     private CallClickListener callClickListener = null;
     private String contactLeadType;
-    private LinearLayout noteDetails;
-
 
     public LeadsAdapter(Context c, List<LSContact> contacts, String type) {
         this.mContext = c;
@@ -301,14 +299,6 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
         mContacts = contacts;
         filteredData = contacts;
         notifyDataSetChanged();
-    }
-
-    public String getContactType() {
-        return contactLeadType;
-    }
-
-    public void setContactType(String contactLeadType) {
-        this.contactLeadType = contactLeadType;
     }
 
     @Override
