@@ -78,27 +78,27 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-//            public void uncaughtException(Thread thread, Throwable ex) {
-//                Log.d(TAG, "uncaughtException: ");
-//                Log.d("testlog", "uncaughtException: ");
-//                Intent launchIntent = new Intent(getIntent());
-//                PendingIntent pending = PendingIntent.getActivity(NavigationDrawerActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 2000, pending);
-//                defaultHandler.uncaughtException(thread, ex);
-//                System.exit(2);
-//                Log.d("testlog", "uncaughtException: exit");
-//            }
-//        });
+        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread thread, Throwable ex) {
+                Log.d(TAG, "uncaughtException: ");
+                Log.d("testlog", "uncaughtException: ");
+                Intent launchIntent = new Intent(getIntent());
+                PendingIntent pending = PendingIntent.getActivity(NavigationDrawerActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 2000, pending);
+                defaultHandler.uncaughtException(thread, ex);
+                System.exit(2);
+                Log.d("testlog", "uncaughtException: exit");
+            }
+        });
 
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
         mixpanel.track("Home Screen Opened");
 
         long contactCount = LSContact.count(LSContact.class);
-        if ( contactCount < 1) {
+        if (contactCount < 1) {
             Log.d(TAG, "onCreate: LSContact.count " + contactCount);
             AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
             agentDataFetchAsync.execute();

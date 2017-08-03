@@ -7,6 +7,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.utils.DayEndAlarmNotification;
 
 import java.util.List;
@@ -46,5 +47,8 @@ public class InquiriesDayEndAlarmReceiver extends WakefulBroadcastReceiver {
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(DayEndAlarmNotification.NOTIFICATION_ID, DayEndAlarmNotification.createAlarmNotification(context, "Pending Inquiries", message));
         }
+
+        // Refresh Service once daily.
+        context.startService(new Intent(context, CallDetectionService.class));
     }
 }

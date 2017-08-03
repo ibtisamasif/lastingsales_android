@@ -175,10 +175,8 @@ public class BubbleHelper extends AppCompatActivity {
                 Toast.makeText(context, "Clicked !", Toast.LENGTH_SHORT).show();
             }
         });
-
         // add bubble view into bubble manager
         bubblesManager.addBubble(bubbleView, 0, 0);
-
         fetchCustomerHistory(number);
     }
 
