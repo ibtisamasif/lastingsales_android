@@ -331,7 +331,5 @@ public class HomeFragment extends TabFragment {
 //        sv.setButtonPosition(lps);
 //        sv.setShouldCentreText(true);
 //        sv.show();
-//
-//
 //    }
 }

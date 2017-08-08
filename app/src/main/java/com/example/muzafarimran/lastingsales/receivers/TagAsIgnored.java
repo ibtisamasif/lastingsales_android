@@ -32,7 +32,7 @@ public class TagAsIgnored extends BroadcastReceiver {
         try {
             JSONObject props = new JSONObject();
             props.put("type", "ignored");
-            mixpanel.track("Lead From Notification - Clicked",props);
+            mixpanel.track("Lead From Notification - Clicked",props); // change
         } catch (Exception e) {
             Log.e("mixpanel", "Unable to add properties to JSONObject", e);
         }

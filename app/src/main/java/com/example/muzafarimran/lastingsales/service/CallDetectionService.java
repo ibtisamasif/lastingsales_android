@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.service;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -12,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -90,7 +92,19 @@ public class CallDetectionService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "CallDetectionService onDestroy()");
-        unregisterReceiver(mReceiver);
+        unregisterReceiver(receiver);
+        sendBroadcast(new Intent("YouWillNeverKillMe"));
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Log.d(TAG, "onTaskRemoved: ");
+        //create a intent that you want to start again..
+        Intent intent = new Intent(getApplicationContext(), CallDetectionService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 5000, pendingIntent);
+        super.onTaskRemoved(rootIntent);
     }
 
     final BroadcastReceiver receiver = new BroadcastReceiver() {
