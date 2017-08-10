@@ -18,6 +18,8 @@ import java.sql.Date;
 
 public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     public static final String TAG = "TheCallLogEngine";
+    public static final String SUB_ID = "subscription";
+
     Context mContext;
     private boolean reRun = true;
 
@@ -76,6 +78,8 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
             int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
             int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
             int name = managedCursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
+//            int accountId = managedCursor.getColumnIndex(CallLog.Calls.PHONE_ACCOUNT_ID); //in OPPO sim1 = 1 & sim2 = 3
+//            int subs = managedCursor.getColumnIndex(SUB_ID); //in OPPO sim1 = 1 & sim2 = 3 // in Huawei sim1 = 0 & sim2 = 1
 
             managedCursor.moveToLast();
             do {
@@ -94,6 +98,8 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                 String callDate = managedCursor.getString(date);
                 Date callDayTime = new Date(Long.valueOf(callDate));
                 String callDuration = managedCursor.getString(duration);
+//                String callAccountId = managedCursor.getString(accountId);
+//                String callSubs = managedCursor.getString(subs);
 
                 if (LSCall.ifExist(callId)) {
                     Log.d(TAG, "ID: " + callId);
@@ -109,6 +115,8 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     Log.d(TAG, "callDate: " + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Long.parseLong(callDate)));
                     Log.d(TAG, "callDayTime: " + callDayTime);
                     Log.d(TAG, "callDuration: " + callDuration);
+//                    Log.d(TAG, "callAccountId: " + callAccountId);
+//                    Log.d(TAG, "callSubs: " + callSubs);
 
                     String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(mContext, callNumber);
                     LSCall tempCall = new LSCall();
