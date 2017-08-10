@@ -310,26 +310,26 @@ public class HomeFragment extends TabFragment {
         super.onStop();
     }
 
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-//        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-//        lps.setMargins(margin, margin, margin, margin);
-//
-//        sv = new ShowcaseView.Builder(getActivity())
-//                .withMaterialShowcase()
-//                .setStyle(R.style.MyCustomShowcaseTheme)
-//                .setTarget(new ViewTarget(floatingActionMenu))
-//                .setContentTitle("Wellcome!")
-//                .setContentText("You can make Leads from here!")
-////                .hideOnTouchOutside()
-//                .replaceEndButton(R.layout.view_custom_button)
-//                .build();
-//        sv.setButtonPosition(lps);
-//        sv.setShouldCentreText(true);
-//        sv.show();
-//    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+        lps.setMargins(margin, margin, margin, margin);
+
+        sv = new ShowcaseView.Builder(getActivity())
+                .withMaterialShowcase()
+                .setStyle(R.style.MyCustomShowcaseTheme)
+                .setTarget(new ViewTarget(floatingActionMenu))
+                .setContentTitle("Wellcome!")
+                .setContentText("You can make Leads from here!")
+//                .hideOnTouchOutside()
+                .replaceEndButton(R.layout.view_custom_button)
+                .build();
+        sv.setButtonPosition(lps);
+        sv.setShouldCentreText(true);
+        sv.show();
+    }
 }

@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.PhoneNumberUtils;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -52,12 +53,32 @@ public class PhoneNumberAndCallUtils {
         return matcher.matches();
     }
 
+    @Deprecated
     public static String numberToInterNationalNumber(String inputString) {
         if (inputString != null) {
             PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
             String s = null;
             try {
                 Phonenumber.PhoneNumber pkNumberProto = phoneNumberUtil.parse(inputString, "PK");
+                s = phoneNumberUtil.format(pkNumberProto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+            } catch (NumberParseException e) {
+                e.printStackTrace();
+            }
+            return s;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public static String numberToInterNationalNumber(Context context, String inputString) {
+        if (inputString != null) {
+            PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+            String s = null;
+            try {
+                TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+                String countryCodeValue = tm.getNetworkCountryIso();
+                Phonenumber.PhoneNumber pkNumberProto = phoneNumberUtil.parse(inputString, countryCodeValue.toUpperCase());
                 s = phoneNumberUtil.format(pkNumberProto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
             } catch (NumberParseException e) {
                 e.printStackTrace();

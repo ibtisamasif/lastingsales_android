@@ -296,7 +296,7 @@ public class CallDetectionService extends Service {
     public void checkShowCallPopupFlyer(Context ctx, String number) {
         Log.wtf(TAG, "checkShowCallPopupFlyer: ");
         if(settingsManager.getKeyStateFlyer()){
-            String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
+            String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(ctx, number);
             LSContact oneContact;
             oneContact = LSContact.getContactFromNumber(internationalNumber);
             ArrayList<LSNote> notesForContact = null;

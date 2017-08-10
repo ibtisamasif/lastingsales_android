@@ -158,7 +158,7 @@ public class AddEditLeadActivity extends Activity {
                 contactPhone = etContactPhone.getText().toString();
                 contactEmail = etContactEmail.getText().toString();
 
-                String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
+                String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
                 LSContact checkContact;
                 checkContact = LSContact.getContactFromNumber(intlNum);
                 if (checkContact == null) {

@@ -110,7 +110,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     Log.d(TAG, "callDayTime: " + callDayTime);
                     Log.d(TAG, "callDuration: " + callDuration);
 
-                    String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(callNumber);
+                    String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(mContext, callNumber);
                     LSCall tempCall = new LSCall();
                     tempCall.setCallLogId(callId);
                     tempCall.setContactNumber(internationalNumber);

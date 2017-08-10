@@ -111,7 +111,7 @@ public class TagNotificationDialogActivity extends Activity {
             selectedContactType = bundle.getString(TAG_LAUNCH_MODE_CONTACT_TYPE);
             preSelectedContactType = selectedContactType;
             editingMode = false;
-            String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(phoneNumberFromLastActivity);
+            String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(TagNotificationDialogActivity.this, phoneNumberFromLastActivity);
             String nameFromPhoneBook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), internationalNumber);
             etContactPhone.setText(internationalNumber);
             if (contactNameFromLastActivity != null) {
@@ -191,7 +191,7 @@ public class TagNotificationDialogActivity extends Activity {
                             etContactPhone.setError("Invalid Number!");
                         }
                         if (validation && !editingMode) {
-                            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
+                            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(TagNotificationDialogActivity.this, contactPhone);
                             LSContact checkContact;
                             checkContact = LSContact.getContactFromNumber(intlNum);
                             if (checkContact != null) {

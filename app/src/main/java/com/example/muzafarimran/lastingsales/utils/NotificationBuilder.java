@@ -17,7 +17,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 public class NotificationBuilder {
      public static void showTagNumberPopup(Context ctx, String contactName, String contactNumber) {
         NotificationManager mNotificationManager;
-        String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactNumber);
+        String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(ctx, contactNumber);
         LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
 
         if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {

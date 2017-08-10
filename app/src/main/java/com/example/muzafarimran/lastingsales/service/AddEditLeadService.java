@@ -139,7 +139,7 @@ public class AddEditLeadService extends Service {
 //        phonebook and the number can be populated in the editText Field
         Log.d(TAG, "onCreate: Tag Number");
         preSelectedContactType = selectedContactType;
-        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(phoneNumberFromLastActivity);
+        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phoneNumberFromLastActivity);
         String nameFromPhoneBook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), internationalNumber);
         etContactPhone.setText(internationalNumber);
         if (contactNameFromLastActivity != null) {
@@ -233,7 +233,7 @@ public class AddEditLeadService extends Service {
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation) {
-                        String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
+                        String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), contactPhone);
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);
 //                        Log.d("testlog", "onClick: CheckContactType :" + checkContact.getContactType());

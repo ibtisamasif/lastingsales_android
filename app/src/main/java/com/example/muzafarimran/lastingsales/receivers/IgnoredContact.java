@@ -18,7 +18,7 @@ public class IgnoredContact {
 
     public static void AddAsIgnoredContact(Context context, String contactPhone, String contactName) {
         if (contactPhone != null && contactPhone != ""){
-            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(contactPhone);
+            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(context, contactPhone);
             LSContact checkContact;
             checkContact = LSContact.getContactFromNumber(intlNum);
             if (checkContact != null) {
