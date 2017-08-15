@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
-import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -124,7 +123,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
             holder.user_details_wrapper = (LinearLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.llcontact_followup = (LinearLayout) convertView.findViewById(R.id.llcontact_followup);
             holder.contact_followup = (ImageButton) convertView.findViewById(R.id.contact_followup);
-            holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
+            holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButton);
             holder.lastContactText = (TextView) convertView.findViewById(R.id.last_contact_text);
             holder.numberCallsText = (TextView) convertView.findViewById(R.id.calls_text);
             holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);

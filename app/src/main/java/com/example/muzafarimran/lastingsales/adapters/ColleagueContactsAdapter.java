@@ -117,7 +117,7 @@ public class ColleagueContactsAdapter extends BaseAdapter implements Filterable 
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.contactTagDropDownLayout = (RelativeLayout) convertView.findViewById(R.id.contactTagDropDownLayout);
-            holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
+            holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButton);
             holder.bIgnore = (Button) convertView.findViewById(R.id.contactDropDownIgnoreButton);
             holder.bSales = (Button) convertView.findViewById(R.id.contactDropDownAddAsLeadButton);
             holder.contactTagDropDownLayout.setVisibility(GONE);

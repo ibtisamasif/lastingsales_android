@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +115,7 @@ public class IgnoredAdapter extends BaseAdapter implements Filterable {
             holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.user_details_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
-            holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
+            holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButton);
             holder.bSales = (Button) convertView.findViewById(R.id.bSales);
             holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);
             holder.contactDetailsDopDownLayout.setVisibility(GONE);

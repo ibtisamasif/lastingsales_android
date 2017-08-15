@@ -97,7 +97,7 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getDateArrangedSalesContacts() {
         try {
-            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' ORDER BY updated_at DESC");
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where contact_type = 'type_sales' ORDER BY updated_at DESC");
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
@@ -105,7 +105,7 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getDateArrangedSalesContacts(String offset) {
         try {
-            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' ORDER BY updated_at DESC LIMIT 10 OFFSET " + offset);
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where contact_type = 'type_sales' ORDER BY updated_at DESC LIMIT 10 OFFSET " + offset);
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
@@ -113,7 +113,7 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getDateArrangedSalesContactsByLeadSalesStatus(String leadType) {
         try {
-            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' and contact_sales_status = '" + leadType + "'" + " ORDER BY updated_at DESC");
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where contact_type = 'type_sales' and contact_sales_status = '" + leadType + "'" + " ORDER BY updated_at DESC");
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
@@ -121,7 +121,7 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getDateArrangedSalesContactsByLeadSalesStatus(String leadType, String offset) {
         try {
-            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' and contact_sales_status = '" + leadType + "'" + " ORDER BY updated_at DESC LIMIT 10 OFFSET " + offset);
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where contact_type = 'type_sales' and contact_sales_status = '" + leadType + "'" + " ORDER BY updated_at DESC LIMIT 10 OFFSET " + offset);
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }

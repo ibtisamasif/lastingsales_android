@@ -32,8 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingLeft="0dp"
-                android:src="@drawable/ic_account_circle"
-                android:tint="@color/colorPrimary" />
+                android:src="@drawable/ic_account_circle" />
 
             <RelativeLayout
 
@@ -75,7 +74,7 @@
             android:gravity="center">
 
             <ImageButton
-                android:id="@+id/deleteButtonContactRow"
+                android:id="@+id/deleteButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/trash_circle_red_128"

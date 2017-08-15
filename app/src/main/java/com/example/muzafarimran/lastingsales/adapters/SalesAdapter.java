@@ -124,7 +124,7 @@ public class SalesAdapter extends BaseAdapter implements Filterable, StickyListH
             holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.user_details_wrapper = (LinearLayout) convertView.findViewById(R.id.user_call_group_wrapper);
-            holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButtonContactRow);
+            holder.deleteButton = (ImageButton) convertView.findViewById(R.id.deleteButton);
             holder.lastContactText = (TextView) convertView.findViewById(R.id.last_contact_text);
             holder.numberCallsText = (TextView) convertView.findViewById(R.id.calls_text);
             holder.contactDetailsDopDownLayout = (LinearLayout) convertView.findViewById(R.id.contactDetailsDropDownLayout);
