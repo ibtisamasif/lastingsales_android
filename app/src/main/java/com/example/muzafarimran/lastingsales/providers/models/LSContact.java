@@ -94,7 +94,7 @@ public class LSContact extends SugarRecord {
 //            return new ArrayList<LSContact>();
 //        }
 //    }
-
+    // used in All leads
     public static List<LSContact> getDateArrangedSalesContacts() {
         try {
             return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where contact_type = 'type_sales' ORDER BY updated_at DESC");
@@ -102,7 +102,7 @@ public class LSContact extends SugarRecord {
             return new ArrayList<LSContact>();
         }
     }
-
+    // All Fragment
     public static List<LSContact> getDateArrangedSalesContacts(String offset) {
         try {
             return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where contact_type = 'type_sales' ORDER BY updated_at DESC LIMIT 10 OFFSET " + offset);
@@ -110,7 +110,7 @@ public class LSContact extends SugarRecord {
             return new ArrayList<LSContact>();
         }
     }
-
+    // used in Rest of sales funnel screens i.e Inprogress , lost , won
     public static List<LSContact> getDateArrangedSalesContactsByLeadSalesStatus(String leadType) {
         try {
             return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where contact_type = 'type_sales' and contact_sales_status = '" + leadType + "'" + " ORDER BY updated_at DESC");

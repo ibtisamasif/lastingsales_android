@@ -177,7 +177,7 @@ public class AllAdapter extends BaseAdapter implements Filterable {
             @Override
             public boolean onLongClick(View view) {
                 deleteFlow = true;
-                setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
+                setList(LSContact.getDateArrangedSalesContacts());
                 Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -224,7 +224,7 @@ public class AllAdapter extends BaseAdapter implements Filterable {
 //                    contact.delete();
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
                 dataSenderAsync.run();
-                setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
+                setList(LSContact.getDateArrangedSalesContacts());
                 Toast.makeText(mContext, "Lead will be deleted upon syncing!", Toast.LENGTH_SHORT).show();
 //                    }else {
 //                        Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();

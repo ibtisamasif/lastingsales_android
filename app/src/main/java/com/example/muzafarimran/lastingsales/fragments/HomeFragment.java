@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,7 +42,9 @@ import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
-
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,12 +57,11 @@ public class HomeFragment extends TabFragment {
     private CardView llInActiveLeadsContainer;
     private CardView llUnlabeledContainer;
     private CardView llinquriesContainer;
-//    private FrameLayout followupsListHolderFrameLayout;
+    //    private FrameLayout followupsListHolderFrameLayout;
     private FollowupsTodayListFragment followupsTodayListFragment;
     private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     private FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
-    private ShowcaseView sv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -202,7 +202,6 @@ public class HomeFragment extends TabFragment {
                 tvInquiriesValue.setText("" + allInquiries.size());
             } else {
                 llinquriesContainer.setVisibility(View.GONE);
-//                llshadow1.setVisibility(View.GONE);
             }
         } else {
             tvInquiriesValue.setText(0);
@@ -214,7 +213,6 @@ public class HomeFragment extends TabFragment {
                 tvUnlabeledContacts.setText("" + allUnlabeledContacts.size());
             } else {
                 llUnlabeledContainer.setVisibility(View.GONE);
-//                llshadow2.setVisibility(View.GONE);
             }
         } else {
             tvUnlabeledContacts.setText(0);
@@ -226,7 +224,6 @@ public class HomeFragment extends TabFragment {
                 tvInactiveLeadsValue.setText("" + allInactiveLeads.size());
             } else {
                 llInActiveLeadsContainer.setVisibility(View.GONE);
-//                llshadow3.setVisibility(View.GONE);
             }
         } else {
             tvInactiveLeadsValue.setText(0);
@@ -313,23 +310,38 @@ public class HomeFragment extends TabFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-        lps.setMargins(margin, margin, margin, margin);
 
-        sv = new ShowcaseView.Builder(getActivity())
-                .withMaterialShowcase()
-                .setStyle(R.style.MyCustomShowcaseTheme)
-                .setTarget(new ViewTarget(floatingActionMenu))
-                .setContentTitle("Wellcome!")
-                .setContentText("You can make Leads from here!")
-//                .hideOnTouchOutside()
-                .replaceEndButton(R.layout.view_custom_button)
-                .build();
-        sv.setButtonPosition(lps);
-        sv.setShouldCentreText(true);
-        sv.show();
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity() , "100");
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+//                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        sequence.setConfig(config);
+        sequence.addSequenceItem(floatingActionMenu, "You can add leads here", "GOT IT");
+        if (llinquriesContainer.isShown()) {
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(llinquriesContainer)
+                            .setDismissText("GOT IT")
+                            .setContentText("These are your inquiries which you need to call back")
+                            .withRectangleShape(true)
+                            .build()
+            );
+        }
+        if (llUnlabeledContainer.isShown()) {
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(llUnlabeledContainer)
+                            .setDismissText("GOT IT")
+                            .setContentText("here are your unlabeled contacts please save them")
+                            .withRectangleShape()
+                            .build()
+            );
+        }
+        sequence.start();
     }
 }

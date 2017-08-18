@@ -100,5 +100,6 @@ dependencies {
     compile 'com.mixpanel.android:mixpanel-android:5.0.1'
     compile project(':volley-master')
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'
+    compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
 }
 apply plugin: 'com.google.gms.google-services'

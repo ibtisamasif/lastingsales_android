@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import java.util.List;
 import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 
 /**
@@ -63,6 +65,7 @@ public class UnlabeledFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
         setRetainInstance(true);
         unlabeledAdapter = new UnlabeledAdapter(getContext());
         unlabeledAdapter.setList(untaggedContacts);
@@ -126,6 +129,7 @@ public class UnlabeledFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
         listView = (ListView) view.findViewById(R.id.calls_list);
         listView.setAdapter(unlabeledAdapter);
@@ -148,6 +152,19 @@ public class UnlabeledFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated: ");
+        super.onActivityCreated(savedInstanceState);
+        new MaterialShowcaseView.Builder(getActivity())
+                .setTarget(errorScreenView)
+                .setDismissText("GOT IT")
+                .setContentText("These are your unknown contacts you need to save them")
+                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+                .singleUse("300") // provide a unique ID used to ensure it is only shown once
+                .show();
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,7 +59,7 @@ public class InquiriesFragment extends SearchFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate() called");
+        Log.d(TAG, "onCreate: ");
         setRetainInstance(true);
         inquiriesAdapter = new InquiriesAdapter(getContext());
         setHasOptionsMenu(true);
@@ -66,7 +68,7 @@ public class InquiriesFragment extends SearchFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart() called");
+        Log.d(TAG, "onStart: ");
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -74,7 +76,7 @@ public class InquiriesFragment extends SearchFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop() called");
+        Log.d(TAG, "onStop: ");
         bus.unregister(this);
     }
 
@@ -96,7 +98,7 @@ public class InquiriesFragment extends SearchFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume() called");
+        Log.d(TAG, "onResume: ");
 //        List<LSInquiry> contacts = LSInquiry.getAllPendingInquiriesInDescendingOrder();
 //        setList(contacts);
         new ListPopulateAsync().execute();
@@ -104,6 +106,7 @@ public class InquiriesFragment extends SearchFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
         errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
         errorScreenView.setErrorImage(R.drawable.delight_lost);
@@ -132,21 +135,21 @@ public class InquiriesFragment extends SearchFragment {
 
     class ListPopulateAsync extends AsyncTask<Void, String, Void> {
         List<LSInquiry> inquiries;
-//        ProgressDialog progressDialog;
+        ProgressDialog progressDialog;
 
         ListPopulateAsync() {
             super();
-//            progressDialog = new ProgressDialog(getContext());
-//            progressDialog.setTitle("Loading data");
-//            //this method will be running on UI thread
-//            progressDialog.setMessage("Please Wait...");
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Loading data");
+            //this method will be running on UI thread
+            progressDialog.setMessage("Please Wait...");
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.d(TAG, "onPreExecute: ");
-//            progressDialog.show();
+            progressDialog.show();
         }
 
         @Override
@@ -167,9 +170,9 @@ public class InquiriesFragment extends SearchFragment {
             setList(inquiries);
             Log.d(TAG, "onPostExecute: ");
 //            Toast.makeText(getContext(), "onPostExecuteInquries", Toast.LENGTH_SHORT).show();
-//            if (progressDialog != null && progressDialog.isShowing()) {
-//                progressDialog.dismiss();
-//            }
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
     }
 }

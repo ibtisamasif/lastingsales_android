@@ -58,6 +58,7 @@ import java.util.Locale;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SearchCallback, TabSelectedListener {
     private static final String TAG = "NaviDrawerActivity";
@@ -79,11 +80,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        String countryCodeValue = tm.getNetworkCountryIso();
-        Log.d(TAG, "onCreate: LANGUAGE " + countryCodeValue);
-
         final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread thread, Throwable ex) {
@@ -94,7 +90,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 manager.set(AlarmManager.RTC, System.currentTimeMillis() + 2000, pending);
                 defaultHandler.uncaughtException(thread, ex);
-                System.exit(2);
+                System.exit(2); //TODO why 2 i forgot and it seems buggy now?
                 Log.d("testlog", "uncaughtException: exit");
             }
         });
@@ -119,7 +115,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundle = new Bundle();
+        final Bundle bundle = new Bundle();
         //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
 //        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
@@ -208,6 +204,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //                        tab.setIcon(R.drawable.ic_home_white_48dp);
                         getSupportActionBar().setTitle("Inquiries");
                         UpdateBadge();
+                        new MaterialShowcaseView.Builder(NavigationDrawerActivity.this)
+                                .setTarget(badgeInquries)
+                                .setDismissText("GOT IT")
+                                .setContentText("Here are your inquiries which you need to call back")
+                                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+                                .singleUse("200") // provide a unique ID used to ensure it is only shown once
+                                .show();
 //                        String projectToken = MixpanelConfig.projectToken;
 //                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
 //                        try {
@@ -479,6 +482,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
             @Override
             public void onPageSelected(int position) {
+                Log.d(TAG, "onPageSelected: ");
                 if (position == 2) {
                     TabSelectedListener tabSelectedListener = (TabSelectedListener) ((SampleFragmentPagerAdapter) viewPager.getAdapter()).getItem(position);
                     tabSelectedListener.onTabSelectedEvent(4, "");
@@ -488,7 +492,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                Log.d(TAG, "onPageScrollStateChanged: ");
             }
         });
         viewPager.setCurrentItem(position, true);

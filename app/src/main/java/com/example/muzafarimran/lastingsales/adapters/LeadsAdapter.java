@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +41,7 @@ import static android.view.View.GONE;
 
 public class LeadsAdapter extends BaseAdapter implements Filterable {
 
+    private static final String TAG = "LeadsAdapter";
     private final static int TYPE_SEPARATOR = 0;
     private final static int TYPE_ITEM = 1;
     private final static int ITEM_TYPES = 2;
@@ -116,6 +118,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.contact_row_view, parent, false);
             holder = new ViewHolder();
+            holder.user_avatar = (ImageView) convertView.findViewById(R.id.user_avatar);
             holder.name = (TextView) convertView.findViewById(R.id.contact_name);
             holder.contact_status = (TextView) convertView.findViewById(R.id.contact_status);
             holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
@@ -190,6 +193,10 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
                 mContext.startActivity(detailsActivityIntent);
             }
         });
+        if( contact.isLeadDeleted() ){
+            Log.d(TAG, "getView: deleted Lead");
+            holder.user_avatar.setImageResource(R.drawable.ic_account_circle_transparent_blue);
+        }
 //              Deletes the contact, queries db and updates local list plus notifies adapter
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -354,6 +361,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
         RelativeLayout statusRow;
         ImageButton contact_followup;
         LinearLayout llcontact_followup;
+        public ImageView user_avatar;
     }
 
     /*
