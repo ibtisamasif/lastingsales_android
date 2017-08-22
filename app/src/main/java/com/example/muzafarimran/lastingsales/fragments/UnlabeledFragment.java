@@ -1,7 +1,5 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
-
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -13,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
@@ -23,15 +19,11 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.UnlabeledAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -158,13 +150,13 @@ public class UnlabeledFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated: ");
         super.onActivityCreated(savedInstanceState);
-        new MaterialShowcaseView.Builder(getActivity())
-                .setTarget(errorScreenView)
-                .setDismissText("GOT IT")
-                .setContentText("These are your unknown contacts you need to save them")
-                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-                .singleUse("300") // provide a unique ID used to ensure it is only shown once
-                .show();
+//        new MaterialShowcaseView.Builder(getActivity())
+//                .setTarget(errorScreenView)
+//                .setDismissText("GOT IT")
+//                .setContentText("These are your unknown contacts you need to save them")
+//                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+//                .singleUse("300") // provide a unique ID used to ensure it is only shown once
+//                .show();
     }
 
     @Override

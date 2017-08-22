@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.InquiriesAdapter;
@@ -25,10 +24,9 @@ import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 
 import java.util.List;
-
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
 
 /**
  * A simple {@link Fragment} subclass.

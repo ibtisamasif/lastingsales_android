@@ -2,21 +2,13 @@ package com.example.muzafarimran.lastingsales.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
@@ -29,22 +21,14 @@ import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.SimpleShowcaseEventListener;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -307,41 +291,41 @@ public class HomeFragment extends TabFragment {
         super.onStop();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500); // half second between each showcase view
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity() , "100");
-        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
-            @Override
-            public void onShow(MaterialShowcaseView itemView, int position) {
-//                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        sequence.setConfig(config);
-        sequence.addSequenceItem(floatingActionMenu, "You can add leads here", "GOT IT");
-        if (llinquriesContainer.isShown()) {
-            sequence.addSequenceItem(
-                    new MaterialShowcaseView.Builder(getActivity())
-                            .setTarget(llinquriesContainer)
-                            .setDismissText("GOT IT")
-                            .setContentText("These are your inquiries which you need to call back")
-                            .withRectangleShape(true)
-                            .build()
-            );
-        }
-        if (llUnlabeledContainer.isShown()) {
-            sequence.addSequenceItem(
-                    new MaterialShowcaseView.Builder(getActivity())
-                            .setTarget(llUnlabeledContainer)
-                            .setDismissText("GOT IT")
-                            .setContentText("here are your unlabeled contacts please save them")
-                            .withRectangleShape()
-                            .build()
-            );
-        }
-        sequence.start();
-    }
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//
+//        ShowcaseConfig config = new ShowcaseConfig();
+//        config.setDelay(500); // half second between each showcase view
+//        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity() , "100");
+//        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+//            @Override
+//            public void onShow(MaterialShowcaseView itemView, int position) {
+////                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        sequence.setConfig(config);
+//        sequence.addSequenceItem(floatingActionMenu, "You can add leads here", "GOT IT");
+//        if (llinquriesContainer.isShown()) {
+//            sequence.addSequenceItem(
+//                    new MaterialShowcaseView.Builder(getActivity())
+//                            .setTarget(llinquriesContainer)
+//                            .setDismissText("GOT IT")
+//                            .setContentText("These are your inquiries which you need to call back")
+//                            .withRectangleShape(true)
+//                            .build()
+//            );
+//        }
+//        if (llUnlabeledContainer.isShown()) {
+//            sequence.addSequenceItem(
+//                    new MaterialShowcaseView.Builder(getActivity())
+//                            .setTarget(llUnlabeledContainer)
+//                            .setDismissText("GOT IT")
+//                            .setContentText("here are your unlabeled contacts please save them")
+//                            .withRectangleShape()
+//                            .build()
+//            );
+//        }
+//        sequence.start();
+//    }
 }

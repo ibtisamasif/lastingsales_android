@@ -52,13 +52,9 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManage
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import java.util.List;
-import java.util.Locale;
-
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SearchCallback, TabSelectedListener {
     private static final String TAG = "NaviDrawerActivity";
@@ -204,13 +200,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //                        tab.setIcon(R.drawable.ic_home_white_48dp);
                         getSupportActionBar().setTitle("Inquiries");
                         UpdateBadge();
-                        new MaterialShowcaseView.Builder(NavigationDrawerActivity.this)
-                                .setTarget(badgeInquries)
-                                .setDismissText("GOT IT")
-                                .setContentText("Here are your inquiries which you need to call back")
-                                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-                                .singleUse("200") // provide a unique ID used to ensure it is only shown once
-                                .show();
+//                        new MaterialShowcaseView.Builder(NavigationDrawerActivity.this)
+//                                .setTarget(badgeInquries)
+//                                .setDismissText("GOT IT")
+//                                .setContentText("Here are your inquiries which you need to call back")
+//                                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+//                                .singleUse("200") // provide a unique ID used to ensure it is only shown once
+//                                .show();
 //                        String projectToken = MixpanelConfig.projectToken;
 //                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
 //                        try {
