@@ -59,8 +59,8 @@ public class InProgressFragment extends TabFragment {
         Log.d(TAG, "onCreate: ");
         setRetainInstance(true);
         leadsAdapter = new LeadsAdapter(getContext(), null, LSContact.SALES_STATUS_INPROGRESS); // TODO remove this line as it populates all contacts have inprogress status including ignored,business
-        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS, "0");
-        setList(contacts);
+//        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS, "0");
+//        setList(contacts);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class InProgressFragment extends TabFragment {
         super.onResume();
 //        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS, "0");
 //        setList(contacts);
-//        new ListPopulateAsync().execute();
+        new ListPopulateAsync().execute();
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -116,43 +116,43 @@ public class InProgressFragment extends TabFragment {
         listView.setEmptyView(errorScreenView);
 //        ProgressBar footer = new ProgressBar(getActivity());
 //        listView.addFooterView(footer);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            private int currentVisibleItemCount;
-            private int currentScrollState;
-            private int currentFirstVisibleItem;
-            private int totalItem;
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                Log.d(TAG, "onScrollStateChanged: ");
-                // TODO Auto-generated method stub
-                this.currentScrollState = scrollState;
-                this.isScrollCompleted();
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                Log.d(TAG, "onScroll: ");
-                // TODO Auto-generated method stub
-                this.currentFirstVisibleItem = firstVisibleItem;
-                this.currentVisibleItemCount = visibleItemCount;
-                this.totalItem = totalItemCount;
-
-
-            }
-
-            private void isScrollCompleted() {
-                Log.d(TAG, "isScrollCompleted: ");
-                if (totalItem - currentFirstVisibleItem == currentVisibleItemCount && this.currentScrollState == SCROLL_STATE_IDLE) {
-
-                    Log.d(TAG, "isScrollCompleted: END OF LIST FETCHING NEW RECORDS");
-                    new ListPopulateAsync().execute();
-
-//                    List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-//                    setList(contacts);
-                }
-            }
-        });
+//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            private int currentVisibleItemCount;
+//            private int currentScrollState;
+//            private int currentFirstVisibleItem;
+//            private int totalItem;
+//
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                Log.d(TAG, "onScrollStateChanged: ");
+//                // TODO Auto-generated method stub
+//                this.currentScrollState = scrollState;
+//                this.isScrollCompleted();
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                Log.d(TAG, "onScroll: ");
+//                // TODO Auto-generated method stub
+//                this.currentFirstVisibleItem = firstVisibleItem;
+//                this.currentVisibleItemCount = visibleItemCount;
+//                this.totalItem = totalItemCount;
+//
+//
+//            }
+//
+//            private void isScrollCompleted() {
+//                Log.d(TAG, "isScrollCompleted: ");
+//                if (totalItem - currentFirstVisibleItem == currentVisibleItemCount && this.currentScrollState == SCROLL_STATE_IDLE) {
+//
+//                    Log.d(TAG, "isScrollCompleted: END OF LIST FETCHING NEW RECORDS");
+//                    new ListPopulateAsync().execute();
+//
+////                    List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+////                    setList(contacts);
+//                }
+//            }
+//        });
         return view;
     }
 
@@ -178,29 +178,29 @@ public class InProgressFragment extends TabFragment {
 //        allAdapter.getFilter().filter(query);
 //    }
 
-    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
+    private class ListPopulateAsync extends AsyncTask<Void, String, Void> {
         List<LSContact> contacts;
-        ProgressDialog progressDialog;
+//        ProgressDialog progressDialog;
 
         ListPopulateAsync() {
             super();
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setTitle("Loading data");
-            //this method will be running on UI thread
-            progressDialog.setMessage("Please Wait...");
+//            progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.d(TAG, "onPreExecute: ");
-            progressDialog.show();
+//            progressDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... unused) {
             contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-            SystemClock.sleep(200);
+//            SystemClock.sleep(200);
             return (null);
         }
 
@@ -215,9 +215,9 @@ public class InProgressFragment extends TabFragment {
             setList(contacts);
             Log.d(TAG, "onPostExecute: ");
 //            Toast.makeText(getContext(), "onPostExecuteInProgress", Toast.LENGTH_SHORT).show();
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
         }
     }
 }

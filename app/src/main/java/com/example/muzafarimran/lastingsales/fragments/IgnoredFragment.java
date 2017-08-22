@@ -175,7 +175,7 @@ public class IgnoredFragment extends TabFragment {
         @Override
         protected Void doInBackground(Void... unused) {
             contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_IGNORED);
-            SystemClock.sleep(200);
+//            SystemClock.sleep(200);
             return (null);
         }
 

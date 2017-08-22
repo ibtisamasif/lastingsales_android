@@ -198,7 +198,7 @@ public class ColleagueFragment extends TabFragment {
         @Override
         protected Void doInBackground(Void... unused) {
             contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
-            SystemClock.sleep(200);
+//            SystemClock.sleep(200);
             return (null);
         }
 

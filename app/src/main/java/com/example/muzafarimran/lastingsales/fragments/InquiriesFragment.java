@@ -135,27 +135,27 @@ public class InquiriesFragment extends SearchFragment {
 
     class ListPopulateAsync extends AsyncTask<Void, String, Void> {
         List<LSInquiry> inquiries;
-        ProgressDialog progressDialog;
+//        ProgressDialog progressDialog;
 
         ListPopulateAsync() {
             super();
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setTitle("Loading data");
-            //this method will be running on UI thread
-            progressDialog.setMessage("Please Wait...");
+//            progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.d(TAG, "onPreExecute: ");
-            progressDialog.show();
+//            progressDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... unused) {
             inquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-            SystemClock.sleep(200);
+//            SystemClock.sleep(200);
             return (null);
         }
 
@@ -170,9 +170,9 @@ public class InquiriesFragment extends SearchFragment {
             setList(inquiries);
             Log.d(TAG, "onPostExecute: ");
 //            Toast.makeText(getContext(), "onPostExecuteInquries", Toast.LENGTH_SHORT).show();
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
         }
     }
 }

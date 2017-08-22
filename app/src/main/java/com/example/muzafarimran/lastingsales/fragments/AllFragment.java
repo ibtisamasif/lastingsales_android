@@ -56,8 +56,8 @@ public class AllFragment extends TabFragment{
         Log.d(TAG, "onCreate() called");
         setRetainInstance(true);
         allAdapter = new AllAdapter(getContext(), null, LSContact.CONTACT_TYPE_SALES);
-        List<LSContact> contacts = LSContact.getDateArrangedSalesContacts("0");
-        setList(contacts);
+//        List<LSContact> contacts = LSContact.getDateArrangedSalesContacts("0");
+//        setList(contacts);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AllFragment extends TabFragment{
         super.onResume();
         Log.d(TAG, "onResume() called");
 //        setList(LSContact.getAllTypeArrangedContactsAccordingToLeadType());
-//        new ListPopulateAsync().execute();
+        new ListPopulateAsync().execute();
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -169,29 +169,29 @@ public class AllFragment extends TabFragment{
 //        allAdapter.getFilter().filter(query);
 //    }
 
-    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
+    private class ListPopulateAsync extends AsyncTask<Void, String, Void> {
         List<LSContact> contacts;
-        ProgressDialog progressDialog;
+//        ProgressDialog progressDialog;
 
         ListPopulateAsync() {
             super();
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setTitle("Loading data");
-            //this method will be running on UI thread
-            progressDialog.setMessage("Please Wait...");
+//            progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.d(TAG, "onPreExecute: ");
-            progressDialog.show();
+//            progressDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... unused) {
             contacts = LSContact.getDateArrangedSalesContacts();
-            SystemClock.sleep(200);
+//            SystemClock.sleep(200);
             return (null);
         }
 
@@ -206,9 +206,9 @@ public class AllFragment extends TabFragment{
             setList(contacts);
             Log.d(TAG, "onPostExecute: ");
 //            Toast.makeText(getContext(), "onPostExecuteAll", Toast.LENGTH_SHORT).show();
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
         }
     }
 }

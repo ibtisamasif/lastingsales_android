@@ -49,15 +49,15 @@ public class LeadsTabsFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "All";
+                return "All (0)";
             case 1:
-                return "InProgress";
+                return "InProgress (0)";
             case 2:
-                return "Won";
+                return "Won (0)";
             case 3:
-                return "Lost";
+                return "Lost (0)";
             case 4:
-                return "InActive";
+                return "InActive (0)";
 
             default:
                 return null;

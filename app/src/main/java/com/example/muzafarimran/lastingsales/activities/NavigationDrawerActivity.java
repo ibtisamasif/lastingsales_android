@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
+import com.example.muzafarimran.lastingsales.fragments.WonFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -9,9 +10,12 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -320,13 +324,65 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     }
 
     private void UpdateBadge() {
-        List<LSInquiry> allPendingInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-        if (allPendingInquiries != null && allPendingInquiries.size() > 0) {
-            badgeInquries.setText("" + allPendingInquiries.size());
-            badgeInquries.toggle();
-            badgeInquries.show();
-        } else {
-            badgeInquries.hide();
+
+        new BadgeUpdateAsync().execute();
+
+//        List<LSInquiry> allPendingInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+//        if (allPendingInquiries != null && allPendingInquiries.size() > 0) {
+//            badgeInquries.setText("" + allPendingInquiries.size());
+//            badgeInquries.toggle();
+//            badgeInquries.show();
+//        } else {
+//            badgeInquries.hide();
+//        }
+    }
+
+    private class BadgeUpdateAsync extends AsyncTask<Void, String, Void> {
+        //        ProgressDialog progressDialog;
+        List<LSInquiry> allPendingInquiries;
+
+        BadgeUpdateAsync() {
+            super();
+//            progressDialog = new ProgressDialog(NavigationDrawerActivity.this);
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "onPreExecute: ");
+//            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            allPendingInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+//            SystemClock.sleep(200);
+            return (null);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: " + item);
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            Log.d(TAG, "onPostExecute: ");
+//            Toast.makeText(getContext(), "onPostExecuteWon", Toast.LENGTH_SHORT).show();
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+            if (allPendingInquiries != null && allPendingInquiries.size() > 0) {
+                badgeInquries.setText("" + allPendingInquiries.size());
+                badgeInquries.toggle();
+                badgeInquries.show();
+            } else {
+                badgeInquries.hide();
+            }
         }
     }
 
@@ -437,8 +493,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            startActivity(tempIntent);
             AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
             agentDataFetchAsync.execute();
-            RecordingManager recordingManager = new RecordingManager();
-            recordingManager.execute();
+//            RecordingManager recordingManager = new RecordingManager();
+//            recordingManager.execute();
             TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
             theCallLogEngine.execute();
             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());

@@ -1,7 +1,9 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -190,67 +192,144 @@ public class HomeFragment extends TabFragment {
     }
 
     private void updateHomeFigures() {
-        ArrayList<LSContact> allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
 
-        ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
+        new UpdateHomeFigureAsync().execute();
 
-        List<LSInquiry> allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+//        ArrayList<LSContact> allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
+////        ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
+//        List<LSInquiry> allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+//        if (allInquiries != null) {
+//            if (allInquiries.size() > 0) {
+//                llinquriesContainer.setVisibility(View.VISIBLE);
+//                tvInquiriesValue.setText("" + allInquiries.size());
+//            } else {
+//                llinquriesContainer.setVisibility(View.GONE);
+//            }
+//        } else {
+//            tvInquiriesValue.setText(0);
+//        }
+//
+//        if (allUnlabeledContacts != null) {
+//            if (allUnlabeledContacts.size() > 0) {
+//                llUnlabeledContainer.setVisibility(View.VISIBLE);
+//                tvUnlabeledContacts.setText("" + allUnlabeledContacts.size());
+//            } else {
+//                llUnlabeledContainer.setVisibility(View.GONE);
+//            }
+//        } else {
+//            tvUnlabeledContacts.setText(0);
+//        }
 
-        if (allInquiries != null) {
-            if (allInquiries.size() > 0) {
-                llinquriesContainer.setVisibility(View.VISIBLE);
-                tvInquiriesValue.setText("" + allInquiries.size());
-            } else {
-                llinquriesContainer.setVisibility(View.GONE);
-            }
-        } else {
-            tvInquiriesValue.setText(0);
+//        if (allInactiveLeads != null) {
+//            if (allInactiveLeads.size() > 0) {
+//                llInActiveLeadsContainer.setVisibility(View.VISIBLE);
+//                tvInactiveLeadsValue.setText("" + allInactiveLeads.size());
+//            } else {
+//                llInActiveLeadsContainer.setVisibility(View.GONE);
+//            }
+//        } else {
+//            tvInactiveLeadsValue.setText(0);
+//        }
+
+//        ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
+//        Calendar now = Calendar.getInstance();
+//        Calendar beginingOfToday = Calendar.getInstance();
+//        beginingOfToday.set(Calendar.HOUR_OF_DAY, 0);
+//        beginingOfToday.set(Calendar.MINUTE, 0);
+//        Calendar endOfToday = Calendar.getInstance();
+//        endOfToday.add(Calendar.DAY_OF_MONTH, 1);
+//        endOfToday.set(Calendar.HOUR_OF_DAY, 0);
+//        endOfToday.set(Calendar.MINUTE, 0);
+//        ArrayList<TempFollowUp> followupsInToday = new ArrayList<>();
+//        for (TempFollowUp oneFollowup : allFollowUps) {
+//            if (oneFollowup.getDateTimeForFollowup() > beginingOfToday.getTimeInMillis() && oneFollowup.getDateTimeForFollowup() < endOfToday.getTimeInMillis()) {
+//                followupsInToday.add(oneFollowup);
+//            }
+//        }
+//        ArrayList<TempFollowUp> followupsDue = new ArrayList<>();
+//        ArrayList<TempFollowUp> followUpsDone = new ArrayList<>();
+//        for (TempFollowUp oneFollowup : followupsInToday) {
+//            if (oneFollowup.getDateTimeForFollowup() < now.getTimeInMillis()) {
+//                followUpsDone.add(oneFollowup);
+//            } else {
+//                followupsDue.add(oneFollowup);
+//            }
+//        }
+    }
+
+    class UpdateHomeFigureAsync extends AsyncTask<Void, String, Void> {
+        //        ProgressDialog progressDialog;
+        ArrayList<LSContact> allUnlabeledContacts;
+        ArrayList<LSContact> allInactiveLeads;
+        List<LSInquiry> allInquiries;
+
+        UpdateHomeFigureAsync() {
+            super();
+//            progressDialog = new ProgressDialog(NavigationDrawerActivity.this);
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
         }
 
-        if (allUnlabeledContacts != null) {
-            if (allUnlabeledContacts.size() > 0) {
-                llUnlabeledContainer.setVisibility(View.VISIBLE);
-                tvUnlabeledContacts.setText("" + allUnlabeledContacts.size());
-            } else {
-                llUnlabeledContainer.setVisibility(View.GONE);
-            }
-        } else {
-            tvUnlabeledContacts.setText(0);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "onPreExecute: ");
+//            progressDialog.show();
         }
 
-        if (allInactiveLeads != null) {
-            if (allInactiveLeads.size() > 0) {
-                llInActiveLeadsContainer.setVisibility(View.VISIBLE);
-                tvInactiveLeadsValue.setText("" + allInactiveLeads.size());
-            } else {
-                llInActiveLeadsContainer.setVisibility(View.GONE);
-            }
-        } else {
-            tvInactiveLeadsValue.setText(0);
+        @Override
+        protected Void doInBackground(Void... unused) {
+            allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
+            allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
+            allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+//            SystemClock.sleep(200);
+            return (null);
         }
 
-        ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
-        Calendar now = Calendar.getInstance();
-        Calendar beginingOfToday = Calendar.getInstance();
-        beginingOfToday.set(Calendar.HOUR_OF_DAY, 0);
-        beginingOfToday.set(Calendar.MINUTE, 0);
-        Calendar endOfToday = Calendar.getInstance();
-        endOfToday.add(Calendar.DAY_OF_MONTH, 1);
-        endOfToday.set(Calendar.HOUR_OF_DAY, 0);
-        endOfToday.set(Calendar.MINUTE, 0);
-        ArrayList<TempFollowUp> followupsInToday = new ArrayList<>();
-        for (TempFollowUp oneFollowup : allFollowUps) {
-            if (oneFollowup.getDateTimeForFollowup() > beginingOfToday.getTimeInMillis() && oneFollowup.getDateTimeForFollowup() < endOfToday.getTimeInMillis()) {
-                followupsInToday.add(oneFollowup);
-            }
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: " + item);
         }
-        ArrayList<TempFollowUp> followupsDue = new ArrayList<>();
-        ArrayList<TempFollowUp> followUpsDone = new ArrayList<>();
-        for (TempFollowUp oneFollowup : followupsInToday) {
-            if (oneFollowup.getDateTimeForFollowup() < now.getTimeInMillis()) {
-                followUpsDone.add(oneFollowup);
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            Log.d(TAG, "onPostExecute: ");
+//            Toast.makeText(getContext(), "onPostExecuteWon", Toast.LENGTH_SHORT).show();
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+            if (allInquiries != null) {
+                if (allInquiries.size() > 0) {
+                    llinquriesContainer.setVisibility(View.VISIBLE);
+                    tvInquiriesValue.setText("" + allInquiries.size());
+                } else {
+                    llinquriesContainer.setVisibility(View.GONE);
+                }
             } else {
-                followupsDue.add(oneFollowup);
+                tvInquiriesValue.setText(0);
+            }
+
+            if (allUnlabeledContacts != null) {
+                if (allUnlabeledContacts.size() > 0) {
+                    llUnlabeledContainer.setVisibility(View.VISIBLE);
+                    tvUnlabeledContacts.setText("" + allUnlabeledContacts.size());
+                } else {
+                    llUnlabeledContainer.setVisibility(View.GONE);
+                }
+            } else {
+                tvUnlabeledContacts.setText(0);
+            }
+            if (allInactiveLeads != null) {
+                if (allInactiveLeads.size() > 0) {
+                    llInActiveLeadsContainer.setVisibility(View.VISIBLE);
+                    tvInactiveLeadsValue.setText("" + allInactiveLeads.size());
+                } else {
+                    llInActiveLeadsContainer.setVisibility(View.GONE);
+                }
+            } else {
+                tvInactiveLeadsValue.setText(0);
             }
         }
     }
@@ -313,7 +392,7 @@ public class HomeFragment extends TabFragment {
 
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity() , "100");
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "100");
         sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
             @Override
             public void onShow(MaterialShowcaseView itemView, int position) {

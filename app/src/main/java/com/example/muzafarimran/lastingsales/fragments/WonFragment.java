@@ -171,29 +171,29 @@ public class WonFragment extends TabFragment{
 //        allAdapter.getFilter().filter(query);
 //    }
 
-    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
+    private class ListPopulateAsync extends AsyncTask<Void, String, Void> {
         List<LSContact> contacts;
-        ProgressDialog progressDialog;
+//        ProgressDialog progressDialog;
 
         ListPopulateAsync() {
             super();
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setTitle("Loading data");
-            //this method will be running on UI thread
-            progressDialog.setMessage("Please Wait...");
+//            progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.d(TAG, "onPreExecute: ");
-            progressDialog.show();
+//            progressDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... unused) {
             contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-            SystemClock.sleep(200);
+//            SystemClock.sleep(200);
             return (null);
         }
 
@@ -208,9 +208,9 @@ public class WonFragment extends TabFragment{
             setList(contacts);
             Log.d(TAG, "onPostExecute: ");
 //            Toast.makeText(getContext(), "onPostExecuteWon", Toast.LENGTH_SHORT).show();
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
         }
     }
 }

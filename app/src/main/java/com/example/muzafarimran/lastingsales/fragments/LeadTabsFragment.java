@@ -1,8 +1,11 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -131,57 +134,147 @@ public class LeadTabsFragment extends TabFragment implements TabSelectedListener
     }
 
     private void updateTabFigues() {
-        //List Taken To Filter out Colleagues
+
+        new updateTabFiguesAsync().execute();
+
 //        //Leads List
-        List<LSContact> allLeads = LSContact.getAllTypeArrangedContactsAccordingToLeadType();
+//        List<LSContact> allLeads = LSContact.getAllTypeArrangedContactsAccordingToLeadType();
+//
+//        //Leads List
+//        List<LSContact> allInProgress = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+//
+//        //All Won
+//        List<LSContact> allWon = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+//
+//        //All Lost
+//        List<LSContact> allLost = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+//
+//        //InActive Leads List
+//        ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
+//
+//
+//        if (allLeads != null) {
+//            if (allLeads.size() > 0) {
+//                tabs.getTabAt(0).setText("All" + " (" + allLeads.size() + ")");
+//            } else {
+//                tabs.getTabAt(0).setText("All" + " (" + 0 + ")");
+//            }
+//        }
+//        if (allInProgress != null) {
+//            if (allInProgress.size() > 0) {
+//                tabs.getTabAt(1).setText("InProgress" + " (" + allInProgress.size() + ")");
+//            } else {
+//                tabs.getTabAt(1).setText("InProgress" + " (" + 0 + ")");
+//            }
+//        }
+//        if (allWon != null) {
+//            if (allWon.size() > 0) {
+//                tabs.getTabAt(2).setText("Won" + " (" + allWon.size() + ")");
+//            } else {
+//                tabs.getTabAt(2).setText("Won" + " (" + 0 + ")");
+//            }
+//        }
+//        if (allLost != null) {
+//            if (allLost.size() > 0) {
+//                tabs.getTabAt(3).setText("Lost" + " (" + allLost.size() + ")");
+//            } else {
+//                tabs.getTabAt(3).setText("Lost" + " (" + 0 + ")");
+//            }
+//        }
+//        if (allInactiveLeads != null) {
+//            if (allInactiveLeads.size() > 0) {
+//                tabs.getTabAt(4).setText("InActive" + " (" + allInactiveLeads.size() + ")");
+//            } else {
+//                tabs.getTabAt(4).setText("InActive" + " (" + 0 + ")");
+//            }
+//        }
+    }
 
-        //Leads List
-        List<LSContact> allInProgress = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-
-        //All Won
-        List<LSContact> allWon = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-
-        //All Lost
-        List<LSContact> allLost = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-
-        //InActive Leads List
-        ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
-
-        if (allLeads != null) {
-            if (allLeads.size() > 0) {
-                tabs.getTabAt(0).setText("All" + " (" + allLeads.size() + ")");
-            } else {
-                tabs.getTabAt(0).setText("All" + " (" + 0 + ")");
-            }
+    class updateTabFiguesAsync extends AsyncTask<Void, String, Void> {
+        //        ProgressDialog progressDialog;
+        List<LSContact> allLeads;
+        List<LSContact> allInProgress;
+        List<LSContact> allWon;
+        List<LSContact> allLost;
+        ArrayList<LSContact> allInactiveLeads;
+        updateTabFiguesAsync() {
+            super();
+//            progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
         }
-        if (allInProgress != null) {
-            if (allInProgress.size() > 0) {
-                tabs.getTabAt(1).setText("InProgress" + " (" + allInProgress.size() + ")");
-            } else {
-                tabs.getTabAt(1).setText("InProgress" + " (" + 0 + ")");
-            }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "onPreExecute: ");
+//            progressDialog.show();
         }
-        if (allWon != null) {
-            if (allWon.size() > 0) {
-                tabs.getTabAt(2).setText("Won" + " (" + allWon.size() + ")");
-            } else {
-                tabs.getTabAt(2).setText("Won" + " (" + 0 + ")");
-            }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            allLeads = LSContact.getAllTypeArrangedContactsAccordingToLeadType();
+            //Leads List
+            allInProgress = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+            //All Won
+            allWon = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+            //All Lost
+            allLost = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+            //InActive Leads List
+            allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
+//            SystemClock.sleep(200);
+            return (null);
         }
-        if (allLost != null) {
-            if (allLost.size() > 0) {
-                tabs.getTabAt(3).setText("Lost" + " (" + allLost.size() + ")");
-            } else {
-                tabs.getTabAt(3).setText("Lost" + " (" + 0 + ")");
-            }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: " + item);
         }
-        if (allInactiveLeads != null) {
-            if (allInactiveLeads.size() > 0) {
-                tabs.getTabAt(4).setText("InActive" + " (" + allInactiveLeads.size() + ")");
-            } else {
-                tabs.getTabAt(4).setText("InActive" + " (" + 0 + ")");
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            Log.d(TAG, "onPostExecute: ");
+//            Toast.makeText(getContext(), "onPostExecuteInProgress", Toast.LENGTH_SHORT).show();
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+            if (allLeads != null) {
+                if (allLeads.size() > 0) {
+                    tabs.getTabAt(0).setText("All" + " (" + allLeads.size() + ")");
+                } else {
+                    tabs.getTabAt(0).setText("All" + " (" + 0 + ")");
+                }
+            }
+            if (allInProgress != null) {
+                if (allInProgress.size() > 0) {
+                    tabs.getTabAt(1).setText("InProgress" + " (" + allInProgress.size() + ")");
+                } else {
+                    tabs.getTabAt(1).setText("InProgress" + " (" + 0 + ")");
+                }
+            }
+            if (allWon != null) {
+                if (allWon.size() > 0) {
+                    tabs.getTabAt(2).setText("Won" + " (" + allWon.size() + ")");
+                } else {
+                    tabs.getTabAt(2).setText("Won" + " (" + 0 + ")");
+                }
+            }
+            if (allLost != null) {
+                if (allLost.size() > 0) {
+                    tabs.getTabAt(3).setText("Lost" + " (" + allLost.size() + ")");
+                } else {
+                    tabs.getTabAt(3).setText("Lost" + " (" + 0 + ")");
+                }
+            }
+            if (allInactiveLeads != null) {
+                if (allInactiveLeads.size() > 0) {
+                    tabs.getTabAt(4).setText("InActive" + " (" + allInactiveLeads.size() + ")");
+                } else {
+                    tabs.getTabAt(4).setText("InActive" + " (" + 0 + ")");
+                }
             }
         }
     }
-
 }

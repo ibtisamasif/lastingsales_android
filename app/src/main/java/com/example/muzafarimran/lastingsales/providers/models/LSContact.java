@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 
 public class LSContact extends SugarRecord {
+    private static final String TAG = "LSContact";
 
     @Ignore
     public static final String SALES_STATUS_INPROGRESS = "InProgress";
@@ -161,6 +163,7 @@ public class LSContact extends SugarRecord {
     }
 
     public static List<LSContact> getAllInactiveLeadContacts() {
+        Log.d(TAG, "getAllInactiveLeadContacts: ");
         try {
             ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getDateArrangedSalesContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
             ArrayList<LSContact> allInactiveLeads = new ArrayList<LSContact>();

@@ -200,7 +200,7 @@ public class UnlabeledFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... unused) {
             contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
-            SystemClock.sleep(200);
+//            SystemClock.sleep(200);
             return (null);
         }
 
