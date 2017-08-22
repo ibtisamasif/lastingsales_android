@@ -177,7 +177,7 @@ public class ColleagueFragment extends TabFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
+    private class ListPopulateAsync extends AsyncTask<Void, String, Void> {
         List<LSContact> contacts;
 //        ProgressDialog progressDialog;
 

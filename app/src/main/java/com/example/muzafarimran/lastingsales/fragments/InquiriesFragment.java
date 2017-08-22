@@ -1,11 +1,7 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
-
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,20 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.InquiriesAdapter;
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 /**
  * A simple {@link Fragment} subclass.

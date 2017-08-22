@@ -2,20 +2,15 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
-import com.example.muzafarimran.lastingsales.fragments.WonFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -24,7 +19,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
@@ -52,17 +45,12 @@ import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.utils.CallRecord;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManager;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import java.util.List;
-import java.util.Locale;
-
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SearchCallback, TabSelectedListener {
     private static final String TAG = "NaviDrawerActivity";
@@ -124,8 +112,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
 //        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
 
-
-        Log.d(TAG, "onCreate: DB name: " + getDatabasePath("sugar_example").getAbsolutePath());
+//        Log.d(TAG, "onCreate: DB name: " + getDatabasePath("sugar_example").getAbsolutePath());
 
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -180,7 +167,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 startActivity(intent);
             }
         });
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), NavigationDrawerActivity.this));
         viewPager.setOffscreenPageLimit(2);
@@ -191,14 +177,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_home_white_48dp);
 //        tabLayout.getTabAt(1).setIcon(R.drawable.menu_icon_phone);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_people_white_48dp);
-
         tab1 = tabLayout.getTabAt(0);
         imageViewBadge = new ImageView(getApplicationContext());
         imageViewBadge.setImageResource(R.drawable.ic_phone_missed_white_48dp);
         tab1.setCustomView(imageViewBadge);
         badgeInquries = new BadgeView(getApplicationContext(), imageViewBadge);
         UpdateBadge();
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -208,13 +192,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //                        tab.setIcon(R.drawable.ic_home_white_48dp);
                         getSupportActionBar().setTitle("Inquiries");
                         UpdateBadge();
-                        new MaterialShowcaseView.Builder(NavigationDrawerActivity.this)
-                                .setTarget(badgeInquries)
-                                .setDismissText("GOT IT")
-                                .setContentText("Here are your inquiries which you need to call back")
-                                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-                                .singleUse("200") // provide a unique ID used to ensure it is only shown once
-                                .show();
+//                        new MaterialShowcaseView.Builder(NavigationDrawerActivity.this)
+//                                .setTarget(badgeInquries)
+//                                .setDismissText("GOT IT")
+//                                .setContentText("Here are your inquiries which you need to call back")
+//                                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+//                                .singleUse("200") // provide a unique ID used to ensure it is only shown once
+//                                .show();
 //                        String projectToken = MixpanelConfig.projectToken;
 //                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
 //                        try {

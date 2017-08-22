@@ -56,8 +56,8 @@ public class WonFragment extends TabFragment{
         Log.d(TAG, "onCreate() called");
         setRetainInstance(true);
         leadsAdapter = new LeadsAdapter(getContext(), null, LSContact.SALES_STATUS_CLOSED_WON); // TODO remove this line as it populates all contacts have inprogress status including ignored,business
-        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON, "0");
-        setList(contacts);
+//        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON, "0");
+//        setList(contacts);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class WonFragment extends TabFragment{
         Log.d(TAG, "onResume() called");
 //        List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
 //        setList(contacts);
-//        new ListPopulateAsync().execute();
+        new ListPopulateAsync().execute();
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -111,41 +111,41 @@ public class WonFragment extends TabFragment{
         errorScreenView.setErrorImage(R.drawable.delight_won);
         errorScreenView.setErrorText(this.getResources().getString(R.string.em_won_delight));
         listView.setEmptyView(errorScreenView);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            private int currentVisibleItemCount;
-            private int currentScrollState;
-            private int currentFirstVisibleItem;
-            private int totalItem;
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                Log.d(TAG, "onScrollStateChanged: ");
-                // TODO Auto-generated method stub
-                this.currentScrollState = scrollState;
-                this.isScrollCompleted();
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                Log.d(TAG, "onScroll: ");
-                // TODO Auto-generated method stub
-                this.currentFirstVisibleItem = firstVisibleItem;
-                this.currentVisibleItemCount = visibleItemCount;
-                this.totalItem = totalItemCount;
-
-
-            }
-
-            private void isScrollCompleted() {
-                Log.d(TAG, "isScrollCompleted: ");
-                if (totalItem - currentFirstVisibleItem == currentVisibleItemCount && this.currentScrollState == SCROLL_STATE_IDLE) {
-
-                    Log.d(TAG, "isScrollCompleted: END OF LIST FETCHING NEW RECORDS");
-                    new ListPopulateAsync().execute();
-
-                }
-            }
-        });
+//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            private int currentVisibleItemCount;
+//            private int currentScrollState;
+//            private int currentFirstVisibleItem;
+//            private int totalItem;
+//
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                Log.d(TAG, "onScrollStateChanged: ");
+//                // TODO Auto-generated method stub
+//                this.currentScrollState = scrollState;
+//                this.isScrollCompleted();
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                Log.d(TAG, "onScroll: ");
+//                // TODO Auto-generated method stub
+//                this.currentFirstVisibleItem = firstVisibleItem;
+//                this.currentVisibleItemCount = visibleItemCount;
+//                this.totalItem = totalItemCount;
+//
+//
+//            }
+//
+//            private void isScrollCompleted() {
+//                Log.d(TAG, "isScrollCompleted: ");
+//                if (totalItem - currentFirstVisibleItem == currentVisibleItemCount && this.currentScrollState == SCROLL_STATE_IDLE) {
+//
+//                    Log.d(TAG, "isScrollCompleted: END OF LIST FETCHING NEW RECORDS");
+//                    new ListPopulateAsync().execute();
+//
+//                }
+//            }
+//        });
         return view;
     }
 

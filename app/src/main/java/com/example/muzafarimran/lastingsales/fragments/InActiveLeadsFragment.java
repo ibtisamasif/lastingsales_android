@@ -1,16 +1,13 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.InActiveLeadsAdapter;
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
@@ -18,9 +15,7 @@ import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-
 import java.util.List;
-
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
