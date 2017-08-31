@@ -48,6 +48,7 @@ public class LogInActivity extends AppCompatActivity {
     String email, password;
     Button loginButton;
     SessionManager sessionManager;
+    private LinearLayout llForgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +75,11 @@ public class LogInActivity extends AppCompatActivity {
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
         llSignup = (LinearLayout) findViewById(R.id.llSignup);
+        llForgotPassword = (LinearLayout) findViewById(R.id.llForgotPassword);
         etEmail.getBackground().clearColorFilter();
         etPassword.getBackground().clearColorFilter();
 
-//        hardcoding number and password for develoment speedup purposes
+//        hardcoding number and password for development speedup purposes
 //        etEmail.setText("ibtiagent24@gmail.com");
 //        etPassword.setText("111111");
 
@@ -111,12 +113,19 @@ public class LogInActivity extends AppCompatActivity {
                 }
             }
         });
-
         llSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), SignupActivity.class));
                 Toast.makeText(LogInActivity.this, "Signup", Toast.LENGTH_SHORT).show();
+            }
+        });
+        llForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(MyURLs.FORGOT_PASSWORD));
+                startActivity(i);
             }
         });
     }

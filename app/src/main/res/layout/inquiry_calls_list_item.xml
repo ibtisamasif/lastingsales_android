@@ -133,15 +133,29 @@
                     android:layout_centerHorizontal="true">
 
                     <Button
-                        android:id="@+id/bContactCallsdetails"
+                        android:id="@+id/bIgnore"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="100dp"
                         android:layout_height="27dp"
                         android:background="@drawable/btn_primary"
                         android:radius="5dip"
+                        android:text="@string/non_busines_capital"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        />
+
+                    <Button
+                        android:id="@+id/bContactCallsdetails"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="100dp"
+                        android:layout_height="27dp"
+                        android:background="@drawable/btn_primary"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/bIgnore"
+                        android:radius="5dip"
                         android:text="Details"
-                        android:textColor="#ffffff"
-                        android:textSize="12dp" />
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
 
                     <Button
                         android:id="@+id/call_tag_btn"
@@ -153,8 +167,8 @@
                         android:background="@drawable/btn_primary"
                         android:radius="5dip"
                         android:text="Track"
-                        android:textColor="#ffffff"
-                        android:textSize="12dp" />
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>

@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/half_white2"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -123,6 +123,34 @@
                     android:gravity="center"
                     android:text="Sign up now."
                     android:textColor="@color/blueLighter" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@color/half_white2"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Forgot Password?" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Reset now."
+                    android:textColor="@color/blueLighter" />
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

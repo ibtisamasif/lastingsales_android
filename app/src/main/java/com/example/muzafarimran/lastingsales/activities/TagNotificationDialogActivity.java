@@ -76,8 +76,8 @@ public class TagNotificationDialogActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_notification_dialog);
         inflater = getLayoutInflater();
-        etContactName = (EditText) findViewById(R.id.etNameFollowupPopup);
-        etContactPhone = (TextView) findViewById(R.id.etNumberFollowupPopup);
+        etContactName = (EditText) findViewById(R.id.etContactName);
+        etContactPhone = (TextView) findViewById(R.id.etContactPhone);
         bSave = (Button) findViewById(R.id.bSaveFollowupPopup);
         bClose = (ImageButton) findViewById(R.id.bClose);
         cbIgnore = (CheckBox) findViewById(R.id.cbIgnore);

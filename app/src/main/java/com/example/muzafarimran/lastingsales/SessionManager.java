@@ -6,7 +6,6 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
-import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -162,9 +161,9 @@ public class SessionManager {
         if (LSCall.count(LSCall.class) > 0) {
             LSInquiry.deleteAll(LSCall.class);
         }
-        if (LSCallRecording.count(LSCallRecording.class) > 0) {
-            LSCallRecording.deleteAll(LSCallRecording.class);
-        }
+//        if (LSCallRecording.count(LSCallRecording.class) > 0) {
+//            LSCallRecording.deleteAll(LSCallRecording.class);
+//        }
         if (LSContact.count(LSContact.class) > 0) {
             LSContact.deleteAll(LSContact.class);
         }

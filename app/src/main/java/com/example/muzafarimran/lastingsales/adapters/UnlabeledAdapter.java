@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +19,12 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.activities.TypeManager;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -97,7 +93,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
             this.showcalldetailslistener = new ShowDetailsDropDown(contact, holder.contactCallDetails);
             holder.bSales = (Button) convertView.findViewById(R.id.bSalesUtaggedItem);
             holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bContactCallsdetails);
-            holder.bIgnore = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
+            holder.bIgnore = (Button) convertView.findViewById(R.id.bIgnore);
 
             holder.call_icon.setOnClickListener(this.callClickListener);
             holder.call_name_time.setOnClickListener(this.showcalldetailslistener);

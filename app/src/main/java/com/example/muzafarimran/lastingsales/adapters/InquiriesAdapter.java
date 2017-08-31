@@ -14,13 +14,17 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
+import com.example.muzafarimran.lastingsales.activities.TypeManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
@@ -84,7 +88,7 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LSInquiry inquiryCall = (LSInquiry) getItem(position);
-        String number = inquiryCall.getContactNumber();
+        final String number = inquiryCall.getContactNumber();
         ViewHolder holder = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.inquiry_calls_list_item, parent, false);
@@ -94,6 +98,7 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
+            holder.bIgnore = (Button) convertView.findViewById(R.id.bIgnore);
             holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bContactCallsdetails);
             holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
             holder.inquireyCount = (TextView) convertView.findViewById(R.id.inquireyCount);
@@ -137,6 +142,7 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
             Log.wtf(TAG, "getView: checkContact Null");
             holder.bTag.setVisibility(View.VISIBLE);
         }
+        holder.bIgnore.setTag(number);
         holder.bContactCallsdetails.setTag(number);
         holder.bContactCallsdetails.setOnClickListener(detailsListener);
         holder.numberDetailTextView.setText(number);
@@ -159,7 +165,23 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
         if (inquiryCall.getCountOfInquiries() > 0) {
             holder.inquireyCount.setText(inquiryCall.getCountOfInquiries() + "");
         }
-
+        holder.bIgnore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LSContact tempContact = LSContact.getContactFromNumber(number);
+                String oldType = tempContact.getContactType();
+                tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                tempContact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
+                tempContact.save();
+                String newType = LSContact.CONTACT_TYPE_IGNORED;
+                TypeManager.ConvertTo(mContext, tempContact, oldType, newType);
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
+                dataSenderAsync.run();
+                List<LSInquiry> inquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+                setList(inquiries);
+                Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
+            }
+        });
         return convertView;
     }
 
@@ -227,6 +249,7 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
         RelativeLayout call_name_time;
         RelativeLayout contactCallDetails;
         TextView numberDetailTextView;
+        Button bIgnore;
         Button bContactCallsdetails;
         Button bTag;
         TextView inquireyCount;

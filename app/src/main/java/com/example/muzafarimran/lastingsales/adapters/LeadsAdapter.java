@@ -120,7 +120,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
             holder = new ViewHolder();
             holder.user_avatar = (ImageView) convertView.findViewById(R.id.user_avatar);
             holder.name = (TextView) convertView.findViewById(R.id.contact_name);
-            holder.contact_status = (TextView) convertView.findViewById(R.id.contact_status);
+//            holder.contact_status = (TextView) convertView.findViewById(R.id.contact_status);
             holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.user_details_wrapper = (LinearLayout) convertView.findViewById(R.id.user_call_group_wrapper);
@@ -163,9 +163,9 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
         } else {
             holder.name.setText(contact.getContactName());
         }
-        if (contact.getContactSalesStatus() != null) {
-            holder.contact_status.setText(contact.getContactSalesStatus());
-        }
+//        if (contact.getContactSalesStatus() != null) {
+//            holder.contact_status.setText(contact.getContactSalesStatus());
+//        }
         holder.user_details_wrapper.setTag(position);
         holder.number.setText(contact.getPhoneOne());
         holder.user_details_wrapper.setOnClickListener(new showContactDetaislsListener(contact, holder.contactDetailsDopDownLayout));
@@ -348,7 +348,7 @@ public class LeadsAdapter extends BaseAdapter implements Filterable {
     * */
     static class ViewHolder {
         TextView name;
-        TextView contact_status;
+//        TextView contact_status;
         TextView number;
         TextView lastContactText;
         TextView numberCallsText;

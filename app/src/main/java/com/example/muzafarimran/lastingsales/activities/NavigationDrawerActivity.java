@@ -5,18 +5,26 @@ import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
@@ -48,9 +57,12 @@ import com.example.muzafarimran.lastingsales.utils.CallRecord;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
 import java.util.List;
+
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SearchCallback, TabSelectedListener {
     private static final String TAG = "NaviDrawerActivity";
@@ -72,6 +84,58 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER);
+        Log.d(TAG, "onCreate: Build.BRAND: " + Build.BRAND);
+
+        if(Build.BRAND.equalsIgnoreCase("xiaomi") ){
+            Log.d(TAG, "onCreate: xiaomi");
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
+            startActivity(intent);
+
+
+        }else if(Build.BRAND.equalsIgnoreCase("Letv")){
+            Log.d(TAG, "onCreate: Letv");
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.AutobootManageActivity"));
+            startActivity(intent);
+
+        }
+        else if(Build.BRAND.equalsIgnoreCase("Honor")){
+            Log.d(TAG, "onCreate: Honor");
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+            startActivity(intent);
+
+        }
+
+        if("huawei".equalsIgnoreCase(Build.MANUFACTURER)) {
+            AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+            builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+                            startActivity(intent);
+//                            sp.edit().putBoolean("protected",true).commit();
+                        }
+                    }).create().show();
+        }
+
+        Intent intentTest = new Intent();
+        String packageName = NavigationDrawerActivity.this.getPackageName();
+        PowerManager pm = (PowerManager) NavigationDrawerActivity.this.getSystemService(Context.POWER_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (pm.isIgnoringBatteryOptimizations(packageName))
+                intentTest.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+            else {
+                intentTest.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intentTest.setData(Uri.parse("package:" + packageName));
+            }
+            NavigationDrawerActivity.this.startActivity(intentTest);
+        }
+
         final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread thread, Throwable ex) {
@@ -192,13 +256,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //                        tab.setIcon(R.drawable.ic_home_white_48dp);
                         getSupportActionBar().setTitle("Inquiries");
                         UpdateBadge();
-//                        new MaterialShowcaseView.Builder(NavigationDrawerActivity.this)
-//                                .setTarget(badgeInquries)
-//                                .setDismissText("GOT IT")
-//                                .setContentText("Here are your inquiries which you need to call back")
-//                                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-//                                .singleUse("200") // provide a unique ID used to ensure it is only shown once
-//                                .show();
+                        new MaterialShowcaseView.Builder(NavigationDrawerActivity.this)
+                                .setTarget(badgeInquries)
+                                .setDismissText("GOT IT")
+                                .setContentText("Here are your inquiries which you need to call back")
+                                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+                                .singleUse("200") // provide a unique ID used to ensure it is only shown once
+                                .show();
 //                        String projectToken = MixpanelConfig.projectToken;
 //                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
 //                        try {
@@ -524,8 +588,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             public void onPageSelected(int position) {
                 Log.d(TAG, "onPageSelected: ");
                 if (position == 2) {
-                    TabSelectedListener tabSelectedListener = (TabSelectedListener) ((SampleFragmentPagerAdapter) viewPager.getAdapter()).getItem(position);
-                    tabSelectedListener.onTabSelectedEvent(4, "");
+                    if (tag.equals("All Leads")) {
+                        // Do nothing
+                    } else if (tag.equals("InActiveLeads")) {
+                        TabSelectedListener tabSelectedListener = (TabSelectedListener) ((SampleFragmentPagerAdapter) viewPager.getAdapter()).getItem(position);
+                        tabSelectedListener.onTabSelectedEvent(4, "");
+                    }
                 }
                 viewPager.removeOnPageChangeListener(this);
             }

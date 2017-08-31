@@ -1,10 +1,8 @@
 package com.example.muzafarimran.lastingsales.service;
 
-import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
@@ -13,7 +11,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +37,6 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.List;
 
 
 public class AddEditLeadService extends Service {
@@ -123,8 +119,8 @@ public class AddEditLeadService extends Service {
 
     private void initializeAllViewsFromThisParentView(View largeInflatedView) {
 
-        etContactName = (EditText) largeInflatedView.findViewById(R.id.etNameFollowupPopup);
-        etContactPhone = (TextView) largeInflatedView.findViewById(R.id.etNumberFollowupPopup);
+        etContactName = (EditText) largeInflatedView.findViewById(R.id.etContactName);
+        etContactPhone = (TextView) largeInflatedView.findViewById(R.id.etContactPhone);
         bSave = (Button) largeInflatedView.findViewById(R.id.bSaveFollowupPopup);
         bClose = (ImageButton) largeInflatedView.findViewById(R.id.bClose);
         bNo = (Button) largeInflatedView.findViewById(R.id.bNo);
@@ -134,7 +130,14 @@ public class AddEditLeadService extends Service {
         llContactDetailsFollowupScreen = (LinearLayout) largeInflatedView.findViewById(R.id.llContactDetailsAddContactScreen);
         llContactType = (LinearLayout) largeInflatedView.findViewById(R.id.llContactType);
         llContactType.setVisibility(View.GONE); // Temporary
-
+        // Mix Panel Event
+        String projectToken = MixpanelConfig.projectToken;
+        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+        try {
+            mixpanel.track("Lead From Dialog - Shown");
+        } catch (Exception e) {
+            Log.e("mixpanel", "Unable to add properties to JSONObject", e);
+        }
 //        if launch mode is tag number then number is gotten out of bundle so it can be searched in
 //        phonebook and the number can be populated in the editText Field
         Log.d(TAG, "onCreate: Tag Number");

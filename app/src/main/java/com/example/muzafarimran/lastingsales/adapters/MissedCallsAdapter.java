@@ -97,7 +97,7 @@ public class MissedCallsAdapter extends BaseAdapter implements Filterable {
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
-            holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bNonBusinessUntaggedItem);
+            holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bIgnore);
             holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
             holder.inquireyCount = (TextView) convertView.findViewById(R.id.inquireyCount);
             this.showcalldetailslistener = new ShowDetailsDropDown(call, holder.contactCallDetails);

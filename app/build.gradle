@@ -8,8 +8,8 @@ android {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 54
-        versionName "1.51"
+        versionCode 56
+        versionName "1.53"
         jackOptions {
             enabled false
         }
@@ -101,5 +101,6 @@ dependencies {
     compile project(':volley-master')
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'
     compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
+    compile "me.leolin:ShortcutBadger:1.1.18@aar"
 }
 apply plugin: 'com.google.gms.google-services'

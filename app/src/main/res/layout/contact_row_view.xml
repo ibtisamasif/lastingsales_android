@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_weight="4">
+            android:layout_weight="5">
 
             <ImageView
                 android:id="@+id/user_avatar"
@@ -70,7 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:gravity="center">
 
             <ImageButton
@@ -82,31 +82,31 @@
                 />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/user_status"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="2.5"
-            android:gravity="center">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/user_status"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="2.5"-->
+            <!--android:gravity="center">-->
 
-            <TextView
-                android:id="@+id/contact_status"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/dynamic_border"
-                android:gravity="center"
-                android:padding="2dp"
-                android:textSize="14sp"
-                tools:text="InProgress" />
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/contact_status"-->
+                <!--android:layout_width="80dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/dynamic_border"-->
+                <!--android:gravity="center"-->
+                <!--android:padding="2dp"-->
+                <!--android:textSize="14sp"-->
+                <!--tools:text="InProgress" />-->
+        <!--</LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/llcontact_followup"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="1.25"
+            android:layout_weight="1.75"
             android:gravity="center">
 
             <ImageButton
@@ -122,7 +122,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="1.25"
+            android:layout_weight="1.75"
             android:gravity="center">
 
             <ImageView

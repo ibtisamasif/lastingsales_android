@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.muzafarimran.lastingsales.activities.NavigationDrawerActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -20,6 +21,8 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 /**
  * Created by ibtisam on 3/4/2017.
  */
@@ -32,11 +35,11 @@ public class InquiryManager {
         LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(tempContact.getPhoneOne());
         if (tempInquiry != null) {
             tempInquiry.setContact(tempContact);
-            tempInquiry.save();
             tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
             tempInquiry.save();
             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
             dataSenderAsync.run();
+            ShortcutBadger.applyCount(context, tempInquiry.getCountOfInquiries());
         }
     }
 
@@ -52,7 +55,7 @@ public class InquiryManager {
                 tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
             }
             tempInquiry.save();
-
+            ShortcutBadger.applyCount(context, tempInquiry.getCountOfInquiries());
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
             mixpanel.track("Inquiry Followed");
@@ -64,6 +67,7 @@ public class InquiryManager {
         if (tempInquiry != null) {
             tempInquiry.setCountOfInquiries(tempInquiry.getCountOfInquiries() + 1);
             tempInquiry.save();
+            ShortcutBadger.applyCount(context, tempInquiry.getCountOfInquiries());
         } else {
             LSInquiry newInquiry = new LSInquiry();
             newInquiry.setContactNumber(call.getContactNumber());
@@ -76,6 +80,7 @@ public class InquiryManager {
             newInquiry.setAverageResponseTime(0L);
             newInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
             newInquiry.save();
+            ShortcutBadger.applyCount(context, newInquiry.getCountOfInquiries());
         }
     }
 }

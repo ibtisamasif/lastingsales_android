@@ -55,7 +55,6 @@ public class DataSenderAsync {
     private static int currentState = 1;
     private static final int IDLE = 1;
     private static final int PENDING = 2;
-
     private static boolean firstThreadIsRunning = false;
     private Context mContext;
     private SessionManager sessionManager;
@@ -130,9 +129,9 @@ public class DataSenderAsync {
                             updateNotesToServer();
                             addFollowupsToServer();
                             deleteContactsFromServer();
-                            if (NetworkAccess.isWifiConnected(mContext)) {
-                                addRecordingToServer();
-                            }
+//                            if (NetworkAccess.isWifiConnected(mContext)) {
+//                                addRecordingToServer();
+//                            }
                         }
 //                        }
                         else {

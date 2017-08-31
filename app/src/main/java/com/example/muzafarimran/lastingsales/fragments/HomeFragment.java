@@ -3,13 +3,16 @@ package com.example.muzafarimran.lastingsales.fragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
+
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
@@ -23,19 +26,26 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends TabFragment {
     private static final String TAG = "HomeFragment";
+    private TextView tvTotalLeadsValue;
     private TextView tvInquiriesValue;
     private TextView tvInactiveLeadsValue;
     private TextView tvUnlabeledContacts;
+    private CardView lltotalLeadsContainer;
     private CardView llInActiveLeadsContainer;
     private CardView llUnlabeledContainer;
     private CardView llinquriesContainer;
@@ -44,6 +54,7 @@ public class HomeFragment extends TabFragment {
     private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     private FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
+    private RatingBar ratingBar1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,30 +64,47 @@ public class HomeFragment extends TabFragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        tvTotalLeadsValue = (TextView) view.findViewById(R.id.tvTotalLeadsValue);
         tvInquiriesValue = (TextView) view.findViewById(R.id.tvInquriesValue);
         tvUnlabeledContacts = (TextView) view.findViewById(R.id.tvUntaggeContactsVal);
         tvInactiveLeadsValue = (TextView) view.findViewById(R.id.tvInactiveLeadsValue);
+        lltotalLeadsContainer = (CardView) view.findViewById(R.id.lltotalLeadsContainer);
         llinquriesContainer = (CardView) view.findViewById(R.id.llinquriesContainer);
         llUnlabeledContainer = (CardView) view.findViewById(R.id.llUnlabeledContactsContainer);
         llInActiveLeadsContainer = (CardView) view.findViewById(R.id.llInActiveLeadsContactsContainer);
+        ratingBar1 = (RatingBar) view.findViewById(R.id.ratingBar1);
 //        followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
         updateHomeFigures();
-        llInActiveLeadsContainer.setOnClickListener(new View.OnClickListener() {
+//        lltotalLeadsContainer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int position = 2;
+//                ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "AllLeads");
+//            }
+//        });
+        llinquriesContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = 2;
-                ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "InActiveLeads");
-//                Intent intent;
+                int position = 0;
+                ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "Inquiries");
+//                mViewPager.setCurrentItem(1,true);
 //                Bundle bundle = new Bundle();
-//                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, InActiveLeadsFragment.class.getName());
-//                bundle.putString(FrameActivity.ACTIVITY_TITLE, "InActive Leads");
-//                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-//                intent = new Intent(getContext(), FrameActivity.class);
+//                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsTodayListFragment.class.getName());
+//                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Followups Today");
+//                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
+//                Intent intent = new Intent(getContext(), FrameActivity.class);
 //                intent.putExtras(bundle);
 //                startActivity(intent);
 //                String projectToken = MixpanelConfig.projectToken;
 //                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
-//                mixpanel.track("InActive(Home)");
+//                try {
+//                    JSONObject props = new JSONObject();
+//                    props.put("Gender", "Female");
+//                    props.put("Logged in", false);
+//                    mixpanel.track("Inquiries(Home)", props);
+//                } catch (JSONException e) {
+//                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
+//                }
             }
         });
         llUnlabeledContainer.setOnClickListener(new View.OnClickListener() {
@@ -102,29 +130,22 @@ public class HomeFragment extends TabFragment {
 //                }
             }
         });
-        llinquriesContainer.setOnClickListener(new View.OnClickListener() {
+        llInActiveLeadsContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = 0;
-                ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "Inquiries");
-//                mViewPager.setCurrentItem(1,true);
+                int position = 2;
+                ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "InActiveLeads");
+//                Intent intent;
 //                Bundle bundle = new Bundle();
-//                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, FollowupsTodayListFragment.class.getName());
-//                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Followups Today");
-//                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
-//                Intent intent = new Intent(getContext(), FrameActivity.class);
+//                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, InActiveLeadsFragment.class.getName());
+//                bundle.putString(FrameActivity.ACTIVITY_TITLE, "InActive Leads");
+//                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+//                intent = new Intent(getContext(), FrameActivity.class);
 //                intent.putExtras(bundle);
 //                startActivity(intent);
 //                String projectToken = MixpanelConfig.projectToken;
 //                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
-//                try {
-//                    JSONObject props = new JSONObject();
-//                    props.put("Gender", "Female");
-//                    props.put("Logged in", false);
-//                    mixpanel.track("Inquiries(Home)", props);
-//                } catch (JSONException e) {
-//                    Log.e("MYAPP", "Unable to add properties to JSONObject", e);
-//                }
+//                mixpanel.track("InActive(Home)");
             }
         });
 
@@ -172,73 +193,12 @@ public class HomeFragment extends TabFragment {
     }
 
     private void updateHomeFigures() {
-
         new UpdateHomeFigureAsync().execute();
-
-//        ArrayList<LSContact> allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
-////        ArrayList<LSContact> allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
-//        List<LSInquiry> allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-//        if (allInquiries != null) {
-//            if (allInquiries.size() > 0) {
-//                llinquriesContainer.setVisibility(View.VISIBLE);
-//                tvInquiriesValue.setText("" + allInquiries.size());
-//            } else {
-//                llinquriesContainer.setVisibility(View.GONE);
-//            }
-//        } else {
-//            tvInquiriesValue.setText(0);
-//        }
-//
-//        if (allUnlabeledContacts != null) {
-//            if (allUnlabeledContacts.size() > 0) {
-//                llUnlabeledContainer.setVisibility(View.VISIBLE);
-//                tvUnlabeledContacts.setText("" + allUnlabeledContacts.size());
-//            } else {
-//                llUnlabeledContainer.setVisibility(View.GONE);
-//            }
-//        } else {
-//            tvUnlabeledContacts.setText(0);
-//        }
-
-//        if (allInactiveLeads != null) {
-//            if (allInactiveLeads.size() > 0) {
-//                llInActiveLeadsContainer.setVisibility(View.VISIBLE);
-//                tvInactiveLeadsValue.setText("" + allInactiveLeads.size());
-//            } else {
-//                llInActiveLeadsContainer.setVisibility(View.GONE);
-//            }
-//        } else {
-//            tvInactiveLeadsValue.setText(0);
-//        }
-
-//        ArrayList<TempFollowUp> allFollowUps = (ArrayList<TempFollowUp>) TempFollowUp.listAll(TempFollowUp.class);
-//        Calendar now = Calendar.getInstance();
-//        Calendar beginingOfToday = Calendar.getInstance();
-//        beginingOfToday.set(Calendar.HOUR_OF_DAY, 0);
-//        beginingOfToday.set(Calendar.MINUTE, 0);
-//        Calendar endOfToday = Calendar.getInstance();
-//        endOfToday.add(Calendar.DAY_OF_MONTH, 1);
-//        endOfToday.set(Calendar.HOUR_OF_DAY, 0);
-//        endOfToday.set(Calendar.MINUTE, 0);
-//        ArrayList<TempFollowUp> followupsInToday = new ArrayList<>();
-//        for (TempFollowUp oneFollowup : allFollowUps) {
-//            if (oneFollowup.getDateTimeForFollowup() > beginingOfToday.getTimeInMillis() && oneFollowup.getDateTimeForFollowup() < endOfToday.getTimeInMillis()) {
-//                followupsInToday.add(oneFollowup);
-//            }
-//        }
-//        ArrayList<TempFollowUp> followupsDue = new ArrayList<>();
-//        ArrayList<TempFollowUp> followUpsDone = new ArrayList<>();
-//        for (TempFollowUp oneFollowup : followupsInToday) {
-//            if (oneFollowup.getDateTimeForFollowup() < now.getTimeInMillis()) {
-//                followUpsDone.add(oneFollowup);
-//            } else {
-//                followupsDue.add(oneFollowup);
-//            }
-//        }
     }
 
     private class UpdateHomeFigureAsync extends AsyncTask<Void, String, Void> {
         //        ProgressDialog progressDialog;
+        List<LSContact> allLeads;
         ArrayList<LSContact> allUnlabeledContacts;
         ArrayList<LSContact> allInactiveLeads;
         List<LSInquiry> allInquiries;
@@ -260,6 +220,7 @@ public class HomeFragment extends TabFragment {
 
         @Override
         protected Void doInBackground(Void... unused) {
+            allLeads = LSContact.getDateArrangedSalesContacts();
             allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
             allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
             allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
@@ -280,6 +241,17 @@ public class HomeFragment extends TabFragment {
 //            if (progressDialog != null && progressDialog.isShowing()) {
 //                progressDialog.dismiss();
 //            }
+            if (allLeads != null) {
+                if (allLeads.size() > 0) {
+                    lltotalLeadsContainer.setVisibility(View.VISIBLE);
+                    tvTotalLeadsValue.setText("" + allLeads.size());
+                } else {
+                    lltotalLeadsContainer.setVisibility(View.GONE);
+                }
+            } else {
+                tvTotalLeadsValue.setText(0);
+            }
+
             if (allInquiries != null) {
                 if (allInquiries.size() > 0) {
                     llinquriesContainer.setVisibility(View.VISIBLE);
@@ -366,41 +338,41 @@ public class HomeFragment extends TabFragment {
         super.onStop();
     }
 
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//
-//        ShowcaseConfig config = new ShowcaseConfig();
-//        config.setDelay(500); // half second between each showcase view
-//        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "100");
-//        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
-//            @Override
-//            public void onShow(MaterialShowcaseView itemView, int position) {
-////                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        sequence.setConfig(config);
-//        sequence.addSequenceItem(floatingActionMenu, "You can add leads here", "GOT IT");
-//        if (llinquriesContainer.isShown()) {
-//            sequence.addSequenceItem(
-//                    new MaterialShowcaseView.Builder(getActivity())
-//                            .setTarget(llinquriesContainer)
-//                            .setDismissText("GOT IT")
-//                            .setContentText("These are your inquiries which you need to call back")
-//                            .withRectangleShape(true)
-//                            .build()
-//            );
-//        }
-//        if (llUnlabeledContainer.isShown()) {
-//            sequence.addSequenceItem(
-//                    new MaterialShowcaseView.Builder(getActivity())
-//                            .setTarget(llUnlabeledContainer)
-//                            .setDismissText("GOT IT")
-//                            .setContentText("here are your unlabeled contacts please save them")
-//                            .withRectangleShape()
-//                            .build()
-//            );
-//        }
-//        sequence.start();
-//    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "100");
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+//                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        sequence.setConfig(config);
+        sequence.addSequenceItem(floatingActionMenu, "You can add leads here", "GOT IT");
+        if (llinquriesContainer.isShown()) {
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(llinquriesContainer)
+                            .setDismissText("GOT IT")
+                            .setContentText("These are your inquiries which you need to call back")
+                            .withRectangleShape(true)
+                            .build()
+            );
+        }
+        if (llUnlabeledContainer.isShown()) {
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(llUnlabeledContainer)
+                            .setDismissText("GOT IT")
+                            .setContentText("here are your unlabeled contacts please save them")
+                            .withRectangleShape()
+                            .build()
+            );
+        }
+        sequence.start();
+    }
 }

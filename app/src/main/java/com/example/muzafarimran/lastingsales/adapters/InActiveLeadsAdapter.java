@@ -107,7 +107,7 @@ public class InActiveLeadsAdapter extends BaseAdapter implements Filterable{
             convertView = mInflater.inflate(R.layout.contact_row_view, parent, false);
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.contact_name);
-            holder.contact_status = (TextView) convertView.findViewById(R.id.contact_status);
+//            holder.contact_status = (TextView) convertView.findViewById(R.id.contact_status);
             holder.number = (TextView) convertView.findViewById(R.id.contactNumber);
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
             holder.user_details_wrapper = (LinearLayout) convertView.findViewById(R.id.user_call_group_wrapper);
@@ -140,9 +140,9 @@ public class InActiveLeadsAdapter extends BaseAdapter implements Filterable{
         holder.lastContactText.setText(timeAgoString);
         holder.numberCallsText.setText(numberOfCalls);
         holder.name.setText(contact.getContactName());
-        if (contact.getContactSalesStatus() != null) {
-            holder.contact_status.setText(contact.getContactSalesStatus());
-        }
+//        if (contact.getContactSalesStatus() != null) {
+//            holder.contact_status.setText(contact.getContactSalesStatus());
+//        }
         holder.user_details_wrapper.setTag(position);
         holder.number.setText(contact.getPhoneOne());
         holder.user_details_wrapper.setOnClickListener(new showContactDetaislsListener(contact, holder.contactDetailsDopDownLayout));
@@ -254,7 +254,7 @@ public class InActiveLeadsAdapter extends BaseAdapter implements Filterable{
         Button detailsButton;
         TextView salesLeadStatus;
         RelativeLayout statusRow;
-        TextView contact_status;
+//        TextView contact_status;
     }
 
     /*

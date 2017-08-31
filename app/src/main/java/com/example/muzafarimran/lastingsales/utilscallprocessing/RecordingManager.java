@@ -15,6 +15,7 @@ import java.util.List;
  * Created by ibtisam on 3/7/2017.
  */
 
+@Deprecated
 public class RecordingManager extends AsyncTask<Object, Void, Void> {
     public static final String TAG = "RecordingManager";
     private Context mContext;

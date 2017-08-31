@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.muzafarimran.lastingsales">
 
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <!--<uses-permission android:name="android.permission.READ_SYNC_STATS" />-->
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -55,12 +56,12 @@
         </receiver>
         <receiver android:name=".receivers.TagAsIgnored">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
             <!--</intent-filter>-->
         </receiver>
         <receiver android:name=".receivers.FollowupNotiCancelBtnReceiver">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
             <!--</intent-filter>-->
         </receiver>
         <receiver android:name=".receivers.CallsStatesReceiver">
@@ -101,10 +102,9 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receivers.RestartServiceReceiver" >
+        <receiver android:name=".receivers.RestartServiceReceiver">
             <intent-filter>
-                <action android:name="YouWillNeverKillMe" >
-                </action>
+                <action android:name="YouWillNeverKillMe"></action>
             </intent-filter>
         </receiver>
         <receiver
@@ -243,7 +243,7 @@
             android:name=".activities.TagNotificationDialogActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/MyTransparentTheme"></activity>
+            android:theme="@style/MyTransparentTheme" />
 
         <activity
             android:name=".activities.FireBaseMainActivity"

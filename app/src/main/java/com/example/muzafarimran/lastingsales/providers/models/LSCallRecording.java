@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * Created by ibtisam on 2/24/2017.
  */
 
+@Deprecated
 public class LSCallRecording extends SugarRecord {
 
     private String contactNumber;

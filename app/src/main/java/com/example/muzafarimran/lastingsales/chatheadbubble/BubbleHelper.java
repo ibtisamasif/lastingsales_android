@@ -38,6 +38,7 @@ import java.util.Map;
 
 public class BubbleHelper extends AppCompatActivity {
     private static final String TAG = "BubbleHelper";
+    private final int MY_MAX_RETRIES = 3;
     private final SessionManager sessionManager;
     private BubbleLayout bubbleView;
     private TextView tvNoteTextUIOCallPopup;
@@ -51,7 +52,8 @@ public class BubbleHelper extends AppCompatActivity {
     private ImageButton ibClose;
     private TextView tvName;
     private TextView tvCallerHistoryLastCallDateTime1;
-//    private TextView tvCallerHistoryLastCallTimeAgo1;
+    //    private TextView tvCallerHistoryLastCallTimeAgo1;
+
 
     public BubbleHelper(Context context) {
         this.context = context;
@@ -90,6 +92,17 @@ public class BubbleHelper extends AppCompatActivity {
                 hide();
             }
         });
+
+
+        if (oneContact != null) {
+            tvName.setText(oneContact.getContactName());
+        }
+
+        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
+        if (tvName.getText().toString().equals("null") && name != null) {
+            tvName.setText(name);
+        }
+
 //        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
 //        if (oneContact != null) {
 //            if (oneContact.getContactName() != null) {
@@ -155,10 +168,16 @@ public class BubbleHelper extends AppCompatActivity {
             }
         });
 
-//        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
-//        if (name != null) {
-//            tvName.setText(name);
-//        }
+        LSContact oneContact;
+        oneContact = LSContact.getContactFromNumber(PhoneNumberAndCallUtils.numberToInterNationalNumber(context, number));
+        if (oneContact != null) {
+            tvName.setText(oneContact.getContactName());
+        }
+
+        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
+        if (tvName.getText().toString().equals("null") && name != null) {
+            tvName.setText(name);
+        }
 
         // this method call when user removes notification layout
         bubbleView.setOnBubbleRemoveListener(new BubbleLayout.OnBubbleRemoveListener() {
@@ -227,8 +246,10 @@ public class BubbleHelper extends AppCompatActivity {
                         Log.d(TAG, "onResponse0: role_id: " + role_id0);
                         Log.d(TAG, "onResponse0: name: " + name0);
 
-                        if (name0 != null && !name0.equals("null")) {
-                            tvName.setText(name0);
+                        if (tvName.getText().toString().equals("null")) {
+                            if (name0 != null && !name0.equals("null")) {
+                                tvName.setText(name0);
+                            }
                         }
 
                         if (firstname0 != null && lastname0 != null && last_call0 != null) {
@@ -270,9 +291,7 @@ public class BubbleHelper extends AppCompatActivity {
                         }
                     }
 //                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
+                } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
             }
@@ -297,7 +316,7 @@ public class BubbleHelper extends AppCompatActivity {
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                MY_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }

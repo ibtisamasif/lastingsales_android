@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,6 +23,8 @@ import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.UnlabeledAdapter;
+import com.example.muzafarimran.lastingsales.providers.loaders.LostLoader;
+import com.example.muzafarimran.lastingsales.providers.loaders.UnlabeledLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -36,7 +40,7 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UnlabeledFragment extends Fragment {
+public class UnlabeledFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<LSContact>>{
 
     private static final String TAG = "UntaggedCallFragment";
     UnlabeledAdapter unlabeledAdapter;
@@ -124,7 +128,8 @@ public class UnlabeledFragment extends Fragment {
         super.onResume();
         Log.d(TAG, "onResume() called");
 //        updateContactssList();
-        new ListPopulateAsync().execute();
+        getLoaderManager().initLoader(1, null, this).forceLoad();
+//        new ListPopulateAsync().execute();
     }
 
     @Override
@@ -154,18 +159,18 @@ public class UnlabeledFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        Log.d(TAG, "onActivityCreated: ");
-//        super.onActivityCreated(savedInstanceState);
-//        new MaterialShowcaseView.Builder(getActivity())
-//                .setTarget(errorScreenView)
-//                .setDismissText("GOT IT")
-//                .setContentText("These are your unknown contacts you need to save them")
-//                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-//                .singleUse("300") // provide a unique ID used to ensure it is only shown once
-//                .show();
-//    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated: ");
+        super.onActivityCreated(savedInstanceState);
+        new MaterialShowcaseView.Builder(getActivity())
+                .setTarget(errorScreenView)
+                .setDismissText("GOT IT")
+                .setContentText("These are your unknown contacts you need to save them")
+                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+                .singleUse("300") // provide a unique ID used to ensure it is only shown once
+                .show();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -176,6 +181,23 @@ public class UnlabeledFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<List<LSContact>> onCreateLoader(int i, Bundle bundle) {
+        return new UnlabeledLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<LSContact>> loader, List<LSContact> lsContacts) {
+        Log.d(TAG, "onLoadFinished: ");
+        unlabeledAdapter.setList(lsContacts);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<LSContact>> loader) {
+        Log.d(TAG, "onLoaderReset: ");
+        unlabeledAdapter.setList(new ArrayList<LSContact>());
     }
 
     class ListPopulateAsync extends AsyncTask<Void, String, Void> {

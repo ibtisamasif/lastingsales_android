@@ -108,8 +108,8 @@ public class TagNumberAndAddFollowupActivity extends Activity implements TimePic
         inflater = getLayoutInflater();
         year = month = day = hour = minute = 0;
         tvTitleFollowupPopup = (TextView) findViewById(R.id.tvTitleFollowupPopup);
-        etContactName = (EditText) findViewById(R.id.etNameFollowupPopup);
-        tvContactPhone = (TextView) findViewById(R.id.etNumberFollowupPopup);
+        etContactName = (EditText) findViewById(R.id.etContactName);
+        tvContactPhone = (TextView) findViewById(R.id.etContactPhone);
 //        ibAddNote = (ImageView) findViewById(R.id.ivAddNote);
 //        ibAddFollowup = (ImageView) findViewById(R.id.ivAddFollowup);
 //        addNoteActionLayout = (RelativeLayout) findViewById(R.id.addNoteActionLayout);

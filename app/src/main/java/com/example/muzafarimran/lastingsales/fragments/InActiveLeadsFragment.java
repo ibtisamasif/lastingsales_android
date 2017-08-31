@@ -2,6 +2,8 @@ package com.example.muzafarimran.lastingsales.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,7 +16,11 @@ import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.providers.loaders.InActiveLoader;
+import com.example.muzafarimran.lastingsales.providers.loaders.LostLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+
+import java.util.ArrayList;
 import java.util.List;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
@@ -23,7 +29,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 12/17/2016.
  */
 
-public class InActiveLeadsFragment extends  TabFragment{
+public class InActiveLeadsFragment extends  TabFragment implements LoaderManager.LoaderCallbacks<List<LSContact>>{
 
     public static final String TAG = "InActiveLeadsFragment";
     ListView listView = null;
@@ -62,7 +68,8 @@ public class InActiveLeadsFragment extends  TabFragment{
         Log.d(TAG, "onResume: ");
 //        List<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
 //        setList(contacts);
-        new ListPopulateAsync().execute();
+        getLoaderManager().initLoader(1, null, this).forceLoad();
+//        new ListPopulateAsync().execute();
         bus = TinyBus.from(getActivity().getApplicationContext());
         bus.register(this);
     }
@@ -145,6 +152,23 @@ public class InActiveLeadsFragment extends  TabFragment{
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<List<LSContact>> onCreateLoader(int i, Bundle bundle) {
+        return new InActiveLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<LSContact>> loader, List<LSContact> lsContacts) {
+        Log.d(TAG, "onLoadFinished: ");
+        inActiveLeadsAdapter.setList(lsContacts);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<LSContact>> loader) {
+        Log.d(TAG, "onLoaderReset: ");
+        inActiveLeadsAdapter.setList(new ArrayList<LSContact>());
     }
 
     private class ListPopulateAsync extends AsyncTask<Void, String, Void> {

@@ -3,6 +3,8 @@ package com.example.muzafarimran.lastingsales.fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,7 +18,12 @@ import com.example.muzafarimran.lastingsales.adapters.InquiriesAdapter;
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
+import com.example.muzafarimran.lastingsales.providers.loaders.InProgressLoader;
+import com.example.muzafarimran.lastingsales.providers.loaders.InquiriesLoader;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
@@ -25,7 +32,7 @@ import de.halfbit.tinybus.TinyBus;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InquiriesFragment extends SearchFragment {
+public class InquiriesFragment extends SearchFragment  implements LoaderManager.LoaderCallbacks<List<LSInquiry>>{
 
     public static final String TAG = "InquiriesFragment";
     InquiriesAdapter inquiriesAdapter;
@@ -93,7 +100,8 @@ public class InquiriesFragment extends SearchFragment {
         Log.d(TAG, "onResume: ");
 //        List<LSInquiry> contacts = LSInquiry.getAllPendingInquiriesInDescendingOrder();
 //        setList(contacts);
-        new ListPopulateAsync().execute();
+        getLoaderManager().initLoader(1, null, this).forceLoad();
+//        new ListPopulateAsync().execute();
     }
 
     @Override
@@ -123,6 +131,23 @@ public class InquiriesFragment extends SearchFragment {
     @Override
     protected void onSearch(String query) {
         inquiriesAdapter.getFilter().filter(query);
+    }
+
+    @Override
+    public Loader<List<LSInquiry>> onCreateLoader(int i, Bundle bundle) {
+        return new InquiriesLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<LSInquiry>> loader, List<LSInquiry> lsInquiries) {
+        Log.d(TAG, "onLoadFinished: ");
+        inquiriesAdapter.setList(lsInquiries);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<LSInquiry>> loader) {
+        Log.d(TAG, "onLoaderReset: ");
+        inquiriesAdapter.setList(new ArrayList<LSInquiry>());
     }
 
     class ListPopulateAsync extends AsyncTask<Void, String, Void> {

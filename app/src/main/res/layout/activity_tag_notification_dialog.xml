@@ -122,7 +122,7 @@
                             android:textSize="15sp" />
 
                         <TextView
-                            android:id="@+id/etNumberFollowupPopup"
+                            android:id="@+id/etContactPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="1dp"
@@ -152,7 +152,7 @@
                             android:textSize="15sp" />
 
                         <EditText
-                            android:id="@+id/etNameFollowupPopup"
+                            android:id="@+id/etContactName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
