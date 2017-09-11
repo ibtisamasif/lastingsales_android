@@ -13,6 +13,7 @@ import com.example.muzafarimran.lastingsales.activities.AlertDialogActivity;
  * Created by ibtisam on 6/15/2017.
  */
 
+@Deprecated
 public class InquiryAlarmReceiver extends WakefulBroadcastReceiver{
     public static final String TAG = "InquiryAlarmReceiver";
     @Override

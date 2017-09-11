@@ -3,7 +3,10 @@ package com.example.muzafarimran.lastingsales.activities;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.receivers.DayStartHighlightAlarmReceiver;
+import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.ShortcutBadgeUpdateAsync;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import android.app.AlarmManager;
@@ -12,12 +15,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -58,6 +58,7 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngin
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.util.Calendar;
 import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
@@ -84,24 +85,50 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        boolean hourlyAlarmUp = (PendingIntent.getBroadcast(NavigationDrawerActivity.this, 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
+        if (hourlyAlarmUp) {
+            Log.d("myAlarmLog", "Hourly Alarm is already active");
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 10); // For 4 PM or 5 PM
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            PendingIntent pi = PendingIntent.getBroadcast(NavigationDrawerActivity.this, 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager am = (AlarmManager) NavigationDrawerActivity.this.getSystemService(Context.ALARM_SERVICE);
+            am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, pi);
+        }
+
+        boolean dayStartHighlightAlarmUp = (PendingIntent.getBroadcast(NavigationDrawerActivity.this, 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
+        if (dayStartHighlightAlarmUp) {
+            Log.d("myAlarmLog", "DayStart Alarm is already active");
+        } else {
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.set(Calendar.HOUR_OF_DAY, 9); // For 4 PM or 5 PM
+            calendar2.set(Calendar.MINUTE, 0);
+            calendar2.set(Calendar.SECOND, 0);
+            PendingIntent pi2 = PendingIntent.getBroadcast(NavigationDrawerActivity.this, 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager am2 = (AlarmManager) NavigationDrawerActivity.this.getSystemService(Context.ALARM_SERVICE);
+            am2.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi2);
+        }
+
         Log.d(TAG, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER);
         Log.d(TAG, "onCreate: Build.BRAND: " + Build.BRAND);
 
-        if(Build.BRAND.equalsIgnoreCase("xiaomi") ){
+        if (Build.BRAND.equalsIgnoreCase("xiaomi")) {
             Log.d(TAG, "onCreate: xiaomi");
             Intent intent = new Intent();
             intent.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
             startActivity(intent);
 
 
-        }else if(Build.BRAND.equalsIgnoreCase("Letv")){
+        } else if (Build.BRAND.equalsIgnoreCase("Letv")) {
             Log.d(TAG, "onCreate: Letv");
             Intent intent = new Intent();
             intent.setComponent(new ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.AutobootManageActivity"));
             startActivity(intent);
 
-        }
-        else if(Build.BRAND.equalsIgnoreCase("Honor")){
+        } else if (Build.BRAND.equalsIgnoreCase("Honor")) {
             Log.d(TAG, "onCreate: Honor");
             Intent intent = new Intent();
             intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
@@ -109,8 +136,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
         }
 
-        if("huawei".equalsIgnoreCase(Build.MANUFACTURER)) {
-            AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+        if ("huawei".equalsIgnoreCase(Build.MANUFACTURER)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
                     .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
@@ -123,18 +150,18 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                     }).create().show();
         }
 
-        Intent intentTest = new Intent();
-        String packageName = NavigationDrawerActivity.this.getPackageName();
-        PowerManager pm = (PowerManager) NavigationDrawerActivity.this.getSystemService(Context.POWER_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (pm.isIgnoringBatteryOptimizations(packageName))
-                intentTest.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-            else {
-                intentTest.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intentTest.setData(Uri.parse("package:" + packageName));
-            }
-            NavigationDrawerActivity.this.startActivity(intentTest);
-        }
+//        Intent intentTest = new Intent();
+//        String packageName = NavigationDrawerActivity.this.getPackageName();
+//        PowerManager pm = (PowerManager) NavigationDrawerActivity.this.getSystemService(Context.POWER_SERVICE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (pm.isIgnoringBatteryOptimizations(packageName))
+//                intentTest.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+//            else {
+//                intentTest.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+//                intentTest.setData(Uri.parse("package:" + packageName));
+//            }
+//            NavigationDrawerActivity.this.startActivity(intentTest);
+//        }
 
         final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -246,7 +273,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         imageViewBadge.setImageResource(R.drawable.ic_phone_missed_white_48dp);
         tab1.setCustomView(imageViewBadge);
         badgeInquries = new BadgeView(getApplicationContext(), imageViewBadge);
-        UpdateBadge();
+        updateBadge();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -255,14 +282,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                     case 0:
 //                        tab.setIcon(R.drawable.ic_home_white_48dp);
                         getSupportActionBar().setTitle("Inquiries");
-                        UpdateBadge();
-                        new MaterialShowcaseView.Builder(NavigationDrawerActivity.this)
-                                .setTarget(badgeInquries)
-                                .setDismissText("GOT IT")
-                                .setContentText("Here are your inquiries which you need to call back")
-                                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-                                .singleUse("200") // provide a unique ID used to ensure it is only shown once
-                                .show();
+                        updateBadge();
+                        showInquiryTutorials();
 //                        String projectToken = MixpanelConfig.projectToken;
 //                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
 //                        try {
@@ -277,13 +298,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                     case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
                         getSupportActionBar().setTitle("Home");
-                        UpdateBadge();
+                        updateBadge();
 //                        ((TextView)(toolbar.findViewById(R.id.title))).setText("CALL LOGS");
                         break;
                     case 2:
 //                        tab.setIcon(R.drawable.menu_icon_contact_selected);
                         getSupportActionBar().setTitle("Sales Leads");
-                        UpdateBadge();
+                        updateBadge();
                         // ((TextView)(myToolbar.findViewById(R.id.title))).setText("CONTACTS");
                         break;
 //                case 3:
@@ -326,6 +347,16 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         }
     }
 
+    private void showInquiryTutorials() {
+        new MaterialShowcaseView.Builder(NavigationDrawerActivity.this)
+                .setTarget(badgeInquries)
+                .setDismissText("GOT IT")
+                .setContentText("Here are your inquiries which you need to call back")
+                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+                .singleUse("200") // provide a unique ID used to ensure it is only shown once
+                .show();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -349,7 +380,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     public void onCallReceivedEventModel(MissedCallEventModel event) {
         Log.d(TAG, "onMissedCallEvent() called with: event = [" + event + "]");
         if (event.getState() == MissedCallEventModel.CALL_TYPE_MISSED) {
-            UpdateBadge();
+            updateBadge();
         }
     }
 
@@ -358,7 +389,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         Log.d(TAG, "onAnyIncomingCallEvent() called with: event = [" + event + "]");
         if (event.getState() == IncomingCallEventModel.CALL_TYPE_INCOMING) {
             Log.d(TAG, "Incoming");
-            UpdateBadge();
+            updateBadge();
         }
     }
 
@@ -367,11 +398,11 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         Log.d(TAG, "onAnyOutGoingCallEvent() called with: event = [" + event + "]");
         if (event.getState() == OutgoingCallEventModel.CALL_TYPE_OUTGOING) {
             Log.d(TAG, "Outgoing");
-            UpdateBadge();
+            updateBadge();
         }
     }
 
-    private void UpdateBadge() {
+    private void updateBadge() {
 
         new BadgeUpdateAsync().execute();
 
@@ -428,6 +459,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 badgeInquries.setText("" + allPendingInquiries.size());
                 badgeInquries.toggle();
                 badgeInquries.show();
+                new ShortcutBadgeUpdateAsync(NavigationDrawerActivity.this).execute();
             } else {
                 badgeInquries.hide();
             }

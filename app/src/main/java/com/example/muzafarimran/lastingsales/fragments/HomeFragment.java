@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.fragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -54,7 +53,7 @@ public class HomeFragment extends TabFragment {
     private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     private FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
-    private RatingBar ratingBar1;
+    private RatingBar rbInquiries;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,9 +71,10 @@ public class HomeFragment extends TabFragment {
         llinquriesContainer = (CardView) view.findViewById(R.id.llinquriesContainer);
         llUnlabeledContainer = (CardView) view.findViewById(R.id.llUnlabeledContactsContainer);
         llInActiveLeadsContainer = (CardView) view.findViewById(R.id.llInActiveLeadsContactsContainer);
-        ratingBar1 = (RatingBar) view.findViewById(R.id.ratingBar1);
+        rbInquiries = (RatingBar) view.findViewById(R.id.rbInquiries);
+        rbInquiries.setMax(5);
 //        followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
-        updateHomeFigures();
+//        updateHomeFigures();
 //        lltotalLeadsContainer.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -256,6 +256,7 @@ public class HomeFragment extends TabFragment {
                 if (allInquiries.size() > 0) {
                     llinquriesContainer.setVisibility(View.VISIBLE);
                     tvInquiriesValue.setText("" + allInquiries.size());
+                    rbInquiries.setRating(allInquiries.size());
                 } else {
                     llinquriesContainer.setVisibility(View.GONE);
                 }
@@ -283,6 +284,7 @@ public class HomeFragment extends TabFragment {
             } else {
                 tvInactiveLeadsValue.setText(0);
             }
+//            showHomeTutorials(); TODO uncomment this
         }
     }
 
@@ -338,10 +340,7 @@ public class HomeFragment extends TabFragment {
         super.onStop();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+    public void showHomeTutorials() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "100");
@@ -352,14 +351,26 @@ public class HomeFragment extends TabFragment {
             }
         });
         sequence.setConfig(config);
-        sequence.addSequenceItem(floatingActionMenu, "You can add leads here", "GOT IT");
+//        sequence.addSequenceItem(floatingActionMenu, "Lastingsales helps you manage your customers better.", "GOT IT");
+        if (lltotalLeadsContainer.isShown()) {
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(lltotalLeadsContainer)
+                            .setDismissText("NEXT!")
+                            .setContentText("These are your customers that you have labeled as leads")
+                            .withRectangleShape()
+                            .setDismissOnTouch(true)
+                            .build()
+            );
+        }
         if (llinquriesContainer.isShown()) {
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(getActivity())
                             .setTarget(llinquriesContainer)
-                            .setDismissText("GOT IT")
-                            .setContentText("These are your inquiries which you need to call back")
-                            .withRectangleShape(true)
+                            .setDismissText("NEXT!")
+                            .setContentText("Inquiries are missed calls from your customers. Inquiries remain in the list until you talk to them.")
+                            .withRectangleShape()
+                            .setDismissOnTouch(true)
                             .build()
             );
         }
@@ -367,9 +378,21 @@ public class HomeFragment extends TabFragment {
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(getActivity())
                             .setTarget(llUnlabeledContainer)
-                            .setDismissText("GOT IT")
-                            .setContentText("here are your unlabeled contacts please save them")
+                            .setDismissText("NEXT!")
+                            .setContentText("Unlabeled contacts is a list of all the people you have talked to but not marked them as your customers.")
                             .withRectangleShape()
+                            .setDismissOnTouch(true)
+                            .build()
+            );
+        }
+        if (llInActiveLeadsContainer.isShown()) {
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(llInActiveLeadsContainer)
+                            .setDismissText("NEXT!")
+                            .setContentText("These are customers whom you have not talked to in last 3 days")
+                            .withRectangleShape()
+                            .setDismissOnTouch(true)
                             .build()
             );
         }

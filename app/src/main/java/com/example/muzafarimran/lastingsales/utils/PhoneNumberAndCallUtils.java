@@ -65,8 +65,7 @@ public class PhoneNumberAndCallUtils {
                 e.printStackTrace();
             }
             return s;
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -76,7 +75,7 @@ public class PhoneNumberAndCallUtils {
             PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
             String s = null;
             try {
-                TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+                TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
                 String countryCodeValue = tm.getNetworkCountryIso();
                 Phonenumber.PhoneNumber pkNumberProto = phoneNumberUtil.parse(inputString, countryCodeValue.toUpperCase());
                 s = phoneNumberUtil.format(pkNumberProto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
@@ -84,8 +83,7 @@ public class PhoneNumberAndCallUtils {
                 e.printStackTrace();
             }
             return s;
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -133,6 +131,24 @@ public class PhoneNumberAndCallUtils {
         return formatter.format(calendar.getTime());
     }
 
+    public static String getDaysAgo(long time, Context ctx) {
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000;
+        }
+        long now = Calendar.getInstance().getTimeInMillis();
+        if (time > now || time <= 0) {
+            return null;
+        }
+        final long diff = now - time;
+        if (diff < 24 * HOUR_MILLIS) {
+            return " today";
+        } else if (diff < 48 * HOUR_MILLIS) {
+            return "yesterday";
+        } else {
+            return diff / DAY_MILLIS + " days ago";
+        }
+    }
 
     public static String getTimeAgo(long time, Context ctx) {
         if (time < 1000000000000L) {

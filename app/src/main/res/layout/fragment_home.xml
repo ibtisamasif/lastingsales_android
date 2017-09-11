@@ -91,7 +91,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground">
 
@@ -301,14 +300,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/llColumnsHomeScreen"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="4dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="232dp"
             android:layout_height="1dp"
             android:layout_gravity="right"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:background="@color/lightGray" />
 
         <LinearLayout
@@ -332,13 +331,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_weight="0.5"
             android:gravity="center"
             android:orientation="vertical">
 
             <RatingBar
-                android:id="@+id/ratingBar1"
+                android:id="@+id/rbInquiries"
                 style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="176dp"
                 android:layout_height="wrap_content" />

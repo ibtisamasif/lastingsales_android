@@ -20,7 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.receivers.InquiriesDayEndAlarmReceiver;
+import com.example.muzafarimran.lastingsales.receivers.DayStartHighlightAlarmReceiver;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
@@ -373,7 +373,7 @@ public class VersionManager {
                     calendar.set(Calendar.HOUR_OF_DAY, 15); // For 4 PM or 5 PM
                     calendar.set(Calendar.MINUTE, 0);
                     calendar.set(Calendar.SECOND, 0);
-                    PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, new Intent(mContext, InquiriesDayEndAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, new Intent(mContext, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
                     AlarmManager am = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
                     am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
 
@@ -387,7 +387,7 @@ public class VersionManager {
                     calendar.set(Calendar.HOUR_OF_DAY, 16); // For 4 PM or 5 PM
                     calendar.set(Calendar.MINUTE, 0);
                     calendar.set(Calendar.SECOND, 0);
-                    PendingIntent pi = PendingIntent.getBroadcast(mContext.getApplicationContext(), 0, new Intent(mContext.getApplicationContext(), InquiriesDayEndAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pi = PendingIntent.getBroadcast(mContext.getApplicationContext(), 0, new Intent(mContext.getApplicationContext(), DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
                     AlarmManager am = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
                     am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
 

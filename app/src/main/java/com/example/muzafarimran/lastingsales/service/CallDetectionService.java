@@ -300,7 +300,7 @@ public class CallDetectionService extends Service {
             LSContact oneContact;
             oneContact = LSContact.getContactFromNumber(internationalNumber);
             ArrayList<LSNote> notesForContact = null;
-            if (oneContact != null) {
+            if (oneContact != null && !oneContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
                 notesForContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(oneContact.getId());
                 if (notesForContact != null && notesForContact.size() > 0) {
                     notesForContact.size();
@@ -310,7 +310,7 @@ public class CallDetectionService extends Service {
                 } else {
                     BubbleHelper.getInstance(ctx).show(internationalNumber);
                 }
-            } else {
+            } else if (oneContact == null){
                 BubbleHelper.getInstance(ctx).show(internationalNumber);
             }
         }

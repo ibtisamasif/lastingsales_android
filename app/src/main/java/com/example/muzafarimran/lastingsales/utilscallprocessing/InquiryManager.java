@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
+import java.util.List;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 
@@ -39,11 +41,12 @@ public class InquiryManager {
             tempInquiry.save();
             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
             dataSenderAsync.run();
-            ShortcutBadger.applyCount(context, tempInquiry.getCountOfInquiries());
+            // Update launcher icon count
+            new ShortcutBadgeUpdateAsync(context).execute();
         }
     }
 
-    public static void Remove(Context context, LSCall call) {
+    static void Remove(Context context, LSCall call) {
         LSInquiry tempInquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());
         if (tempInquiry != null && tempInquiry.getAverageResponseTime() <= 0) {
             Calendar now = Calendar.getInstance();
@@ -55,19 +58,21 @@ public class InquiryManager {
                 tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
             }
             tempInquiry.save();
-            ShortcutBadger.applyCount(context, tempInquiry.getCountOfInquiries());
+            // Update launcher icon count
+            new ShortcutBadgeUpdateAsync(context).execute();
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
             mixpanel.track("Inquiry Followed");
         }
     }
 
-    public static void CreateOrUpdate(Context context, LSCall call) {
+    static void CreateOrUpdate(Context context, LSCall call) {
         LSInquiry tempInquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());
         if (tempInquiry != null) {
             tempInquiry.setCountOfInquiries(tempInquiry.getCountOfInquiries() + 1);
             tempInquiry.save();
-            ShortcutBadger.applyCount(context, tempInquiry.getCountOfInquiries());
+            // Update launcher icon count
+            new ShortcutBadgeUpdateAsync(context).execute();
         } else {
             LSInquiry newInquiry = new LSInquiry();
             newInquiry.setContactNumber(call.getContactNumber());
@@ -80,7 +85,10 @@ public class InquiryManager {
             newInquiry.setAverageResponseTime(0L);
             newInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
             newInquiry.save();
-            ShortcutBadger.applyCount(context, newInquiry.getCountOfInquiries());
+            // Update launcher icon count
+            new ShortcutBadgeUpdateAsync(context).execute();
         }
     }
+
+
 }

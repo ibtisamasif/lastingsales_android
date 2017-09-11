@@ -48,11 +48,11 @@ public class BubbleHelper extends AppCompatActivity {
     private TextView tvCallerHistoryName0;
     private TextView tvCallerHistoryName1;
     private TextView tvCallerHistoryLastCallDateTime0;
-    //    private TextView tvCallerHistoryLastCallTimeAgo0;
+    private TextView tvCallerHistoryLastCallTimeAgo0;
     private ImageButton ibClose;
     private TextView tvName;
     private TextView tvCallerHistoryLastCallDateTime1;
-    //    private TextView tvCallerHistoryLastCallTimeAgo1;
+    private TextView tvCallerHistoryLastCallTimeAgo1;
 
 
     public BubbleHelper(Context context) {
@@ -75,10 +75,10 @@ public class BubbleHelper extends AppCompatActivity {
         tvNoteTextUIOCallPopup = (TextView) bubbleView.findViewById(R.id.tvNoteTextUIOCallPopup);
         tvCallerHistoryName0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName0);
         tvCallerHistoryLastCallDateTime0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime0);
-//        tvCallerHistoryLastCallTimeAgo0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo0);
+        tvCallerHistoryLastCallTimeAgo0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo0);
         tvCallerHistoryName1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName1);
         tvCallerHistoryLastCallDateTime1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime1);
-//        tvCallerHistoryLastCallTimeAgo1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo1);
+        tvCallerHistoryLastCallTimeAgo1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo1);
         tvName = (TextView) bubbleView.findViewById(R.id.tvName);
         tvName.setText(number);
         ibClose = (ImageButton) bubbleView.findViewById(R.id.ibClose);
@@ -93,27 +93,28 @@ public class BubbleHelper extends AppCompatActivity {
             }
         });
 
-
-        if (oneContact != null) {
-            tvName.setText(oneContact.getContactName());
-        }
+//        if (oneContact != null) {
+//            tvName.setText(oneContact.getContactName());
+//        }
+//
+//        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
+//        if (tvName.getText().toString().equals("null") && name != null) {
+//            tvName.setText(name);
+//        }
 
         String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
-        if (tvName.getText().toString().equals("null") && name != null) {
-            tvName.setText(name);
+        if (oneContact != null) {
+            if (oneContact.getContactName() != null) {
+                tvName.setText(oneContact.getContactName());
+            }
+        } else {
+            if (name != null) {
+                tvName.setText(name);
+            } else {
+                tvName.setText(number);
+            }
         }
 
-//        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
-//        if (oneContact != null) {
-//            if (oneContact.getContactName() != null) {
-//                tvName.setText(oneContact.getContactName());
-//            } else if (name != null) {
-//                tvName.setText(name);
-//            }
-////            else if (oneContact.getPhoneOne() != null) {
-////                tvName.setText(oneContact.getPhoneOne());
-////            }
-//        }
         LSNote tempNote = null;
         if (noteIdLong != null) {
             tempNote = LSNote.findById(LSNote.class, noteIdLong);
@@ -150,10 +151,10 @@ public class BubbleHelper extends AppCompatActivity {
         tvNoteTextUIOCallPopup = (TextView) bubbleView.findViewById(R.id.tvNoteTextUIOCallPopup);
         tvCallerHistoryName0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName0);
         tvCallerHistoryLastCallDateTime0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime0);
-//        tvCallerHistoryLastCallTimeAgo0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo0);
+        tvCallerHistoryLastCallTimeAgo0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo0);
         tvCallerHistoryName1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName1);
         tvCallerHistoryLastCallDateTime1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime1);
-//        tvCallerHistoryLastCallTimeAgo1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo1);
+        tvCallerHistoryLastCallTimeAgo1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo1);
         tvName = (TextView) bubbleView.findViewById(R.id.tvName);
         tvName.setText(number);
         ibClose = (ImageButton) bubbleView.findViewById(R.id.ibClose);
@@ -170,13 +171,27 @@ public class BubbleHelper extends AppCompatActivity {
 
         LSContact oneContact;
         oneContact = LSContact.getContactFromNumber(PhoneNumberAndCallUtils.numberToInterNationalNumber(context, number));
-        if (oneContact != null) {
-            tvName.setText(oneContact.getContactName());
-        }
+
+//        if (oneContact != null) {
+//            tvName.setText(oneContact.getContactName());
+//        }
+//
+//        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
+//        if (tvName.getText().toString().equals("null") && name != null) {
+//            tvName.setText(name);
+//        }
 
         String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
-        if (tvName.getText().toString().equals("null") && name != null) {
-            tvName.setText(name);
+        if (oneContact != null) {
+            if (oneContact.getContactName() != null) {
+                tvName.setText(oneContact.getContactName());
+            }
+        } else {
+            if (name != null) {
+                tvName.setText(name);
+            } else {
+                tvName.setText(number);
+            }
         }
 
         // this method call when user removes notification layout
@@ -223,7 +238,7 @@ public class BubbleHelper extends AppCompatActivity {
                 Log.d(TAG, "onResponse() response = [" + respon + "]");
                 try {
                     JSONObject jObj = new JSONObject(respon);
-                    int responseCode = jObj.getInt("responseCode");
+//                    int responseCode = jObj.getInt("responseCode");
                     JSONObject response = jObj.getJSONObject("response");
                     JSONArray dataArray = response.getJSONArray("data");
                     Log.d(TAG, "onResponse: dataArray Lenght: " + dataArray.length());
@@ -246,10 +261,8 @@ public class BubbleHelper extends AppCompatActivity {
                         Log.d(TAG, "onResponse0: role_id: " + role_id0);
                         Log.d(TAG, "onResponse0: name: " + name0);
 
-                        if (tvName.getText().toString().equals("null")) {
-                            if (name0 != null && !name0.equals("null")) {
-                                tvName.setText(name0);
-                            }
+                        if (name0 != null && !name0.equals("null")) {
+                            tvName.setText(name0);
                         }
 
                         if (firstname0 != null && lastname0 != null && last_call0 != null) {
@@ -259,7 +272,7 @@ public class BubbleHelper extends AppCompatActivity {
                                 tvCallerHistoryName0.setText("Last contacted with me");
                             }
                             tvCallerHistoryLastCallDateTime0.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), "dd-MMM-yyyy"));
-//                            tvCallerHistoryLastCallTimeAgo0.setText(PhoneNumberAndCallUtils.getTimeAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0) , context));
+                            tvCallerHistoryLastCallTimeAgo0.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), context) + ")");
                         }
                     }
                     if (dataArray.length() > 1) {
@@ -287,7 +300,7 @@ public class BubbleHelper extends AppCompatActivity {
                                 tvCallerHistoryName1.setText("Last contacted with me");
                             }
                             tvCallerHistoryLastCallDateTime1.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), "dd-MMM-yyyy"));
-//                            tvCallerHistoryLastCallTimeAgo1.setText(PhoneNumberAndCallUtils.getTimeAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0) , context));
+                            tvCallerHistoryLastCallTimeAgo1.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), context) + ")");
                         }
                     }
 //                    }

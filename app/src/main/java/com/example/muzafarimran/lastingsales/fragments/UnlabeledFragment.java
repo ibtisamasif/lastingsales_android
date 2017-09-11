@@ -164,9 +164,9 @@ public class UnlabeledFragment extends Fragment implements LoaderManager.LoaderC
         Log.d(TAG, "onActivityCreated: ");
         super.onActivityCreated(savedInstanceState);
         new MaterialShowcaseView.Builder(getActivity())
-                .setTarget(errorScreenView)
+                .setTarget(searchView)
                 .setDismissText("GOT IT")
-                .setContentText("These are your unknown contacts you need to save them")
+                .setContentText("These are your customers you have talked to and needed to get marked them as leads.")
                 .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
                 .singleUse("300") // provide a unique ID used to ensure it is only shown once
                 .show();
