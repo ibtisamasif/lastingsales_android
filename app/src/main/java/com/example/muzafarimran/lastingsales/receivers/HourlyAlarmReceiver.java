@@ -28,6 +28,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
         if (lsInquiry != null && lsInquiry.size() > 0) {
             String nameOrNumber;
             String name = lsInquiry.get(0).getContactName();
+            String number = lsInquiry.get(0).getContactNumber();
             String nameFromPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, lsInquiry.get(0).getContactNumber());
             if (name != null) {
                 nameOrNumber = name;
@@ -35,12 +36,11 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                 nameOrNumber = nameFromPhonebook;
             }
             else {
-                String number = lsInquiry.get(0).getContactNumber();
                 nameOrNumber = number;
             }
             String message = "call back " + nameOrNumber;
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(HourlyAlarmNotification.NOTIFICATION_ID, HourlyAlarmNotification.createAlarmNotification(context, "Pending Inquiries", message));
+            mNotificationManager.notify(HourlyAlarmNotification.NOTIFICATION_ID, HourlyAlarmNotification.createAlarmNotification(context, "Pending Inquiries", message, number));
         }
         // Refresh Service once daily.
 //        context.startService(new Intent(context, CallDetectionService.class));  // TODO is it still needed here as well ?

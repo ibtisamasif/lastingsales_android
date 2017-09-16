@@ -85,6 +85,19 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        boolean dayStartHighlightAlarmUp = (PendingIntent.getBroadcast(NavigationDrawerActivity.this, 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
+        if (dayStartHighlightAlarmUp) {
+            Log.d("myAlarmLog", "DayStart Alarm is already active");
+        } else {
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.set(Calendar.HOUR_OF_DAY, 9); // For 4 PM or 5 PM
+            calendar2.set(Calendar.MINUTE, 0);
+            calendar2.set(Calendar.SECOND, 0);
+            PendingIntent pi2 = PendingIntent.getBroadcast(NavigationDrawerActivity.this, 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager am2 = (AlarmManager) NavigationDrawerActivity.this.getSystemService(Context.ALARM_SERVICE);
+            am2.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi2);
+        }
 
         boolean hourlyAlarmUp = (PendingIntent.getBroadcast(NavigationDrawerActivity.this, 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
         if (hourlyAlarmUp) {
@@ -97,19 +110,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             PendingIntent pi = PendingIntent.getBroadcast(NavigationDrawerActivity.this, 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager am = (AlarmManager) NavigationDrawerActivity.this.getSystemService(Context.ALARM_SERVICE);
             am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, pi);
-        }
-
-        boolean dayStartHighlightAlarmUp = (PendingIntent.getBroadcast(NavigationDrawerActivity.this, 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
-        if (dayStartHighlightAlarmUp) {
-            Log.d("myAlarmLog", "DayStart Alarm is already active");
-        } else {
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.set(Calendar.HOUR_OF_DAY, 9); // For 4 PM or 5 PM
-            calendar2.set(Calendar.MINUTE, 0);
-            calendar2.set(Calendar.SECOND, 0);
-            PendingIntent pi2 = PendingIntent.getBroadcast(NavigationDrawerActivity.this, 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager am2 = (AlarmManager) NavigationDrawerActivity.this.getSystemService(Context.ALARM_SERVICE);
-            am2.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi2);
         }
 
         Log.d(TAG, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER);
@@ -345,6 +345,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 }
             }
         }
+        // Updating Last Visit
+        Log.d("rating", "onCreate: setLastAppVisit");
+        long milliSecondsIn30Second = 60000; // 30 seconds for now
+        long now = Calendar.getInstance().getTimeInMillis();
+        long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
+        sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
+//        sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
     }
 
     private void showInquiryTutorials() {

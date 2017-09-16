@@ -42,13 +42,12 @@ public class SessionManager {
     public static final String KEY_INIT_COMPANY_CREATED = "init_company_created";
     public static final String KEY_INIT_ACCOUNT_TYPE_SELECTED = "init_account_type_selected";
 
-
     private static final String KEY_LOGIN_MODE = "user_login_mode";
-
     public static final String MODE_NORMAL = "user_login_normal";
     public static final String MODE_NEW_INSTALL = "user_login_new_install";
     public static final String MODE_UPGRADE = "user_login_upgrade";
 
+    public static final String LAST_APP_VISIT = "last_app_visit";
 
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffs";
@@ -360,6 +359,15 @@ public class SessionManager {
 
     public void setKeyInitAccountTypeSelected(String type) {
         editor.putString(KEY_INIT_ACCOUNT_TYPE_SELECTED, type);
+        editor.commit();
+    }
+
+    public String getLastAppVisit() {
+        return pref.getString(LAST_APP_VISIT, "");
+    }
+
+    public void setLastAppVisit(String time) {
+        editor.putString(LAST_APP_VISIT, time);
         editor.commit();
     }
 }
