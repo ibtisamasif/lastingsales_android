@@ -3,11 +3,13 @@ package com.example.muzafarimran.lastingsales.chatheadbubble;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -29,16 +31,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BubbleHelper extends AppCompatActivity {
     private static final String TAG = "BubbleHelper";
-    private static BubbleHelper mInstance;
     private final int MY_MAX_RETRIES = 3;
     private final SessionManager sessionManager;
     private BubbleLayout bubbleView;
     private TextView tvNoteTextUIOCallPopup;
+    private static BubbleHelper mInstance;
     private BubblesManager bubblesManager;
     private Context context;
     private TextView tvCallerHistoryName0;
@@ -123,7 +127,7 @@ public class BubbleHelper extends AppCompatActivity {
         bubbleView.setOnBubbleRemoveListener(new BubbleLayout.OnBubbleRemoveListener() {
             @Override
             public void onBubbleRemoved(BubbleLayout bubble) {
-//                Toast.makeText(context, "Closed !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Closed !", Toast.LENGTH_SHORT).show();
             }
         });
         // this methoid call when cursor clicks on the notification layout( bubble layout)
@@ -131,7 +135,7 @@ public class BubbleHelper extends AppCompatActivity {
 
             @Override
             public void onBubbleClick(BubbleLayout bubble) {
-//                Toast.makeText(context, "Clicked !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Clicked !", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -194,7 +198,7 @@ public class BubbleHelper extends AppCompatActivity {
         bubbleView.setOnBubbleRemoveListener(new BubbleLayout.OnBubbleRemoveListener() {
             @Override
             public void onBubbleRemoved(BubbleLayout bubble) {
-//                Toast.makeText(context, "Removed !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Removed !", Toast.LENGTH_SHORT).show();
             }
         });
         // this methoid call when cursor clicks on the notification layout( bubble layout)
@@ -202,7 +206,7 @@ public class BubbleHelper extends AppCompatActivity {
 
             @Override
             public void onBubbleClick(BubbleLayout bubble) {
-//                Toast.makeText(context, "Clicked !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Clicked !", Toast.LENGTH_SHORT).show();
             }
         });
         // add bubble view into bubble manager

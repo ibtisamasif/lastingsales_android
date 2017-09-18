@@ -91,17 +91,10 @@ public class HomeFragment extends TabFragment {
 //                ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "AllLeads");
 //            }
 //        });
-        lltotalLeadsContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int position = 2;
-                ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "AllLeads");
-            }
-        });
         llinquriesContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = 2;
+                int position = 0;
                 ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "Inquiries");
 //                mViewPager.setCurrentItem(1,true);
 //                Bundle bundle = new Bundle();
@@ -212,66 +205,159 @@ public class HomeFragment extends TabFragment {
         new UpdateHomeFigureAsync().execute();
     }
 
-    private void setRatingStars() {
-        Log.d("rating", "onCreate: getLastAppVisit");
-        long milisecondsIn1Day = 86400000;
+    private class UpdateHomeFigureAsync extends AsyncTask<Void, String, Void> {
+        //        ProgressDialog progressDialog;
+        List<LSContact> allLeads;
+        ArrayList<LSContact> allUnlabeledContacts;
+        ArrayList<LSContact> allInactiveLeads;
+        List<LSInquiry> allInquiries;
 
-//        long milliSecondsIn1Min = 30000; // 30 seconds for now
-//        milisecondsIn1Day = milliSecondsIn1Min; // Comment it
+        UpdateHomeFigureAsync() {
+            super();
 
-        long now = Calendar.getInstance().getTimeInMillis();
-        long oneDayAgoTimestamp = now - milisecondsIn1Day;
-        long twoDaysAgoTimestamp = now - (milisecondsIn1Day * 2);
-        long theeDaysAgoTimestamp = now - (milisecondsIn1Day * 3);
-        long fourDaysAgoTimestamp = now - (milisecondsIn1Day * 4);
-        long fiveDaysAgoTimestamp = now - (milisecondsIn1Day * 5);
+//            progressDialog = new ProgressDialog(NavigationDrawerActivity.this);
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
+        }
 
-        Log.d(TAG, "oneDayAgoTimestamp: " + oneDayAgoTimestamp);
-        Log.d(TAG, "twoDaysAgoTimestamp: " + twoDaysAgoTimestamp);
-        Log.d(TAG, "theeDaysAgoTimestamp: " + theeDaysAgoTimestamp);
-        Log.d(TAG, "fourDaysAgoTimestamp: " + fourDaysAgoTimestamp);
-        Log.d(TAG, "fiveDaysAgoTimestamp: " + fiveDaysAgoTimestamp);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "onPreExecute: ");
+//            progressDialog.show();
+        }
 
-        String lastAppVisitTime = sessionManager.getLastAppVisit();
-        Long lastAppVisitTimeLong = Long.parseLong(lastAppVisitTime);
+        @Override
+        protected Void doInBackground(Void... unused) {
 
-        if (lastAppVisitTimeLong > oneDayAgoTimestamp) {
-            Log.d(TAG, "stars 5 ");
-            rbLastVisitHighlight.setRating(5);
-            float current = rbLastVisitHighlight.getRating();
-            ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 5f);
-            anim.setDuration(5000);
-            anim.start();
-        } else if (lastAppVisitTimeLong > twoDaysAgoTimestamp) {
-            Log.d(TAG, "stars 4 ");
-            rbLastVisitHighlight.setRating(4);
-            float current = rbLastVisitHighlight.getRating();
-            ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 4f);
-            anim.setDuration(5000);
-            anim.start();
-        } else if (lastAppVisitTimeLong > theeDaysAgoTimestamp) {
-            Log.d(TAG, "stars 3 ");
-            rbLastVisitHighlight.setRating(3);
-            float current = rbLastVisitHighlight.getRating();
-            ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 3f);
-            anim.setDuration(5000);
-            anim.start();
-        } else if (lastAppVisitTimeLong > fourDaysAgoTimestamp) {
-            Log.d(TAG, "stars 2 ");
-            rbLastVisitHighlight.setRating(2);
-            float current = rbLastVisitHighlight.getRating();
-            ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 2f);
-            anim.setDuration(5000);
-            anim.start();
-        } else if (lastAppVisitTimeLong > fiveDaysAgoTimestamp) {
-            Log.d(TAG, "stars 1 ");
-            rbLastVisitHighlight.setRating(1);
-            float current = rbLastVisitHighlight.getRating();
-            ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 1f);
-            anim.setDuration(5000);
-            anim.start();
+            allLeads = LSContact.getDateArrangedSalesContacts();
+            allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
+            allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
+            allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+//            SystemClock.sleep(200);
+            return (null);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: " + item);
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            Log.d(TAG, "onPostExecute: ");
+//            Toast.makeText(getContext(), "onPostExecuteWon", Toast.LENGTH_SHORT).show();
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+            if (allLeads != null) {
+                if (allLeads.size() > 0) {
+                    lltotalLeadsContainer.setVisibility(View.VISIBLE);
+                    tvTotalLeadsValue.setText("" + allLeads.size());
+                } else {
+                    lltotalLeadsContainer.setVisibility(View.GONE);
+                }
+            } else {
+                tvTotalLeadsValue.setText(0);
+            }
+
+            if (allInquiries != null) {
+                if (allInquiries.size() > 0) {
+                    llinquriesContainer.setVisibility(View.VISIBLE);
+                    tvInquiriesValue.setText("" + allInquiries.size());
+                    rbInquiriesHighlight.setRating(5 - allInquiries.size());
+                } else {
+                    llinquriesContainer.setVisibility(View.GONE);
+                }
+            } else {
+                tvInquiriesValue.setText(0);
+            }
+
+            if (allUnlabeledContacts != null) {
+                if (allUnlabeledContacts.size() > 0) {
+                    llUnlabeledContainer.setVisibility(View.VISIBLE);
+                    tvUnlabeledContacts.setText("" + allUnlabeledContacts.size());
+                } else {
+                    llUnlabeledContainer.setVisibility(View.GONE);
+                }
+            } else {
+                tvUnlabeledContacts.setText(0);
+            }
+            if (allInactiveLeads != null) {
+                if (allInactiveLeads.size() > 0) {
+                    llInActiveLeadsContainer.setVisibility(View.VISIBLE);
+                    tvInactiveLeadsValue.setText("" + allInactiveLeads.size());
+                } else {
+                    llInActiveLeadsContainer.setVisibility(View.GONE);
+                }
+            } else {
+                tvInactiveLeadsValue.setText(0);
+            }
+
+
+            Log.d("rating", "onCreate: getLastAppVisit");
+            long milisecondsIn1Day = 86400000;
+
+            long milliSecondsIn1Min = 30000; // 30 seconds for now
+            milisecondsIn1Day = milliSecondsIn1Min; // Comment it
+
+            long now = Calendar.getInstance().getTimeInMillis();
+            long oneDayAgoTimestamp = now - milisecondsIn1Day;
+            long twoDaysAgoTimestamp = now - (milisecondsIn1Day * 2);
+            long theeDaysAgoTimestamp = now - (milisecondsIn1Day * 3);
+            long fourDaysAgoTimestamp = now - (milisecondsIn1Day * 4);
+            long fiveDaysAgoTimestamp = now - (milisecondsIn1Day * 5);
+
+            Log.d(TAG, "oneDayAgoTimestamp: " + oneDayAgoTimestamp);
+            Log.d(TAG, "twoDaysAgoTimestamp: " + twoDaysAgoTimestamp);
+            Log.d(TAG, "theeDaysAgoTimestamp: " + theeDaysAgoTimestamp);
+            Log.d(TAG, "fourDaysAgoTimestamp: " + fourDaysAgoTimestamp);
+            Log.d(TAG, "fiveDaysAgoTimestamp: " + fiveDaysAgoTimestamp);
+
+            Log.d(TAG, "getLastAppVisit: " + sessionManager.getLastAppVisit());
+
+            if (Long.parseLong(sessionManager.getLastAppVisit()) > oneDayAgoTimestamp) {
+                Log.d(TAG, "stars 5 ");
+                rbLastVisitHighlight.setRating(5);
+                float current = rbLastVisitHighlight.getRating();
+                ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 5f);
+                anim.setDuration(1000);
+                anim.start();
+            } else if (Long.parseLong(sessionManager.getLastAppVisit()) > twoDaysAgoTimestamp ) {
+                Log.d(TAG, "stars 4 ");
+                rbLastVisitHighlight.setRating(4);
+                float current = rbLastVisitHighlight.getRating();
+                ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 4f);
+                anim.setDuration(1000);
+                anim.start();
+            } else if (Long.parseLong(sessionManager.getLastAppVisit()) > theeDaysAgoTimestamp) {
+                Log.d(TAG, "stars 3 ");
+                rbLastVisitHighlight.setRating(3);
+                float current = rbLastVisitHighlight.getRating();
+                ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 3f);
+                anim.setDuration(1000);
+                anim.start();
+            } else if (Long.parseLong(sessionManager.getLastAppVisit()) > fourDaysAgoTimestamp) {
+                Log.d(TAG, "stars 2 ");
+                rbLastVisitHighlight.setRating(2);
+                float current = rbLastVisitHighlight.getRating();
+                ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 2f);
+                anim.setDuration(1000);
+                anim.start();
+            } else if (Long.parseLong(sessionManager.getLastAppVisit()) > fiveDaysAgoTimestamp) {
+                Log.d(TAG, "stars 1 ");
+                rbLastVisitHighlight.setRating(1);
+                float current = rbLastVisitHighlight.getRating();
+                ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 1f);
+                anim.setDuration(1000);
+                anim.start();
+            }
+//            showHomeTutorials(); TODO uncomment this
         }
     }
+
 
     @Subscribe
     public void onCallReceivedEventModel(MissedCallEventModel event) {
@@ -381,117 +467,5 @@ public class HomeFragment extends TabFragment {
             );
         }
         sequence.start();
-    }
-
-    private class UpdateHomeFigureAsync extends AsyncTask<Void, String, Void> {
-        //        ProgressDialog progressDialog;
-        List<LSContact> allLeads;
-        ArrayList<LSContact> allUnlabeledContacts;
-        ArrayList<LSContact> allInactiveLeads;
-        List<LSInquiry> allInquiries;
-
-        UpdateHomeFigureAsync() {
-            super();
-
-//            progressDialog = new ProgressDialog(NavigationDrawerActivity.this);
-//            progressDialog.setTitle("Loading data");
-//            //this method will be running on UI thread
-//            progressDialog.setMessage("Please Wait...");
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.d(TAG, "onPreExecute: ");
-//            progressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... unused) {
-
-            allLeads = LSContact.getDateArrangedSalesContacts();
-            allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
-            allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
-            allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-//            SystemClock.sleep(200);
-            return (null);
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        protected void onProgressUpdate(String... item) {
-            Log.d(TAG, "onProgressUpdate: " + item);
-        }
-
-        @Override
-        protected void onPostExecute(Void unused) {
-            Log.d(TAG, "onPostExecute: ");
-//            Toast.makeText(getContext(), "onPostExecuteWon", Toast.LENGTH_SHORT).show();
-//            if (progressDialog != null && progressDialog.isShowing()) {
-//                progressDialog.dismiss();
-//            }
-            if (allLeads != null) {
-                if (allLeads.size() > 0) {
-                    lltotalLeadsContainer.setVisibility(View.VISIBLE);
-                    tvTotalLeadsValue.setText("" + allLeads.size());
-                } else {
-                    lltotalLeadsContainer.setVisibility(View.GONE);
-                }
-            } else {
-                tvTotalLeadsValue.setText(0);
-            }
-
-            if (allInquiries != null) {
-                if (allInquiries.size() > 0) {
-                    llinquriesContainer.setVisibility(View.VISIBLE);
-                    tvInquiriesValue.setText("" + allInquiries.size());
-                    rbInquiriesHighlight.setRating(5 - allInquiries.size());
-                } else {
-                    llinquriesContainer.setVisibility(View.GONE);
-                }
-            } else {
-                tvInquiriesValue.setText(0);
-            }
-
-            if (allUnlabeledContacts != null) {
-                if (allUnlabeledContacts.size() > 0) {
-                    llUnlabeledContainer.setVisibility(View.VISIBLE);
-                    tvUnlabeledContacts.setText("" + allUnlabeledContacts.size());
-                } else {
-                    llUnlabeledContainer.setVisibility(View.GONE);
-                }
-            } else {
-                tvUnlabeledContacts.setText(0);
-            }
-            if (allInactiveLeads != null) {
-                if (allInactiveLeads.size() > 0) {
-                    llInActiveLeadsContainer.setVisibility(View.VISIBLE);
-                    tvInactiveLeadsValue.setText("" + allInactiveLeads.size());
-                } else {
-                    llInActiveLeadsContainer.setVisibility(View.GONE);
-                }
-            } else {
-                tvInactiveLeadsValue.setText(0);
-            }
-
-            setRatingStars();
-
-            // Updating Last Visit
-//        Log.d("rating", "onCreate: setLastAppVisit");
-//        long milliSecondsIn30Second = 60000; // 30 seconds for now
-//        long now = Calendar.getInstance().getTimeInMillis();
-//        long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
-//        sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
-            sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
-
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    setRatingStars();
-//                }
-//            }, 5000);
-//            showHomeTutorials(); //TODO uncomment this
-        }
     }
 }
