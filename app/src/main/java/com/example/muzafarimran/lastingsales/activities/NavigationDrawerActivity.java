@@ -1,14 +1,5 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
-import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.receivers.DayStartHighlightAlarmReceiver;
-import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
-import com.example.muzafarimran.lastingsales.service.CallDetectionService;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.ShortcutBadgeUpdateAsync;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -39,24 +30,33 @@ import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.customview.BadgeView;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
-import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
+import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
 import com.example.muzafarimran.lastingsales.fragments.IgnoredFragment;
+import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.receivers.DayStartHighlightAlarmReceiver;
+import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
+import com.example.muzafarimran.lastingsales.receivers.RatingAlarmReceiver;
+import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.utils.CallRecord;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.ShortcutBadgeUpdateAsync;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
 import java.util.List;
@@ -85,7 +85,20 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
+        boolean ratingAlarm = (PendingIntent.getBroadcast(NavigationDrawerActivity.this, 2, new Intent(NavigationDrawerActivity.this, RatingAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
+        if (ratingAlarm) {
+            Log.d("myAlarmLog", "Rating Alarm is already active");
+        } else {
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.set(Calendar.HOUR_OF_DAY, 11); // For 4 PM or 5 PM
+            calendar2.set(Calendar.MINUTE, 0);
+            calendar2.set(Calendar.SECOND, 0);
+            PendingIntent pi2 = PendingIntent.getBroadcast(NavigationDrawerActivity.this, 2, new Intent(NavigationDrawerActivity.this, RatingAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager am2 = (AlarmManager) NavigationDrawerActivity.this.getSystemService(Context.ALARM_SERVICE);
+            am2.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi2);
+        }
+
         boolean dayStartHighlightAlarmUp = (PendingIntent.getBroadcast(NavigationDrawerActivity.this, 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
         if (dayStartHighlightAlarmUp) {
             Log.d("myAlarmLog", "DayStart Alarm is already active");
@@ -345,12 +358,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 }
             }
         }
-        // Updating Last Visit
-        Log.d("rating", "onCreate: setLastAppVisit");
-        long milliSecondsIn30Second = 60000; // 30 seconds for now
-        long now = Calendar.getInstance().getTimeInMillis();
-        long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
-        sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
+//        // Updating Last Visit
+////        Log.d("rating", "onCreate: setLastAppVisit");
+////        long milliSecondsIn30Second = 60000; // 30 seconds for now
+////        long now = Calendar.getInstance().getTimeInMillis();
+////        long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
+////        sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
 //        sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
     }
 
@@ -421,56 +434,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //        } else {
 //            badgeInquries.hide();
 //        }
-    }
-
-    private class BadgeUpdateAsync extends AsyncTask<Void, String, Void> {
-        //        ProgressDialog progressDialog;
-        List<LSInquiry> allPendingInquiries;
-
-        BadgeUpdateAsync() {
-            super();
-//            progressDialog = new ProgressDialog(NavigationDrawerActivity.this);
-//            progressDialog.setTitle("Loading data");
-//            //this method will be running on UI thread
-//            progressDialog.setMessage("Please Wait...");
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.d(TAG, "onPreExecute: ");
-//            progressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... unused) {
-            allPendingInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-//            SystemClock.sleep(200);
-            return (null);
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        protected void onProgressUpdate(String... item) {
-            Log.d(TAG, "onProgressUpdate: " + item);
-        }
-
-        @Override
-        protected void onPostExecute(Void unused) {
-            Log.d(TAG, "onPostExecute: ");
-//            Toast.makeText(getContext(), "onPostExecuteWon", Toast.LENGTH_SHORT).show();
-//            if (progressDialog != null && progressDialog.isShowing()) {
-//                progressDialog.dismiss();
-//            }
-            if (allPendingInquiries != null && allPendingInquiries.size() > 0) {
-                badgeInquries.setText("" + allPendingInquiries.size());
-                badgeInquries.toggle();
-                badgeInquries.show();
-                new ShortcutBadgeUpdateAsync(NavigationDrawerActivity.this).execute();
-            } else {
-                badgeInquries.hide();
-            }
-        }
     }
 
     @Override
@@ -627,8 +590,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             public void onPageSelected(int position) {
                 Log.d(TAG, "onPageSelected: ");
                 if (position == 2) {
-                    if (tag.equals("All Leads")) {
-                        // Do nothing
+                    if (tag.equals("AllLeads")) {
+                        TabSelectedListener tabSelectedListener = (TabSelectedListener) ((SampleFragmentPagerAdapter) viewPager.getAdapter()).getItem(position);
+                        tabSelectedListener.onTabSelectedEvent(0, "");
                     } else if (tag.equals("InActiveLeads")) {
                         TabSelectedListener tabSelectedListener = (TabSelectedListener) ((SampleFragmentPagerAdapter) viewPager.getAdapter()).getItem(position);
                         tabSelectedListener.onTabSelectedEvent(4, "");
@@ -644,6 +608,56 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         });
         viewPager.setCurrentItem(position, true);
 
+    }
+
+    private class BadgeUpdateAsync extends AsyncTask<Void, String, Void> {
+        //        ProgressDialog progressDialog;
+        List<LSInquiry> allPendingInquiries;
+
+        BadgeUpdateAsync() {
+            super();
+//            progressDialog = new ProgressDialog(NavigationDrawerActivity.this);
+//            progressDialog.setTitle("Loading data");
+//            //this method will be running on UI thread
+//            progressDialog.setMessage("Please Wait...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "onPreExecute: ");
+//            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            allPendingInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+//            SystemClock.sleep(200);
+            return (null);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: " + item);
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            Log.d(TAG, "onPostExecute: ");
+//            Toast.makeText(getContext(), "onPostExecuteWon", Toast.LENGTH_SHORT).show();
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+            if (allPendingInquiries != null && allPendingInquiries.size() > 0) {
+                badgeInquries.setText("" + allPendingInquiries.size());
+                badgeInquries.toggle();
+                badgeInquries.show();
+                new ShortcutBadgeUpdateAsync(NavigationDrawerActivity.this).execute();
+            } else {
+                badgeInquries.hide();
+            }
+        }
     }
 
 //    public class tabSelectedListener implements TabLayout.OnTabSelectedListener {

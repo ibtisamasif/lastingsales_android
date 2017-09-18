@@ -6,9 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
@@ -144,7 +142,7 @@ public class PhoneNumberAndCallUtils {
         if (diff < 24 * HOUR_MILLIS) {
             return " today";
         } else if (diff < 48 * HOUR_MILLIS) {
-            return "yesterday";
+            return " yesterday";
         } else {
             return diff / DAY_MILLIS + " days ago";
         }
