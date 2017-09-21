@@ -9,6 +9,7 @@ public class SettingsManager {
 
     private static final String KEY_STATE_FLYER = "state_flyer";
     private static final String KEY_STATE_CALL_END_DIALOG = "state_call_end_dialog";
+    private static final String KEY_STATE_HOURLY_NOTIFICATION = "state_hourly_notification";
 
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffsSettings";
@@ -43,6 +44,15 @@ public class SettingsManager {
 
     public void setKeyStateCallEndDialog(Boolean state) {
         editor.putBoolean(KEY_STATE_CALL_END_DIALOG, state);
+        editor.commit();
+    }
+
+    public Boolean getKeyStateHourlyNotification() {
+        return pref.getBoolean(KEY_STATE_HOURLY_NOTIFICATION, true);
+    }
+
+    public void setKeyStateHourlyNotification(Boolean state) {
+        editor.putBoolean(KEY_STATE_HOURLY_NOTIFICATION, state);
         editor.commit();
     }
 }

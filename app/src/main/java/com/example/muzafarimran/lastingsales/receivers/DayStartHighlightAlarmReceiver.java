@@ -41,7 +41,7 @@ public class DayStartHighlightAlarmReceiver extends WakefulBroadcastReceiver {
             else if (lsInquiry.size() == 2) {
                 message = nameOrNumber + " and 1 others";
             } else if (lsInquiry.size() > 2) {
-                message = nameOrNumber + " and 2 others";
+                message = nameOrNumber + " and " + (lsInquiry.size()-1) +" others";
             }
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(DayStartHighlightAlarmNotification.NOTIFICATION_ID, DayStartHighlightAlarmNotification.createAlarmNotification(context, "Highlights", message));

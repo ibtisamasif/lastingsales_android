@@ -1,15 +1,22 @@
 package com.example.muzafarimran.lastingsales.receivers;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
+import android.widget.RemoteViews;
 
+import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.utils.HourlyAlarmNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,25 +31,45 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
         Log.d(TAG, "onReceive:Hourly Alarm Fired");
         Log.d("Inquiry", "onReceive:Hourly Alarm Fired");
 
-        List<LSInquiry> lsInquiry = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-        if (lsInquiry != null && lsInquiry.size() > 0) {
-            String nameOrNumber;
-            String name = lsInquiry.get(0).getContactName();
-            String number = lsInquiry.get(0).getContactNumber();
-            String nameFromPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, lsInquiry.get(0).getContactNumber());
-            if (name != null) {
-                nameOrNumber = name;
-            }else if (nameFromPhonebook != null){
-                nameOrNumber = nameFromPhonebook;
+        int count = intent.getIntExtra(Intent.EXTRA_ALARM_COUNT, -1);
+        Log.d(TAG, "onReceive: Count: " + count);
+        if (count < 2) {
+            List<LSInquiry> lsInquiry = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+            if (lsInquiry != null && lsInquiry.size() > 0) {
+                List<String> nameFromApp = new ArrayList<>();
+                List<String> nameFromPhonebook = new ArrayList<>();
+                List<String> numberFromApp = new ArrayList<>();
+                List<String> nameOrNumber = new ArrayList<>();
+                List<String> timeAgo = new ArrayList<>();
+                List<String> messageList = new ArrayList<>();
+
+                for (int i = 0; i < lsInquiry.size(); i++) {
+                    Log.d(TAG, "onReceive: lsinquiry.size(): " + lsInquiry.size());
+                    nameFromApp.add(lsInquiry.get(i).getContactName());
+                    nameFromPhonebook.add(PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, lsInquiry.get(i).getContactNumber()));
+                    numberFromApp.add(lsInquiry.get(i).getContactNumber());
+                    if (nameFromApp.get(i) != null) {
+                        nameOrNumber.add(nameFromApp.get(i));
+                    } else if (nameFromPhonebook.get(i) != null) {
+                        nameOrNumber.add(nameFromPhonebook.get(i));
+                    } else {
+                        nameOrNumber.add(numberFromApp.get(i));
+                    }
+                    messageList.add(nameOrNumber.get(i));
+//                    messageList.add(nameOrNumber.get(i) + "                                     (" +  PhoneNumberAndCallUtils.getTimeAgo(lsInquiry.get(i).getBeginTime(), context) + ")");
+                }
+
+                if (lsInquiry.size() == 1) {
+                    NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    mNotificationManager.notify(HourlyAlarmNotification.NOTIFICATION_ID, HourlyAlarmNotification.createAlarmNotification(context, "Lets Callback", messageList.get(0), numberFromApp.get(0)));
+                } else if (lsInquiry.size() > 1) {
+                    NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    mNotificationManager.notify(HourlyAlarmNotification.NOTIFICATION_ID, HourlyAlarmNotification.createAlarmNotification(context, "Lets Callback", messageList));
+                }
             }
-            else {
-                nameOrNumber = number;
-            }
-            String message = "call back " + nameOrNumber;
-            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(HourlyAlarmNotification.NOTIFICATION_ID, HourlyAlarmNotification.createAlarmNotification(context, "Pending Inquiries", message, number));
-        }
-        // Refresh Service once daily.
+            // Refresh Service once daily.
 //        context.startService(new Intent(context, CallDetectionService.class));  // TODO is it still needed here as well ?
+        }
     }
 }
+

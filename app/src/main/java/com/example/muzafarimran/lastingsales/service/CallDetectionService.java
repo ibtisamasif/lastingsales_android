@@ -50,7 +50,7 @@ import de.halfbit.tinybus.TinyBus;
 
 public class CallDetectionService extends Service {
     private static final String TAG = CallDetectionService.class.getSimpleName();
-    private static final int NOTIFICATION_ID = 1;
+    private static final int NOTIFICATION_ID = -1;
     private BroadcastReceiver mReceiver;
 
     private static int lastState = TelephonyManager.CALL_STATE_IDLE;

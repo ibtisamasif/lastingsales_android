@@ -101,7 +101,7 @@ public class HomeFragment extends TabFragment {
         llinquriesContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = 2;
+                int position = 0;
                 ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "Inquiries");
 //                mViewPager.setCurrentItem(1,true);
 //                Bundle bundle = new Bundle();
@@ -233,43 +233,44 @@ public class HomeFragment extends TabFragment {
         Log.d(TAG, "fiveDaysAgoTimestamp: " + fiveDaysAgoTimestamp);
 
         String lastAppVisitTime = sessionManager.getLastAppVisit();
-        Long lastAppVisitTimeLong = Long.parseLong(lastAppVisitTime);
-
-        if (lastAppVisitTimeLong > oneDayAgoTimestamp) {
-            Log.d(TAG, "stars 5 ");
-            rbLastVisitHighlight.setRating(5);
-            float current = rbLastVisitHighlight.getRating();
-            ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 5f);
-            anim.setDuration(5000);
-            anim.start();
-        } else if (lastAppVisitTimeLong > twoDaysAgoTimestamp) {
-            Log.d(TAG, "stars 4 ");
-            rbLastVisitHighlight.setRating(4);
-            float current = rbLastVisitHighlight.getRating();
-            ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 4f);
-            anim.setDuration(5000);
-            anim.start();
-        } else if (lastAppVisitTimeLong > theeDaysAgoTimestamp) {
-            Log.d(TAG, "stars 3 ");
-            rbLastVisitHighlight.setRating(3);
-            float current = rbLastVisitHighlight.getRating();
-            ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 3f);
-            anim.setDuration(5000);
-            anim.start();
-        } else if (lastAppVisitTimeLong > fourDaysAgoTimestamp) {
-            Log.d(TAG, "stars 2 ");
-            rbLastVisitHighlight.setRating(2);
-            float current = rbLastVisitHighlight.getRating();
-            ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 2f);
-            anim.setDuration(5000);
-            anim.start();
-        } else if (lastAppVisitTimeLong > fiveDaysAgoTimestamp) {
-            Log.d(TAG, "stars 1 ");
-            rbLastVisitHighlight.setRating(1);
-            float current = rbLastVisitHighlight.getRating();
-            ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 1f);
-            anim.setDuration(5000);
-            anim.start();
+        if (lastAppVisitTime !=null && !lastAppVisitTime.equals("") ){
+            Long lastAppVisitTimeLong = Long.parseLong(lastAppVisitTime);
+            if (lastAppVisitTimeLong > oneDayAgoTimestamp) {
+                Log.d(TAG, "stars 5 ");
+                rbLastVisitHighlight.setRating(5);
+                float current = rbLastVisitHighlight.getRating();
+                ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 5f);
+                anim.setDuration(5000);
+                anim.start();
+            } else if (lastAppVisitTimeLong > twoDaysAgoTimestamp) {
+                Log.d(TAG, "stars 4 ");
+                rbLastVisitHighlight.setRating(4);
+                float current = rbLastVisitHighlight.getRating();
+                ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 4f);
+                anim.setDuration(5000);
+                anim.start();
+            } else if (lastAppVisitTimeLong > theeDaysAgoTimestamp) {
+                Log.d(TAG, "stars 3 ");
+                rbLastVisitHighlight.setRating(3);
+                float current = rbLastVisitHighlight.getRating();
+                ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 3f);
+                anim.setDuration(5000);
+                anim.start();
+            } else if (lastAppVisitTimeLong > fourDaysAgoTimestamp) {
+                Log.d(TAG, "stars 2 ");
+                rbLastVisitHighlight.setRating(2);
+                float current = rbLastVisitHighlight.getRating();
+                ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 2f);
+                anim.setDuration(5000);
+                anim.start();
+            } else if (lastAppVisitTimeLong > fiveDaysAgoTimestamp) {
+                Log.d(TAG, "stars 1 ");
+                rbLastVisitHighlight.setRating(1);
+                float current = rbLastVisitHighlight.getRating();
+                ObjectAnimator anim = ObjectAnimator.ofFloat(rbLastVisitHighlight, "rating", current, 1f);
+                anim.setDuration(5000);
+                anim.start();
+            }
         }
     }
 

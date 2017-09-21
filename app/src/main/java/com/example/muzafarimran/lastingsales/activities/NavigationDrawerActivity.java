@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.adapters.SampleFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.customview.BadgeView;
@@ -69,6 +70,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     private static final String TAG = "NaviDrawerActivity";
     MaterialSearchView searchView;
     SessionManager sessionManager;
+    SettingsManager settingsManager;
     CallRecord callRecord;
     ImageView ivProfileImage;
     TextView tvProfileName, tvProfileNumber;
@@ -86,43 +88,49 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        boolean ratingAlarm = (PendingIntent.getBroadcast(NavigationDrawerActivity.this, 2, new Intent(NavigationDrawerActivity.this, RatingAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
-        if (ratingAlarm) {
-            Log.d("myAlarmLog", "Rating Alarm is already active");
-        } else {
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.set(Calendar.HOUR_OF_DAY, 11); // For 4 PM or 5 PM
-            calendar2.set(Calendar.MINUTE, 0);
-            calendar2.set(Calendar.SECOND, 0);
-            PendingIntent pi2 = PendingIntent.getBroadcast(NavigationDrawerActivity.this, 2, new Intent(NavigationDrawerActivity.this, RatingAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager am2 = (AlarmManager) NavigationDrawerActivity.this.getSystemService(Context.ALARM_SERVICE);
-            am2.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi2);
-        }
+//        boolean ratingAlarm = (PendingIntent.getBroadcast(getApplicationContext(), 2, new Intent(NavigationDrawerActivity.this, RatingAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
+//        if (ratingAlarm) {
+//            Log.d("myAlarmLog", "Rating Alarm is already active");
+//        } else {
+//            Log.d("myAlarmLog", "Rating Alarm is activated now");
+//            Calendar calendar2 = Calendar.getInstance();
+//            calendar2.set(Calendar.HOUR_OF_DAY, 11); // For 11am
+//            calendar2.set(Calendar.MINUTE, 0);
+//            calendar2.set(Calendar.SECOND, 0);
+//            PendingIntent pi2 = PendingIntent.getBroadcast(NavigationDrawerActivity.this, 2, new Intent(NavigationDrawerActivity.this, RatingAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+//            AlarmManager am2 = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+//            am2.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi2);
+//        }
 
-        boolean dayStartHighlightAlarmUp = (PendingIntent.getBroadcast(NavigationDrawerActivity.this, 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
-        if (dayStartHighlightAlarmUp) {
-            Log.d("myAlarmLog", "DayStart Alarm is already active");
-        } else {
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.set(Calendar.HOUR_OF_DAY, 9); // For 4 PM or 5 PM
-            calendar2.set(Calendar.MINUTE, 0);
-            calendar2.set(Calendar.SECOND, 0);
-            PendingIntent pi2 = PendingIntent.getBroadcast(NavigationDrawerActivity.this, 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager am2 = (AlarmManager) NavigationDrawerActivity.this.getSystemService(Context.ALARM_SERVICE);
-            am2.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi2);
-        }
+//        boolean dayStartHighlightAlarmUp = (PendingIntent.getBroadcast(getApplicationContext(), 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
+//        if (dayStartHighlightAlarmUp) {
+//            Log.d("myAlarmLog", "DayStart Alarm is already active");
+//        } else {
+//            Log.d("myAlarmLog", "DayStart Alarm is activated now");
+//            Calendar calendar2 = Calendar.getInstance();
+//            calendar2.set(Calendar.HOUR_OF_DAY, 9); // For 9am
+//            calendar2.set(Calendar.MINUTE, 0);
+//            calendar2.set(Calendar.SECOND, 0);
+//            PendingIntent pi2 = PendingIntent.getBroadcast(getApplicationContext(), 1, new Intent(NavigationDrawerActivity.this, DayStartHighlightAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+//            AlarmManager am2 = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+//            am2.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi2);
+//        }
 
-        boolean hourlyAlarmUp = (PendingIntent.getBroadcast(NavigationDrawerActivity.this, 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
-        if (hourlyAlarmUp) {
-            Log.d("myAlarmLog", "Hourly Alarm is already active");
-        } else {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 10); // For 4 PM or 5 PM
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            PendingIntent pi = PendingIntent.getBroadcast(NavigationDrawerActivity.this, 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager am = (AlarmManager) NavigationDrawerActivity.this.getSystemService(Context.ALARM_SERVICE);
-            am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, pi);
+        settingsManager = new SettingsManager(this);
+        if (settingsManager.getKeyStateHourlyNotification()){
+            boolean hourlyAlarmUp = (PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
+            if (hourlyAlarmUp) {
+                Log.d("myAlarmLog", "Hourly Alarm is already active");
+            } else {
+                Log.d("myAlarmLog", "Hourly Alarm is activated now");
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, 10); // For 10am
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, pi);
+            }
         }
 
         Log.d(TAG, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER);
@@ -364,7 +372,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 ////        long now = Calendar.getInstance().getTimeInMillis();
 ////        long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
 ////        sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
-//        sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
+        sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
     }
 
     private void showInquiryTutorials() {
