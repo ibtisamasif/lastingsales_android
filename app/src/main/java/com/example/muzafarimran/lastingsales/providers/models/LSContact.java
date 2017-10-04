@@ -52,6 +52,7 @@ public class LSContact extends SugarRecord {
     private String dynamic;
     private boolean isLeadDeleted;
     private Long updatedAt;
+    private LSContactProfile contactProfile;
 
 
     public LSContact() {
@@ -533,6 +534,14 @@ public class LSContact extends SugarRecord {
         isLeadDeleted = leadDeleted;
     }
 
+    public LSContactProfile getContactProfile() {
+        return contactProfile;
+    }
+
+    public void setContactProfile(LSContactProfile contactProfile) {
+        this.contactProfile = contactProfile;
+    }
+
     @Override
     public String toString() {
         return "LSContact{" +
@@ -551,6 +560,10 @@ public class LSContact extends SugarRecord {
                 ", detailsDropDownOpen=" + detailsDropDownOpen +
                 ", syncStatus='" + syncStatus + '\'' +
                 ", serverId='" + serverId + '\'' +
+                ", dynamic='" + dynamic + '\'' +
+                ", isLeadDeleted=" + isLeadDeleted +
+                ", updatedAt=" + updatedAt +
+                ", contactProfile=" + contactProfile +
                 '}';
     }
 }

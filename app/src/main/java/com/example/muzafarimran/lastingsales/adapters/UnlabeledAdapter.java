@@ -14,18 +14,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.activities.TypeManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.wdullaer.materialdatetimepicker.time.CircleView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
 
@@ -84,6 +89,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.unlabeled_contacts_list_item, parent, false);
             holder = new ViewHolder();
+            holder.user_avatar = (CircleImageView) convertView.findViewById(R.id.user_avatar);
             holder.name = (TextView) convertView.findViewById(R.id.call_name);
             holder.time = (TextView) convertView.findViewById(R.id.call_time);
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
@@ -106,20 +112,41 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
             holder = (ViewHolder) convertView.getTag();
             ((ViewGroup) holder.call_name_time.getParent().getParent()).removeView(call_details);
         }
-        if (contact.getContactName() == null) {
-            holder.name.setText(contact.getPhoneOne());
-        } else if (contact.getContactName().equals("null")) {
-            holder.name.setText("");
-        } else if (contact.getContactName().equals("Unlabeled Contact") || contact.getContactName().equals("Ignored Contact")) {
-            String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, contact.getPhoneOne());
-            if (name != null) {
-                holder.name.setText(name);
+        LSContactProfile lsContactProfile = contact.getContactProfile();
+        if (contact.getContactName() != null) {
+            if (contact.getContactName().equals("null")) {
+                holder.name.setText("");
+            } else if (contact.getContactName().equals("Unlabeled Contact") || contact.getContactName().equals("Ignored Contact")) {
+                String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, contact.getPhoneOne());
+                if (name != null) {
+                    holder.name.setText(name);
+                } else {
+                    if (lsContactProfile != null) {
+                        holder.name.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
+                    } else {
+                        holder.name.setText(contact.getPhoneOne());
+                    }
+                }
+            } else {
+                holder.name.setText(contact.getContactName());
+            }
+        } else {
+            if (lsContactProfile != null) {
+                holder.name.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
             } else {
                 holder.name.setText(contact.getPhoneOne());
             }
-        } else {
-            holder.name.setText(contact.getContactName());
         }
+        if (lsContactProfile != null) {
+            if (lsContactProfile.getSocial_image() != null) {
+                imageFunc(holder.user_avatar, lsContactProfile.getSocial_image());
+            } else {
+                holder.user_avatar.setImageResource(R.drawable.ic_account_circle);
+            }
+        }else {
+            holder.user_avatar.setImageResource(R.drawable.ic_account_circle);
+        }
+
         holder.bIgnore.setTag(number);
         holder.bContactCallsdetails.setTag(number);
         holder.numberDetailTextView.setText(number);
@@ -157,6 +184,16 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
+    private void imageFunc(ImageView imageView, String url) {
+        //Downloading using Glide Library
+        Glide.with(mContext)
+                .load(url)
+//                .override(48, 48)
+//                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.ic_account_circle)
+                .into(imageView);
+    }
+
     public void setList(List<LSContact> mCalls) {
         this.mContacts = mCalls;
         filteredData = mCalls;
@@ -177,11 +214,11 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
                     List<LSContact> filterResultsData = new ArrayList<>();
                     //int length = charSequence.length();
                     for (int i = 0; i < mContacts.size(); i++) {
-                        if (mContacts.get(i).getContactName() != null && mContacts.get(i).getContactName().replaceAll("\\s+","").toLowerCase().contains(((String) charSequence).toLowerCase().replaceAll("\\s+",""))) {
+                        if (mContacts.get(i).getContactName() != null && mContacts.get(i).getContactName().replaceAll("\\s+", "").toLowerCase().contains(((String) charSequence).toLowerCase().replaceAll("\\s+", ""))) {
                             filterResultsData.add(mContacts.get(i));
                             continue;
                         }
-                        if (mContacts.get(i).getPhoneOne().replaceAll("\\s+","").toLowerCase().contains(((String) charSequence).toLowerCase().replaceAll("\\s+",""))) {
+                        if (mContacts.get(i).getPhoneOne().replaceAll("\\s+", "").toLowerCase().contains(((String) charSequence).toLowerCase().replaceAll("\\s+", ""))) {
                             filterResultsData.add(mContacts.get(i));
                         }
                     }
@@ -200,6 +237,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
     }
 
     static class ViewHolder {
+        CircleImageView user_avatar;
         TextView name;
         TextView time;
         ImageView call_icon;

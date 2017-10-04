@@ -19,6 +19,7 @@ public class MyURLs {
     public static String UPDATE_NOTE = "https://api.lastingsales.com/api/v1/lead/";
     public static String UPDATE_AGENT = "https://api.lastingsales.com/api/v1/user";
     public static String GET_CONTACTS = "https://api.lastingsales.com/api/v1/lead";
+    public static String GET_PROFILE = "http://api.lastingsales.com/api/v1/graph/public/profile";
     public static String GET_NOTES = "https://api.lastingsales.com/api/v1/lead";
     public static String GET_COLUMNS = "https://api.lastingsales.com/api/v1/column";
     public static String GET_CUSTOMER_HISTORY = "https://api.lastingsales.com/api/v1/graph/lead/agent/relation";

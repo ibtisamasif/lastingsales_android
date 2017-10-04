@@ -201,7 +201,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                        created_at = payload.getString("created_at");
 //                    }
                     String updated_at = null;
-                    if(payload.has("updated_at")){
+                    if (payload.has("updated_at")) {
                         updated_at = payload.getString("updated_at");
                     }
                     String dynamic_values = null;
@@ -402,6 +402,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     LSDynamicColumns tempColumn = LSDynamicColumns.getColumnFromServerId(id);
                     if (tempColumn != null) {
                         tempColumn.delete();
+                    }
+                }
+            }
+            if (tag.equals("Notification")) {
+                if (action.equals("inquiries")) {
+                    String message = "";
+                    if (payload.has("message")) {
+                        message = payload.getString("message");
+                        Log.d(TAG, "handleDataMessage: Notification Message: " + message);
                     }
                 }
             }

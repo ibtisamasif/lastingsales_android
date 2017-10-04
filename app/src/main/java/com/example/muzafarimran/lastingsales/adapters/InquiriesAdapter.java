@@ -16,12 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.activities.TypeManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
@@ -30,6 +32,8 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
 
@@ -93,6 +97,7 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.inquiry_calls_list_item, parent, false);
             holder = new ViewHolder();
+            holder.user_avatar = (CircleImageView) convertView.findViewById(R.id.user_avatar);
             holder.name = (TextView) convertView.findViewById(R.id.call_name);
             holder.time = (TextView) convertView.findViewById(R.id.call_time);
             holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
@@ -116,19 +121,32 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
             holder = (ViewHolder) convertView.getTag();
             ((ViewGroup) holder.call_name_time.getParent().getParent()).removeView(call_details);
         }
+
+        LSContactProfile lsContactProfile = inquiryCall.getContactProfile();
         if (inquiryCall.getContact() == null) {
+            Log.d(TAG, "getView: inquiryCall.getContact() == null: " + number);
+            // TAG button visibility
+            holder.bTag.setVisibility(View.VISIBLE);
             if (inquiryCall.getContactName() != null) {
-                holder.name.setText(inquiryCall.getContactName());
+                holder.name.setText(inquiryCall.getContactName());      //Name from App
             } else {
-                Log.d(TAG, "getView: else 1" + number);
+                Log.d(TAG, "getView: else 1: " + number);
                 holder.name.setText(inquiryCall.getContactNumber());
                 String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, number);
-                if (phoneBookContactName != null) {
-                    Log.d(TAG, "getView: else 1 nested if" + number);
+                if (phoneBookContactName != null) {                     //Name from PhoneBook
+                    Log.d(TAG, "getView: else 1 nested if: " + number);
                     holder.name.setText(phoneBookContactName);
+                }else if (lsContactProfile != null){     //Name from Profile
+                    Log.d(TAG, "getView: Name from Profile");
+                    holder.name.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName() );
                 }
             }
         } else {
+            // TAG button visibility
+            if(!inquiryCall.getContact().getContactType().equals(LSContact.CONTACT_TYPE_SALES)){
+                Log.d(TAG, "getView: not a sale contact: " + number);
+                holder.bTag.setVisibility(View.VISIBLE);
+            }
             if (inquiryCall.getContact().getContactName() == null) {
                 Log.d(TAG, "getView: if 2" + number);
                 holder.name.setText(inquiryCall.getContactNumber());
@@ -136,12 +154,27 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
                 Log.d(TAG, "getView: else 2" + number);
                 holder.name.setText(inquiryCall.getContact().getContactName());
             }
+            if(inquiryCall.getContact().getContactProfile() != null ){
+                Log.d(TAG, "getView: Inquiry Profile Exists");
+            }
         }
-        LSContact checkContact = LSContact.getContactFromNumber(number);
-        if (checkContact == null || !checkContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)){
-            Log.wtf(TAG, "getView: checkContact Null");
-            holder.bTag.setVisibility(View.VISIBLE);
+
+        if (lsContactProfile != null) {
+            if (lsContactProfile.getSocial_image() != null) {
+                imageFunc(holder.user_avatar, lsContactProfile.getSocial_image());
+            } else {
+                holder.user_avatar.setImageResource(R.drawable.ic_account_circle);
+            }
+        }else {
+            holder.user_avatar.setImageResource(R.drawable.ic_account_circle);
         }
+
+//        //TODO query will slow down performance
+//        LSContact checkContact = LSContact.getContactFromNumber(number);
+//        if (checkContact == null || !checkContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)){
+//            Log.wtf(TAG, "getView: checkContact Null");
+//            holder.bTag.setVisibility(View.VISIBLE);
+//        }
         holder.bIgnore.setTag(number);
         holder.bContactCallsdetails.setTag(number);
         holder.bContactCallsdetails.setOnClickListener(detailsListener);
@@ -183,6 +216,16 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
             }
         });
         return convertView;
+    }
+
+    private void imageFunc(ImageView imageView, String url) {
+        //Downloading using Glide Library
+        Glide.with(mContext)
+                .load(url)
+//                .override(48, 48)
+//                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.ic_account_circle)
+                .into(imageView);
     }
 
     public void setList(List<LSInquiry> mCalls) {
@@ -253,6 +296,7 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
         Button bContactCallsdetails;
         Button bTag;
         TextView inquireyCount;
+        public CircleImageView user_avatar;
     }
 
     /*

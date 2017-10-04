@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
@@ -11,11 +10,9 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
+import com.example.muzafarimran.lastingsales.utils.AgentDataFetchAsync;
 
 import java.util.Calendar;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 public class SessionManager {

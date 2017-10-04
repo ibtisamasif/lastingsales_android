@@ -30,6 +30,7 @@ public class LSInquiry extends SugarRecord {
     private String serverId;
     private Long averageResponseTime;
     private String status;
+    private LSContactProfile contactProfile;
 
     public LSInquiry() {
     }
@@ -161,6 +162,14 @@ public class LSInquiry extends SugarRecord {
         this.status = status;
     }
 
+    public LSContactProfile getContactProfile() {
+        return contactProfile;
+    }
+
+    public void setContactProfile(LSContactProfile contactProfile) {
+        this.contactProfile = contactProfile;
+    }
+
     @Override
     public String toString() {
         return "LSInquiry{" +
@@ -171,6 +180,10 @@ public class LSInquiry extends SugarRecord {
                 ", duration=" + duration +
                 ", countOfInquiries=" + countOfInquiries +
                 ", syncStatus='" + syncStatus + '\'' +
+                ", serverId='" + serverId + '\'' +
+                ", averageResponseTime=" + averageResponseTime +
+                ", status='" + status + '\'' +
+                ", contactProfile=" + contactProfile +
                 '}';
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,24 +16,39 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.IndividualContactCallAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static android.view.View.GONE;
 
 public class ContactCallDetails extends AppCompatActivity {
-    private static  final String TAG = "ContactCallDetails";
+    private static final String TAG = "ContactCallDetails";
     Button bTagButton;
     private String number = "";
     private String name = "";
     private IndividualContactCallAdapter indadapter;
+    private TextView contact_name_ind;
+    private CircleImageView user_avatar_ind;
+    private TextView tvNameFromProfile;
+    private TextView tvCityFromProfile;
+    private TextView tvCountryFromProfile;
+    private TextView tvWorkFromProfile;
+    private TextView tvCompanyFromProfile;
+    private TextView tvWhatsappFromProfile;
+    private TextView tvTweeterFromProfile;
+    private TextView tvLinkdnFromProfile;
 
 
     @Override
@@ -53,28 +69,22 @@ public class ContactCallDetails extends AppCompatActivity {
         LSContact contact = LSContact.getContactFromNumber(this.number);
         if (contact != null) {
             this.name = contact.getContactName();
-            bTagButton.setVisibility(GONE);
+//            bTagButton.setVisibility(GONE);
         } else {
             this.name = "UNKNOWN";
             //bFollowupButton.setVisibility(GONE);
             bTagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent addContactIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
-                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
-                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
-                    startActivity(addContactIntent);
+//                    Intent addContactIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
+//                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
+//                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
+//                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
+//                    startActivity(addContactIntent);
                 }
             });
         }
-        {
-            setUpList();
-        }
-        getSupportActionBar().setTitle("Call Details");
-    }
 
-    private void setUpList() {
         ArrayList<LSCall> allCallsOfThisContact = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();
         CallClickListener callClickListener = new CallClickListener(ContactCallDetails.this);
         ((TextView) (this.findViewById(R.id.call_numbe_ind))).setText(this.number);
@@ -83,19 +93,75 @@ public class ContactCallDetails extends AppCompatActivity {
         ((ImageView) (this.findViewById(R.id.call_icon_ind))).setOnClickListener(callClickListener);
         //hide tag button if name is not stored
         if (this.name == null || (this.name).isEmpty()) {
-            ((Button) (this.findViewById(R.id.b_tag_individual_contact_call_screen))).setVisibility(GONE);
+//            ((Button) (this.findViewById(R.id.b_tag_individual_contact_call_screen))).setVisibility(GONE);
             contactName = this.name;
         }
-        ((TextView) (this.findViewById(R.id.contact_name_ind))).setText(contactName);
+        contact_name_ind = (TextView) findViewById(R.id.contact_name_ind);
+        contact_name_ind.setText(contactName);
+        user_avatar_ind = (CircleImageView) findViewById(R.id.user_avatar_ind);
+        tvNameFromProfile = (TextView) findViewById(R.id.tvNameFromProfile);
+        tvCityFromProfile = (TextView) findViewById(R.id.tvCityFromProfile);
+        tvCountryFromProfile = (TextView) findViewById(R.id.tvCountryFromProfile);
+        tvWorkFromProfile = (TextView) findViewById(R.id.tvWorkFromProfile);
+        tvCompanyFromProfile = (TextView) findViewById(R.id.tvCompanyFromProfile);
+        tvWhatsappFromProfile = (TextView) findViewById(R.id.tvWhatsappFromProfile);
+        tvTweeterFromProfile = (TextView) findViewById(R.id.tvTweeterFromProfile);
+        tvLinkdnFromProfile = (TextView) findViewById(R.id.tvLinkdnFromProfile);
+
+        tvTweeterFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
+        tvLinkdnFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
+
+        LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(number);
+        if (lsContactProfile != null) {
+            if (lsContactProfile.getSocial_image() != null) {
+                imageFunc(user_avatar_ind, lsContactProfile.getSocial_image());
+            }
+            if (lsContactProfile.getFirstName() != null) {
+                tvNameFromProfile.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
+            }
+            if (lsContactProfile.getCity() != null) {
+                tvCityFromProfile.setText(lsContactProfile.getCity());
+            }
+            if (lsContactProfile.getCountry() != null) {
+                tvCountryFromProfile.setText(lsContactProfile.getCountry());
+            }
+            if (lsContactProfile.getWork() != null) {
+                tvWorkFromProfile.setText(lsContactProfile.getWork());
+            }
+            if (lsContactProfile.getCompany() != null) {
+                tvCompanyFromProfile.setText(lsContactProfile.getCompany());
+            }
+            if (lsContactProfile.getWhatsapp() != null) {
+                tvWhatsappFromProfile.setText(lsContactProfile.getWhatsapp());
+            }
+            if (lsContactProfile.getTweet() != null) {
+                tvTweeterFromProfile.setText(lsContactProfile.getTweet());
+            }
+            if (lsContactProfile.getLinkd() != null) {
+                tvLinkdnFromProfile.setText(lsContactProfile.getLinkd());
+            }
+        }
+
         ListView listview = (ListView) this.findViewById(R.id.calls_list);
         indadapter = new IndividualContactCallAdapter(ContactCallDetails.this, allCallsOfThisContact);
-        Log.d(TAG, "setUpList: Size "+allCallsOfThisContact.size());
-        for(LSCall oneCall: allCallsOfThisContact) {
+        Log.d(TAG, "setUpList: Size " + allCallsOfThisContact.size());
+        for (LSCall oneCall : allCallsOfThisContact) {
             Log.d(TAG, "setUpList: " + oneCall.toString());
         }
         listview.setAdapter(indadapter);
+
+        getSupportActionBar().setTitle("Details");
     }
 
+    private void imageFunc(CircleImageView imageView, String url) {
+        //Downloading using Glide Library
+        Glide.with(this)
+                .load(url)
+//                .override(48, 48)
+//                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.ic_account_circle_white)
+                .into(imageView);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

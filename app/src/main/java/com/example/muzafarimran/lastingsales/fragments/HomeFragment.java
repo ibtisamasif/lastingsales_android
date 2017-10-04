@@ -492,7 +492,7 @@ public class HomeFragment extends TabFragment {
 //                    setRatingStars();
 //                }
 //            }, 5000);
-            showHomeTutorials(); //TODO uncomment this
+//            showHomeTutorials(); //TODO uncomment this
         }
     }
 }
