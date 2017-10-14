@@ -50,7 +50,12 @@ public class ProfileEngineAsync extends AsyncTask<Object, Void, Void> {
         return null;
     }
 
+    public void run() {
+        getBatchContacts();
+    }
+
     private void getBatchContacts() {
+        Log.d(TAG, "getBatchContacts: Job Started");
         List<LSContact> contactsList = null;
         if (LSContact.count(LSContact.class) > 0) {
             contactsList = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
@@ -169,6 +174,25 @@ public class ProfileEngineAsync extends AsyncTask<Object, Void, Void> {
                         }
                     }else {
                         Log.d(TAG, "onResponse: Already Exists: " + lsContactProfile);
+
+                        lsContactProfile.setFirstName(fname);
+                        lsContactProfile.setLastName(lname);
+                        lsContactProfile.setDob(dob);
+                        lsContactProfile.setPhone(phone);
+                        lsContactProfile.setAddress(address);
+                        lsContactProfile.setCity(city);
+                        lsContactProfile.setCountry(country);
+                        lsContactProfile.setEmail(email);
+                        lsContactProfile.setLinkd(linkd);
+                        lsContactProfile.setTweet(tweet);
+                        lsContactProfile.setInsta(insta);
+                        lsContactProfile.setWhatsapp(whatsapp);
+                        lsContactProfile.setCompany(company);
+                        lsContactProfile.setWork(work);
+                        lsContactProfile.setSocial_image(social_image);
+                        lsContactProfile.setComp_link(comp_link);
+                        lsContactProfile.save();
+
                         if(lsContact.getContactProfile() == null){
                             lsContact.setContactProfile(lsContactProfile);
                             lsContact.save();

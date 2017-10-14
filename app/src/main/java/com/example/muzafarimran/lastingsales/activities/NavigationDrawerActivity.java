@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
@@ -11,12 +12,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.PersistableBundle;
-import android.support.annotation.ColorRes;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -34,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
@@ -53,33 +47,24 @@ import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
+import com.example.muzafarimran.lastingsales.providers.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
 import com.example.muzafarimran.lastingsales.service.*;
+import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
 import com.example.muzafarimran.lastingsales.utils.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.utils.ProfileEngineAsync;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.ShortcutBadgeUpdateAsync;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
-import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.List;
-
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-
-import static com.example.muzafarimran.lastingsales.service.ProfileFetchService.MESSENGER_INTENT_KEY;
-import static com.example.muzafarimran.lastingsales.service.ProfileFetchService.MSG_COLOR_START;
-import static com.example.muzafarimran.lastingsales.service.ProfileFetchService.MSG_COLOR_STOP;
-import static com.example.muzafarimran.lastingsales.service.ProfileFetchService.MSG_UNCOLOR_START;
-import static com.example.muzafarimran.lastingsales.service.ProfileFetchService.MSG_UNCOLOR_STOP;
-import static com.example.muzafarimran.lastingsales.service.ProfileFetchService.WORK_DURATION_KEY;
 
 public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SearchCallback, TabSelectedListener {
     private static final String TAG = "NaviDrawerActivity";
@@ -97,27 +82,15 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     TabLayout.Tab tab1;
     TinyBus bus;
     private ViewPager viewPager;
-    private FirebaseAnalytics mFirebaseAnalytics;
 
-
-    private ComponentName mServiceComponent;
-
-    private int mJobId = 0;
-
-    // Handler for incoming messages from the service.
-    private IncomingMessageHandler mHandler;
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        mServiceComponent = new ComponentName(this, ProfileFetchService.class);
-//        mHandler = new IncomingMessageHandler(NavigationDrawerActivity.this);
-//        scheduleJob();
+        DemoSyncJob.schedulePeriodic();
 
-        ProfileEngineAsync profileEngineAsync = new ProfileEngineAsync(NavigationDrawerActivity.this);
-        profileEngineAsync.execute();
+//        ProfileEngineAsync profileEngineAsync = new ProfileEngineAsync(NavigationDrawerActivity.this);
+//        profileEngineAsync.execute();
 
 //        boolean ratingAlarm = (PendingIntent.getBroadcast(getApplicationContext(), 2, new Intent(NavigationDrawerActivity.this, RatingAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
 //        if (ratingAlarm) {
@@ -160,7 +133,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 calendar.set(Calendar.SECOND, 0);
                 PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, pi);
+                am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES/15, pi);
             }
         }
 
@@ -249,7 +222,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         }
 
         // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         final Bundle bundle = new Bundle();
         //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
@@ -404,7 +377,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 ////        long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
 ////        sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
         sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
+        SyncLastSeen.updateLastSeenToServer(NavigationDrawerActivity.this);
     }
+
 
     private void showInquiryTutorials() {
         new MaterialShowcaseView.Builder(NavigationDrawerActivity.this)
@@ -417,46 +392,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     }
 
 
-    /**
-     * Executed when user clicks on SCHEDULE JOB.
-     */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void scheduleJob() {
-        JobInfo.Builder builder = new JobInfo.Builder(mJobId++, mServiceComponent);
-
-//        String delay = mDelayEditText.getText().toString();
-//        if (!TextUtils.isEmpty(delay)) {
-        builder.setMinimumLatency(Long.valueOf(2) * 1000);
-//        }
-//        String deadline = mDeadlineEditText.getText().toString();
-//        if (!TextUtils.isEmpty(deadline)) {
-        builder.setOverrideDeadline(Long.valueOf(5) * 1000);
-//        }
-//        boolean requiresUnmetered = mWiFiConnectivityRadioButton.isChecked();
-//        boolean requiresAnyConnectivity = mAnyConnectivityRadioButton.isChecked();
-//        if (requiresUnmetered) {
-        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED);
-//        } else if (requiresAnyConnectivity) {
-        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
-//        }
-        builder.setRequiresDeviceIdle(false);
-        builder.setRequiresCharging(true);
-
-        // Extras, work duration.
-        PersistableBundle extras = new PersistableBundle();
-//        String workDuration = mDurationTimeEditText.getText().toString();
-//        if (TextUtils.isEmpty(workDuration)) {
-//            workDuration = "1";
-//        }
-        extras.putLong(WORK_DURATION_KEY, Long.valueOf(20) * 1000);
-
-        builder.setExtras(extras);
-
-        // Schedule job
-        Log.d("ProfileFetch", "Scheduling job");
-        JobScheduler tm = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        tm.schedule(builder.build());
-    }
 
     /**
      * Executed when user clicks on CANCEL ALL.
@@ -489,97 +424,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         }
     }
 
-    /**
-     * A {@link Handler} allows you to send messages associated with a thread. A {@link Messenger}
-     * uses this handler to communicate from {@link ProfileFetchService}. It's also used to make
-     * the start and stop views blink for a short period of time.
-     */
-    private static class IncomingMessageHandler extends Handler {
-
-        // Prevent possible leaks with a weak reference.
-        private WeakReference<NavigationDrawerActivity> mActivity;
-
-        IncomingMessageHandler(NavigationDrawerActivity activity) {
-            super(/* default looper */);
-            this.mActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            NavigationDrawerActivity mainActivity = mActivity.get();
-            if (mainActivity == null) {
-                // Activity is no longer available, exit.
-                return;
-            }
-//            View showStartView = mainActivity.findViewById(R.id.onstart_textview);
-//            View showStopView = mainActivity.findViewById(R.id.onstop_textview);
-            Message m;
-            switch (msg.what) {
-                /*
-                 * Receives callback from the service when a job has landed
-                 * on the app. Turns on indicator and sends a message to turn it off after
-                 * a second.
-                 */
-                case MSG_COLOR_START:
-                    // Start received, turn on the indicator and show text.
-//                    showStartView.setBackgroundColor(getColor(R.color.start_received));
-//                    updateParamsTextView(msg.obj, "started");
-
-                    // Send message to turn it off after a second.
-                    m = Message.obtain(this, MSG_UNCOLOR_START);
-                    sendMessageDelayed(m, 1000L);
-                    break;
-                /*
-                 * Receives callback from the service when a job that previously landed on the
-                 * app must stop executing. Turns on indicator and sends a message to turn it
-                 * off after two seconds.
-                 */
-                case MSG_COLOR_STOP:
-                    // Stop received, turn on the indicator and show text.
-//                    showStopView.setBackgroundColor(getColor(R.color.stop_received));
-//                    updateParamsTextView(msg.obj, "stopped");
-
-                    // Send message to turn it off after a second.
-                    m = obtainMessage(MSG_UNCOLOR_STOP);
-                    sendMessageDelayed(m, 2000L);
-                    break;
-                case MSG_UNCOLOR_START:
-//                    showStartView.setBackgroundColor(getColor(R.color.none_received));
-//                    updateParamsTextView(null, "");
-                    break;
-                case MSG_UNCOLOR_STOP:
-//                    showStopView.setBackgroundColor(getColor(R.color.none_received));
-//                    updateParamsTextView(null, "");
-                    break;
-            }
-        }
-
-//        private void updateParamsTextView(@Nullable Object jobId, String action) {
-//            TextView paramsTextView = (TextView) mActivity.get().findViewById(R.id.task_params);
-//            if (jobId == null) {
-//                paramsTextView.setText("");
-//                return;
-//            }
-//            String jobIdText = String.valueOf(jobId);
-//            paramsTextView.setText(String.format("Job ID %s %s", jobIdText, action));
-//        }
-
-//        private int getColor(@ColorRes int color) {
-//            return mActivity.get().getResources().getColor(color);
-//        }
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
         bus = TinyBus.from(this.getApplicationContext());
         bus.register(this); //TODO Caused by: java.lang.IllegalStateException: You must call this method from the same thread, in which TinyBus was created. Created: Thread[AsyncTask #2,5,main], current thread: Thread[main,5,main]
-
-//        // Start service and provide it a way to communicate with this class.
-//        Intent startServiceIntent = new Intent(this, ProfileFetchService.class);
-//        Messenger messengerIncoming = new Messenger(mHandler);
-//        startServiceIntent.putExtra(MESSENGER_INTENT_KEY, messengerIncoming);
-//        startService(startServiceIntent);
     }
 
     @Override
@@ -592,12 +442,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     protected void onStop() {
         super.onStop();
         bus.unregister(this);
-
-        // A service can be "started" and/or "bound". In this case, it's "started" by this Activity
-        // and "bound" to the JobScheduler (also called "Scheduled" by the JobScheduler). This call
-        // to stopService() won't prevent scheduled jobs to be processed. However, failing
-        // to call stopService() would keep it alive indefinitely.
-//        stopService(new Intent(this, ProfileFetchService.class));
         super.onStop();
     }
 

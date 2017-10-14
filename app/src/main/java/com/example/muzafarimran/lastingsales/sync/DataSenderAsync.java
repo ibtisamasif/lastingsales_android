@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -27,6 +28,7 @@ import com.example.muzafarimran.lastingsales.utils.AndroidMultiPartEntity;
 import com.example.muzafarimran.lastingsales.utils.AndroidMultiPartEntity.ProgressListener;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.google.api.client.json.JsonString;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -619,6 +621,25 @@ public class DataSenderAsync {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteInquiry");
+                try {
+//                    Log.d(TAG, "onErrorResponse: error.networkResponse.data: " + error.networkResponse.data);
+                    Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
+                    if(error.networkResponse.statusCode == 412){
+                        JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                        int responseCode = jObj.getInt("responseCode");
+                        String responseObject = jObj.getString("response");
+                        if(responseCode == 236){
+                            Log.d(TAG, "onErrorResponse: " + responseObject);
+                            inquiry.delete();
+                            InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                            TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                            bus.post(mCallEvent);
+                            Toast.makeText(mContext, "Inquiry doesnt exist on server", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }) {
         };

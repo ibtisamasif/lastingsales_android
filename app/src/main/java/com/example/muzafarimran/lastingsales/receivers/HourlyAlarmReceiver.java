@@ -1,22 +1,16 @@
 package com.example.muzafarimran.lastingsales.receivers;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
-import android.widget.RemoteViews;
 
-import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.utils.HourlyAlarmNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +27,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
 
         int count = intent.getIntExtra(Intent.EXTRA_ALARM_COUNT, -1);
         Log.d(TAG, "onReceive: Count: " + count);
-        if (count < 2) {
+//        if (count < 2) {
             List<LSInquiry> lsInquiry = LSInquiry.getAllPendingInquiriesInDescendingOrder();
             if (lsInquiry != null && lsInquiry.size() > 0) {
                 List<String> nameFromApp = new ArrayList<>();
@@ -61,15 +55,23 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
 
                 if (lsInquiry.size() == 1) {
                     NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                    mNotificationManager.notify(HourlyAlarmNotification.NOTIFICATION_ID, HourlyAlarmNotification.createAlarmNotification(context, "Lets Callback", messageList.get(0), numberFromApp.get(0)));
+                    mNotificationManager.notify(HourlyAlarmNotification.NOTIFICATION_ID, HourlyAlarmNotification.createHourlyAlarmNotificationForSingle(context, "Lets Callback", messageList.get(0), numberFromApp.get(0)));
                 } else if (lsInquiry.size() > 1) {
+                    String numberOfContactHavingImage = "";
+                    for (int i = 0; i < lsInquiry.size(); i++) {
+                        if (lsInquiry.get(i).getContactProfile() !=null )
+                            if(lsInquiry.get(i).getContactProfile().getSocial_image() != null) {
+                                numberOfContactHavingImage = lsInquiry.get(i).getContactNumber();
+                                break;
+                        }
+                    }
                     NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                    mNotificationManager.notify(HourlyAlarmNotification.NOTIFICATION_ID, HourlyAlarmNotification.createAlarmNotification(context, "Lets Callback", messageList));
+                    mNotificationManager.notify(HourlyAlarmNotification.NOTIFICATION_ID, HourlyAlarmNotification.createHourlyAlarmNotificationForList(context, "Lets Callback", messageList, numberOfContactHavingImage));
                 }
             }
             // Refresh Service once daily.
 //        context.startService(new Intent(context, CallDetectionService.class));  // TODO is it still needed here as well ?
-        }
+//        }
     }
 }
 

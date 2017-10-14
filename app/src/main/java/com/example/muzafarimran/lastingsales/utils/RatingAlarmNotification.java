@@ -19,7 +19,7 @@ public class RatingAlarmNotification {
     public static final int NOTIFICATION_ID = 2;
 
     public static Notification createAlarmNotification(Context context, String title, String message) {
-        Log.d(TAG, "createAlarmNotification: RatingAlarm");
+        Log.d(TAG, "createHourlyAlarmNotificationForList: RatingAlarm");
         Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
 //        inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
         PendingIntent pDetailsActivityIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_CANCEL_CURRENT);

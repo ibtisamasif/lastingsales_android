@@ -4,11 +4,11 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.evernote.android.job.JobManager;
 import com.orm.SchemaGenerator;
 import com.orm.SugarApp;
 import com.orm.SugarContext;
 import com.orm.SugarDb;
-import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created by ibtisam on 5/17/2017.
@@ -33,15 +33,20 @@ public class Sugar extends SugarApp {
         SchemaGenerator schemaGenerator = new SchemaGenerator(this);
         schemaGenerator.createDatabase(new SugarDb(this).getDB());
 
-        // SQUARE memory leakage library
-        Log.d(TAG, "onCreate: SquareLeakLibrary");
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this);
-        // Normal app init code...
+        //Android Job Library
+        JobManager.create(this).addJobCreator(new DemoJobCreator());
+        JobManager.instance().getConfig().setAllowSmallerIntervalsForMarshmallow(true); //TODO Don't use this in production
+
+
+//        // SQUARE memory leakage library
+//        Log.d(TAG, "onCreate: SquareLeakLibrary");
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        LeakCanary.install(this);
+//        // Normal app init code...
 
     }
 

@@ -3,13 +3,12 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.3'
-
     defaultConfig {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 65
-        versionName "2.16"
+        versionCode 66
+        versionName "2.17"
         jackOptions {
             enabled false
         }
@@ -92,16 +91,13 @@ dependencies {
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.github.clans:fab:1.6.4'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
-//    compile 'com.android.support:support-annotations:26.0.2'
-//    compile 'com.github.bumptech.glide:glide:4.1.1'
-//    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
+    //    compile 'com.android.support:support-annotations:26.0.2'
+    //    compile 'com.github.bumptech.glide:glide:4.1.1'
+    //    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     //    compile 'com.aykuttasil:callrecord:1.2.1'
-
     //    compile files('libs/httpclient-4.3.6.jar')
-
     //    compile files('libs/httpcore-4.3.3.jar')
-
     //    compile files('libs/httpmime-4.3.6.jar')
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'com.google.code.gson:gson:2.8.0'
@@ -111,7 +107,8 @@ dependencies {
     compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
     compile 'me.leolin:ShortcutBadger:1.1.18@aar'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    compile 'com.evernote:android-job:1.1.7'
 }
 apply plugin: 'com.google.gms.google-services'

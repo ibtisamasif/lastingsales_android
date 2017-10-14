@@ -23,7 +23,6 @@ public class MyURLs {
     public static String GET_NOTES = "https://api.lastingsales.com/api/v1/lead";
     public static String GET_COLUMNS = "https://api.lastingsales.com/api/v1/column";
     public static String GET_CUSTOMER_HISTORY = "https://api.lastingsales.com/api/v1/graph/lead/agent/relation";
-    public static String GET_USER_INFO = "https://api.lastingsales.com/api/v1/user";
     public static final String PRIVACY_POLICY = "https://lastingsales.com/privacy.html";
     public static final String FORGOT_PASSWORD = "https://app.lastingsales.com/#/access/forgotpwd";
 

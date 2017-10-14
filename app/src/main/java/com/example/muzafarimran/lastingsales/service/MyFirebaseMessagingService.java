@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.service;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
@@ -9,13 +10,16 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.MainActivity;
 import com.example.muzafarimran.lastingsales.activities.TypeManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
+import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
+import com.example.muzafarimran.lastingsales.utils.FirebaseCustomNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -411,6 +415,46 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (payload.has("message")) {
                         message = payload.getString("message");
                         Log.d(TAG, "handleDataMessage: Notification Message: " + message);
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseInquiriesNotification(getApplicationContext(), message));
+                    }
+                } else if (action.equals("unlabeled")) {
+                    String message = "";
+                    if (payload.has("message")) {
+                        message = payload.getString("message");
+                        Log.d(TAG, "handleDataMessage: Notification Message: " + message);
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseUnlabeledNotification(getApplicationContext(), message));
+                    }
+                }
+//                else if (action.equals("homescreen")) {
+//                    String message = "";
+//                    if (payload.has("message")) {
+//                        message = payload.getString("message");
+//                        Log.d(TAG, "handleDataMessage: Notification Message: " + message);
+//                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                        mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseHomescreenNotification(getApplicationContext(), message));
+//                    }
+//                }
+            }
+
+            if (tag.equals("Inquiries")) {
+                if (action.equals("delete")) {
+                    String contact_number = "";
+                    if (payload.has("contact_number")) {
+                        contact_number = payload.getString("contact_number");
+                        LSInquiry lsInquiry = LSInquiry.getPendingInquiryByNumberIfExists(contact_number);
+                        lsInquiry.delete();
+                        InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                        TinyBus bus = TinyBus.from(getApplicationContext());
+                        bus.post(mCallEvent);
+                    }
+                } else if (action.equals("put")) {
+                    String contact_number = "";
+                    if (payload.has("contact_number")) {
+                        contact_number = payload.getString("contact_number");
+                        LSInquiry lsInquiry = LSInquiry.getPendingInquiryByNumberIfExists(contact_number);
+                        Log.d(TAG, "handleDataMessage: : " + lsInquiry);
                     }
                 }
             }
@@ -464,21 +508,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    /**
-     * Showing notification with text only
-     */
-    private void showNotificationMessage(Context context, String title, String message, String timeStamp, Intent intent) {
-        notificationUtils = new FireBaseNotificationUtils(context);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notificationUtils.showNotificationMessage(title, message, timeStamp, intent);
-    }
-
-    /**
-     * Showing notification with text and image
-     */
-    private void showNotificationMessageWithBigImage(Context context, String title, String message, String timeStamp, Intent intent, String imageUrl) {
-        notificationUtils = new FireBaseNotificationUtils(context);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);
-    }
+//    /**
+//     * Showing notification with text only
+//     */
+//    private void showNotificationMessage(Context context, String title, String message, String timeStamp, Intent intent) {
+//        notificationUtils = new FireBaseNotificationUtils(context);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        notificationUtils.showNotificationMessage(title, message, timeStamp, intent);
+//    }
+//
+//    /**
+//     * Showing notification with text and image
+//     */
+//    private void showNotificationMessageWithBigImage(Context context, String title, String message, String timeStamp, Intent intent, String imageUrl) {
+//        notificationUtils = new FireBaseNotificationUtils(context);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);
+//    }
 }

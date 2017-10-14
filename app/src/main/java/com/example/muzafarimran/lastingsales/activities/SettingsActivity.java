@@ -105,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
-//                    settingsManager.setKeyStateCallEndDialog(true);
+                    settingsManager.setKeyStateCallEndDialog(true);
 //                    Calendar calendar = Calendar.getInstance();
 //                    calendar.set(Calendar.HOUR_OF_DAY, 10); // For 10am
 //                    calendar.set(Calendar.MINUTE, 0);
@@ -113,7 +113,7 @@ public class SettingsActivity extends AppCompatActivity {
 //                    PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SettingsActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
 //                    AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 //                    am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES/15, pi);
-//                    Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Enabled Start App for changes to take effect", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Enabled Start App for changes to take effect", Toast.LENGTH_SHORT).show();
                 } else {
                     settingsManager.setKeyStateCallEndDialog(false);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SettingsActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE);
