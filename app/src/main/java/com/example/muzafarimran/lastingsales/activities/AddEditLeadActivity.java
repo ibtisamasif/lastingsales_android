@@ -267,7 +267,7 @@ public class AddEditLeadActivity extends Activity {
         } else if (num != null && !num.equals("")) {
             selectedContact = LSContact.getContactFromNumber(num);
         }
-        if (selectedContact.getContactName() != null) { //TODO crash on deleting the contact of inquiry and then tagging the inquiry
+        if (selectedContact.getContactName() != null) {
             if (selectedContact.getContactName().equals("Unlabeled Contact") || selectedContact.getContactName().equals("Ignored Contact")) {
                 String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), selectedContact.getPhoneOne());
                 if (name != null) {

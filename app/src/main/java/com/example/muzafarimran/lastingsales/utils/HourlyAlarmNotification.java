@@ -23,6 +23,7 @@ import java.util.List;
  * Created by ibtisam on 6/21/2017.
  */
 
+@Deprecated
 public class HourlyAlarmNotification {
     public static final String TAG = "DayStartHighlightAlarmNotification";
     public static final int NOTIFICATION_ID = 2;

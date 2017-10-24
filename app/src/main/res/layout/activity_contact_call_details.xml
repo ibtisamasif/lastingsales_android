@@ -303,6 +303,34 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llFbFromProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="Facebook: "
+                    android:textColor="#ffffff"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvFbFromProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text=""
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    android:linksClickable="true"
+                    android:autoLink="web"
+                    android:textColorLink="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/contact_bio_section_ind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

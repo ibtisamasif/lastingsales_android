@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
@@ -29,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
@@ -47,7 +47,8 @@ import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
-import com.example.muzafarimran.lastingsales.providers.DemoSyncJob;
+import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
+import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
@@ -55,13 +56,16 @@ import com.example.muzafarimran.lastingsales.service.*;
 import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
 import com.example.muzafarimran.lastingsales.utils.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.ShortcutBadgeUpdateAsync;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import java.util.Calendar;
 import java.util.List;
+
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
@@ -71,7 +75,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     MaterialSearchView searchView;
     SessionManager sessionManager;
     SettingsManager settingsManager;
-//    CallRecord callRecord;
+    //    CallRecord callRecord;
     ImageView ivProfileImage;
     TextView tvProfileName, tvProfileNumber;
     boolean shouldShowSearchMenu = false;
@@ -82,14 +86,20 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     TabLayout.Tab tab1;
     TinyBus bus;
     private ViewPager viewPager;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(PhoneNumberAndCallUtils.numberToInterNationalNumber(NavigationDrawerActivity.this, "03247158218"));
+//        if (lsContactProfile != null) {
+//            lsContactProfile.delete();
+//        }
+
         DemoSyncJob.schedulePeriodic();
 
-//        ProfileEngineAsync profileEngineAsync = new ProfileEngineAsync(NavigationDrawerActivity.this);
+//        AllContactProfilesFetchingEngineAsync profileEngineAsync = new AllContactProfilesFetchingEngineAsync(NavigationDrawerActivity.this);
 //        profileEngineAsync.execute();
 
 //        boolean ratingAlarm = (PendingIntent.getBroadcast(getApplicationContext(), 2, new Intent(NavigationDrawerActivity.this, RatingAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
@@ -121,7 +131,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //        }
 
         settingsManager = new SettingsManager(this);
-        if (settingsManager.getKeyStateHourlyNotification()){
+        if (settingsManager.getKeyStateHourlyNotification()) {
             boolean hourlyAlarmUp = (PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
             if (hourlyAlarmUp) {
                 Log.d("myAlarmLog", "Hourly Alarm is already active");
@@ -133,7 +143,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 calendar.set(Calendar.SECOND, 0);
                 PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(NavigationDrawerActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES/15, pi);
+                am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 2, pi);
             }
         }
 
@@ -207,6 +217,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
         mixpanel.track("Home Screen Opened");
 
+        //TODO optimize it
         long contactCount = LSContact.count(LSContact.class);
         if (contactCount < 1) {
             Log.d(TAG, "onCreate: LSContact.count " + contactCount);
@@ -222,7 +233,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         }
 
         // Obtain the FirebaseAnalytics instance.
-        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         final Bundle bundle = new Bundle();
         //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
@@ -391,40 +402,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 .show();
     }
 
-
-
-    /**
-     * Executed when user clicks on CANCEL ALL.
-     */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void cancelAllJobs(View v) {
-        JobScheduler tm = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        tm.cancelAll();
-        Toast.makeText(NavigationDrawerActivity.this, R.string.all_jobs_cancelled, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Executed when user clicks on FINISH LAST TASK.
-     */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void finishJob(View v) {
-        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        List<JobInfo> allPendingJobs = jobScheduler.getAllPendingJobs();
-        if (allPendingJobs.size() > 0) {
-            // Finish the last one
-            int jobId = allPendingJobs.get(0).getId();
-            jobScheduler.cancel(jobId);
-            Toast.makeText(
-                    NavigationDrawerActivity.this, String.format(getString(R.string.cancelled_job), jobId),
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(
-                    NavigationDrawerActivity.this, getString(R.string.no_jobs_to_cancel),
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -588,6 +565,11 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            startActivity(intent);
 //        }
         else if (id == R.id.nav_item_refresh) {
+//            LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(PhoneNumberAndCallUtils.numberToInterNationalNumber(NavigationDrawerActivity.this, "+92 301 4775234"));
+//            if (lsContactProfile != null) {
+//                Log.d("ContactProfileProvider", "onNavigationItemSelected: DELETED ");
+//                lsContactProfile.delete();
+//            }
 //            Intent tempIntent = new Intent(this, FireBaseMainActivity.class);
 //            startActivity(tempIntent);
             AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());

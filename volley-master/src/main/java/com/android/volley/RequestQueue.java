@@ -335,7 +335,7 @@ public class RequestQueue {
             try {
 //                Log.d("DataSender", "Size " + mCurrentRequests.size());
                 if (mCurrentRequests.size() <= 0) {
-                    if (mAllFinishedListener != null) { //TODO finalize the check
+                    if (mAllFinishedListener != null) {
                         mAllFinishedListener.onAllFinished();
                     }
                 }

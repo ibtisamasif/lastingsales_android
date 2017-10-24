@@ -29,13 +29,14 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.BuildConfig;
-import com.example.muzafarimran.lastingsales.utils.ProfileEngineAsync;
+import com.example.muzafarimran.lastingsales.sync.AllContactProfilesFetchingEngineAsync;
 
 /**
  * Service to handle callbacks from the JobScheduler. Requests scheduled with the JobScheduler
  * ultimately land on this service's "onStartJob" method. It runs jobs for a specific amount of time
  * and finishes them. It keeps the activity updated with changes via a Messenger.
  */
+@Deprecated
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class ProfileFetchService extends JobService {
     private static final String TAG = "ProfileFetch";
@@ -93,8 +94,8 @@ public class ProfileFetchService extends JobService {
         }, duration);
         Log.i(TAG, "on start job: " + params.getJobId());
 
-        ProfileEngineAsync profileEngineAsync = new ProfileEngineAsync(getApplicationContext());
-        profileEngineAsync.execute();
+        AllContactProfilesFetchingEngineAsync allContactProfilesFetchingEngineAsync = new AllContactProfilesFetchingEngineAsync(getApplicationContext());
+        allContactProfilesFetchingEngineAsync.execute();
         // Return true as there's more work to be done with this job.
         return true;
     }

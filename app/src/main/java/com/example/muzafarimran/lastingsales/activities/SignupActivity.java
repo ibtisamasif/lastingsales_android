@@ -56,11 +56,13 @@ public class SignupActivity extends AppCompatActivity {
     private LinearLayout llLogin;
     private SessionManager sessionManager;
     private TextView tvPrivacyPolicy;
+    private static RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        queue = Volley.newRequestQueue(SignupActivity.this, new HurlStack());
         sessionManager = new SessionManager(getApplicationContext());
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
@@ -185,7 +187,6 @@ public class SignupActivity extends AppCompatActivity {
     private void makeSignupRequest(final Activity activity, final String firstname, final String lastname, final String number, final String password, final String confirmpassword, final String com, final String mobile) {
 
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(activity, new HurlStack());
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.SIGNUP_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -234,7 +235,7 @@ public class SignupActivity extends AppCompatActivity {
                                 JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
 //                                int responseCode = jObj.getInt("responseCode");
                                 String response = jObj.getString("response");
-                                Toast.makeText(activity, ""+response, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "" + response, Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(activity, "Server Error.", Toast.LENGTH_SHORT).show();
                             }
@@ -270,9 +271,8 @@ public class SignupActivity extends AppCompatActivity {
     private void makeCreateCompanyRequest(final Activity activity, final String companyName) {
 
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(activity, new HurlStack());
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_COMPANY_URL, new Response.Listener<String>() {
-                @Override
+            @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() called with: response = [" + response + "]");
                 pdLoading.dismiss();
@@ -311,7 +311,7 @@ public class SignupActivity extends AppCompatActivity {
                                 JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
 //                                int responseCode = jObj.getInt("responseCode");
                                 String response = jObj.getString("response");
-                                Toast.makeText(activity, ""+response, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "" + response, Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(activity, "Server Error.", Toast.LENGTH_SHORT).show();
                             }

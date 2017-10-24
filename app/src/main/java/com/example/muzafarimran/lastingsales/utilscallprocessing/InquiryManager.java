@@ -1,44 +1,36 @@
 package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.muzafarimran.lastingsales.activities.NavigationDrawerActivity;
+import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
-import com.example.muzafarimran.lastingsales.receivers.InquiryAlarmReceiver;
+import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
-import java.util.List;
-
-import me.leolin.shortcutbadger.ShortcutBadger;
 
 /**
  * Created by ibtisam on 3/4/2017.
  */
 
 public class InquiryManager {
+    private static LSInquiry inquiry;
     public static final String TAG = "InquiryManager";
 
     public static void RemoveByContact(Context context, LSContact tempContact) {
         //update inquiry as well if exists
-        LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(tempContact.getPhoneOne());
-        if (tempInquiry != null) {
-            tempInquiry.setContact(tempContact);
-            tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
-            tempInquiry.save();
+        inquiry = LSInquiry.getInquiryByNumberIfExists(tempContact.getPhoneOne());
+        if (inquiry != null) {
+            inquiry.setContact(tempContact);
+            inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+            inquiry.save();
             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
             dataSenderAsync.run();
             // Update launcher icon count
@@ -47,17 +39,17 @@ public class InquiryManager {
     }
 
     static void Remove(Context context, LSCall call) {
-        LSInquiry tempInquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());
-        if (tempInquiry != null && tempInquiry.getAverageResponseTime() <= 0) {
+        inquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());
+        if (inquiry != null && inquiry.getAverageResponseTime() <= 0) {
             Calendar now = Calendar.getInstance();
-            tempInquiry.setAverageResponseTime(now.getTimeInMillis() - tempInquiry.getBeginTime());
-            tempInquiry.setStatus(LSInquiry.INQUIRY_STATUS_ATTENDED);
-            if (tempInquiry.getSyncStatus().equals(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED)) {
-                tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED);
+            inquiry.setAverageResponseTime(now.getTimeInMillis() - inquiry.getBeginTime());
+            inquiry.setStatus(LSInquiry.INQUIRY_STATUS_ATTENDED);
+            if (inquiry.getSyncStatus().equals(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED)) {
+                inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED);
             } else {
-                tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
+                inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
             }
-            tempInquiry.save();
+            inquiry.save();
             // Update launcher icon count
             new ShortcutBadgeUpdateAsync(context).execute();
             String projectToken = MixpanelConfig.projectToken;
@@ -67,24 +59,69 @@ public class InquiryManager {
     }
 
     static void CreateOrUpdate(Context context, LSCall call) {
-        LSInquiry tempInquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());
-        if (tempInquiry != null) {
-            tempInquiry.setCountOfInquiries(tempInquiry.getCountOfInquiries() + 1);
-            tempInquiry.save();
+        inquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());
+        if (inquiry != null) {
+            inquiry.setCountOfInquiries(inquiry.getCountOfInquiries() + 1);
+            inquiry.save();
             // Update launcher icon count
             new ShortcutBadgeUpdateAsync(context).execute();
         } else {
-            LSInquiry newInquiry = new LSInquiry();
-            newInquiry.setContactNumber(call.getContactNumber());
-            newInquiry.setContactName(call.getContactName());
-            newInquiry.setContact(call.getContact());
-            newInquiry.setBeginTime(call.getBeginTime());
-            newInquiry.setDuration(call.getDuration());
-            newInquiry.setCountOfInquiries(1);
-            newInquiry.setStatus(LSInquiry.INQUIRY_STATUS_PENDING);
-            newInquiry.setAverageResponseTime(0L);
-            newInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
-            newInquiry.save();
+            inquiry = new LSInquiry();
+            inquiry.setContactNumber(call.getContactNumber());
+            inquiry.setContactName(call.getContactName());
+            inquiry.setContact(call.getContact());
+            inquiry.setBeginTime(call.getBeginTime());
+            inquiry.setDuration(call.getDuration());
+            inquiry.setCountOfInquiries(1);
+            inquiry.setStatus(LSInquiry.INQUIRY_STATUS_PENDING);
+            inquiry.setAverageResponseTime(0L);
+            inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
+            inquiry.save();
+            LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(inquiry.getContactNumber());
+            if (lsContactProfile != null) {
+                Log.d(TAG, "CreateOrUpdate: getFromLSContactProfile");
+                inquiry.setContactProfile(lsContactProfile);
+                inquiry.save();
+                LSContact lsContact = LSContact.getContactFromNumber(call.getContactNumber()); //TODO Can be fetched from previous screen will improve performance and save battery
+                if (lsContact != null) {
+                    lsContact.setContactProfile(lsContactProfile);
+                    lsContact.save();
+                }
+            } else {
+                Log.d(TAG, "CreateOrUpdate: get LsContactProfile from ContactProfileProvider");
+                //TODO try to fetch from server instantly from server to show pictures in Inquiries and unlabeled lists instantly and efficiently
+
+                ContactProfileProvider contactProfileProvider = new ContactProfileProvider(context);
+                contactProfileProvider.getContactProfile(call.getContactNumber(), new LSContactProfileCallback() {
+                    @Override
+                    public void onSuccess(LSContactProfile result) {
+                        Log.d(TAG, "onResponse: lsContactProfile: " + result);
+                        if (result != null) {
+                            inquiry.setContactProfile(result);
+                            inquiry.save();
+                            Log.d(TAG, "onSuccess: inquiry: " + inquiry.toString());
+                            LSContact lsContact = LSContact.getContactFromNumber(inquiry.getContactNumber());
+                            if (lsContact != null) {
+                                lsContact.setContactProfile(result);
+                                lsContact.save();
+                                Log.d(TAG, "onSuccess: lsContact: " + lsContact.toString());
+                            }
+                        }
+                    }
+                });
+
+//            ContactProfileProvider contactProfileProvider = new ContactProfileProvider(context);
+//            LSContactProfile lsContactProfile2 = contactProfileProvider.getContactProfile(call.getContactNumber());
+//            if (lsContactProfile2 != null) {
+//                newInquiry.setContactProfile(lsContactProfile2);
+//                newInquiry.save();
+//                LSContact lsContact = LSContact.getContactFromNumber(call.getContactNumber());
+//                if (lsContact != null) {
+//                    lsContact.setContactProfile(lsContactProfile2);
+//                    lsContact.save();
+//                }
+//            }
+            }
             // Update launcher icon count
             new ShortcutBadgeUpdateAsync(context).execute();
         }

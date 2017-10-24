@@ -55,9 +55,9 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         if (!sessionManager.isUserSignedIn()) {
             return;
         }
-//        Toast.makeText(ctx, "Incoming call started", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "Incoming call started", Toast.LENGTH_SHORT).show();
 //        if (wakeLock == null) {
-//            powerManager = (PowerManager) ctx.getSystemService(POWER_SERVICE);
+//            powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
 //            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
 //            wakeLock.acquire();
 //            Log.d(TAG, "onIncomingCallStarted: Wakelock Aquired");
@@ -125,10 +125,10 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         if (!sessionManager.isUserSignedIn()) {
             return;
         }
-//        Toast.makeText(ctx, "Outgoing call started", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "Outgoing call started", Toast.LENGTH_SHORT).show();
 //        Log.d("LSTime", "onOutgoingCallStarted: CallReceiverLog BeginTime: " + start.getTime());
 //        if (wakeLock == null) {
-//            powerManager = (PowerManager) ctx.getSystemService(POWER_SERVICE);
+//            powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
 //            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
 //            wakeLock.acquire();
 //            Log.d(TAG, "onOutgoingCallStarted: Wakelock Aquired");
@@ -199,7 +199,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         if (!sessionManager.isUserSignedIn()) {
             return;
         }
-//        showTagNumberPopupIfNeeded(ctx, number);
+//        showTagNumberPopupIfNeeded(context, number);
         if (isBubbleShown) {
             endServiceAndCallPopupFlyer(ctx);
             isBubbleShown = false;
@@ -215,7 +215,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempCall.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
 //            tempCall.setBeginTime(start.getTime());
 //            tempCall.setAudioPath(mAudio_FilePath);
-//            String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+//            String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, internationalNumber);
 //            if (phoneBookContactName == null) {
 //                tempCall.setContactName(null);
 //            } else if (!phoneBookContactName.equals("")) {
@@ -258,10 +258,10 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempRecording.setSyncStatus(SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
 //            tempRecording.save();
 ////            Log.d(TAG, "onIncomingCallEnded: File Location2: " + tempRecording.getAudioPath());
-//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
 //            dataSenderAsync.run();
 //            IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
-//            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+//            TinyBus bus = TinyBus.from(context.getApplicationContext());
 //            bus.post(mCallEvent);
 //        }
 //        if (recorder != null && isRecordStarted) {
@@ -277,13 +277,13 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            wakeLock = null;
 //            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
 //        }
-        Log.d(TAG, "onIncomingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
-//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+        Log.d(TAG, "onIncomingCall() called with: context = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
+//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(context);
 //        theCallLogEngine.execute();
-//        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
 //        dataSenderAsync.run();
 //        IncomingCallEventModel mCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
-//        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+//        TinyBus bus = TinyBus.from(context.getApplicationContext());
 //        bus.post(mCallEvent);
 
         final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
@@ -311,8 +311,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         if (!sessionManager.isUserSignedIn()) {
             return;
         }
-//        Toast.makeText(ctx, "Outgoing call Ended", Toast.LENGTH_SHORT).show();
-//        showTagNumberPopupIfNeeded(ctx, number);
+//        Toast.makeText(context, "Outgoing call Ended", Toast.LENGTH_SHORT).show();
+//        showTagNumberPopupIfNeeded(context, number);
         if (isBubbleShown) {
             endServiceAndCallPopupFlyer(ctx);
             isBubbleShown = false;
@@ -329,14 +329,14 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempCall.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
 //            tempCall.setBeginTime(start.getTime());
 //            tempCall.setAudioPath(mAudio_FilePath);
-//            String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+//            String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, internationalNumber);
 //            if (phoneBookContactName == null) {
 //                tempCall.setContactName(null);
 //            } else if (!phoneBookContactName.equals("")) {
 //                tempCall.setContactName(phoneBookContactName);
 //            }
 //            long callDuration = PhoneNumberAndCallUtils.secondsFromStartAndEndDates(start, end);
-//            Toast.makeText(ctx, "Duration " + callDuration, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Duration " + callDuration, Toast.LENGTH_SHORT).show();
 //            tempCall.setDuration(callDuration);
 //            LSContact contact = LSContact.getContactFromNumber(internationalNumber);
 ////      if contact is null that means contact is not already saved with this number
@@ -363,7 +363,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //                    tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED);
 //                } else {
 //                    tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
-//                    Toast.makeText(ctx, "Let me know when this Toast Appears", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "Let me know when this Toast Appears", Toast.LENGTH_SHORT).show();
 //                }
 //                tempInquiry.save();
 //            }
@@ -374,10 +374,10 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempRecording.setSyncStatus(SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
 //            tempRecording.save();
 ////            Log.d(TAG, "onOutgoingCallEnded: File Location2: " + tempRecording.getAudioPath());
-//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
 //            dataSenderAsync.run();
 //            OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
-//            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+//            TinyBus bus = TinyBus.from(context.getApplicationContext());
 //            bus.post(mCallEvent);
 //        }
 //        if (recorder != null && isRecordStarted) {
@@ -392,13 +392,13 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            wakeLock = null;
 //            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
 //        }
-        Log.d(TAG, "onOutgoingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
-//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+        Log.d(TAG, "onOutgoingCall() called with: context = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
+//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(context);
 //        theCallLogEngine.execute();
-//        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
 //        dataSenderAsync.run();
 //        OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
-//        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+//        TinyBus bus = TinyBus.from(context.getApplicationContext());
 //        bus.post(mCallEvent);
         final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
         theCallLogEngine.execute();
@@ -421,8 +421,8 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 
     @Override
     protected void onMissedCall(Context ctx, String number, Date start, final Intent intent) {
-//        Toast.makeText(ctx, "Missed Call Detected", Toast.LENGTH_SHORT).show();
-//        showTagNumberPopupIfNeeded(ctx, number);
+//        Toast.makeText(context, "Missed Call Detected", Toast.LENGTH_SHORT).show();
+//        showTagNumberPopupIfNeeded(context, number);
         if (isBubbleShown) {
             endServiceAndCallPopupFlyer(ctx);
             isBubbleShown = false;
@@ -435,7 +435,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //        } else {
 //            LSCall tempCall = new LSCall();
 //            tempCall.setContactNumber(internationalNumber);
-//            String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+//            String phoneBookContactName = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, internationalNumber);
 //            if (phoneBookContactName == null) {
 //                tempCall.setContactName(null);
 //            } else if (!phoneBookContactName.equals("")) {
@@ -456,7 +456,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            tempCall.save();
 //            LSInquiry tempInquiry = LSInquiry.getPendingInquiryByNumberIfExists(tempCall.getContactNumber());
 //            if (tempInquiry != null) {
-//                Toast.makeText(ctx, "Already Exists", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Already Exists", Toast.LENGTH_SHORT).show();
 //                tempInquiry.setCountOfInquiries(tempInquiry.getCountOfInquiries() + 1);
 ////            tempInquiry.setBeginTime(start.getTime());
 ////            tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
@@ -464,7 +464,7 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //                Log.d(TAG, "onMissedCall: getCountOfInquiries: " + tempInquiry.getCountOfInquiries());
 //                Log.d(TAG, "onMissedCall: tempInquiry :" + tempInquiry.toString());
 //            } else {
-//                Toast.makeText(ctx, "Doesnt Exist", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Doesnt Exist", Toast.LENGTH_SHORT).show();
 //                LSInquiry newInquiry = new LSInquiry();
 //                newInquiry.setContactNumber(tempCall.getContactNumber());
 //                newInquiry.setContactName(tempCall.getContactName());
@@ -478,10 +478,10 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //                newInquiry.save();
 //                Log.d(TAG, "onMissedCall: newInquiry: " + newInquiry.toString());
 //            }
-//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
 //            dataSenderAsync.run();
 //            MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
-//            TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+//            TinyBus bus = TinyBus.from(context.getApplicationContext());
 //            bus.post(mCallEvent);
 //        }
 //        if (recorder != null && isRecordStarted) {
@@ -496,13 +496,13 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 //            wakeLock = null;
 //            Log.d(TAG, "onIncomingCallStarted: Wakelock Released");
 //        }
-        Log.d("MissedCallReceiver", "onMissedCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
-//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+        Log.d("MissedCallReceiver", "onMissedCall() called with: context = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
+//        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(context);
 //        theCallLogEngine.execute();
-//        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+//        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
 //        dataSenderAsync.run();
 //        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
-//        TinyBus bus = TinyBus.from(ctx.getApplicationContext());
+//        TinyBus bus = TinyBus.from(context.getApplicationContext());
 //        bus.post(mCallEvent);
         final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
         theCallLogEngine.execute();
@@ -536,9 +536,9 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
 
                 BubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId(), internationalNumber, oneContact);
 
-//                Intent intent = new Intent(ctx, AddEditLeadService.class);
+//                Intent intent = new Intent(context, AddEditLeadService.class);
 //                intent.putExtra(OUTGOINGCALL_CONTACT_NOTE_ID, notesForContact.get(notesForContact.size() - 1).getId() + "");
-//                ctx.startService(intent);
+//                context.startService(intent);
             } else {
                 BubbleHelper.getInstance(ctx).show(internationalNumber);
             }
@@ -554,39 +554,39 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
         BubbleHelper.getInstance(ctx).hide();
 
 //        Log.wtf(TAG, "endServiceAndCallPopupFlyer: ");
-//        Intent intent = new Intent(ctx, AddEditLeadService.class);
-//        ctx.stopService(intent);
+//        Intent intent = new Intent(context, AddEditLeadService.class);
+//        context.stopService(intent);
     }
 
-//    public void checkShowCallPopupNew(Context ctx, String name, String number) {
+//    public void checkShowCallPopupNew(Context context, String name, String number) {
 //        Log.wtf(TAG, "checkShowCallPopupNew: ");
 //        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-////        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-//        Intent intent = new Intent(ctx, AddEditLeadService.class);
+////        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, internationalNumber);
+//        Intent intent = new Intent(context, AddEditLeadService.class);
 //        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
 //        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
 //        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
 //        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
-//        ctx.startService(intent);
+//        context.startService(intent);
 //    }
 
-//    private void showTagNumberPopupIfNeeded(Context ctx, String number) {
+//    private void showTagNumberPopupIfNeeded(Context context, String number) {
 //        NotificationManager mNotificationManager;
 //        String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
 //        LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
 //
 //        if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
 //            String name = tempContact.getContactName();
-//            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx, number, tempContact));
+//            mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(context, number, tempContact));
 //
 //        } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-//            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
+//            mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(context, intlNumber));
 //        } else if (tempContact == null) {
 //            Log.d(TAG, "showTagNumberPopupIfNeeded: tempContact is NULL");
-//            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(ctx, intlNumber));
+//            mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(context, intlNumber));
 //        }
 //    }
 

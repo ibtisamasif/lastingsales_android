@@ -15,6 +15,7 @@ import java.util.Calendar;
  * Created by ibtisam on 9/18/2017.
  */
 
+@Deprecated
 public class RatingAlarmReceiver extends WakefulBroadcastReceiver {
     public static final String TAG = "myAlarmLog";
 
@@ -32,7 +33,7 @@ public class RatingAlarmReceiver extends WakefulBroadcastReceiver {
         long oneDayAgoTimestamp = now - milisecondsIn1Day;
         SessionManager sessionManager = new SessionManager(context);
         String lastAppVisitTime = sessionManager.getLastAppVisit();
-        Long lastAppVisitTimeLong = Long.parseLong(lastAppVisitTime);
+        Long lastAppVisitTimeLong = Long.parseLong(lastAppVisitTime); // TODO crash Nexus 5X
         Log.d(TAG, "onReceive: getLastAppVisit: " + lastAppVisitTimeLong);
         Log.d(TAG, "onReceive: oneDayAgoTimestamp: " + oneDayAgoTimestamp);
         if (lastAppVisitTimeLong > oneDayAgoTimestamp) {

@@ -144,6 +144,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
 
+//                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
                     LSContact tempContact = LSContact.getContactFromNumber(phone);
                     if (tempContact != null) {
                         tempContact.setServerId(id);
@@ -197,6 +198,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String name = payload.getString("name");
                     String email = payload.getString("email");
                     String phone = payload.getString("phone");
+//                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
                     String address = payload.getString("address");
                     String status = payload.getString("status");
                     String lead_type = payload.getString("lead_type");

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by ibtisam on 6/20/2017.
  */
-
+@Deprecated
 public class DayStartHighlightAlarmReceiver extends WakefulBroadcastReceiver {
     public static final String TAG = "myAlarmLog";
 

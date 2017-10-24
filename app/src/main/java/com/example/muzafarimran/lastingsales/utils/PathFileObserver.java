@@ -6,6 +6,7 @@ import com.example.muzafarimran.lastingsales.receivers.CallsStatesReceiver;
 
 import java.io.File;
 
+@Deprecated
 public class PathFileObserver extends FileObserver {
 
     public interface FileObserverInterface{

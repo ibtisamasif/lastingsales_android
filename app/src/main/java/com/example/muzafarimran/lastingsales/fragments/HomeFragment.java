@@ -226,11 +226,11 @@ public class HomeFragment extends TabFragment {
         long fourDaysAgoTimestamp = now - (milisecondsIn1Day * 4);
         long fiveDaysAgoTimestamp = now - (milisecondsIn1Day * 5);
 
-        Log.d(TAG, "oneDayAgoTimestamp: " + oneDayAgoTimestamp);
-        Log.d(TAG, "twoDaysAgoTimestamp: " + twoDaysAgoTimestamp);
-        Log.d(TAG, "theeDaysAgoTimestamp: " + theeDaysAgoTimestamp);
-        Log.d(TAG, "fourDaysAgoTimestamp: " + fourDaysAgoTimestamp);
-        Log.d(TAG, "fiveDaysAgoTimestamp: " + fiveDaysAgoTimestamp);
+//        Log.d(TAG, "oneDayAgoTimestamp: " + oneDayAgoTimestamp);
+//        Log.d(TAG, "twoDaysAgoTimestamp: " + twoDaysAgoTimestamp);
+//        Log.d(TAG, "theeDaysAgoTimestamp: " + theeDaysAgoTimestamp);
+//        Log.d(TAG, "fourDaysAgoTimestamp: " + fourDaysAgoTimestamp);
+//        Log.d(TAG, "fiveDaysAgoTimestamp: " + fiveDaysAgoTimestamp);
 
         String lastAppVisitTime = sessionManager.getLastAppVisit();
         if (lastAppVisitTime !=null && !lastAppVisitTime.equals("") ){

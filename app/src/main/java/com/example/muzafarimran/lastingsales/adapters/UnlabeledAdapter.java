@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
@@ -25,7 +27,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.wdullaer.materialdatetimepicker.time.CircleView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +114,12 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
             ((ViewGroup) holder.call_name_time.getParent().getParent()).removeView(call_details);
         }
         LSContactProfile lsContactProfile = contact.getContactProfile();
+        if (lsContactProfile == null) {
+            Log.d(TAG, "CreateOrUpdate: Not Found in contact Table now getting from ContactProfileProvider: " + contact.toString());
+            lsContactProfile = LSContactProfile.getProfileFromNumber(number);
+        } else {
+            Log.d(TAG, "CreateOrUpdate: Found in contact Table: " + contact);
+        }
         if (contact.getContactName() != null) {
             if (contact.getContactName().equals("null")) {
                 holder.name.setText("");
@@ -138,12 +145,12 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
             }
         }
         if (lsContactProfile != null) {
-            if (lsContactProfile.getSocial_image() != null) {
+            if (lsContactProfile.getSocial_image() != null && !lsContactProfile.getSocial_image().equals("")) {
                 imageFunc(holder.user_avatar, lsContactProfile.getSocial_image());
             } else {
                 holder.user_avatar.setImageResource(R.drawable.ic_account_circle);
             }
-        }else {
+        } else {
             holder.user_avatar.setImageResource(R.drawable.ic_account_circle);
         }
 
@@ -184,13 +191,14 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
-    private void imageFunc(ImageView imageView, String url) {
+    private void imageFunc(CircleImageView imageView, String url) {
         //Downloading using Glide Library
         Glide.with(mContext)
                 .load(url)
 //                .override(48, 48)
 //                .placeholder(R.drawable.placeholder)
                 .error(R.drawable.ic_account_circle)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }
 

@@ -36,20 +36,20 @@ public class PhoneNumberAndCallUtils {
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
     private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
 
-    public static String removeLeadingZeroesFromString(String inputString) {
-        String seat;// setNullToString(recElement.getChildText("SEAT"));
-        seat = Long.valueOf(inputString).toString();
-        return seat;
-    }
-
-    public static boolean isValidPassword(final String password) {
-        Pattern pattern;
-        Matcher matcher;
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
-        pattern = Pattern.compile(PASSWORD_PATTERN);
-        matcher = pattern.matcher(password);
-        return matcher.matches();
-    }
+//    public static String removeLeadingZeroesFromString(String inputString) {
+//        String seat;// setNullToString(recElement.getChildText("SEAT"));
+//        seat = Long.valueOf(inputString).toString();
+//        return seat;
+//    }
+//
+//    public static boolean isValidPassword(final String password) {
+//        Pattern pattern;
+//        Matcher matcher;
+//        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
+//        pattern = Pattern.compile(PASSWORD_PATTERN);
+//        matcher = pattern.matcher(password);
+//        return matcher.matches();
+//    }
 
     @Deprecated
     public static String numberToInterNationalNumber(String inputString) {
@@ -177,54 +177,54 @@ public class PhoneNumberAndCallUtils {
         }
     }
 
-    // TODO under development
-    public static String getTimeDuration(long time, Context ctx) {
-        if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
-            time *= 1000;
-        }
-        long now = Calendar.getInstance().getTimeInMillis();
-        if (time > now || time <= 0) {
-            return null;
-        }
-        final long diff = now - time;
-        if (diff < MINUTE_MILLIS) {
-            return diff / 1000 + "s";
-        } else if (diff < 60 * MINUTE_MILLIS) {
-            return (diff / 1000) / 60 + "m";
-        } else if (diff < 90 * MINUTE_MILLIS) {
-            return "an hour ago";
-        } else if (diff < 24 * HOUR_MILLIS) {
-            return diff / HOUR_MILLIS + " hours ago";
-        } else if (diff < 48 * HOUR_MILLIS) {
-            return "yesterday";
-        } else {
-            return diff / DAY_MILLIS + " days ago";
-        }
-    }
-
-    public static String currentDateTime() {
-        Date curDate = new Date();
-        SimpleDateFormat format = new SimpleDateFormat();
-        String DateToStr = format.format(curDate);
-        return DateToStr;
-    }
-
-    public static String generateUniqueFileName(String fname) {
-        String filename = fname;
-        long millis = System.currentTimeMillis();
-        String datetime = new Date().toGMTString();
-        datetime = datetime.replace(" ", "");
-        datetime = datetime.replace(":", "");
-        String rndchars = RandomStringUtils.randomAlphanumeric(16);
-        filename = rndchars + "_" + datetime + "_" + millis;
-        return filename;
-    }
+//    // TODO under development
+//    public static String getTimeDuration(long time, Context ctx) {
+//        if (time < 1000000000000L) {
+//            // if timestamp given in seconds, convert to millis
+//            time *= 1000;
+//        }
+//        long now = Calendar.getInstance().getTimeInMillis();
+//        if (time > now || time <= 0) {
+//            return null;
+//        }
+//        final long diff = now - time;
+//        if (diff < MINUTE_MILLIS) {
+//            return diff / 1000 + "s";
+//        } else if (diff < 60 * MINUTE_MILLIS) {
+//            return (diff / 1000) / 60 + "m";
+//        } else if (diff < 90 * MINUTE_MILLIS) {
+//            return "an hour ago";
+//        } else if (diff < 24 * HOUR_MILLIS) {
+//            return diff / HOUR_MILLIS + " hours ago";
+//        } else if (diff < 48 * HOUR_MILLIS) {
+//            return "yesterday";
+//        } else {
+//            return diff / DAY_MILLIS + " days ago";
+//        }
+//    }
+//
+//    public static String currentDateTime() {
+//        Date curDate = new Date();
+//        SimpleDateFormat format = new SimpleDateFormat();
+//        String DateToStr = format.format(curDate);
+//        return DateToStr;
+//    }
+//
+//    public static String generateUniqueFileName(String fname) {
+//        String filename = fname;
+//        long millis = System.currentTimeMillis();
+//        String datetime = new Date().toGMTString();
+//        datetime = datetime.replace(" ", "");
+//        datetime = datetime.replace(":", "");
+//        String rndchars = RandomStringUtils.randomAlphanumeric(16);
+//        filename = rndchars + "_" + datetime + "_" + millis;
+//        return filename;
+//    }
 
     public static String getContactNameFromLocalPhoneBook(Context context, String phoneNumber) {
         ContentResolver cr = context.getContentResolver();
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null); //TODO Exception android.database.CursorWindowAllocationException: Cursor window could not be created from binder.
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
         if (cursor == null) {
             return null;
         }

@@ -5,15 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.TagNotificationDialogActivity;
-import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 /**
  * Created by ibtisam on 3/4/2017.
  */
-
+@Deprecated
 public class NotificationBuilder {
      public static void showTagNumberPopup(Context ctx, String contactName, String contactNumber) {
         NotificationManager mNotificationManager;

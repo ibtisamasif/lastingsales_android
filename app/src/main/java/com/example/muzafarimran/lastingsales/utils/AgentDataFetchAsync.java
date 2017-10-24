@@ -39,10 +39,12 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
     private static final String TAG = "AgentDataFetchAsync";
     private SessionManager sessionManager;
     private Context mContext;
+    private static RequestQueue queue;
 
     public AgentDataFetchAsync(Context context) {
         mContext = context;
         sessionManager = new SessionManager(mContext);
+        queue = Volley.newRequestQueue(mContext);
     }
 
     @Override
@@ -61,7 +63,6 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
 
         Log.d(TAG, "fetchDynamicColumns: Fetching columns...");
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
         final String BASE_URL = MyURLs.GET_COLUMNS;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
@@ -179,7 +180,6 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
     private void fetchAgentLeadsFunc() {
         Log.d(TAG, "fetchAgentLeadsFunc: Fetching Data...");
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
         final String BASE_URL = MyURLs.GET_CONTACTS;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
@@ -271,7 +271,6 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
     private void fetchAgentNotesFunc(LSContact contact) {
         Log.d(TAG, "fetchAgentNotesFunc: Fetching Data...");
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(mContext);
         final String BASE_URL = MyURLs.GET_NOTES;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()

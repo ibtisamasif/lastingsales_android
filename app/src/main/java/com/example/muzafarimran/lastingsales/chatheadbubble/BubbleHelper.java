@@ -17,10 +17,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -31,6 +35,8 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BubbleHelper extends AppCompatActivity {
     private static final String TAG = "BubbleHelper";
@@ -49,11 +55,14 @@ public class BubbleHelper extends AppCompatActivity {
     private TextView tvName;
     private TextView tvCallerHistoryLastCallDateTime1;
     private TextView tvCallerHistoryLastCallTimeAgo1;
+    private CircleImageView user_avatar;
+    private static RequestQueue queue;
 
 
     public BubbleHelper(Context context) {
         this.context = context;
         sessionManager = new SessionManager(context);
+        queue = Volley.newRequestQueue(context);
         bubblesManager = new BubblesManager.Builder(context).setTrashLayout(R.layout.notification_trash_layout).build();
         bubblesManager.initialize();
     }
@@ -65,9 +74,20 @@ public class BubbleHelper extends AppCompatActivity {
         return mInstance;
     }
 
+    private void imageFunc(CircleImageView imageView, String url) {
+        //Downloading using Glide Library
+        Glide.with(context)
+                .load(url)
+//                .override(48, 48)
+//                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.ic_flyer_circle)
+                .into(imageView);
+    }
+
     public void show(Long noteIdLong, String number, LSContact oneContact) {
 
-        bubbleView = (BubbleLayout) LayoutInflater.from(context).inflate(R.layout.notification_layout, null);
+        bubbleView = (BubbleLayout) LayoutInflater.from(context).inflate(R.layout.flyer_layout, null);
+        user_avatar = (CircleImageView) bubbleView.findViewById(R.id.user_avatar);
         tvNoteTextUIOCallPopup = (TextView) bubbleView.findViewById(R.id.tvNoteTextUIOCallPopup);
         tvCallerHistoryName0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName0);
         tvCallerHistoryLastCallDateTime0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime0);
@@ -88,6 +108,19 @@ public class BubbleHelper extends AppCompatActivity {
                 hide();
             }
         });
+
+//        String num = PhoneNumberAndCallUtils.numberToInterNationalNumber(context, "+92 324 7158218");
+        ContactProfileProvider contactProfileProvider = new ContactProfileProvider(context);
+        contactProfileProvider.getContactProfile(number, new LSContactProfileCallback() {
+            @Override
+            public void onSuccess(LSContactProfile result) {
+                Log.d(TAG, "onResponse: lsContactProfile: " + result);
+                if (result != null) {
+                    imageFunc(user_avatar, result.getSocial_image());
+                }
+            }
+        });
+
 
 //        if (oneContact != null) {
 //            tvName.setText(oneContact.getContactName());
@@ -143,7 +176,8 @@ public class BubbleHelper extends AppCompatActivity {
 
     public void show(String number) {
 
-        bubbleView = (BubbleLayout) LayoutInflater.from(context).inflate(R.layout.notification_layout, null);
+        bubbleView = (BubbleLayout) LayoutInflater.from(context).inflate(R.layout.flyer_layout, null);
+        user_avatar = (CircleImageView) bubbleView.findViewById(R.id.user_avatar);
         tvNoteTextUIOCallPopup = (TextView) bubbleView.findViewById(R.id.tvNoteTextUIOCallPopup);
         tvCallerHistoryName0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName0);
         tvCallerHistoryLastCallDateTime0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime0);
@@ -162,6 +196,18 @@ public class BubbleHelper extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hide();
+            }
+        });
+
+//                String num = PhoneNumberAndCallUtils.numberToInterNationalNumber(context, "+92 324 7158218");
+        ContactProfileProvider contactProfileProvider = new ContactProfileProvider(context);
+        contactProfileProvider.getContactProfile(number, new LSContactProfileCallback() {
+            @Override
+            public void onSuccess(LSContactProfile result) {
+                Log.d(TAG, "onResponse: lsContactProfile: " + result);
+                if (result != null) {
+                    imageFunc(user_avatar, result.getSocial_image());
+                }
             }
         });
 
@@ -219,7 +265,6 @@ public class BubbleHelper extends AppCompatActivity {
         Log.d(TAG, "fetchCustomerHistory: Number: " + number);
         Log.d(TAG, "fetchCustomerHistory: Token: " + sessionManager.getLoginToken());
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(context);
         final String BASE_URL = MyURLs.GET_CUSTOMER_HISTORY;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
@@ -299,7 +344,6 @@ public class BubbleHelper extends AppCompatActivity {
                             tvCallerHistoryLastCallTimeAgo1.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), context) + ")");
                         }
                     }
-//                    }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }

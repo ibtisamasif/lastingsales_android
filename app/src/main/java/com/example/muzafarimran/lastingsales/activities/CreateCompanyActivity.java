@@ -51,11 +51,13 @@ public class CreateCompanyActivity extends AppCompatActivity {
     private String companyName;
     private SessionManager sessionManager;
     private ProgressDialog pdLoading;
+    private static RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_company);
+        queue = Volley.newRequestQueue(CreateCompanyActivity.this, new HurlStack());
         sessionManager = new SessionManager(getApplicationContext());
         etCompanyName = (EditText) findViewById(R.id.etCompanyName);
         bCreateCompany = (Button) findViewById(R.id.bCreateCompany);
@@ -108,7 +110,6 @@ public class CreateCompanyActivity extends AppCompatActivity {
     private void makeCreateCompanyRequest(final Activity activity, final String companyName) {
 
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(activity, new HurlStack());
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_COMPANY_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -180,7 +181,6 @@ public class CreateCompanyActivity extends AppCompatActivity {
 //
 //        Log.d(TAG, "makeGetUserInfoRequest: getting...");
 //        final int MY_SOCKET_TIMEOUT_MS = 60000;
-//        RequestQueue queue = Volley.newRequestQueue(mContext);
 //        final String BASE_URL = MyURLs.GET_USER_INFO;
 //        Uri builtUri = Uri.parse(BASE_URL)
 //                .buildUpon()

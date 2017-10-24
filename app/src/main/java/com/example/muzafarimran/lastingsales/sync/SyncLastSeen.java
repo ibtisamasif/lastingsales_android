@@ -9,6 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
@@ -25,12 +26,13 @@ import org.json.JSONObject;
 public class SyncLastSeen {
     public static final String TAG = "SyncLastSeen";
     private static SessionManager sessionManager;
+    private static RequestQueue queue;
 
     public static void updateLastSeenToServer(Activity activity) {
         sessionManager = new SessionManager(activity);
+        queue = Volley.newRequestQueue(activity);
 
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(activity);
         final String BASE_URL = MyURLs.UPDATE_AGENT;
         Uri builtUri;
         builtUri = Uri.parse(BASE_URL)

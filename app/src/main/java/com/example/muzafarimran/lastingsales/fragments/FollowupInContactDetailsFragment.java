@@ -76,7 +76,7 @@ public class FollowupInContactDetailsFragment extends TabFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_followup_contact_details, container, false); //TODO crash on note 2 outOfMemory
+        View view = inflater.inflate(R.layout.fragment_followup_contact_details, container, false); //TODO crash on note 2 outOfMemory Reappeared on 18 oct at fateens fone
 
         addFollowupBtn = (Button) view.findViewById(R.id.bAddFollowupContactDetailsScreen);
         llFolloupNoteRow = (LinearLayout) view.findViewById(R.id.followupNoteRow);

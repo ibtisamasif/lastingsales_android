@@ -201,7 +201,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
 
                         }
                     } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        DynamicColumnBuilder.Column column = dynamicColumnBuilder.getById(Integer.parseInt(dynamicColumns.getServerId()));
+                        DynamicColumnBuilder.Column column = dynamicColumnBuilder.getById(Integer.parseInt(dynamicColumns.getServerId())); //TODO Exception java.lang.NullPointerException: SGH-T889 18 sep
                         Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
 
                         String currentValue = s.getSelectedItem().toString();

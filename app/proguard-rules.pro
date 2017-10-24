@@ -16,5 +16,5 @@
 #   public *;
 #}
 
-#-keep public class com.example.muzafarimran.lastingsales.providers.Sugar { *; }
+#-keep public class com.example.muzafarimran.lastingsales.app.Sugar { *; }
 #-dontskipnonpubliclibraryclassmembers

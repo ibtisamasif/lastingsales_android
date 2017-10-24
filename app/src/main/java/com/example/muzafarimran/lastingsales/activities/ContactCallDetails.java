@@ -49,6 +49,7 @@ public class ContactCallDetails extends AppCompatActivity {
     private TextView tvWhatsappFromProfile;
     private TextView tvTweeterFromProfile;
     private TextView tvLinkdnFromProfile;
+    private TextView tvFbFromProfile;
 
 
     @Override
@@ -107,9 +108,11 @@ public class ContactCallDetails extends AppCompatActivity {
         tvWhatsappFromProfile = (TextView) findViewById(R.id.tvWhatsappFromProfile);
         tvTweeterFromProfile = (TextView) findViewById(R.id.tvTweeterFromProfile);
         tvLinkdnFromProfile = (TextView) findViewById(R.id.tvLinkdnFromProfile);
+        tvFbFromProfile = (TextView) findViewById(R.id.tvFbFromProfile);
 
         tvTweeterFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
         tvLinkdnFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
+        tvFbFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
 
         LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(number);
         if (lsContactProfile != null) {
@@ -139,6 +142,9 @@ public class ContactCallDetails extends AppCompatActivity {
             }
             if (lsContactProfile.getLinkd() != null) {
                 tvLinkdnFromProfile.setText(lsContactProfile.getLinkd());
+            }
+            if (lsContactProfile.getFb() != null) {
+                tvFbFromProfile.setText(lsContactProfile.getFb());
             }
         }
 

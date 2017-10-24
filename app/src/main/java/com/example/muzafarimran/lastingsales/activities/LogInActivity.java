@@ -49,11 +49,13 @@ public class LogInActivity extends AppCompatActivity {
     Button loginButton;
     SessionManager sessionManager;
     private LinearLayout llForgotPassword;
+    private static RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        queue = Volley.newRequestQueue(LogInActivity.this, new HurlStack());
 
 //        Version Control
         VersionManager versionManager = new VersionManager(getApplicationContext());
@@ -140,8 +142,6 @@ public class LogInActivity extends AppCompatActivity {
 
     public void makeLoginRequest(final Activity activity, final String number, final String password) {
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(activity, new HurlStack());
-//        RequestQueue queue = Volley.newRequestQueue(activity);
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -326,7 +326,6 @@ public class LogInActivity extends AppCompatActivity {
     private void updateFirebaseIdAndInitConfigMakeRequest(Activity activity, @Nullable JSONObject returnInitJson) {
 
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        RequestQueue queue = Volley.newRequestQueue(activity);
         final String BASE_URL = MyURLs.UPDATE_AGENT;
         Uri builtUri;
         if (returnInitJson != null) {
@@ -397,7 +396,6 @@ public class LogInActivity extends AppCompatActivity {
 
 //    public void updateAgentFirebaseIdToServer(final Activity activity) {
 //        final int MY_SOCKET_TIMEOUT_MS = 60000;
-//        RequestQueue queue = Volley.newRequestQueue(activity);
 //        final String BASE_URL = MyURLs.UPDATE_AGENT;
 //        Uri builtUri = Uri.parse(BASE_URL)
 //                .buildUpon()
