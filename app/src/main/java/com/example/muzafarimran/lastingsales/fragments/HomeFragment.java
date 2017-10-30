@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -17,21 +22,27 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
+import com.example.muzafarimran.lastingsales.adapters.UnlabeledAdapter;
+import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.ContactTaggedFromUntaggedContactEventModel;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.UnlabeledContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
+import com.example.muzafarimran.lastingsales.providers.loaders.UnlabeledLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import de.halfbit.tinybus.Bus;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
@@ -41,7 +52,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends TabFragment {
+public class HomeFragment extends TabFragment implements LoaderManager.LoaderCallbacks<List<LSContact>>{
     private static final String TAG = "HomeFragment";
     private TextView tvTotalLeadsValue;
     private TextView tvInquiriesValue;
@@ -51,19 +62,36 @@ public class HomeFragment extends TabFragment {
     private CardView llInActiveLeadsContainer;
     private CardView llUnlabeledContainer;
     private CardView llinquriesContainer;
-    //    private FrameLayout followupsListHolderFrameLayout;
-    private FollowupsTodayListFragment followupsTodayListFragment;
     private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     private FloatingActionMenu floatingActionMenu;
     private TinyBus bus;
     private RatingBar rbInquiriesHighlight;
     private RatingBar rbLastVisitHighlight;
+    private FrameLayout unlabeledListHolderFrameLayout;
     private SessionManager sessionManager;
+
+
+    UnlabeledAdapter unlabeledAdapter;
+    ListView listView = null;
+    private List<LSContact> untaggedContacts = new ArrayList<>();
+    private ExpandableHeightListView expandableListView;
+
+
+    public void setList(List<LSContact> contacts) {
+        if (unlabeledAdapter != null) {
+            unlabeledAdapter.setList(contacts);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(getActivity());
+
+        setRetainInstance(true);
+        unlabeledAdapter = new UnlabeledAdapter(getContext());
+        unlabeledAdapter.setList(untaggedContacts);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -82,15 +110,8 @@ public class HomeFragment extends TabFragment {
         rbInquiriesHighlight.setMax(5);
         rbLastVisitHighlight.setMax(5);
 
-//        followupsListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.followupsListHolderFrameLayout);
-//        updateHomeFigures();
-//        lltotalLeadsContainer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int position = 2;
-//                ((TabSelectedListener) getActivity()).onTabSelectedEvent(position, "AllLeads");
-//            }
-//        });
+//        unlabeledListHolderFrameLayout = (FrameLayout) view.findViewById(R.id.unlabeledListHolderFrameLayout);
+
         lltotalLeadsContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,21 +212,43 @@ public class HomeFragment extends TabFragment {
                 startActivity(intent);
             }
         });
+
+//        List<LSContact> untaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
+//        this.untaggedContacts = untaggedContacts;
+//        setList(untaggedContacts);
+
+        expandableListView = (ExpandableHeightListView) view.findViewById(R.id.calls_list);
+
+        expandableListView.setAdapter(unlabeledAdapter);
+
+        // This actually does the magic
+        expandableListView.setExpanded(true);
+
 //        //Bundle bundle = new Bundle();
 //        //bundle.putString(NotesFragment.CONTACT_ID, selectedContact.getId().toString());
-//        followupsTodayListFragment = new FollowupsTodayListFragment();
+//        UnlabeledFragment unlabeledFragment = new UnlabeledFragment();
 //        //followupsTodayListFragment.setArguments(bundle);
 //        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//        transaction.replace(R.id.followupsListHolderFrameLayout, followupsTodayListFragment);
+//        transaction.replace(R.id.unlabeledListHolderFrameLayout, unlabeledFragment);
 //        transaction.commit();
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        updateHomeFigures();
-        setHasOptionsMenu(false);
+    public Loader<List<LSContact>> onCreateLoader(int i, Bundle bundle) {
+        return new UnlabeledLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<LSContact>> loader, List<LSContact> lsContacts) {
+        Log.d(TAG, "onLoadFinished: ");
+        unlabeledAdapter.setList(lsContacts);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<LSContact>> loader) {
+        Log.d(TAG, "onLoaderReset: ");
+        unlabeledAdapter.setList(new ArrayList<LSContact>());
     }
 
     private void updateHomeFigures() {
@@ -233,7 +276,7 @@ public class HomeFragment extends TabFragment {
 //        Log.d(TAG, "fiveDaysAgoTimestamp: " + fiveDaysAgoTimestamp);
 
         String lastAppVisitTime = sessionManager.getLastAppVisit();
-        if (lastAppVisitTime !=null && !lastAppVisitTime.equals("") ){
+        if (lastAppVisitTime != null && !lastAppVisitTime.equals("")) {
             Long lastAppVisitTimeLong = Long.parseLong(lastAppVisitTime);
             if (lastAppVisitTimeLong > oneDayAgoTimestamp) {
                 Log.d(TAG, "stars 5 ");
@@ -308,6 +351,21 @@ public class HomeFragment extends TabFragment {
     public void onUnlabeledContactAddedEventModel(UnlabeledContactAddedEventModel event) {
         Log.d(TAG, "onUnlabeledContactAddedEventModel() called with: event = [" + event + "]");
         updateHomeFigures();
+    }
+
+    private void updateContactssList() {
+
+        List<LSContact> untaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
+        this.untaggedContacts = untaggedContacts;
+        setList(untaggedContacts);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().initLoader(1, null, this).forceLoad();
+        updateHomeFigures();
+        setHasOptionsMenu(false);
     }
 
     @Override
@@ -411,7 +469,7 @@ public class HomeFragment extends TabFragment {
         protected Void doInBackground(Void... unused) {
 
             allLeads = LSContact.getDateArrangedSalesContacts();
-            allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_UNLABELED);
+            allUnlabeledContacts = (ArrayList<LSContact>) LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
             allInactiveLeads = (ArrayList<LSContact>) LSContact.getAllInactiveLeadContacts();
             allInquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
 //            SystemClock.sleep(200);

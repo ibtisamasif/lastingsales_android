@@ -1,10 +1,8 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -12,10 +10,10 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
@@ -23,9 +21,9 @@ import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.UnlabeledAdapter;
-import com.example.muzafarimran.lastingsales.providers.loaders.LostLoader;
 import com.example.muzafarimran.lastingsales.providers.loaders.UnlabeledLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -135,7 +133,22 @@ public class UnlabeledFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
-        View view = inflater.inflate(R.layout.fragment_calls, container, false);
+        View view = inflater.inflate(R.layout.fragment_unlabeled, container, false);
+
+
+//        ExpandableHeightListView expandableListView = (ExpandableHeightListView) view.findViewById(R.id.calls_list);
+//
+//        expandableListView.setAdapter(unlabeledAdapter);
+//
+//        // This actually does the magic
+//        expandableListView.setExpanded(true);
+//
+//        errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
+//        errorScreenView.setErrorImage(R.drawable.delight_inactive);
+//        errorScreenView.setErrorText(this.getResources().getString(R.string.em_unlabeled_delight));
+//        expandableListView.setEmptyView(errorScreenView);
+
+
         listView = (ListView) view.findViewById(R.id.calls_list);
         listView.setAdapter(unlabeledAdapter);
         errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
@@ -200,46 +213,46 @@ public class UnlabeledFragment extends Fragment implements LoaderManager.LoaderC
         unlabeledAdapter.setList(new ArrayList<LSContact>());
     }
 
-    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
-        List<LSContact> contacts;
-//        ProgressDialog progressDialog;
-
-        ListPopulateAsync() {
-            super();
-//            progressDialog = new ProgressDialog(getContext());
-//            progressDialog.setTitle("Loading data");
-//            //this method will be running on UI thread
-//            progressDialog.setMessage("Please Wait...");
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.d(TAG, "onPreExecute: ");
-//            progressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... unused) {
-            contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
-//            SystemClock.sleep(200);
-            return (null);
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        protected void onProgressUpdate(String... item) {
-            Log.d(TAG, "onProgressUpdate: " + item);
-        }
-
-        @Override
-        protected void onPostExecute(Void unused) {
-            setList(contacts);
-            Log.d(TAG, "onPostExecute: ");
-//            Toast.makeText(getContext(), "onPostExecuteUnlabeled", Toast.LENGTH_SHORT).show();
-//            if (progressDialog != null && progressDialog.isShowing()) {
-//                progressDialog.dismiss();
-//            }
-        }
-    }
+//    class ListPopulateAsync extends AsyncTask<Void, String, Void> {
+//        List<LSContact> contacts;
+////        ProgressDialog progressDialog;
+//
+//        ListPopulateAsync() {
+//            super();
+////            progressDialog = new ProgressDialog(getContext());
+////            progressDialog.setTitle("Loading data");
+////            //this method will be running on UI thread
+////            progressDialog.setMessage("Please Wait...");
+//        }
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            Log.d(TAG, "onPreExecute: ");
+////            progressDialog.show();
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... unused) {
+//            contacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
+////            SystemClock.sleep(200);
+//            return (null);
+//        }
+//
+//        @SuppressWarnings("unchecked")
+//        @Override
+//        protected void onProgressUpdate(String... item) {
+//            Log.d(TAG, "onProgressUpdate: " + item);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void unused) {
+//            setList(contacts);
+//            Log.d(TAG, "onPostExecute: ");
+////            Toast.makeText(getContext(), "onPostExecuteUnlabeled", Toast.LENGTH_SHORT).show();
+////            if (progressDialog != null && progressDialog.isShowing()) {
+////                progressDialog.dismiss();
+////            }
+//        }
+//    }
 }

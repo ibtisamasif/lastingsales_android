@@ -18,9 +18,7 @@ import com.example.muzafarimran.lastingsales.adapters.InquiriesAdapter;
 import com.example.muzafarimran.lastingsales.customview.ErrorScreenView;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
-import com.example.muzafarimran.lastingsales.providers.loaders.InProgressLoader;
 import com.example.muzafarimran.lastingsales.providers.loaders.InquiriesLoader;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 
 import java.util.ArrayList;
@@ -107,7 +105,7 @@ public class InquiriesFragment extends SearchFragment  implements LoaderManager.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
-        View view = inflater.inflate(R.layout.fragment_calls, container, false);
+        View view = inflater.inflate(R.layout.fragment_inquiries, container, false);
         errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
         errorScreenView.setErrorImage(R.drawable.delight_lost);
         errorScreenView.setErrorText(this.getResources().getString(R.string.em_inquiries_delight));

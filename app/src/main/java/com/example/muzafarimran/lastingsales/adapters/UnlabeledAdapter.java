@@ -49,7 +49,6 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
     private ShowDetailsDropDown showcalldetailslistener = null;
     private List<LSContact> filteredData;
 
-
     public UnlabeledAdapter(Context c) {
         this.mContext = c;
         if (mContacts == null) {
@@ -68,7 +67,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getCount() {
-        return filteredData.size();  // TODO crash here on searching bilal ignored contacts list
+        return filteredData.size();  // TODO crash here on searching bilal ignored contacts list (URGENT)
     }
 
     @Override
@@ -101,6 +100,20 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
             holder.bSales = (Button) convertView.findViewById(R.id.bSalesUtaggedItem);
             holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bContactCallsdetails);
             holder.bIgnore = (Button) convertView.findViewById(R.id.bIgnore);
+
+
+            holder.tvNameFromProfile = (TextView) convertView.findViewById(R.id.tvNameFromProfile);
+            holder.tvCityFromProfile = (TextView) convertView.findViewById(R.id.tvCityFromProfile);
+            holder.tvCountryFromProfile = (TextView) convertView.findViewById(R.id.tvCountryFromProfile);
+            holder.tvWorkFromProfile = (TextView) convertView.findViewById(R.id.tvWorkFromProfile);
+            holder.tvCompanyFromProfile = (TextView) convertView.findViewById(R.id.tvCompanyFromProfile);
+            holder.tvWhatsappFromProfile = (TextView) convertView.findViewById(R.id.tvWhatsappFromProfile);
+            holder.tvTweeterFromProfile = (TextView) convertView.findViewById(R.id.tvTweeterFromProfile);
+            holder.tvLinkdnFromProfile = (TextView) convertView.findViewById(R.id.tvLinkdnFromProfile);
+            holder.tvFbFromProfile = (TextView) convertView.findViewById(R.id.tvFbFromProfile);
+            holder.user_profile_group_wrapper = (RelativeLayout) convertView.findViewById(R.id.user_profile_group_wrapper);
+            holder.user_profile_group_wrapper.setVisibility(View.GONE);
+
 
             holder.call_icon.setOnClickListener(this.callClickListener);
             holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
@@ -145,12 +158,44 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
             }
         }
         if (lsContactProfile != null) {
+            holder.user_profile_group_wrapper.setVisibility(View.VISIBLE);
+
             if (lsContactProfile.getSocial_image() != null && !lsContactProfile.getSocial_image().equals("")) {
                 imageFunc(holder.user_avatar, lsContactProfile.getSocial_image());
             } else {
                 holder.user_avatar.setImageResource(R.drawable.ic_account_circle);
             }
+
+
+            if (lsContactProfile.getFirstName() != null) {
+                holder.tvNameFromProfile.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
+            }
+            if (lsContactProfile.getCity() != null) {
+                holder.tvCityFromProfile.setText(lsContactProfile.getCity());
+            }
+            if (lsContactProfile.getCountry() != null) {
+                holder.tvCountryFromProfile.setText(lsContactProfile.getCountry());
+            }
+            if (lsContactProfile.getWork() != null) {
+                holder.tvWorkFromProfile.setText(lsContactProfile.getWork());
+            }
+            if (lsContactProfile.getCompany() != null) {
+                holder.tvCompanyFromProfile.setText(lsContactProfile.getCompany());
+            }
+            if (lsContactProfile.getWhatsapp() != null) {
+                holder.tvWhatsappFromProfile.setText(lsContactProfile.getWhatsapp());
+            }
+            if (lsContactProfile.getTweet() != null) {
+                holder.tvTweeterFromProfile.setText(lsContactProfile.getTweet());
+            }
+            if (lsContactProfile.getLinkd() != null) {
+                holder.tvLinkdnFromProfile.setText(lsContactProfile.getLinkd());
+            }
+            if (lsContactProfile.getFb() != null) {
+                holder.tvFbFromProfile.setText(lsContactProfile.getFb());
+            }
         } else {
+            holder.user_profile_group_wrapper.setVisibility(View.GONE);
             holder.user_avatar.setImageResource(R.drawable.ic_account_circle);
         }
 
@@ -256,6 +301,17 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
         Button bIgnore;
         Button bSales;
         public Button bContactCallsdetails;
+
+        private TextView tvNameFromProfile;
+        private TextView tvCityFromProfile;
+        private TextView tvCountryFromProfile;
+        private TextView tvWorkFromProfile;
+        private TextView tvCompanyFromProfile;
+        private TextView tvWhatsappFromProfile;
+        private TextView tvTweeterFromProfile;
+        private TextView tvLinkdnFromProfile;
+        private TextView tvFbFromProfile;
+        public RelativeLayout user_profile_group_wrapper;
     }
 
     /*

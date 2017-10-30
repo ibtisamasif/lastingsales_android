@@ -120,4 +120,7 @@
     <string name="no_jobs_to_cancel">No jobs to cancel</string>
     <string name="all_jobs_cancelled">All jobs cancelled</string>
 
+    <string name="google_card_background_color">#F2F2F2</string>
+    <string name="google_card_color">#FFFFFF</string>
+
 </resources>

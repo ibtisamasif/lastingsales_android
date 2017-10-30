@@ -1,17 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 78
         versionName "2.25" //change mixpanel key too
-        jackOptions {
-            enabled false
-        }
+//        jackOptions {
+//            enabled false
+//        }
+        vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
     signingConfigs {
@@ -50,14 +51,14 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_7
-        sourceCompatibility JavaVersion.VERSION_1_7
+        android.compileOptions.targetCompatibility JavaVersion.VERSION_1_8
+        android.compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.google.firebase:firebase-core:11.4.0'
     compile 'com.google.firebase:firebase-messaging:11.4.0'
     compile 'com.google.firebase:firebase-crash:11.4.0'
@@ -77,11 +78,11 @@ dependencies {
         exclude module: 'support-annotations'
         exclude group: 'com.google.guava'
     }
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:palette-v7:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:palette-v7:26.1.0'
+    compile 'com.android.support:cardview-v7:26.1.0'
     compile 'com.wdullaer:materialdatetimepicker:2.5.0'
     testCompile 'junit:junit:4.12'
     compile 'com.github.satyan:sugar:1.5'
@@ -107,8 +108,9 @@ dependencies {
     compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
     compile 'me.leolin:ShortcutBadger:1.1.18@aar'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     compile 'com.evernote:android-job:1.1.7'
+    compile 'com.github.paolorotolo:expandableheightlistview:1.0.0'
 }
 apply plugin: 'com.google.gms.google-services'
