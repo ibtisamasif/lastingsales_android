@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/cardview_background_color">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -11,7 +12,9 @@
         <ListView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/leads_contacts_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp">
         </ListView>
 
         <com.example.muzafarimran.lastingsales.customview.ErrorScreenView

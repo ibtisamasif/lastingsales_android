@@ -67,7 +67,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getCount() {
-        return filteredData.size();  // TODO crash here on searching bilal ignored contacts list (URGENT)
+        return filteredData.size();  // TODO crash here on searching bilal ignored contacts list (URGENT) = fixed ?
     }
 
     @Override

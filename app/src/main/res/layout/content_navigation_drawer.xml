@@ -30,6 +30,7 @@
         app:tabMode="fixed"
         app:tabTextColor="@color/white"
         app:tabSelectedTextColor="@color/darkGray"
-        app:layout_scrollFlags="scroll|enterAlways" />
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:theme="@style/CustomHomeScreenToolBar"/>
 
 </LinearLayout>
