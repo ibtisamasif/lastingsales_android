@@ -67,6 +67,6 @@
     <color name="stop_received">#FF0000</color>
 
     <color name="cardview_color">#efefe3</color>
-    <color name="cardview_background_color">#efefe3</color>
+    <color name="cardview_background_color">#eaeae4</color>
 
 </resources>

@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.IndividualContactCallAdapter;
@@ -166,6 +167,7 @@ public class ContactCallDetails extends AppCompatActivity {
 //                .override(48, 48)
 //                .placeholder(R.drawable.placeholder)
                 .error(R.drawable.ic_account_circle_white)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }
 

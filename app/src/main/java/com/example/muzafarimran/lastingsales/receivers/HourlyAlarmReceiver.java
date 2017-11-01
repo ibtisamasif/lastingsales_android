@@ -14,6 +14,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.muzafarimran.lastingsales.R;
@@ -133,7 +134,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                 if (lsInquiry.size() == 1) {
                     Log.d(TAG, "onPostExecute: lsInquiry.size() == 1");
                     if (result != null) {
-                        Glide.with(context).load(result).asBitmap().into(new SimpleTarget<Bitmap>() {
+                        Glide.with(context).load(result).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
@@ -202,7 +203,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                 } else if (lsInquiry.size() > 1) {
                     Log.d(TAG, "onPostExecute: lsInquiry.size() > 1");
                     if (result != null) {
-                        Glide.with(context).load(result).asBitmap().into(new SimpleTarget<Bitmap>() {
+                        Glide.with(context).load(result).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

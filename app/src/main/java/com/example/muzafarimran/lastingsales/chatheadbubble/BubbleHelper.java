@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
@@ -81,6 +82,7 @@ public class BubbleHelper extends AppCompatActivity {
 //                .override(48, 48)
 //                .placeholder(R.drawable.placeholder)
                 .error(R.drawable.ic_flyer_circle)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }
 
