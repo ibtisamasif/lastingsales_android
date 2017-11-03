@@ -1,7 +1,6 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -10,9 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,7 +20,6 @@ import com.example.muzafarimran.lastingsales.adapters.IndividualContactCallAdapt
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -32,11 +27,8 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.view.View.GONE;
-
 public class ContactCallDetails extends AppCompatActivity {
     private static final String TAG = "ContactCallDetails";
-    Button bTagButton;
     private String number = "";
     private String name = "";
     private IndividualContactCallAdapter indadapter;
@@ -57,7 +49,7 @@ public class ContactCallDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_call_details_ap_bar);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -65,7 +57,6 @@ public class ContactCallDetails extends AppCompatActivity {
 //        getSupportActionBar().setHomeAsUpIndicator(upArrow);
         toolbar.setNavigationIcon(upArrow);
 
-        bTagButton = (Button) findViewById(R.id.b_tag_individual_contact_call_screen);
         Intent intent = getIntent();
         this.number = intent.getStringExtra("number");
         LSContact contact = LSContact.getContactFromNumber(this.number);
@@ -74,42 +65,31 @@ public class ContactCallDetails extends AppCompatActivity {
 //            bTagButton.setVisibility(GONE);
         } else {
             this.name = "UNKNOWN";
-            //bFollowupButton.setVisibility(GONE);
-            bTagButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    Intent addContactIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
-//                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_TAG_PHONE_NUMBER);
-//                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-//                    addContactIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
-//                    startActivity(addContactIntent);
-                }
-            });
         }
 
         ArrayList<LSCall> allCallsOfThisContact = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();
         CallClickListener callClickListener = new CallClickListener(ContactCallDetails.this);
         ((TextView) (this.findViewById(R.id.call_numbe_ind))).setText(this.number);
         String contactName = this.name;
-        ((ImageView) (this.findViewById(R.id.call_icon_ind))).setTag(this.number);
-        ((ImageView) (this.findViewById(R.id.call_icon_ind))).setOnClickListener(callClickListener);
+        this.findViewById(R.id.call_icon_ind).setTag(this.number);
+        this.findViewById(R.id.call_icon_ind).setOnClickListener(callClickListener);
         //hide tag button if name is not stored
         if (this.name == null || (this.name).isEmpty()) {
 //            ((Button) (this.findViewById(R.id.b_tag_individual_contact_call_screen))).setVisibility(GONE);
             contactName = this.name;
         }
-        contact_name_ind = (TextView) findViewById(R.id.contact_name_ind);
+        contact_name_ind = findViewById(R.id.contact_name_ind);
         contact_name_ind.setText(contactName);
-        user_avatar_ind = (CircleImageView) findViewById(R.id.user_avatar_ind);
-        tvNameFromProfile = (TextView) findViewById(R.id.tvNameFromProfile);
-        tvCityFromProfile = (TextView) findViewById(R.id.tvCityFromProfile);
-        tvCountryFromProfile = (TextView) findViewById(R.id.tvCountryFromProfile);
-        tvWorkFromProfile = (TextView) findViewById(R.id.tvWorkFromProfile);
-        tvCompanyFromProfile = (TextView) findViewById(R.id.tvCompanyFromProfile);
-        tvWhatsappFromProfile = (TextView) findViewById(R.id.tvWhatsappFromProfile);
-        tvTweeterFromProfile = (TextView) findViewById(R.id.tvTweeterFromProfile);
-        tvLinkdnFromProfile = (TextView) findViewById(R.id.tvLinkdnFromProfile);
-        tvFbFromProfile = (TextView) findViewById(R.id.tvFbFromProfile);
+        user_avatar_ind = findViewById(R.id.user_avatar_ind);
+        tvNameFromProfile = findViewById(R.id.tvNameFromProfile);
+        tvCityFromProfile = findViewById(R.id.tvCityFromProfile);
+        tvCountryFromProfile = findViewById(R.id.tvCountryFromProfile);
+        tvWorkFromProfile = findViewById(R.id.tvWorkFromProfile);
+        tvCompanyFromProfile = findViewById(R.id.tvCompanyFromProfile);
+        tvWhatsappFromProfile = findViewById(R.id.tvWhatsappFromProfile);
+        tvTweeterFromProfile = findViewById(R.id.tvTweeterFromProfile);
+        tvLinkdnFromProfile = findViewById(R.id.tvLinkdnFromProfile);
+        tvFbFromProfile = findViewById(R.id.tvFbFromProfile);
 
         tvTweeterFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
         tvLinkdnFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
@@ -149,7 +129,7 @@ public class ContactCallDetails extends AppCompatActivity {
             }
         }
 
-        ListView listview = (ListView) this.findViewById(R.id.calls_list);
+        ListView listview = this.findViewById(R.id.calls_list);
         indadapter = new IndividualContactCallAdapter(ContactCallDetails.this, allCallsOfThisContact);
         Log.d(TAG, "setUpList: Size " + allCallsOfThisContact.size());
         for (LSCall oneCall : allCallsOfThisContact) {

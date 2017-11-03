@@ -23,12 +23,10 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.activities.TypeManager;
-import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -102,18 +100,19 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.inquiry_calls_list_item, parent, false);
             holder = new ViewHolder();
-            holder.user_avatar = (CircleImageView) convertView.findViewById(R.id.user_avatar);
-            holder.name = (TextView) convertView.findViewById(R.id.call_name);
-            holder.time = (TextView) convertView.findViewById(R.id.call_time);
-            holder.call_icon = (ImageView) convertView.findViewById(R.id.call_icon);
-            holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
-            holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
-            holder.bIgnore = (Button) convertView.findViewById(R.id.bIgnore);
-            holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bContactCallsdetails);
-            holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
-            holder.inquireyCount = (TextView) convertView.findViewById(R.id.inquireyCount);
+            holder.user_avatar = convertView.findViewById(R.id.user_avatar);
+            holder.name = convertView.findViewById(R.id.call_name);
+            holder.time = convertView.findViewById(R.id.call_time);
+            holder.call_icon = convertView.findViewById(R.id.call_icon);
+            holder.call_name_time = convertView.findViewById(R.id.user_call_group_wrapper);
+            holder.numberDetailTextView = convertView.findViewById(R.id.call_number);
+            holder.bIgnore = convertView.findViewById(R.id.bIgnore);
+            holder.bContactCallsdetails = convertView.findViewById(R.id.bContactCallsdetails);
+            holder.contactCallDetails = convertView.findViewById(R.id.rl_calls_details);
+            holder.inquireyCount = convertView.findViewById(R.id.inquireyCount);
             this.showcalldetailslistener = new ShowDetailsDropDown(inquiryCall, holder.contactCallDetails);
-            holder.bTag = (Button) convertView.findViewById(R.id.call_tag_btn);
+            holder.bTag = convertView.findViewById(R.id.call_tag_btn);
+
             holder.call_icon.setOnClickListener(this.callClickListener);
             holder.call_name_time.setOnClickListener(this.showcalldetailslistener);
             holder.bTag.setVisibility(GONE);
@@ -307,6 +306,7 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
     }
 
     static class ViewHolder {
+        public CircleImageView user_avatar;
         TextView name;
         TextView time;
         ImageView call_icon;
@@ -317,7 +317,6 @@ public class InquiriesAdapter extends BaseAdapter implements Filterable {
         Button bContactCallsdetails;
         Button bTag;
         TextView inquireyCount;
-        public CircleImageView user_avatar;
     }
 
     /*

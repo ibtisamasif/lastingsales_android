@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.adapters;
+package com.example.muzafarimran.lastingsales.home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -35,8 +35,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
 
-@Deprecated
-public class UnlabeledAdapter extends BaseAdapter implements Filterable {
+public class HomeAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = "UnlabeledContactsAdapte";
     private final static int ITEM_TYPES = 2;
     public Context mContext;
@@ -50,7 +49,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
     private ShowDetailsDropDown showcalldetailslistener = null;
     private List<LSContact> filteredData;
 
-    public UnlabeledAdapter(Context c) {
+    public HomeAdapter(Context c) {
         this.mContext = c;
         if (mContacts == null) {
             mContacts = new ArrayList<>();
@@ -88,7 +87,7 @@ public class UnlabeledAdapter extends BaseAdapter implements Filterable {
 
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.unlabeled_contacts_list_item, parent, false);
+            convertView = mInflater.inflate(R.layout.home_list_item1, parent, false);
             holder = new ViewHolder();
             holder.user_avatar = convertView.findViewById(R.id.user_avatar);
             holder.name = convertView.findViewById(R.id.call_name);

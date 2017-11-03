@@ -7,144 +7,288 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/toolbar_Text_color_main</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
     </style>
 
+    <!-- Hi, a request: USE THESE GODDAMM ATTRIBUTES!! -->
+    <!--
+    _______                                      _
+   |__   __|                                    | |
+      | |_   _ _ __   ___   __ _ _ __ __ _ _ __ | |__  _   _
+      | | | | | '_ \ / _ \ / _` | '__/ _` | '_ \| '_ \| | | |
+      | | |_| | |_) | (_) | (_| | | | (_| | |_) | | | | |_| |
+      |_|\__, | .__/ \___/ \__, |_|  \__,_| .__/|_| |_|\__, |
+          __/ | |           __/ |         | |           __/ |
+         |___/|_|          |___/          |_|          |___/
 
-    <style name="Theme.Transparent" parent="android:Theme">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
+
+     -->
+
+
+    <style name="Ls">Ls.Type</style>
+
+    <style name="Ls.Type">Ls.Type</style>
+    <!-- Type style should extend form Ls.Type.Parent -->
+    <style name="Ls.Type.Parent"></style>
+
+    <!-- LIST OF ALL TYPE STYLES -->
+
+    <!-- Ls.Type.Title -->
+    <!-- Ls.Type.Body1 -->
+    <!-- Ls.Type.Body2 -->
+    <!-- Ls.Type.Button -->
+    <!-- Ls.Type.Caption -->
+    <!-- Ls.Type.Display1 -->
+    <!-- Ls.Type.Display2 -->
+    <!-- Ls.Type.Display3 -->
+    <!-- Ls.Type.Display4 -->
+    <!-- Ls.Type.Headline -->
+    <!-- Ls.Type.Subheading -->
+
+    <style name="Ls.Type.Title" parent="Ls.Type.Parent">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/md_grey_900</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <!-- Ls Type # -->
+    <style name="Ls.Type.Body1" parent="Ls.Type.Parent">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/md_grey_900</item>
+        <item name="android:fontFamily">sans-serif-regular</item>
+    </style>
+    <!-- Ls Type # -->
+    <style name="Ls.Type.Body2" parent="Ls.Type.Parent">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/md_grey_900</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <!-- Ls Type # -->
+    <style name="Ls.Type.Button" parent="Ls.Type.Parent">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/md_grey_900</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
+    </style>
+    <!-- Ls Type # -->
+    <style name="Ls.Type.Caption" parent="Ls.Type.Parent">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/md_grey_600</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <!-- Ls Type # -->
+    <style name="Ls.Type.Display1" parent="Ls.Type.Parent">
+        <item name="android:textSize">34sp</item>
+        <item name="android:textColor">@color/md_grey_600</item>
+        <item name="android:fontFamily">sans-serif-regular</item>
+    </style>
+    <!-- Ls Type # -->
+    <style name="Ls.Type.Display2" parent="Ls.Type.Parent">
+        <item name="android:textSize">45sp</item>
+        <item name="android:textColor">@color/md_grey_600</item>
+        <item name="android:fontFamily">sans-serif-regular</item>
+    </style>
+    <!-- Ls Type # -->
+    <style name="Ls.Type.Display3" parent="Ls.Type.Parent">
+        <item name="android:textSize">56sp</item>
+        <item name="android:textColor">@color/md_grey_600</item>
+        <item name="android:fontFamily">sans-serif-regular</item>
+    </style>
+    <!-- Ls Type # -->
+    <style name="Ls.Type.Display4" parent="Ls.Type.Parent">
+        <item name="android:textSize">112sp</item>
+        <item name="android:textColor">@color/md_grey_600</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    <!-- Ls Type # -->
+    <style name="Ls.Type.Headline" parent="Ls.Type.Parent">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/md_grey_900</item>
+        <item name="android:fontFamily">sans-serif-regular</item>
+    </style>
+    <!-- Ls Type # -->
+    <style name="Ls.Type.Subheading" parent="Ls.Type.Parent">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/md_grey_900</item>
+        <item name="android:fontFamily">sans-serif-regular</item>
     </style>
 
-    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!-- Used for the buttons -->
-        <item name="colorAccent">#000000</item>
-        <!-- Used for the title and text -->
-        <item name="android:textColorPrimary">#464545</item>
-        <!-- Used for the background -->
-        <item name="android:background">#FFFFFF</item>
-    </style>
-    <!-- Style Used in Personal and Colleague ActionBar -->
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <!-- Style Used in ActionBar plus color of BACK ARROW -->
-        <item name="android:textColorPrimary">#ffffff</item>
-    </style>
+    <!--
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <!-- Style Used NavigationDrawerActivity Only Drawer -->
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:textColorPrimary">@color/drawer_items_text_color</item>
-    </style>
-
-    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@android:color/white</item>
-    </style>
-
-    <!-- Style Used in Contact Details Screen Collapsing Toolbar-->
-    <style name="expandedappbar" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">48sp</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="collapsedappbar" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">#ffffff</item>
-    </style>
-
-    <!-- Contextual ActionBar Used in Add/Edit Notes Screen ActionBar and Contextual Action Bar-->
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionModeBackground">@color/colorPrimary</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="actionMenuTextColor">@color/white</item>
-    </style>
-
-    <style name="MyTransparentTheme" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-    </style>
+    ____        _   _
+    |  _ \      | | | |
+    | |_) |_   _| |_| |_ ___  _ __
+    |  _ <| | | | __| __/ _ \| '_ \
+    | |_) | |_| | |_| || (_) | | | |
+    |____/ \__,_|\__|\__\___/|_| |_|
 
 
-    <!-- SHOWCASE-->
+    -->
 
-    <style name="Toolbar">
-        <item name="android:background">?attr/colorPrimary</item>
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-    </style>
+    <!--<style name="Ls.Button" ></style>-->
+    <!--<style name="Ls.Button.Parent" ></style>-->
 
-    <style name="MyCustomShowcaseTheme" parent="ShowcaseView.Light">
-        <item name="sv_backgroundColor">#c0000000</item>
-        <item name="sv_showcaseColor">#00a6ff</item>
-        <item name="sv_buttonText">Hide</item>
-        <item name="sv_tintButtonColor">false</item>
-        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
-    </style>
-
-    <style name="CustomShowcaseTheme" parent="ShowcaseView.Light">
-        <item name="sv_backgroundColor">#3300A621</item>
-        <item name="sv_showcaseColor">#00801A</item>
-        <item name="sv_buttonText">Hide</item>
-        <item name="sv_tintButtonColor">false</item>
-        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
-    </style>
-
-    <style name="CustomShowcaseTheme2" parent="ShowcaseView">
-        <item name="sv_backgroundColor">#e51249d9</item>
-        <item name="sv_showcaseColor">#25467A</item>
-        <item name="sv_buttonText">Close</item>
-        <item name="sv_titleTextAppearance">@style/CustomTitle2</item>
-        <item name="sv_detailTextAppearance">@style/CustomText2</item>
-    </style>
-
-    <style name="CustomShowcaseTheme3" parent="ShowcaseView.Light">
-        <item name="sv_backgroundColor">#c8ed680f</item>
-        <item name="sv_showcaseColor">#ed680f</item>
-        <item name="sv_buttonText">Hide</item>
-        <item name="sv_tintButtonColor">false</item>
-        <item name="sv_titleTextAppearance">@style/CustomTitle2</item>
-        <item name="sv_detailTextAppearance">@style/CustomText2</item>
-    </style>
-
-    <style name="CustomTitle" parent="TextAppearance.ShowcaseView.Title">
-        <item name="android:textColor">#00801A</item>
-    </style>
-
-    <style name="CustomTitle2" parent="TextAppearance.ShowcaseView.Title.Light">
-        <item name="android:textColor">#deffffff</item>
-    </style>
-
-    <style name="CustomText2" parent="TextAppearance.ShowcaseView.Detail.Light">
-        <item name="android:textColor">#8affffff</item>
-    </style>
-
-    <style name="ListItemBigtext">
-        <item name="android:textColor">#25467A</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
-        <item name="android:textStyle">italic</item>
-    </style>
-
-    <style name="ListItemSubtext">
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
-    </style>
+    <!--<style name="Ls.Button.Borderless" parent="Ls.Button.Parent" >-->
+    <!--<item name="android:radius">2dp</item>-->
+    <!--<item name="android:textSize">16sp</item>-->
+    <!--<item name="android:textColor">@color/md_grey_900</item>-->
+    <!--<item name="android:fontFamily">sans-serif-regular</item>-->
+    <!--</style>-->
+    <!--<style name="Ls.Button.Raised" parent="Ls.Button.Parent" >-->
+    <!--<item name="android:radius">2dp</item>-->
+    <!--<item name="android:height">36dp</item>-->
+    <!--&lt;!&ndash;<item name="android:layout_margin">6dp</item>&ndash;&gt;-->
+    <!--<item name="android:textSize">16sp</item>-->
+    <!--<item name="android:background">@color/Ls.Color.Primary</item>-->
+    <!--<item name="android:textColor">@color/Ls.Color.Button.Text.Primary</item>-->
+    <!--&lt;!&ndash; <item name="android:fontFamily">sans-serif-regular</item> &ndash;&gt;-->
+    <!--</style>-->
 
 
-    <style name="Theme.Custom" parent="Theme.AppCompat">
-        <item name="windowActionBar">false</item>
-        <item name="windowActionBarOverlay">true</item>
-        <item name="android:windowActionBarOverlay">true</item>
-    </style>
+    <!--<style name="Ls.Image" ></style>-->
+    <!--<style name="Ls.Image.Parent" ></style>-->
+    <!--<style name="Ls.Image.ListImage" parent="Ls.Button.Parent" >-->
+    <!--<item name="android:height">@dimen/Ls.Dimen.ListIconHeight</item>-->
+    <!--<item name="android:width">@dimen/Ls.Dimen.ListIconWidth</item>-->
+    <!--<item name="android:clickable">true</item>-->
+    <!--&lt;!&ndash; <item name="android:textSize">16sp</item> &ndash;&gt;-->
+    <!--&lt;!&ndash; <item name="android:textColor">@color/md_grey_900</item> &ndash;&gt;-->
+    <!--&lt;!&ndash; <item name="android:fontFamily">sans-serif-regular</item> &ndash;&gt;-->
+    <!--</style>-->
 
-    <style name="CustomHomeScreenToolBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:windowActionBarOverlay">true</item>
-        <!-- Support library compatibility -->
-        <item name="windowActionBarOverlay">true</item>
-    </style>
+    <!--<style name="Theme.Transparent" parent="android:Theme">-->
+    <!--<item name="android:windowIsTranslucent">true</item>-->
+    <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+    <!--<item name="android:windowContentOverlay">@null</item>-->
+    <!--<item name="android:windowNoTitle">true</item>-->
+    <!--<item name="android:windowIsFloating">true</item>-->
+    <!--<item name="android:backgroundDimEnabled">false</item>-->
+    <!--</style>-->
+
+    <!--<style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">-->
+    <!--&lt;!&ndash; Used for the buttons &ndash;&gt;-->
+    <!--<item name="colorAccent">#000000</item>-->
+    <!--&lt;!&ndash; Used for the title and text &ndash;&gt;-->
+    <!--<item name="android:textColorPrimary">#464545</item>-->
+    <!--&lt;!&ndash; Used for the background &ndash;&gt;-->
+    <!--<item name="android:background">#FFFFFF</item>-->
+    <!--</style>-->
+    <!--&lt;!&ndash; Style Used in Personal and Colleague ActionBar &ndash;&gt;-->
+    <!--<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">-->
+    <!--&lt;!&ndash; Style Used in ActionBar plus color of BACK ARROW &ndash;&gt;-->
+    <!--<item name="android:textColorPrimary">#ffffff</item>-->
+    <!--</style>-->
+
+    <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
+
+    <!--&lt;!&ndash; Style Used NavigationDrawerActivity Only Drawer &ndash;&gt;-->
+    <!--<style name="AppTheme.NoActionBar">-->
+    <!--<item name="windowActionBar">false</item>-->
+    <!--<item name="windowNoTitle">true</item>-->
+    <!--<item name="android:textColorPrimary">@color/drawer_items_text_color</item>-->
+    <!--</style>-->
+
+    <!--<style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">-->
+    <!--<item name="color">@android:color/white</item>-->
+    <!--</style>-->
+
+    <!--&lt;!&ndash; Style Used in Contact Details Screen Collapsing Toolbar&ndash;&gt;-->
+    <!--<style name="expandedappbar" parent="@android:style/TextAppearance.Medium">-->
+    <!--<item name="android:textSize">48sp</item>-->
+    <!--<item name="android:textColor">#ffffff</item>-->
+    <!--<item name="android:textStyle">bold</item>-->
+    <!--</style>-->
+
+    <!--<style name="collapsedappbar" parent="@android:style/TextAppearance.Medium">-->
+    <!--<item name="android:textSize">18sp</item>-->
+    <!--<item name="android:textColor">#ffffff</item>-->
+    <!--</style>-->
+
+    <!--&lt;!&ndash; Contextual ActionBar Used in Add/Edit Notes Screen ActionBar and Contextual Action Bar&ndash;&gt;-->
+    <!--<style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <!--<item name="android:actionModeBackground">@color/colorPrimary</item>-->
+    <!--<item name="android:textColor">@color/white</item>-->
+    <!--<item name="actionMenuTextColor">@color/white</item>-->
+    <!--</style>-->
+
+    <!--<style name="MyTransparentTheme" parent="Theme.AppCompat.Dialog.Alert">-->
+    <!--<item name="android:windowNoTitle">true</item>-->
+    <!--<item name="android:windowIsFloating">true</item>-->
+    <!--</style>-->
+
+
+    <!--&lt;!&ndash; SHOWCASE&ndash;&gt;-->
+
+    <!--<style name="Toolbar">-->
+    <!--<item name="android:background">?attr/colorPrimary</item>-->
+    <!--<item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>-->
+    <!--</style>-->
+
+    <!--<style name="MyCustomShowcaseTheme" parent="ShowcaseView.Light">-->
+    <!--<item name="sv_backgroundColor">#c0000000</item>-->
+    <!--<item name="sv_showcaseColor">#00a6ff</item>-->
+    <!--<item name="sv_buttonText">Hide</item>-->
+    <!--<item name="sv_tintButtonColor">false</item>-->
+    <!--<item name="sv_titleTextAppearance">@style/CustomTitle</item>-->
+    <!--</style>-->
+
+    <!--<style name="CustomShowcaseTheme" parent="ShowcaseView.Light">-->
+    <!--<item name="sv_backgroundColor">#3300A621</item>-->
+    <!--<item name="sv_showcaseColor">#00801A</item>-->
+    <!--<item name="sv_buttonText">Hide</item>-->
+    <!--<item name="sv_tintButtonColor">false</item>-->
+    <!--<item name="sv_titleTextAppearance">@style/CustomTitle</item>-->
+    <!--</style>-->
+
+    <!--<style name="CustomShowcaseTheme2" parent="ShowcaseView">-->
+    <!--<item name="sv_backgroundColor">#e51249d9</item>-->
+    <!--<item name="sv_showcaseColor">#25467A</item>-->
+    <!--<item name="sv_buttonText">Close</item>-->
+    <!--<item name="sv_titleTextAppearance">@style/CustomTitle2</item>-->
+    <!--<item name="sv_detailTextAppearance">@style/CustomText2</item>-->
+    <!--</style>-->
+
+    <!--<style name="CustomShowcaseTheme3" parent="ShowcaseView.Light">-->
+    <!--<item name="sv_backgroundColor">#c8ed680f</item>-->
+    <!--<item name="sv_showcaseColor">#ed680f</item>-->
+    <!--<item name="sv_buttonText">Hide</item>-->
+    <!--<item name="sv_tintButtonColor">false</item>-->
+    <!--<item name="sv_titleTextAppearance">@style/CustomTitle2</item>-->
+    <!--<item name="sv_detailTextAppearance">@style/CustomText2</item>-->
+    <!--</style>-->
+
+    <!--<style name="CustomTitle" parent="TextAppearance.ShowcaseView.Title">-->
+    <!--<item name="android:textColor">#00801A</item>-->
+    <!--</style>-->
+
+    <!--<style name="CustomTitle2" parent="TextAppearance.ShowcaseView.Title.Light">-->
+    <!--<item name="android:textColor">#deffffff</item>-->
+    <!--</style>-->
+
+    <!--<style name="CustomText2" parent="TextAppearance.ShowcaseView.Detail.Light">-->
+    <!--<item name="android:textColor">#8affffff</item>-->
+    <!--</style>-->
+
+    <!--<style name="ListItemBigtext">-->
+    <!--<item name="android:textColor">#25467A</item>-->
+    <!--<item name="android:textAppearance">?android:attr/textAppearanceLarge</item>-->
+    <!--<item name="android:textStyle">italic</item>-->
+    <!--</style>-->
+
+    <!--<style name="ListItemSubtext">-->
+    <!--<item name="android:textAppearance">?android:attr/textAppearanceSmall</item>-->
+    <!--<item name="android:textColor">?android:attr/textColorSecondary</item>-->
+    <!--</style>-->
+
+
+    <!--<style name="Theme.Custom" parent="Theme.AppCompat">-->
+    <!--<item name="windowActionBar">false</item>-->
+    <!--<item name="windowActionBarOverlay">true</item>-->
+    <!--<item name="android:windowActionBarOverlay">true</item>-->
+    <!--</style>-->
+
+    <!--<style name="CustomHomeScreenToolBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
+    <!--<item name="android:windowActionBarOverlay">true</item>-->
+    <!--&lt;!&ndash; Support library compatibility &ndash;&gt;-->
+    <!--<item name="windowActionBarOverlay">true</item>-->
+    <!--</style>-->
+
 </resources>

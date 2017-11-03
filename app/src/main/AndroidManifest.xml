@@ -267,7 +267,7 @@
         <activity
             android:name=".activities.NavigationDrawerActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+        <!--android:theme="@style/AppTheme.NoActionBar"-->
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -278,8 +278,8 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
-                    android:scheme="http"
-                    android:host="lastingsales.com">
+                    android:host="lastingsales.com"
+                    android:scheme="http">
                 </data>
             </intent-filter>
         </activity>
