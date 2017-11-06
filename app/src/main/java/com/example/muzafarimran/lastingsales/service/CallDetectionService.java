@@ -24,12 +24,10 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationDrawerActivity;
-import com.example.muzafarimran.lastingsales.activities.TagNotificationDialogActivity;
 import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleHelper;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
-import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -352,7 +350,7 @@ public class CallDetectionService extends Service {
 
         Intent unlabeledIntent = new Intent(this, FrameActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
+//        bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
         bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
         bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
         unlabeledIntent.putExtras(bundle);

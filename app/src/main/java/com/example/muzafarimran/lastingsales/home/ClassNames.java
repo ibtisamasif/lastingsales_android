@@ -20,4 +20,9 @@ public class ClassNames {
     public static final int SEPARATOR_CLASS_TYPE = 3;
     public static final int SEPARATOR_CLASS_RESOURCE = R.layout.separator_item;
 
+    public static final String ERROR_CLASS_NAME = "com.example.muzafarimran.lastingsales.home.ErrorItem";
+    public static final int ERROR_CLASS_TYPE = 4;
+    public static final int ERROR_CLASS_RESOURCE = R.layout.error_item;
+
+
 }

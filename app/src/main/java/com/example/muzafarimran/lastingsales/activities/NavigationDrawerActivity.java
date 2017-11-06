@@ -2,8 +2,6 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,7 +9,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -43,11 +40,9 @@ import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
 import com.example.muzafarimran.lastingsales.fragments.IgnoredFragment;
 import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
-import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
-import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -56,7 +51,6 @@ import com.example.muzafarimran.lastingsales.service.*;
 import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
 import com.example.muzafarimran.lastingsales.utils.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.ShortcutBadgeUpdateAsync;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -198,20 +192,20 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //            NavigationDrawerActivity.this.startActivity(intentTest);
 //        }
 
-        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread thread, Throwable ex) {
-                Log.d(TAG, "uncaughtException: ");
-                Log.d("testlog", "uncaughtException: ");
-                Intent launchIntent = new Intent(getIntent());
-                PendingIntent pending = PendingIntent.getActivity(NavigationDrawerActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pending);
-                defaultHandler.uncaughtException(thread, ex);
-                System.exit(2); //TODO why 2 i forgot and it seems buggy now?
-                Log.d("testlog", "uncaughtException: exit");
-            }
-        });
+//        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+//            public void uncaughtException(Thread thread, Throwable ex) {
+//                Log.d(TAG, "uncaughtException: ");
+//                Log.d("testlog", "uncaughtException: ");
+//                Intent launchIntent = new Intent(getIntent());
+//                PendingIntent pending = PendingIntent.getActivity(NavigationDrawerActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pending);
+//                defaultHandler.uncaughtException(thread, ex);
+//                System.exit(2); //TODO why 2 i forgot and it seems buggy now?
+//                Log.d("testlog", "uncaughtException: exit");
+//            }
+//        });
 
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
@@ -515,12 +509,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 //                Log.e("MYAPP", "Unable to add properties to JSONObject", e);
 //            }
         } else if (id == R.id.nav_item_unlabeled_contacts) {
-            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
-            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
-            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
-            intent = new Intent(getApplicationContext(), FrameActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+//            bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
+//            bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
+//            bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
+//            intent = new Intent(getApplicationContext(), FrameActivity.class);
+//            intent.putExtras(bundle);
+//            startActivity(intent);
 //            String projectToken = MixpanelConfig.projectToken;
 //            MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
 //            try {

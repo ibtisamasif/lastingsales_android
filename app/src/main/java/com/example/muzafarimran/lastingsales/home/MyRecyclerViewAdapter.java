@@ -54,6 +54,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             case ClassNames.SEPARATOR_CLASS_TYPE:
                 return new ViewHolderSeparatorCard(LayoutInflater.from(mContext).inflate(ClassNames.SEPARATOR_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.ERROR_CLASS_TYPE:
+                return new ViewHolderErrorCard(LayoutInflater.from(mContext).inflate(ClassNames.ERROR_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -76,6 +79,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.SEPARATOR_CLASS_TYPE:
                 ViewHolderSeparatorCard viewHolderSeparatorCard = (ViewHolderSeparatorCard) holder;
                 viewHolderSeparatorCard.bind(item, position, mContext);
+                break;
+            case ClassNames.ERROR_CLASS_TYPE:
+                ViewHolderErrorCard viewHolderErrorCard = (ViewHolderErrorCard) holder;
+                viewHolderErrorCard.bind(item, position, mContext);
                 break;
         }
     }

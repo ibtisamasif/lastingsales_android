@@ -41,7 +41,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
     TextView name;
     TextView time;
     ImageView call_icon;
-    RelativeLayout call_name_time;
+//    RelativeLayout call_name_time;
     RelativeLayout contactCallDetails;
     TextView numberDetailTextView;
     Button bIgnore;
@@ -57,7 +57,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         this.name = view.findViewById(R.id.call_name);
         this.time = view.findViewById(R.id.call_time);
         this.call_icon = view.findViewById(R.id.call_icon);
-        this.call_name_time = view.findViewById(R.id.user_call_group_wrapper);
+//        this.call_name_time = view.findViewById(R.id.user_call_group_wrapper);
         this.numberDetailTextView = view.findViewById(R.id.call_number);
         this.bIgnore = view.findViewById(R.id.bIgnore);
         this.contactCallDetails = view.findViewById(R.id.rl_calls_details);
@@ -134,7 +134,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
 
         this.bIgnore.setTag(number);
         this.numberDetailTextView.setText(number);
-        this.call_name_time.setTag(position);
+//        this.call_name_time.setTag(position);
 
         long callTimeMillis = inquiryCall.getBeginTime();
         long now = Calendar.getInstance().getTimeInMillis();

@@ -206,7 +206,7 @@
 //        }
 //
 //        @Override
-//        public void handleMessage(Message msg) {
+//        public void handleMessage(Message message) {
 //            MainActivity mainActivity = mActivity.get();
 //            if (mainActivity == null) {
 //                // Activity is no longer available, exit.
@@ -215,7 +215,7 @@
 //            View showStartView = mainActivity.findViewById(R.id.onstart_textview);
 //            View showStopView = mainActivity.findViewById(R.id.onstop_textview);
 //            Message m;
-//            switch (msg.what) {
+//            switch (message.what) {
 //                /*
 //                 * Receives callback from the service when a job has landed
 //                 * on the app. Turns on indicator and sends a message to turn it off after
@@ -224,7 +224,7 @@
 //                case MSG_COLOR_START:
 //                    // Start received, turn on the indicator and show text.
 //                    showStartView.setBackgroundColor(getColor(R.color.start_received));
-//                    updateParamsTextView(msg.obj, "started");
+//                    updateParamsTextView(message.obj, "started");
 //
 //                    // Send message to turn it off after a second.
 //                    m = Message.obtain(this, MSG_UNCOLOR_START);
@@ -238,7 +238,7 @@
 //                case MSG_COLOR_STOP:
 //                    // Stop received, turn on the indicator and show text.
 //                    showStopView.setBackgroundColor(getColor(R.color.stop_received));
-//                    updateParamsTextView(msg.obj, "stopped");
+//                    updateParamsTextView(message.obj, "stopped");
 //
 //                    // Send message to turn it off after a second.
 //                    m = obtainMessage(MSG_UNCOLOR_STOP);

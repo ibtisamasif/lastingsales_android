@@ -5,13 +5,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationDrawerActivity;
-import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
 
 /**
  * Created by ibtisam on 10/9/2017.
@@ -46,7 +44,7 @@ public class FirebaseCustomNotification {
 
         Intent unlabeledIntent;
         Bundle bundle = new Bundle();
-        bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
+//        bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, UnlabeledFragment.class.getName());
         bundle.putString(FrameActivity.ACTIVITY_TITLE, "Unlabeled Leads");
         bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, true);
         unlabeledIntent = new Intent(context, FrameActivity.class);
