@@ -34,7 +34,6 @@ limitations under the License.
                 android:layout_height="match_parent"
                 android:layout_margin="12dp"
                 android:layout_weight="1"
-                android:background="@color/none_received"
                 android:gravity="center"
                 android:text="@string/onstarttask" />
 
@@ -44,7 +43,6 @@ limitations under the License.
                 android:layout_height="match_parent"
                 android:layout_margin="12dp"
                 android:layout_weight="1"
-                android:background="@color/none_received"
                 android:gravity="center"
                 android:text="@string/onstoptask" />
 

@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:scaleType="fitEnd"
                 android:src="@drawable/ic_call_green"
-                android:tint="@color/darkGreen" />
+                 />
         </LinearLayout>
 
     </LinearLayout>
@@ -157,7 +157,6 @@
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_below="@id/user_call_group_wrapper"
-        android:background="@drawable/contact_detail_drop_down_bg"
         android:orientation="vertical"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
@@ -179,8 +178,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
-                    android:paddingRight="10dp"
-                    android:src="@drawable/ic_plain_status_white" />
+                    android:paddingRight="10dp" />
 
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/status_label"
@@ -189,7 +187,6 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/status_icon"
                     android:text="@string/status"
-                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
                 <LinearLayout
@@ -217,8 +214,7 @@
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_down_white" />
+                        android:scaleType="fitXY"/>
 
                 </LinearLayout>
 
@@ -235,8 +231,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:paddingRight="10dp"
-                    android:src="@drawable/number_calls_icon" />
+                    android:paddingRight="10dp" />
 
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/calls_label"
@@ -273,8 +268,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:paddingRight="10dp"
-                    android:src="@drawable/last_contact_icon" />
+                    android:paddingRight="10dp" />
 
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/last_contact_label"
@@ -301,12 +295,10 @@
 
             <Button
                 android:id="@+id/contactDetailsDropDownDetailsButton"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="120dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/btn_transparent_white_border"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -314,7 +306,6 @@
                 android:radius="5dip"
                 android:tag="personal_radio"
                 android:text="@string/details"
-                android:textColor="@color/white"
                 android:textSize="14sp" />
         </LinearLayout>
 

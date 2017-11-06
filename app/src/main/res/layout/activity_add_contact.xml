@@ -3,7 +3,6 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/app_background"
               android:orientation="vertical"
               android:paddingBottom="@dimen/activity_vertical_margin"
               android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -41,13 +40,11 @@
 
                 <Button
                     android:id="@+id/b_import_contact"
-                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="120dp"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/btn_primary"
-                    android:paddingBottom="5dp"
+                        android:paddingBottom="5dp"
                     android:paddingLeft="20dp"
                     android:paddingStart="20dp"
                     android:paddingRight="10dp"
@@ -65,7 +62,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/border_bottom_add_contact"
                 android:orientation="horizontal"
                 android:paddingBottom="3dp"
                 android:paddingLeft="20dp"
@@ -75,11 +71,9 @@
                     android:id="@+id/add_contact_name_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_right_add_contact"
                     android:paddingBottom="15dp"
                     android:paddingRight="20dp"
                     android:paddingTop="5dp"
-                    android:src="@drawable/add_contact_name_field_icon"
                     />
 
                 <EditText
@@ -90,7 +84,6 @@
                     android:layout_marginStart="20dp"
                     android:layout_toRightOf="@id/add_contact_name_icon"
                     android:layout_toEndOf="@id/add_contact_name_icon"
-                    android:background="@drawable/border_bottom_transparent"
                     android:ems="10"
                     android:hint="@string/contact_name"
                     android:inputType="textPersonName"
@@ -103,7 +96,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/border_bottom_add_contact"
                 android:orientation="horizontal"
                 android:paddingBottom="3dp"
                 android:paddingLeft="20dp"
@@ -114,12 +106,10 @@
                     android:id="@+id/add_contact_phone_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_right_add_contact"
                     android:paddingBottom="15dp"
                     android:paddingRight="30dp"
                     android:paddingEnd="20dp"
                     android:paddingTop="5dp"
-                    android:src="@drawable/add_contact_number_field_icon"
                     />
 
                 <EditText
@@ -129,7 +119,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:layout_toRightOf="@id/add_contact_phone_icon"
-                    android:background="@drawable/border_bottom_transparent"
                     android:ems="10"
                     android:hint="@string/contact_phone"
                     android:inputType="numberDecimal"
@@ -142,7 +131,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/border_bottom_add_contact"
                 android:orientation="horizontal"
                 android:paddingBottom="3dp"
                 android:paddingLeft="20dp"
@@ -152,11 +140,9 @@
                     android:id="@+id/add_contact_email_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_right_add_contact"
                     android:paddingBottom="15dp"
                     android:paddingRight="23dp"
                     android:paddingTop="5dp"
-                    android:src="@drawable/add_contact_email_field_icon"
                     />
 
                 <EditText
@@ -165,7 +151,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/add_contact_email_icon"
-                    android:background="@drawable/border_bottom_transparent"
                     android:ems="10"
                     android:hint="EMAIL*"
                     android:inputType="textPersonName"
@@ -178,7 +163,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/border_bottom_add_contact"
                 android:orientation="horizontal"
                 android:paddingBottom="3dp"
                 android:paddingLeft="20dp"
@@ -188,11 +172,9 @@
                     android:id="@+id/add_contact_notes_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/border_right_add_contact"
                     android:paddingBottom="15dp"
                     android:paddingRight="25dp"
                     android:paddingTop="0dp"
-                    android:src="@drawable/add_contact_notes_field_icon"
                     />
 
                 <EditText
@@ -201,7 +183,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/add_contact_notes_icon"
-                    android:background="@drawable/border_bottom_transparent"
                     android:ems="10"
                     android:hint="NOTES"
                     android:inputType="textMultiLine"
@@ -222,7 +203,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
-                    android:background="@drawable/border_bottom_add_contact"
                     android:orientation="horizontal"
                     android:paddingBottom="3dp"
                     android:paddingLeft="20dp"
@@ -232,11 +212,9 @@
                         android:id="@+id/add_contact_phone_icon_two"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/border_right_add_contact"
                         android:paddingBottom="15dp"
                         android:paddingRight="30dp"
                         android:paddingTop="5dp"
-                        android:src="@drawable/add_contact_number_field_icon"
                         />
 
                     <EditText
@@ -246,7 +224,6 @@
                         android:layout_marginLeft="20dp"
 
                         android:layout_toRightOf="@id/add_contact_phone_icon"
-                        android:background="@drawable/border_bottom_transparent"
                         android:ems="10"
                         android:hint="PHONE 2"
                         android:inputType="numberDecimal"
@@ -260,7 +237,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
-                    android:background="@drawable/border_bottom_add_contact"
                     android:orientation="horizontal"
                     android:paddingBottom="3dp"
                     android:paddingLeft="20dp"
@@ -270,11 +246,9 @@
                         android:id="@+id/description_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/border_right_add_contact"
                         android:paddingBottom="15dp"
                         android:paddingRight="30dp"
                         android:paddingTop="5dp"
-                        android:src="@drawable/add_contact_number_field_icon"
                         />
 
                     <EditText
@@ -283,7 +257,6 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/add_contact_phone_icon"
-                        android:background="@drawable/border_bottom_transparent"
                         android:ems="10"
                         android:hint="DESCRIPTION"
                         android:inputType="numberDecimal"
@@ -297,7 +270,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
-                    android:background="@drawable/border_bottom_add_contact"
                     android:orientation="horizontal"
                     android:paddingBottom="3dp"
                     android:paddingLeft="20dp"
@@ -307,11 +279,9 @@
                         android:id="@+id/company_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/border_right_add_contact"
                         android:paddingBottom="15dp"
                         android:paddingRight="30dp"
                         android:paddingTop="5dp"
-                        android:src="@drawable/add_contact_number_field_icon"
                         />
 
                     <EditText
@@ -320,7 +290,6 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/add_contact_phone_icon"
-                        android:background="@drawable/border_bottom_transparent"
                         android:ems="10"
                         android:hint="COMPANY"
                         android:inputType="numberDecimal"
@@ -334,7 +303,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
-                    android:background="@drawable/border_bottom_add_contact"
                     android:orientation="horizontal"
                     android:paddingBottom="3dp"
                     android:paddingLeft="20dp"
@@ -344,11 +312,9 @@
                         android:id="@+id/address_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/border_right_add_contact"
                         android:paddingBottom="15dp"
                         android:paddingRight="30dp"
                         android:paddingTop="5dp"
-                        android:src="@drawable/add_contact_number_field_icon"
                         />
 
                     <EditText
@@ -357,7 +323,6 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/add_contact_phone_icon"
-                        android:background="@drawable/border_bottom_transparent"
                         android:ems="10"
                         android:hint="ADDRESS"
                         android:inputType="numberDecimal"
@@ -377,12 +342,10 @@
 
                 <Button
                     android:id="@+id/collegue_radio"
-                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="120dp"
                     android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="0.33"
-                    android:background="@drawable/btn_transparent_white_border"
                     android:paddingBottom="5dp"
                     android:paddingLeft="12dp"
                     android:paddingRight="10dp"
@@ -396,13 +359,11 @@
 
                 <Button
                     android:id="@+id/sales_radio"
-                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="120dp"
                     android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="0.33"
-                    android:background="@drawable/btn_primary"
-                    android:paddingBottom="5dp"
+                        android:paddingBottom="5dp"
                     android:paddingLeft="14dp"
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
@@ -415,11 +376,9 @@
 
                 <Button
                     android:id="@+id/personal_radio"
-                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="120dp"
                     android:layout_height="30dp"
                     android:layout_weight="0.33"
-                    android:background="@drawable/btn_transparent_white_border"
                     android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
@@ -435,10 +394,8 @@
 
             <Button
                 android:id="@+id/add_contact_cta"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:background="@drawable/btn_primary"
                 android:padding="0dp"
                 android:radius="5dip"
                 android:text="ADD CONTACT"
@@ -448,10 +405,8 @@
 
             <Button
                 android:id="@+id/save_contact_cta"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:background="@drawable/btn_primary"
                 android:padding="0dp"
                 android:radius="5dip"
                 android:text="SAVE CONTACT"

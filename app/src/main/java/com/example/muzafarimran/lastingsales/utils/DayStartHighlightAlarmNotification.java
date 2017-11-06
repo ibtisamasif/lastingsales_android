@@ -5,12 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
+
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
-import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationDrawerActivity;
-import com.example.muzafarimran.lastingsales.fragments.InquiriesFragment;
 
 /**
  * Created by ibtisam on 6/21/2017.

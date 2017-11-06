@@ -21,8 +21,9 @@
             android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:id="@+id/user_avatar"
-                style="@style/Ls.Image.ListImage"
                 android:src="@drawable/ic_account_circle"
                 app:civ_border_color="#FF000000"
                 app:civ_border_width="0dp" />
@@ -40,7 +41,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="name"
-                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <TextView
@@ -95,7 +95,6 @@
                     android:layout_toStartOf="@id/call_icon"
                     android:background="@drawable/inquiry_count_round"
                     android:gravity="center"
-                    android:textColor="@color/white"
                     android:textSize="12sp"
                     tools:text="50" />
 
@@ -108,7 +107,7 @@
                     android:paddingRight="10dp"
                     android:scaleType="fitEnd"
                     android:src="@drawable/ic_call_green"
-                    android:tint="@color/darkGreen" />
+                    />
 
             </RelativeLayout>
 
@@ -142,7 +141,6 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:text="@string/salesCapital"
-                    <!--android:textColor="@color/white"-->
                     />
                 </RelativeLayout>
             </RelativeLayout>

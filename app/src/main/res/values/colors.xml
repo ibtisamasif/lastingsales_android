@@ -15,6 +15,7 @@
     <color name="Ls.Color.Secondary">@color/md_cyan_600</color>
     <color name="Ls.Color.Red">@color/md_red_600</color>
     <color name="Ls.Color.Success">@color/md_teal_600</color>
+    <color name="Ls.Color.Info">@color/md_teal_600</color>
     <color name="Ls.Color.Default">@color/md_grey_600</color>
     <color name="Ls.Color.Background">@color/md_blue_grey_50</color>
 

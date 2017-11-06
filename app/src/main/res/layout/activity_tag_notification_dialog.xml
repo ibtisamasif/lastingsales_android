@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:animateLayoutChanges="true"
-        android:background="@drawable/shadow_borders3_white_bg"
         android:orientation="vertical"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -22,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            android:background="@drawable/shape_rounded_corners_accent_color"
             android:orientation="horizontal"
             android:weightSum="10">
 
@@ -34,7 +32,6 @@
                 android:gravity="left"
                 android:padding="12dp"
                 android:text="Save Contact"
-                android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -44,7 +41,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:layout_weight="9"
-                android:background="@color/blueDark"
                 android:src="@drawable/ic_close_white" />
 
         </LinearLayout>
@@ -78,27 +74,22 @@
 
                         <Button
                             android:id="@+id/bCollegueRadio"
-                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:layout_marginRight="10dp"
                             android:layout_weight="0.33"
-                            android:background="@drawable/btn_transparent_black_border"
 
                             android:radius="5dip"
                             android:tag="sales_radio"
                             android:text="COLLEAGUE"
-                            android:textColor="@color/black"
                             android:textSize="10sp" />
 
                         <Button
                             android:id="@+id/bSalesRadio"
-                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:layout_marginRight="10dp"
                             android:layout_weight="0.33"
-                            android:background="@drawable/btn_primary"
                             android:radius="5dip"
                             android:tag="collegue_radio"
                             android:text="LEAD"
@@ -118,7 +109,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/number"
-                            android:textColor="@color/black"
                             android:textSize="15sp" />
 
                         <TextView
@@ -131,7 +121,6 @@
 
                             android:inputType="phone"
                             android:padding="8dp"
-                            android:textColor="@color/black"
                             android:textSize="15sp"
                             tools:text="+92 301 4775234" />
                     </LinearLayout>
@@ -148,7 +137,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/name"
-                            android:textColor="@color/black"
                             android:textSize="15sp" />
 
                         <EditText
@@ -158,10 +146,8 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="20dp"
                             android:layout_weight="1"
-                            android:background="@drawable/shape_borders_rounded_corners_primary_color_white_fill"
                             android:inputType="textPersonName"
                             android:padding="8dp"
-                            android:textColor="@color/black"
                             android:textSize="15sp"
                             tools:text="David Abraham" />
                     </LinearLayout>
@@ -272,9 +258,7 @@
                         android:id="@+id/cbIgnore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Don't ask this number again."
-                        android:textColor="@color/black"
-                        android:buttonTint="@color/black"/>
+                        android:text="Don't ask this number again." />
                 </LinearLayout>
 
                 <LinearLayout
@@ -299,10 +283,8 @@
 
                     <Button
                         android:id="@+id/bSaveFollowupPopup"
-                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="150dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/btn_primary"
                         android:padding="0dp"
                         android:radius="5dip"
                         android:text="SAVE"

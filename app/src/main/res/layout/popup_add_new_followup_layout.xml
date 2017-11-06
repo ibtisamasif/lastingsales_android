@@ -12,20 +12,18 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:alpha="0.7"
-            android:background="@color/totem_blue"/>
+            />
 
         <LinearLayout
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@color/white"
             android:orientation="vertical"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@color/white"
                 >
 
                 <TextView
@@ -33,7 +31,6 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/popup_title_add_new_reminder"
-                    android:textColor="@color/black"
                     android:textSize="16sp"
                     />
             </LinearLayout>
@@ -175,7 +172,6 @@
                     android:layout_height="35dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
-                    android:backgroundTint="@color/white"
                     android:text="@string/change"
                     />
             </RelativeLayout>
@@ -197,7 +193,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/note_title"
-                    android:textColor="@color/black"
                     android:textSize="12sp"
                     />
 
@@ -228,10 +223,8 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/white"
                     android:padding="10dp"
                     android:text="@string/cancel"
-                    android:textColor="@color/black"
                     android:textSize="12dp"
                     />
 
@@ -241,10 +234,8 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:backgroundTint="@color/white"
                     android:padding="10dp"
                     android:text="@string/ok"
-                    android:textColor="@color/black"
                     android:textSize="12sp"
                     />
 

@@ -149,7 +149,6 @@
         <activity
             android:name=".activities.ContactCallDetails"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.AddContactActivity" />
         <activity
             android:name=".activities.LSContactChooserActivity"
             android:screenOrientation="portrait" />
@@ -172,16 +171,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AddEditNoteActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AlertDialogActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyAlertDialogStyle" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AlarmAlertDialogActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyAlertDialogStyle" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LogInActivity"
             android:screenOrientation="portrait"
@@ -194,22 +190,16 @@
             android:name=".activities.CreateCompanyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".activities.ContactDetailsActivity" />
 
         <activity
             android:name=".activities.ContactDetailsTabActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".activities.NotesByContactsActivity2"
             android:screenOrientation="portrait" />
 
         <service
             android:name=".service.AddEditLeadService"
             android:enabled="true"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyTransparentTheme">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="inez.apps.customincomingcallscreen.MyService" />
                 <action android:name="android.intent.action.MAIN" />
@@ -220,18 +210,12 @@
             android:name=".service.CallDetectionService"
             android:enabled="true"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyTransparentTheme">
+            android:screenOrientation="portrait">
             <!--<intent-filter>-->
             <!--<action android:name="inez.apps.customincomingcallscreen.MyService" />-->
             <!--<action android:name="android.intent.action.MAIN" />-->
             <!--</intent-filter>-->
         </service>
-
-        <activity
-            android:name=".activities.TagNumberActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name=".activities.SplashActivity"
@@ -267,7 +251,6 @@
         <activity
             android:name=".activities.NavigationDrawerActivity"
             android:screenOrientation="portrait"
-        <!--android:theme="@style/AppTheme.NoActionBar"-->
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -287,8 +270,7 @@
         <activity
             android:name=".activities.TagNotificationDialogActivity"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyTransparentTheme" />
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activities.FireBaseMainActivity"
@@ -303,11 +285,6 @@
         <activity
             android:name=".activities.FrameActivity"
             android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".activities.TagNumberAndAddFollowupActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name=".activities.AddEditLeadActivity"

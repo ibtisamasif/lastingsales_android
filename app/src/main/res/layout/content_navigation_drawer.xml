@@ -24,13 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal|center_vertical"
-        android:background="@color/tablayout_background"
         app:tabGravity="fill"
-        app:tabIndicatorColor="@color/tab_indicator_color"
         app:tabMode="fixed"
-        app:tabTextColor="@color/white"
-        app:tabSelectedTextColor="@color/darkGray"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:theme="@style/CustomHomeScreenToolBar"/>
+        app:layout_scrollFlags="scroll|enterAlways" />
 
 </LinearLayout>

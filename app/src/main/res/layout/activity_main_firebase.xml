@@ -18,13 +18,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:gravity="center_horizontal"
-        android:textColor="@color/black"
-        android:textSize="26dp"/>
+        android:textSize="26dp" />
 
     <EditText
         android:id="@+id/txt_reg_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/black"/>
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

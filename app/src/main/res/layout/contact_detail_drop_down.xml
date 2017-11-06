@@ -3,7 +3,6 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               xmlns:tools="http://schemas.android.com/tools"
-              android:background="@drawable/contact_detail_drop_down_bg"
               android:orientation="vertical"
               android:paddingLeft="25dp"
               android:paddingRight="25dp"
@@ -29,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:paddingRight="10dp"
-                android:src="@drawable/last_contact_icon"
                 />
 
             <TextView
@@ -70,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:paddingRight="10dp"
-                android:src="@drawable/number_calls_icon"/>
+                />
 
 
             <TextView
@@ -101,12 +99,11 @@
 
         <Button
             android:id="@+id/contactDetailsDropDownDetailsButton"
-            style="?android:attr/borderlessButtonStyle"
             android:layout_width="120dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/btn_transparent_white_border"
+
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="10dp"
@@ -114,7 +111,6 @@
             android:radius="5dip"
             android:tag="personal_radio"
             android:text="Details"
-            android:textColor="@color/white"
             android:textSize="14sp"
             />
     </LinearLayout>

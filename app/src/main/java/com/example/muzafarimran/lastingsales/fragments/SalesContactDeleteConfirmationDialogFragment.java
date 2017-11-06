@@ -6,10 +6,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.widget.Toast;
-
-import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.SalesAdapter;
 
 /**
  * Created by ahmad on 19-Dec-16.

@@ -277,7 +277,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 tv.setText(allColumns.get(i).getName());
                 tv.setPadding(15, 15, 15, 15);
                 final EditText et = new EditText(getContext());
-                et.setTextColor(getResources().getColor(R.color.black));
+//                et.setTextColor(getResources().getColor(R.color.black));
                 et.setBackgroundResource(R.drawable.dynamic_border);
                 et.setPadding(15, 15, 15, 15);
                 et.setText(allColumns.get(i).getDefaultValueOption());
@@ -320,10 +320,10 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 tv.setText(allColumns.get(i).getName());
                 tv.setPadding(15, 15, 15, 15);
                 final EditText et = new EditText(getContext());
-                et.setTextColor(getResources().getColor(R.color.black));
+//                et.setTextColor(getResources().getColor(R.color.black));
                 et.setBackgroundResource(R.drawable.dynamic_border);
                 et.setPadding(15, 15, 15, 15);
-                et.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                et.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et.setText(allColumns.get(i).getDefaultValueOption());
                 et.setMinimumWidth(400);
                 et.setTag(allColumns.get(i).getServerId());

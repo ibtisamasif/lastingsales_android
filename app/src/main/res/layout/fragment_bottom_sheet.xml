@@ -8,7 +8,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/deleteLayoutBottomSheet"
-        android:background="@drawable/selector_layout_click_gray_bg"
         >
         <ImageView
             android:layout_width="24dp"
@@ -22,7 +21,6 @@
             android:layout_height="wrap_content"
             android:text="Delete"
             android:layout_marginTop="16dp"
-            android:textColor="@color/black"
             />
     </LinearLayout>
 

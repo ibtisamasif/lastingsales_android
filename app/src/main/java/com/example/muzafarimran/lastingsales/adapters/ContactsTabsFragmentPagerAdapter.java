@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
 import com.example.muzafarimran.lastingsales.fragments.IgnoredFragment;
-import com.example.muzafarimran.lastingsales.fragments.SalesFragment;
 import com.example.muzafarimran.lastingsales.fragments.UnlabeledFragment;
 
 @Deprecated

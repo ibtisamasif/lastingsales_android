@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="standard test text"
-        android:textColor="@color/white"
         android:textSize="12dp" />
 
     <TextView
@@ -26,7 +25,6 @@
         android:background="#18366C"
         android:scaleType="fitEnd"
         android:text="0"
-        android:textColor="@color/white"
         android:textSize="12dp" />
 
 </RelativeLayout>

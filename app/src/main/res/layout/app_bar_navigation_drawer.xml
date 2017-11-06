@@ -23,8 +23,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:minHeight="?attr/actionBarSize"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:theme="@style/CustomHomeScreenToolBar"/>
+                    app:layout_scrollFlags="scroll|enterAlways" />
 
                 <com.miguelcatalan.materialsearchview.MaterialSearchView
                     android:id="@+id/search_view"

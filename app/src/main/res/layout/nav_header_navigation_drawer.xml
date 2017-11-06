@@ -41,15 +41,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:text="@string/loremipsun"
-            android:textColor="@color/white" />
+            android:text="@string/loremipsun" />
 
         <TextView
             android:id="@+id/tvProfileNumberNavBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+923228899906"
-            android:textColor="@color/half_white" />
+            android:text="+923228899906" />
     </LinearLayout>
 
 

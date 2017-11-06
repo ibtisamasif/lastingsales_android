@@ -13,14 +13,14 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbarContactDetailsActivity"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            />
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
@@ -38,7 +38,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:orientation="vertical"
                 >
 
@@ -170,7 +169,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/address"
-                        android:textColor="@color/white"
                         android:textSize="12sp"
                         />
 
@@ -180,7 +178,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:text="None"
-                        android:textColor="@color/white"
                         android:textSize="12sp"
                         />
 
@@ -201,7 +198,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:orientation="vertical"
                 >
 
@@ -272,7 +268,6 @@
                         android:layout_height="42dp"
                         android:layout_alignParentRight="true"
                         android:layout_margin="5dp"
-                        android:background="@drawable/btn_primary"
                         android:padding="5dp"
                         android:src="@drawable/ic_av_alarm"
                         android:id="@+id/ibEditFollowupButton"
@@ -288,7 +283,6 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/btn_primary"
                     android:paddingBottom="5dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="10dp"

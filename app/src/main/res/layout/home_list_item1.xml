@@ -63,7 +63,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/unknown_capital"
-                        android:textColor="@color/black"
                         android:textSize="18sp" />
 
                     <TextView
@@ -88,7 +87,7 @@
                     android:paddingRight="10dp"
                     android:scaleType="fitEnd"
                     android:src="@drawable/ic_call_green"
-                    android:tint="@color/darkGreen" />
+                    />
 
             </RelativeLayout>
 
@@ -101,7 +100,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/lightGray"
                     android:orientation="horizontal" />
 
                 <LinearLayout
@@ -366,7 +364,6 @@
 
                 <Button
                     android:id="@+id/bIgnore"
-                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -382,7 +379,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:text="@string/salesCapital"
-                    android:textColor="@color/white" />
+                    />
 
 
             </RelativeLayout>

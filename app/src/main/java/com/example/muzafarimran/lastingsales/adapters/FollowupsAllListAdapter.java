@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.TagNumberAndAddFollowupActivity;
 import com.example.muzafarimran.lastingsales.fragments.FollowupsListFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
@@ -71,12 +70,12 @@ public class FollowupsAllListAdapter extends BaseAdapter implements StickyListHe
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent myIntent = new Intent(context, TagNumberAndAddFollowupActivity.class);
-                    myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
-                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, oneContact.getId() + "");
-                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, oneFollowup.getId() + "");
-                    context.startActivity(myIntent);
-                    notifyDataSetChanged();
+//                    Intent myIntent = new Intent(context, TagNumberAndAddFollowupActivity.class);
+//                    myIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP);
+//                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, oneContact.getId() + "");
+//                    myIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_FOLLOWUP_ID, oneFollowup.getId() + "");
+//                    context.startActivity(myIntent);
+//                    notifyDataSetChanged();
                 }
             });
             viewHolder.contactName = (TextView) convertView.findViewById(R.id.list_item_followups_name);

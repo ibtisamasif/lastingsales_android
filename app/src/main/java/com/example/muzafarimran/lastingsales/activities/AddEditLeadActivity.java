@@ -437,14 +437,14 @@ public class AddEditLeadActivity extends Activity {
     private void selectRadioButton(String button) {
         if (button.equals(LSContact.CONTACT_TYPE_SALES)) {
             selectedContactType = LSContact.CONTACT_TYPE_SALES;
-            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
+//            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+//            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
             bSalesRadio.setTextColor(Color.WHITE);
             bColleagueRadio.setTextColor(Color.BLACK);
         } else if (button.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
             selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
-            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+//            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
+//            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
             bSalesRadio.setTextColor(Color.BLACK);
             bColleagueRadio.setTextColor(Color.WHITE);
         }

@@ -3,7 +3,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ffffff"
-    android:theme="@style/AppTheme.Base"
     >
 
     <LinearLayout
@@ -31,7 +30,6 @@
             android:text="Lorem ipsum"
             android:textSize="16dp"
             android:textStyle="bold"
-            android:textColor="@color/black"
             />
 
     </LinearLayout>
@@ -55,7 +53,7 @@
             android:layout_height="100dp"
             android:layout_marginLeft="10dp"
             android:inputType="textMultiLine"
-            android:textColor="@color/black"/>
+            />
 
     </LinearLayout>
 
@@ -72,10 +70,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
-            android:background="@drawable/btn_primary"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:textColor="@color/white"
             />
 
         <Button
@@ -83,10 +79,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save"
-            android:background="@drawable/btn_primary"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:textColor="@color/white"
 
             />
     </LinearLayout>

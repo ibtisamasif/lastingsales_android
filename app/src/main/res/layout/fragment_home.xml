@@ -5,7 +5,6 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cardview_background_color"
     android:orientation="vertical">
 
     <ScrollView
@@ -67,7 +66,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Total Leads"
-                                android:textColor="@color/white"
                                 android:textSize="16sp" />
                         </LinearLayout>
 
@@ -136,7 +134,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Inquiries"
-                                android:textColor="@color/white"
                                 android:textSize="16sp" />
                         </LinearLayout>
 
@@ -181,7 +178,6 @@
                             android:layout_width="100dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@color/redDark"
                             android:gravity="center">
 
                             <TextView
@@ -199,7 +195,6 @@
                             android:layout_width="180dp"
                             android:layout_height="match_parent"
                             android:layout_weight="2"
-                            android:background="@color/redLight"
                             android:gravity="center">
 
                             <TextView
@@ -252,7 +247,6 @@
                             android:layout_width="100dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@color/greenDark"
                             android:gravity="center">
 
                             <TextView
@@ -269,7 +263,6 @@
                             android:layout_width="180dp"
                             android:layout_height="match_parent"
                             android:layout_weight="2"
-                            android:background="@color/greenLight"
                             android:gravity="center">
 
                             <TextView
@@ -323,7 +316,7 @@
                             android:layout_height="1dp"
                             android:layout_gravity="right"
                             android:layout_marginTop="5dp"
-                            android:background="@color/lightGray" />
+                            />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -338,7 +331,6 @@
                                 android:layout_height="wrap_content"
                                 android:text="Your Performance Score"
                                 android:textAllCaps="true"
-                                android:textColor="@color/darkGray"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -512,13 +504,9 @@
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
-        fab:menu_colorNormal="@color/fab_contact_menu_normal"
-        fab:menu_colorPressed="@color/fab_contact_menu_pressed"
         fab:menu_colorRipple="#99d4d4d4"
         fab:menu_fab_size="normal"
         fab:menu_icon="@drawable/ic_person_add_white"
-        fab:menu_labels_colorNormal="@color/fab_contact_menu_text_background_normal"
-        fab:menu_labels_colorPressed="@color/fab_contact_menu_text_background_pressed"
         fab:menu_labels_colorRipple="#66efecec"
         fab:menu_labels_cornerRadius="3dp"
         fab:menu_labels_ellipsize="none"
@@ -533,7 +521,6 @@
         fab:menu_labels_textColor="#f2f1f1"
         fab:menu_labels_textSize="15sp"
         fab:menu_openDirection="up"
-        fab:menu_shadowColor="@color/darkGray"
         fab:menu_shadowRadius="4dp"
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="4dp"
@@ -544,8 +531,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_input_add"
-            app:fab_colorNormal="@color/fab_add_contact_normal"
-            app:fab_colorPressed="@color/fab_add_contact_pressed"
             fab:fab_label="Add Lead"
             fab:fab_size="mini" />
 
@@ -554,8 +539,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_action_search"
-            app:fab_colorNormal="@color/fab_import_contact_normal"
-            app:fab_colorPressed="@color/fab_import_contact_pressed"
             fab:fab_label="Import from Phonebook"
             fab:fab_size="mini" />
 

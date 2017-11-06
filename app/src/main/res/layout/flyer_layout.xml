@@ -36,7 +36,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shadow_borders"
             android:orientation="vertical"
 
             >
@@ -100,7 +99,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginStart="10dp"
                         android:src="@drawable/ic_flyer_circle"
-                        android:tint="@color/white" />
+                         />
 
                 </LinearLayout>
 
@@ -125,7 +124,6 @@
                             android:layout_marginRight="20dp"
                             android:ellipsize="end"
                             android:text="UNKNOWN"
-                            android:textColor="@color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -138,7 +136,6 @@
                             android:layout_below="@+id/tvName"
                             android:layout_centerVertical="true"
                             android:text="Note:"
-                            android:textColor="@color/white"
                             android:textSize="12sp"
                             android:textStyle="bold" />
 
@@ -153,7 +150,6 @@
                             android:layout_marginRight="20dp"
                             android:layout_marginStart="10dp"
                             android:maxLines="4"
-                            android:textColor="@color/white"
                             android:textSize="12sp" />
                     </RelativeLayout>
 
@@ -205,7 +201,6 @@
                             android:layout_weight="2.5"
                             android:maxLines="3"
                             android:text="Last contacted with me"
-                            android:textColor="@color/black"
                             android:textSize="12sp" />
 
                         <LinearLayout
@@ -223,7 +218,6 @@
                                 android:layout_height="wrap_content"
                                 android:maxLines="3"
                                 android:text="3-Jan-2017"
-                                android:textColor="@color/darkerGray"
                                 android:textSize="10sp" />
 
                             <TextView
@@ -233,7 +227,6 @@
                                 android:layout_marginLeft="6dp"
                                 android:layout_marginStart="6dp"
                                 android:maxLines="1"
-                                android:textColor="@color/darkerGray"
                                 android:textSize="10sp" />
                         </LinearLayout>
 
@@ -247,7 +240,6 @@
                             android:layout_weight="2.5"
                             android:maxLines="1"
                             android:text="Last contacted Ibtisam Asif"
-                            android:textColor="@color/black"
                             android:textSize="12sp" />
 
                         <LinearLayout
@@ -265,7 +257,6 @@
                                 android:layout_height="wrap_content"
                                 android:maxLines="3"
                                 android:text="2-Jan-2017"
-                                android:textColor="@color/darkerGray"
                                 android:textSize="10sp" />
 
                             <TextView
@@ -275,7 +266,6 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginStart="10dp"
                                 android:maxLines="3"
-                                android:textColor="@color/darkerGray"
                                 android:textSize="10sp" />
                         </LinearLayout>
                     </LinearLayout>

@@ -1,48 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="60dp"
-              android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="62dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/list_text_margin_left"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/list_item_followups_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00-00-00"
-            android:textColor="@color/black"
-            />
+            android:text="00-00-00" />
 
         <TextView
             android:id="@+id/list_item_followups_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lorem Ipsum"
-            android:textColor="@color/black"
-            />
+            android:text="Lorem Ipsum" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="2dp"
         android:layout_height="60dp"
-        android:layout_marginLeft="@dimen/list_text_margin_left"
-        android:background="@color/lightGray"></LinearLayout>
+        android:layout_marginLeft="@dimen/list_text_margin_left"></LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/list_text_margin_left"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/list_item_followups_name"
@@ -50,18 +43,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity=""
             android:text="Lorem Ipsum"
-            android:textColor="@color/black"
             android:textSize="15dp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/list_item_followups_note"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lorem Ipsum"
-            android:textColor="@color/black"
-            />
+            android:text="Lorem Ipsum" />
 
     </LinearLayout>
 
