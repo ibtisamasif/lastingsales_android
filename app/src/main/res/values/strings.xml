@@ -1,4 +1,9 @@
 <resources>
+
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
     <string name="app_name">  LastingSales</string>
     <string name="mixpanel_key">347487b41c2e70ed4dcef0f8454ad710</string>
     <string name="title_activity_splash">LastingSales</string>
@@ -122,5 +127,9 @@
 
     <string name="google_card_background_color">#F2F2F2</string>
     <string name="google_card_color">#FFFFFF</string>
+    <string name="navigation_inquiries">Inquiries</string>
+    <string name="navigation_home">Home</string>
+    <string name="navigation_leads">Leads</string>
+    <string name="navigation_more">More</string>
 
 </resources>

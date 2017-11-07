@@ -38,16 +38,13 @@ import static android.view.View.GONE;
 public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
     public static final String TAG = "InquiriesAdapter";
     public CircleImageView user_avatar;
-    TextView name;
-    TextView time;
-    ImageView call_icon;
-//    RelativeLayout call_name_time;
-    RelativeLayout contactCallDetails;
-    TextView numberDetailTextView;
-    Button bIgnore;
-    Button bTag;
-    TextView inquireyCount;
-    private LSContactProfile lsContactProfile;
+    private TextView name;
+    private TextView time;
+    private ImageView call_icon;
+    private TextView numberDetailTextView;
+    private Button bIgnore;
+    private Button bTag;
+    private TextView inquireyCount;
     private View.OnClickListener callClickListener = null;
 
 
@@ -57,10 +54,8 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         this.name = view.findViewById(R.id.call_name);
         this.time = view.findViewById(R.id.call_time);
         this.call_icon = view.findViewById(R.id.call_icon);
-//        this.call_name_time = view.findViewById(R.id.user_call_group_wrapper);
         this.numberDetailTextView = view.findViewById(R.id.call_number);
         this.bIgnore = view.findViewById(R.id.bIgnore);
-        this.contactCallDetails = view.findViewById(R.id.rl_calls_details);
         this.inquireyCount = view.findViewById(R.id.inquireyCount);
         this.bTag = view.findViewById(R.id.call_tag_btn);
         this.bTag.setVisibility(GONE);
@@ -71,7 +66,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         final String number = inquiryCall.getContactNumber();
 
         //        LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(number); // performance drawbacks with this function
-        lsContactProfile = inquiryCall.getContactProfile();
+        LSContactProfile lsContactProfile = inquiryCall.getContactProfile();
         if (lsContactProfile == null) {
             Log.d(TAG, "CreateOrUpdate: Not Found in LSInquiry Table now getting from ContactProfileProvider");
 //            ContactProfileProvider contactProfileProvider = new ContactProfileProvider(mContext);
@@ -146,9 +141,6 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
             this.time.setTextColor(Color.parseColor("#d0898989"));
         }
         this.time.setText(PhoneNumberAndCallUtils.getTimeAgo(inquiryCall.getBeginTime(), mContext));
-//        this.call_icon.setTag(mCalls.get(position).getContactNumber());
-
-//        this.bTag.setOnClickListener(new InquiriesAdapter.TagAContactClickListener(number));
 
         if (inquiryCall.getCountOfInquiries() > 0) {
             this.inquireyCount.setText(inquiryCall.getCountOfInquiries() + "");

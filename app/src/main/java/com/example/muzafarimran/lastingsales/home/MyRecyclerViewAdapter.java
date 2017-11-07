@@ -37,7 +37,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.SEPARATOR_CLASS_NAME:
                 return ClassNames.SEPARATOR_CLASS_TYPE;
 
+            case ClassNames.ERROR_CLASS_NAME:
+                return ClassNames.ERROR_CLASS_TYPE;
+
             default:
+                Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
                 return -1;
         }
     }
