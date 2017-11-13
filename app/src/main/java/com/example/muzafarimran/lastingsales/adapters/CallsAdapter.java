@@ -20,7 +20,6 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +97,7 @@ public class CallsAdapter extends BaseAdapter implements Filterable {
             holder.call_name_time = (RelativeLayout) convertView.findViewById(R.id.user_call_group_wrapper);
             holder.numberDetailTextView = (TextView) convertView.findViewById(R.id.call_number);
             holder.bContactCallsdetails = (Button) convertView.findViewById(R.id.bIgnore);
-            holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_calls_details);
+            holder.contactCallDetails = (RelativeLayout) convertView.findViewById(R.id.rl_container_buttons);
             this.showcalldetailslistener = new ShowDetailsDropDown(call, holder.contactCallDetails);
             holder.bTag = (Button) convertView.findViewById(R.id.call_tag_btn);
             holder.call_icon.setOnClickListener(this.callClickListener);

@@ -39,7 +39,6 @@ import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ColleagueFragment;
 import com.example.muzafarimran.lastingsales.fragments.IgnoredFragment;
-import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
@@ -66,6 +65,7 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SearchCallback, TabSelectedListener {
     private static final String TAG = "NaviDrawerActivity";
+
     MaterialSearchView searchView;
     SessionManager sessionManager;
     SettingsManager settingsManager;
@@ -278,14 +278,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent;
-                Bundle bundle = new Bundle();
-                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, MoreFragment.class.getName());
-                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Profile");
-                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
-                intent = new Intent(getApplicationContext(), FrameActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
+
             }
         });
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -368,7 +361,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         });
         Bundle bundle1 = getIntent().getExtras();
         if (bundle1 != null) {
-            String tab = bundle1.getString("SELECTED_TAB");
+            String tab = bundle1.getString("KEY_SELECTED_TAB");
             if (tab != null) {
                 if (tab.equals("INQUIRIES_TAB")) {
                     viewPager.setCurrentItem(0, true);

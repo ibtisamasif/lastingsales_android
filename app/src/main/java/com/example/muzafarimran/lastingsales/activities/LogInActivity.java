@@ -66,7 +66,7 @@ public class LogInActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(getApplicationContext());
         if (sessionManager.isUserSignedIn()) {
-            startActivity(new Intent(getApplicationContext(), NavigationDrawerActivity.class));
+            startActivity(new Intent(getApplicationContext(), NavigationBottomMainActivity.class));
             finish();
         }
         pdLoading = new ProgressDialog(this);
@@ -240,7 +240,7 @@ public class LogInActivity extends AppCompatActivity {
                             activity.startActivity(new Intent(activity, CreateCompanyActivity.class));
                             activity.finish();
                         } else {
-                            activity.startActivity(new Intent(activity, NavigationDrawerActivity.class));
+                            activity.startActivity(new Intent(activity, NavigationBottomMainActivity.class));
                             activity.finish();
                         }
                         Log.d(TAG, "onResponse: " + response);
@@ -336,7 +336,7 @@ public class LogInActivity extends AppCompatActivity {
                     .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                     .build();
 
-        }else {
+        } else {
             builtUri = Uri.parse(BASE_URL)
                     .buildUpon()
                     .appendQueryParameter("device_id", "" + sessionManager.getKeyLoginFirebaseRegId())
@@ -355,14 +355,15 @@ public class LogInActivity extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
                     if (responseCode == 200) {
+
                         JSONObject responseObject = jObj.getJSONObject("response");
                         Log.d(TAG, "onResponse : FirebaseLocalRegID : " + sessionManager.getKeyLoginFirebaseRegId());
                         Log.d(TAG, "onResponse : FirebaseServerRegID : " + responseObject.getString("device_id"));
 
-                        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-                        theCallLogEngine.execute();
-                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-                        dataSenderAsync.run();
+//                        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+//                        theCallLogEngine.execute();
+//                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+//                        dataSenderAsync.run();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

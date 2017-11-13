@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.utils.IgnoredContact;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONObject;

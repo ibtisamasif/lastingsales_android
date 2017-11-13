@@ -7,7 +7,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.activities.MainActivity;
 import com.example.muzafarimran.lastingsales.activities.TypeManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
@@ -26,8 +25,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Calendar;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -461,25 +458,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             }
 
-
-//            JSONObject data = json.getJSONObject("data");
-//            String title = data.getString("title");
-//            String message = data.getString("message");
-//            boolean isBackground = data.getBoolean("is_background");
-//            String imageUrl = data.getString("image");
-//            String timestamp = data.getString("timestamp");
-//            JSONObject payload = data.getJSONObject("payload");
-//
-//            Log.e(TAG, "title: " + title);
-//            Log.e(TAG, "message: " + message);
-//            Log.e(TAG, "isBackground: " + isBackground);
-//            Log.e(TAG, "payload: " + payload.toString());
-//            Log.e(TAG, "imageUrl: " + imageUrl);
-//            Log.e(TAG, "timestamp: " + timestamp);
-
-//            if (!FireBaseNotificationUtils.isAppIsInBackground(getApplicationContext())) {
-//            Log.d(TAG, "handleNotification: CHECK 2");
-//                 app is in foreground, broadcast the push message
             Intent pushNotification = new Intent(FireBaseConfig.PUSH_NOTIFICATION);
             pushNotification.putExtra("message", mMsg);
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
@@ -487,20 +465,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // play notification sound
             FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
             notificationUtils.playNotificationSound();
-//            } else {
-//            Log.d(TAG, "handleNotification: CHECK 3");
-            // app is in background, show the notification in notification tray
-            Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
-            resultIntent.putExtra("message", mMsg);
-
-//                // check for image attachment
-//                if (TextUtils.isEmpty(imageUrl)) {
-//                    showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
-//                } else {
-//                    // image is present, show notification with image
-//                    showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
-//                }
-//            }
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(TAG, "Json Exception: " + e.getMessage());
@@ -509,22 +473,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "Exception: " + e.getMessage());
         }
     }
-
-//    /**
-//     * Showing notification with text only
-//     */
-//    private void showNotificationMessage(Context context, String title, String message, String timeStamp, Intent intent) {
-//        notificationUtils = new FireBaseNotificationUtils(context);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        notificationUtils.showNotificationMessage(title, message, timeStamp, intent);
-//    }
-//
-//    /**
-//     * Showing notification with text and image
-//     */
-//    private void showNotificationMessageWithBigImage(Context context, String title, String message, String timeStamp, Intent intent, String imageUrl) {
-//        notificationUtils = new FireBaseNotificationUtils(context);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);
-//    }
 }

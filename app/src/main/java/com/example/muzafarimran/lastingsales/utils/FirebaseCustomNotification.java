@@ -21,7 +21,7 @@ public class FirebaseCustomNotification {
     public static Notification createFirebaseInquiriesNotification(Context context, String message) {
 
         Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
-        inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
+        inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder notificationBuilder = new Notification.Builder(context)

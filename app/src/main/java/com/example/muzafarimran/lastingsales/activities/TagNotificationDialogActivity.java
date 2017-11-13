@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.receivers.IgnoredContact;
+import com.example.muzafarimran.lastingsales.utils.IgnoredContact;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;

@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -25,7 +24,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.providers.DynamicColumnBuilder;
+import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilder;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;

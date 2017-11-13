@@ -20,7 +20,7 @@ public class DayStartHighlightAlarmNotification {
     public static Notification createAlarmNotification(Context context, String title, String message) {
 
         Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
-        inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
+        inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
         PendingIntent pDetailsActivityIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Notification.Builder notificationBuilder = new Notification.Builder(context)

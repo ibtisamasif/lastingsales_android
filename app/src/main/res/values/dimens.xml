@@ -5,6 +5,8 @@
     <dimen name="Ls.Dimen.ListItemIconMargin">16dp</dimen>
     <dimen name="Ls.Dimen.space">8dp</dimen>
 
+    <dimen name="Ls.Dimen.CardHorizontalMargin">4dp</dimen>
+    <dimen name="Ls.Dimen.CardVerticalMargin">4dp</dimen>
     <dimen name="Ls.Dimen.CardMarginSmall">4dp</dimen>
     <dimen name="Ls.Dimen.CardMarginMedium">8dp</dimen>
 

@@ -2,9 +2,12 @@ package com.example.muzafarimran.lastingsales.listloaders;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
-import com.example.muzafarimran.lastingsales.home.SeparatorItem;
+
+import com.example.muzafarimran.lastingsales.activities.ColleagueActivity;
+import com.example.muzafarimran.lastingsales.activities.IgnoredActivity;
+import com.example.muzafarimran.lastingsales.carditems.SettingItem;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,15 +24,15 @@ public class MoreLoader  extends AsyncTaskLoader<List<Object>>{
     @Override
     public List<Object> loadInBackground() {
         list.clear();
-//        Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
 
-        Collection<SeparatorItem> listSeparator = new ArrayList<SeparatorItem>();
+        SettingItem settingItemAbout = new SettingItem("Colleague", ColleagueActivity.class);
+        SettingItem settingItemSetting = new SettingItem("Ignored", IgnoredActivity.class);
+        SettingItem settingItemLogout = new SettingItem("Settings");
 
-        SeparatorItem spItem = new SeparatorItem();
-        spItem.text = "More Element";
-        listSeparator.add(spItem);
+        list.add(settingItemAbout);
+        list.add(settingItemSetting);
+        list.add(settingItemLogout);
 
-        list.addAll(listSeparator);
         return list;
     }
 }

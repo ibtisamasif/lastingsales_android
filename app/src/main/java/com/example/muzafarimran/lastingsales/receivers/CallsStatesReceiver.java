@@ -18,9 +18,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.utils.PathFileObserver;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.RecordingManager;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ahmad on 08-Nov-16.
  */
 
-public class CallsStatesReceiver extends CallReceiver implements PathFileObserver.FileObserverInterface {
+public class CallsStatesReceiver extends CallReceiver{
     public static final String OUTGOINGCALL_CONTACT_ID = "outgoing_contact_id";
     public static final String INCOMINGCALL_CONTACT_ID = "incoming_contact_id";
     public static final String OUTGOINGCALL_CONTACT_NOTE_ID = "outgoing_contact_note_id";
@@ -45,7 +43,6 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
     private static boolean isRecordStarted = false;
     private static PowerManager powerManager = null;
     private static PowerManager.WakeLock wakeLock = null;
-    private static PathFileObserver pathFileObserver;
     private SessionManager sessionManager;
     private static boolean isBubbleShown = false;
 
@@ -550,83 +547,6 @@ public class CallsStatesReceiver extends CallReceiver implements PathFileObserve
     }
 
     private void endServiceAndCallPopupFlyer(Context ctx) {
-
         BubbleHelper.getInstance(ctx).hide();
-
-//        Log.wtf(TAG, "endServiceAndCallPopupFlyer: ");
-//        Intent intent = new Intent(context, AddEditLeadService.class);
-//        context.stopService(intent);
-    }
-
-//    public void checkShowCallPopupNew(Context context, String name, String number) {
-//        Log.wtf(TAG, "checkShowCallPopupNew: ");
-//        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-////        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, internationalNumber);
-//        Intent intent = new Intent(context, AddEditLeadService.class);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
-//        context.startService(intent);
-//    }
-
-//    private void showTagNumberPopupIfNeeded(Context context, String number) {
-//        NotificationManager mNotificationManager;
-//        String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-//        LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
-//
-//        if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-//            String name = tempContact.getContactName();
-//            mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(context, number, tempContact));
-//
-//        } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-//            mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(context, intlNumber));
-//        } else if (tempContact == null) {
-//            Log.d(TAG, "showTagNumberPopupIfNeeded: tempContact is NULL");
-//            mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//            mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createTagNotification(context, intlNumber));
-//        }
-//    }
-
-    @Override
-    public void onEvent(int event, String path) {
-        switch (event) {
-            case FileObserver.CREATE:
-                Log.d(TAG, "Event CREATE:");
-//                Log.d(TAG, "CREATE:" + rootPath + path);
-                break;
-            case FileObserver.DELETE:
-                Log.d(TAG, "Event DELETE:");
-//                Log.d(TAG, "DELETE:" + rootPath + path);
-                break;
-            case FileObserver.DELETE_SELF:
-                Log.d(TAG, "Event DELETE_SELF:");
-//                Log.d(TAG, "DELETE_SELF:" + rootPath + path);
-                break;
-            case FileObserver.MODIFY:
-//                Log.d(TAG, "Event MODIFY:");
-//                Log.d(TAG, "MODIFY:" + rootPath + path);
-                break;
-            case FileObserver.MOVED_FROM:
-                Log.d(TAG, "Event MOVED_FROM:");
-//                Log.d(TAG, "MOVED_FROM:" + rootPath + path);
-                break;
-            case FileObserver.MOVED_TO:
-                Log.d(TAG, "MOVED_TO:" + path);
-                break;
-            case FileObserver.MOVE_SELF:
-                Log.d(TAG, "MOVE_SELF:" + path);
-                break;
-            case FileObserver.CLOSE_WRITE:
-                Log.d(TAG, "CLOSE_WRITE:" + path);
-                RecordingManager recordingManager = new RecordingManager();
-                recordingManager.execute();
-                break;
-            default:
-                // just ignore
-                break;
-        }
     }
 }

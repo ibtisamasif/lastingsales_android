@@ -3,9 +3,10 @@ package com.example.muzafarimran.lastingsales.listloaders;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.example.muzafarimran.lastingsales.home.ErrorItem;
+import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
+import com.example.muzafarimran.lastingsales.carditems.HomeItem;
+import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +29,18 @@ public class LeadsLoader  extends AsyncTaskLoader<List<Object>> {
         Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
 
         if(contacts != null){
+
+            Collection<HomeItem> listHome = new ArrayList<HomeItem>();
+            HomeItem item = new HomeItem();
+            item.value = "" + contacts.size();
+            item.text = "LEADS";
+            listHome.add(item);
+
+            SeparatorItem separatorItem = new SeparatorItem();
+            separatorItem.text = "Leads";
+
+            list.addAll(listHome);
+            list.add(separatorItem);
             list.addAll(contacts);
         }else {
             Collection<ErrorItem> listError = new ArrayList<ErrorItem>();

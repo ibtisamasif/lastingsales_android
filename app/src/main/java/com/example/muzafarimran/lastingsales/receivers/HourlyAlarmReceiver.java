@@ -141,7 +141,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
                                 Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
-                                inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
+                                inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
                                 PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                                 Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -173,7 +173,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
                         Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
-                        inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
+                        inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
                         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                         Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -208,7 +208,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                                 Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
-                                inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
+                                inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
                                 PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
@@ -243,7 +243,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                     } else {
                         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                         Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
-                        inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
+                        inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
                         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)

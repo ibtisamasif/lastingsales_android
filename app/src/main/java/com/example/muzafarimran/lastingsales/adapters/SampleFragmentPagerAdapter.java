@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.fragments.LeadTabsFragment;
-import com.example.muzafarimran.lastingsales.home.newHomeFragment;
-import com.example.muzafarimran.lastingsales.inquiry.newInquiriesFragment;
+import com.example.muzafarimran.lastingsales.fragments.newHomeFragment;
+import com.example.muzafarimran.lastingsales.fragments.newInquiriesFragment;
 
 import java.util.ArrayList;
 import java.util.List;

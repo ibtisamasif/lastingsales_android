@@ -10,6 +10,9 @@
         <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
     </style>
 
+    <!-- Lies here a failed experiment on styling the tool bar: RIP-->
+
+
     <!-- Hi, a request: USE THESE GODDAMM ATTRIBUTES!! -->
     <!--
     _______                                      _

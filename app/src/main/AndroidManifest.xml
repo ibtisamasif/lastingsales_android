@@ -81,14 +81,6 @@
             <!--</intent-filter>-->
         </receiver>
         <receiver
-            android:name=".receivers.InquiryAlarmReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-            <!--</intent-filter>-->
-        </receiver>
-        <receiver
             android:name=".receivers.HourlyAlarmReceiver"
             android:enabled="true"
             android:exported="true">
@@ -135,34 +127,14 @@
                 <category android:name="com.example.muzafarimran.lastingsales" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receivers.UninstallIntentReceiver">
-            <intent-filter android:priority="999">
-                <action android:name="android.intent.action.QUERY_PACKAGE_RESTART" />
-                <action android:name="android.intent.action.UNINSTALL_PACKAGE" />
-                <data android:scheme="com.example.muzafarimran.lastingsales" />
-            </intent-filter>
-        </receiver>
 
         <activity
-            android:name=".activities.MainActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.ContactCallDetails"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.LSContactChooserActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AddEditFollowUpsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="nosensor" />
-        <activity
-            android:name=".activities.FollowupsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".activities.NotesActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait" />
@@ -193,6 +165,15 @@
 
         <activity
             android:name=".activities.ContactDetailsTabActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.AccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ColleagueActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.IgnoredActivity"
             android:screenOrientation="portrait" />
 
         <service
@@ -290,16 +271,6 @@
             android:name=".activities.TagNotificationDialogActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
-
-        <activity
-            android:name=".activities.FireBaseMainActivity"
-            android:label="@string/title_main_activity"
-            android:screenOrientation="portrait">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
 
         <activity
             android:name=".activities.FrameActivity"

@@ -34,7 +34,6 @@ public class IgnoredFragment extends TabFragment {
     private static final String TAG = "PersonalContactFragment";
     ListView listView = null;
     IgnoredAdapter ignoredAdapter;
-    EditText inputSearch;
     MaterialSearchView searchView;
     private TinyBus bus;
     private ErrorScreenView errorScreenView;
@@ -113,7 +112,6 @@ public class IgnoredFragment extends TabFragment {
         Log.d(TAG, "onResume() Called");
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
         listView = (ListView) view.findViewById(R.id.personal_contacts_list);
-        inputSearch = (EditText) (getActivity().findViewById(R.id.search_box));
         listView.setAdapter(ignoredAdapter);
         errorScreenView = (ErrorScreenView) view.findViewById(R.id.ivleads_contacts_custom);
         errorScreenView.setErrorImage(R.drawable.delight_home);

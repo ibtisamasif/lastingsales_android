@@ -43,7 +43,7 @@ public class HourlyAlarmNotification {
         }
 
         Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
-        inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
+        inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -85,7 +85,7 @@ public class HourlyAlarmNotification {
         }
 
         Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
-        inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
+        inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
