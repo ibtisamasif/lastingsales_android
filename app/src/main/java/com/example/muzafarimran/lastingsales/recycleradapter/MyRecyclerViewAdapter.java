@@ -7,10 +7,14 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.app.ClassNames;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderCallCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderErrorCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderHomeCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderInquiryCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderLoadingCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderMoreCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderNoteCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderReminderCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSeparatorCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSettingCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderUnlabeledCard;
@@ -58,6 +62,18 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.HOME_CLASS_NAME:
                 return ClassNames.HOME_CLASS_TYPE;
 
+            case ClassNames.NOTE_CLASS_NAME:
+                return ClassNames.NOTE_CLASS_TYPE;
+
+            case ClassNames.CALL_CLASS_NAME:
+                return ClassNames.CALL_CLASS_TYPE;
+
+            case ClassNames.REMINDER_CLASS_NAME:
+                return ClassNames.REMINDER_CLASS_TYPE;
+
+            case ClassNames.MORE_CLASS_NAME:
+                return ClassNames.MORE_CLASS_TYPE;
+
             default:
                 Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
                 return -1;
@@ -87,7 +103,19 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 return new ViewHolderLoadingCard(LayoutInflater.from(mContext).inflate(ClassNames.LOADING_CLASS_RESOURCE, viewGroup, false));
 
             case ClassNames.HOME_CLASS_TYPE:
-                return new ViewHolderHomeCard(LayoutInflater.from(mContext).inflate(ClassNames.HOME_CLASS_RESOURCE, viewGroup, false));
+                return new ViewHolderHomeCard(LayoutInflater.from(mContext).inflate(ClassNames.HOME_CLASS_RESOURCE, viewGroup, false)); //Huawei crash here
+
+            case ClassNames.NOTE_CLASS_TYPE:
+                return new ViewHolderNoteCard(LayoutInflater.from(mContext).inflate(ClassNames.NOTE_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.CALL_CLASS_TYPE:
+                return new ViewHolderCallCard(LayoutInflater.from(mContext).inflate(ClassNames.CALL_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.REMINDER_CLASS_TYPE:
+                return new ViewHolderReminderCard(LayoutInflater.from(mContext).inflate(ClassNames.REMINDER_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.MORE_CLASS_TYPE:
+                return new ViewHolderMoreCard(LayoutInflater.from(mContext).inflate(ClassNames.MORE_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -126,6 +154,22 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.HOME_CLASS_TYPE:
                 ViewHolderHomeCard viewHolderHomeCard = (ViewHolderHomeCard) holder;
                 viewHolderHomeCard.bind(item, position, mContext);
+                break;
+            case ClassNames.NOTE_CLASS_TYPE:
+                ViewHolderNoteCard viewHolderNoteCard = (ViewHolderNoteCard) holder;
+                viewHolderNoteCard.bind(item, position, mContext);
+                break;
+            case ClassNames.CALL_CLASS_TYPE:
+                ViewHolderCallCard viewHolderCallCard = (ViewHolderCallCard) holder;
+                viewHolderCallCard.bind(item, position, mContext);
+                break;
+            case ClassNames.REMINDER_CLASS_TYPE:
+                ViewHolderReminderCard viewHolderReminderCard = (ViewHolderReminderCard) holder;
+                viewHolderReminderCard.bind(item, position, mContext);
+                break;
+            case ClassNames.MORE_CLASS_TYPE:
+                ViewHolderMoreCard viewHolderMoreCard = (ViewHolderMoreCard) holder;
+                viewHolderMoreCard.bind(item, position, mContext);
                 break;
         }
     }

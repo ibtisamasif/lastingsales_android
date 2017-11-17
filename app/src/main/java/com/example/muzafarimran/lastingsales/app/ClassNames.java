@@ -36,4 +36,20 @@ public class ClassNames {
     public static final String HOME_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.HomeItem";
     public static final int HOME_CLASS_TYPE = 7;
     public static final int HOME_CLASS_RESOURCE = R.layout.card_home;
+
+    public static final String NOTE_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.LSNote";
+    public static final int NOTE_CLASS_TYPE = 8;
+    public static final int NOTE_CLASS_RESOURCE = R.layout.card_note;
+
+    public static final String CALL_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.LSCall";
+    public static final int CALL_CLASS_TYPE = 9;
+    public static final int CALL_CLASS_RESOURCE = R.layout.ind_call_view;
+
+    public static final String REMINDER_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.TempFollowUp";
+    public static final int REMINDER_CLASS_TYPE = 10;
+    public static final int REMINDER_CLASS_RESOURCE = R.layout.reminder_item;
+
+    public static final String MORE_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.MoreItem";
+    public static final int MORE_CLASS_TYPE = 11;
+    public static final int MORE_CLASS_RESOURCE = R.layout.card_more;
 }

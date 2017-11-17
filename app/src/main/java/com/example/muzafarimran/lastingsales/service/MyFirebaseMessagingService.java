@@ -7,7 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.activities.TypeManager;
+import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
@@ -44,52 +44,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e(TAG, "MessageReceived");
         sessionManager = new SessionManager(getApplicationContext());
         Log.d(TAG, "onMessageReceived: Firebase ID: " + sessionManager.getKeyLoginFirebaseRegId());
-//        Log.e(TAG, "From: " + remoteMessage.getFrom());
-//        Log.e(TAG, "From2: " + remoteMessage.getTo());
-//        Log.e(TAG, "From3: " + remoteMessage.getNotification());
-//        Log.e(TAG, "From4: " + remoteMessage.getData());
-//        Log.e(TAG, "From5: " + remoteMessage.getMessageType());
-//        Log.e(TAG, "From6: " + remoteMessage.getCollapseKey());
-
-
-//        if (remoteMessage == null)
-//            return;
-//
-//        // Check if message contains a notification payload.
-//        if (remoteMessage.getNotification() != null) {
-//            Log.e(TAG, "Notification Body: " + remoteMessage.getNotification().getBody());
-//            handleNotification(remoteMessage.getNotification().getBody());
-//        }
-//
-//        // Check if message contains a data payload.
-//        if (remoteMessage.getData().size() > 0) {
-//            Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
-
         try {
-//                JSONObject json = new JSONObject(remoteMessage.getNotification().getBody().toString());
             if (sessionManager.isUserSignedIn()) {
                 JSONObject json = new JSONObject(remoteMessage.getData().toString());
                 handleDataMessage(json);
             }
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
-        }
-//        }
-    }
-
-    private void handleNotification(String message) {
-        Log.d(TAG, "handleNotification: CHECK 1");
-        if (!FireBaseNotificationUtils.isAppIsInBackground(getApplicationContext())) {
-            // app is in foreground, broadcast the push message
-            Intent pushNotification = new Intent(FireBaseConfig.PUSH_NOTIFICATION);
-            pushNotification.putExtra("message", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-
-            // play notification sound
-            FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
-            notificationUtils.playNotificationSound();
-        } else {
-            // If the app is in background, firebase itself handles the notification
         }
     }
 

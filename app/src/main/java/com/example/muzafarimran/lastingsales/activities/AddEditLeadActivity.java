@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +8,12 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
@@ -24,6 +23,7 @@ import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 1/19/2017.
  */
 
-public class AddEditLeadActivity extends Activity {
+public class AddEditLeadActivity extends AppCompatActivity {
 
     public static final String ACTIVITY_LAUNCH_MODE = "activity_launch_mode";
     public static final String LAUNCH_MODE_IMPORT_CONTACT = "launch_mode_import_contact_from_phonebook";
@@ -68,7 +68,7 @@ public class AddEditLeadActivity extends Activity {
     String phoneNumberFromLastActivity;
     boolean editingMode = false;
     long contactIdLong = -1;
-    TextView tvTitleAddContact;
+//    TextView tvTitleAddContact;
     EditText etContactName;
     EditText etContactPhone;
     EditText etContactEmail;
@@ -90,7 +90,8 @@ public class AddEditLeadActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_lead);
-        tvTitleAddContact = (TextView) findViewById(R.id.tvTitleAddContact);
+        this.setFinishOnTouchOutside(false);
+//        tvTitleAddContact = (TextView) findViewById(R.id.tvTitleAddContact);
         etContactName = (EditText) findViewById(R.id.etNameAddLead);
         etContactPhone = (EditText) findViewById(R.id.etNumberAddLead);
         llEmailAddress = (LinearLayout) findViewById(R.id.llEmailAddress);
@@ -113,7 +114,7 @@ public class AddEditLeadActivity extends Activity {
         if (launchMode.equals(LAUNCH_MODE_IMPORT_CONTACT)) {
             llEmailAddress.setVisibility(View.GONE);
             startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), REQUEST_CODE_PICK_CONTACTS);
-            tvTitleAddContact.setText(TITLE_IMPORT_CONTACT);
+//            tvTitleAddContact.setText(TITLE_IMPORT_CONTACT);
             editingMode = false;
             // Redirected Import Contact to LAUNCH_MODE_ADD_NEW_CONTACT
             launchMode = AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT;
@@ -251,13 +252,13 @@ public class AddEditLeadActivity extends Activity {
 
     private void populateCreateContactView() {
         llEmailAddress.setVisibility(View.GONE);
-        tvTitleAddContact.setText(TITLE_ADD_NEW_CONTACT);
+//        tvTitleAddContact.setText(TITLE_ADD_NEW_CONTACT);
         editingMode = false;
         selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
     }
 
     private void populateUpdateContactView(Bundle bundle) {
-        tvTitleAddContact.setText(TITLE_EDIT_CONTACT);
+//        tvTitleAddContact.setText(TITLE_EDIT_CONTACT);
         editingMode = true;
         String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
         String num = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);

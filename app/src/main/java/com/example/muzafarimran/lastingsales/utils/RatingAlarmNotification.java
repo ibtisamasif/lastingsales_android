@@ -8,19 +8,20 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.NavigationDrawerActivity;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 
 /**
  * Created by ibtisam on 9/18/2017.
  */
 
+@Deprecated
 public class RatingAlarmNotification {
     public static final String TAG = "myAlarmLog";
     public static final int NOTIFICATION_ID = 2;
 
     public static Notification createAlarmNotification(Context context, String title, String message) {
         Log.d(TAG, "createHourlyAlarmNotificationForList: RatingAlarm");
-        Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
+        Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
 //        inquiriesIntent.putExtra("SELECTED_TAB", "INQUIRIES_TAB");
         PendingIntent pDetailsActivityIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 

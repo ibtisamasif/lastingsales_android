@@ -15,7 +15,6 @@ import android.view.View;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
-import com.example.muzafarimran.lastingsales.listeners.TabSelectedListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import de.halfbit.tinybus.TinyBus;
@@ -28,7 +27,6 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     public static final String TAG = "ContactDetailsTab";
     public static final String KEY_CONTACT_ID = "contact_id";
     public static final String KEY_SET_SELECTED_TAB = "key_set_selected_tab";
-    public static final String SET_SELECTED_TAB_FOLLOWUP = "tab_selected_followup";
 
     ViewPager viewPager;
     FloatingActionButton floatingActionButton;
@@ -72,7 +70,6 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 //                tvNumberOne.setText(selectedContact.getPhoneOne());
             }
         }
-
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId(), selectedContact.getPhoneOne()));
@@ -172,7 +169,6 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 addContactScreenIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
                 addContactScreenIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contactIdString);
                 startActivity(addContactScreenIntent);
-                finish();
                 break;
             case android.R.id.home:
                 onBackPressed();

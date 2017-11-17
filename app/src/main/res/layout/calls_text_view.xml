@@ -124,7 +124,7 @@
 
 
                     <Button
-                        android:id="@+id/call_tag_btn"
+                        android:id="@+id/bTag"
                         android:layout_width="120dp"
                         android:layout_height="27dp"
                         android:layout_marginLeft="10dp"

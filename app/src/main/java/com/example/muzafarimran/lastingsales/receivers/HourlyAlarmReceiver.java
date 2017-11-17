@@ -18,7 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.NavigationDrawerActivity;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -140,7 +140,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
 
                                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-                                Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
+                                Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
                                 inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
                                 PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -172,7 +172,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                     } else {
                         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-                        Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
+                        Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
                         inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
                         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -207,7 +207,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                                Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
+                                Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
                                 inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
                                 PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -242,7 +242,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                         });
                     } else {
                         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                        Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
+                        Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
                         inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
                         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

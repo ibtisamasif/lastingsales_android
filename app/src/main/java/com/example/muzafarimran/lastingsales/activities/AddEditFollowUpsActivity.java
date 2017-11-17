@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.calendar.MyCalendarEvent;
-import com.example.muzafarimran.lastingsales.calendar.MyDateTimeStamp;
+import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;

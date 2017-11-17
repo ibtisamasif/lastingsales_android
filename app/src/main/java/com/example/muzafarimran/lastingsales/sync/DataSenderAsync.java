@@ -19,32 +19,15 @@ import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
-import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.utils.AndroidMultiPartEntity;
-import com.example.muzafarimran.lastingsales.utils.AndroidMultiPartEntity.ProgressListener;
-import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.google.api.client.json.JsonString;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -921,154 +904,4 @@ public class DataSenderAsync {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
-
-    private void addRecordingToServer() {
-        List<LSCallRecording> recordingList = null;
-        if (LSCallRecording.count(LSCallRecording.class) > 0) {
-            recordingList = LSCallRecording.findWithQuery(LSCallRecording.class, "Select * from LS_CALL_RECORDING where sync_status = 'recording_not_synced' and server_id_of_call IS NOT NULL");
-//            recordingList = LSCallRecording.find(LSCallRecording.class, "sync_status = ?", SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
-            Log.d(TAG, "addRecordingsToServer: count : " + recordingList.size());
-            for (LSCallRecording oneRecording : recordingList) {
-                Log.d(TAG, "Found Call");
-                addRecordingToServer(oneRecording);
-            }
-//        uploadFile(CallsStatesReceiver.mAudio_FilePath + CallsStatesReceiver.mAudio_FileName + "_outgoing_429683239.amr");
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private void addRecordingToServer(LSCallRecording recording) {
-        currentState = PENDING;
-        Log.d(TAG, "uploadFile: Path: " + recording.getAudioPath());
-//        String filePath = "/storage/emulated/0/Pictures/Android File Upload/myrec.amr";
-        String responseString = null;
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(MyURLs.FILE_UPLOAD_URL);
-        try {
-            Log.d(TAG, "uploadFile: 0");
-            AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                    new ProgressListener() {
-                        @Override
-                        public void transferred(long num) {
-                            Log.d(TAG, "uploading..." + (int) ((num / (float) totalSize) * 100));
-//                            publishProgress((int) ((num / (float) totalSize) * 100));
-                        }
-                    });
-            File sourceFile = new File(recording.getAudioPath());
-            // Adding file data to http body
-            entity.addPart("recording_file", new FileBody(sourceFile));
-            // Extra parameters if you want to pass to server
-            entity.addPart("call_id", new StringBody("" + recording.getServerIdOfCall()));
-            entity.addPart("api_token", new StringBody(sessionManager.getLoginToken()));
-            totalSize = entity.getContentLength();
-            httppost.setEntity(entity);
-            // Making server call
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity r_entity = response.getEntity();
-
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode == 200) {
-                recording.setSyncStatus(SyncStatus.SYNC_STATUS_RECORDING_SYNCED);
-                recording.save();
-                // Server response
-                responseString = EntityUtils.toString(r_entity);
-            } else {
-                responseString = "Error occurred! Http Status Code: " + statusCode;
-            }
-            Log.d(TAG, "uploadFile: ResponseCode: " + statusCode);
-            Log.d(TAG, "uploadFile: ResponseString: " + responseString);
-
-        } catch (ClientProtocolException e) {
-            responseString = e.toString();
-            Log.d(TAG, "ClientProtocolException: " + responseString);
-        } catch (FileNotFoundException e) {
-            responseString = e.toString();
-            Log.d(TAG, "FileNotFoundException: " + responseString);
-            recording.delete();
-        } catch (IOException e) {
-            responseString = e.toString();
-            Log.d(TAG, "IOException: " + responseString);
-        }
-    }
-
-//    public void addCallRecordingsToServer(){
-//        String path;
-//        File[] myFiles = new File[0];
-//        File pathToRecordings = new File(Environment.getExternalStorageDirectory() + AudioFilePath.audioFileDirectoryPath);
-//        if(pathToRecordings.exists())
-//        {
-//            myFiles = pathToRecordings.listFiles();
-//        }
-//        else {
-//            Log.d(TAG,  "17)AudioFile: No files found");
-//        }
-//        Log.d(TAG,  "17)PathToRecordings: "+pathToRecordings);
-//        try {
-//            if (myFiles.length != 0) {
-//                try {
-//                    if (myFiles.length !=0){
-//                        for (File file : myFiles) {
-//                            try {
-//                                path = file.getAbsolutePath();
-//                                MediaPlayer mediaPlayer = MediaPlayer.create(mContext, Uri.parse(path));
-//                                int file_duration = mediaPlayer.getDuration();
-//                                Log.d(TAG,  "17)AudioFile: Duration: "+file_duration+" path: "+path);
-//                                uploadFile(path, sessionManager.getLoginToken());
-//                            }catch (Exception e){
-//                                Log.d(TAG, "17)AudioFileSyncing Deleting Corrupted File: "+e.getMessage());
-//                                file.delete();
-//                            }
-//                        }
-//                    }
-//                }catch (Exception e){
-//                    Log.d(TAG, "17)AudioFileSyncing Exception: "+e.getMessage());
-//                }
-//            }else {
-//                pathToRecordings.delete();
-//            }
-//        }catch (Exception e){
-//            Log.d(TAG, "17)AudioFileSyncing Exception: "+e.getMessage());
-//        }
-//
-//    }
-//
-//    @SuppressWarnings("deprecation")
-//    private String uploadFile(String filePath) {
-//        String status = "Other";
-//
-//        List<NameValuePair> params = new ArrayList<NameValuePair>();
-//        String responseString = null;
-//        try {
-//            File sourceFile = new File(filePath);
-//            FileBody sourceFileBody = new FileBody(new File(filePath));
-//
-//            MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
-//            multipartEntityBuilder.addPart("status", new StringBody(status));
-//
-//            multipartEntityBuilder.addBinaryBody("audiofile",sourceFile);
-//
-//            Log.d(TAG, "17)Audio file Sending...");
-//            responseString = Http_Request.getHttpPostFile(MyURLs.AUDIO_FILE_UPLOAD_URL, params, multipartEntityBuilder);
-//            Log.d(TAG, "17)Audio file Response: "+responseString);
-//            JSONObject jobj = new JSONObject(responseString);
-//
-//            int error = jobj.getInt("error");
-//            if (error == 0){
-//                String fileOutputPath;
-//                File pathToRecordings = new File(Environment.getExternalStorageDirectory() + AudioFilePath.audioFileDirectoryOutputPath);
-//                fileOutputPath = pathToRecordings.getAbsolutePath();
-//
-//                Log.d(TAG, "17)VoiceRecord: audio deleted from mobile.");
-//            }
-//        } catch (IOException e) {
-//            responseString = e.toString();
-//            Log.d(TAG, "17)VoiceRecord: responseStringIOException: " + responseString);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Log.d(TAG, "17)VoiceRecord: JSONException: " + e.getMessage());
-//        }
-//
-//        return responseString;
-//
-//    }
 }

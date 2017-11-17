@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -45,10 +47,11 @@ public class ContactCallDetails extends AppCompatActivity {
     private TextView tvFbFromProfile;
 
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact_call_details_ap_bar);
+        setContentView(R.layout.activity_contact_call_details);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -75,12 +78,16 @@ public class ContactCallDetails extends AppCompatActivity {
         this.findViewById(R.id.call_icon_ind).setOnClickListener(callClickListener);
         //hide tag button if name is not stored
         if (this.name == null || (this.name).isEmpty()) {
-//            ((Button) (this.findViewById(R.id.b_tag_individual_contact_call_screen))).setVisibility(GONE);
             contactName = this.name;
         }
         contact_name_ind = findViewById(R.id.contact_name_ind);
         contact_name_ind.setText(contactName);
         user_avatar_ind = findViewById(R.id.user_avatar_ind);
+
+        View includeContactProfile = findViewById(R.id.includeContactProfile);
+        TextView tvContactProfileSeparator = (TextView) includeContactProfile.findViewById(R.id.tvSeparator);
+        tvContactProfileSeparator.setText("Social Profile");
+
         tvNameFromProfile = findViewById(R.id.tvNameFromProfile);
         tvCityFromProfile = findViewById(R.id.tvCityFromProfile);
         tvCountryFromProfile = findViewById(R.id.tvCountryFromProfile);
@@ -90,6 +97,10 @@ public class ContactCallDetails extends AppCompatActivity {
         tvTweeterFromProfile = findViewById(R.id.tvTweeterFromProfile);
         tvLinkdnFromProfile = findViewById(R.id.tvLinkdnFromProfile);
         tvFbFromProfile = findViewById(R.id.tvFbFromProfile);
+
+        View includeCallHistory = findViewById(R.id.includeCallHistory);
+        TextView tvContactCallHistorySeparator = (TextView) includeCallHistory.findViewById(R.id.tvSeparator);
+        tvContactCallHistorySeparator.setText("Call History");
 
         tvTweeterFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
         tvLinkdnFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
@@ -146,7 +157,7 @@ public class ContactCallDetails extends AppCompatActivity {
                 .load(url)
 //                .override(48, 48)
 //                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.ic_account_circle_white)
+                .error(R.drawable.ic_account_circle)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }
@@ -155,10 +166,7 @@ public class ContactCallDetails extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.ic_action_edit:
-//                Intent addContactScreenIntent = new Intent(getApplicationContext(), TagNumberAndAddFollowupActivity.class);
-//                addContactScreenIntent.putExtra(TagNumberAndAddFollowupActivity.ACTIVITY_LAUNCH_MODE, TagNumberAndAddFollowupActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
-//                addContactScreenIntent.putExtra(TagNumberAndAddFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contactIdString);
-//                startActivity(addContactScreenIntent);
+
                 break;
             case android.R.id.home:
                 onBackPressed();

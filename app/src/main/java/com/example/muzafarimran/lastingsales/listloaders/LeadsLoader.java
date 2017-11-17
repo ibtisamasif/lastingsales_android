@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.listloaders;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
@@ -25,9 +26,7 @@ public class LeadsLoader  extends AsyncTaskLoader<List<Object>> {
 
     @Override
     public List<Object> loadInBackground() {
-        list.clear();
         Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
-
         if(contacts != null){
 
             Collection<HomeItem> listHome = new ArrayList<HomeItem>();
@@ -45,7 +44,8 @@ public class LeadsLoader  extends AsyncTaskLoader<List<Object>> {
         }else {
             Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
             ErrorItem erItem = new ErrorItem();
-            erItem.message = "NOTHING TO DISPLAY";
+            erItem.message = "Nothing in leads";
+            erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
             listError.add(erItem);
             list.addAll(listError);
         }

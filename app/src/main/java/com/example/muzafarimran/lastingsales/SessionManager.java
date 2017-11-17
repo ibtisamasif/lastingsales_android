@@ -10,7 +10,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.utils.AgentDataFetchAsync;
+import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 
 import java.util.Calendar;
 

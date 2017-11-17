@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.viewholders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,22 +9,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.TypeManager;
+import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.Calendar;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -56,7 +53,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         this.numberDetailTextView = view.findViewById(R.id.call_number);
 //        this.bIgnore = view.findViewById(R.id.bIgnore);
         this.inquireyCount = view.findViewById(R.id.inquireyCount);
-        this.bTag = view.findViewById(R.id.call_tag_btn);
+        this.bTag = view.findViewById(R.id.bTag);
         this.bTag.setVisibility(GONE);
     }
 
@@ -147,6 +144,29 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         this.callClickListener = new CallClickListener(mContext);
         this.call_icon.setOnClickListener(this.callClickListener);
         this.call_icon.setTag(inquiryCall.getContactNumber());
+
+        this.bTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LSContact checkContact = LSContact.getContactFromNumber(number);
+                if (checkContact == null) {
+                    Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
+                    myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                    myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
+                    myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_INQUIRY);
+                    mContext.startActivity(myIntent);
+                } else {
+                    Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
+                    myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                    myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, number);
+                    myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, "");
+                    myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_INQUIRY);
+                    mContext.startActivity(myIntent);
+                }
+            }
+        });
+
+
 //        this.bIgnore.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

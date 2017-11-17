@@ -32,7 +32,7 @@ public class ViewHolderSettingCard extends RecyclerView.ViewHolder {
     public ViewHolderSettingCard(View v) {
         super(v);
         cl_container_setting_item = v.findViewById(R.id.cl_container_setting_item);
-        textView = v.findViewById(R.id.textView);
+        textView = v.findViewById(R.id.tvTitle);
         imageView = v.findViewById(R.id.imageView);
 
     }

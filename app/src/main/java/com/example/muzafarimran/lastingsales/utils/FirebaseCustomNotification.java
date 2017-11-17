@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
-import com.example.muzafarimran.lastingsales.activities.NavigationDrawerActivity;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 
 /**
  * Created by ibtisam on 10/9/2017.
@@ -20,7 +20,7 @@ public class FirebaseCustomNotification {
 
     public static Notification createFirebaseInquiriesNotification(Context context, String message) {
 
-        Intent inquiriesIntent = new Intent(context, NavigationDrawerActivity.class);
+        Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
         inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -70,7 +70,7 @@ public class FirebaseCustomNotification {
 
     public static Notification createFirebaseHomescreenNotification(Context context, String message) {
 
-        Intent homescreenIntent = new Intent(context, NavigationDrawerActivity.class);
+        Intent homescreenIntent = new Intent(context, NavigationBottomMainActivity.class);
         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), homescreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder notificationBuilder = new Notification.Builder(context)

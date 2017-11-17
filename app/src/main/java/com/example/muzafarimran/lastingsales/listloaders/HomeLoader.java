@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.listloaders;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
@@ -28,7 +29,6 @@ public class HomeLoader extends AsyncTaskLoader<List<Object>> {
     @Override
     public List<Object> loadInBackground() {
 
-        list.clear();
         Collection<LSContact> unlabeledContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
         if (!unlabeledContacts.isEmpty()) {
 
@@ -53,11 +53,10 @@ public class HomeLoader extends AsyncTaskLoader<List<Object>> {
 //        list.addAll(listLoading);
 
         } else {
-            Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
             ErrorItem erItem = new ErrorItem();
-            erItem.message = "NOTHING TO DISPLAY";
-            listError.add(erItem);
-            list.addAll(listError);
+            erItem.message = "Nothing in home";
+            erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
+            list.add(erItem);
         }
         return list;
     }

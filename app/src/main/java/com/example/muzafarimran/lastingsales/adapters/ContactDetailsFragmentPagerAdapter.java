@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.muzafarimran.lastingsales.fragments.CallLogsInContactDetailsFragmentNew;
 import com.example.muzafarimran.lastingsales.fragments.FollowupInContactDetailsFragment;
-import com.example.muzafarimran.lastingsales.fragments.IndividualCallLogsFragment;
 import com.example.muzafarimran.lastingsales.fragments.IndividualContactDetailsFragment;
-import com.example.muzafarimran.lastingsales.fragments.NotesFragment;
+import com.example.muzafarimran.lastingsales.fragments.NotesInContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
 /**
@@ -15,7 +15,7 @@ import com.example.muzafarimran.lastingsales.fragments.TabFragment;
  */
 
 public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
-    final int TAB_COUNT = 4;
+    final int TAB_COUNT = 3;
     private Long id;
     private String number;
 
@@ -33,13 +33,10 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = IndividualContactDetailsFragment.newInstance(0, IndividualContactDetailsFragment.TAG, id);
                 break;
             case 1:
-                fragment = NotesFragment.newInstance(1, NotesFragment.TAG, id);
+                fragment = NotesInContactDetailsFragment.newInstance(1, NotesInContactDetailsFragment.TAG, id);
                 break;
             case 2:
-                fragment = FollowupInContactDetailsFragment.newInstance(2, FollowupInContactDetailsFragment.TAG, id);
-                break;
-            case 3:
-                fragment = IndividualCallLogsFragment.newInstance(3, IndividualCallLogsFragment.TAG, id);
+                fragment = CallLogsInContactDetailsFragmentNew.newInstance(3, CallLogsInContactDetailsFragmentNew.TAG, id);
                 break;
         }
         return fragment;
@@ -56,10 +53,8 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return "Details";
             case 1:
-                return "Notes";
+                return "Notes & Followup";
             case 2:
-                return "Reminder";
-            case 3:
                 return "Calls";
             default:
                 return null;

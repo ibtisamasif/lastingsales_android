@@ -22,7 +22,7 @@ public class SplashActivity extends Activity {
             }
             @Override
             public void onFinish() {
-                Intent intent = new Intent(SplashActivity.this, NavigationDrawerActivity.class);
+                Intent intent = new Intent(SplashActivity.this, NavigationBottomMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();

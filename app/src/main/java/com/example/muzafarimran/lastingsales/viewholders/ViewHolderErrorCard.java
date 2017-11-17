@@ -31,6 +31,7 @@ public class ViewHolderErrorCard extends RecyclerView.ViewHolder {
 
         final ErrorItem errorItem = (ErrorItem) item;
         tvError.setText(errorItem.message);
+        imErrorImage.setImageResource(errorItem.drawable);
 
     }
 }

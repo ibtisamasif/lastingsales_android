@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -54,16 +53,15 @@ public class AddEditNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_note);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
+//        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
 //        android.support.v7.app.ActionBar bar = getSupportActionBar();
 //        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
         tvContactName = (TextView) findViewById(R.id.contact_name_add_note);
         etContactNote = (EditText) findViewById(R.id.contact_note_add_note);
-        bSave = (Button) findViewById(R.id.ok_add_note);
+        bSave = (Button) findViewById(R.id.bSave);
         bCancel = (Button) findViewById(R.id.cancel_add_note);
-
 
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
@@ -95,7 +93,6 @@ public class AddEditNoteActivity extends AppCompatActivity {
                 selectedContact = LSContact.findById(LSContact.class, contactIdLong);
                 tvContactName.setText(selectedContact.getContactName());
             }
-
         }
 
         bSave.setOnClickListener(new View.OnClickListener() {
@@ -146,13 +143,13 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                onBackPressed();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }

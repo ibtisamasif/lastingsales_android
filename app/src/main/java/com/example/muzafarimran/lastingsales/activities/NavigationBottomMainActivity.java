@@ -6,12 +6,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
@@ -23,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
@@ -30,8 +30,11 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
+import com.example.muzafarimran.lastingsales.customview.BadgeView;
+import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelper;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.listloaders.HomeLoader;
@@ -40,8 +43,11 @@ import com.example.muzafarimran.lastingsales.listloaders.LeadsLoader;
 import com.example.muzafarimran.lastingsales.listloaders.MoreLoader;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
-import com.example.muzafarimran.lastingsales.utils.AgentDataFetchAsync;
+import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.ShortcutBadgeUpdateAsync;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -78,14 +84,13 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     private SettingsManager settingsManager;
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             if (ACTIVE_LOADER != -1) {
-                if (getSupportLoaderManager().getLoader(ACTIVE_LOADER).isStarted()) { //still crash here
+                if (getSupportLoaderManager().getLoader(ACTIVE_LOADER).isStarted()) { //still crashing here
                     getSupportLoaderManager().getLoader(ACTIVE_LOADER).cancelLoad();
                 }
             }
@@ -133,6 +138,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
 
@@ -371,9 +377,19 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 //                startActivity(intent);
 
                 return true;
+            case R.id.action_refresh:
+
+                AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
+                agentDataFetchAsync.execute();
+                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+                theCallLogEngine.execute();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                dataSenderAsync.run();
+                Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 }

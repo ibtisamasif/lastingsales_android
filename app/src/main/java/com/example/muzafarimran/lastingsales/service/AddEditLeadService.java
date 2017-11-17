@@ -60,7 +60,6 @@ public class AddEditLeadService extends Service {
     private ImageButton bClose;
     private CheckBox cbIgnore;
     private LinearLayout llContactDetailsFollowupScreen;
-    private LinearLayout llContactType;
     private LayoutInflater inflater;
     private Button bColleagueRadio;
     private Button bSalesRadio;
@@ -128,8 +127,6 @@ public class AddEditLeadService extends Service {
         bSalesRadio = (Button) largeInflatedView.findViewById(R.id.bSalesRadio);
         bColleagueRadio = (Button) largeInflatedView.findViewById(R.id.bCollegueRadio);
         llContactDetailsFollowupScreen = (LinearLayout) largeInflatedView.findViewById(R.id.llContactDetailsAddContactScreen);
-        llContactType = (LinearLayout) largeInflatedView.findViewById(R.id.llContactType);
-        llContactType.setVisibility(View.GONE); // Temporary
         // Mix Panel Event
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);

@@ -26,6 +26,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/ic_account_circle"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:text="name"
             app:layout_constraintStart_toEndOf="@+id/user_avatar"
             app:layout_constraintTop_toTopOf="@+id/user_avatar" />
@@ -66,6 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/call_name"
             android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_toEndOf="@id/missed_call_icon"
             android:layout_toRightOf="@id/missed_call_icon"
             android:text="time"
@@ -73,7 +76,7 @@
             app:layout_constraintTop_toTopOf="@+id/missed_call_icon" />
 
         <Button
-            android:id="@+id/call_tag_btn"
+            android:id="@+id/bTag"
             style="@android:style/Widget.DeviceDefault.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,6 +96,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
             android:scaleType="fitEnd"
             android:src="@drawable/ic_call_green"
@@ -105,6 +109,7 @@
             android:layout_height="24dp"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:layout_toLeftOf="@id/call_icon"
             android:layout_toStartOf="@id/call_icon"
             android:background="@drawable/inquiry_count_round"
@@ -121,6 +126,6 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"/>
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

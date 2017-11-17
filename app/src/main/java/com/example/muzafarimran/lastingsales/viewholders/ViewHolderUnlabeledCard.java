@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.viewholders;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,7 +20,10 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
-import com.example.muzafarimran.lastingsales.activities.TypeManager;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -27,6 +31,7 @@ import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.Collection;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -72,7 +77,6 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
         this.rl_container_buttons = v.findViewById(R.id.rl_container_buttons);
         this.bSales = v.findViewById(R.id.bSalesUtaggedItem);
         this.bIgnore = v.findViewById(R.id.bIgnore);
-
 
         this.tvNameFromProfile = v.findViewById(R.id.tvNameFromProfile);
         this.tvCityFromProfile = v.findViewById(R.id.tvCityFromProfile);
@@ -195,18 +199,54 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
             Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
         });
 
-
         switch (contactType) {
             case LSContact.CONTACT_TYPE_SALES:
                 rl_container_buttons.setVisibility(View.GONE);
                 // navigate to lead
                 // dont show smart info
                 // add delete followup button
+
                 this.cv_item.setOnClickListener(view -> {
                     Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
                     long contactId = contact.getId();
                     detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                     mContext.startActivity(detailsActivityIntent);
+                });
+
+                //  Deletes the contact, queries db and updates local list plus notifies adapter
+                this.cv_item.setOnLongClickListener(view -> {
+
+                    LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
+//                    if (checkInquiry == null) {
+                    checkInquiry.delete();
+                    //Flushing Notes Of lead
+                    List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(contact.getId());
+                    if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
+                        for (LSNote oneNote : allNotesOfThisContact) {
+                            oneNote.delete();
+                        }
+                    }
+                    //Flushing Followup Of lead
+                    List<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getFollowupsByContactId(contact.getId());
+                    if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
+                        for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
+                            oneFollowup.delete();
+                        }
+                    }
+                    //contact is deleted and will be hard deleted on syncing.
+                    contact.setLeadDeleted(true);
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+                    contact.save();
+//                    contact.delete();
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
+                    dataSenderAsync.run();
+                    // FIRE EVENT TO REFRESH LIST
+                    Snackbar.make(view, "Lead deleted!", Snackbar.LENGTH_SHORT).show();
+//                    }else {
+//                        Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
+//                    }
+
+                    return true;
                 });
                 break;
 
@@ -214,19 +254,43 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 rl_container_buttons.setVisibility(View.VISIBLE);
                 // navigate to details
                 // show smart info
+
                 this.cv_item.setOnClickListener(view -> {
                     Intent myIntent = new Intent(mContext, ContactCallDetails.class);
                     myIntent.putExtra("number", (String) view.getTag());
                     mContext.startActivity(myIntent);
                 });
+
+                this.cv_item.setOnLongClickListener(view -> {
+
+                    LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
+//                if (checkInquiry == null) {
+                    contact.setLeadDeleted(true);
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+                    contact.delete();
+                    Snackbar.make(view, "Personal contact deleted!", Snackbar.LENGTH_SHORT).show();
+                    // FIRE EVENT TO REFRESH LIST
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
+                    dataSenderAsync.run();
+//                } else {
+//                    Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
+//                }
+                    return true;
+                });
                 break;
 
             case LSContact.CONTACT_TYPE_UNLABELED:
                 rl_container_buttons.setVisibility(View.VISIBLE);
+
                 this.cv_item.setOnClickListener(view -> {
                     Intent myIntent = new Intent(mContext, ContactCallDetails.class);
                     myIntent.putExtra("number", (String) view.getTag());
                     mContext.startActivity(myIntent);
+                });
+
+                this.cv_item.setOnLongClickListener(view -> {
+                    Snackbar.make(view, "Can not delete unlabeled contact", Snackbar.LENGTH_SHORT).show();
+                    return true;
                 });
                 break;
 
@@ -238,11 +302,25 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 
                 //No navigation on click
 
-                break;
+                this.cv_item.setOnLongClickListener(view -> {
 
+                    LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
+//                if (checkInquiry == null) {
+                    contact.setLeadDeleted(true);
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+                    contact.save();
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
+                    dataSenderAsync.run();
+                    // FIRE EVENT TO REFRESH LIST
+                    Snackbar.make(view, "Ignored Contact Deleted!", Snackbar.LENGTH_SHORT).show();
+//                }else {
+//                    Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
+//                }
+                    return true;
+                });
+                break;
             default:
         }
-
     }
 
     private void imageFunc(CircleImageView imageView, String url, Context context) {

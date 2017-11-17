@@ -8,7 +8,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 /**
  * Created by ahmad on 02-Dec-16.
  */
-
+@Deprecated
 public abstract class SearchFragment extends TabFragment {
     protected MaterialSearchView materialSearchView;
     protected MaterialSearchView.OnQueryTextListener mSearchListener = new MaterialSearchView.OnQueryTextListener() {
