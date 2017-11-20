@@ -8,6 +8,7 @@ public class MoreItem {
 
     public int drawable;
     public String text;
+    public String description;
     public Class goAt = null;
 
     public MoreItem(String setting) {

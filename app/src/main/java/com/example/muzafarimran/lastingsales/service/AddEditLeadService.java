@@ -334,7 +334,7 @@ public class AddEditLeadService extends Service {
             selectedContactType = LSContact.CONTACT_TYPE_SALES;
 //            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
 //            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-            bSalesRadio.setTextColor(Color.WHITE);
+            bSalesRadio.setTextColor(Color.WHITE); // TODO crash here after call
             bColleagueRadio.setTextColor(Color.BLACK);
         } else if (button.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
             selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;

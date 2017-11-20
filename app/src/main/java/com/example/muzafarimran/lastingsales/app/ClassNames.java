@@ -52,4 +52,8 @@ public class ClassNames {
     public static final String MORE_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.MoreItem";
     public static final int MORE_CLASS_TYPE = 11;
     public static final int MORE_CLASS_RESOURCE = R.layout.card_more;
+
+    public static final String CHIP_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.ChipItem";
+    public static final int CHIP_CLASS_TYPE = 12;
+    public static final int CHIP_CLASS_RESOURCE = R.layout.card_chip;
 }

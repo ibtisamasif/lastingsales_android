@@ -28,11 +28,16 @@ public class MoreLoader extends AsyncTaskLoader<List<Object>> {
         list.clear();
 
         MoreItem moreItemColleague = new MoreItem("Colleague", ColleagueActivity.class);
-        moreItemColleague.drawable = R.drawable.bg_collegeue_card_xxxhdpi;
+        moreItemColleague.drawable = R.drawable.bg_collegue_cardxxxhdpi;
+        moreItemColleague.description = "Contacts that are not your leads i.e vendors, colleagues and business contacts.";
+
         MoreItem moreItemIgnored = new MoreItem("Ignored", IgnoredActivity.class);
-        moreItemIgnored.drawable = R.drawable.bg_ignore_card_xxxhdpi;
+        moreItemIgnored.drawable = R.drawable.bg_ignord_cardxxxhdpi;
+        moreItemIgnored.description = "Contacts that you don't want to be tracked i.e friends and family.";
+
         MoreItem moreItemSetting = new MoreItem("Settings");
-        moreItemSetting.drawable = R.drawable.bg_ignore_card_xxxhdpi;
+        moreItemSetting.drawable = R.drawable.bg_ignord_cardxxxhdpi;
+        moreItemSetting.description = "Manage your accounts and notification preferences.";
 
         list.add(moreItemColleague);
         list.add(moreItemIgnored);

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.app.ClassNames;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderCallCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderChipCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderErrorCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderHomeCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderInquiryCard;
@@ -74,6 +75,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.MORE_CLASS_NAME:
                 return ClassNames.MORE_CLASS_TYPE;
 
+            case ClassNames.CHIP_CLASS_NAME:
+                return ClassNames.CHIP_CLASS_TYPE;
+
             default:
                 Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
                 return -1;
@@ -116,6 +120,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             case ClassNames.MORE_CLASS_TYPE:
                 return new ViewHolderMoreCard(LayoutInflater.from(mContext).inflate(ClassNames.MORE_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.CHIP_CLASS_TYPE:
+                return new ViewHolderChipCard(LayoutInflater.from(mContext).inflate(ClassNames.CHIP_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -171,6 +178,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 ViewHolderMoreCard viewHolderMoreCard = (ViewHolderMoreCard) holder;
                 viewHolderMoreCard.bind(item, position, mContext);
                 break;
+            case ClassNames.CHIP_CLASS_TYPE:
+                ViewHolderChipCard viewHolderChipCard = (ViewHolderChipCard) holder;
+                viewHolderChipCard.bind(item, position, mContext);
+                break;
         }
     }
 
@@ -178,4 +189,5 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public int getItemCount() {
         return mItem.size();
     }
+
 }

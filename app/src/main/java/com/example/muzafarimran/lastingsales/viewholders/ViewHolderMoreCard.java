@@ -27,6 +27,7 @@ public class ViewHolderMoreCard extends RecyclerView.ViewHolder {
 
 
     private final TextView tvTitle;
+    private final TextView tvDescription;
     private final ConstraintLayout cl;
     private final ImageView ivCardBackground;
     private  SessionManager sessionManager;
@@ -34,6 +35,7 @@ public class ViewHolderMoreCard extends RecyclerView.ViewHolder {
     public ViewHolderMoreCard(View v) {
         super(v);
         tvTitle = v.findViewById(R.id.tvTitle);
+        tvDescription = v.findViewById(R.id.tvDescription);
         cl = v.findViewById(R.id.cl);
         ivCardBackground = v.findViewById(R.id.ivCardBackground);
     }
@@ -41,6 +43,7 @@ public class ViewHolderMoreCard extends RecyclerView.ViewHolder {
     public void bind(Object item, int position, Context mContext) {
         MoreItem moreItem = (MoreItem) item;
         tvTitle.setText(moreItem.text);
+        tvDescription.setText(moreItem.description);
         ivCardBackground.setImageResource(moreItem.drawable);
 
         cl.setOnClickListener(new View.OnClickListener() {

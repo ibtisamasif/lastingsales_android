@@ -32,6 +32,7 @@ import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.customview.BadgeView;
 import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelper;
+import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -61,7 +62,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 11/6/2017.
  */
 
-public class NavigationBottomMainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Object>> {
+public class NavigationBottomMainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Object>>, ChipClickListener {
     public static final String TAG = "NavigationBottomMain";
 
     public static final String KEY_ACTIVE_LOADER = "active_loader";
@@ -84,6 +85,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     private SettingsManager settingsManager;
 
+    Bundle bundle = new Bundle();
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -97,20 +100,20 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             switch (item.getItemId()) {
                 case R.id.navigation_inquiries:
                     ACTIVE_LOADER = 1;
-                    getSupportLoaderManager().restartLoader(1, null, NavigationBottomMainActivity.this).forceLoad();
+                    getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this);
                     return true;
                 case R.id.navigation_home:
                     ACTIVE_LOADER = 2;
-                    getSupportLoaderManager().restartLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
+                    getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
                 case R.id.navigation_leads:
                     ACTIVE_LOADER = 3;
-                    getSupportLoaderManager().restartLoader(3, null, NavigationBottomMainActivity.this).forceLoad();
+                    getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
                 case R.id.navigation_more:
                     ACTIVE_LOADER = 4;
-                    getSupportLoaderManager().restartLoader(4, null, NavigationBottomMainActivity.this).forceLoad();
+                    getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
             }
             return false;
@@ -333,7 +336,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             case 2:
                 return new HomeLoader(NavigationBottomMainActivity.this);
             case 3:
-                return new LeadsLoader(NavigationBottomMainActivity.this);
+                return new LeadsLoader(NavigationBottomMainActivity.this, args );
             case 4:
                 return new MoreLoader(NavigationBottomMainActivity.this);
             default:
@@ -390,6 +393,42 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onChipClick(String chip) {
+        switch (chip) {
+            case "All":
+                bundle.putString("whichLeads", "All");
+                getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
+                break;
+
+            case "InProgress":
+                bundle.putString("whichLeads", "InProgress");
+                getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
+                break;
+
+            case "Won":
+                bundle.putString("whichLeads", "Won");
+                getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                Toast.makeText(this, "WonListened", Toast.LENGTH_SHORT).show();
+                break;
+
+            case "Lost":
+                bundle.putString("whichLeads", "Lost");
+                getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
+                break;
+
+            case "InActive":
+                bundle.putString("whichLeads", "InActive");
+                getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                Toast.makeText(this, "WonListened", Toast.LENGTH_SHORT).show();
+                break;
+            default:
         }
     }
 }

@@ -217,8 +217,10 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 this.cv_item.setOnLongClickListener(view -> {
 
                     LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
+                    if(checkInquiry != null){
+                        checkInquiry.delete();
+                    }
 //                    if (checkInquiry == null) {
-                    checkInquiry.delete();
                     //Flushing Notes Of lead
                     List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(contact.getId());
                     if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
