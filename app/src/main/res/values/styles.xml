@@ -10,6 +10,15 @@
         <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
     </style>
 
+    <!--<style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Translucent">-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <!--<item name="android:windowBackground">@color/mdtp_transparent_black</item>-->
+        <!--<item name="android:textColorPrimary">@color/md_black</item>-->
+        <!--<item name="android:colorBackgroundCacheHint">@null</item>-->
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <!--<item name="android:windowAnimationStyle">@android:style/Animation</item>-->
+    <!--</style>-->
+
     <!-- Lies here a failed experiment on styling the tool bar: RIP-->
 
 

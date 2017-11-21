@@ -1,16 +1,20 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
@@ -22,12 +26,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
+import com.example.muzafarimran.lastingsales.app.ClassManager;
+import com.example.muzafarimran.lastingsales.app.ClassNames;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.customview.BadgeView;
@@ -36,7 +44,9 @@ import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
+import com.example.muzafarimran.lastingsales.recycleradapter.ExampleAdapter;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.listloaders.HomeLoader;
 import com.example.muzafarimran.lastingsales.listloaders.InquiryLoader;
@@ -54,6 +64,7 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import de.halfbit.tinybus.TinyBus;
@@ -86,6 +97,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     private SettingsManager settingsManager;
 
     Bundle bundle = new Bundle();
+
+    private Menu menu;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -131,6 +144,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         getSupportActionBar().setTitle("Home");
         ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
+
+
+        View modalbottomsheet = getLayoutInflater().inflate(R.layout.bottom_sheet_sample, null);
+
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(modalbottomsheet);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+
 
         adapter = new MyRecyclerViewAdapter(this, list);
 
@@ -336,7 +358,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             case 2:
                 return new HomeLoader(NavigationBottomMainActivity.this);
             case 3:
-                return new LeadsLoader(NavigationBottomMainActivity.this, args );
+                return new LeadsLoader(NavigationBottomMainActivity.this, args);
             case 4:
                 return new MoreLoader(NavigationBottomMainActivity.this);
             default:
@@ -358,30 +380,152 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         adapter.notifyDataSetChanged();
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar, menu);
-        return super.onCreateOptionsMenu(menu);
+
+        this.menu = menu;
+
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                loadHistory(query);
+                return false;
+            }
+        });
+
+        return true;
+
+//        return super.onCreateOptionsMenu(menu);
+    }
+
+    // History
+    private void loadHistory(String query) {
+
+
+        // Cursor
+        String[] columns = new String[]{"_id", "text", "drawable", "class"};
+        Object[] temp = new Object[]{0, "default", R.drawable.inquiry_count_round, ""};
+
+        MatrixCursor cursor = new MatrixCursor(columns);
+
+        int count = 0;
+
+
+        // From LSContacts where number = query
+        String myQuery = "SELECT * FROM LS_CONTACT where phone_one like '%" + query + "%' limit 5";
+        Collection<LSContact> contactsByNumber = LSContact.findWithQuery(LSContact.class, myQuery);
+
+        for (LSContact one : contactsByNumber) {
+            temp[0] = count;
+            temp[1] = one.getPhoneOne();
+            temp[2] = R.drawable.ic_account_circle;
+            if (one.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+
+                temp[3] = ClassManager.ABOUT_ACTIVITY;
+            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                temp[3] = ClassManager.ABOUT_ACTIVITY;
+            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+                temp[3] = ClassManager.ABOUT_ACTIVITY;
+            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+                temp[3] = ClassManager.ABOUT_ACTIVITY;
+            }
+
+            cursor.addRow(temp);
+            count++;
+
+        }
+
+
+        // From LSContacts where name = query
+        myQuery = "SELECT * FROM LS_CONTACT where contact_name like '%" + query + "%' limit 5";
+        Collection<LSContact> contactsByName = LSContact.findWithQuery(LSContact.class, myQuery);
+
+        for (LSContact one : contactsByName) {
+            temp[0] = count;
+            temp[1] = one.getContactName();
+            temp[2] = R.drawable.ic_account_circle;
+            if (one.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+                temp[3] = ClassManager.ABOUT_ACTIVITY;
+            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                temp[3] = ClassManager.ABOUT_ACTIVITY;
+            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+                temp[3] = ClassManager.ABOUT_ACTIVITY;
+            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+                temp[3] = ClassManager.ABOUT_ACTIVITY;
+            }
+
+            cursor.addRow(temp);
+            count++;
+
+        }
+
+
+        // From LSNotes where description = query
+        myQuery = "SELECT * FROM LS_NOTE where note_text like '%" + query + "%' limit 5";
+        Collection<LSNote> notesByDescription = LSNote.findWithQuery(LSNote.class, myQuery);
+
+        for (LSNote one : notesByDescription) {
+            temp[0] = count;
+            temp[1] = one.getNoteText();
+            temp[2] = R.drawable.ic_notes_black;
+            temp[3] = ClassManager.ABOUT_ACTIVITY;
+            cursor.addRow(temp);
+            count++;
+
+        }
+
+
+        // From LSInquiry where number = query
+        myQuery = "SELECT * FROM LS_INQUIRY where contact_number like '%" + query + "%' limit 5";
+        Collection<LSInquiry> inquiriesByNumber = LSInquiry.findWithQuery(LSInquiry.class, myQuery);
+
+        for (LSInquiry one : inquiriesByNumber) {
+            temp[0] = count;
+            temp[1] = one.getContactNumber();
+            temp[2] = R.drawable.inquiry_count_round;
+            temp[3] = ClassManager.ABOUT_ACTIVITY;
+            cursor.addRow(temp);
+            count++;
+        }
+
+
+        // Pass all in one Collection
+
+
+        // SearchView
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        search.setSuggestionsAdapter(new
+
+                ExampleAdapter(this, cursor, list));
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_search:
+                Toast.makeText(this, "Searching", Toast.LENGTH_SHORT).show();
+                return true;
             case R.id.action_account:
-
                 startActivity(new Intent(NavigationBottomMainActivity.this, AccountActivity.class));
-
-//                Intent intent;
-//                Bundle bundle = new Bundle();
-//                bundle.putString(FrameActivity.FRAGMENT_NAME_STRING, MoreFragment.class.getName());
-//                bundle.putString(FrameActivity.ACTIVITY_TITLE, "Profile");
-//                bundle.putBoolean(FrameActivity.INFLATE_OPTIONS_MENU, false);
-//                intent = new Intent(getApplicationContext(), FrameActivity.class);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-
                 return true;
             case R.id.action_refresh:
-
                 AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
                 agentDataFetchAsync.execute();
                 TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
@@ -389,7 +533,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
                 Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -26,7 +26,7 @@ import java.util.List;
  * Created by ibtisam on 11/9/2016.
  */
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     private String TAG = "MyRecyclerViewAdapter";
     private List<?> mItem;
     private Context mContext;

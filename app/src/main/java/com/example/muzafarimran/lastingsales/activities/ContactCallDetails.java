@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -47,18 +49,50 @@ public class ContactCallDetails extends AppCompatActivity {
     private TextView tvFbFromProfile;
 
 
+    private BottomSheetBehavior mBottomSheetBehavior;
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_contact_call_details);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp);
-//        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-        toolbar.setNavigationIcon(upArrow);
+
+        View bottomSheet = findViewById(R.id.bottom_sheet);
+
+//        Button b_tag_individual_contact_call_screen = (Button) findViewById(R.id.b_tag_individual_contact_call_screen);
+//
+//        b_tag_individual_contact_call_screen.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//            }
+//        });
+
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
+        mBottomSheetBehavior.setPeekHeight(200);
+
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    mBottomSheetBehavior.setPeekHeight(200);
+                }
+            }
+
+            @Override
+            public void onSlide(View bottomSheet, float slideOffset) {
+            }
+        });
+
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp);
+////        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+//        toolbar.setNavigationIcon(upArrow);
 
         Intent intent = getIntent();
         this.number = intent.getStringExtra("number");
@@ -148,7 +182,7 @@ public class ContactCallDetails extends AppCompatActivity {
         }
         listview.setAdapter(indadapter);
 
-        getSupportActionBar().setTitle("Details");
+//        getSupportActionBar().setTitle("Details");
     }
 
     private void imageFunc(CircleImageView imageView, String url) {

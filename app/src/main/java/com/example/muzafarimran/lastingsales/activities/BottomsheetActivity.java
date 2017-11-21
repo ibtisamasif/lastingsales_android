@@ -12,6 +12,7 @@ import com.example.muzafarimran.lastingsales.R;
  * Created by ibtisam on 11/17/2017.
  */
 
+@Deprecated
 public class BottomsheetActivity extends AppCompatActivity {
 
     private BottomSheetBehavior mBottomSheetBehavior;
