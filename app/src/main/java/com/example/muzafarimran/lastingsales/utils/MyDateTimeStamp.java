@@ -1,5 +1,9 @@
 package com.example.muzafarimran.lastingsales.utils;
 
+import android.net.Uri;
+
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -105,5 +109,10 @@ public class MyDateTimeStamp {
             e.printStackTrace();
         }
         return dateTimeLong;
+    }
+
+    public static void setFrescoImage(SimpleDraweeView imageView, String url) {
+        Uri uri = Uri.parse(url);
+        imageView.setImageURI(uri);
     }
 }

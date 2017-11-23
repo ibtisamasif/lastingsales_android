@@ -64,7 +64,7 @@
             android:id="@+id/material_design_floating_action_menu_add_business"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_input_add"
+            app:srcCompat="@android:drawable/ic_input_add"
             fab:fab_label="Add New"
             fab:fab_size="mini" />
 
@@ -72,7 +72,7 @@
             android:id="@+id/material_design_floating_action_menu_import_business"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_action_search"
+            app:srcCompat="@drawable/ic_action_action_search"
             fab:fab_label="Import from Phonebook"
             fab:fab_size="mini" />
         />

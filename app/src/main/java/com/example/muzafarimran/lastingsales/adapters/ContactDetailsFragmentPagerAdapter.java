@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.fragments.CallLogsInContactDetailsFragmentNew;
-import com.example.muzafarimran.lastingsales.fragments.FollowupInContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.IndividualContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.NotesInContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;

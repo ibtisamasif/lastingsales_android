@@ -17,7 +17,7 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('E:/ibtii/work/Vivid/configuration data/lskey.jks')
+            storeFile file('C:/work/lastingsales-app_new2/configuration data/lskey.jks')
             storePassword "J7Z/}aB*6'r7q+A~"
             keyAlias "lastingSales"
             keyPassword "J7Z/}aB*6'r7q+A~"
@@ -56,6 +56,7 @@ android {
     }
 }
 dependencies {
+    implementation 'com.google.android.gms:play-services-plus:11.4.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:26.1.0'
@@ -63,6 +64,8 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.4.0'
     compile 'com.google.firebase:firebase-crash:11.4.0'
     compile 'com.google.android.gms:play-services-gcm:11.4.0'
+    compile 'com.google.android.gms:play-services-ads:11.4.0'
+
     compile('com.google.android.gms:play-services-auth:11.4.0') {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.guava'
@@ -107,13 +110,15 @@ dependencies {
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'
     compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
     compile 'me.leolin:ShortcutBadger:1.1.18@aar'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
     //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     compile 'com.evernote:android-job:1.1.7'
     compile 'com.github.paolorotolo:expandableheightlistview:1.0.0'
 
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'com.facebook.fresco:fresco:1.5.0'
+    compile 'com.android.support:support-core-utils:26.1.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

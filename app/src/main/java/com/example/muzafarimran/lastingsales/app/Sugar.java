@@ -2,10 +2,12 @@ package com.example.muzafarimran.lastingsales.app;
 
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
 import com.evernote.android.job.JobManager;
 import com.example.muzafarimran.lastingsales.service.DemoJobCreator;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.orm.SugarApp;
 import com.orm.SugarContext;
 
@@ -32,10 +34,12 @@ public class Sugar extends SugarApp {
 //        SchemaGenerator schemaGenerator = new SchemaGenerator(this); //TODO uncomment in production
 //        schemaGenerator.createDatabase(new SugarDb(this).getDB());
 
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        Fresco.initialize(this);
+
         //Android Job Library
         JobManager.create(this).addJobCreator(new DemoJobCreator());
 //        JobManager.instance().getConfig().setAllowSmallerIntervalsForMarshmallow(true); //TODO Don't use this in production
-
 
 //        // SQUARE memory leakage library
 //        Log.d(TAG, "onCreate: SquareLeakLibrary");

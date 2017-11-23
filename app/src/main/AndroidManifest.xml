@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.REAL_GET_TASKS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-    <!--<uses-permission android:name="android.permission.READ_SYNC_STATS" />-->
+    <!-- <uses-permission android:name="android.permission.READ_SYNC_STATS" /> -->
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -30,12 +30,8 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" />
 
-    <permission
-        android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-
     <application
-        android:name="com.example.muzafarimran.lastingsales.app.Sugar"
+        android:name=".app.Sugar"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -50,9 +46,9 @@
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
-        <!--<meta-data-->
-        <!--android:name="DOMAIN_PACKAGE_NAME"-->
-        <!--android:value="com.example.muzafarimran.lastingsales" />-->
+        <!-- <meta-data -->
+        <!-- android:name="DOMAIN_PACKAGE_NAME" -->
+        <!-- android:value="com.example.muzafarimran.lastingsales" /> -->
 
         <receiver android:name=".receivers.NetworkStateReceiver">
             <intent-filter>
@@ -60,28 +56,32 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".receivers.TagAsIgnored">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+            <!-- </intent-filter> -->
         </receiver>
         <receiver android:name=".receivers.FollowupNotiCancelBtnReceiver">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+            <!-- </intent-filter> -->
         </receiver>
         <receiver android:name=".receivers.CallsStatesReceiver">
-            <!--<intent-filter android:priority="999">-->
-            <!--<action android:name="android.intent.action.PHONE_STATE" />-->
-            <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter android:priority="999"> -->
+            <!-- <action android:name="android.intent.action.PHONE_STATE" /> -->
+            <!-- <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> -->
+            <!-- </intent-filter> -->
         </receiver>
         <receiver
             android:name=".receivers.AlarmReceiver"
             android:enabled="true"
             android:exported="true">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+            <!-- </intent-filter> -->
         </receiver>
         <receiver
             android:name=".receivers.HourlyAlarmReceiver"
@@ -91,22 +91,22 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <!--<receiver-->
-        <!--android:name=".receivers.DayStartHighlightAlarmReceiver"-->
-        <!--android:enabled="true"-->
-        <!--android:exported="true">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
-        <!--<receiver-->
-        <!--android:name=".receivers.RatingAlarmReceiver"-->
-        <!--android:enabled="true"-->
-        <!--android:exported="true">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
+        <!-- <receiver -->
+        <!-- android:name=".receivers.DayStartHighlightAlarmReceiver" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <!-- <receiver -->
+        <!-- android:name=".receivers.RatingAlarmReceiver" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
         <receiver
             android:name=".receivers.DeviceBootReceiver"
             android:enabled="true">
@@ -131,10 +131,9 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".activities.ContactCallDetails"
-            android:screenOrientation="portrait"
-            android:theme="@/Theme.AppCompat.Translucent"/>
+        <!-- <activity -->
+        <!-- android:name=".activities.ContactCallDetails" -->
+        <!-- android:screenOrientation="portrait"/> -->
         <activity
             android:name=".activities.AddEditFollowUpsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -169,7 +168,6 @@
             android:name=".activities.CreateCompanyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".activities.ContactDetailsTabActivity"
             android:screenOrientation="portrait" />
@@ -194,16 +192,16 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </service>
-
         <service
             android:name=".service.CallDetectionService"
             android:enabled="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
-            <!--<intent-filter>-->
-            <!--<action android:name="inez.apps.customincomingcallscreen.MyService" />-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="inez.apps.customincomingcallscreen.MyService" /> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- </intent-filter> -->
         </service>
 
         <activity
@@ -211,57 +209,61 @@
             android:label="@string/title_activity_splash"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
-        <!--<activity-->
-        <!--android:name=".calendar.CalenderActivity"-->
-        <!--android:label="Google Calendar API Android Quickstart">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
-        <!--<category android:name="android.intent.category.LAUNCHER" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
+        <!-- <activity -->
+        <!-- android:name=".calendar.CalenderActivity" -->
+        <!-- android:label="Google Calendar API Android Quickstart"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
 
-        <!--<activity-->
-        <!--android:name=".service.MainActivity"-->
-        <!--android:screenOrientation="portrait"-->
-        <!--android:theme="@style/AppTheme.NoActionBar"-->
-        <!--android:windowSoftInputMode="adjustPan">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
-        <!--<category android:name="android.intent.category.LAUNCHER" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
 
-        <!--<activity-->
-            <!--android:name=".activities.BottomsheetActivity"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:windowSoftInputMode="adjustPan">-->
-            <!--&lt;!&ndash;<intent-filter>&ndash;&gt;-->
-                <!--&lt;!&ndash;<action android:name="android.intent.action.MAIN" />&ndash;&gt;-->
-                <!--&lt;!&ndash;<category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
-            <!--&lt;!&ndash;</intent-filter>&ndash;&gt;-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
+        <!-- <activity -->
+        <!-- android:name=".service.MainActivity" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar" -->
+        <!-- android:windowSoftInputMode="adjustPan"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
 
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-                <!--<category android:name="android.intent.category.BROWSABLE" />-->
 
-                <!--<data-->
-                    <!--android:host="lastingsales.com"-->
-                    <!--android:scheme="http"></data>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+        <!-- <activity -->
+        <!-- android:name=".activities.BottomsheetActivity" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:windowSoftInputMode="adjustPan"> -->
+        <!-- &lt;!&ndash;<intent-filter>&ndash;&gt; -->
+        <!-- &lt;!&ndash;<action android:name="android.intent.action.MAIN" />&ndash;&gt; -->
+        <!-- &lt;!&ndash;<category android:name="android.intent.category.LAUNCHER" />&ndash;&gt; -->
+        <!-- &lt;!&ndash;</intent-filter>&ndash;&gt; -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.VIEW" /> -->
+
+
+        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+
+
+        <!-- <data -->
+        <!-- android:host="lastingsales.com" -->
+        <!-- android:scheme="http"></data> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
 
         <activity
             android:name=".activities.NavigationBottomMainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -273,10 +275,9 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
 
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -287,51 +288,54 @@
 
                 <data
                     android:host="lastingsales.com"
-                    android:scheme="http"></data>
+                    android:scheme="http" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".onboarding.OnBoardingActivity"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
         <activity
             android:name=".activities.TagNotificationDialogActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activities.FrameActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activities.AddEditLeadActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
 
-
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".service.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".service.BubblesService"
             android:enabled="true"
             android:exported="false" />
 
-        <!--<service-->
-        <!--android:name=".service.ProfileFetchService"-->
-        <!--android:permission="android.permission.BIND_JOB_SERVICE"-->
-        <!--android:exported="true"/>-->
+        <!-- <service -->
+        <!-- android:name=".service.ProfileFetchService" -->
+        <!-- android:permission="android.permission.BIND_JOB_SERVICE" -->
+        <!-- android:exported="true"/> -->
 
-        <!--<service-->
-        <!--android:name=".service.CallRecordService"-->
-        <!--android:exported="true"/>-->
+
+        <!-- <service -->
+        <!-- android:name=".service.CallRecordService" -->
+        <!-- android:exported="true"/> -->
 
     </application>
 

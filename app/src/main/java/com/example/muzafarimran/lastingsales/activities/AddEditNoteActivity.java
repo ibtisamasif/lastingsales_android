@@ -16,7 +16,11 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import java.util.Calendar;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -115,6 +119,8 @@ public class AddEditNoteActivity extends AppCompatActivity {
                         note.setContactOfNote(selectedContact);
                         note.setNoteText(etContactNote.getText().toString());
                         note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_NOT_SYNCED);
+                        note.setContactOfNote(selectedContact);
+                        note.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                         note.save();
                         NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
                         TinyBus bus = TinyBus.from(getApplicationContext());

@@ -62,7 +62,7 @@
             android:id="@+id/ivLogo"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/login_logo"
+            app:srcCompat="@drawable/login_logo"
             android:contentDescription="Lasting Sales Logo" />
     </LinearLayout>
 </LinearLayout>

@@ -1,43 +1,47 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.CoordinatorLayout;
+
+import android.support.v4.widget.NestedScrollView;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.IndividualContactCallAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
+import com.example.muzafarimran.lastingsales.utils.TypeManager;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.orm.query.Condition;
 import com.orm.query.Select;
-
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class ContactCallDetails extends AppCompatActivity {
+public class ContactCallDetails extends BottomSheetDialogFragment {
     private static final String TAG = "ContactCallDetails";
+    private static final String CONTACT_ID = "contact_id";
+
     private String number = "";
     private String name = "";
     private IndividualContactCallAdapter indadapter;
     private TextView contact_name_ind;
-    private CircleImageView user_avatar_ind;
+    private SimpleDraweeView user_avatar_ind;
     private TextView tvNameFromProfile;
     private TextView tvCityFromProfile;
     private TextView tvCountryFromProfile;
@@ -47,56 +51,48 @@ public class ContactCallDetails extends AppCompatActivity {
     private TextView tvTweeterFromProfile;
     private TextView tvLinkdnFromProfile;
     private TextView tvFbFromProfile;
+    private Button bTrack;
+    private Button bIgnore;
 
+    public static ContactCallDetails newInstance(Long contact_id, int page) {
+        ContactCallDetails fragmentFirst = new ContactCallDetails();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putLong(CONTACT_ID, contact_id);
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
+    }
 
-    private BottomSheetBehavior mBottomSheetBehavior;
+    private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
-    @SuppressLint("RestrictedApi")
+        @Override
+        public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                dismiss();
+            }
+        }
+
+        @Override
+        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+        }
+    };
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void setupDialog(Dialog dialog, int style) {
 
-        setContentView(R.layout.activity_contact_call_details);
+        View view = View.inflate(getContext(), R.layout.activity_contact_call_details, null);
+        dialog.setContentView(view);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) ((View) view.getParent()).getLayoutParams();
+        CoordinatorLayout.Behavior behavior = layoutParams.getBehavior();
+        if (behavior != null && behavior instanceof BottomSheetBehavior) {
+            ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
+            ((BottomSheetBehavior) behavior).setPeekHeight(300);
+        }
 
-        View bottomSheet = findViewById(R.id.bottom_sheet);
-
-//        Button b_tag_individual_contact_call_screen = (Button) findViewById(R.id.b_tag_individual_contact_call_screen);
-//
-//        b_tag_individual_contact_call_screen.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-//            }
-//        });
-
-        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-
-        mBottomSheetBehavior.setPeekHeight(200);
-
-        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    mBottomSheetBehavior.setPeekHeight(200);
-                }
-            }
-
-            @Override
-            public void onSlide(View bottomSheet, float slideOffset) {
-            }
-        });
-
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp);
-////        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-//        toolbar.setNavigationIcon(upArrow);
-
-        Intent intent = getIntent();
-        this.number = intent.getStringExtra("number");
-        LSContact contact = LSContact.getContactFromNumber(this.number);
+        Long contactId = getArguments().getLong(CONTACT_ID);
+        LSContact selectedContact = LSContact.findById(LSContact.class, contactId);
+        this.number = selectedContact.getPhoneOne();
+        LSContact contact = LSContact.getContactFromNumber(number);
         if (contact != null) {
             this.name = contact.getContactName();
 //            bTagButton.setVisibility(GONE);
@@ -105,34 +101,66 @@ public class ContactCallDetails extends AppCompatActivity {
         }
 
         ArrayList<LSCall> allCallsOfThisContact = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();
-        CallClickListener callClickListener = new CallClickListener(ContactCallDetails.this);
-        ((TextView) (this.findViewById(R.id.call_numbe_ind))).setText(this.number);
+        CallClickListener callClickListener = new CallClickListener(getActivity());
+        ((TextView) (view.findViewById(R.id.call_numbe_ind))).setText(this.number);
         String contactName = this.name;
-        this.findViewById(R.id.call_icon_ind).setTag(this.number);
-        this.findViewById(R.id.call_icon_ind).setOnClickListener(callClickListener);
+        view.findViewById(R.id.call_icon_ind).setTag(this.number);
+        view.findViewById(R.id.call_icon_ind).setOnClickListener(callClickListener);
         //hide tag button if name is not stored
         if (this.name == null || (this.name).isEmpty()) {
             contactName = this.name;
         }
-        contact_name_ind = findViewById(R.id.contact_name_ind);
+        contact_name_ind = view.findViewById(R.id.contact_name_ind);
         contact_name_ind.setText(contactName);
-        user_avatar_ind = findViewById(R.id.user_avatar_ind);
+        user_avatar_ind = view.findViewById(R.id.user_avatar_ind);
+        bTrack = view.findViewById(R.id.bTrack);
+        bTrack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(getActivity(), AddEditLeadActivity.class);
+                myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, contact.getPhoneOne() + "");
+                myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, "");
+                myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_UNLABELED);
+                getActivity().startActivity(myIntent);
+//                Snackbar.make(view, "Added to Contact!", Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Added to Contact!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        bIgnore = view.findViewById(R.id.bIgnore);
+        bIgnore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String oldType = contact.getContactType();
+                contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                contact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
+                contact.save();
+                String newType = LSContact.CONTACT_TYPE_IGNORED;
+                TypeManager.ConvertTo(getActivity(), contact, oldType, newType);
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getActivity().getApplicationContext());
+                dataSenderAsync.run();
+//                Collection<LSContact> allUntaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
+//                setList(allUntaggedContacts);
+//                Snackbar.make(view, "Added to Ignored Contact!", Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        View includeContactProfile = findViewById(R.id.includeContactProfile);
+        View includeContactProfile = view.findViewById(R.id.includeContactProfile);
         TextView tvContactProfileSeparator = (TextView) includeContactProfile.findViewById(R.id.tvSeparator);
         tvContactProfileSeparator.setText("Social Profile");
 
-        tvNameFromProfile = findViewById(R.id.tvNameFromProfile);
-        tvCityFromProfile = findViewById(R.id.tvCityFromProfile);
-        tvCountryFromProfile = findViewById(R.id.tvCountryFromProfile);
-        tvWorkFromProfile = findViewById(R.id.tvWorkFromProfile);
-        tvCompanyFromProfile = findViewById(R.id.tvCompanyFromProfile);
-        tvWhatsappFromProfile = findViewById(R.id.tvWhatsappFromProfile);
-        tvTweeterFromProfile = findViewById(R.id.tvTweeterFromProfile);
-        tvLinkdnFromProfile = findViewById(R.id.tvLinkdnFromProfile);
-        tvFbFromProfile = findViewById(R.id.tvFbFromProfile);
+        tvNameFromProfile = view.findViewById(R.id.tvNameFromProfile);
+        tvCityFromProfile = view.findViewById(R.id.tvCityFromProfile);
+        tvCountryFromProfile = view.findViewById(R.id.tvCountryFromProfile);
+        tvWorkFromProfile = view.findViewById(R.id.tvWorkFromProfile);
+        tvCompanyFromProfile = view.findViewById(R.id.tvCompanyFromProfile);
+        tvWhatsappFromProfile = view.findViewById(R.id.tvWhatsappFromProfile);
+        tvTweeterFromProfile = view.findViewById(R.id.tvTweeterFromProfile);
+        tvLinkdnFromProfile = view.findViewById(R.id.tvLinkdnFromProfile);
+        tvFbFromProfile = view.findViewById(R.id.tvFbFromProfile);
 
-        View includeCallHistory = findViewById(R.id.includeCallHistory);
+        View includeCallHistory = view.findViewById(R.id.includeCallHistory);
         TextView tvContactCallHistorySeparator = (TextView) includeCallHistory.findViewById(R.id.tvSeparator);
         tvContactCallHistorySeparator.setText("Call History");
 
@@ -143,7 +171,7 @@ public class ContactCallDetails extends AppCompatActivity {
         LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(number);
         if (lsContactProfile != null) {
             if (lsContactProfile.getSocial_image() != null) {
-                imageFunc(user_avatar_ind, lsContactProfile.getSocial_image());
+                MyDateTimeStamp.setFrescoImage(user_avatar_ind, lsContactProfile.getSocial_image());
             }
             if (lsContactProfile.getFirstName() != null) {
                 tvNameFromProfile.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
@@ -174,8 +202,8 @@ public class ContactCallDetails extends AppCompatActivity {
             }
         }
 
-        ListView listview = this.findViewById(R.id.calls_list);
-        indadapter = new IndividualContactCallAdapter(ContactCallDetails.this, allCallsOfThisContact);
+        com.example.muzafarimran.lastingsales.customview.NonScrollListView listview = view.findViewById(R.id.calls_list);
+        indadapter = new IndividualContactCallAdapter(getActivity(), allCallsOfThisContact);
         Log.d(TAG, "setUpList: Size " + allCallsOfThisContact.size());
         for (LSCall oneCall : allCallsOfThisContact) {
             Log.d(TAG, "setUpList: " + oneCall.toString());
@@ -183,18 +211,11 @@ public class ContactCallDetails extends AppCompatActivity {
         listview.setAdapter(indadapter);
 
 //        getSupportActionBar().setTitle("Details");
+
+        NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet);
+        nestedScrollView.setScrollY(0);
     }
 
-    private void imageFunc(CircleImageView imageView, String url) {
-        //Downloading using Glide Library
-        Glide.with(this)
-                .load(url)
-//                .override(48, 48)
-//                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.ic_account_circle)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -203,7 +224,7 @@ public class ContactCallDetails extends AppCompatActivity {
 
                 break;
             case android.R.id.home:
-                onBackPressed();
+//                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);

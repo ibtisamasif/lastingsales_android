@@ -46,6 +46,6 @@
         android:layout_marginLeft="11dp"
         android:layout_marginRight="11dp"
         android:clickable="true"
-        android:src="@drawable/ic_notes_white" />
+        app:srcCompat="@drawable/ic_notes_white" />
 
 </android.support.design.widget.CoordinatorLayout>

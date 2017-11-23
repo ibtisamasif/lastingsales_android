@@ -28,25 +28,38 @@ public class HomeLoader extends AsyncTaskLoader<List<Object>> {
 
     @Override
     public List<Object> loadInBackground() {
+        Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
+
+        Collection<LSInquiry> inquiriesContacts = LSInquiry.getAllPendingInquiriesInDescendingOrder();
+
+        HomeItem item2 = new HomeItem();
+        item2.text = "Inquiries";
+        item2.value = "" + inquiriesContacts.size();
+
+        HomeItem item3 = new HomeItem();
+        item3.text = "Leads";
+        item3.value = "" + contacts.size();
+
+        list.add(item2);
+        list.add(item3);
 
         Collection<LSContact> unlabeledContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
         if (!unlabeledContacts.isEmpty()) {
 
-            Collection<HomeItem> listHome = new ArrayList<HomeItem>();
             HomeItem item = new HomeItem();
-            item.text = "HOME CARD";
+            item.text = "Unlabeled contacts";
             item.value = "" + unlabeledContacts.size();
-            listHome.add(item);
 
             SeparatorItem separatorItem = new SeparatorItem();
-            separatorItem.text = "Unlabeled contacts";
+            separatorItem.text = "Recent unlabeled contacts";
 
 //        Collection<LoadingItem> listLoading = new ArrayList<LoadingItem>();
 //        LoadingItem loadingItem = new LoadingItem();
 //        loadingItem.text = "Loading items...";
 //        listLoading.add(loadingItem);
 
-            list.addAll(listHome);
+            list.add(item);
+
 //        list.addAll(inquiriesContacts);
             list.add(separatorItem);
             list.addAll(unlabeledContacts);
@@ -54,7 +67,7 @@ public class HomeLoader extends AsyncTaskLoader<List<Object>> {
 
         } else {
             ErrorItem erItem = new ErrorItem();
-            erItem.message = "Nothing in home";
+            erItem.message = "Nothing in Unlabeled";
             erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
             list.add(erItem);
         }

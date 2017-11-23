@@ -3,9 +3,7 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,19 +22,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by ibtisam on 5/19/2017.
@@ -59,7 +51,7 @@ public class CreateCompanyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_company);
         queue = Volley.newRequestQueue(CreateCompanyActivity.this, new HurlStack());
         sessionManager = new SessionManager(getApplicationContext());
-        etCompanyName = (EditText) findViewById(R.id.etCompanyName);
+        etCompanyName = (EditText) findViewById(R.id.etFirstName);
         bCreateCompany = (Button) findViewById(R.id.bCreateCompany);
         llLogin = (LinearLayout) findViewById(R.id.llLogin);
         pdLoading = new ProgressDialog(this);

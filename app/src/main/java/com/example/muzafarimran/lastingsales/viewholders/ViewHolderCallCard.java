@@ -9,22 +9,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
-import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-
-import java.util.Calendar;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.view.View.GONE;
-
 
 /**
  * Created by ibtisam on 11/1/2017.

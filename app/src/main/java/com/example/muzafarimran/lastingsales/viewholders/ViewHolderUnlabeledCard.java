@@ -2,24 +2,27 @@ package com.example.muzafarimran.lastingsales.viewholders;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactCallDetails;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
@@ -29,12 +32,11 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.Collection;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
 
 /**
  * Created by ibtisam on 11/1/2017.
@@ -42,9 +44,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
     public static final String TAG = "ViewHolderUnlabeledCard";
-    private final CardView cv_item;
 
-    CircleImageView user_avatar;
+    private final CardView cv_item;
+    private final LinearLayout llTypeRibbon;
+    SimpleDraweeView user_avatar;
     TextView name;
     TextView time;
     ImageView call_icon;
@@ -69,6 +72,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
     public ViewHolderUnlabeledCard(View v) {
         super(v);
         this.cv_item = v.findViewById(R.id.cv_item);
+        this.llTypeRibbon = v.findViewById(R.id.llTypeRibbon);
         this.user_avatar = v.findViewById(R.id.user_avatar);
         this.name = v.findViewById(R.id.call_name);
         this.time = v.findViewById(R.id.call_time);
@@ -135,8 +139,12 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 imageFunc(this.user_avatar, lsContactProfile.getSocial_image(), mContext);
             } else {
                 this.user_avatar.setImageResource(R.drawable.ic_account_circle);
+                Drawable placeholderDrawable = ContextCompat.getDrawable(mContext, R.drawable.ic_account_circle);
+                this.user_avatar.setHierarchy(
+                        GenericDraweeHierarchyBuilder.newInstance(mContext.getResources())
+                                .setPlaceholderImage(placeholderDrawable)
+                                .build());
             }
-
 
             if (lsContactProfile.getFirstName() != null) {
                 this.tvNameFromProfile.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
@@ -168,10 +176,15 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
         } else {
             this.user_profile_group_wrapper.setVisibility(View.GONE);
             this.user_avatar.setImageResource(R.drawable.ic_account_circle);
+            Drawable placeholderDrawable = ContextCompat.getDrawable(mContext, R.drawable.ic_account_circle);
+            this.user_avatar.setHierarchy(
+                    GenericDraweeHierarchyBuilder.newInstance(mContext.getResources())
+                            .setPlaceholderImage(placeholderDrawable)
+                            .build());
         }
 
         this.bIgnore.setTag(number);
-        this.cv_item.setTag(number);
+        this.cv_item.setTag(contact.getId());
         this.numberDetailTextView.setText(number);
 //        this.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(contact.getBeginTime()));
         this.callClickListener = new CallClickListener(mContext);
@@ -194,7 +207,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
             TypeManager.ConvertTo(mContext, contact, oldType, newType);
             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
             dataSenderAsync.run();
-            Collection<LSContact> allUntaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
+//            Collection<LSContact> allUntaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
 //                setList(allUntaggedContacts);
             Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
         });
@@ -202,6 +215,8 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
         switch (contactType) {
             case LSContact.CONTACT_TYPE_SALES:
                 rl_container_buttons.setVisibility(View.GONE);
+                user_profile_group_wrapper.setVisibility(View.GONE);
+                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Success));
                 // navigate to lead
                 // dont show smart info
                 // add delete followup button
@@ -217,7 +232,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 this.cv_item.setOnLongClickListener(view -> {
 
                     LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
-                    if(checkInquiry != null){
+                    if (checkInquiry != null) {
                         checkInquiry.delete();
                     }
 //                    if (checkInquiry == null) {
@@ -254,6 +269,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 
             case LSContact.CONTACT_TYPE_BUSINESS:
                 rl_container_buttons.setVisibility(View.VISIBLE);
+                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
                 // navigate to details
                 // show smart info
 
@@ -282,12 +298,18 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 break;
 
             case LSContact.CONTACT_TYPE_UNLABELED:
-                rl_container_buttons.setVisibility(View.VISIBLE);
+                rl_container_buttons.setVisibility(View.GONE);
+                user_profile_group_wrapper.setVisibility(View.GONE);
+                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Warning));
 
                 this.cv_item.setOnClickListener(view -> {
-                    Intent myIntent = new Intent(mContext, ContactCallDetails.class);
-                    myIntent.putExtra("number", (String) view.getTag());
-                    mContext.startActivity(myIntent);
+
+                    NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
+                    navigationBottomMainActivity.onClickUnlabeled((Long) view.getTag());
+
+//                    Intent myIntent = new Intent(mContext, ContactCallDetails.class);
+//                    myIntent.putExtra("number", (String) view.getTag());
+//                    mContext.startActivity(myIntent);
                 });
 
                 this.cv_item.setOnLongClickListener(view -> {
@@ -299,7 +321,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
             case LSContact.CONTACT_TYPE_IGNORED:
                 //No profile layout shown
                 rl_container_buttons.setVisibility(View.GONE);
-
+                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Default));
                 //Remove ignore button
 
                 //No navigation on click
@@ -325,14 +347,17 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
         }
     }
 
-    private void imageFunc(CircleImageView imageView, String url, Context context) {
-        //Downloading using Glide Library
-        Glide.with(context)
-                .load(url)
-//                .override(48, 48)
-//                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.ic_account_circle)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView);
+    private void imageFunc(SimpleDraweeView imageView, String url, Context context) {
+        Uri uri = Uri.parse(url);
+        imageView.setImageURI(uri);
+
+//        //Downloading using Glide Library
+//        Glide.with(context)
+//                .load(url)
+////                .override(48, 48)
+////                .placeholder(R.drawable.placeholder)
+//                .error(R.drawable.ic_account_circle)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .into(imageView);
     }
 }

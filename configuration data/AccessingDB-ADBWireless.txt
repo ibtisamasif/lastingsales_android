@@ -1,0 +1,29 @@
+cd C:\sdk\platform-tools
+
+FOR LASTINGSALES:
+In cmd Type 'adb shell'
+su
+Press 'Allow' on device
+chmod 777 /data /data/data /data/data/com.lastingsales.agent /data/data/com.lastingsales.agent/*
+
+adb shell
+su
+root@android:/ # chmod 777 /data/data/com.lastingsales.agent/databases/sugar_example.db
+
+FOR PROVIDER CONTACTS
+In cmd Type 'adb shell'
+su
+Press 'Allow' on device
+chmod 777 /data /data/data /data/data/com.android.providers.contacts
+
+adb shell
+su
+root@android:/ # chmod 777 /data/data/com.android.providers.contacts/databases/contacts2.db
+
+
+cd C:\sdk\platform-tools
+
+adb tcpip 5555
+
+adb connect 192.168.8.115
+adb connect 192.168.10.18

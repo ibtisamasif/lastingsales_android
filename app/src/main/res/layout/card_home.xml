@@ -22,6 +22,19 @@
         android:layout_height="wrap_content"
         android:weightSum="0">
 
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvValue"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/bg_collegue_cardxxxhdpi" />
+
         <TextView
             android:id="@+id/tvValue"
             android:layout_width="wrap_content"
@@ -39,11 +52,11 @@
 
         <TextView
             android:id="@+id/tvHome"
+            style="@style/TextAppearance.AppCompat.Large.Inverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
             android:text="Home"
             android:textSize="16sp"
@@ -60,10 +73,11 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
             android:paddingLeft="4dp"
-            android:src="@drawable/ic_visibility_white_48dp"
+            app:srcCompat="@drawable/ic_visibility_white_48dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingStart="4dp" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

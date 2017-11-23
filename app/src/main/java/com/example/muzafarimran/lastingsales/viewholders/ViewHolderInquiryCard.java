@@ -3,6 +3,8 @@ package com.example.muzafarimran.lastingsales.viewholders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -10,19 +12,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.Calendar;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
 
@@ -33,12 +33,14 @@ import static android.view.View.GONE;
 
 public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
     public static final String TAG = "InquiriesAdapter";
-    public CircleImageView user_avatar;
+
+    private CardView cv_item;
+    private SimpleDraweeView user_avatar;
     private TextView name;
     private TextView time;
     private ImageView call_icon;
     private TextView numberDetailTextView;
-//    private Button bIgnore;
+    //    private Button bIgnore;
     private Button bTag;
     private TextView inquireyCount;
     private View.OnClickListener callClickListener = null;
@@ -46,6 +48,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
 
     public ViewHolderInquiryCard(View view) {
         super(view);
+        this.cv_item = view.findViewById(R.id.cv_item);
         this.user_avatar = view.findViewById(R.id.user_avatar);
         this.name = view.findViewById(R.id.call_name);
         this.time = view.findViewById(R.id.call_time);
@@ -123,6 +126,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
             this.user_avatar.setImageResource(R.drawable.ic_account_circle);
         }
 
+        this.cv_item.setTag(number);
 //        this.bIgnore.setTag(number);
         this.numberDetailTextView.setText(number);
 //        this.call_name_time.setTag(position);
@@ -144,6 +148,14 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         this.callClickListener = new CallClickListener(mContext);
         this.call_icon.setOnClickListener(this.callClickListener);
         this.call_icon.setTag(inquiryCall.getContactNumber());
+
+        this.cv_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
+                navigationBottomMainActivity.onClickInquiry((String) view.getTag());
+            }
+        });
 
         this.bTag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,14 +198,17 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
 //        });
     }
 
-    private void imageFunc(CircleImageView imageView, String url, Context context) {
-        //Downloading using Glide Library
-        Glide.with(context)
-                .load(url)
-//                .override(48, 48)
-//                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.ic_account_circle)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView);
+    private void imageFunc(SimpleDraweeView imageView, String url, Context context) {
+        Uri uri = Uri.parse(url);
+        imageView.setImageURI(uri);
+
+//        //Downloading using Glide Library
+//        Glide.with(context)
+//                .load(url)
+////                .override(48, 48)
+////                .placeholder(R.drawable.placeholder)
+//                .error(R.drawable.ic_account_circle)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .into(imageView);
     }
 }

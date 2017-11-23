@@ -19,20 +19,23 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 
 public class ViewHolderNoteCard extends RecyclerView.ViewHolder {
 
+    private final TextView tvCreatedAt;
     private TextView tvNote;
     private ImageView ivDelete;
     private final ConstraintLayout cl;
 
     public ViewHolderNoteCard(View v) {
         super(v);
-        tvNote = v.findViewById(R.id.tvNote);
-        ivDelete = v.findViewById(R.id.ivDelete);
         cl = v.findViewById(R.id.cl);
+        tvNote = v.findViewById(R.id.tvNote);
+        tvCreatedAt = v.findViewById(R.id.tvCreatedAt);
+        ivDelete = v.findViewById(R.id.ivDelete);
     }
 
     public void bind(Object item, int position, Context mContext) {
         final LSNote noteItem = (LSNote) item;
         tvNote.setText(noteItem.getNoteText());
+        tvCreatedAt.setText(noteItem.getCreatedAt());
         ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

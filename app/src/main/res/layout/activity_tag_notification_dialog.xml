@@ -41,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:layout_weight="9"
-                android:src="@drawable/ic_close_white" />
+                app:srcCompat="@drawable/ic_close_white" />
 
         </LinearLayout>
 
@@ -190,7 +190,7 @@
                 <!--android:layout_alignParentRight="true"-->
                 <!--android:layout_gravity=""-->
                 <!--android:layout_marginRight="20dp"-->
-                <!--android:src="@drawable/ic_plus_xxl"-->
+                <!--app:srcCompat="@drawable/ic_plus_xxl"-->
                 <!--/>-->
 
                 <!--</RelativeLayout>-->
@@ -233,7 +233,7 @@
                 <!--android:layout_alignParentRight="true"-->
                 <!--android:layout_gravity=""-->
                 <!--android:layout_marginRight="20dp"-->
-                <!--android:src="@drawable/ic_plus_xxl"-->
+                <!--app:srcCompat="@drawable/ic_plus_xxl"-->
                 <!--/>-->
 
                 <!--</RelativeLayout>-->

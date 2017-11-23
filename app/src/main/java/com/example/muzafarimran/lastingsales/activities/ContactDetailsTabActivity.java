@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -11,11 +12,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+
+import java.util.List;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -164,12 +173,47 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.ic_action_delete:
+                LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(selectedContact.getPhoneOne());
+                if (checkInquiry != null) {
+                    checkInquiry.delete();
+                }
+//                    if (checkInquiry == null) {
+                //Flushing Notes Of lead
+                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedContact.getId());
+                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
+                    for (LSNote oneNote : allNotesOfThisContact) {
+                        oneNote.delete();
+                    }
+                }
+                //Flushing Followup Of lead
+                List<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getFollowupsByContactId(selectedContact.getId());
+                if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
+                    for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
+                        oneFollowup.delete();
+                    }
+                }
+                //contact is deleted and will be hard deleted on syncing.
+                selectedContact.setLeadDeleted(true);
+                selectedContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+                selectedContact.save();
+//                    contact.delete();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(this);
+                dataSenderAsync.run();
+//                    }else {
+//                        Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
+//                    }
+                Toast.makeText(this, "Lead Deleted", Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+
             case R.id.ic_action_edit:
                 Intent addContactScreenIntent = new Intent(getApplicationContext(), AddEditLeadActivity.class);
                 addContactScreenIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
                 addContactScreenIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contactIdString);
                 startActivity(addContactScreenIntent);
                 break;
+
             case android.R.id.home:
                 onBackPressed();
                 return true;

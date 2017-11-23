@@ -17,8 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
@@ -27,7 +25,9 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
+import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,8 +36,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BubbleHelper extends AppCompatActivity {
     private static final String TAG = "BubbleHelper";
@@ -56,7 +54,7 @@ public class BubbleHelper extends AppCompatActivity {
     private TextView tvName;
     private TextView tvCallerHistoryLastCallDateTime1;
     private TextView tvCallerHistoryLastCallTimeAgo1;
-    private CircleImageView user_avatar;
+    private SimpleDraweeView user_avatar;
     private static RequestQueue queue;
 
 
@@ -75,21 +73,11 @@ public class BubbleHelper extends AppCompatActivity {
         return mInstance;
     }
 
-    private void imageFunc(CircleImageView imageView, String url) {
-        //Downloading using Glide Library
-        Glide.with(context)
-                .load(url)
-//                .override(48, 48)
-//                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.ic_flyer_circle)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView);
-    }
 
     public void show(Long noteIdLong, String number, LSContact oneContact) {
 
         bubbleView = (BubbleLayout) LayoutInflater.from(context).inflate(R.layout.flyer_layout, null);
-        user_avatar = (CircleImageView) bubbleView.findViewById(R.id.user_avatar);
+        user_avatar = (SimpleDraweeView) bubbleView.findViewById(R.id.user_avatar);
         tvNoteTextUIOCallPopup = (TextView) bubbleView.findViewById(R.id.tvNoteTextUIOCallPopup);
         tvCallerHistoryName0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName0);
         tvCallerHistoryLastCallDateTime0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime0);
@@ -118,7 +106,7 @@ public class BubbleHelper extends AppCompatActivity {
             public void onSuccess(LSContactProfile result) {
                 Log.d(TAG, "onResponse: lsContactProfile: " + result);
                 if (result != null) {
-                    imageFunc(user_avatar, result.getSocial_image());
+                    MyDateTimeStamp.setFrescoImage(user_avatar, result.getSocial_image());
                 }
             }
         });
@@ -179,7 +167,7 @@ public class BubbleHelper extends AppCompatActivity {
     public void show(String number) {
 
         bubbleView = (BubbleLayout) LayoutInflater.from(context).inflate(R.layout.flyer_layout, null);
-        user_avatar = (CircleImageView) bubbleView.findViewById(R.id.user_avatar);
+        user_avatar = (SimpleDraweeView) bubbleView.findViewById(R.id.user_avatar);
         tvNoteTextUIOCallPopup = (TextView) bubbleView.findViewById(R.id.tvNoteTextUIOCallPopup);
         tvCallerHistoryName0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName0);
         tvCallerHistoryLastCallDateTime0 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime0);
@@ -208,7 +196,7 @@ public class BubbleHelper extends AppCompatActivity {
             public void onSuccess(LSContactProfile result) {
                 Log.d(TAG, "onResponse: lsContactProfile: " + result);
                 if (result != null) {
-                    imageFunc(user_avatar, result.getSocial_image());
+                    MyDateTimeStamp.setFrescoImage(user_avatar, result.getSocial_image());
                 }
             }
         });

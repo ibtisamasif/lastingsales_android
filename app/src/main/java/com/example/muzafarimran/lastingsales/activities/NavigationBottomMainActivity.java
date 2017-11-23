@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.SearchManager;
@@ -9,12 +8,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.MatrixCursor;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
@@ -26,8 +24,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -35,13 +31,12 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.app.ClassManager;
-import com.example.muzafarimran.lastingsales.app.ClassNames;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
-import com.example.muzafarimran.lastingsales.customview.BadgeView;
 import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelper;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
+import com.example.muzafarimran.lastingsales.onboarding.OnBoardingActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -57,7 +52,6 @@ import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
 import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.ShortcutBadgeUpdateAsync;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -106,8 +100,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             if (ACTIVE_LOADER != -1) {
-                if (getSupportLoaderManager().getLoader(ACTIVE_LOADER).isStarted()) { //still crashing here
-                    getSupportLoaderManager().getLoader(ACTIVE_LOADER).cancelLoad();
+                try {
+                    if (getSupportLoaderManager().getLoader(ACTIVE_LOADER).isStarted()) { //still crashing here
+                        getSupportLoaderManager().getLoader(ACTIVE_LOADER).cancelLoad();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             switch (item.getItemId()) {
@@ -143,16 +141,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Home");
         ActionBar actionBar = getSupportActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-
-
-        View modalbottomsheet = getLayoutInflater().inflate(R.layout.bottom_sheet_sample, null);
-
-        BottomSheetDialog dialog = new BottomSheetDialog(this);
-        dialog.setContentView(modalbottomsheet);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-
 
         adapter = new MyRecyclerViewAdapter(this, list);
 
@@ -172,6 +160,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         mRecyclerView.setAdapter(adapter);
 
         init(this);
+
+//        startActivity(new Intent(NavigationBottomMainActivity.this, OnBoardingActivity.class));
     }
 
     private void init(NavigationBottomMainActivity navigationBottomMainActivity) {
@@ -262,20 +252,20 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 //            NavigationDrawerActivity.this.startActivity(intentTest);
 //        }
 
-//        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-//            public void uncaughtException(Thread thread, Throwable ex) {
-//                Log.d(TAG, "uncaughtException: ");
-//                Log.d("testlog", "uncaughtException: ");
-//                Intent launchIntent = new Intent(getIntent());
-//                PendingIntent pending = PendingIntent.getActivity(NavigationBottomMainActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pending);
-//                defaultHandler.uncaughtException(thread, ex);
-//                System.exit(2);
-//                Log.d("testlog", "uncaughtException: exit");
-//            }
-//        });
+        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread thread, Throwable ex) {
+                Log.d(TAG, "uncaughtException: ");
+                Log.d("testlog", "uncaughtException: ");
+                Intent launchIntent = new Intent(getIntent());
+                PendingIntent pending = PendingIntent.getActivity(NavigationBottomMainActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pending);
+                defaultHandler.uncaughtException(thread, ex);
+                System.exit(2);
+                Log.d("testlog", "uncaughtException: exit");
+            }
+        });
 
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
@@ -573,5 +563,17 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 break;
             default:
         }
+    }
+
+    public void onClickUnlabeled(Long contact_id) {
+        ContactCallDetails contactCallDetails = ContactCallDetails.newInstance(contact_id, 0);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        contactCallDetails.show(fragmentManager, "tag");
+    }
+
+    public void onClickInquiry(String number) {
+        InquiryCallDetails contactCallDetails = InquiryCallDetails.newInstance(number, 0);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        contactCallDetails.show(fragmentManager, "tag");
     }
 }

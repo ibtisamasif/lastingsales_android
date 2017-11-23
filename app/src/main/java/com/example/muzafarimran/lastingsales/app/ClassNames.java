@@ -24,7 +24,6 @@ public class ClassNames {
     public static final int ERROR_CLASS_TYPE = 4;
     public static final int ERROR_CLASS_RESOURCE = R.layout.card_error;
 
-
     public static final String SETTING_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.SettingItem";
     public static final int SETTING_CLASS_TYPE = 5;
     public static final int SETTING_CLASS_RESOURCE = R.layout.card_setting;

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/contact_row"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingBottom="0dp"
-    android:paddingTop="10dp"
-    >
+    android:paddingTop="10dp">
 
     <RelativeLayout
         android:id="@+id/user_call_group_wrapper"
@@ -34,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="0dp"
-                android:src="@drawable/ic_account_circle"
+                app:srcCompat="@drawable/ic_account_circle"
                 android:tint="@color/colorPrimary"
                 android:layout_centerVertical="true"
                 />
@@ -88,7 +87,7 @@
             android:layout_centerVertical="true"
             android:paddingRight="10dp"
             android:scaleType="fitEnd"
-            android:src="@drawable/ic_call_green"
+            app:srcCompat="@drawable/ic_call_green"
             />
 
     </RelativeLayout>

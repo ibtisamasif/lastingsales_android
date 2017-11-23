@@ -10,7 +10,7 @@
         <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
     </style>
 
-    <!--<style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Translucent">-->
+    <!--<style name="Theme.AppCompat.Translucent">-->
         <!--<item name="android:windowNoTitle">true</item>-->
         <!--<item name="android:windowBackground">@color/mdtp_transparent_black</item>-->
         <!--<item name="android:textColorPrimary">@color/md_black</item>-->
