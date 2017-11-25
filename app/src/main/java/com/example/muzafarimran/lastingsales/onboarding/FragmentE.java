@@ -10,10 +10,6 @@ import android.widget.EditText;
 
 import com.example.muzafarimran.lastingsales.R;
 
-/**
- * Created by ibtisam on 11/23/2017.
- */
-
 public class FragmentE extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -43,12 +39,7 @@ public class FragmentE extends Fragment {
         etCompanyName = view.findViewById(R.id.etFirstName);
         etEmail = view.findViewById(R.id.etEmail);
         bNext = view.findViewById(R.id.bNext);
-        bNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((OnBoardingActivity)getActivity()).dataFromFragmentE(etCompanyName.getText().toString(), etEmail.getText().toString());
-            }
-        });
+        bNext.setOnClickListener(view1 -> ((OnBoardingActivity)getActivity()).dataFromFragmentE(etCompanyName.getText().toString(), etEmail.getText().toString()));
         return view;
     }
 

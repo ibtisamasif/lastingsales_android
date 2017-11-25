@@ -9,29 +9,26 @@
     android:id="@+id/linearLayout5">
 
 
-
-
     <ImageView
         android:id="@+id/lead_number_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:paddingRight="8dp"
         android:tint="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_account_circle_white"
         tools:layout_conversion_absoluteHeight="30dp"
         tools:layout_conversion_absoluteWidth="30dp" />
 
     <TextView
         android:id="@+id/lead_number_text"
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Number"
-        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/lead_number_icon"
         app:layout_constraintTop_toTopOf="@+id/lead_number_icon"
         tools:layout_conversion_absoluteHeight="16dp"
@@ -39,6 +36,7 @@
 
     <TextView
         android:id="@+id/tvNumber"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -55,22 +53,21 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:paddingRight="12dp"
+        android:layout_marginTop="16dp"
         android:tint="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lead_number_icon"
+        app:srcCompat="@drawable/ic_location_on_24dp"
         tools:layout_conversion_absoluteHeight="30dp"
         tools:layout_conversion_absoluteWidth="30dp" />
 
     <TextView
         android:id="@+id/lead_address_text"
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Address"
-        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/lead_address_icon"
         app:layout_constraintTop_toTopOf="@+id/lead_address_icon"
         tools:layout_conversion_absoluteHeight="16dp"
@@ -78,6 +75,7 @@
 
     <TextView
         android:id="@+id/tvAddress"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -94,23 +92,22 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:paddingRight="10dp"
+        android:layout_marginTop="16dp"
         android:tint="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lead_address_icon"
+        app:srcCompat="@drawable/ic_filter_list_24dp"
         tools:layout_conversion_absoluteHeight="30dp"
         tools:layout_conversion_absoluteWidth="30dp" />
 
 
     <TextView
         android:id="@+id/lead_status_label"
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Status"
-        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/lead_icon"
         app:layout_constraintTop_toTopOf="@+id/lead_icon"
         tools:layout_conversion_absoluteHeight="16dp"
@@ -132,13 +129,12 @@
 
     <TextView
         android:id="@+id/textView6"
+        style="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/lead_details"
-        android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lead_icon"
         tools:layout_conversion_absoluteHeight="21dp"
@@ -147,6 +143,7 @@
 
     <TextView
         android:id="@+id/tvDefaultText"
+        style="@style/Base.TextAppearance.AppCompat.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

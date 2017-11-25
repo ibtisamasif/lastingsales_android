@@ -54,7 +54,7 @@ public class IndividualContactCallAdapter extends BaseAdapter {
         LSCall call = (LSCall) getItem(position);
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.ind_call_view, parent, false);
+            convertView = mInflater.inflate(R.layout.card_call, parent, false);
             holder = new ViewHolder();
             holder.call_type = (TextView) convertView.findViewById(R.id.call_type);
             holder.tvDuration = (TextView) convertView.findViewById(R.id.tvDuration);

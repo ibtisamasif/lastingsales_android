@@ -9,10 +9,6 @@ import android.view.ViewGroup;
 import com.example.muzafarimran.lastingsales.R;
 import com.google.android.gms.plus.PlusOneButton;
 
-/**
- * Created by ibtisam on 11/23/2017.
- */
-
 public class FragmentC extends Fragment{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";

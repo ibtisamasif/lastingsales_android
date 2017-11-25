@@ -42,7 +42,7 @@ public class ClassNames {
 
     public static final String CALL_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.LSCall";
     public static final int CALL_CLASS_TYPE = 9;
-    public static final int CALL_CLASS_RESOURCE = R.layout.ind_call_view;
+    public static final int CALL_CLASS_RESOURCE = R.layout.card_call;
 
     public static final String REMINDER_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.TempFollowUp";
     public static final int REMINDER_CLASS_TYPE = 10;

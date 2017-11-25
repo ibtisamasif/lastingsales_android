@@ -10,10 +10,6 @@ import android.widget.EditText;
 
 import com.example.muzafarimran.lastingsales.R;
 
-/**
- * Created by ibtisam on 11/23/2017.
- */
-
 public class FragmentF extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -22,7 +18,7 @@ public class FragmentF extends Fragment {
     private EditText etLastName;
     private EditText etPhoneNumber;
     private EditText etPassword;
-    private EditText etConfimPassword;
+    private EditText etConfirmPassword;
     private Button bNext;
 
     public FragmentF() {
@@ -47,12 +43,16 @@ public class FragmentF extends Fragment {
         etLastName = view.findViewById(R.id.etLastName);
         etPhoneNumber = view.findViewById(R.id.etPhoneNumber);
         etPassword = view.findViewById(R.id.etPassword);
-        etConfimPassword = view.findViewById(R.id.etConfimPassword);
+        etConfirmPassword = view.findViewById(R.id.etConfirmPassword);
         bNext = view.findViewById(R.id.bNext);
         bNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((OnBoardingActivity) getActivity()).dataFromFragmentF(etFirstName.getText().toString(), etLastName.getText().toString(), etPhoneNumber.getText().toString(), etPassword.getText().toString(), etConfimPassword.getText().toString());
+                ((OnBoardingActivity) getActivity()).dataFromFragmentF(etFirstName.getText().toString(),
+                        etLastName.getText().toString(),
+                        etPhoneNumber.getText().toString(),
+                        etPassword.getText().toString(),
+                        etConfirmPassword.getText().toString());
             }
         });
         return view;

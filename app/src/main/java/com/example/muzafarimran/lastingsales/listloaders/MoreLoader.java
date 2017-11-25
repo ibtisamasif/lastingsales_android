@@ -36,7 +36,7 @@ public class MoreLoader extends AsyncTaskLoader<List<Object>> {
         moreItemIgnored.description = "Contacts that you don't want to be tracked i.e friends and family.";
 
         MoreItem moreItemSetting = new MoreItem("Settings");
-        moreItemSetting.drawable = R.drawable.bg_ignord_cardxxxhdpi;
+        moreItemSetting.drawable = R.drawable.bg_setting_cardcopyxxxhdpi;
         moreItemSetting.description = "Manage your accounts and notification preferences.";
 
         list.add(moreItemColleague);

@@ -37,29 +37,28 @@
 
         <TextView
             android:id="@+id/tvValue"
+            style="@style/Base.TextAppearance.AppCompat.Display2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:minWidth="102dp"
             android:text=" 0 "
-            android:textSize="40sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvHome"
-            style="@style/TextAppearance.AppCompat.Large.Inverse"
+            style="@style/Base.TextAppearance.AppCompat.Title.Inverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
             android:text="Home"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvValue"
             app:layout_constraintTop_toTopOf="parent" />

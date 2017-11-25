@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,8 +8,10 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -150,7 +153,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         if (extras != null) {
             selectedTab = extras.getString(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB);
             if (selectedTab != null && selectedTab != "") {
-                viewPager.setCurrentItem(2, true);
+                viewPager.setCurrentItem(1, true);
             }
         }
     }
@@ -174,37 +177,62 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.ic_action_delete:
-                LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(selectedContact.getPhoneOne());
-                if (checkInquiry != null) {
-                    checkInquiry.delete();
+
+
+                String nameTextOnDialog;
+                if (selectedContact.getContactName() != null) {
+                    nameTextOnDialog = selectedContact.getContactName();
+                } else {
+                    nameTextOnDialog = selectedContact.getPhoneOne();
                 }
+                AlertDialog.Builder alert = new AlertDialog.Builder(ContactDetailsTabActivity.this);
+                alert.setTitle("Delete");
+                alert.setMessage("Are you sure to delete " + nameTextOnDialog);
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(selectedContact.getPhoneOne());
+                        if (checkInquiry != null) {
+                            checkInquiry.delete();
+                        }
 //                    if (checkInquiry == null) {
-                //Flushing Notes Of lead
-                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedContact.getId());
-                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
-                    for (LSNote oneNote : allNotesOfThisContact) {
-                        oneNote.delete();
-                    }
-                }
-                //Flushing Followup Of lead
-                List<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getFollowupsByContactId(selectedContact.getId());
-                if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
-                    for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
-                        oneFollowup.delete();
-                    }
-                }
-                //contact is deleted and will be hard deleted on syncing.
-                selectedContact.setLeadDeleted(true);
-                selectedContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
-                selectedContact.save();
-//                    contact.delete();
-                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(this);
-                dataSenderAsync.run();
+                        //Flushing Notes Of lead
+                        List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedContact.getId());
+                        if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
+                            for (LSNote oneNote : allNotesOfThisContact) {
+                                oneNote.delete();
+                            }
+                        }
+                        //Flushing Followup Of lead
+                        List<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getFollowupsByContactId(selectedContact.getId());
+                        if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
+                            for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
+                                oneFollowup.delete();
+                            }
+                        }
+                        //contact is deleted and will be hard deleted on syncing.
+                        selectedContact.setLeadDeleted(true);
+                        selectedContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+                        selectedContact.save();
+//                    selectedContact.delete();
+                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ContactDetailsTabActivity.this);
+                        dataSenderAsync.run();
+                        // FIRE EVENT TO REFRESH LIST
+                        Snackbar.make(toolbar, "Lead deleted!", Snackbar.LENGTH_SHORT).show();
 //                    }else {
 //                        Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
 //                    }
-                Toast.makeText(this, "Lead Deleted", Toast.LENGTH_SHORT).show();
-                finish();
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
                 break;
 
             case R.id.ic_action_edit:

@@ -4,20 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Ls.Color.Text.Secondary">
+    android:background="@color/md_teal_800">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="134dp"
-        android:background="@color/md_cyan_800"
+        android:background="@color/md_teal_600"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
+    <com.example.muzafarimran.lastingsales.customview.CustomViewPager
         android:id="@+id/viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"

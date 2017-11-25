@@ -43,27 +43,24 @@
 
         <TextView
             android:id="@+id/call_name"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:text="@string/unknown_capital"
-            android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/user_avatar"
             app:layout_constraintTop_toTopOf="@+id/user_avatar" />
 
         <TextView
             android:id="@+id/call_number"
+            style="@style/Base.TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/call_name"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/missed_call_icon"
             android:layout_toRightOf="@id/missed_call_icon"
-
             android:text="number"
-            android:textSize="15sp"
             app:layout_constraintStart_toEndOf="@+id/user_avatar"
             app:layout_constraintTop_toBottomOf="@+id/call_name" />
 

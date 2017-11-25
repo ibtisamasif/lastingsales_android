@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -25,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
+import com.example.muzafarimran.lastingsales.onboarding.OnBoardingActivity;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
@@ -42,13 +42,13 @@ import java.util.Map;
 public class LogInActivity extends AppCompatActivity {
 
     public static final String TAG = "LogInActivity";
-    ProgressDialog pdLoading;
-    EditText etEmail, etPassword;
-    LinearLayout llSignup;
-    String email, password;
-    Button loginButton;
-    SessionManager sessionManager;
-    private LinearLayout llForgotPassword;
+    private ProgressDialog pdLoading;
+    private EditText etEmail, etPassword;
+    private Button bSignup;
+    private Button bReset;
+    private String email, password;
+    private Button loginButton;
+    private SessionManager sessionManager;
     private static RequestQueue queue;
 
     @Override
@@ -76,8 +76,8 @@ public class LogInActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.loginButtonLoginScreen);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
-        llSignup = (LinearLayout) findViewById(R.id.llSignup);
-        llForgotPassword = (LinearLayout) findViewById(R.id.llForgotPassword);
+        bSignup = (Button) findViewById(R.id.bSignup);
+        bReset = (Button) findViewById(R.id.bReset);
         etEmail.getBackground().clearColorFilter();
         etPassword.getBackground().clearColorFilter();
 
@@ -115,14 +115,15 @@ public class LogInActivity extends AppCompatActivity {
                 }
             }
         });
-        llSignup.setOnClickListener(new View.OnClickListener() {
+        bSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), SignupActivity.class));
-                Toast.makeText(LogInActivity.this, "Signup", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LogInActivity.this, OnBoardingActivity.class));
+//                startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+//                Toast.makeText(LogInActivity.this, "Signup", Toast.LENGTH_SHORT).show();
             }
         });
-        llForgotPassword.setOnClickListener(new View.OnClickListener() {
+        bReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_VIEW);

@@ -5,16 +5,13 @@ package com.example.muzafarimran.lastingsales.carditems;
  */
 
 public class SettingItem {
-    public int drawable;
+    public int drawable = 0;
     public String text;
     public Class goAt = null;
 
-    public SettingItem(String setting) {
-        text = setting;
-    }
-
-    public SettingItem(String setting, Class goAt) {
-        text = setting;
+    public SettingItem(String text, Class goAt, int drawable) {
+        this.drawable = drawable;
+        this.text = text;
         this.goAt = goAt;
     }
 }

@@ -1,285 +1,205 @@
 <com.example.muzafarimran.lastingsales.chatheadbubble.BubbleLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clipChildren="false"
-    android:clipToPadding="false">
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:theme="@style/Theme.AppCompat.Light">
 
-    <LinearLayout
-        android:id="@+id/avatar"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical"
-        android:scaleType="centerCrop"
-        android:windowAnimationStyle="@android:style/Animation.Translucent"
-        android:windowBackground="@android:color/transparent"
-        android:windowIsTranslucent="true"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true">
 
-        >
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="2dp"-->
-        <!--android:layout_marginTop="2dp"-->
-        <!--android:background="@drawable/bubble_counter_bkg"-->
-        <!--android:paddingLeft="4dp"-->
-        <!--android:paddingRight="4dp"-->
-        <!--android:text="1"-->
-        <!--android:textColor="#fff"-->
-        <!--android:textSize="15sp" />-->
-
-
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/avatar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:animateLayoutChanges="true"
+            android:background="@color/Ls.Color.Background"
+            android:scaleType="centerCrop"
+            android:windowAnimationStyle="@android:style/Animation.Translucent"
+            android:windowBackground="@android:color/transparent"
 
-            >
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:background="@drawable/shape_rounded_rectangle_banner_bg"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:paddingLeft="10dp"-->
-            <!--android:paddingRight="10dp"-->
-
-            <!--&gt;-->
-
-            <!--<View-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="1" />-->
-
-            <!--<ImageView-->
-            <!--android:id="@+id/imBanner"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_gravity="center"-->
-            <!--app:srcCompat="@drawable/logo_white_text_white" />-->
-
-            <!--&lt;!&ndash;<View&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_height="0dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_weight="1" />&ndash;&gt;-->
-
-            <!--&lt;!&ndash;<ImageButton&ndash;&gt;-->
-            <!--&lt;!&ndash;android:id="@+id/ibClose"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_width="40dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_height="40dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:background="@drawable/close_icon"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:gravity="right" />&ndash;&gt;-->
-
-            <!--</LinearLayout>-->
+            android:windowIsTranslucent="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/md_blue_900"
+                android:orientation="vertical"
+                fresco:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/user_avatar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                fresco:layout_constraintStart_toStartOf="parent"
+                fresco:layout_constraintTop_toTopOf="parent"
+                fresco:placeholderImage="@drawable/ic_account_circle"
+                fresco:roundAsCircle="true"
+                android:layout_marginLeft="8dp" />
+
+            <TextView
+                android:id="@+id/tvNoteTextUIOCallPopup"
+                style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                android:layout_width="200dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/tvNoteHeading"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:maxLines="4"
+                fresco:layout_constraintEnd_toEndOf="parent"
+                fresco:layout_constraintStart_toEndOf="@+id/tvNoteHeading"
+                fresco:layout_constraintTop_toTopOf="@+id/tvNoteHeading" />
+
+            <TextView
+                android:id="@+id/tvName"
+                style="@style/Base.TextAppearance.AppCompat.Title.Inverse"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#023a5f"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                android:layout_alignLeft="@+id/tvNoteTextUIOCallPopup"
+                android:layout_alignStart="@+id/tvNoteTextUIOCallPopup"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:text="UNKNOWN"
+                fresco:layout_constraintStart_toEndOf="@+id/user_avatar"
+                fresco:layout_constraintTop_toTopOf="@+id/user_avatar"
+                android:layout_marginLeft="8dp" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center">
-
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/user_avatar"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        fresco:placeholderImage="@drawable/ic_account_circle"
-                        fresco:roundAsCircle="true"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:padding="2dp">
-
-                        <TextView
-                            android:id="@+id/tvName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/tvNoteTextUIOCallPopup"
-                            android:layout_alignStart="@+id/tvNoteTextUIOCallPopup"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginRight="20dp"
-                            android:ellipsize="end"
-                            android:text="UNKNOWN"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvNoteHeading"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/tvNoteTextUIOCallPopup"
-                            android:layout_alignStart="@+id/tvNoteTextUIOCallPopup"
-                            android:layout_below="@+id/tvName"
-                            android:layout_centerVertical="true"
-                            android:text="Note:"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvNoteTextUIOCallPopup"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tvNoteHeading"
-                            android:layout_marginBottom="1dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginStart="10dp"
-                            android:maxLines="4"
-                            android:textSize="12sp" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center">
-
-                    <ImageButton
-                        android:id="@+id/ibClose"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/close_icon" />
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvNoteHeading"
+                style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_rounded_rectangle_buttons_bg">
+                android:layout_alignLeft="@+id/tvNoteTextUIOCallPopup"
+                android:layout_alignStart="@+id/tvNoteTextUIOCallPopup"
+                android:layout_below="@+id/tvName"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:text="Note:"
+                fresco:layout_constraintStart_toEndOf="@+id/user_avatar"
+                fresco:layout_constraintTop_toBottomOf="@+id/tvName"
+                android:layout_marginLeft="8dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+            <ImageButton
+                android:id="@+id/ibClose"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/close_icon"
+                fresco:layout_constraintEnd_toEndOf="parent"
+                fresco:layout_constraintTop_toTopOf="parent"
+                android:layout_marginRight="8dp" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:weightSum="10">
+            <TextView
+                android:id="@+id/tvCallerHistoryName0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="2.5"
+                android:maxLines="3"
+                android:text="Last contacted with me"
+                android:textSize="12sp"
+                fresco:layout_constraintStart_toStartOf="parent"
+                fresco:layout_constraintTop_toBottomOf="@+id/user_avatar"
+                android:layout_marginLeft="8dp" />
 
-                        <TextView
-                            android:id="@+id/tvCallerHistoryName0"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="start"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="2.5"
-                            android:maxLines="3"
-                            android:text="Last contacted with me"
-                            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tvCallerHistoryLastCallDateTime0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:maxLines="3"
+                android:text="3-Jan-2017"
+                android:textSize="10sp"
+                fresco:layout_constraintEnd_toEndOf="parent"
+                fresco:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName0"
+                android:layout_marginRight="8dp" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="left"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="2.5"
-                            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tvCallerHistoryLastCallTimeAgo0"
+                style="@style/Base.TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:textSize="10sp"
+                fresco:layout_constraintStart_toStartOf="parent"
+                fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryName0"
+                tools:text="1 day ago"
+                android:layout_marginLeft="8dp" />
 
-                            <TextView
-                                android:id="@+id/tvCallerHistoryLastCallDateTime0"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:maxLines="3"
-                                android:text="3-Jan-2017"
-                                android:textSize="10sp" />
+            <TextView
+                android:id="@+id/tvCallerHistoryName1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="2.5"
+                android:maxLines="1"
+                android:text="Last contacted Ibtisam Asif"
+                android:textSize="12sp"
+                fresco:layout_constraintStart_toStartOf="parent"
+                fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo0"
+                android:layout_marginLeft="8dp" />
 
-                            <TextView
-                                android:id="@+id/tvCallerHistoryLastCallTimeAgo0"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="6dp"
-                                android:layout_marginStart="6dp"
-                                android:maxLines="1"
-                                android:textSize="10sp" />
-                        </LinearLayout>
+            <TextView
+                android:id="@+id/tvCallerHistoryLastCallTimeAgo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:maxLines="3"
+                android:textSize="10sp"
+                fresco:layout_constraintStart_toStartOf="parent"
+                fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryName1"
+                tools:text="1 day ago"
+                android:layout_marginLeft="8dp" />
 
-                        <TextView
-                            android:id="@+id/tvCallerHistoryName1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="left"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="2.5"
-                            android:maxLines="1"
-                            android:text="Last contacted Ibtisam Asif"
-                            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tvCallerHistoryLastCallDateTime1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:maxLines="3"
+                android:text="2-Jan-2017"
+                android:textSize="10sp"
+                fresco:layout_constraintEnd_toEndOf="parent"
+                fresco:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName1"
+                android:layout_marginRight="8dp" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="left"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="2.5"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tvCallerHistoryLastCallDateTime1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:maxLines="3"
-                                android:text="2-Jan-2017"
-                                android:textSize="10sp" />
-
-                            <TextView
-                                android:id="@+id/tvCallerHistoryLastCallTimeAgo1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginStart="10dp"
-                                android:maxLines="3"
-                                android:textSize="10sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/ivLogo"
-                        android:layout_width="0dp"
-                        android:layout_height="54dp"
-                        android:layout_weight="2"
-                        app:srcCompat="@drawable/login_logo" />
-
-                </LinearLayout>
+            <TextView
+                android:id="@+id/tvError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Loading..."
+                card_view:layout_editor_absoluteX="109dp"
+                card_view:layout_editor_absoluteY="146dp"
+                fresco:layout_constraintBottom_toBottomOf="parent"
+                fresco:layout_constraintEnd_toEndOf="parent"
+                fresco:layout_constraintStart_toStartOf="parent"
+                fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo1" />
 
 
-            </RelativeLayout>
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 
-    </LinearLayout>
 </com.example.muzafarimran.lastingsales.chatheadbubble.BubbleLayout>

@@ -4,17 +4,20 @@
     android:id="@+id/cl"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/md_white">
+    android:background="?attr/selectableItemBackground"
+    android:focusable="true"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/tvText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="default"
         app:layout_constraintStart_toEndOf="@+id/ivAvatar"
-        app:layout_constraintTop_toTopOf="@+id/ivAvatar" />
+        app:layout_constraintTop_toTopOf="@+id/ivAvatar"
+        android:layout_marginLeft="8dp" />
 
     <ImageView
         android:id="@+id/ivAvatar"
@@ -26,6 +29,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_account_circle" />
+        app:srcCompat="@drawable/ic_account_circle"
+        android:layout_marginLeft="8dp" />
 
 </android.support.constraint.ConstraintLayout>

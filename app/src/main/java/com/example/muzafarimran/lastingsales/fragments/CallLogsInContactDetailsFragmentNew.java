@@ -96,6 +96,7 @@ public class CallLogsInContactDetailsFragmentNew extends TabFragment {
 
         Collection<LSCall> allCalls = Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();
 
+        list.clear();
         if (!allCalls.isEmpty()) {
             list.addAll(allCalls);
         } else {

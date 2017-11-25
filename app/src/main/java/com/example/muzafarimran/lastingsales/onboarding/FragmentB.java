@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import com.example.muzafarimran.lastingsales.R;
 import com.google.android.gms.plus.PlusOneButton;
 
-/**
- * A fragment with a Google +1 button.
- */
+
 public class FragmentB extends Fragment {
 
 

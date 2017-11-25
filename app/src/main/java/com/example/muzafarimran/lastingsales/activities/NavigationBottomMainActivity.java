@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.MatrixCursor;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,14 +35,15 @@ import com.example.muzafarimran.lastingsales.app.ClassManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelper;
+import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
-import com.example.muzafarimran.lastingsales.onboarding.OnBoardingActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
-import com.example.muzafarimran.lastingsales.recycleradapter.ExampleAdapter;
+import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.listloaders.HomeLoader;
 import com.example.muzafarimran.lastingsales.listloaders.InquiryLoader;
@@ -404,106 +406,102 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     // History
     private void loadHistory(String query) {
 
-
         // Cursor
-        String[] columns = new String[]{"_id", "text", "drawable", "class"};
-        Object[] temp = new Object[]{0, "default", R.drawable.inquiry_count_round, ""};
+        String[] columns = new String[]{"_id", "text", "drawable", "class", "intentPutId", "intentPutNumber" , "type"};
+        Object[] temp = new Object[]{0, "default", R.drawable.inquiry_count_round, "", "", "", ""};
 
         MatrixCursor cursor = new MatrixCursor(columns);
 
         int count = 0;
 
-
         // From LSContacts where number = query
         String myQuery = "SELECT * FROM LS_CONTACT where phone_one like '%" + query + "%' limit 5";
         Collection<LSContact> contactsByNumber = LSContact.findWithQuery(LSContact.class, myQuery);
 
-        for (LSContact one : contactsByNumber) {
+        for (LSContact contact : contactsByNumber) {
             temp[0] = count;
-            temp[1] = one.getPhoneOne();
+            temp[1] = contact.getPhoneOne();
             temp[2] = R.drawable.ic_account_circle;
-            if (one.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-
+            if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+                temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
+                temp[4] = contact.getId();
+            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                // Dont navigate anywhere on clicking colleagues as discussed
                 temp[3] = ClassManager.ABOUT_ACTIVITY;
-            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+                // Dont navigate anywhere on clicking colleagues as discussed
                 temp[3] = ClassManager.ABOUT_ACTIVITY;
-            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
-                temp[3] = ClassManager.ABOUT_ACTIVITY;
-            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-                temp[3] = ClassManager.ABOUT_ACTIVITY;
+            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
+                temp[4] = contact.getId();
+                temp[5] = contact.getPhoneOne();
             }
-
+            temp[6] = "type_contact";
             cursor.addRow(temp);
             count++;
-
         }
-
 
         // From LSContacts where name = query
         myQuery = "SELECT * FROM LS_CONTACT where contact_name like '%" + query + "%' limit 5";
         Collection<LSContact> contactsByName = LSContact.findWithQuery(LSContact.class, myQuery);
 
-        for (LSContact one : contactsByName) {
+        for (LSContact contact : contactsByName) {
             temp[0] = count;
-            temp[1] = one.getContactName();
+            temp[1] = contact.getContactName();
             temp[2] = R.drawable.ic_account_circle;
-            if (one.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+            if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+                temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
+                temp[4] = contact.getId();
+            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                // Dont navigate anywhere on clicking colleagues as discussed
                 temp[3] = ClassManager.ABOUT_ACTIVITY;
-            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+                // Dont navigate anywhere on clicking colleagues as discussed
                 temp[3] = ClassManager.ABOUT_ACTIVITY;
-            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
-                temp[3] = ClassManager.ABOUT_ACTIVITY;
-            } else if (one.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-                temp[3] = ClassManager.ABOUT_ACTIVITY;
+            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
+                temp[4] = contact.getId();
+                temp[5] = contact.getPhoneOne();
             }
-
+            temp[6] = "type_contact";
             cursor.addRow(temp);
             count++;
-
         }
-
-
         // From LSNotes where description = query
         myQuery = "SELECT * FROM LS_NOTE where note_text like '%" + query + "%' limit 5";
         Collection<LSNote> notesByDescription = LSNote.findWithQuery(LSNote.class, myQuery);
 
-        for (LSNote one : notesByDescription) {
+        for (LSNote note : notesByDescription) {
             temp[0] = count;
-            temp[1] = one.getNoteText();
-            temp[2] = R.drawable.ic_notes_black;
-            temp[3] = ClassManager.ABOUT_ACTIVITY;
+            temp[1] = note.getNoteText();
+            temp[2] = R.drawable.ic_notes_black_48dp;
+            temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
+            temp[4] = note.getContactOfNote().getId();
+            temp[6] = "type_note";
             cursor.addRow(temp);
             count++;
-
         }
-
-
         // From LSInquiry where number = query
         myQuery = "SELECT * FROM LS_INQUIRY where contact_number like '%" + query + "%' limit 5";
         Collection<LSInquiry> inquiriesByNumber = LSInquiry.findWithQuery(LSInquiry.class, myQuery);
 
-        for (LSInquiry one : inquiriesByNumber) {
+        for (LSInquiry inquiry : inquiriesByNumber) {
             temp[0] = count;
-            temp[1] = one.getContactNumber();
+            temp[1] = inquiry.getContactNumber();
             temp[2] = R.drawable.inquiry_count_round;
-            temp[3] = ClassManager.ABOUT_ACTIVITY;
+            temp[3] = ClassManager.INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
+            temp[4] = null;
+            temp[5] = inquiry.getContactNumber();
+            temp[6] = "type_inquiry";
             cursor.addRow(temp);
             count++;
         }
 
-
-        // Pass all in one Collection
-
-
-        // SearchView
-        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        // SearchView
+//        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
         final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
-
-        search.setSuggestionsAdapter(new
-
-                ExampleAdapter(this, cursor, list));
-
+        search.setSuggestionsAdapter(new SearchSuggestionAdapter(this, cursor, list));
     }
 
     @Override
@@ -566,13 +564,13 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     public void onClickUnlabeled(Long contact_id) {
-        ContactCallDetails contactCallDetails = ContactCallDetails.newInstance(contact_id, 0);
+        ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragment.newInstance(contact_id, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        contactCallDetails.show(fragmentManager, "tag");
+        contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
     }
 
     public void onClickInquiry(String number) {
-        InquiryCallDetails contactCallDetails = InquiryCallDetails.newInstance(number, 0);
+        InquiryCallDetailsBottomSheetFragment contactCallDetails = InquiryCallDetailsBottomSheetFragment.newInstance(number, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         contactCallDetails.show(fragmentManager, "tag");
     }

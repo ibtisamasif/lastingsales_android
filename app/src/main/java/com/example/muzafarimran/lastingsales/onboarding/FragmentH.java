@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.onboarding;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,11 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
-
-/**
- * Created by ibtisam on 11/23/2017.
- */
 
 public class FragmentH extends Fragment {
 
@@ -45,8 +39,9 @@ public class FragmentH extends Fragment {
         bFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), NavigationBottomMainActivity.class));
-                getActivity().finish();
+                ((OnBoardingActivity) getActivity()).dataFromFragmentH();
+//                startActivity(new Intent(getActivity(), NavigationBottomMainActivity.class));
+//                getActivity().finish();
             }
         });
         return view;

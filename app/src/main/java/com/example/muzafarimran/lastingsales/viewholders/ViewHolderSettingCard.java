@@ -41,7 +41,9 @@ public class ViewHolderSettingCard extends RecyclerView.ViewHolder {
 
         final SettingItem settingItem = (SettingItem) item;
         textView.setText(settingItem.text);
-
+        if (settingItem.drawable != 0){
+            imageView.setImageResource(settingItem.drawable);
+        }
         cl_container_setting_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

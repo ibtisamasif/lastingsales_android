@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -26,6 +27,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
+import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -40,8 +42,7 @@ import java.util.Map;
 public class BubbleHelper extends AppCompatActivity {
     private static final String TAG = "BubbleHelper";
     private static BubbleHelper mInstance;
-    private final int MY_MAX_RETRIES = 3;
-    private final SessionManager sessionManager;
+    private SessionManager sessionManager;
     private BubbleLayout bubbleView;
     private TextView tvNoteTextUIOCallPopup;
     private BubblesManager bubblesManager;
@@ -56,7 +57,10 @@ public class BubbleHelper extends AppCompatActivity {
     private TextView tvCallerHistoryLastCallTimeAgo1;
     private SimpleDraweeView user_avatar;
     private static RequestQueue queue;
+    private TextView tvError;
 
+    public BubbleHelper() {
+    }
 
     public BubbleHelper(Context context) {
         this.context = context;
@@ -88,10 +92,22 @@ public class BubbleHelper extends AppCompatActivity {
         tvName = (TextView) bubbleView.findViewById(R.id.tvName);
         tvName.setText(number);
         ibClose = (ImageButton) bubbleView.findViewById(R.id.ibClose);
+        tvError = (TextView) bubbleView.findViewById(R.id.tvError);
         tvCallerHistoryName0.setText("");
         tvCallerHistoryLastCallDateTime0.setText("");
+        tvCallerHistoryLastCallTimeAgo0.setText("");
         tvCallerHistoryName1.setText("");
         tvCallerHistoryLastCallDateTime1.setText("");
+        tvCallerHistoryLastCallTimeAgo1.setText("");
+
+        tvError.setVisibility(View.VISIBLE);
+        tvCallerHistoryName0.setVisibility(View.GONE);
+        tvCallerHistoryLastCallDateTime0.setVisibility(View.GONE);
+        tvCallerHistoryLastCallTimeAgo0.setVisibility(View.GONE);
+        tvCallerHistoryName1.setVisibility(View.GONE);
+        tvCallerHistoryLastCallDateTime1.setVisibility(View.GONE);
+        tvCallerHistoryLastCallTimeAgo1.setVisibility(View.GONE);
+
         ibClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,10 +194,23 @@ public class BubbleHelper extends AppCompatActivity {
         tvName = (TextView) bubbleView.findViewById(R.id.tvName);
         tvName.setText(number);
         ibClose = (ImageButton) bubbleView.findViewById(R.id.ibClose);
+        tvError = (TextView) bubbleView.findViewById(R.id.tvError);
+
         tvCallerHistoryName0.setText("");
         tvCallerHistoryLastCallDateTime0.setText("");
+        tvCallerHistoryLastCallTimeAgo0.setText("");
         tvCallerHistoryName1.setText("");
         tvCallerHistoryLastCallDateTime1.setText("");
+        tvCallerHistoryLastCallTimeAgo1.setText("");
+
+        tvError.setVisibility(View.VISIBLE);
+        tvCallerHistoryName0.setVisibility(View.GONE);
+        tvCallerHistoryLastCallDateTime0.setVisibility(View.GONE);
+        tvCallerHistoryLastCallTimeAgo0.setVisibility(View.GONE);
+        tvCallerHistoryName1.setVisibility(View.GONE);
+        tvCallerHistoryLastCallDateTime1.setVisibility(View.GONE);
+        tvCallerHistoryLastCallTimeAgo1.setVisibility(View.GONE);
+
         ibClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,6 +295,7 @@ public class BubbleHelper extends AppCompatActivity {
         StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String respon) {
+                tvError.setVisibility(View.GONE);
                 Log.d(TAG, "onResponse() response = [" + respon + "]");
                 try {
                     JSONObject jObj = new JSONObject(respon);
@@ -297,11 +327,14 @@ public class BubbleHelper extends AppCompatActivity {
                         }
 
                         if (firstname0 != null && lastname0 != null && last_call0 != null) {
+                            tvCallerHistoryName0.setVisibility(View.VISIBLE);
                             if (!user_id0.equals(sessionManager.getKeyLoginId())) {
                                 tvCallerHistoryName0.setText("Last contacted " + firstname0 + " " + lastname0);
                             } else {
                                 tvCallerHistoryName0.setText("Last contacted with me");
                             }
+                            tvCallerHistoryLastCallDateTime0.setVisibility(View.VISIBLE);
+                            tvCallerHistoryLastCallTimeAgo0.setVisibility(View.VISIBLE);
                             tvCallerHistoryLastCallDateTime0.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), "dd-MMM-yyyy"));
                             tvCallerHistoryLastCallTimeAgo0.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), context) + ")");
                         }
@@ -325,11 +358,15 @@ public class BubbleHelper extends AppCompatActivity {
                         Log.d(TAG, "onResponse1: name: " + name1);
 
                         if (firstname1 != null && lastname1 != null && last_call1 != null) {
+                            tvCallerHistoryName1.setVisibility(View.VISIBLE);
                             if (!user_id1.equals(sessionManager.getKeyLoginId())) {
                                 tvCallerHistoryName1.setText("Last contacted " + firstname1 + " " + lastname1);
                             } else {
                                 tvCallerHistoryName1.setText("Last contacted with me");
                             }
+
+                            tvCallerHistoryLastCallDateTime1.setVisibility(View.VISIBLE);
+                            tvCallerHistoryLastCallTimeAgo1.setVisibility(View.VISIBLE);
                             tvCallerHistoryLastCallDateTime1.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), "dd-MMM-yyyy"));
                             tvCallerHistoryLastCallTimeAgo1.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), context) + ")");
                         }
@@ -343,6 +380,23 @@ public class BubbleHelper extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotGetCustomerHistory");
+                if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
+                    tvError.setText("Internet is required to view connections");
+                } else {
+                    try {
+                        if (error.networkResponse != null) {
+                            if (error.networkResponse.statusCode == 404) {
+                                tvError.setText("Connections not found");
+                            } else {
+                                tvError.setText("Error loading");
+                            }
+                        } else {
+                            tvError.setText("Poor Internet Connectivity");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }) {
             @Override
@@ -357,6 +411,7 @@ public class BubbleHelper extends AppCompatActivity {
                 return params;
             }
         };
+        int MY_MAX_RETRIES = 3;
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 MY_MAX_RETRIES,
