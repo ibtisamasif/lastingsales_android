@@ -10,7 +10,7 @@ import android.util.Log;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.AddEditNoteActivity;
-import com.example.muzafarimran.lastingsales.activities.AddEditFollowUpsActivity;
+import com.example.muzafarimran.lastingsales.activities.AddEditNewFollowupActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -52,9 +52,9 @@ public class CallEndNotification {
         intentNote.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId());
         PendingIntent pIntentNote = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intentNote, 0);
 
-        Intent intentFollow = new Intent(ctx, AddEditFollowUpsActivity.class);
-        intentFollow.putExtra(AddEditFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddEditFollowUpsActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
-        intentFollow.putExtra(AddEditFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId());
+        Intent intentFollow = new Intent(ctx, AddEditNewFollowupActivity.class);
+        intentFollow.putExtra(AddEditNewFollowupActivity.ACTIVITY_LAUNCH_MODE, AddEditNewFollowupActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
+        intentFollow.putExtra(AddEditNewFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId());
         PendingIntent pIntentFollow = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intentFollow, 0);
 
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)

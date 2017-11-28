@@ -380,7 +380,7 @@ public class BubbleHelper extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotGetCustomerHistory");
-                if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
+                if (!NetworkAccess.isNetworkAvailable(context)) {
                     tvError.setText("Internet is required to view connections");
                 } else {
                     try {

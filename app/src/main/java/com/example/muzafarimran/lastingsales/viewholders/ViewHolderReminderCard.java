@@ -10,8 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.AddEditFollowUpsActivity;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.activities.AddEditNewFollowupActivity;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.Calendar;
@@ -49,9 +48,9 @@ public class ViewHolderReminderCard extends RecyclerView.ViewHolder {
             bAddFollowupContactDetailsScreen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent myIntent = new Intent(mContext, AddEditFollowUpsActivity.class);
-                    myIntent.putExtra(AddEditFollowUpsActivity.ACTIVITY_LAUNCH_MODE, AddEditFollowUpsActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
-                    myIntent.putExtra(AddEditFollowUpsActivity.TAG_LAUNCH_MODE_CONTACT_ID, tempFollowUp.getContact().getId() + "");
+                    Intent myIntent = new Intent(mContext, AddEditNewFollowupActivity.class);
+                    myIntent.putExtra(AddEditNewFollowupActivity.ACTIVITY_LAUNCH_MODE, AddEditNewFollowupActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
+                    myIntent.putExtra(AddEditNewFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, tempFollowUp.getContact().getId() + "");
                     mContext.startActivity(myIntent);
                 }
             });

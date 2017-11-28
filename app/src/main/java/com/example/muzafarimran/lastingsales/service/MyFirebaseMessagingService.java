@@ -7,6 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
@@ -193,7 +194,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String newType = contact.getContactType();
                     TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType);
                     Log.e(TAG, "Put From Local DB: " + contact.getContactName());
-                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.post(mCallEvent);
 

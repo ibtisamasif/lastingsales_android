@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 
-import android.media.Image;
-import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +18,6 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.app.ClassManager;
-import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
-import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
 
 import java.util.List;
 
@@ -106,7 +101,7 @@ public class SearchSuggestionAdapter extends CursorAdapter {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.item, parent, false);
+        View view = inflater.inflate(R.layout.card_search_item, parent, false);
 
         cl = (ConstraintLayout) view.findViewById(R.id.cl);
 

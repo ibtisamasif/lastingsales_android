@@ -220,9 +220,9 @@ public class AddEditLeadActivity extends AppCompatActivity {
                     mixpanel.track("Lead From " + mixpanelSource);
                     Log.d(TAG, "mixpanelSource: " + mixpanelSource);
                 }
-                LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                TinyBus bus = TinyBus.from(getApplicationContext());
-                bus.post(mCallEvent);
+//                LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+//                TinyBus bus = TinyBus.from(getApplicationContext());
+//                bus.post(mCallEvent);
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
             }

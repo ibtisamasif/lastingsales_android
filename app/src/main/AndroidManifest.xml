@@ -135,7 +135,7 @@
         <!-- android:name=".activitContactCallDetailsBottomSheetFragmentails" -->
         <!-- android:screenOrientation="portrait"/> -->
         <activity
-            android:name=".activities.AddEditFollowUpsActivity"
+            android:name=".activities.AddEditNewFollowupActivity"
             android:screenOrientation="nosensor"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity

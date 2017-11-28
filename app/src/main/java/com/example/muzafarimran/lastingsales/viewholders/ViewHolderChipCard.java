@@ -43,6 +43,13 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
         bAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                chipItem.selected = 1;
+                bAll.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_selected));
+                bInProgress.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bWon.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bLost.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bAll.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bInActive.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 chipClickListener.onChipClick("All");
 //                Toast.makeText(mContext, "bAll Leads", Toast.LENGTH_SHORT).show();
             }
@@ -51,6 +58,13 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
         bInProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                chipItem.selected = 2;
+                bAll.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bInProgress.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_selected));
+                bWon.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bLost.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bAll.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bInActive.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 chipClickListener.onChipClick("InProgress");
 //                Toast.makeText(mContext, "bInProgress Leads", Toast.LENGTH_SHORT).show();
             }
@@ -59,6 +73,12 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
         bWon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                chipItem.selected = 3;
+                bAll.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bInProgress.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bWon.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_selected));
+                bLost.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bInActive.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 chipClickListener.onChipClick("Won");
 //                Toast.makeText(mContext, "bWon Leads", Toast.LENGTH_SHORT).show();
             }
@@ -67,6 +87,12 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
         bLost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                chipItem.selected = 4;
+                bAll.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bInProgress.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bWon.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bLost.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_selected));
+                bInActive.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 chipClickListener.onChipClick("Lost");
 //                Toast.makeText(mContext, "bLost Leads", Toast.LENGTH_SHORT).show();
             }
@@ -75,6 +101,12 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
         bInActive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                chipItem.selected = 5;
+                bAll.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bInProgress.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bWon.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bLost.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
+                bInActive.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_selected));
                 chipClickListener.onChipClick("InActive");
 //                Toast.makeText(mContext, "bInActive Leads", Toast.LENGTH_SHORT).show();
             }

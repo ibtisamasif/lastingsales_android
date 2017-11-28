@@ -189,5 +189,4 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public int getItemCount() {
         return mItem.size();
     }
-
 }

@@ -82,7 +82,7 @@ public class InquiryCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
     @Override
     public void setupDialog(Dialog dialog, int style) {
 
-        View view = View.inflate(getContext(), R.layout.activity_inquiry_call_details, null);
+        View view = View.inflate(getContext(), R.layout.fragment_inquiry_call_details_bottom_sheet, null);
         dialog.setContentView(view);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) ((View) view.getParent()).getLayoutParams();
         CoordinatorLayout.Behavior behavior = layoutParams.getBehavior();

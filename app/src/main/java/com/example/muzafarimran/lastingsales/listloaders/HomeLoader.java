@@ -28,19 +28,18 @@ public class HomeLoader extends AsyncTaskLoader<List<Object>> {
 
     @Override
     public List<Object> loadInBackground() {
-        Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
 
         Collection<LSInquiry> inquiriesContacts = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-
         HomeItem item2 = new HomeItem();
         item2.text = "Inquiries";
         item2.value = "" + inquiriesContacts.size();
+        list.add(item2);
 
+        Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
         HomeItem item3 = new HomeItem();
         item3.text = "Leads";
         item3.value = "" + contacts.size();
 
-        list.add(item2);
         list.add(item3);
 
         Collection<LSContact> unlabeledContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);

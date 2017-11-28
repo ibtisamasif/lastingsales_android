@@ -301,7 +301,7 @@ public class LogInActivity extends AppCompatActivity {
                                 Toast.makeText(activity, "Server Error.", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(getApplicationContext(), "Poor Internet Connectivity", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Internet Connectivity might be poor", Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -57,7 +57,7 @@ public class AddEditLeadService extends Service {
     private EditText etContactName;
     private TextView etContactPhone;
     private Button bSave;
-    private ImageButton bClose;
+    private ImageView bClose;
     private CheckBox cbIgnore;
     private LinearLayout llContactDetailsFollowupScreen;
     private LayoutInflater inflater;
@@ -121,7 +121,7 @@ public class AddEditLeadService extends Service {
         etContactName = (EditText) largeInflatedView.findViewById(R.id.etContactName);
         etContactPhone = (TextView) largeInflatedView.findViewById(R.id.etContactPhone);
         bSave = (Button) largeInflatedView.findViewById(R.id.bSaveFollowupPopup);
-        bClose = (ImageButton) largeInflatedView.findViewById(R.id.bClose);
+        bClose = (ImageView) largeInflatedView.findViewById(R.id.bClose);
         bNo = (Button) largeInflatedView.findViewById(R.id.bNo);
         cbIgnore = (CheckBox) largeInflatedView.findViewById(R.id.cbIgnore);
         bSalesRadio = (Button) largeInflatedView.findViewById(R.id.bSalesRadio);

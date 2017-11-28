@@ -48,7 +48,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 separatorItem.text = "Leads";
 
                 ChipItem chipItem = new ChipItem();
-                chipItem.selected = 1;
+//                chipItem.selected = 1;
                 chipItem.totalButtons = 5;
 
                 list.add(separatorItem);
@@ -81,7 +81,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 separatorItem.text = "Leads";
 
                 ChipItem chipItem = new ChipItem();
-                chipItem.selected = 1;
+//                chipItem.selected = 2;
                 chipItem.totalButtons = 5;
 
                 list.add(separatorItem);
@@ -113,7 +113,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 separatorItem.text = "Leads";
 
                 ChipItem chipItem = new ChipItem();
-                chipItem.selected = 1;
+//                chipItem.selected = 3;
                 chipItem.totalButtons = 5;
 
                 list.add(separatorItem);
@@ -145,7 +145,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 separatorItem.text = "Leads";
 
                 ChipItem chipItem = new ChipItem();
-                chipItem.selected = 1;
+//                chipItem.selected = 4;
                 chipItem.totalButtons = 5;
 
                 list.add(separatorItem);
@@ -177,7 +177,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 separatorItem.text = "Leads";
 
                 ChipItem chipItem = new ChipItem();
-                chipItem.selected = 1;
+//                chipItem.selected = 5;
                 chipItem.totalButtons = 5;
 
                 list.add(separatorItem);

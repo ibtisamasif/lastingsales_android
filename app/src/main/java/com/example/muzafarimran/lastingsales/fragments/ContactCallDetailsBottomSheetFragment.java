@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.adapters.IndividualContactCallAdapter;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
@@ -53,6 +55,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.halfbit.tinybus.TinyBus;
 
 public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String TAG = "ContactCallDetailsBotto";
@@ -106,7 +110,7 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
-        View view = View.inflate(getContext(), R.layout.activity_contact_call_details, null);
+        View view = View.inflate(getContext(), R.layout.fragment_contact_call_details_bottom_sheet, null);
         dialog.setContentView(view);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) ((View) view.getParent()).getLayoutParams();
         CoordinatorLayout.Behavior behavior = layoutParams.getBehavior();
@@ -149,7 +153,9 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
                 myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, "");
                 myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_UNLABELED);
                 getActivity().startActivity(myIntent);
-//                Snackbar.make(view, "Added to Contact!", Snackbar.LENGTH_SHORT).show();
+//                LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+//                TinyBus bus = TinyBus.from(getActivity().getApplicationContext());
+//                bus.post(mCallEvent);
                 Toast.makeText(getActivity(), "Added to Contact!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -165,9 +171,6 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
                 TypeManager.ConvertTo(getActivity(), contact, oldType, newType);
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getActivity().getApplicationContext());
                 dataSenderAsync.run();
-//                Collection<LSContact> allUntaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
-//                setList(allUntaggedContacts);
-//                Snackbar.make(view, "Added to Ignored Contact!", Snackbar.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(), "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -228,7 +231,7 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
             }
         }
 
-        com.example.muzafarimran.lastingsales.customview.NonScrollListView listview = view.findViewById(R.id.calls_list);
+        ListView listview = view.findViewById(R.id.calls_list);
         indadapter = new IndividualContactCallAdapter(getActivity(), allCallsOfThisContact);
         Log.d(TAG, "setUpList: Size " + allCallsOfThisContact.size());
         for (LSCall oneCall : allCallsOfThisContact) {

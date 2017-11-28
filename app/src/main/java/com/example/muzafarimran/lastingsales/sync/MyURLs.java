@@ -13,15 +13,16 @@ public class MyURLs {
     public static String ADD_CALL = "https://api.lastingsales.com/api/v1/call";
     public static String ADD_INQUIRY = "https://api.lastingsales.com/api/v1/inquiries";
     public static String UPDATE_INQUIRY = "https://api.lastingsales.com/api/v1/inquiries/";
+    public static String DELETE_NOTE = "https://api.lastingsales.com/api/v1/lead/";
     public static String DELETE_INQUIRY = "https://api.lastingsales.com/api/v1/inquiries/";
     public static String DELETE_CONTACT = "https://api.lastingsales.com/api/v1/lead/";
     public static String UPDATE_CONTACT = "https://api.lastingsales.com/api/v1/lead/";
     public static String UPDATE_NOTE = "https://api.lastingsales.com/api/v1/lead/";
     public static String UPDATE_AGENT = "https://api.lastingsales.com/api/v1/user";
     public static String GET_CONTACTS = "https://api.lastingsales.com/api/v1/lead";
-    public static String GET_PROFILE = "http://api.lastingsales.com/api/v1/graph/public/profile";
     public static String GET_NOTES = "https://api.lastingsales.com/api/v1/lead";
     public static String GET_COLUMNS = "https://api.lastingsales.com/api/v1/column";
+    public static String GET_PROFILE = "http://api.lastingsales.com/api/v1/graph/public/profile";
     public static String GET_CUSTOMER_HISTORY = "https://api.lastingsales.com/api/v1/graph/lead/agent/relation";
     public static final String PRIVACY_POLICY = "https://lastingsales.com/privacy.html";
     public static final String FORGOT_PASSWORD = "https://app.lastingsales.com/#/access/forgotpwd";

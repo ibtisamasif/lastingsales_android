@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -222,6 +223,9 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 //                    }else {
 //                        Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
 //                    }
+                        ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+                        TinyBus bus = TinyBus.from(ContactDetailsTabActivity.this);
+                        bus.post(mCallEvent);
                         dialog.dismiss();
                         finish();
                     }

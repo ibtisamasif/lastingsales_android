@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -15,6 +16,8 @@ import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
+
+import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by ibtisam on 3/4/2017.
@@ -35,6 +38,9 @@ public class InquiryManager {
             dataSenderAsync.run();
             // Update launcher icon count
             new ShortcutBadgeUpdateAsync(context).execute();
+            InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+            TinyBus bus = TinyBus.from(context);
+            bus.post(mCallEvent);
         }
     }
 
@@ -55,6 +61,9 @@ public class InquiryManager {
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
             mixpanel.track("Inquiry Followed");
+            InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+            TinyBus bus = TinyBus.from(context);
+            bus.post(mCallEvent);
         }
     }
 
@@ -125,7 +134,8 @@ public class InquiryManager {
             // Update launcher icon count
             new ShortcutBadgeUpdateAsync(context).execute();
         }
+        InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+        TinyBus bus = TinyBus.from(context);
+        bus.post(mCallEvent);
     }
-
-
 }

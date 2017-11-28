@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ColleagueContactDeleteBottomSheetDialogFragment;
 import com.example.muzafarimran.lastingsales.fragments.ColleagueContactDeleteConfirmationDialogFragment;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
@@ -44,6 +46,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
 
+import de.halfbit.tinybus.TinyBus;
+
 /**
  * Created by ibtisam on 11/1/2017.
  */
@@ -51,13 +55,14 @@ import java.util.List;
 public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
     public static final String TAG = "ViewHolderUnlabeledCard";
 
-    private final CardView cv_item;
+    //    private final CardView cv_item;
+    private final ConstraintLayout cl;
     private final LinearLayout llTypeRibbon;
     SimpleDraweeView user_avatar;
     TextView name;
     TextView time;
     ImageView call_icon;
-    ImageView missed_call_icon;
+    ImageView imSmartBadge;
     RelativeLayout rl_container_buttons;
     TextView numberDetailTextView;
     Button bIgnore;
@@ -77,7 +82,8 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 
     public ViewHolderUnlabeledCard(View v) {
         super(v);
-        this.cv_item = v.findViewById(R.id.cv_item);
+        this.cl = v.findViewById(R.id.cl);
+        this.imSmartBadge = v.findViewById(R.id.imSmartBadge);
         this.llTypeRibbon = v.findViewById(R.id.llTypeRibbon);
         this.user_avatar = v.findViewById(R.id.user_avatar);
         this.name = v.findViewById(R.id.call_name);
@@ -109,9 +115,11 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 
         LSContactProfile lsContactProfile = contact.getContactProfile();
         if (lsContactProfile == null) {
+            imSmartBadge.setVisibility(View.GONE);
             Log.d(TAG, "CreateOrUpdate: Not Found in contact Table now getting from ContactProfileProvider: " + contact.toString());
             lsContactProfile = LSContactProfile.getProfileFromNumber(number);
         } else {
+            imSmartBadge.setVisibility(View.VISIBLE);
             Log.d(TAG, "CreateOrUpdate: Found in contact Table: " + contact);
         }
         if (contact.getContactName() != null) {
@@ -190,7 +198,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
         }
 
         this.bIgnore.setTag(number);
-        this.cv_item.setTag(contact.getId());
+        this.cl.setTag(contact.getId());
         this.numberDetailTextView.setText(number);
 //        this.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(contact.getBeginTime()));
         this.callClickListener = new CallClickListener(mContext);
@@ -227,7 +235,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 // dont show smart info
                 // add delete followup button
 
-                this.cv_item.setOnClickListener(view -> {
+                this.cl.setOnClickListener(view -> {
                     Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
                     long contactId = contact.getId();
                     detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
@@ -235,7 +243,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 });
 
                 //  Deletes the contact, queries db and updates local list plus notifies adapter
-                this.cv_item.setOnLongClickListener(view -> {
+                this.cl.setOnLongClickListener(view -> {
 //                    String nameTextOnDialog;
 //                    if(contact.getContactName() != null){
 //                        nameTextOnDialog = contact.getContactName();
@@ -299,17 +307,17 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 // navigate to details
                 // show smart info
 
-                this.cv_item.setOnClickListener(view -> {
+                this.cl.setOnClickListener(view -> {
                     Intent myIntent = new Intent(mContext, ContactCallDetailsBottomSheetFragment.class);
                     myIntent.putExtra("number", (String) view.getTag());
                     mContext.startActivity(myIntent);
                 });
 
-                this.cv_item.setOnLongClickListener(view -> {
+                this.cl.setOnLongClickListener(view -> {
                     String nameTextOnDialog;
-                    if(contact.getContactName() != null){
+                    if (contact.getContactName() != null) {
                         nameTextOnDialog = contact.getContactName();
-                    }else {
+                    } else {
                         nameTextOnDialog = contact.getPhoneOne();
                     }
                     AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
@@ -330,6 +338,9 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 //                            } else {
 //                                Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
 //                            }
+                            ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+                            TinyBus bus = TinyBus.from(mContext);
+                            bus.post(mCallEvent);
                             dialog.dismiss();
                         }
                     });
@@ -349,7 +360,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 user_profile_group_wrapper.setVisibility(View.GONE);
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Warning));
 
-                this.cv_item.setOnClickListener(view -> {
+                this.cl.setOnClickListener(view -> {
 
                     NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
                     navigationBottomMainActivity.onClickUnlabeled((Long) view.getTag());
@@ -359,7 +370,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 //                    mContext.startActivity(myIntent);
                 });
 
-                this.cv_item.setOnLongClickListener(view -> {
+                this.cl.setOnLongClickListener(view -> {
 //                    Snackbar.make(view, "Can not delete unlabeled contact", Snackbar.LENGTH_SHORT).show();
                     return true;
                 });
@@ -373,12 +384,12 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 
                 //No navigation on click
 
-                this.cv_item.setOnLongClickListener(view -> {
+                this.cl.setOnLongClickListener(view -> {
                     // // FIXME: 11/24/2017
                     String nameTextOnDialog;
-                    if(contact.getContactName() != null){
+                    if (contact.getContactName() != null) {
                         nameTextOnDialog = contact.getContactName();
-                    }else {
+                    } else {
                         nameTextOnDialog = contact.getPhoneOne();
                     }
                     AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
@@ -399,6 +410,9 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 //                }else {
 //                    Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
 //                }
+                            ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+                            TinyBus bus = TinyBus.from(mContext);
+                            bus.post(mCallEvent);
                             dialog.dismiss();
                         }
                     });
