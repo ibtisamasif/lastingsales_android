@@ -39,6 +39,7 @@ public class FragmentH extends Fragment {
         bFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Login Now
                 ((OnBoardingActivity) getActivity()).dataFromFragmentH();
 //                startActivity(new Intent(getActivity(), NavigationBottomMainActivity.class));
 //                getActivity().finish();

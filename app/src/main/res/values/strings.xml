@@ -77,7 +77,7 @@
     <string name="title">Title</string>
     <string name="non_busines_capital">IGNORE</string>
     <string name="colleague_capital">COLLEAGUE</string>
-    <string name="salesCapital">TRACK</string>
+    <string name="salesCapital">Make Lead</string>
     <string name="connections">Connections</string>
     <!--        TAB NAMES-->
     <string name="tab_home">Home</string>

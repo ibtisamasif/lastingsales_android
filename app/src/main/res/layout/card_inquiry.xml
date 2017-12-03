@@ -11,9 +11,6 @@
     android:layout_marginBottom="@dimen/Ls.Dimen.CardVerticalMargin"
     android:layout_marginStart="@dimen/Ls.Dimen.CardHorizontalMargin"
     android:layout_marginEnd="@dimen/Ls.Dimen.CardHorizontalMargin"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="3dp"
     card_view:cardElevation="2dp"
     card_view:cardUseCompatPadding="true">

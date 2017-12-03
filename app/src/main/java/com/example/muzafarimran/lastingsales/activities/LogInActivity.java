@@ -183,7 +183,6 @@ public class LogInActivity extends AppCompatActivity {
                             role_role = roleObject.getString("role");
                         }
 
-
                         JSONObject returnInitJson = null;
                         if (responseObject.has("config") && !responseObject.isNull("config")) {
                             String config = responseObject.getString("config");

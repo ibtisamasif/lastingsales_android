@@ -115,4 +115,12 @@ public class MyDateTimeStamp {
         Uri uri = Uri.parse(url);
         imageView.setImageURI(uri);
     }
+
+    public static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
 }

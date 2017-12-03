@@ -162,6 +162,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         this.companyName = companyName;
         this.email = email;
         moveToFragment(4);
+
     }
 
     public void dataFromFragmentF(String firstname, String lastname, String phone, String password, String confirmpassword) {

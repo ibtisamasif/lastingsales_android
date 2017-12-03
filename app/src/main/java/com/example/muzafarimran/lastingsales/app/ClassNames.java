@@ -55,4 +55,16 @@ public class ClassNames {
     public static final String CHIP_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.ChipItem";
     public static final int CHIP_CLASS_TYPE = 12;
     public static final int CHIP_CLASS_RESOURCE = R.layout.card_chip;
+
+    public static final String LSCONTACTS_SOCIAL_PROFILE_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.LSContactProfile";
+    public static final int LSCONTACTS_SOCIAL_PROFILE_CLASS_TYPE = 13;
+    public static final int LSCONTACTS_SOCIAL_PROFILE_CLASS_RESOURCE = R.layout.card_social_profile;
+
+    public static final String CONNECTIONS_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.ConnectionItem";
+    public static final int CONNECTIONS_CLASS_TYPE = 14;
+    public static final int CONNECTIONS_CLASS_RESOURCE = R.layout.card_connection;
+
+    public static final String CONTACT_HEADER_BOTTOMSHEET_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem";
+    public static final int CONTACT_HEADER_BOTTOMSHEET_CLASS_TYPE = 15;
+    public static final int CONTACT_HEADER_BOTTOMSHEET_CLASS_RESOURCE = R.layout.card_contact_header_bottomsheet;
 }

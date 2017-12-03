@@ -9,7 +9,7 @@ public class NetworkAccess {
     public static Boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting(); //TODO should be only isConnected();
     }
 
     public static Boolean isWifiConnected(Context context) {

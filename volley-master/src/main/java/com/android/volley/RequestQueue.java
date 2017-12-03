@@ -232,7 +232,6 @@ public class RequestQueue {
 
     /**
      * Cancels all requests in this queue for which the given filter applies.
-     *
      * @param filter The filtering function to use
      */
     public void cancelAll(RequestFilter filter) {
@@ -263,7 +262,6 @@ public class RequestQueue {
 
     /**
      * Adds a Request to the dispatch queue.
-     *
      * @param request The request to service
      * @return The passed-in request
      */

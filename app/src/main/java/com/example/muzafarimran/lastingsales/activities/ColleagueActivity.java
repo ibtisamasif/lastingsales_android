@@ -70,7 +70,7 @@ public class ColleagueActivity  extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         Collection<LSContact> contacts;
-        contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
+        contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
 
         list.clear();
         list.addAll(contacts);

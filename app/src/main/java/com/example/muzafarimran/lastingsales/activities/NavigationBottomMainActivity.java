@@ -41,6 +41,7 @@ import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
@@ -153,16 +154,16 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
         init(this);
 
-        SwipeController swipeController = new SwipeController();
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
-        itemTouchhelper.attachToRecyclerView(mRecyclerView);
-
-        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                super.onDraw(c, parent, state);
-            }
-        });
+//        SwipeController swipeController = new SwipeController();
+//        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+//        itemTouchhelper.attachToRecyclerView(mRecyclerView);
+//
+//        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+//            @Override
+//            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+//                super.onDraw(c, parent, state);
+//            }
+//        });
 
     }
 
@@ -258,14 +259,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread thread, Throwable ex) {
                 Log.d(TAG, "uncaughtException: ");
-                Log.d("testlog", "uncaughtException: ");
                 Intent launchIntent = new Intent(getIntent());
                 PendingIntent pending = PendingIntent.getActivity(NavigationBottomMainActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 manager.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pending);
                 defaultHandler.uncaughtException(thread, ex);
                 System.exit(2);
-                Log.d("testlog", "uncaughtException: exit");
             }
         });
 
@@ -625,7 +624,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     public void onClickUnlabeled(Long contact_id) {
-        ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragment.newInstance(contact_id, 0);
+        ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragmentNew.newInstance(contact_id, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
     }

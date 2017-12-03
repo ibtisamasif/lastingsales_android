@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import com.example.muzafarimran.lastingsales.app.ClassNames;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderCallCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderChipCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderConnectionsCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderContactHeaderBottomsheetCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSocialProfileCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderErrorCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderHomeCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderInquiryCard;
@@ -78,6 +81,15 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.CHIP_CLASS_NAME:
                 return ClassNames.CHIP_CLASS_TYPE;
 
+            case ClassNames.LSCONTACTS_SOCIAL_PROFILE_CLASS_NAME:
+                return ClassNames.LSCONTACTS_SOCIAL_PROFILE_CLASS_TYPE;
+
+            case ClassNames.CONNECTIONS_CLASS_NAME:
+                return ClassNames.CONNECTIONS_CLASS_TYPE;
+
+            case ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_NAME:
+                return ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_TYPE;
+
             default:
                 Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
                 return -1;
@@ -123,6 +135,15 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             case ClassNames.CHIP_CLASS_TYPE:
                 return new ViewHolderChipCard(LayoutInflater.from(mContext).inflate(ClassNames.CHIP_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.LSCONTACTS_SOCIAL_PROFILE_CLASS_TYPE:
+                return new ViewHolderSocialProfileCard(LayoutInflater.from(mContext).inflate(ClassNames.LSCONTACTS_SOCIAL_PROFILE_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.CONNECTIONS_CLASS_TYPE:
+                return new ViewHolderConnectionsCard(LayoutInflater.from(mContext).inflate(ClassNames.CONNECTIONS_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_TYPE:
+                return new ViewHolderContactHeaderBottomsheetCard(LayoutInflater.from(mContext).inflate(ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -181,6 +202,18 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.CHIP_CLASS_TYPE:
                 ViewHolderChipCard viewHolderChipCard = (ViewHolderChipCard) holder;
                 viewHolderChipCard.bind(item, position, mContext);
+                break;
+            case ClassNames.LSCONTACTS_SOCIAL_PROFILE_CLASS_TYPE:
+                ViewHolderSocialProfileCard viewHolderSocialProfileCard = (ViewHolderSocialProfileCard) holder;
+                viewHolderSocialProfileCard.bind(item, position, mContext);
+                break;
+            case ClassNames.CONNECTIONS_CLASS_TYPE:
+                ViewHolderConnectionsCard viewHolderConnectionsCard = (ViewHolderConnectionsCard) holder;
+                viewHolderConnectionsCard.bind(item, position, mContext);
+                break;
+            case ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_TYPE:
+                ViewHolderContactHeaderBottomsheetCard viewHolderContactHeaderBottomsheetCard = (ViewHolderContactHeaderBottomsheetCard) holder;
+                viewHolderContactHeaderBottomsheetCard.bind(item, position, mContext);
                 break;
         }
     }
