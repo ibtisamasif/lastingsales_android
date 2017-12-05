@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.carditems.AddLeadItem;
 import com.example.muzafarimran.lastingsales.carditems.ChipItem;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.HomeItem;
@@ -44,6 +45,9 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 item.text = "All LEADS";
                 listHome.add(item);
 
+                AddLeadItem addLeadItem = new AddLeadItem();
+                list.add(addLeadItem);
+
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
 
@@ -77,6 +81,9 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 item.text = "Leads that are InProgress";
                 listHome.add(item);
 
+                AddLeadItem addLeadItem = new AddLeadItem();
+                list.add(addLeadItem);
+
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
 
@@ -108,6 +115,9 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 item.value = "" + contacts.size();
                 item.text = "Leads that are Won";
                 listHome.add(item);
+
+                AddLeadItem addLeadItem = new AddLeadItem();
+                list.add(addLeadItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -141,6 +151,9 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 item.text = "Leads that are Lost";
                 listHome.add(item);
 
+                AddLeadItem addLeadItem = new AddLeadItem();
+                list.add(addLeadItem);
+
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
 
@@ -172,6 +185,9 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 item.value = "" + contacts.size();
                 item.text = "Leads that are InActive";
                 listHome.add(item);
+
+                AddLeadItem addLeadItem = new AddLeadItem();
+                list.add(addLeadItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";

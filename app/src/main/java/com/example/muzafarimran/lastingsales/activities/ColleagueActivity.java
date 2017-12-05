@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -99,5 +101,9 @@ public class ColleagueActivity  extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-
+    public void onClickColleague(Long contact_id) {
+        ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragmentNew.newInstance(contact_id, 0);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
+    }
 }

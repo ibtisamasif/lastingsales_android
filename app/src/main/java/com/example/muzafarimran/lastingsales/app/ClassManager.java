@@ -4,12 +4,10 @@ import android.content.Intent;
 
 import com.example.muzafarimran.lastingsales.activities.AboutActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
-import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
-import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
+import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragmentNew;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * Created by ibtisam on 11/20/2017.
@@ -26,8 +24,8 @@ public class ClassManager {
         HashMap<String, Class> hashMap = new HashMap<>();
         hashMap.put(ABOUT_ACTIVITY, AboutActivity.class);
         hashMap.put(CONTACT_DETAILS_TAB_ACTIVITY, ContactDetailsTabActivity.class);
-        hashMap.put(CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT, ContactCallDetailsBottomSheetFragment.class);
-        hashMap.put(INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT, InquiryCallDetailsBottomSheetFragment.class);
+        hashMap.put(CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT, ContactCallDetailsBottomSheetFragmentNew.class);
+        hashMap.put(INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT, InquiryCallDetailsBottomSheetFragmentNew.class);
         return hashMap.get(name);
     }
 }

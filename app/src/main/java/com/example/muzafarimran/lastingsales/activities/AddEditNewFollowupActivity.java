@@ -62,7 +62,7 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
     int mMinute;
     private LSContact selectedContact = null;
     private TempFollowUp selectedFollowup = null;
-    private TextView tvTitleFollowupPopup;
+//    private TextView tvTitleFollowupPopup;
     private String lastDayOfMonth;
     private String lastDayOfYear;
     private String otherEditText;
@@ -72,7 +72,7 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_new_followup);
-        tvTitleFollowupPopup = (TextView) findViewById(R.id.tvTitleFollowupPopup);
+//        tvTitleFollowupPopup = (TextView) findViewById(R.id.tvTitleFollowupPopup);
         bOneWeek = (Button) findViewById(R.id.bOneWeekFollowupPopup);
         bThreeDays = (Button) findViewById(R.id.bThreeDaysFollowupPopup);
         bTomorrow = (Button) findViewById(R.id.bTomorrowFollowupPopup);
@@ -89,7 +89,7 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
 
         if (launchMode.equals(LAUNCH_MODE_ADD_NEW_FOLLOWUP)) {
             Toast.makeText(this, "Add new Followup", Toast.LENGTH_SHORT).show();
-            tvTitleFollowupPopup.setText(TITLE_ADD_FOLLOWUP);
+//            tvTitleFollowupPopup.setText(TITLE_ADD_FOLLOWUP);
             editingMode = false;
             String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
             if (id != null && !id.equals("")) {
@@ -105,7 +105,7 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
 
         } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
 
-            tvTitleFollowupPopup.setText(TITLE_EDIT_FOLLOWUP);
+//            tvTitleFollowupPopup.setText(TITLE_EDIT_FOLLOWUP);
             editingMode = true;
             String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
             if (id != null && !id.equals("")) {

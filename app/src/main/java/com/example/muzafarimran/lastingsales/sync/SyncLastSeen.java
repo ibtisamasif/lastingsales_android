@@ -41,6 +41,7 @@ public class SyncLastSeen {
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
+        Log.d(TAG, "updateLastSeenToServer: URL: " + myUrl);
         StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -54,14 +55,14 @@ public class SyncLastSeen {
                         Log.d(TAG, "onResponse : LastSeenFromServer : " + responseObject.getString("last_seen"));
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(); //TODO crash here
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Log.d(TAG, "onErrorResponse: CouldNotUpdateupdateLastSeenToServer");
+                Log.e(TAG, "onErrorResponse:SyncLastSeen CouldNotUpdateLastSeenToServer");
             }
         }) {
         };

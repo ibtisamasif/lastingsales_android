@@ -41,10 +41,12 @@
             style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ems="11"
             android:layout_marginStart="16dp"
             android:text="name"
             app:layout_constraintStart_toEndOf="@+id/user_avatar"
-            app:layout_constraintTop_toTopOf="@+id/user_avatar" />
+            app:layout_constraintTop_toTopOf="@+id/user_avatar"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:id="@+id/call_number"
@@ -54,7 +56,8 @@
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toEndOf="@+id/user_avatar"
             app:layout_constraintTop_toBottomOf="@+id/call_name"
-            tools:text="number" />
+            tools:text="number"
+            android:layout_marginLeft="16dp" />
 
         <ImageView
             android:id="@+id/missed_call_icon"
@@ -76,7 +79,8 @@
             android:layout_toRightOf="@id/missed_call_icon"
             android:text="time"
             app:layout_constraintStart_toEndOf="@+id/missed_call_icon"
-            app:layout_constraintTop_toTopOf="@+id/missed_call_icon" />
+            app:layout_constraintTop_toTopOf="@+id/missed_call_icon"
+            android:layout_marginLeft="8dp" />
 
         <Button
             android:id="@+id/bTag"

@@ -34,9 +34,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:ems="13"
         android:text="@string/unknown_capital"
         app:layout_constraintStart_toEndOf="@+id/user_avatar"
-        app:layout_constraintTop_toTopOf="@+id/user_avatar" />
+        app:layout_constraintTop_toTopOf="@+id/user_avatar"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/call_number"
@@ -49,7 +51,8 @@
         android:layout_toRightOf="@id/missed_call_icon"
         android:text="number"
         app:layout_constraintStart_toEndOf="@+id/user_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/call_name" />
+        app:layout_constraintTop_toBottomOf="@+id/call_name"
+        android:layout_marginLeft="8dp" />
 
     <ImageView
         android:id="@+id/call_icon"

@@ -220,9 +220,9 @@ public class AddEditLeadActivity extends AppCompatActivity {
                     mixpanel.track("Lead From " + mixpanelSource);
                     Log.d(TAG, "mixpanelSource: " + mixpanelSource);
                 }
-//                LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-//                TinyBus bus = TinyBus.from(getApplicationContext());
-//                bus.post(mCallEvent);
+                LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                TinyBus bus = TinyBus.from(getApplicationContext());
+                bus.post(mCallEvent);
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
             }
@@ -438,12 +438,16 @@ public class AddEditLeadActivity extends AppCompatActivity {
     private void selectRadioButton(String button) {
         if (button.equals(LSContact.CONTACT_TYPE_SALES)) {
             selectedContactType = LSContact.CONTACT_TYPE_SALES;
+            bSalesRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            bColleagueRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 //            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
 //            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
             bSalesRadio.setTextColor(Color.WHITE);
             bColleagueRadio.setTextColor(Color.BLACK);
         } else if (button.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
             selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
+            bSalesRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            bColleagueRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 //            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
 //            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
             bSalesRadio.setTextColor(Color.BLACK);

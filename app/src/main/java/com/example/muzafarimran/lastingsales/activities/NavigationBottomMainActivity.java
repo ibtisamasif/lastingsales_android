@@ -40,9 +40,9 @@ import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelp
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -61,6 +61,7 @@ import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
 import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
+import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -82,6 +83,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     public static final String KEY_ACTIVE_LOADER = "active_loader";
     public static int ACTIVE_LOADER = -1;
+    public static String KEY_SELECTED_TAB = "key_selected_tab";
+    public static String INQUIRIES_TAB = "inquiries_tab";
     private TinyBus bus;
     private List<Object> list = new ArrayList<Object>();
     private MyRecyclerViewAdapter adapter;
@@ -139,18 +142,32 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         getSupportActionBar().setTitle("Home");
         ActionBar actionBar = getSupportActionBar();
         adapter = new MyRecyclerViewAdapter(this, list);
-        getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
         mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_home);
-
         sessionManager = new SessionManager(this);
-
         mRecyclerView.setAdapter(adapter);
+        Bundle bundle1 = getIntent().getExtras();
+        if (bundle1 != null) {
+            Log.d(TAG, "onCreate: Loading Inquiries TAB");
+            String tab = bundle1.getString(KEY_SELECTED_TAB);
+            if (tab != null) {
+                if (tab.equals(INQUIRIES_TAB)) {
+                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this).forceLoad();
+                    navigation.setSelectedItemId(R.id.navigation_inquiries);
+                }
+            }else {
+                Log.d(TAG, "onCreate: Bundle Not Null Loading Home TAB");
+                getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
+                navigation.setSelectedItemId(R.id.navigation_home);
+            }
+        }else {
+            Log.d(TAG, "onCreate: Bundle is Null Loading Home TAB");
+            getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
+            navigation.setSelectedItemId(R.id.navigation_home);
+        }
 
         init(this);
 
@@ -164,7 +181,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 //                super.onDraw(c, parent, state);
 //            }
 //        });
-
     }
 
     private void init(NavigationBottomMainActivity navigationBottomMainActivity) {
@@ -294,7 +310,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 //        long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
 //        sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
         sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
-        SyncLastSeen.updateLastSeenToServer(NavigationBottomMainActivity.this);
+        if (NetworkAccess.isNetworkAvailable(this)){
+            SyncLastSeen.updateLastSeenToServer(NavigationBottomMainActivity.this);
+        }
     }
 
 
@@ -557,6 +575,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
                 Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
+                mixpanel.track("Refreshed");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -630,8 +651,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     public void onClickInquiry(String number) {
-        InquiryCallDetailsBottomSheetFragment contactCallDetails = InquiryCallDetailsBottomSheetFragment.newInstance(number, 0);
+        InquiryCallDetailsBottomSheetFragmentNew contactCallDetails = InquiryCallDetailsBottomSheetFragmentNew.newInstance(number, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         contactCallDetails.show(fragmentManager, "tag");
+
+//        InquiryCallDetailsBottomSheetFragment contactCallDetails = InquiryCallDetailsBottomSheetFragment.newInstance(number, 0);
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        contactCallDetails.show(fragmentManager, "tag");
     }
 }

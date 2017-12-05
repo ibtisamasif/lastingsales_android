@@ -22,27 +22,18 @@ class UnlabeledManager {
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
             mixpanel.track("Unlabeled To Lead");
-            LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-            TinyBus bus = TinyBus.from(context.getApplicationContext());
-            bus.post(mCallEvent);
         } else if (newtype.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
             // from unlabeled to business
             InquiryManager.RemoveByContact(context, tempContact);
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
             mixpanel.track("Unlabeled To Colleague");
-            LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-            TinyBus bus = TinyBus.from(context.getApplicationContext());
-            bus.post(mCallEvent);
         } else if (newtype.equals(LSContact.CONTACT_TYPE_IGNORED)) {
             // from unlabeled to ignored
             InquiryManager.RemoveByContact(context, tempContact);
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
             mixpanel.track("Unlabeled To Ignored");
-            LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-            TinyBus bus = TinyBus.from(context.getApplicationContext());
-            bus.post(mCallEvent);
         }
     }
 }

@@ -140,11 +140,11 @@ public class PhoneNumberAndCallUtils {
         }
         final long diff = now - time;
         if (diff < 24 * HOUR_MILLIS) {
-            return " Today";
+            return " Today ";
         } else if (diff < 48 * HOUR_MILLIS) {
-            return " Yesterday";
+            return " Yesterday ";
         } else {
-            return diff / DAY_MILLIS + " Days ago";
+            return diff / DAY_MILLIS + " Days ago ";
         }
     }
 

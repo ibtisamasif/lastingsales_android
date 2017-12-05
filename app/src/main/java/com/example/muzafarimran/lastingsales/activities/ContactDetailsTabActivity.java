@@ -161,11 +161,11 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 
     public void onBackPressed() {
         super.onBackPressed();
-        BackPressedEventModel model = new BackPressedEventModel();
-        TinyBus.from(getApplicationContext()).post(model);
-        if (!model.backPressHandled) {
-            super.onBackPressed();
-        }
+//        BackPressedEventModel model = new BackPressedEventModel();
+//        TinyBus.from(getApplicationContext()).post(model);
+//        if (!model.backPressHandled) {
+//            super.onBackPressed();
+//        }
     }
 
     @Override

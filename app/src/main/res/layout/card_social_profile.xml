@@ -28,273 +28,249 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <RelativeLayout
-            android:id="@+id/user_profile_group_wrapper"
-            android:layout_width="288dp"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_avatar">
+            app:layout_constraintTop_toBottomOf="@+id/includeContactProfile">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:orientation="horizontal" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvNameFromProfile"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvNameFromProfileTitle"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:id="@+id/llNameFromProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+            <TextView
+                android:id="@+id/tvNameFromProfileTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Name: "
+                app:layout_constraintEnd_toStartOf="@+id/tvNameFromProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:paddingLeft="10dp"
-                        android:text="Name: "
-                        android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tvCityFromProfileTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="City: "
+                app:layout_constraintEnd_toStartOf="@+id/tvCityFromProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvNameFromProfileTitle" />
 
-                    <TextView
-                        android:id="@+id/tvNameFromProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:paddingLeft="10dp"
-                        android:text=""
-                        android:textSize="12sp" />
-                </LinearLayout>
+            <TextView
+                android:id="@+id/tvCityFromProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvCityFromProfileTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvNameFromProfile" />
 
-                <LinearLayout
-                    android:id="@+id/llCityFromProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+            <TextView
+                android:id="@+id/tvCountryFromProfileTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Counrty: "
+                app:layout_constraintEnd_toStartOf="@+id/tvCountryFromProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCityFromProfileTitle" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:paddingLeft="10dp"
-                        android:text="City: "
-                        android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tvCountryFromProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvCountryFromProfileTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvCityFromProfile" />
 
-                    <TextView
-                        android:id="@+id/tvCityFromProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:paddingLeft="10dp"
-                        android:text=""
-                        android:textSize="12sp" />
-                </LinearLayout>
+            <TextView
+                android:id="@+id/tvWorkFromProfileTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Work: "
+                app:layout_constraintEnd_toStartOf="@+id/tvWorkFromProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCountryFromProfileTitle" />
 
-                <LinearLayout
-                    android:id="@+id/llCountryFromProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+            <TextView
+                android:id="@+id/tvWorkFromProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvWorkFromProfileTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvCountryFromProfile" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:paddingLeft="10dp"
-                        android:text="Counrty: "
-                        android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tvCompanyFromProfileTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Company: "
+                app:layout_constraintEnd_toStartOf="@+id/tvCompanyFromProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvWorkFromProfileTitle" />
 
-                    <TextView
-                        android:id="@+id/tvCountryFromProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:paddingLeft="10dp"
-                        android:text=""
-                        android:textSize="12sp" />
-                </LinearLayout>
+            <TextView
+                android:id="@+id/tvCompanyFromProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvCompanyFromProfileTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvWorkFromProfile" />
 
-                <LinearLayout
-                    android:id="@+id/llWorkFromProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+            <TextView
+                android:id="@+id/tvWhatsappFromProfileTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Whatsapp: "
+                app:layout_constraintEnd_toStartOf="@+id/tvWhatsappFromProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCompanyFromProfileTitle" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:paddingLeft="10dp"
-                        android:text="Work: "
-                        android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tvWhatsappFromProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvWhatsappFromProfileTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvCompanyFromProfile" />
 
-                    <TextView
-                        android:id="@+id/tvWorkFromProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:paddingLeft="10dp"
-                        android:text=""
-                        android:textSize="12sp" />
-                </LinearLayout>
+            <TextView
+                android:id="@+id/tvTweeterFromProfileTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Twitter: "
+                app:layout_constraintEnd_toStartOf="@+id/tvTweeterFromProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvWhatsappFromProfileTitle" />
 
-                <LinearLayout
-                    android:id="@+id/llCompanyFromProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+            <TextView
+                android:id="@+id/tvTweeterFromProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llWhatsappFromProfile"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvTweeterFromProfileTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvWhatsappFromProfile" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:paddingLeft="10dp"
-                        android:text="Company: "
-                        android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tvLinkdnFromProfileTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="LinkdIn: "
+                app:layout_constraintEnd_toStartOf="@+id/tvLinkdnFromProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTweeterFromProfileTitle" />
 
-                    <TextView
-                        android:id="@+id/tvCompanyFromProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:paddingLeft="10dp"
-                        android:text=""
-                        android:textSize="12sp" />
-                </LinearLayout>
+            <TextView
+                android:id="@+id/tvLinkdnFromProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvLinkdnFromProfileTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvTweeterFromProfile" />
 
-                <LinearLayout
-                    android:id="@+id/llWhatsappFromProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+            <TextView
+                android:id="@+id/tvFbFromProfileTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Facebook: "
+                app:layout_constraintEnd_toStartOf="@+id/tvFbFromProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvLinkdnFromProfileTitle" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:paddingLeft="10dp"
-                        android:text="Whatsapp: "
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tvWhatsappFromProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:paddingLeft="10dp"
-                        android:text=""
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llTweeterFromProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:paddingLeft="10dp"
-                        android:text="Twitter: "
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tvTweeterFromProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:autoLink="web"
-                        android:linksClickable="true"
-                        android:paddingLeft="10dp"
-                        android:text=""
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llLinkdnFromProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:paddingLeft="10dp"
-                        android:text="LinkdIn: "
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tvLinkdnFromProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:autoLink="web"
-                        android:linksClickable="true"
-                        android:paddingLeft="10dp"
-                        android:text=""
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llFbFromProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:paddingLeft="10dp"
-                        android:text="Facebook: "
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tvFbFromProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:autoLink="web"
-                        android:linksClickable="true"
-                        android:paddingLeft="10dp"
-                        android:text=""
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/tvFbFromProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvFbFromProfileTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvLinkdnFromProfile" />
+        </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="0dp"

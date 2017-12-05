@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.app.ClassNames;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderAddLeadCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderCallCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderChipCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderConnectionsCard;
@@ -90,6 +91,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_NAME:
                 return ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_TYPE;
 
+            case ClassNames.ADD_lEAD_CLASS_NAME:
+                return ClassNames.ADD_lEAD_CLASS_TYPE;
+
             default:
                 Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
                 return -1;
@@ -144,6 +148,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             case ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_TYPE:
                 return new ViewHolderContactHeaderBottomsheetCard(LayoutInflater.from(mContext).inflate(ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.ADD_lEAD_CLASS_TYPE:
+                return new ViewHolderAddLeadCard(LayoutInflater.from(mContext).inflate(ClassNames.ADD_lEAD_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -214,6 +221,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_TYPE:
                 ViewHolderContactHeaderBottomsheetCard viewHolderContactHeaderBottomsheetCard = (ViewHolderContactHeaderBottomsheetCard) holder;
                 viewHolderContactHeaderBottomsheetCard.bind(item, position, mContext);
+                break;
+            case ClassNames.ADD_lEAD_CLASS_TYPE:
+                ViewHolderAddLeadCard viewHolderAddLeadCard = (ViewHolderAddLeadCard) holder;
+                viewHolderAddLeadCard.bind(item, position, mContext);
                 break;
         }
     }

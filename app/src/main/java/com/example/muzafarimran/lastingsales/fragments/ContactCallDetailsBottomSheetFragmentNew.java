@@ -33,7 +33,7 @@ import java.util.List;
 public class ContactCallDetailsBottomSheetFragmentNew extends BottomSheetDialogFragment {
 
     private static final String TAG = "ContactCallDetailsBotto";
-    private static final String CONTACT_ID = "contact_id";
+    public static final String CONTACT_ID = "contact_id";
     private List<Object> list = new ArrayList<Object>();
     private RecyclerView mRecyclerView;
 
@@ -68,7 +68,7 @@ public class ContactCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
         CoordinatorLayout.Behavior behavior = layoutParams.getBehavior();
         if (behavior != null && behavior instanceof BottomSheetBehavior) {
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
-            ((BottomSheetBehavior) behavior).setPeekHeight(200);
+            ((BottomSheetBehavior) behavior).setPeekHeight(600);
         }
         Long contactId = getArguments().getLong(CONTACT_ID);
         LSContact selectedContact = LSContact.findById(LSContact.class, contactId);

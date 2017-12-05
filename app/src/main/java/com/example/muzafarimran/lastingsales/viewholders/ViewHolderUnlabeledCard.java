@@ -26,15 +26,12 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.ColleagueActivity;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
-import com.example.muzafarimran.lastingsales.fragments.ColleagueContactDeleteBottomSheetDialogFragment;
-import com.example.muzafarimran.lastingsales.fragments.ColleagueContactDeleteConfirmationDialogFragment;
-import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
+import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
@@ -308,9 +305,11 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 // show smart info
 
                 this.cl.setOnClickListener(view -> {
-                    Intent myIntent = new Intent(mContext, ContactCallDetailsBottomSheetFragment.class);
-                    myIntent.putExtra("number", (String) view.getTag());
-                    mContext.startActivity(myIntent);
+                    ColleagueActivity colleagueActivity = (ColleagueActivity) mContext;
+                    colleagueActivity.onClickColleague((Long) view.getTag());
+//                    Intent myIntent = new Intent(mContext, ContactCallDetailsBottomSheetFragmentNew.class);
+//                    myIntent.putExtra(ContactCallDetailsBottomSheetFragmentNew.CONTACT_ID, (Long) view.getTag());
+//                    mContext.startActivity(myIntent);
                 });
 
                 this.cl.setOnLongClickListener(view -> {
@@ -361,10 +360,8 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Warning));
 
                 this.cl.setOnClickListener(view -> {
-
                     NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
                     navigationBottomMainActivity.onClickUnlabeled((Long) view.getTag());
-
 //                    Intent myIntent = new Intent(mContext, ContactCallDetailsBottomSheetFragment.class);
 //                    myIntent.putExtra("number", (String) view.getTag());
 //                    mContext.startActivity(myIntent);
