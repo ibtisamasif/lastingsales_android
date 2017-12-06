@@ -33,20 +33,12 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
     @Override
     public List<Object> loadInBackground() {
-
+        AddLeadItem addLeadItem = new AddLeadItem();
+        list.add(addLeadItem);
 
         if (leadsToLoad != null && leadsToLoad.equals("All")) {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
             if (contacts != null) {
-
-                Collection<HomeItem> listHome = new ArrayList<HomeItem>();
-                HomeItem item = new HomeItem();
-                item.value = "" + contacts.size();
-                item.text = "All LEADS";
-                listHome.add(item);
-
-                AddLeadItem addLeadItem = new AddLeadItem();
-                list.add(addLeadItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -75,15 +67,6 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
             if (contacts != null) {
 
-                Collection<HomeItem> listHome = new ArrayList<HomeItem>();
-                HomeItem item = new HomeItem();
-                item.value = "" + contacts.size();
-                item.text = "Leads that are InProgress";
-                listHome.add(item);
-
-                AddLeadItem addLeadItem = new AddLeadItem();
-                list.add(addLeadItem);
-
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
 
@@ -109,15 +92,6 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
             if (contacts != null) {
-
-                Collection<HomeItem> listHome = new ArrayList<HomeItem>();
-                HomeItem item = new HomeItem();
-                item.value = "" + contacts.size();
-                item.text = "Leads that are Won";
-                listHome.add(item);
-
-                AddLeadItem addLeadItem = new AddLeadItem();
-                list.add(addLeadItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -145,15 +119,6 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
             if (contacts != null) {
 
-                Collection<HomeItem> listHome = new ArrayList<HomeItem>();
-                HomeItem item = new HomeItem();
-                item.value = "" + contacts.size();
-                item.text = "Leads that are Lost";
-                listHome.add(item);
-
-                AddLeadItem addLeadItem = new AddLeadItem();
-                list.add(addLeadItem);
-
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
 
@@ -180,15 +145,6 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
             if (contacts != null) {
 
-                Collection<HomeItem> listHome = new ArrayList<HomeItem>();
-                HomeItem item = new HomeItem();
-                item.value = "" + contacts.size();
-                item.text = "Leads that are InActive";
-                listHome.add(item);
-
-                AddLeadItem addLeadItem = new AddLeadItem();
-                list.add(addLeadItem);
-
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
 
@@ -212,12 +168,6 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
         } else {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
             if (contacts != null) {
-
-                Collection<HomeItem> listHome = new ArrayList<HomeItem>();
-                HomeItem item = new HomeItem();
-                item.value = "" + contacts.size();
-                item.text = "Leads that are InActive";
-                listHome.add(item);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";

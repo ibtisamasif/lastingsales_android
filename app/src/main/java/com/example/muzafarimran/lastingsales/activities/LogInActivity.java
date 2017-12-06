@@ -54,7 +54,7 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_login);
         queue = Volley.newRequestQueue(LogInActivity.this, new HurlStack());
 
 //        Version Control
@@ -129,6 +129,9 @@ public class LogInActivity extends AppCompatActivity {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(MyURLs.FORGOT_PASSWORD));
                 startActivity(i);
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(LogInActivity.this, projectToken);
+                mixpanel.track("Password Reset");
             }
         });
     }
@@ -244,7 +247,7 @@ public class LogInActivity extends AppCompatActivity {
                             activity.finish();
                         }
                         Log.d(TAG, "onResponse: " + response);
-                        Toast.makeText(activity, "" + user_id, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(activity, "" + user_id, Toast.LENGTH_SHORT).show();
                         try {
 
                             String projectToken = MixpanelConfig.projectToken;

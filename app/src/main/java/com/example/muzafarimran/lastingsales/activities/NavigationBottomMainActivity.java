@@ -383,7 +383,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             ACTIVE_LOADER = 1;
             navigation.setSelectedItemId(R.id.navigation_inquiries);
         }
-        Toast.makeText(NavigationBottomMainActivity.this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(NavigationBottomMainActivity.this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
     }
 
     @Subscribe
@@ -398,7 +398,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             ACTIVE_LOADER = 3;
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
-        Toast.makeText(NavigationBottomMainActivity.this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(NavigationBottomMainActivity.this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
     }
 
     @Subscribe
@@ -413,7 +413,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             ACTIVE_LOADER = 3;
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
-        Toast.makeText(NavigationBottomMainActivity.this, "ContactDeletedEventModel", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(NavigationBottomMainActivity.this, "ContactDeletedEventModel", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -614,31 +614,31 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             case "All":
                 bundle.putString("whichLeads", "All");
                 getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
-                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "InProgress":
                 bundle.putString("whichLeads", "InProgress");
                 getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
-                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "Won":
                 bundle.putString("whichLeads", "Won");
                 getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
-                Toast.makeText(this, "WonListened", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "WonListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "Lost":
                 bundle.putString("whichLeads", "Lost");
                 getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
-                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "InActive":
                 bundle.putString("whichLeads", "InActive");
                 getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
-                Toast.makeText(this, "InActiveListened", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "InActiveListened", Toast.LENGTH_SHORT).show();
                 break;
             default:
         }

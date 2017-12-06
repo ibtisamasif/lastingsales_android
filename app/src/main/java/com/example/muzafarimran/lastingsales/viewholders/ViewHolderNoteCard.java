@@ -65,7 +65,7 @@ public class ViewHolderNoteCard extends RecyclerView.ViewHolder {
                             NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
                             TinyBus bus = TinyBus.from(mContext);
                             bus.post(mNoteAdded);
-                            Toast.makeText(mContext, "deleted successfully.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Deleted successfully.", Toast.LENGTH_SHORT).show();
                         }
                         dialog.dismiss();
                     }

@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/tv"
-        style="@style/Base.TextAppearance.AppCompat.Display1"
+        style="@style/Ls.Type.Display1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -20,33 +20,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        style="@style/Base.TextAppearance.AppCompat.Body2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="32dp"
-        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
-        app:layout_constraintEnd_toEndOf="@+id/tv"
-        app:layout_constraintStart_toStartOf="@+id/tv"
-        app:layout_constraintTop_toBottomOf="@+id/tv"
-        android:layout_marginRight="8dp" />
-
     <EditText
         android:id="@+id/etFirstName"
+        style="@style/ThemeEditTextLightOnBoarding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="54dp"
         android:ems="10"
         android:hint="Company Name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/tv" />
 
     <EditText
         android:id="@+id/etEmail"
+        style="@style/ThemeEditTextLightOnBoarding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

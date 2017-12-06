@@ -24,7 +24,8 @@
         app:layout_constraintStart_toStartOf="@+id/cl"
         app:layout_constraintTop_toTopOf="@+id/cl"
         fresco:placeholderImage="@drawable/ic_account_circle"
-        fresco:roundAsCircle="true" />
+        fresco:roundAsCircle="true"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/call_name"

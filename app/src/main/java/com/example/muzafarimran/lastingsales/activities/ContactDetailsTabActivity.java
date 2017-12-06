@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -27,6 +28,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.List;
 
@@ -85,7 +87,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId(), selectedContact.getPhoneOne()));
+        viewPager.setAdapter(new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId(), selectedContact.getPhoneOne())); //TODO crash getId was null
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -143,7 +145,6 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(getApplicationContext(), AddEditNoteActivity.class);
                 intent.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_ADD_NEW_NOTE);
                 intent.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_CONTACT_NUMBER, selectedContact.getPhoneOne());
@@ -178,8 +179,6 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.ic_action_delete:
-
-
                 String nameTextOnDialog;
                 if (selectedContact.getContactName() != null) {
                     nameTextOnDialog = selectedContact.getContactName();
@@ -219,7 +218,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ContactDetailsTabActivity.this);
                         dataSenderAsync.run();
                         // FIRE EVENT TO REFRESH LIST
-                        Snackbar.make(toolbar, "Lead deleted!", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(toolbar, "Note deleted!", Snackbar.LENGTH_SHORT).show();
 //                    }else {
 //                        Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
 //                    }
@@ -228,6 +227,9 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                         bus.post(mCallEvent);
                         dialog.dismiss();
                         finish();
+                        String projectToken = MixpanelConfig.projectToken;
+                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(ContactDetailsTabActivity.this, projectToken);
+                        mixpanel.track("Note deleted");
                     }
                 });
                 alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {

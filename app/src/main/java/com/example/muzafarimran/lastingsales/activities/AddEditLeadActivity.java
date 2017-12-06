@@ -54,7 +54,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
 
     public static final String MIXPANEL_SOURCE = "mixpanel_source";
 
-    public static final String MIXPANEL_SOURCE_FAB = "Fab";
+    public static final String MIXPANEL_SOURCE_CARD = "Card";
     public static final String MIXPANEL_SOURCE_NOTIFICATION = "Notification";
     public static final String MIXPANEL_SOURCE_UNLABELED = "Unlabeled";
     public static final String MIXPANEL_SOURCE_IGNORE = "Ignored";
@@ -68,7 +68,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
     String phoneNumberFromLastActivity;
     boolean editingMode = false;
     long contactIdLong = -1;
-//    TextView tvTitleAddContact;
+    //    TextView tvTitleAddContact;
     EditText etContactName;
     EditText etContactPhone;
     EditText etContactEmail;
@@ -123,10 +123,10 @@ public class AddEditLeadActivity extends AppCompatActivity {
         if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
             populateCreateContactView();
             String num = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
-            if(num != null){
+            if (num != null) {
                 etContactPhone.setText(num);
                 String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(this, num);
-                if(name != null){
+                if (name != null) {
                     etContactName.setText(name);
                 }
             }
@@ -183,6 +183,9 @@ public class AddEditLeadActivity extends AppCompatActivity {
                         //Saving contact in native phonebook as well
                         PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), tempContact.getContactName(), tempContact.getPhoneOne());
                         moveToContactDetailScreenIfNeeded(tempContact);
+                        String projectToken = MixpanelConfig.projectToken;
+                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                        mixpanel.track("Create lead dialog - created lead");
                     }
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
                     if (isValid(contactName, contactPhone, contactEmail)) {

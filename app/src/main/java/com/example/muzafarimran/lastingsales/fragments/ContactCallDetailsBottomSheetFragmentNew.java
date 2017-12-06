@@ -76,6 +76,7 @@ public class ContactCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
 
         ContactHeaderBottomsheetItem contactHeaderBottomsheetItem = new ContactHeaderBottomsheetItem();
         contactHeaderBottomsheetItem.lsContact = selectedContact;
+        contactHeaderBottomsheetItem.place = "contact";
         list.add(contactHeaderBottomsheetItem);
 
         LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(selectedContact.getPhoneOne());

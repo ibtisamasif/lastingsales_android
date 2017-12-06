@@ -26,10 +26,9 @@
                 android:layout_height="64dp"
                 android:background="@drawable/shape_rounded_rectangle"
                 android:orientation="vertical"
-                fresco:layout_constraintTop_toTopOf="parent"
-                fresco:layout_constraintStart_toStartOf="parent"
-                fresco:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteX="0dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/user_avatar"
@@ -38,10 +37,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                fresco:layout_constraintStart_toStartOf="parent"
-                fresco:layout_constraintTop_toTopOf="parent"
-                fresco:placeholderImage="@drawable/ic_account_circle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 fresco:roundAsCircle="true"
+                fresco:placeholderImage="@drawable/ic_account_circle_white_img"
                 android:layout_marginLeft="8dp" />
 
             <TextView
@@ -53,9 +52,9 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:maxLines="4"
-                fresco:layout_constraintEnd_toEndOf="parent"
-                fresco:layout_constraintStart_toEndOf="@+id/tvNoteHeading"
-                fresco:layout_constraintTop_toTopOf="@+id/tvNoteHeading" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvNoteHeading"
+                app:layout_constraintTop_toTopOf="@+id/tvNoteHeading" />
 
             <TextView
                 android:id="@+id/tvName"
@@ -69,8 +68,8 @@
                 android:ems="12"
                 android:ellipsize="end"
                 android:text="UNKNOWN"
-                fresco:layout_constraintStart_toEndOf="@+id/user_avatar"
-                fresco:layout_constraintTop_toTopOf="@+id/user_avatar"
+                app:layout_constraintStart_toEndOf="@+id/user_avatar"
+                app:layout_constraintTop_toTopOf="@+id/user_avatar"
                 android:layout_marginLeft="8dp" />
 
             <TextView
@@ -84,8 +83,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
                 android:text="Note:"
-                fresco:layout_constraintStart_toEndOf="@+id/user_avatar"
-                fresco:layout_constraintTop_toBottomOf="@+id/tvName"
+                app:layout_constraintStart_toEndOf="@+id/user_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/tvName"
                 android:layout_marginLeft="8dp" />
 
             <ImageButton
@@ -96,8 +95,8 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/close_icon"
-                fresco:layout_constraintEnd_toEndOf="parent"
-                fresco:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginRight="8dp" />
 
             <TextView
@@ -112,8 +111,10 @@
                 android:maxLines="3"
                 android:text="Last contacted with me"
                 android:textSize="12sp"
-                fresco:layout_constraintStart_toStartOf="parent"
-                fresco:layout_constraintTop_toBottomOf="@+id/user_avatar" />
+                android:textColor="@color/md_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_avatar"
+                android:layout_marginLeft="8dp" />
 
             <TextView
                 android:id="@+id/tvCallerHistoryLastCallDateTime0"
@@ -124,8 +125,10 @@
                 android:maxLines="3"
                 android:text="3-Jan-2017"
                 android:textSize="10sp"
-                fresco:layout_constraintEnd_toEndOf="parent"
-                fresco:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName0" />
+                android:textColor="@color/md_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName0"
+                android:layout_marginRight="8dp" />
 
             <TextView
                 android:id="@+id/tvCallerHistoryLastCallTimeAgo0"
@@ -135,9 +138,10 @@
                 android:layout_marginStart="8dp"
                 android:maxLines="1"
                 android:textSize="10sp"
-                fresco:layout_constraintStart_toStartOf="parent"
-                fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryName0"
-                tools:text="1 day ago" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryName0"
+                tools:text="1 day ago"
+                android:layout_marginLeft="8dp" />
 
             <TextView
                 android:id="@+id/tvCallerHistoryName1"
@@ -151,8 +155,10 @@
                 android:maxLines="1"
                 android:text="Last contacted Ibtisam Asif"
                 android:textSize="12sp"
-                fresco:layout_constraintStart_toStartOf="parent"
-                fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo0" />
+                android:textColor="@color/md_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo0"
+                android:layout_marginLeft="8dp" />
 
             <TextView
                 android:id="@+id/tvCallerHistoryLastCallTimeAgo1"
@@ -162,8 +168,8 @@
                 app:layout_goneMarginBottom="16dp"
                 android:maxLines="3"
                 android:textSize="10sp"
-                fresco:layout_constraintStart_toStartOf="parent"
-                fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryName1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryName1"
                 tools:text="1 day ago"
                 android:layout_marginLeft="8dp" />
 
@@ -176,8 +182,10 @@
                 android:maxLines="3"
                 android:text="2-Jan-2017"
                 android:textSize="10sp"
-                fresco:layout_constraintEnd_toEndOf="parent"
-                fresco:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName1" />
+                android:textColor="@color/md_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName1"
+                android:layout_marginRight="8dp" />
 
             <TextView
                 android:id="@+id/tvError"
@@ -190,10 +198,10 @@
                 android:text="Loading..."
                 card_view:layout_editor_absoluteX="109dp"
                 card_view:layout_editor_absoluteY="146dp"
-                fresco:layout_constraintBottom_toBottomOf="parent"
-                fresco:layout_constraintEnd_toEndOf="parent"
-                fresco:layout_constraintStart_toStartOf="parent"
-                fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo1" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo1" />
 
         </android.support.constraint.ConstraintLayout>
 

@@ -44,6 +44,7 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
     private TextView tvCallerHistoryName1;
     private TextView tvCallerHistoryLastCallDateTime1;
     private TextView tvCallerHistoryLastCallTimeAgo1;
+    private final TextView tvError;
     Context mContext;
     private static SessionManager sessionManager;
     private static RequestQueue queue;
@@ -58,6 +59,7 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
         tvCallerHistoryName1 = (TextView) v.findViewById(R.id.tvCallerHistoryName1);
         tvCallerHistoryLastCallDateTime1 = (TextView) v.findViewById(R.id.tvCallerHistoryLastCallDateTime1);
         tvCallerHistoryLastCallTimeAgo1 = (TextView) v.findViewById(R.id.tvCallerHistoryLastCallTimeAgo1);
+        tvError = (TextView) v.findViewById(R.id.tvError);
 
     }
 
@@ -80,6 +82,8 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
         tvCallerHistoryLastCallDateTime1.setVisibility(View.GONE);
         tvCallerHistoryLastCallTimeAgo1.setVisibility(View.GONE);
 
+        tvError.setVisibility(View.VISIBLE);
+
         sessionManager = new SessionManager(mContext);
         queue = Volley.newRequestQueue(mContext);
         fetchCustomerHistory(selectedContact.getPhoneOne());
@@ -101,7 +105,7 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
         StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String respon) {
-//                tvError.setVisibility(View.GONE);
+                tvError.setVisibility(View.GONE);
                 Log.d(TAG, "onResponse() response = [" + respon + "]");
                 try {
                     JSONObject jObj = new JSONObject(respon);
@@ -187,17 +191,17 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
                 error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotGetCustomerHistory");
                 if (!NetworkAccess.isNetworkAvailable(mContext)) {
-//                    tvError.setText("Internet is required to view connections");
+                    tvError.setText("Internet is required to view connections");
                 } else {
                     try {
                         if (error.networkResponse != null) {
                             if (error.networkResponse.statusCode == 404) {
 //                                tvError.setText("Connections not found");
                             } else {
-//                                tvError.setText("Error loading");
+                                tvError.setText("Error loading");
                             }
                         } else {
-//                            tvError.setText("Poor Internet Connectivity");
+                            tvError.setText("Poor Internet Connectivity");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

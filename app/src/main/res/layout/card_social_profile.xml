@@ -45,11 +45,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvNameFromProfileTitle"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/tvNameFromProfileTitle" />
 
             <TextView
                 android:id="@+id/tvNameFromProfileTitle"
@@ -75,7 +74,7 @@
                 android:text="City: "
                 app:layout_constraintEnd_toStartOf="@+id/tvCityFromProfile"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvNameFromProfileTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tvNameFromProfile" />
 
             <TextView
                 android:id="@+id/tvCityFromProfile"
@@ -83,11 +82,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvCityFromProfileTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvNameFromProfile" />
+                app:layout_constraintTop_toTopOf="@+id/tvCityFromProfileTitle" />
 
             <TextView
                 android:id="@+id/tvCountryFromProfileTitle"
@@ -100,7 +98,7 @@
                 android:text="Counrty: "
                 app:layout_constraintEnd_toStartOf="@+id/tvCountryFromProfile"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCityFromProfileTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCityFromProfile" />
 
             <TextView
                 android:id="@+id/tvCountryFromProfile"
@@ -108,11 +106,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvCountryFromProfileTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvCityFromProfile" />
+                app:layout_constraintTop_toTopOf="@+id/tvCountryFromProfileTitle" />
 
             <TextView
                 android:id="@+id/tvWorkFromProfileTitle"
@@ -125,7 +122,7 @@
                 android:text="Work: "
                 app:layout_constraintEnd_toStartOf="@+id/tvWorkFromProfile"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCountryFromProfileTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCountryFromProfile" />
 
             <TextView
                 android:id="@+id/tvWorkFromProfile"
@@ -133,11 +130,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvWorkFromProfileTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvCountryFromProfile" />
+                app:layout_constraintTop_toTopOf="@+id/tvWorkFromProfileTitle" />
 
             <TextView
                 android:id="@+id/tvCompanyFromProfileTitle"
@@ -150,7 +146,7 @@
                 android:text="Company: "
                 app:layout_constraintEnd_toStartOf="@+id/tvCompanyFromProfile"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvWorkFromProfileTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tvWorkFromProfile" />
 
             <TextView
                 android:id="@+id/tvCompanyFromProfile"
@@ -158,11 +154,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvCompanyFromProfileTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvWorkFromProfile" />
+                app:layout_constraintTop_toTopOf="@+id/tvCompanyFromProfileTitle" />
 
             <TextView
                 android:id="@+id/tvWhatsappFromProfileTitle"
@@ -175,7 +170,7 @@
                 android:text="Whatsapp: "
                 app:layout_constraintEnd_toStartOf="@+id/tvWhatsappFromProfile"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCompanyFromProfileTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCompanyFromProfile" />
 
             <TextView
                 android:id="@+id/tvWhatsappFromProfile"
@@ -183,11 +178,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvWhatsappFromProfileTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvCompanyFromProfile" />
+                app:layout_constraintTop_toTopOf="@+id/tvWhatsappFromProfileTitle" />
 
             <TextView
                 android:id="@+id/tvTweeterFromProfileTitle"
@@ -200,7 +194,7 @@
                 android:text="Twitter: "
                 app:layout_constraintEnd_toStartOf="@+id/tvTweeterFromProfile"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvWhatsappFromProfileTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tvWhatsappFromProfile" />
 
             <TextView
                 android:id="@+id/tvTweeterFromProfile"
@@ -209,13 +203,12 @@
                 android:layout_below="@+id/llWhatsappFromProfile"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:autoLink="web"
                 android:linksClickable="true"
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvTweeterFromProfileTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvWhatsappFromProfile" />
+                app:layout_constraintTop_toTopOf="@+id/tvTweeterFromProfileTitle" />
 
             <TextView
                 android:id="@+id/tvLinkdnFromProfileTitle"
@@ -228,7 +221,7 @@
                 android:text="LinkdIn: "
                 app:layout_constraintEnd_toStartOf="@+id/tvLinkdnFromProfile"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTweeterFromProfileTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tvTweeterFromProfile" />
 
             <TextView
                 android:id="@+id/tvLinkdnFromProfile"
@@ -236,13 +229,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:autoLink="web"
                 android:linksClickable="true"
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvLinkdnFromProfileTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvTweeterFromProfile" />
+                app:layout_constraintTop_toTopOf="@+id/tvLinkdnFromProfileTitle" />
 
             <TextView
                 android:id="@+id/tvFbFromProfileTitle"
@@ -255,7 +247,7 @@
                 android:text="Facebook: "
                 app:layout_constraintEnd_toStartOf="@+id/tvFbFromProfile"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvLinkdnFromProfileTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tvLinkdnFromProfile" />
 
             <TextView
                 android:id="@+id/tvFbFromProfile"
@@ -263,13 +255,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:autoLink="web"
                 android:linksClickable="true"
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvFbFromProfileTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvLinkdnFromProfile" />
+                app:layout_constraintTop_toTopOf="@+id/tvFbFromProfileTitle" />
+
+            <LinearLayout
+                android:id="@+id/space"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvFbFromProfile" />
         </android.support.constraint.ConstraintLayout>
 
         <LinearLayout

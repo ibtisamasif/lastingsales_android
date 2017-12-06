@@ -46,7 +46,7 @@ public class ClassNames {
 
     public static final String REMINDER_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.TempFollowUp";
     public static final int REMINDER_CLASS_TYPE = 10;
-    public static final int REMINDER_CLASS_RESOURCE = R.layout.reminder_item;
+    public static final int REMINDER_CLASS_RESOURCE = R.layout.card_reminder;
 
     public static final String MORE_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.MoreItem";
     public static final int MORE_CLASS_TYPE = 11;

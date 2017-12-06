@@ -57,6 +57,24 @@
     <!-- Ls.Type.Headline -->
     <!-- Ls.Type.Subheading -->
 
+    <style name="ThemeEditTextLightOnAddEditLeadService">
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/md_white</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:textColor">@color/md_black</item>
+        <!-- hint text color -->
+        <item name="android:textColorHint">@color/md_grey_600</item>
+    </style>
+
+    <style name="ThemeEditTextLightOnBoarding">
+        <!-- bottom line color -->
+        <item name="colorControlNormal">#000000</item>
+        <!-- text color -->
+        <item name="android:textColor">@color/md_white</item>
+        <!-- hint text color -->
+        <item name="android:textColorHint">#BDBDBD</item>
+    </style>
+
     <style name="Ls.Type.Title" parent="Ls.Type.Parent">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/md_grey_900</item>
@@ -69,10 +87,8 @@
         <item name="android:fontFamily">sans-serif-regular</item>
     </style>
     <!-- Ls Type # -->
-    <style name="Ls.Type.Body2" parent="Ls.Type.Parent">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/md_grey_900</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+    <style name="Ls.Type.Body2" parent="Base.TextAppearance.AppCompat.Body2">
+        <item name="android:textColor">@color/md_white</item>
     </style>
     <!-- Ls Type # -->
     <style name="Ls.Type.Button" parent="Ls.Type.Parent">
@@ -87,10 +103,8 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
     <!-- Ls Type # -->
-    <style name="Ls.Type.Display1" parent="Ls.Type.Parent">
-        <item name="android:textSize">34sp</item>
-        <item name="android:textColor">@color/md_grey_600</item>
-        <item name="android:fontFamily">sans-serif-regular</item>
+    <style name="Ls.Type.Display1" parent="Base.TextAppearance.AppCompat.Display1">
+        <item name="android:textColor">@color/md_white</item>
     </style>
     <!-- Ls Type # -->
     <style name="Ls.Type.Display2" parent="Ls.Type.Parent">
@@ -121,6 +135,10 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/md_grey_900</item>
         <item name="android:fontFamily">sans-serif-regular</item>
+    </style>
+
+    <style name="Ls.Type.Subheading.Inverse" parent="TextAppearance.AppCompat.Subhead">
+        <!--<item name="android:textColor">@color/md_white</item>-->
     </style>
 
     <!--

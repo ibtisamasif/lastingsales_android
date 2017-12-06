@@ -51,20 +51,20 @@ public class FragmentE extends Fragment {
             company = etCompanyName.getText().toString();
             email = etEmail.getText().toString();
 
+            if (company.length() < 4) {
+                companyVarified = false;
+            }
             if (email.length() < 7 ) {
                 emailVarified = false;
             }
             if(!MyDateTimeStamp.isValidEmail(email)){
                 emailVarified = false;
             }
-            if (company.length() < 4) {
-                companyVarified = false;
+            if (!companyVarified) {
+                etCompanyName.setError("Invalid Company minimum 4 characters expected!");
             }
             if (!emailVarified) {
                 etEmail.setError("Invalid Email!");
-            }
-            if (!companyVarified) {
-                etCompanyName.setError("Invalid Company minimum 7 characters expected!");
             }
             if (emailVarified && companyVarified) {
                 ((OnBoardingActivity) getActivity()).dataFromFragmentE(etCompanyName.getText().toString(), etEmail.getText().toString());
@@ -77,4 +77,6 @@ public class FragmentE extends Fragment {
     public void onResume() {
         super.onResume();
     }
+
+
 }

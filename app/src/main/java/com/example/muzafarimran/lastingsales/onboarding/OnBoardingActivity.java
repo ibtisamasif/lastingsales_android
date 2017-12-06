@@ -45,12 +45,16 @@ public class OnBoardingActivity extends AppCompatActivity {
     private String companyName;
     private String email;
     private String password;
+    private String firstname;
+    private String lastname;
+    private String phone;
+    private String confirmpassword;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
-        viewPager =  findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         FragmentManager fm = getSupportFragmentManager();
         TutorialsFragmentPagerAdapter tutorialsFragmentPagerAdapter = new TutorialsFragmentPagerAdapter(fm);
         viewPager.setAdapter(tutorialsFragmentPagerAdapter);
@@ -65,17 +69,17 @@ public class OnBoardingActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 1){
+                if (position == 1) {
                     viewPager.setPagingEnabled(true);
-                }else if (position == 2){
+                } else if (position == 2) {
                     viewPager.setPagingEnabled(true);
-                }else if (position == 3){
+                } else if (position == 3) {
                     viewPager.setPagingEnabled(false);
-                }else if (position == 4){
+                } else if (position == 4) {
                     viewPager.setPagingEnabled(false);
-                }else if (position == 5){
+                } else if (position == 5) {
                     viewPager.setPagingEnabled(false);
-                }else if(position == 6){
+                } else if (position == 6) {
                     viewPager.setPagingEnabled(false);
                 }
             }
@@ -153,7 +157,24 @@ public class OnBoardingActivity extends AppCompatActivity {
 
     }
 
-    public void moveToFragment(int i){
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 1) {
+            moveToFragment(0);
+        } else if (viewPager.getCurrentItem() == 2) {
+            moveToFragment(1);
+        } else if (viewPager.getCurrentItem() == 3) {
+            moveToFragment(2);
+        } else if (viewPager.getCurrentItem() == 4) {
+            moveToFragment(3);
+        } else if (viewPager.getCurrentItem() == 5) {
+            moveToFragment(4);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void moveToFragment(int i) {
         viewPager.setCurrentItem(i);
     }
 
@@ -166,11 +187,21 @@ public class OnBoardingActivity extends AppCompatActivity {
     }
 
     public void dataFromFragmentF(String firstname, String lastname, String phone, String password, String confirmpassword) {
-
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.phone = phone;
         this.password = password;
-
+        this.confirmpassword = confirmpassword;
+        this.password = password;
         moveToFragment(5);
+        registerUserRequest();
+    }
 
+    public void dataFromFragmentG(){
+        registerUserRequest();
+    }
+
+    private void registerUserRequest() {
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.SIGNUP_URL, response -> {
             Log.d(TAG, "onResponse() called with: response = [" + response + "]");
@@ -193,7 +224,7 @@ public class OnBoardingActivity extends AppCompatActivity {
 //                    String completeImagePath = MyURLs.IMAGE_URL + image_path;
                     sessionManager.setLoginToken(api_token);
                     Toast.makeText(OnBoardingActivity.this, "Successfully Signup", Toast.LENGTH_SHORT).show();
-                    makeCreateCompanyRequest(companyName);
+                    registerCompanyRequest(companyName);
 //                        activity.startActivity(new Intent(activity, CreateCompanyActivity.class));
 //                        activity.finish();
                     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -504,7 +535,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         queue.add(sr);
     }
 
-    private void makeCreateCompanyRequest(String companyName) {
+    private void registerCompanyRequest(String companyName) {
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_COMPANY_URL, response -> {
             Log.d(TAG, "onResponse() called with: response = [" + response + "]");

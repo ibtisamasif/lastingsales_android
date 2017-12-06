@@ -61,7 +61,7 @@ public class SyncLastSeen {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                error.printStackTrace(); //TODO crash here too
                 Log.e(TAG, "onErrorResponse:SyncLastSeen CouldNotUpdateLastSeenToServer");
             }
         }) {

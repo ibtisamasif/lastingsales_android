@@ -61,8 +61,6 @@ public class AddEditLeadService extends Service {
     private CheckBox cbIgnore;
     private LinearLayout llContactDetailsFollowupScreen;
     private LayoutInflater inflater;
-    private Button bColleagueRadio;
-    private Button bSalesRadio;
     WindowManager wm;
     Context serviceContext;
     ImageView logoSmall;
@@ -119,13 +117,13 @@ public class AddEditLeadService extends Service {
     private void initializeAllViewsFromThisParentView(View largeInflatedView) {
 
         etContactName = (EditText) largeInflatedView.findViewById(R.id.etContactName);
+        etContactName.getBackground().setColorFilter(getResources().getColor(R.color.md_white), PorterDuff.Mode.SRC_IN);
+        etContactName.getBackground().clearColorFilter();
         etContactPhone = (TextView) largeInflatedView.findViewById(R.id.etContactPhone);
         bSave = (Button) largeInflatedView.findViewById(R.id.bSaveFollowupPopup);
         bClose = (ImageView) largeInflatedView.findViewById(R.id.bClose);
         bNo = (Button) largeInflatedView.findViewById(R.id.bNo);
         cbIgnore = (CheckBox) largeInflatedView.findViewById(R.id.cbIgnore);
-        bSalesRadio = (Button) largeInflatedView.findViewById(R.id.bSalesRadio);
-        bColleagueRadio = (Button) largeInflatedView.findViewById(R.id.bCollegueRadio);
         llContactDetailsFollowupScreen = (LinearLayout) largeInflatedView.findViewById(R.id.llContactDetailsAddContactScreen);
         // Mix Panel Event
         String projectToken = MixpanelConfig.projectToken;
@@ -147,35 +145,7 @@ public class AddEditLeadService extends Service {
         } else if (nameFromPhoneBook != null) {
             etContactName.setText(nameFromPhoneBook);
         }
-//            populating name and phone number below after findVieByIDs have been called
-
-//      updating selected Radio button on UI
-        selectRadioButton(selectedContactType);
-        if (preSelectedContactType != null) {
-            selectRadioButton(preSelectedContactType);
-        } else {
-            selectRadioButton(LSContact.CONTACT_TYPE_SALES);
-        }
         etContactName.setSelection(etContactName.getText().length());
-
-        cbIgnore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d(TAG, "onCheckedChanged: " + isChecked);
-                if (isChecked) {
-                    bSalesRadio.setEnabled(false);
-//                    bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-                    bSalesRadio.setTextColor(Color.GRAY);
-                    bColleagueRadio.setEnabled(false);
-//                    bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-                    bColleagueRadio.setTextColor(Color.GRAY);
-                } else {
-                    bSalesRadio.setEnabled(true);
-                    bColleagueRadio.setEnabled(true);
-                    selectRadioButton(selectedContactType);
-                }
-            }
-        });
         bClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -305,44 +275,6 @@ public class AddEditLeadService extends Service {
                 }
             }
         });
-        bSalesRadio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectRadioButton(LSContact.CONTACT_TYPE_SALES);
-            }
-        });
-        bColleagueRadio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
-            }
-        });
-
-
-//        tvNoteText = (TextView) largeInflatedView.findViewById(R.id.tvNoteTextUIOCallPopup);
-//        LSNote tempNote = null;
-//        if (noteIdLong != null) {
-//            tempNote = LSNote.findById(LSNote.class, noteIdLong);
-//            tvNoteText.setText(tempNote.getNoteText());
-//        }
-//        tvNoteText.setText("Test Msg");
-//        banner = (ImageView) largeInflatedView.findViewById(R.id.imBanner);
-    }
-
-    private void selectRadioButton(String button) {
-        if (button.equals(LSContact.CONTACT_TYPE_SALES)) {
-            selectedContactType = LSContact.CONTACT_TYPE_SALES;
-//            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-//            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-            bSalesRadio.setTextColor(Color.WHITE); // TODO crash here after call
-            bColleagueRadio.setTextColor(Color.BLACK);
-        } else if (button.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
-            selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
-//            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-//            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-            bSalesRadio.setTextColor(Color.BLACK);
-            bColleagueRadio.setTextColor(Color.WHITE);
-        }
     }
 
     public View.OnTouchListener getOnTouchListenerDragDrop(final View shrunkView) {

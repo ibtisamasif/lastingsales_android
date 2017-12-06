@@ -129,10 +129,10 @@ public class AddEditNoteActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Note Added", Toast.LENGTH_SHORT).show();
                         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                         dataSenderAsync.run();
+                        String projectToken = MixpanelConfig.projectToken;
+                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                        mixpanel.track("Notes - Created");
                     }
-                    String projectToken = MixpanelConfig.projectToken;
-                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                    mixpanel.track("Notes - Created");
                 }
 
             }

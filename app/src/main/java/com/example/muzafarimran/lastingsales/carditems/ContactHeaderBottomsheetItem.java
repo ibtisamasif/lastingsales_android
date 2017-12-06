@@ -8,4 +8,5 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 public class ContactHeaderBottomsheetItem {
     public LSContact lsContact;
+    public String place;
 }

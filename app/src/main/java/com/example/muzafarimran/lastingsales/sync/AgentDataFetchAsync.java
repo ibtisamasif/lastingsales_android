@@ -21,6 +21,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,8 +55,10 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
 
     @Override
     protected Void doInBackground(Object... objects) {
-        fetchAgentLeadsFunc();
-        fetchDynamicColumns();
+        if (NetworkAccess.isNetworkAvailable(mContext)){
+            fetchAgentLeadsFunc();
+            fetchDynamicColumns();
+        }
         return null;
     }
 
@@ -145,7 +148,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                error.printStackTrace(); // TODO crash here
                 Log.d(TAG, "onErrorResponse: CouldNotSyncGETDynamicColumns");
             }
         }) {
@@ -242,7 +245,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                error.printStackTrace(); // TODO Crash here
                 Log.d(TAG, "onErrorResponse: CouldNotSyncGETContacts");
             }
         }) {

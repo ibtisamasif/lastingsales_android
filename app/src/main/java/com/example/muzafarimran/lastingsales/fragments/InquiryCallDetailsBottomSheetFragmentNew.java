@@ -72,6 +72,7 @@ public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
 
         ContactHeaderBottomsheetItem contactHeaderBottomsheetItem = new ContactHeaderBottomsheetItem();
         contactHeaderBottomsheetItem.lsContact = selectedContact;
+        contactHeaderBottomsheetItem.place = "inquiry";
         list.add(contactHeaderBottomsheetItem);
 
         LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(selectedContact.getPhoneOne());
