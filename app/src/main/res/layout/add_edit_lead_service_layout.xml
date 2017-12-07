@@ -111,7 +111,7 @@
                     android:layout_marginRight="20dp"
                     android:inputType="textPersonName"
                     android:padding="8dp"
-                    android:background="#9dc5c5c5"
+                    android:background="#1cc5c5c5"
                     android:textColor="@color/md_black"
                     android:textSize="15sp"
                     tools:text="David Abraham"

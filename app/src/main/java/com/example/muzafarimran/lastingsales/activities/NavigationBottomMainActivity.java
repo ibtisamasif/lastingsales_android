@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.MatrixCursor;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,7 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +38,6 @@ import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
-import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
@@ -55,7 +51,6 @@ import com.example.muzafarimran.lastingsales.listloaders.HomeLoader;
 import com.example.muzafarimran.lastingsales.listloaders.InquiryLoader;
 import com.example.muzafarimran.lastingsales.listloaders.LeadsLoader;
 import com.example.muzafarimran.lastingsales.listloaders.MoreLoader;
-import com.example.muzafarimran.lastingsales.recycleradapter.SwipeController;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -88,12 +83,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     private TinyBus bus;
     private List<Object> list = new ArrayList<Object>();
     private MyRecyclerViewAdapter adapter;
-    private RecyclerView mRecyclerView;
     private FirebaseAnalytics mFirebaseAnalytics;
     private SessionManager sessionManager;
     private SettingsManager settingsManager;
     Bundle bundle = new Bundle();
-    private Menu menu;
     private SearchView searchView;
     private BottomNavigationView navigation;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -136,13 +129,16 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
+
+        initFirst();
+
         setContentView(R.layout.activity_bottom_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Home");
         ActionBar actionBar = getSupportActionBar();
         adapter = new MyRecyclerViewAdapter(this, list);
-        mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
@@ -158,18 +154,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                     getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this).forceLoad();
                     navigation.setSelectedItemId(R.id.navigation_inquiries);
                 }
-            }else {
+            } else {
                 Log.d(TAG, "onCreate: Bundle Not Null Loading Home TAB");
                 getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
                 navigation.setSelectedItemId(R.id.navigation_home);
             }
-        }else {
+        } else {
             Log.d(TAG, "onCreate: Bundle is Null Loading Home TAB");
             getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_home);
         }
 
-        init(this);
+        initLast(this);
 
 //        SwipeController swipeController = new SwipeController();
 //        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
@@ -183,7 +179,40 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 //        });
     }
 
-    private void init(NavigationBottomMainActivity navigationBottomMainActivity) {
+    private void initFirst() {
+        sessionManager = new SessionManager(getApplicationContext());
+        if (!sessionManager.isUserSignedIn()) {
+            startActivity(new Intent(getApplicationContext(), LogInActivity.class));
+            finish();
+            return;
+        } else {
+            Intent intent = new Intent(NavigationBottomMainActivity.this, CallDetectionService.class);
+            startService(intent);
+            //TODO optimize it
+            long contactCount = LSContact.count(LSContact.class);
+            if (contactCount < 1) {
+                Log.d(TAG, "onCreate: LSContact.count " + contactCount);
+                AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
+                agentDataFetchAsync.execute();
+            }
+            if (sessionManager.isFirstRun()) {
+                Log.d(TAG, "initFirst: isFirstRun TRUE");
+                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+                theCallLogEngine.execute();
+            }
+            sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
+            if (NetworkAccess.isNetworkAvailable(this)) {
+                SyncLastSeen.updateLastSeenToServer(NavigationBottomMainActivity.this);
+//                Log.d("rating", "onCreate: setLastAppVisit");
+//                long milliSecondsIn30Second = 60000; // 30 seconds for now
+//                long now = Calendar.getInstance().getTimeInMillis();
+//                long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
+//                sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
+            }
+        }
+    }
+
+    private void initLast(NavigationBottomMainActivity navigationBottomMainActivity) {
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -191,15 +220,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
 //        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
-
-        sessionManager = new SessionManager(getApplicationContext());
-        if (!sessionManager.isUserSignedIn()) {
-            startActivity(new Intent(getApplicationContext(), LogInActivity.class));
-            finish();
-        } else {
-            Intent intent = new Intent(NavigationBottomMainActivity.this, CallDetectionService.class);
-            startService(intent);
-        }
 
         DemoSyncJob.schedulePeriodic();
 
@@ -223,28 +243,34 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         Log.d(TAG, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER);
         Log.d(TAG, "onCreate: Build.BRAND: " + Build.BRAND);
 
-        if (Build.BRAND.equalsIgnoreCase("xiaomi")) {
+        if (Build.BRAND.equalsIgnoreCase("xiaomi") && !settingsManager.getKeyStateProtectedApp()) {
             Log.d(TAG, "onCreate: xiaomi");
-            Intent intent = new Intent();
-            intent.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
-            startActivity(intent);
-
-
-        } else if (Build.BRAND.equalsIgnoreCase("Letv")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
+                            startActivity(intent);
+                            settingsManager.setKeyStateProtectedApp(true);
+                        }
+                    }).create().show();
+        } else if (Build.BRAND.equalsIgnoreCase("Letv") && !settingsManager.getKeyStateProtectedApp()) {
             Log.d(TAG, "onCreate: Letv");
-            Intent intent = new Intent();
-            intent.setComponent(new ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.AutobootManageActivity"));
-            startActivity(intent);
-
-        } else if (Build.BRAND.equalsIgnoreCase("Honor")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.AutobootManageActivity"));
+                            startActivity(intent);
+                            settingsManager.setKeyStateProtectedApp(true);
+                        }
+                    }).create().show();
+        } else if (Build.BRAND.equalsIgnoreCase("Honor") && !settingsManager.getKeyStateProtectedApp()) {
             Log.d(TAG, "onCreate: Honor");
-            Intent intent = new Intent();
-            intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
-            startActivity(intent);
-
-        }
-
-        if ("huawei".equalsIgnoreCase(Build.MANUFACTURER)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
                     .setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -253,7 +279,19 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                             Intent intent = new Intent();
                             intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
                             startActivity(intent);
-//                            sp.edit().putBoolean("protected",true).commit();
+                            settingsManager.setKeyStateProtectedApp(true);
+                        }
+                    }).create().show();
+        } else if ("huawei".equalsIgnoreCase(Build.MANUFACTURER) && !settingsManager.getKeyStateProtectedApp()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+                            startActivity(intent);
+                            settingsManager.setKeyStateProtectedApp(true);
                         }
                     }).create().show();
         }
@@ -288,30 +326,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
         mixpanel.track("Home Screen Opened");
 
-        //TODO optimize it
-        long contactCount = LSContact.count(LSContact.class);
-        if (contactCount < 1) {
-            Log.d(TAG, "onCreate: LSContact.count " + contactCount);
-            AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
-            agentDataFetchAsync.execute();
-        }
-
         //Version Control
         VersionManager versionManager = new VersionManager(getApplicationContext());
         if (!versionManager.runMigrations()) {
             // if migration has failed
             Toast.makeText(getApplicationContext(), "Migration Failed", Toast.LENGTH_SHORT).show();
-        }
-
-
-        //        Log.d("rating", "onCreate: setLastAppVisit");
-//        long milliSecondsIn30Second = 60000; // 30 seconds for now
-//        long now = Calendar.getInstance().getTimeInMillis();
-//        long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
-//        sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
-        sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
-        if (NetworkAccess.isNetworkAvailable(this)){
-            SyncLastSeen.updateLastSeenToServer(NavigationBottomMainActivity.this);
         }
     }
 
@@ -434,8 +453,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar, menu);
-
-        this.menu = menu;
 
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 

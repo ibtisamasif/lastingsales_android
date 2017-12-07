@@ -20,29 +20,24 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 public class ViewHolderCallCard extends RecyclerView.ViewHolder {
     public static final String TAG = "ViewHolderCallCard";
-    TextView call_type;
-    TextView tvDuration;
-    TextView time_passed;
-    TextView time;
-    ImageView call_icon;
+    private TextView call_type;
+    private TextView tvDuration;
+    private TextView time_passed;
+    private TextView time;
+    private ImageView call_icon;
 
 
     public ViewHolderCallCard(View view) {
         super(view);
-
         call_type = (TextView) view.findViewById(R.id.call_type);
         tvDuration = (TextView) view.findViewById(R.id.tvDuration);
         time_passed = (TextView) view.findViewById(R.id.call_time_passed);
         time = (TextView) view.findViewById(R.id.call_time);
         call_icon = (ImageView) view.findViewById(R.id.ind_call_icon);
-
     }
 
     public void bind(Object item, int position, Context mContext) {
-
         LSCall call = (LSCall) item;
-
-        call_type.setText(call.getType());
         if (call.getType().equals("unanswered") || call.getType().equals("outgoing") || call.getType().equals("incoming")){
             String duration = String.format("%s",call.getDuration()); // TODO duration is only in seconds yet
             tvDuration.setText(duration+"s");
@@ -51,22 +46,25 @@ public class ViewHolderCallCard extends RecyclerView.ViewHolder {
         time_passed.setText(PhoneNumberAndCallUtils.getTimeAgo(call.getBeginTime(), mContext));
         switch (call.getType()) {
             case "missed":
+                call_type.setText("Missed");
                 call_icon.setImageResource(R.drawable.missed_call_icon_ind);
                 break;
             case "rejected":
+                call_type.setText("Rejected");
                 call_icon.setImageResource(R.drawable.call_icon_incoming_ind);
                 break;
             case "incoming":
+                call_type.setText("Incoming");
                 call_icon.setImageResource(R.drawable.call_icon_incoming_ind);
                 break;
             case "outgoing":
+                call_type.setText("Outgoing");
                 call_icon.setImageResource(R.drawable.call_icon_out_going_ind);
                 break;
             case "unanswered":
+                call_type.setText("Unanswered");
                 call_icon.setImageResource(R.drawable.call_icon_out_going_ind);
                 break;
         }
-
     }
-
 }

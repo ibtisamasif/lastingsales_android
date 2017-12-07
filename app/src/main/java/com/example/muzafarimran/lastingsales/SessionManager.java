@@ -17,8 +17,6 @@ import java.util.Calendar;
 
 public class SessionManager {
     public static final String TAG = "SessionManager";
-    public static final String KEY_IS_APP_INITIALIZED = "isSDKIniatialized";
-    static final String KEY_FEEDBACK_ENABLED = "feedback enabled key";
     private static final String KEY_LOGIN_ID = "user_login_id";
     private static final String KEY_LOGIN_TOKEN = "user_login_token";
     private static final String KEY_LOGIN_TIMESTAMP = "user_login_timestamp";
@@ -99,6 +97,15 @@ public class SessionManager {
         // Update the shared preferences with the current version code
         editor.putInt(PREF_VERSION_CODE_KEY, currentVersionCode);
         editor.commit();
+    }
+
+    public Boolean isFirstRun() {
+        if (pref.getBoolean("firstrun", true)) {
+            pref.edit().putBoolean("firstrun", false).commit();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Boolean isUserSignedIn() {
