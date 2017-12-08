@@ -37,6 +37,7 @@ import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelp
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
@@ -236,7 +237,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 calendar.set(Calendar.SECOND, 0);
                 PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(NavigationBottomMainActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 2, pi);
+                am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * 2, pi);
             }
         }
 
@@ -394,7 +395,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         }
     }
 
-
     @Subscribe
     public void onInquiryDeletedEventModel(InquiryDeletedEventModel event) {
         if (ACTIVE_LOADER == 1) {
@@ -402,7 +402,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             ACTIVE_LOADER = 1;
             navigation.setSelectedItemId(R.id.navigation_inquiries);
         }
-//        Toast.makeText(NavigationBottomMainActivity.this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
+    }
+
+    @Subscribe
+    public void onMissedCallEventModel(MissedCallEventModel event) {
+        if (ACTIVE_LOADER == 1) {
+            getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
+            ACTIVE_LOADER = 1;
+            navigation.setSelectedItemId(R.id.navigation_inquiries);
+        }
     }
 
     @Subscribe
@@ -433,7 +441,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
 //        Toast.makeText(NavigationBottomMainActivity.this, "ContactDeletedEventModel", Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
@@ -671,9 +678,5 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         InquiryCallDetailsBottomSheetFragmentNew contactCallDetails = InquiryCallDetailsBottomSheetFragmentNew.newInstance(number, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         contactCallDetails.show(fragmentManager, "tag");
-
-//        InquiryCallDetailsBottomSheetFragment contactCallDetails = InquiryCallDetailsBottomSheetFragment.newInstance(number, 0);
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        contactCallDetails.show(fragmentManager, "tag");
     }
 }

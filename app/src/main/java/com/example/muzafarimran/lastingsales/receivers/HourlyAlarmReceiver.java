@@ -134,24 +134,21 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                 if (lsInquiry.size() == 1) {
                     Log.d(TAG, "onPostExecute: lsInquiry.size() == 1");
                     if (result != null) {
-                        Glide.with(context).load(result).asBitmap().into(new SimpleTarget<Bitmap>() {
+                        Log.d(TAG, "onPostExecute: 1");
+                        Glide.with(context).load(result).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-
                                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
                                 Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
                                 inquiriesIntent.putExtra(NavigationBottomMainActivity.KEY_SELECTED_TAB, NavigationBottomMainActivity.INQUIRIES_TAB);
                                 PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
                                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                                 callIntent.setData(Uri.parse("tel: " + lsInquiry.get(0).getContactNumber()));
                                 PendingIntent pCallBackIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), callIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
                                 Notification.Builder notificationBuilder = new Notification.Builder(context)
                                         .setContentIntent(pContentIntent)
-                                        .addAction(R.drawable.call_icon, "Call Back", pCallBackIntent)
-                                        .addAction(R.drawable.call_icon, "Others", pContentIntent)
+                                        .addAction(R.drawable.ic_call_png, "Call Back", pCallBackIntent)
+                                        .addAction(R.drawable.ic_call_png, "Others", pContentIntent)
                                         .setSmallIcon(R.drawable.ic_notification_small)
                                         .setPriority(Notification.PRIORITY_MAX)
                                         .setLargeIcon(resource)
@@ -170,19 +167,18 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                             }
                         });
                     } else {
+                        Log.d(TAG, "onPostExecute: 2");
                         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
                         Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
                         inquiriesIntent.putExtra(NavigationBottomMainActivity.KEY_SELECTED_TAB, NavigationBottomMainActivity.INQUIRIES_TAB);
                         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
                         Intent callIntent = new Intent(Intent.ACTION_CALL);
                         callIntent.setData(Uri.parse("tel: " + lsInquiry.get(0).getContactNumber()));
                         PendingIntent pCallBackIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), callIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                         Notification.Builder notificationBuilder = new Notification.Builder(context)
                                 .setContentIntent(pContentIntent)
-                                .addAction(R.drawable.call_icon, "Call Back", pCallBackIntent)
-                                .addAction(R.drawable.call_icon, "Others", pContentIntent)
+                                .addAction(R.drawable.ic_call_png, "Call Back", pCallBackIntent)
+                                .addAction(R.drawable.ic_call_png, "Others", pContentIntent)
                                 .setSmallIcon(R.drawable.ic_notification_small)
                                 .setPriority(Notification.PRIORITY_MAX)
 //                                .setLargeIcon(resource)
@@ -203,14 +199,14 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                 } else if (lsInquiry.size() > 1) {
                     Log.d(TAG, "onPostExecute: lsInquiry.size() > 1");
                     if (result != null) {
-                        Glide.with(context).load(result).asBitmap().into(new SimpleTarget<Bitmap>() {
+                        Log.d(TAG, "onPostExecute: 3");
+                        Glide.with(context).load(result).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                                 Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
                                 inquiriesIntent.putExtra(NavigationBottomMainActivity.KEY_SELECTED_TAB, NavigationBottomMainActivity.INQUIRIES_TAB);
                                 PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
                                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                                         .setContentIntent(pContentIntent)
                                         .setSmallIcon(R.drawable.ic_notification_small)
@@ -241,6 +237,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                             }
                         });
                     } else {
+                        Log.d(TAG, "onPostExecute: 4");
                         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                         Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
                         inquiriesIntent.putExtra(NavigationBottomMainActivity.KEY_SELECTED_TAB, NavigationBottomMainActivity.INQUIRIES_TAB);

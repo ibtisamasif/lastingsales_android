@@ -1,187 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:id="@+id/linearLayout5">
+    android:layout_height="wrap_content">
 
-
-    <ImageView
-        android:id="@+id/lead_number_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:tint="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_account_circle_white"
-        tools:layout_conversion_absoluteHeight="30dp"
-        tools:layout_conversion_absoluteWidth="30dp" />
-
-    <TextView
-        android:id="@+id/lead_number_text"
-        style="@style/Base.TextAppearance.AppCompat.Subhead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Number"
-        app:layout_constraintStart_toEndOf="@+id/lead_number_icon"
-        app:layout_constraintTop_toTopOf="@+id/lead_number_icon"
-        tools:layout_conversion_absoluteHeight="16dp"
-        tools:layout_conversion_absoluteWidth="43dp" />
-
-    <TextView
-        android:id="@+id/tvNumber"
-        style="@style/Base.TextAppearance.AppCompat.Body1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:gravity="center|right"
-        android:text="  "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/lead_number_text"
-        tools:layout_conversion_absoluteHeight="40dp"
-        tools:layout_conversion_absoluteWidth="196dp" />
-
-
-    <ImageView
-        android:id="@+id/lead_address_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:tint="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lead_number_icon"
-        app:srcCompat="@drawable/ic_location_on_24dp"
-        tools:layout_conversion_absoluteHeight="30dp"
-        tools:layout_conversion_absoluteWidth="30dp" />
-
-    <TextView
-        android:id="@+id/lead_address_text"
-        style="@style/Base.TextAppearance.AppCompat.Subhead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Address"
-        app:layout_constraintStart_toEndOf="@+id/lead_address_icon"
-        app:layout_constraintTop_toTopOf="@+id/lead_address_icon"
-        tools:layout_conversion_absoluteHeight="16dp"
-        tools:layout_conversion_absoluteWidth="45dp" />
-
-    <TextView
-        android:id="@+id/tvAddress"
-        style="@style/Base.TextAppearance.AppCompat.Body1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:gravity="center|right"
-        android:text="  "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/lead_address_text"
-        tools:layout_conversion_absoluteHeight="40dp"
-        tools:layout_conversion_absoluteWidth="194dp" />
-
-
-    <ImageView
-        android:id="@+id/lead_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:tint="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lead_address_icon"
-        app:srcCompat="@drawable/ic_filter_list_24dp"
-        tools:layout_conversion_absoluteHeight="30dp"
-        tools:layout_conversion_absoluteWidth="30dp" />
-
-
-    <TextView
-        android:id="@+id/lead_status_label"
-        style="@style/Base.TextAppearance.AppCompat.Subhead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Status"
-        app:layout_constraintStart_toEndOf="@+id/lead_icon"
-        app:layout_constraintTop_toTopOf="@+id/lead_icon"
-        tools:layout_conversion_absoluteHeight="16dp"
-        tools:layout_conversion_absoluteWidth="37dp" />
-
-
-    <Spinner
-        android:id="@+id/lead_status_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/lead_status_label"
-        tools:layout_conversion_absoluteHeight="24dp"
-        tools:layout_conversion_absoluteWidth="131dp" />
-
-
-    <TextView
-        android:id="@+id/textView6"
-        style="@style/Base.TextAppearance.AppCompat.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/lead_details"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lead_icon"
-        tools:layout_conversion_absoluteHeight="21dp"
-        tools:layout_conversion_absoluteWidth="91dp" />
-
-
-    <TextView
-        android:id="@+id/tvDefaultText"
-        style="@style/Base.TextAppearance.AppCompat.Caption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="There is no custom field!"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        tools:layout_conversion_absoluteHeight="19dp"
-        tools:layout_conversion_absoluteWidth="153dp" />
-
-    <Button
-        android:id="@+id/contactDetailsSaveButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:tag="personal_radio"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_conversion_absoluteHeight="40dp"
-        tools:layout_conversion_absoluteWidth="160dp" />
-
-    <LinearLayout
-        android:id="@+id/contactDetailsDropDownLayoutinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"></LinearLayout>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</android.support.constraint.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/lead_number_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:tint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_account_circle_white"
+            tools:layout_conversion_absoluteHeight="30dp"
+            tools:layout_conversion_absoluteWidth="30dp"
+            android:layout_marginLeft="16dp" />
+
+        <TextView
+            android:id="@+id/lead_number_text"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Number"
+            app:layout_constraintStart_toEndOf="@+id/lead_number_icon"
+            app:layout_constraintTop_toTopOf="@+id/lead_number_icon"
+            tools:layout_conversion_absoluteHeight="16dp"
+            tools:layout_conversion_absoluteWidth="43dp"
+            android:layout_marginLeft="8dp" />
+
+        <TextView
+            android:id="@+id/tvNumber"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center|right"
+            android:text="  "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/lead_number_text"
+            tools:layout_conversion_absoluteHeight="40dp"
+            tools:layout_conversion_absoluteWidth="196dp"
+            android:layout_marginRight="8dp" />
+
+
+        <ImageView
+            android:id="@+id/lead_address_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:tint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lead_number_icon"
+            app:srcCompat="@drawable/ic_location_on_24dp"
+            tools:layout_conversion_absoluteHeight="30dp"
+            tools:layout_conversion_absoluteWidth="30dp"
+            android:layout_marginLeft="16dp" />
+
+        <TextView
+            android:id="@+id/lead_address_text"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Address"
+            app:layout_constraintStart_toEndOf="@+id/lead_address_icon"
+            app:layout_constraintTop_toTopOf="@+id/lead_address_icon"
+            tools:layout_conversion_absoluteHeight="16dp"
+            tools:layout_conversion_absoluteWidth="45dp"
+            android:layout_marginLeft="8dp" />
+
+        <TextView
+            android:id="@+id/tvAddress"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center|right"
+            android:text="  "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/lead_address_text"
+            tools:layout_conversion_absoluteHeight="40dp"
+            tools:layout_conversion_absoluteWidth="194dp"
+            android:layout_marginRight="8dp" />
+
+
+        <ImageView
+            android:id="@+id/lead_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:tint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lead_address_icon"
+            app:srcCompat="@drawable/ic_filter_list_24dp"
+            tools:layout_conversion_absoluteHeight="30dp"
+            tools:layout_conversion_absoluteWidth="30dp"
+            android:layout_marginLeft="16dp" />
+
+
+        <TextView
+            android:id="@+id/lead_status_label"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Status"
+            app:layout_constraintStart_toEndOf="@+id/lead_icon"
+            app:layout_constraintTop_toTopOf="@+id/lead_icon"
+            tools:layout_conversion_absoluteHeight="16dp"
+            tools:layout_conversion_absoluteWidth="37dp"
+            android:layout_marginLeft="8dp" />
+
+
+        <Spinner
+            android:id="@+id/lead_status_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/lead_status_label"
+            tools:layout_conversion_absoluteHeight="24dp"
+            tools:layout_conversion_absoluteWidth="131dp"
+            android:layout_marginRight="8dp" />
+
+
+        <TextView
+            android:id="@+id/textView6"
+            style="@style/Base.TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/lead_details"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lead_icon"
+            tools:layout_conversion_absoluteHeight="21dp"
+            tools:layout_conversion_absoluteWidth="91dp"
+            android:layout_marginLeft="16dp" />
+
+
+        <TextView
+            android:id="@+id/tvDefaultText"
+            style="@style/Base.TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="There is no custom field!"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            tools:layout_conversion_absoluteHeight="19dp"
+            tools:layout_conversion_absoluteWidth="153dp" />
+
+        <LinearLayout
+            android:id="@+id/contactDetailsDropDownLayoutinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"></LinearLayout>
+
+        <Button
+            android:id="@+id/contactDetailsSaveButton"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:tag="personal_radio"
+            android:text="Save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contactDetailsDropDownLayoutinner"
+            tools:layout_conversion_absoluteHeight="40dp"
+            tools:layout_conversion_absoluteWidth="160dp" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

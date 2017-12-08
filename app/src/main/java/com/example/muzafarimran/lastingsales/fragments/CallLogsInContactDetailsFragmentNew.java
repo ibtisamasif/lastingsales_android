@@ -10,12 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.IndividualContactCallAdapter;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 

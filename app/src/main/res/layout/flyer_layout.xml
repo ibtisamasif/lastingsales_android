@@ -68,6 +68,7 @@
                 android:ems="12"
                 android:ellipsize="end"
                 android:text="UNKNOWN"
+                android:textColor="@color/md_white"
                 app:layout_constraintStart_toEndOf="@+id/user_avatar"
                 app:layout_constraintTop_toTopOf="@+id/user_avatar"
                 android:layout_marginLeft="8dp" />

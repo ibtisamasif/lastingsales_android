@@ -112,7 +112,7 @@ public class SettingsActivity extends AppCompatActivity {
                     calendar.set(Calendar.SECOND, 0);
                     PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SettingsActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
                     AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                    am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 2, pi);
+                    am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * 2, pi);
                     Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Enabled Start App for changes to take effect", Toast.LENGTH_SHORT).show();
                 } else {
                     settingsManager.setKeyStateHourlyNotification(false);
