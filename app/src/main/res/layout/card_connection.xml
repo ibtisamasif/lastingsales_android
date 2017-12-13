@@ -39,7 +39,8 @@
             android:maxLines="3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Last contacted with me" />
+            tools:text="Last contacted with me"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:id="@+id/tvCallerHistoryLastCallDateTime0"
@@ -52,7 +53,8 @@
             android:textColor="@color/md_black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName0"
-            tools:text="3-Jan-2017" />
+            tools:text="3-Jan-2017"
+            android:layout_marginRight="16dp" />
 
         <TextView
             android:id="@+id/tvCallerHistoryLastCallTimeAgo0"

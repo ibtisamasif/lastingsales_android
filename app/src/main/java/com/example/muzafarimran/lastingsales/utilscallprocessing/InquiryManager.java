@@ -106,9 +106,11 @@ public class InquiryManager {
                     public void onSuccess(LSContactProfile result) {
                         Log.d(TAG, "onResponse: lsContactProfile: " + result);
                         if (result != null) {
-                            inquiry.setContactProfile(result);
-                            inquiry.save();
-                            Log.d(TAG, "onSuccess: inquiry: " + inquiry.toString());
+                            if(inquiry != null){
+                                inquiry.setContactProfile(result);
+                                inquiry.save();
+                                Log.d(TAG, "onSuccess: inquiry: " + inquiry.toString());
+                            }
                             LSContact lsContact = LSContact.getContactFromNumber(inquiry.getContactNumber());
                             if (lsContact != null) {
                                 lsContact.setContactProfile(result);

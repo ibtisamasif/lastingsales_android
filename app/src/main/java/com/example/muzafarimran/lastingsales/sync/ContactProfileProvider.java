@@ -215,7 +215,6 @@ public class ContactProfileProvider {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.e(TAG, "onErrorResponse: CouldNotFetchProfile of :" + contactNumber);
                 try {
                     if (error.networkResponse != null) {

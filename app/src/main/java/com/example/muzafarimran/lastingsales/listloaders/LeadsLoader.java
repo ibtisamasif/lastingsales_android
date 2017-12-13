@@ -164,6 +164,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 listError.add(erItem);
                 list.addAll(listError);
             }
+            return list;
 
         } else {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
@@ -188,9 +189,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 listError.add(erItem);
                 list.addAll(listError);
             }
-
             return list;
         }
-        return null;
     }
 }

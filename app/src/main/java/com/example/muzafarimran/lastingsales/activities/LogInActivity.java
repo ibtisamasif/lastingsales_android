@@ -3,15 +3,9 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -53,7 +47,7 @@ public class LogInActivity extends AppCompatActivity {
     private Button bSignup;
     private Button bReset;
     private String email, password;
-    private Button loginButton;
+    private Button loginButtonLoginScreen;
     private SessionManager sessionManager;
     private static RequestQueue queue;
 
@@ -79,7 +73,7 @@ public class LogInActivity extends AppCompatActivity {
         pdLoading.setTitle("Loading data");
         //this method will be running on UI thread
         pdLoading.setMessage("Please Wait...");
-        loginButton = (Button) findViewById(R.id.loginButtonLoginScreen);
+        loginButtonLoginScreen = (Button) findViewById(R.id.loginButtonLoginScreen);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
         bSignup = (Button) findViewById(R.id.bSignup);
@@ -91,7 +85,7 @@ public class LogInActivity extends AppCompatActivity {
 //        etEmail.setText("ibtiagent24@gmail.com");
 //        etPassword.setText("111111");
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        loginButtonLoginScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 etEmail.setError(null);
@@ -294,7 +288,6 @@ public class LogInActivity extends AppCompatActivity {
                 if (pdLoading != null && pdLoading.isShowing()) {
                     pdLoading.dismiss();
                 }
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse() called with: error = [" + error + "]");
                 if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
                     Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
@@ -384,7 +377,6 @@ public class LogInActivity extends AppCompatActivity {
                 if (pdLoading != null && pdLoading.isShowing()) {
                     pdLoading.dismiss();
                 }
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotUpdateInitConfigMakeRequest OR CouldNotSyncAgentFirebaseRegId");
 
 //                RecordingManager recordingManager = new RecordingManager();

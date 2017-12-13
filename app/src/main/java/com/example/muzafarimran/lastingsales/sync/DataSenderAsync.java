@@ -204,7 +204,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddContact");
                 try {
                     JSONObject jObj = new JSONObject(new String(error.networkResponse.data)); //TODO diff response. //Oasis issue (api issue)
@@ -311,7 +310,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateContact");
             }
         }) {
@@ -373,7 +371,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
 //                Log.d(TAG, "onErrorResponse: error.networkResponse.data " +(new String(error.networkResponse.data)));
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddCall");
                 try {
@@ -461,7 +458,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddInquiry");
                 try {
                     Log.d(TAG, "onErrorResponse: error.networkResponse.data: " + error.networkResponse.data);
@@ -552,7 +548,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateInquiry");
             }
         });
@@ -607,7 +602,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteInquiry");
                 try {
 //                    Log.d(TAG, "onErrorResponse: error.networkResponse.data: " + error.networkResponse.data);
@@ -678,7 +672,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddNote");
                 try {
                     if (error.networkResponse != null) {
@@ -767,7 +760,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateNote");
             }
         }) {
@@ -828,7 +820,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteNote");
                 try {
                     if (error.networkResponse != null) {
@@ -910,7 +901,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddFollowup");
             }
         }) {
@@ -980,7 +970,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteContact");
                 try {
                     JSONObject jObj = new JSONObject(new String(error.networkResponse.data));

@@ -140,13 +140,17 @@ public class SessionManager {
         setKeyLoginCompanyName(company_name);
         setKeyLoginRoleId(role_id);
         setKeyLoginRoleName(role_role);
-        fetchData();
         editor.commit();
     }
 
-    private void fetchData() {
-        AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
-        agentDataFetchAsync.execute();
+    public void fetchData() {
+        if( isUserSignedIn()){
+            AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
+            agentDataFetchAsync.execute();
+        }
+        else {
+            Log.d(TAG, "fetchData: USER IS NOT SIGNED IN");
+        }
     }
 
     private void deleteDataIfDifferentUser(String number) {

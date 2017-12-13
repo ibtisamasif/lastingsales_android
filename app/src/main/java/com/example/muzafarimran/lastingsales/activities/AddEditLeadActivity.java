@@ -149,7 +149,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // google device crashed/falled here.
         }
 
         bSave.setOnClickListener(new View.OnClickListener() {

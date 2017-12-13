@@ -39,11 +39,11 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
         Log.d(TAG, "onReceive:Hourly Alarm Fired");
         Log.d("Inquiry", "onReceive:Hourly Alarm Fired");
 
-        long countLong = intent.getLongExtra(Intent.EXTRA_ALARM_COUNT, 0L);
-        Log.d(TAG, "onReceive: CountLong: " + countLong);
-
-        int count = intent.getIntExtra(Intent.EXTRA_ALARM_COUNT, 0);
-        Log.d(TAG, "onReceive: CountInt: " + count);
+//        long countLong = intent.getLongExtra(Intent.EXTRA_ALARM_COUNT, 0L);
+//        Log.d(TAG, "onReceive: CountLong: " + countLong);
+//
+//        int count = intent.getIntExtra(Intent.EXTRA_ALARM_COUNT, 0);
+//        Log.d(TAG, "onReceive: CountInt: " + count);
 //        if (count < 2) {
         new sendNotification(context).execute();
 //        }
@@ -118,8 +118,10 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                             }
                         }
                     }
+                    Log.d(TAG, "doInBackground: message: " + messageList);
+                }else {
+                    Log.d(TAG, "doInBackground: NO INQUIRY TO DISPLAY CALLBACK NOTIFICATION");
                 }
-                Log.d(TAG, "doInBackground: message: " + messageList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -129,12 +131,12 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Log.d(TAG, "onPostExecute: SocialImageLink: " + result);
             if (lsInquiry != null && lsInquiry.size() > 0) {
                 if (lsInquiry.size() == 1) {
                     Log.d(TAG, "onPostExecute: lsInquiry.size() == 1");
                     if (result != null) {
                         Log.d(TAG, "onPostExecute: 1");
+                        Log.d(TAG, "onPostExecute: SocialImageLink: " + result);
                         Glide.with(context).load(result).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -200,6 +202,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                     Log.d(TAG, "onPostExecute: lsInquiry.size() > 1");
                     if (result != null) {
                         Log.d(TAG, "onPostExecute: 3");
+                        Log.d(TAG, "onPostExecute: SocialImageLink: " + result);
                         Glide.with(context).load(result).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {

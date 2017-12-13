@@ -19,8 +19,6 @@ import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.sync.MyURLs;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 
 import org.json.JSONArray;
@@ -55,7 +53,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
 
     @Override
     protected Void doInBackground(Object... objects) {
-        if (NetworkAccess.isNetworkAvailable(mContext)){
+        if (NetworkAccess.isNetworkAvailable(mContext)) {
             fetchAgentLeadsFunc();
             fetchDynamicColumns();
         }
@@ -72,7 +70,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
-        Log.d(TAG, "fetchDynamicColumns: MYURL: "+myUrl);
+        Log.d(TAG, "fetchDynamicColumns: MYURL: " + myUrl);
         StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -148,8 +146,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace(); // TODO crash here
-                Log.d(TAG, "onErrorResponse: CouldNotSyncGETDynamicColumns");
+                Log.e(TAG, "onErrorResponse: CouldNotSyncGETDynamicColumns");
             }
         }) {
             @Override
@@ -230,7 +227,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
                             tempContact.setContactSalesStatus(contactStatus);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                             tempContact.save();
-                            Log.d(TAG, "onResponse: gettingDynamic: "+tempContact.getDynamic());
+                            Log.d(TAG, "onResponse: gettingDynamic: " + tempContact.getDynamic());
                             fetchAgentNotesFunc(tempContact);
                         }
                     }
@@ -245,8 +242,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace(); // TODO Crash here
-                Log.d(TAG, "onErrorResponse: CouldNotSyncGETContacts");
+                Log.e(TAG, "onErrorResponse: CouldNotSyncGETContacts");
             }
         }) {
             @Override
@@ -318,8 +314,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Log.d(TAG, "onErrorResponse: CouldNotSyncGETNotes");
+                Log.e(TAG, "onErrorResponse: CouldNotSyncGETNotes");
             }
         }) {
             @Override

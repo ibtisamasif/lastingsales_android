@@ -247,8 +247,7 @@ public class VersionManager {
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                error.printStackTrace();
-                                Log.d(TAG, "onErrorResponse: CouldNotSyncGETContacts");
+                                Log.e(TAG, "onErrorResponse: CouldNotSyncGETContacts");
                             }
                         }) {
                             @Override

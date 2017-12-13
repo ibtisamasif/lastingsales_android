@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -378,7 +377,6 @@ public class BubbleHelper extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotGetCustomerHistory");
                 if (!NetworkAccess.isNetworkAvailable(context)) {
                     tvError.setText("Internet is required to view connections");

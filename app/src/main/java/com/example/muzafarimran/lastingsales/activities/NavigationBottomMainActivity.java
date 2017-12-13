@@ -56,7 +56,6 @@ import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
-import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -181,6 +180,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     private void initFirst() {
+
         sessionManager = new SessionManager(getApplicationContext());
         if (!sessionManager.isUserSignedIn()) {
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
@@ -189,13 +189,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         } else {
             Intent intent = new Intent(NavigationBottomMainActivity.this, CallDetectionService.class);
             startService(intent);
-            //TODO optimize it
-            long contactCount = LSContact.count(LSContact.class);
-            if (contactCount < 1) {
-                Log.d(TAG, "onCreate: LSContact.count " + contactCount);
-                AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
-                agentDataFetchAsync.execute();
-            }
             if (sessionManager.isFirstRun()) {
                 Log.d(TAG, "initFirst: isFirstRun TRUE");
                 TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
@@ -203,6 +196,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             }
             sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
             if (NetworkAccess.isNetworkAvailable(this)) {
+                long contactCount = LSContact.count(LSContact.class);
+                if (contactCount < 1) {
+                    Log.d(TAG, "onCreate: LSContact.count " + contactCount);
+                    sessionManager.fetchData();
+                }
                 SyncLastSeen.updateLastSeenToServer(NavigationBottomMainActivity.this);
 //                Log.d("rating", "onCreate: setLastAppVisit");
 //                long milliSecondsIn30Second = 60000; // 30 seconds for now
@@ -240,62 +238,78 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * 2, pi);
             }
         }
-
         Log.d(TAG, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER);
         Log.d(TAG, "onCreate: Build.BRAND: " + Build.BRAND);
 
-        if (Build.BRAND.equalsIgnoreCase("xiaomi") && !settingsManager.getKeyStateProtectedApp()) {
+        if (Build.BRAND.equalsIgnoreCase("xiaomi") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
             Log.d(TAG, "onCreate: xiaomi");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
                     .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent();
-                            intent.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
-                            startActivity(intent);
-                            settingsManager.setKeyStateProtectedApp(true);
+                            try {
+                                Intent intent = new Intent();
+                                intent.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
+                                startActivity(intent);
+                                settingsManager.setKeyStateProtectedApp(true);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }).create().show();
-        } else if (Build.BRAND.equalsIgnoreCase("Letv") && !settingsManager.getKeyStateProtectedApp()) {
+        } else if (Build.BRAND.equalsIgnoreCase("Letv") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
             Log.d(TAG, "onCreate: Letv");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
                     .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent();
-                            intent.setComponent(new ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.AutobootManageActivity"));
-                            startActivity(intent);
-                            settingsManager.setKeyStateProtectedApp(true);
+                            try {
+                                Intent intent = new Intent();
+                                intent.setComponent(new ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.AutobootManageActivity"));
+                                startActivity(intent);
+                                settingsManager.setKeyStateProtectedApp(true);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }).create().show();
-        } else if (Build.BRAND.equalsIgnoreCase("Honor") && !settingsManager.getKeyStateProtectedApp()) {
+        } else if (Build.BRAND.equalsIgnoreCase("Honor") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
             Log.d(TAG, "onCreate: Honor");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
                     .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent();
-                            intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
-                            startActivity(intent);
-                            settingsManager.setKeyStateProtectedApp(true);
+                            try {
+                                Intent intent = new Intent();
+                                intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+                                startActivity(intent);
+                                settingsManager.setKeyStateProtectedApp(true);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }).create().show();
-        } else if ("huawei".equalsIgnoreCase(Build.MANUFACTURER) && !settingsManager.getKeyStateProtectedApp()) {
+        } else if ("huawei".equalsIgnoreCase(Build.MANUFACTURER) && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
                     .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent();
-                            intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
-                            startActivity(intent);
-                            settingsManager.setKeyStateProtectedApp(true);
+                            try {
+                                Intent intent = new Intent();
+                                intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+                                startActivity(intent);
+                                settingsManager.setKeyStateProtectedApp(true);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }).create().show();
         }
+
 
 //        Intent intentTest = new Intent();
 //        String packageName = NavigationDrawerActivity.this.getPackageName();
@@ -373,28 +387,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         super.onStop();
     }
 
-    @Override
-    public Loader<List<Object>> onCreateLoader(int id, Bundle args) {
-        list.clear();
-        LoadingItem loadingItem = new LoadingItem();
-        loadingItem.text = "Loading items...";
-        list.add(loadingItem);
-        adapter.notifyDataSetChanged();
-
-        switch (id) {
-            case 1:
-                return new InquiryLoader(NavigationBottomMainActivity.this);
-            case 2:
-                return new HomeLoader(NavigationBottomMainActivity.this);
-            case 3:
-                return new LeadsLoader(NavigationBottomMainActivity.this, args);
-            case 4:
-                return new MoreLoader(NavigationBottomMainActivity.this);
-            default:
-                return null;
-        }
-    }
-
     @Subscribe
     public void onInquiryDeletedEventModel(InquiryDeletedEventModel event) {
         if (ACTIVE_LOADER == 1) {
@@ -444,10 +436,36 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Object>> loader, List<Object> data) {
+    public Loader<List<Object>> onCreateLoader(int id, Bundle args) {
         list.clear();
-        list.addAll(data);
+        LoadingItem loadingItem = new LoadingItem();
+        loadingItem.text = "Loading items...";
+        list.add(loadingItem);
         adapter.notifyDataSetChanged();
+
+        switch (id) {
+            case 1:
+                return new InquiryLoader(NavigationBottomMainActivity.this);
+            case 2:
+                return new HomeLoader(NavigationBottomMainActivity.this);
+            case 3:
+                return new LeadsLoader(NavigationBottomMainActivity.this, args);
+            case 4:
+                return new MoreLoader(NavigationBottomMainActivity.this);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Object>> loader, List<Object> data) {
+        if (data != null) {
+            if (!data.isEmpty()) {
+                list.clear();
+                list.addAll(data);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override
@@ -489,6 +507,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     // History
+
     private void loadHistory(String query) {
 
         // Cursor
@@ -592,8 +611,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 startActivity(new Intent(NavigationBottomMainActivity.this, AccountActivity.class));
                 return true;
             case R.id.action_refresh:
-                AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(getApplicationContext());
-                agentDataFetchAsync.execute();
+                sessionManager.fetchData();
                 TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
                 theCallLogEngine.execute();
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());

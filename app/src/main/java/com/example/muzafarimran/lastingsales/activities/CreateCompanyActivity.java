@@ -130,7 +130,6 @@ public class CreateCompanyActivity extends AppCompatActivity {
                 if (pdLoading != null && pdLoading.isShowing()) {
                     pdLoading.dismiss();
                 }
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse() called with: error = [" + error + "]");
                 if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
                     Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
@@ -202,7 +201,6 @@ public class CreateCompanyActivity extends AppCompatActivity {
 //        }, new Response.ErrorListener() {
 //            @Override
 //            public void onErrorResponse(VolleyError error) {
-//                error.printStackTrace();
 //                Log.d(TAG, "onErrorResponse: CouldNotGetUserInfo");
 //            }
 //        }) {

@@ -238,7 +238,6 @@ public class OnBoardingActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }, error -> {
-            error.printStackTrace();
             FragmentG fg = null;
             FragmentManager fragmentManager = getSupportFragmentManager();
             for (Fragment fragment : fragmentManager.getFragments()) {
@@ -438,7 +437,6 @@ public class OnBoardingActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }, error -> {
-            error.printStackTrace();
             Log.d(TAG, "onErrorResponse() called with: error = [" + error + "]");
             if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
                 Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
@@ -517,7 +515,6 @@ public class OnBoardingActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }, error -> {
-            error.printStackTrace();
             Log.d(TAG, "onErrorResponse: CouldNotUpdateInitConfigMakeRequest OR CouldNotSyncAgentFirebaseRegId");
 
 //                RecordingManager recordingManager = new RecordingManager();
@@ -560,7 +557,6 @@ public class OnBoardingActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }, error -> {
-            error.printStackTrace();
             FragmentG fg = null;
             FragmentManager fragmentManager = getSupportFragmentManager();
             for (Fragment fragment : fragmentManager.getFragments()) {

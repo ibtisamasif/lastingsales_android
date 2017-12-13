@@ -33,7 +33,8 @@
             app:layout_constraintStart_toEndOf="@+id/tvValue"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/bg_collegue_cardxxxhdpi" />
+            app:srcCompat="@drawable/bg_collegue_cardxxxhdpi"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:id="@+id/tvValue"
@@ -48,7 +49,8 @@
             android:text=" 0 "
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:id="@+id/tvHome"
@@ -58,6 +60,8 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxWidth="200dp"
             android:text="Home"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvValue"

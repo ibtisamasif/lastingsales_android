@@ -188,7 +188,6 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotGetCustomerHistory");
                 if (!NetworkAccess.isNetworkAvailable(mContext)) {
                     tvError.setText("Internet is required to view connections");
