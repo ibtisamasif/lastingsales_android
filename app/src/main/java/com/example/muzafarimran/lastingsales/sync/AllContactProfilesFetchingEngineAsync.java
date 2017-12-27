@@ -75,7 +75,7 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
         String formatedNumber = "";
         if (contactNumber.charAt(0) == '+') {
             formatedNumber = contactNumber.substring(1);
-            formatedNumber = formatedNumber.replaceAll("\\s","").trim();
+            formatedNumber = formatedNumber.replaceAll("\\s", "").trim();
         }
 
         Log.d(TAG, "fetchProfileFromServer: Fetching Data... " + contactNumber);
@@ -164,19 +164,19 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
                         newProfile.setSocial_image(social_image);
                         newProfile.setComp_link(comp_link);
                         newProfile.save();
-                        if(lsContact != null){
+                        if (lsContact != null) {
                             lsContact.setContactProfile(newProfile);
                             lsContact.save();
                             Log.d(TAG, "onResponse: save Profile in Contact: " + lsContact.toString());
                         }
                         LSInquiry lsInquiry = LSInquiry.getPendingInquiryByNumberIfExists(intlNumber);
-                        if(lsInquiry != null ) {
+                        if (lsInquiry != null) {
                             lsInquiry.setContactProfile(newProfile);
                             lsInquiry.save();
                             Log.d(TAG, "onResponse: save Profile in PendingInquiry: " + lsInquiry.toString());
                             Log.d(TAG, "onResponse: GET FROM INQUIRIES AGAIN: " + LSInquiry.getPendingInquiryByNumberIfExists(intlNumber).toString());
                         }
-                    }else {
+                    } else {
                         Log.d(TAG, "onResponse: Already Exists: " + lsContactProfile);
 
                         lsContactProfile.setFirstName(fname);
@@ -197,14 +197,16 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
                         lsContactProfile.setComp_link(comp_link);
                         lsContactProfile.save();
 
-                        if(lsContact.getContactProfile() == null){
-                            lsContact.setContactProfile(lsContactProfile);
-                            lsContact.save();
-                            Log.d(TAG, "onResponse: lsContact: " + lsContact.toString());
+                        if (lsContact != null) {
+                            if (lsContact.getContactProfile() == null) {
+                                lsContact.setContactProfile(lsContactProfile);
+                                lsContact.save();
+                                Log.d(TAG, "onResponse: lsContact: " + lsContact.toString());
+                            }
                         }
                         LSInquiry lsInquiry = LSInquiry.getPendingInquiryByNumberIfExists(intlNumber);
-                        if(lsInquiry != null ){
-                            if(lsInquiry.getContactProfile() == null){
+                        if (lsInquiry != null) {
+                            if (lsInquiry.getContactProfile() == null) {
                                 lsInquiry.setContactProfile(lsContactProfile);
                                 lsInquiry.save();
                                 Log.d(TAG, "onResponse: lsInquiry: " + lsInquiry.toString());

@@ -7,7 +7,6 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.ColleagueActivity;
 import com.example.muzafarimran.lastingsales.activities.IgnoredActivity;
 import com.example.muzafarimran.lastingsales.carditems.MoreItem;
-import com.example.muzafarimran.lastingsales.carditems.SettingItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +38,14 @@ public class MoreLoader extends AsyncTaskLoader<List<Object>> {
         moreItemSetting.drawable = R.drawable.bg_setting_cardcopyxxxhdpi;
         moreItemSetting.description = "Manage your accounts and notification preferences.";
 
+//        MoreItem moreItemCompany = new MoreItem("Company", CompanyActivity.class);
+//        moreItemCompany.drawable = R.drawable.bg_ignord_cardxxxhdpi;
+//        moreItemCompany.description = "Contacts that you don't want to be tracked i.e friends and family.";
+
         list.add(moreItemColleague);
         list.add(moreItemIgnored);
         list.add(moreItemSetting);
+//        list.add(moreItemCompany);
 
         return list;
     }

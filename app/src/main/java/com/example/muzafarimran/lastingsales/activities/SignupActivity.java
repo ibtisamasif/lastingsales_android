@@ -134,7 +134,7 @@ public class SignupActivity extends AppCompatActivity {
                 if (email.length() < 7) {
                     emailVarified = false;
                 }
-                if (password.length() < 4) { //TODO password <-> confirm Password matching should be here
+                if (password.length() < 4) {
                     passwordVarified = false;
                 }
                 if (!password.equals(confirmpassword)) {

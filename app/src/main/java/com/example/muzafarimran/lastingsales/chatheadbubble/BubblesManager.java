@@ -81,7 +81,6 @@ public class BubblesManager {
 
     public void initialize() {
         Intent serviceIntent = new Intent(context, BubblesService.class);
-
         context.getApplicationContext().startService(serviceIntent);
         context.getApplicationContext().bindService(serviceIntent, bubbleServiceConnection,
                 Context.BIND_AUTO_CREATE);

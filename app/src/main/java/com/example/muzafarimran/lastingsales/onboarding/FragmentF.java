@@ -69,7 +69,7 @@ public class FragmentF extends Fragment {
                 if (lastname.length() < 3) {
                     lastnameVarified = false;
                 }
-                if (password.length() < 4) { //TODO password <-> confirm Password matching should be here
+                if (password.length() < 4) {
                     passwordVarified = false;
                 }
                 if (!password.equals(confirmpassword)) {

@@ -69,7 +69,7 @@ public class DataSenderAsync {
     public static DataSenderAsync getInstance(Context context) {
         final Context appContext = context.getApplicationContext();
         if (instance == null) {
-//            synchronized ((Object) firstThreadIsRunning){ //TODO make it thread safe
+//            synchronized ((Object) firstThreadIsRunning){
             if (!firstThreadIsRunning) {
                 firstThreadIsRunning = true;
                 instance = new DataSenderAsync(appContext);
@@ -153,7 +153,7 @@ public class DataSenderAsync {
                 }
             }.execute();
         } else {
-            Log.d(TAG, "run: NotRunning"); //TODO Qmobile was falling here
+            Log.d(TAG, "run: NotRunning");
         }
     }
 
@@ -206,13 +206,18 @@ public class DataSenderAsync {
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddContact");
                 try {
-                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data)); //TODO diff response. //Oasis issue (api issue)
-                    int responseCode = jObj.getInt("responseCode");  // here too
-                    if (responseCode == 409) {
-                        JSONObject responseObject = jObj.getJSONObject("response");
-                        contact.setServerId(responseObject.getString("id"));
-                        contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                        contact.save();
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
+                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                            int responseCode = jObj.getInt("responseCode");  // here too
+                            if (responseCode == 409) {
+                                JSONObject responseObject = jObj.getJSONObject("response");
+                                contact.setServerId(responseObject.getString("id"));
+                                contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                                contact.save();
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -391,14 +396,14 @@ public class DataSenderAsync {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 //because server does not accept 0 duration
-                String duration;
-                if (call.getDuration() != null && call.getDuration() > 0) {
-                    duration = "" + call.getDuration();
-                } else {
-                    duration = "1";
-                }
-
-                params.put("duration", "" + duration);
+//                String duration;
+//                if (call.getDuration() != null && call.getDuration() > 0) {
+//                    duration = "" + call.getDuration();
+//                } else {
+//                    duration = "1";
+//                }
+                params.put("duration", "" + call.getDuration());
+//                params.put("duration", "" + duration);
                 params.put("contact_number", "" + call.getContactNumber());
                 params.put("call_type", "" + call.getType());
                 params.put("date", "" + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "yyyy-MM-dd"));
@@ -463,7 +468,7 @@ public class DataSenderAsync {
                     Log.d(TAG, "onErrorResponse: error.networkResponse.data: " + error.networkResponse.data);
                     Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
                     JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                    int responseCode = jObj.getInt("responseCode"); // TODO oasis issue
+//                    int responseCode = jObj.getInt("responseCode");
                     JSONObject responseObject = jObj.getJSONObject("response");
                     String id = responseObject.getString("id");
                     String contactNumber = responseObject.getString("contact_number");
@@ -490,6 +495,7 @@ public class DataSenderAsync {
                 params.put("status", "" + inquiry.getStatus());
                 params.put("avg_response_time", "" + inquiry.getAverageResponseTime() / 1000);
                 params.put("api_token", "" + sessionManager.getLoginToken());
+                Log.d(TAG, "addInquiryToServerSync getParams: " + params);
                 return params;
             }
         };
@@ -604,19 +610,23 @@ public class DataSenderAsync {
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteInquiry");
                 try {
-//                    Log.d(TAG, "onErrorResponse: error.networkResponse.data: " + error.networkResponse.data);
-                    Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
-                    if (error.networkResponse.statusCode == 412) {
-                        JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                        int responseCode = jObj.getInt("responseCode");
-                        String responseObject = jObj.getString("response");
-                        if (responseCode == 236) {
-                            Log.d(TAG, "onErrorResponse: " + responseObject);
-                            inquiry.delete();
-                            InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
-                            TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-                            bus.post(mCallEvent);
-                            Toast.makeText(mContext, "Inquiry doesnt exist on server", Toast.LENGTH_SHORT).show();
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
+                            Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
+                            if (error.networkResponse.statusCode == 412) {
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                String responseObject = jObj.getString("response");
+                                if (responseCode == 236) {
+                                    Log.d(TAG, "onErrorResponse: " + responseObject);
+                                    inquiry.delete();
+                                    InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                                    bus.post(mCallEvent);
+                                    Toast.makeText(mContext, "Inquiry doesnt exist on server", Toast.LENGTH_SHORT).show();
+                                }
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -835,12 +845,12 @@ public class DataSenderAsync {
                                 TinyBus bus = TinyBus.from(mContext);
                                 bus.post(mNoteAdded);
                                 Log.d(TAG, "onErrorResponse: Note doesn't exist on server");
-                                Toast.makeText(mContext, "Note doesn't exist on server", Toast.LENGTH_SHORT).show(); //TODO delete before putting in production
+//                                Toast.makeText(mContext, "Note doesn't exist on server", Toast.LENGTH_SHORT).show();
                             }
                         } else if (error.networkResponse.statusCode == 404) {
 //                        note.delete();
 //                        Log.d(TAG, "onErrorResponse: Note doesn't exist on server deleted and from mobile.");
-//                        Toast.makeText(mContext, "Note doesn't exist on server deleted and from mobile.", Toast.LENGTH_SHORT).show(); //TODO delete before putting in production
+//                        Toast.makeText(mContext, "Note doesn't exist on server deleted and from mobile.", Toast.LENGTH_SHORT).show();
                         } else if (error.networkResponse.statusCode == 401) {
                             // Doesn't Exist on server.
                             note.delete();

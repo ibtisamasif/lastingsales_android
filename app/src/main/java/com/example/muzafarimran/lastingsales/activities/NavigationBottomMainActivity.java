@@ -41,17 +41,17 @@ import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
+import com.example.muzafarimran.lastingsales.listloaders.HomeLoader;
+import com.example.muzafarimran.lastingsales.listloaders.InquiryLoader;
+import com.example.muzafarimran.lastingsales.listloaders.LeadsLoader;
+import com.example.muzafarimran.lastingsales.listloaders.MoreLoader;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
-import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
-import com.example.muzafarimran.lastingsales.listloaders.HomeLoader;
-import com.example.muzafarimran.lastingsales.listloaders.InquiryLoader;
-import com.example.muzafarimran.lastingsales.listloaders.LeadsLoader;
-import com.example.muzafarimran.lastingsales.listloaders.MoreLoader;
+import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -59,6 +59,7 @@ import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.ArrayList;
@@ -99,7 +100,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                         getSupportLoaderManager().getLoader(ACTIVE_LOADER).cancelLoad();
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
+                    FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught");
+                    FirebaseCrash.report(e);
                 }
             }
             switch (item.getItemId()) {
@@ -128,7 +131,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: ");
+        Log.d(TAG, "onCreate: called");
 
         initFirst();
 
@@ -145,27 +148,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         sessionManager = new SessionManager(this);
         mRecyclerView.setAdapter(adapter);
-        Bundle bundle1 = getIntent().getExtras();
-        if (bundle1 != null) {
-            Log.d(TAG, "onCreate: Loading Inquiries TAB");
-            String tab = bundle1.getString(KEY_SELECTED_TAB);
-            if (tab != null) {
-                if (tab.equals(INQUIRIES_TAB)) {
-                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this).forceLoad();
-                    navigation.setSelectedItemId(R.id.navigation_inquiries);
-                }
-            } else {
-                Log.d(TAG, "onCreate: Bundle Not Null Loading Home TAB");
-                getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
-                navigation.setSelectedItemId(R.id.navigation_home);
-            }
-        } else {
-            Log.d(TAG, "onCreate: Bundle is Null Loading Home TAB");
-            getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
-            navigation.setSelectedItemId(R.id.navigation_home);
-        }
 
-        initLast(this);
+        initLast();
 
 //        SwipeController swipeController = new SwipeController();
 //        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
@@ -211,7 +195,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         }
     }
 
-    private void initLast(NavigationBottomMainActivity navigationBottomMainActivity) {
+    private void initLast() {
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -307,7 +291,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                                 e.printStackTrace();
                             }
                         }
-                    }).create().show();
+                    }).create().show(); // pistis phone crashed window leaked  android.view.WindowLeaked: Activity com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView{13adf36b V.E..... R.....ID 0,0-683,378} that was originally added here
         }
 
 
@@ -365,11 +349,32 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: called");
+        Bundle bundle1 = getIntent().getExtras();
+        if (bundle1 != null) {
+            Log.d(TAG, "onCreate: Loading Inquiries TAB");
+            String tab = bundle1.getString(KEY_SELECTED_TAB);
+            if (tab != null) {
+                if (tab.equals(INQUIRIES_TAB)) {
+                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this).forceLoad();
+                    navigation.setSelectedItemId(R.id.navigation_inquiries);
+                }
+            } else {
+                Log.d(TAG, "onCreate: Bundle Not Null Loading Home TAB");
+                getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
+                navigation.setSelectedItemId(R.id.navigation_home);
+            }
+        } else {
+            Log.d(TAG, "onCreate: Bundle is Null Loading Home TAB");
+            getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
+            navigation.setSelectedItemId(R.id.navigation_home);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause: called");
     }
 
     @Override
@@ -385,6 +390,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         bus.unregister(this);
         Log.d(TAG, "onStop() called");
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: called");
     }
 
     @Subscribe
@@ -628,7 +639,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     @Override
     public void onBackPressed() {
-        // TODO is screen is 1 or 3 or 4 move to screen 2. if it is already 2 then exit the app.
         if (!searchView.isIconified()) {
             searchView.setIconified(true);
         } else {

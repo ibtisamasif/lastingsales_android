@@ -161,7 +161,6 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                                         .setStyle(new Notification.BigTextStyle().bigText(messageList.get(0)))
                                         .setAutoCancel(true)
                                         .setDefaults(Notification.DEFAULT_SOUND)
-                                        .setDefaults(Notification.DEFAULT_VIBRATE)
                                         .setContentText(messageList.get(0));
 
                                 notificationBuilder.build().flags |= Notification.FLAG_AUTO_CANCEL;
@@ -191,7 +190,6 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                                 .setStyle(new Notification.BigTextStyle().bigText(messageList.get(0)))
                                 .setAutoCancel(true)
                                 .setDefaults(Notification.DEFAULT_SOUND)
-                                .setDefaults(Notification.DEFAULT_VIBRATE)
                                 .setContentText(messageList.get(0));
 
                         notificationBuilder.build().flags |= Notification.FLAG_AUTO_CANCEL;
@@ -220,8 +218,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                                         .setContentText(messageList.get(0) + " and others")
                                         .setTicker("Missed Inquiries")
                                         .setAutoCancel(true)
-                                        .setDefaults(Notification.DEFAULT_SOUND)
-                                        .setDefaults(Notification.DEFAULT_VIBRATE);
+                                        .setDefaults(Notification.DEFAULT_SOUND);
 
                                 NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
                                 inboxStyle.setBigContentTitle("Lets Callback");
@@ -257,8 +254,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                                 .setContentText(messageList.get(0) + " and others")
                                 .setTicker("Missed Inquiries")
                                 .setAutoCancel(true)
-                                .setDefaults(Notification.DEFAULT_SOUND)
-                                .setDefaults(Notification.DEFAULT_VIBRATE);
+                                .setDefaults(Notification.DEFAULT_SOUND);
 
                         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
                         inboxStyle.setBigContentTitle("Lets Callback");

@@ -44,7 +44,7 @@ public class InquiryManager {
         }
     }
 
-    static void Remove(Context context, LSCall call) {
+    static void remove(Context context, LSCall call) {
         inquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());
         if (inquiry != null && inquiry.getAverageResponseTime() <= 0) {
             Calendar now = Calendar.getInstance();
@@ -67,7 +67,7 @@ public class InquiryManager {
         }
     }
 
-    static void CreateOrUpdate(Context context, LSCall call) {
+    static void createOrUpdate(Context context, LSCall call) {
         inquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());
         if (inquiry != null) {
             inquiry.setCountOfInquiries(inquiry.getCountOfInquiries() + 1);
@@ -80,7 +80,7 @@ public class InquiryManager {
             inquiry.setContactName(call.getContactName());
             inquiry.setContact(call.getContact());
             inquiry.setBeginTime(call.getBeginTime());
-            inquiry.setDuration(call.getDuration());
+//            inquiry.setDuration(call.getDuration());
             inquiry.setCountOfInquiries(1);
             inquiry.setStatus(LSInquiry.INQUIRY_STATUS_PENDING);
             inquiry.setAverageResponseTime(0L);
@@ -88,7 +88,7 @@ public class InquiryManager {
             inquiry.save();
             LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(inquiry.getContactNumber());
             if (lsContactProfile != null) {
-                Log.d(TAG, "CreateOrUpdate: getFromLSContactProfile");
+                Log.d(TAG, "createOrUpdate: getFromLSContactProfile");
                 inquiry.setContactProfile(lsContactProfile);
                 inquiry.save();
                 LSContact lsContact = LSContact.getContactFromNumber(call.getContactNumber()); //TODO Can be fetched from previous screen will improve performance and save battery
@@ -97,7 +97,7 @@ public class InquiryManager {
                     lsContact.save();
                 }
             } else {
-                Log.d(TAG, "CreateOrUpdate: get LsContactProfile from ContactProfileProvider");
+                Log.d(TAG, "createOrUpdate: get LsContactProfile from ContactProfileProvider");
                 //TODO try to fetch from server instantly from server to show pictures in Inquiries and unlabeled lists instantly and efficiently
 
                 ContactProfileProvider contactProfileProvider = new ContactProfileProvider(context);
@@ -106,12 +106,12 @@ public class InquiryManager {
                     public void onSuccess(LSContactProfile result) {
                         Log.d(TAG, "onResponse: lsContactProfile: " + result);
                         if (result != null) {
-                            if(inquiry != null){
+                            if (inquiry != null) {
                                 inquiry.setContactProfile(result);
                                 inquiry.save();
                                 Log.d(TAG, "onSuccess: inquiry: " + inquiry.toString());
                             }
-                            LSContact lsContact = LSContact.getContactFromNumber(inquiry.getContactNumber());
+                            LSContact lsContact = LSContact.getContactFromNumber(call.getContactNumber());
                             if (lsContact != null) {
                                 lsContact.setContactProfile(result);
                                 lsContact.save();
@@ -139,5 +139,81 @@ public class InquiryManager {
         InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
         TinyBus bus = TinyBus.from(context);
         bus.post(mCallEvent);
+    }
+
+    public static void createOrUpdate(Context context, String status_of_inquiry, long beginTimeFromServer, String contactNumber) {
+        if (status_of_inquiry.equals("pending")) {
+            inquiry = LSInquiry.getPendingInquiryByBeginDateTimeIfExists(Long.toString(beginTimeFromServer));
+            if (inquiry != null) {
+                Log.d(TAG, "onResponse: EXISTS: " + inquiry.getContactNumber());
+//                inquiry.setCountOfInquiries(inquiry.getCountOfInquiries() + 1);
+//                inquiry.save();
+            } else {
+                Log.d(TAG, "onResponse: DOESNT EXIST");
+                LSContact lsContact = LSContact.getContactFromNumber(contactNumber);
+                if (lsContact != null) {
+                    inquiry = new LSInquiry();
+                    inquiry.setContactNumber(contactNumber);
+//                                    inquiry.setContactName("From Server");
+                    inquiry.setContact(lsContact);
+                    inquiry.setBeginTime(beginTimeFromServer);
+                    inquiry.setCountOfInquiries(1);
+                    inquiry.setStatus(LSInquiry.INQUIRY_STATUS_PENDING);
+                    inquiry.setAverageResponseTime(0L);
+                    inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
+                    inquiry.save();
+                    LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(inquiry.getContactNumber());
+                    if (lsContactProfile != null) {
+                        Log.d(TAG, "createOrUpdate: getFromLSContactProfile");
+                        inquiry.setContactProfile(lsContactProfile);
+                        inquiry.save();
+                        lsContact.setContactProfile(lsContactProfile);
+                        lsContact.save();
+
+                    } else {
+                        Log.d(TAG, "createOrUpdate: get LsContactProfile from ContactProfileProvider");
+                        //TODO try to fetch from server instantly from server to show pictures in Inquiries and unlabeled lists instantly and efficiently
+
+                        ContactProfileProvider contactProfileProvider = new ContactProfileProvider(context);
+                        contactProfileProvider.getContactProfile(contactNumber, new LSContactProfileCallback() {
+                            @Override
+                            public void onSuccess(LSContactProfile result) {
+                                Log.d(TAG, "onResponse: lsContactProfile: " + result);
+                                if (result != null) {
+                                    if (inquiry != null) {
+                                        inquiry.setContactProfile(result);
+                                        inquiry.save();
+                                        Log.d(TAG, "onSuccess: inquiry: " + inquiry.toString());
+                                        LSContact lsContact = LSContact.getContactFromNumber(inquiry.getContactNumber());
+                                        if (lsContact != null) {
+                                            lsContact.setContactProfile(result);
+                                            lsContact.save();
+                                            Log.d(TAG, "onSuccess: lsContact: " + lsContact.toString());
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+//            ContactProfileProvider contactProfileProvider = new ContactProfileProvider(context);
+//            LSContactProfile lsContactProfile2 = contactProfileProvider.getContactProfile(call.getContactNumber());
+//            if (lsContactProfile2 != null) {
+//                newInquiry.setContactProfile(lsContactProfile2);
+//                newInquiry.save();
+//                LSContact lsContact = LSContact.getContactFromNumber(call.getContactNumber());
+//                if (lsContact != null) {
+//                    lsContact.setContactProfile(lsContactProfile2);
+//                    lsContact.save();
+//                }
+//            }
+                    }
+                    // Update launcher icon count
+                    new ShortcutBadgeUpdateAsync(context).execute();
+                }
+            }
+            InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+            TinyBus bus = TinyBus.from(context);
+            bus.post(mCallEvent);
+        }
     }
 }

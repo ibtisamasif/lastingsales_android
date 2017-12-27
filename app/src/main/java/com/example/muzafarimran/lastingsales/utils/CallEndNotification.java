@@ -54,7 +54,7 @@ public class CallEndNotification {
 
         Intent intentFollow = new Intent(ctx, AddEditNewFollowupActivity.class);
         intentFollow.putExtra(AddEditNewFollowupActivity.ACTIVITY_LAUNCH_MODE, AddEditNewFollowupActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
-        intentFollow.putExtra(AddEditNewFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId());
+        intentFollow.putExtra(AddEditNewFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
         PendingIntent pIntentFollow = PendingIntent.getActivity(ctx, (int) System.currentTimeMillis(), intentFollow, 0);
 
         Notification.Builder notificationBuilder = new Notification.Builder(ctx)

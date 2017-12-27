@@ -425,8 +425,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
             // play notification sound
-            FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
-            notificationUtils.playNotificationSound();
+//            FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
+//            notificationUtils.playNotificationSound();
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(TAG, "Json Exception: " + e.getMessage());

@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,8 +28,8 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.utils.IgnoredContact;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.IgnoredContact;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -38,7 +37,7 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
-
+@Deprecated
 public class AddEditLeadService extends Service {
     public static final String TAG = "AddEditLeadService";
     //    Constants

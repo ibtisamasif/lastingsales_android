@@ -178,30 +178,9 @@
         <activity
             android:name=".activities.IgnoredActivity"
             android:screenOrientation="portrait" />
-
-        <service
-            android:name=".service.AddEditLeadService"
-            android:enabled="true"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.Dialog">
-            <intent-filter>
-                <action android:name="inez.apps.customincomingcallscreen.MyService" />
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".service.CallDetectionService"
-            android:enabled="true"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="inez.apps.customincomingcallscreen.MyService" /> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- </intent-filter> -->
-        </service>
-
+        <activity
+            android:name=".activities.CompanyActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SplashActivity"
             android:label="@string/title_activity_splash"
@@ -213,7 +192,6 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-
         <activity
             android:name=".activities.NavigationBottomMainActivity"
             android:screenOrientation="portrait"
@@ -267,9 +245,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
-            android:name=".chatheadbubble.BubbleHelper" />
+            android:name=".chatheadbubble.FlyerBubbleHelper"
+            />
+        <activity
+            android:name=".chatheadbubble.AddEditLeadServiceBubbleHelper"
+            />
 
-        <activity android:name="com.huawei.systemmanager.optimize.process.ProtectActivity"/>
 
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
@@ -285,6 +266,29 @@
             android:name=".service.BubblesService"
             android:enabled="true"
             android:exported="false" />
+
+        <service
+            android:name=".service.AddEditLeadService"
+            android:enabled="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
+            <intent-filter>
+                <action android:name="inez.apps.customincomingcallscreen.MyService" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".service.CallDetectionService"
+            android:enabled="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="inez.apps.customincomingcallscreen.MyService" /> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- </intent-filter> -->
+        </service>
 
         <!-- <service -->
         <!-- android:name=".service.ProfileFetchService" -->

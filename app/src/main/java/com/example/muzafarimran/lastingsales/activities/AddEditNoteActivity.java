@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,13 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
-import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -91,11 +89,15 @@ public class AddEditNoteActivity extends AppCompatActivity {
             Long id = bundle.getLong(TAG_LAUNCH_MODE_CONTACT_ID);
             if (number != null) {
                 selectedContact = LSContact.getContactFromNumber(number);
-                tvContactName.setText(selectedContact.getContactName());
+                if (selectedContact != null) {
+                    tvContactName.setText(selectedContact.getContactName());
+                }
             } else if (id != null && !id.equals("")) {
                 contactIdLong = id;
                 selectedContact = LSContact.findById(LSContact.class, contactIdLong);
-                tvContactName.setText(selectedContact.getContactName());
+                if (selectedContact != null) {
+                    tvContactName.setText(selectedContact.getContactName());
+                }
             }
         }
 

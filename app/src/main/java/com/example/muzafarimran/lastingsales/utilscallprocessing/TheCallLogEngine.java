@@ -11,6 +11,7 @@ import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.sql.Date;
+import java.util.Arrays;
 
 /**
  * Created by ibtisam on 3/3/2017.
@@ -72,19 +73,23 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
 //        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, "_id = " + LSCall.getCallHavingLatestCallLogId().getCallLogId() , null, "date DESC limit 10");
 
         try {
+
+            Log.e(TAG, "CallLogFunc: managedCursor: " + Arrays.toString(managedCursor.getColumnNames()));
+
             int id = managedCursor.getColumnIndex(CallLog.Calls._ID);
             int numbers = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
             int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
             int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
             int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
             int name = managedCursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
+
 //            int accountId = managedCursor.getColumnIndex(CallLog.Calls.PHONE_ACCOUNT_ID); //in OPPO sim1 = 1 & sim2 = 3
 //            int subs = managedCursor.getColumnIndex(SUB_ID); //in OPPO sim1 = 1 & sim2 = 3 // in Huawei sim1 = 0 & sim2 = 1
 
             managedCursor.moveToLast();
             do {
                 if (managedCursor.isFirst()) {
-                    Log.d(TAG, "CallLogFunc: Cursor is at First Now");
+                    Log.d(TAG, "***************** CallLogFunc: Cursor is at First Now ***************");
                     showNotification = true;
                 }
                 Log.d(TAG, "CallLogFunc: Index: " + managedCursor.getPosition());
@@ -98,6 +103,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                 String callDate = managedCursor.getString(date);
                 Date callDayTime = new Date(Long.valueOf(callDate));
                 String callDuration = managedCursor.getString(duration);
+
 //                String callAccountId = managedCursor.getString(accountId);
 //                String callSubs = managedCursor.getString(subs);
 
@@ -107,6 +113,9 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     reRun = false;
                     continue;
                 } else {
+//                    Log.d(TAG, "SUBSCRIBER_ID: " + callAccountId);
+//                    Log.d(TAG, "SUBSCRIBER: " + callSubs);
+
                     Log.d(TAG, "CallId: " + callId);
                     Log.d(TAG, "CallNumber: " + callNumber);
                     Log.d(TAG, "CallName: " + callName);
@@ -115,8 +124,6 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     Log.d(TAG, "callDate: " + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Long.parseLong(callDate)));
                     Log.d(TAG, "callDayTime: " + callDayTime);
                     Log.d(TAG, "callDuration: " + callDuration);
-//                    Log.d(TAG, "callAccountId: " + callAccountId);
-//                    Log.d(TAG, "callSubs: " + callSubs);
 
                     String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(mContext, callNumber);
                     LSCall tempCall = new LSCall();

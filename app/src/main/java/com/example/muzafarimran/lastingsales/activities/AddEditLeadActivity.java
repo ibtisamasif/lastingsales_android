@@ -135,21 +135,16 @@ public class AddEditLeadActivity extends AppCompatActivity {
             populateUpdateContactView(bundle);
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         }
-
-        try {
-            if (mixpanelSource.equals(MIXPANEL_SOURCE_NOTIFICATION)) {
-                String projectToken = MixpanelConfig.projectToken;
-                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                try {
-                    JSONObject props = new JSONObject();
-                    props.put("type", "track");
-                    mixpanel.track("Lead From Notification - Clicked", props);
-                } catch (Exception e) {
-                    Log.e("mixpanel", "Unable to add properties to JSONObject", e);
-                }
+        if (mixpanelSource != null && mixpanelSource.equals(MIXPANEL_SOURCE_NOTIFICATION)) {
+            String projectToken = MixpanelConfig.projectToken;
+            MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+            try {
+                JSONObject props = new JSONObject();
+                props.put("type", "track");
+                mixpanel.track("Lead From Notification - Clicked", props);
+            } catch (Exception e) {
+                Log.e("mixpanel", "Unable to add properties to JSONObject", e);
             }
-        } catch (Exception e) {
-            e.printStackTrace(); // google device crashed/falled here.
         }
 
         bSave.setOnClickListener(new View.OnClickListener() {
@@ -443,16 +438,16 @@ public class AddEditLeadActivity extends AppCompatActivity {
             selectedContactType = LSContact.CONTACT_TYPE_SALES;
             bSalesRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             bColleagueRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-//            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
+            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
             bSalesRadio.setTextColor(Color.WHITE);
             bColleagueRadio.setTextColor(Color.BLACK);
         } else if (button.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
             selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
             bSalesRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             bColleagueRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-//            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-//            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
+            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
             bSalesRadio.setTextColor(Color.BLACK);
             bColleagueRadio.setTextColor(Color.WHITE);
         }

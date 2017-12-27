@@ -15,7 +15,7 @@ import java.util.Calendar;
 
 class BusinessProcessor {
     public static final String TAG = "BusinessProcessor";
-//TODO FIX This class
+
     public static void Process(Context mContext, LSCall call) {
         Log.d(TAG, "BusinessProcessor: Process() Entered");
         LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());

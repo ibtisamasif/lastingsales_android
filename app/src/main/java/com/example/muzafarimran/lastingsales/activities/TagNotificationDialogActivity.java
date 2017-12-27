@@ -35,6 +35,7 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
+@Deprecated
 public class TagNotificationDialogActivity extends Activity {
     public static final String TAG = "TagNotificationDialog";
     //    Constants

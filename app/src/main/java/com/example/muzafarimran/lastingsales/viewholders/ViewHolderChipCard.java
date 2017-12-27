@@ -4,13 +4,9 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.carditems.ChipItem;
-import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
 
 /**
@@ -30,6 +26,7 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
     public ViewHolderChipCard(View v) {
         super(v);
         bAll = v.findViewById(R.id.bAll);
+//        bAll.setText("ALL" + "(" + "3" + ")");
         bInProgress = v.findViewById(R.id.bInProgress);
         bWon = v.findViewById(R.id.bWon);
         bLost = v.findViewById(R.id.bLost);

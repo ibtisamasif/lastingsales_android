@@ -15,16 +15,12 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by ahmad on 09-Nov-16.
@@ -109,8 +105,7 @@ public class PhoneNumberAndCallUtils {
     public static String getDateTimeStringFromMiliseconds(long milliSeconds) {
         // Create a DateFormatter object for displaying date in specified format.
         SimpleDateFormat formatter = new SimpleDateFormat();
-
-//        String dateFormat = "dd/MM/yyyy hh:mm:ss";
+        //        String dateFormat = "dd/MM/yyyy hh:mm:ss";
 //        // Create a DateFormatter object for displaying date in specified format.
 //        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
         // Create a calendar object that will convert the date and time value in milliseconds to date.
@@ -123,6 +118,7 @@ public class PhoneNumberAndCallUtils {
 //         = "dd/MM/yyyy hh:mm:ss.SSS";
         // Create a DateFormatter object for displaying date in specified format.
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+5"));
         // Create a calendar object that will convert the date and time value in milliseconds to date.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(milliSeconds);
@@ -177,7 +173,6 @@ public class PhoneNumberAndCallUtils {
         }
     }
 
-//    // TODO under development
 //    public static String getTimeDuration(long time, Context ctx) {
 //        if (time < 1000000000000L) {
 //            // if timestamp given in seconds, convert to millis
@@ -351,11 +346,62 @@ public class PhoneNumberAndCallUtils {
         }
     }
 
-    public static long getMillisFromSqlFormattedDate(String last_call1) throws ParseException {
-        String myDate1 = last_call1;
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = sdf1.parse(myDate1);
-        long millis1 = date1.getTime();
+    public static long getMillisFromSqlFormattedDateAndTime(String last_call1) {
+        long millis1 = 0;
+        if (last_call1 != null) {
+            String myDate1 = last_call1;
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date date1 = sdf1.parse(myDate1);
+                millis1 = date1.getTime();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return millis1;
+    }
+
+    public static long getMillisFromSqlFormattedDate(String last_call1) {
+        long millis1 = 0;
+        if (last_call1 != null) {
+            String myDate1 = last_call1;
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+//            sdf1.setTimeZone(TimeZone.getTimeZone("GMT+5"));
+            try {
+                Date date1 = sdf1.parse(myDate1);
+                millis1 = date1.getTime();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return millis1;
+    }
+
+    public static long getMillisFromSqlFormattedDate(String last_call1, String part) {
+        long millis1 = 0;
+        if (last_call1 != null) {
+            String myDate1 = last_call1;
+            SimpleDateFormat sdf1 = new SimpleDateFormat(part);
+//            sdf1.setTimeZone(TimeZone.getTimeZone("GMT+5"));
+            try {
+                Date date1 = sdf1.parse(myDate1);
+                millis1 = date1.getTime();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return millis1;
+    }
+
+
+    public static boolean compareDateTimeInMillis(long milliSeconds1, long milliSeconds2) {
+        // this function should compare time in milliseconds upto 10 characters ignoring last three characters i.e 1513587790755 and 1513587790000 are equal.
+        milliSeconds1 = Long.parseLong(Long.toString(milliSeconds1).substring(0, 10));
+        milliSeconds2 = Long.parseLong(Long.toString(milliSeconds2).substring(0, 10));
+
+        if (milliSeconds1 == milliSeconds2) {
+            return true;
+        }
+        return false;
     }
 }

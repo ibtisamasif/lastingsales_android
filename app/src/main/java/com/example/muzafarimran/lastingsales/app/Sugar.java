@@ -39,7 +39,7 @@ public class Sugar extends SugarApp {
 
         //Android Job Library
         JobManager.create(this).addJobCreator(new DemoJobCreator());
-//        JobManager.instance().getConfig().setAllowSmallerIntervalsForMarshmallow(true); //TODO Don't use this in production
+//        JobManager.instance().getConfig().setAllowSmallerIntervalsForMarshmallow(true); //Don't use this in production
 
 //        // SQUARE memory leakage library
 //        Log.d(TAG, "onCreate: SquareLeakLibrary");

@@ -130,18 +130,6 @@ public class LSContact extends SugarRecord {
         }
     }
 
-    @Deprecated
-    public static List<LSContact> getAllTypeArrangedContactsAccordingToLeadType() { // TODO optimize this function. Crashed here too so must fix it.
-        List<LSContact> arrangedContacts = new ArrayList<>();
-        List<LSContact> contactsLe = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        List<LSContact> contactsLo = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-        List<LSContact> contactsWo = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-        arrangedContacts.addAll(contactsLe);
-        arrangedContacts.addAll(contactsLo);
-        arrangedContacts.addAll(contactsWo);
-        return arrangedContacts;
-    }
-
     // This method is to be used for developer purpose only i.e. to find if there
     public static List<LSContact> getDeletedSalesContactsByLeadSalesStatus(String leadType) {
         try {
@@ -384,11 +372,13 @@ public class LSContact extends SugarRecord {
 //                ;
 //    }
 
+    @Deprecated
     public boolean isDetailsDropDownOpen() {
         return detailsDropDownOpen;
     }
 
-    public void setDetailsDropDownOpen(boolean detailsDropDownOpen) { // TODO check in previous versions
+    @Deprecated
+    public void setDetailsDropDownOpen(boolean detailsDropDownOpen) {
         this.detailsDropDownOpen = detailsDropDownOpen;
     }
 

@@ -4,12 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
-import android.os.FileObserver;
 import android.os.PowerManager;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleHelper;
+import com.example.muzafarimran.lastingsales.chatheadbubble.FlyerBubbleHelper;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
@@ -242,7 +241,7 @@ public class CallsStatesReceiver extends CallReceiver{
 //                tempInquiry.setStatus(LSInquiry.INQUIRY_STATUS_ATTENDED);
 //                if (tempInquiry.getSyncStatus().equals(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED)) {
 //                    tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED);
-//                } else { // TODO USELESS REMOVE IT
+//                } else {
 //                    tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
 //
 //                }
@@ -531,22 +530,22 @@ public class CallsStatesReceiver extends CallReceiver{
             if (notesForContact != null && notesForContact.size() > 0) {
                 notesForContact.size();
 
-                BubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId(), internationalNumber, oneContact);
+                FlyerBubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId(), internationalNumber, oneContact);
 
 //                Intent intent = new Intent(context, AddEditLeadService.class);
 //                intent.putExtra(OUTGOINGCALL_CONTACT_NOTE_ID, notesForContact.get(notesForContact.size() - 1).getId() + "");
 //                context.startService(intent);
             } else {
-                BubbleHelper.getInstance(ctx).show(internationalNumber);
+                FlyerBubbleHelper.getInstance(ctx).show(internationalNumber);
             }
         } else {
-            BubbleHelper.getInstance(ctx).show(internationalNumber);
+            FlyerBubbleHelper.getInstance(ctx).show(internationalNumber);
         }
         Intent intent = new Intent(ctx, CallDetectionService.class);
         ctx.startService(intent);
     }
 
     private void endServiceAndCallPopupFlyer(Context ctx) {
-        BubbleHelper.getInstance(ctx).hide();
+        FlyerBubbleHelper.getInstance(ctx).hide();
     }
 }

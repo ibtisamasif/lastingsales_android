@@ -67,7 +67,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         //        LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(number); // performance drawbacks with this function
         LSContactProfile lsContactProfile = inquiryCall.getContactProfile();
         if (lsContactProfile == null) {
-            Log.d(TAG, "CreateOrUpdate: Not Found in LSInquiry Table now getting from ContactProfileProvider");
+            Log.d(TAG, "createOrUpdate: Not Found in LSInquiry Table now getting from ContactProfileProvider");
 //            ContactProfileProvider contactProfileProvider = new ContactProfileProvider(mContext);
 //            contactProfileProvider.getContactProfile(inquiryCall.getContactNumber(), new LSContactProfileCallback() {
 //                @Override
@@ -78,7 +78,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
 //            });
             lsContactProfile = LSContactProfile.getProfileFromNumber(number);
         } else {
-            Log.d(TAG, "CreateOrUpdate: Found in LSInquiry Table");
+            Log.d(TAG, "createOrUpdate: Found in LSInquiry Table");
         }
         if (inquiryCall.getContact() == null) {
             Log.d(TAG, "getView: inquiryCall.getContact() == null: " + number);
@@ -192,7 +192,6 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
 //                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
 //                dataSenderAsync.run();
 //                List<LSInquiry> inquiries = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-//                // TODO repopulate
 //                Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
 //            }
 //        });

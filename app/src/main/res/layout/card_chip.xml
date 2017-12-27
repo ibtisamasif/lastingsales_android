@@ -16,7 +16,7 @@
             android:layout_margin="5dp"
             android:background="@drawable/shape_chip_selected"
             android:minHeight="0dp"
-            android:text="All"
+            android:text="All(99)"
             android:textColor="@color/md_white"
             android:textSize="14sp"/>
 

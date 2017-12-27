@@ -166,7 +166,7 @@ public class SessionManager {
             LSInquiry.deleteAll(LSInquiry.class);
         }
         if (LSCall.count(LSCall.class) > 0) {
-            LSInquiry.deleteAll(LSCall.class);
+            LSCall.deleteAll(LSCall.class);
         }
 //        if (LSCallRecording.count(LSCallRecording.class) > 0) {
 //            LSCallRecording.deleteAll(LSCallRecording.class);

@@ -33,7 +33,7 @@ public class RatingAlarmReceiver extends WakefulBroadcastReceiver {
         long oneDayAgoTimestamp = now - milisecondsIn1Day;
         SessionManager sessionManager = new SessionManager(context);
         String lastAppVisitTime = sessionManager.getLastAppVisit();
-        Long lastAppVisitTimeLong = Long.parseLong(lastAppVisitTime); // TODO crash Nexus 5X
+        Long lastAppVisitTimeLong = Long.parseLong(lastAppVisitTime);
         Log.d(TAG, "onReceive: getLastAppVisit: " + lastAppVisitTimeLong);
         Log.d(TAG, "onReceive: oneDayAgoTimestamp: " + oneDayAgoTimestamp);
         if (lastAppVisitTimeLong > oneDayAgoTimestamp) {

@@ -74,11 +74,11 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
         LSContactProfile lsContactProfile = contact.getContactProfile();
         if (lsContactProfile == null) {
             imSmartBadge.setVisibility(View.GONE);
-            Log.d(TAG, "CreateOrUpdate: Not Found in contact Table now getting from ContactProfileProvider: " + contact.toString());
+            Log.d(TAG, "createOrUpdate: Not Found in contact Table now getting from ContactProfileProvider: " + contact.toString());
             lsContactProfile = LSContactProfile.getProfileFromNumber(number);
         } else {
             imSmartBadge.setVisibility(View.VISIBLE);
-            Log.d(TAG, "CreateOrUpdate: Found in contact Table: " + contact);
+            Log.d(TAG, "createOrUpdate: Found in contact Table: " + contact);
         }
         if (contact.getContactName() != null) {
             if (contact.getContactName().equals("null")) {

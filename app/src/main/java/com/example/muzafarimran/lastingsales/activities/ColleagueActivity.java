@@ -28,8 +28,6 @@ import de.halfbit.tinybus.TinyBus;
 
 public class ColleagueActivity  extends AppCompatActivity{
     private static final String TAG = "ColleagueActivity";
-    private Toolbar toolbar;
-    private RecyclerView mRecyclerView;
     private MyRecyclerViewAdapter adapter;
     private List<Object> list = new ArrayList<Object>();
     private TinyBus bus;
@@ -38,27 +36,16 @@ public class ColleagueActivity  extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_colleague);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Colleague Contacts");
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        mRecyclerView = (RecyclerView)findViewById(R.id.mRecyclerView);
-
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-//        Collection<LSContact> contacts;
-//        contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
-//
-//        list.addAll(contacts);
-
         adapter = new MyRecyclerViewAdapter(this, list);
-
         mRecyclerView.setAdapter(adapter);
-
     }
-
 
     @Override
     public void onStart() {
@@ -73,7 +60,6 @@ public class ColleagueActivity  extends AppCompatActivity{
         super.onResume();
         Collection<LSContact> contacts;
         contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
-
         list.clear();
         list.addAll(contacts);
         adapter.notifyDataSetChanged();
@@ -85,7 +71,6 @@ public class ColleagueActivity  extends AppCompatActivity{
         Log.d(TAG, "onStop() called");
         super.onStop();
     }
-
 
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);

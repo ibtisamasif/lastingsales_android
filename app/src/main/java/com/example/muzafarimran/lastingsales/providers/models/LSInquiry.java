@@ -1,5 +1,8 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
+import android.util.Log;
+
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
@@ -15,6 +18,7 @@ import java.util.List;
 
 public class LSInquiry extends SugarRecord {
 
+    private static final String TAG = "LSInquiry";
     @Ignore
     public static final String INQUIRY_STATUS_PENDING = "pending";
     @Ignore
@@ -24,7 +28,7 @@ public class LSInquiry extends SugarRecord {
     private String contactNumber;
     private LSContact contact;
     private Long beginTime;
-    private Long duration;
+    private Long duration; // TODO useless field remove it.
     private int countOfInquiries;
     private String syncStatus;
     private String serverId;
@@ -63,6 +67,36 @@ public class LSInquiry extends SugarRecord {
         }
         if (list != null && list.size() > 0) {
             return list.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public static LSInquiry getPendingInquiryByBeginDateTimeIfExists(String beginTimeMillis) {
+        ArrayList<LSInquiry> list = null;
+        ArrayList<LSInquiry> matchedList = new ArrayList<>();
+        try {
+            //TODO Get All pending inquiries then match with each inquiry.
+
+            list = (ArrayList<LSInquiry>) LSInquiry.find(LSInquiry.class, "status = ? ", LSInquiry.INQUIRY_STATUS_PENDING);
+            if (list != null) {
+                for (LSInquiry oneInquiry : list) {
+                    if (PhoneNumberAndCallUtils.compareDateTimeInMillis(Long.valueOf(beginTimeMillis), oneInquiry.getBeginTime())) {
+                        Log.d(TAG, "getPendingInquiryByBeginDateTimeIfExists: MATCHED");
+                        matchedList.add(oneInquiry);
+                        break;
+                    } else {
+                        Log.d(TAG, "getPendingInquiryByBeginDateTimeIfExists: NOT MATCHED");
+                    }
+                }
+            }
+
+//            list = (ArrayList<LSInquiry>) LSInquiry.find(LSInquiry.class, "begin_time = ? ", beginTimeMillis);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        if (matchedList.size() > 0) {
+            return matchedList.get(0);
         } else {
             return null;
         }

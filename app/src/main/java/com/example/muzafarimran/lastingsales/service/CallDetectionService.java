@@ -11,7 +11,6 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -22,9 +21,8 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
-import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
-import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleHelper;
+import com.example.muzafarimran.lastingsales.chatheadbubble.FlyerBubbleHelper;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
@@ -303,20 +301,20 @@ public class CallDetectionService extends Service {
                 if (notesForContact != null && notesForContact.size() > 0) {
                     notesForContact.size();
 
-                    BubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId(), internationalNumber, oneContact);
+                    FlyerBubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId(), internationalNumber, oneContact);
 
                 } else {
-                    BubbleHelper.getInstance(ctx).show(internationalNumber);
+                    FlyerBubbleHelper.getInstance(ctx).show(internationalNumber);
                 }
             } else if (oneContact == null){
-                BubbleHelper.getInstance(ctx).show(internationalNumber);
+                FlyerBubbleHelper.getInstance(ctx).show(internationalNumber);
             }
         }
     }
 
     private void endServiceAndCallPopupFlyer(Context ctx) {
 
-        BubbleHelper.getInstance(ctx).hide();
+        FlyerBubbleHelper.getInstance(ctx).hide();
 
 //        Log.wtf(TAG, "endServiceAndCallPopupFlyer: ");
 //        Intent intent = new Intent(ctx, AddEditLeadService.class);

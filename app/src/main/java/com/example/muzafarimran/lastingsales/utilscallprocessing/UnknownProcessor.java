@@ -35,7 +35,7 @@ class UnknownProcessor {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
-            InquiryManager.Remove(mContext, call);
+            InquiryManager.remove(mContext, call);
             // Call Saved
             call.setContact(tempContact);
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
@@ -51,7 +51,7 @@ class UnknownProcessor {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
-            InquiryManager.Remove(mContext, call);
+            InquiryManager.remove(mContext, call);
             // Call Saved
             call.setContact(tempContact);
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
@@ -74,7 +74,7 @@ class UnknownProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_MISSED)) {
             //Missed
-            InquiryManager.CreateOrUpdate(mContext, call);
+            InquiryManager.createOrUpdate(mContext, call);
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
@@ -84,7 +84,7 @@ class UnknownProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_REJECTED) || call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() == 0L) {
             //Incoming Rejected
-            InquiryManager.CreateOrUpdate(mContext, call);
+            InquiryManager.createOrUpdate(mContext, call);
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();

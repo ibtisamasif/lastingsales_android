@@ -6,13 +6,9 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -27,21 +23,18 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ColleagueActivity;
-import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
-import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
-import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.utils.TypeManager;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
-
-import java.util.List;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -113,11 +106,11 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
         LSContactProfile lsContactProfile = contact.getContactProfile();
         if (lsContactProfile == null) {
             imSmartBadge.setVisibility(View.GONE);
-            Log.d(TAG, "CreateOrUpdate: Not Found in contact Table now getting from ContactProfileProvider: " + contact.toString());
+            Log.d(TAG, "createOrUpdate: Not Found in contact Table now getting from ContactProfileProvider: " + contact.toString());
             lsContactProfile = LSContactProfile.getProfileFromNumber(number);
         } else {
             imSmartBadge.setVisibility(View.VISIBLE);
-            Log.d(TAG, "CreateOrUpdate: Found in contact Table: " + contact);
+            Log.d(TAG, "createOrUpdate: Found in contact Table: " + contact);
         }
         if (contact.getContactName() != null) {
             if (contact.getContactName().equals("null")) {
@@ -382,7 +375,6 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 //No navigation on click
 
                 this.cl.setOnLongClickListener(view -> {
-                    // // FIXME: 11/24/2017
                     String nameTextOnDialog;
                     if (contact.getContactName() != null) {
                         nameTextOnDialog = contact.getContactName();
@@ -403,7 +395,8 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
                             dataSenderAsync.run();
                             // FIRE EVENT TO REFRESH LIST
-                            Snackbar.make(view, "Ignored Contact Deleted!", Snackbar.LENGTH_SHORT).show();
+//                            Snackbar.make(view, "Ignored Contact Deleted!", Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Ignored Contact Deleted!", Toast.LENGTH_SHORT).show();
 //                }else {
 //                    Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
 //                }

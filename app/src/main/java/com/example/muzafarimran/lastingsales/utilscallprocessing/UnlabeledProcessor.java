@@ -31,7 +31,7 @@ public class UnlabeledProcessor {
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
-            InquiryManager.Remove(mContext, call);
+            InquiryManager.remove(mContext, call);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
             MissedCallEventModel mCallEventModel = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
@@ -45,7 +45,7 @@ public class UnlabeledProcessor {
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
-            InquiryManager.Remove(mContext, call);
+            InquiryManager.remove(mContext, call);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
             MissedCallEventModel mCallEventModel = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
@@ -60,7 +60,7 @@ public class UnlabeledProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_MISSED)) {
             //Missed
-            InquiryManager.CreateOrUpdate(mContext, call);
+            InquiryManager.createOrUpdate(mContext, call);
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
@@ -70,7 +70,7 @@ public class UnlabeledProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_REJECTED)|| call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() == 0L) {
             //Rejected
-            InquiryManager.CreateOrUpdate(mContext, call);
+            InquiryManager.createOrUpdate(mContext, call);
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();

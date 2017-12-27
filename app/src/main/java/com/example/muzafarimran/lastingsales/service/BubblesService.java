@@ -53,19 +53,23 @@ public class BubblesService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        if(mbbl!=null)
-        recycleBubble(mbbl);
+        if (mbbl != null)
+            recycleBubble(mbbl);
         return super.onUnbind(intent);
-}
+    }
 
     private void recycleBubble(final BubbleLayout bubble) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
                 if (bubble != null) {
-                    getWindowManager().removeView(bubble);
-                    bubble.notifyBubbleRemoved();
-                    mbbl=null;
+                    try {
+                        getWindowManager().removeView(bubble);
+                        bubble.notifyBubbleRemoved();
+                        mbbl = null;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -73,7 +77,7 @@ public class BubblesService extends Service {
 
     private WindowManager getWindowManager() {
         if (windowManager == null) {
-            windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
+            windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         }
         return windowManager;
     }
@@ -83,7 +87,7 @@ public class BubblesService extends Service {
         bubble.setWindowManager(getWindowManager());
         bubble.setViewParams(layoutParams);
         bubble.setLayoutCoordinator(layoutCoordinator);
-        mbbl=bubble;
+        mbbl = bubble;
         addViewToWindow(bubble);
     }
 
@@ -115,12 +119,12 @@ public class BubblesService extends Service {
         });
     }
 
-    private WindowManager.LayoutParams buildLayoutParamsForBubble(int x, int y) { // final flyer layout code
+    private WindowManager.LayoutParams buildLayoutParamsForBubble(int x, int y) {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 PixelFormat.TRANSPARENT);
         params.gravity = Gravity.CENTER | Gravity.START;
         params.x = x;
@@ -128,30 +132,27 @@ public class BubblesService extends Service {
         return params;
     }
 
-    private WindowManager.LayoutParams buildLayoutParamsForTrash() {
-        int x = 0;
-        int y = 0;
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSPARENT);
-        params.x = x;
-        params.y = y;
-        return params;
-    }
+//    private WindowManager.LayoutParams buildLayoutParamsForTrash() {
+//        int x = 0;
+//        int y = 0;
+//        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+//                WindowManager.LayoutParams.MATCH_PARENT,
+//                WindowManager.LayoutParams.MATCH_PARENT,
+//                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+//                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+//                PixelFormat.TRANSPARENT);
+//        params.x = x;
+//        params.y = y;
+//        return params;
+//    }
 
     public void removeBubble(BubbleLayout bubbl) {
-        if (mbbl!=null) {
+        if (mbbl != null) {
             recycleBubble(mbbl);
         }
-
-
     }
 
     public class BubblesServiceBinder extends Binder {
-
         public BubblesService getService() {
             return BubblesService.this;
         }
