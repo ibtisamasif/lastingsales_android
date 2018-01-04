@@ -104,7 +104,7 @@ public class MyDateTimeStamp {
         java.util.Date dateStart = null;
         long dateTimeLong = 0;
         try {
-            dateTimeLong = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTimeString).getTime();
+            dateTimeLong = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTimeString).getTime(); //TODO google device failed here
         } catch (ParseException e) {
             e.printStackTrace();
         }

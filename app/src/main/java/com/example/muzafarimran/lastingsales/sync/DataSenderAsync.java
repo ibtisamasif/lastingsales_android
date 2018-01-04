@@ -210,7 +210,7 @@ public class DataSenderAsync {
                         if (error.networkResponse != null) {
                             Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
                             JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                            int responseCode = jObj.getInt("responseCode");  // here too
+                            int responseCode = jObj.getInt("responseCode");  //TODO here too
                             if (responseCode == 409) {
                                 JSONObject responseObject = jObj.getJSONObject("response");
                                 contact.setServerId(responseObject.getString("id"));

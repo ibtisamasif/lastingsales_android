@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/ic_action_message"
+        android:icon="@drawable/ic_message_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/abc_search_hint"
+        app:showAsAction="always" />
     <item
         android:id="@+id/ic_action_delete"
         android:icon="@drawable/ic_delete_white_24dp"

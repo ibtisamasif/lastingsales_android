@@ -71,4 +71,8 @@ public class ClassNames {
     public static final String ADD_lEAD_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.AddLeadItem";
     public static final int ADD_lEAD_CLASS_TYPE = 16;
     public static final int ADD_lEAD_CLASS_RESOURCE = R.layout.card_add_lead;
+
+    public static final String STATISTICS_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.StatisticsItem";
+    public static final int STATISTICS_CLASS_TYPE = 17;
+    public static final int STATISTICS_CLASS_RESOURCE = R.layout.card_statistics;
 }

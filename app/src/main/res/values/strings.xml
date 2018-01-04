@@ -133,4 +133,11 @@
     <string name="navigation_more">More</string>
     <string name="account_setting"><![CDATA[account & setting]]></string>
 
+    <string name="message_zoom_touch_expand">Touch a photo to expand it.</string>
+
+    <!-- Accessibility-only descriptions -->
+    <string name="description_image_1">Image 1</string>
+    <string name="description_image_2">Image 2</string>
+    <string name="description_zoom_touch_close">Expanded image (touch to close)</string>
+
 </resources>

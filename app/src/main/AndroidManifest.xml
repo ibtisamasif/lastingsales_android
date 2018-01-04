@@ -250,6 +250,12 @@
         <activity
             android:name=".chatheadbubble.AddEditLeadServiceBubbleHelper"
             />
+        <activity android:name=".utils.ZoomActivity"
+            android:label="Zoom"
+            android:parentActivityName=".activities.NavigationBottomMainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.NavigationBottomMainActivity" />
+        </activity>
 
 
         <service android:name=".service.MyFirebaseMessagingService">

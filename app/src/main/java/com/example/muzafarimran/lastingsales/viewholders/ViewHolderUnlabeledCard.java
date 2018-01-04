@@ -79,7 +79,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
         this.name = v.findViewById(R.id.call_name);
         this.time = v.findViewById(R.id.call_time);
         this.call_icon = v.findViewById(R.id.call_icon);
-        this.numberDetailTextView = v.findViewById(R.id.call_number);
+        this.numberDetailTextView = v.findViewById(R.id.tvEmail);
         this.rl_container_buttons = v.findViewById(R.id.rl_container_buttons);
         this.bSales = v.findViewById(R.id.bSalesUtaggedItem);
         this.bIgnore = v.findViewById(R.id.bIgnore);

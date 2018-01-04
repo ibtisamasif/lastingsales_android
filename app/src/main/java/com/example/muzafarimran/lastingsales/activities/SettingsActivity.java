@@ -31,6 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch swFlyer;
     private Switch swTagDialogPopup;
     private Switch swHourlyAlarmNotification;
+    private Switch swDefaultLead;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
         swFlyer = (Switch) findViewById(R.id.swFlyer);
         swTagDialogPopup = (Switch) findViewById(R.id.swTagDialogPopup);
         swHourlyAlarmNotification = (Switch) findViewById(R.id.swHourlyAlarmNotification);
+        swDefaultLead = (Switch) findViewById(R.id.swDefaultLead);
 
         if (settingsManager.getKeyStateFlyer()) {
             swFlyer.setChecked(true);
@@ -125,6 +127,28 @@ public class SettingsActivity extends AppCompatActivity {
                         alarmManager.cancel(pendingIntent);
                     }
                     Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Disabled", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        if (settingsManager.getKeyStateDefaultLead()) {
+            swDefaultLead.setChecked(true);
+        } else {
+            swDefaultLead.setChecked(false);
+        }
+
+        //attach a listener to check for changes in state
+        swDefaultLead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    settingsManager.setKeyStateDefaultLead(true);
+                    Toast.makeText(SettingsActivity.this, "Default will be Lead", Toast.LENGTH_SHORT).show();
+                } else {
+                    settingsManager.setKeyStateDefaultLead(false);
+                    Toast.makeText(SettingsActivity.this, "Default will be unlabeled", Toast.LENGTH_SHORT).show();
                 }
             }
         });

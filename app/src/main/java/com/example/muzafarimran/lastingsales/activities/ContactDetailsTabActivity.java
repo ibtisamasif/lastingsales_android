@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,16 +12,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
-import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -171,13 +169,25 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.edit_options_menu, menu);
+        getMenuInflater().inflate(R.menu.lead_options_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.ic_action_message:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("sms:"));
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("app.lastingsales.com"));
+//                intent.setType("image/png");
+                intent.putExtra("subject", "Greetings");
+                intent.putExtra("address", "03228899906");
+                intent.putExtra(intent.EXTRA_TEXT, "Wellcome to lastingSales");
+                intent.putExtra("sms_body", "Wellcome to lastingSales");
+                startActivity(intent);
+//                Toast.makeText(this, "Opening Message window", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.ic_action_delete:
                 String nameTextOnDialog;
                 if (selectedContact.getContactName() != null) {

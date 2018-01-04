@@ -83,5 +83,30 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tvDefaultLeadText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Make lead on call instead of unlabeled" />
+
+        <Switch
+            android:id="@+id/swDefaultLead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvDefaultLeadText"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:padding="8dp" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>

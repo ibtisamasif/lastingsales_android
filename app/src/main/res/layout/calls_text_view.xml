@@ -95,7 +95,7 @@
                 android:paddingBottom="0dp">
 
                 <TextView
-                    android:id="@+id/call_number"
+                    android:id="@+id/tvEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
@@ -107,7 +107,7 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/call_number"
+                    android:layout_below="@id/tvEmail"
                     android:layout_centerHorizontal="true">
 
                     <Button

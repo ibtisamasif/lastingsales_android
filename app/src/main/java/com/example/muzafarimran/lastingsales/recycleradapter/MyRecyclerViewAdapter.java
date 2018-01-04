@@ -12,7 +12,6 @@ import com.example.muzafarimran.lastingsales.viewholders.ViewHolderCallCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderChipCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderConnectionsCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderContactHeaderBottomsheetCard;
-import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSocialProfileCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderErrorCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderHomeCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderInquiryCard;
@@ -22,6 +21,8 @@ import com.example.muzafarimran.lastingsales.viewholders.ViewHolderNoteCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderReminderCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSeparatorCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSettingCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSocialProfileCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderStatisticsCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderUnlabeledCard;
 
 import java.util.List;
@@ -94,6 +95,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.ADD_lEAD_CLASS_NAME:
                 return ClassNames.ADD_lEAD_CLASS_TYPE;
 
+            case ClassNames.STATISTICS_CLASS_NAME:
+                return ClassNames.STATISTICS_CLASS_TYPE;
+
             default:
                 Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
                 return -1;
@@ -151,6 +155,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             case ClassNames.ADD_lEAD_CLASS_TYPE:
                 return new ViewHolderAddLeadCard(LayoutInflater.from(mContext).inflate(ClassNames.ADD_lEAD_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.STATISTICS_CLASS_TYPE:
+                return new ViewHolderStatisticsCard(LayoutInflater.from(mContext).inflate(ClassNames.STATISTICS_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -225,6 +232,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.ADD_lEAD_CLASS_TYPE:
                 ViewHolderAddLeadCard viewHolderAddLeadCard = (ViewHolderAddLeadCard) holder;
                 viewHolderAddLeadCard.bind(item, position, mContext);
+                break;
+            case ClassNames.STATISTICS_CLASS_TYPE:
+                ViewHolderStatisticsCard viewHolderStatisticsCard = (ViewHolderStatisticsCard) holder;
+                viewHolderStatisticsCard.bind(item, position, mContext);
                 break;
         }
     }

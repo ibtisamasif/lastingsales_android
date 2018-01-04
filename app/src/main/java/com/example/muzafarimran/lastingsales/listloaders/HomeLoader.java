@@ -7,6 +7,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
+import com.example.muzafarimran.lastingsales.carditems.StatisticsItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -26,40 +27,26 @@ public class HomeLoader extends AsyncTaskLoader<List<Object>> {
 
     @Override
     public List<Object> loadInBackground() {
-
-//        Collection<LSInquiry> inquiriesContacts = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-//        HomeItem item2 = new HomeItem();
-//        item2.text = "Inquiries";
-//        item2.value = "" + inquiriesContacts.size();
-//        list.add(item2);
-//
-//        Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
-//        HomeItem item3 = new HomeItem();
-//        item3.text = "Leads";
-//        item3.value = "" + contacts.size();
-//        list.add(item3);
-
         Collection<LSContact> unlabeledContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
         if (!unlabeledContacts.isEmpty()) {
 
-            HomeItem item = new HomeItem();
-            item.text = "Unlabeled contacts";
-            item.value = "" + unlabeledContacts.size();
+            HomeItem homeItem = new HomeItem();
+            homeItem.text = "Unlabeled contacts";
+            homeItem.value = "" + unlabeledContacts.size();
+
+            StatisticsItem statisticsItem = new StatisticsItem();
+            statisticsItem.artValue = 0;
+            statisticsItem.leadsValue = 0;
+            statisticsItem.inquiriesValue = 0;
+            statisticsItem.callsValue = 0;
 
             SeparatorItem separatorItem = new SeparatorItem();
             separatorItem.text = "Recent unlabeled contacts";
 
-//        Collection<LoadingItem> listLoading = new ArrayList<LoadingItem>();
-//        LoadingItem loadingItem = new LoadingItem();
-//        loadingItem.text = "Loading items...";
-//        listLoading.add(loadingItem);
-
-            list.add(item);
-
-//        list.addAll(inquiriesContacts);
+            list.add(homeItem);
+            list.add(statisticsItem);
             list.add(separatorItem);
             list.addAll(unlabeledContacts);
-//        list.addAll(listLoading);
 
         } else {
             ErrorItem erItem = new ErrorItem();

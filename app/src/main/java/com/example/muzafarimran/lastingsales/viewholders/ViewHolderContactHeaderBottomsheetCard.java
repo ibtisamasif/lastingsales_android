@@ -1,21 +1,17 @@
 package com.example.muzafarimran.lastingsales.viewholders;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,10 +25,9 @@ import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
+import com.example.muzafarimran.lastingsales.utils.ZoomActivity;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
-
-import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by ibtisam on 11/1/2017.
@@ -54,12 +49,12 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
     public ViewHolderContactHeaderBottomsheetCard(View v) {
         super(v);
         this.cl = v.findViewById(R.id.cl);
+        this.user_avatar = v.findViewById(R.id.user_avatar);
         this.imSmartBadge = v.findViewById(R.id.imSmartBadge);
         this.llTypeRibbon = v.findViewById(R.id.llTypeRibbon);
-        this.user_avatar = v.findViewById(R.id.user_avatar);
         this.name = v.findViewById(R.id.call_name);
         this.call_icon = v.findViewById(R.id.call_icon);
-        this.numberDetailTextView = v.findViewById(R.id.call_number);
+        this.numberDetailTextView = v.findViewById(R.id.tvEmail);
         this.bSales = v.findViewById(R.id.bSalesUtaggedItem);
         this.bIgnore = v.findViewById(R.id.bIgnore);
     }
@@ -123,6 +118,15 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
                             .setPlaceholderImage(placeholderDrawable)
                             .build());
         }
+
+        user_avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mContext.startActivity(new Intent(mContext, ZoomActivity.class));
+
+            }
+        });
 
         this.bIgnore.setTag(number);
         this.cl.setTag(contact.getId());

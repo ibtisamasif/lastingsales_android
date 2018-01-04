@@ -173,7 +173,7 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
                                 + String.format(" %02d", selected_hour) + String.format(":%02d", selected_minute + 30) + ":00";
 
                         long selectedDateTime = MyDateTimeStamp.dateTimeLong(mySelectedDateTime + ":00");
-                        long currentDateTime = MyDateTimeStamp.dateTimeLong(myCurrentDateTime + ":00");
+                        long currentDateTime = MyDateTimeStamp.dateTimeLong(myCurrentDateTime + ":00"); // NULLL CRASH HERE
                         if (!mySelectedDateTime.equals(myCurrentDateTime) && selectedDateTime > currentDateTime) {
                             String title = "LastingSales " + selectedContact.getContactName() + "(" + selectedContact.getPhoneOne() + ")";
                             String location = "";

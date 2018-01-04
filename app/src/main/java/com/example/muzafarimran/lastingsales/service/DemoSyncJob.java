@@ -29,7 +29,7 @@ public class DemoSyncJob extends Job {
 
     public static void schedulePeriodic() {
         new JobRequest.Builder(DemoSyncJob.TAG)
-                .setPeriodic(TimeUnit.MINUTES.toMillis(20), TimeUnit.MINUTES.toMillis(10))
+                .setPeriodic(TimeUnit.MINUTES.toMillis(120), TimeUnit.MINUTES.toMillis(10))
 //                .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
                 .setUpdateCurrent(true)
                 .setPersisted(true) //onReboot
