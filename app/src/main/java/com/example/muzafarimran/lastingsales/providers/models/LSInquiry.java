@@ -28,7 +28,7 @@ public class LSInquiry extends SugarRecord {
     private String contactNumber;
     private LSContact contact;
     private Long beginTime;
-    private Long duration; // TODO useless field remove it.
+    private Long duration; //useless now
     private int countOfInquiries;
     private String syncStatus;
     private String serverId;
@@ -76,7 +76,7 @@ public class LSInquiry extends SugarRecord {
         ArrayList<LSInquiry> list = null;
         ArrayList<LSInquiry> matchedList = new ArrayList<>();
         try {
-            //TODO Get All pending inquiries then match with each inquiry.
+            // Get All pending inquiries then match with each inquiry.
 
             list = (ArrayList<LSInquiry>) LSInquiry.find(LSInquiry.class, "status = ? ", LSInquiry.INQUIRY_STATUS_PENDING);
             if (list != null) {

@@ -48,7 +48,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
         new sendNotification(context).execute();
 //        }
 ////        Refresh Service once daily.
-//        context.startService(new Intent(context, CallDetectionService.class));  // TODO is it still needed here as well ?
+//        context.startService(new Intent(context, CallDetectionService.class));  // is it still needed here as well ?
     }
 
     private class sendNotification extends AsyncTask<Void, Void, String> {

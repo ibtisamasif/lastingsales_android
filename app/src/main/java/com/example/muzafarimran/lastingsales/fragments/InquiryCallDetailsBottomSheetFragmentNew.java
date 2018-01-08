@@ -75,7 +75,7 @@ public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
         contactHeaderBottomsheetItem.place = "inquiry";
         list.add(contactHeaderBottomsheetItem);
 
-        LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(selectedContact.getPhoneOne());
+        LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(selectedContact.getPhoneOne()); // TODO crash in 97
         if (lsContactProfile != null){
             SeparatorItem separatorItemlsContactProfile = new SeparatorItem();
             separatorItemlsContactProfile.text = "Profile";

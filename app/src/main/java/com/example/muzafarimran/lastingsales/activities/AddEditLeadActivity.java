@@ -275,7 +275,9 @@ public class AddEditLeadActivity extends AppCompatActivity {
                     etContactName.setText("");
                 }
             } else {
-                etContactName.setText(selectedContact.getContactName());
+                if (selectedContact.getContactName() != null){
+                    etContactName.setText(selectedContact.getContactName());
+                }
             }
             selectRadioButton(selectedContact.getContactType());
         } else {

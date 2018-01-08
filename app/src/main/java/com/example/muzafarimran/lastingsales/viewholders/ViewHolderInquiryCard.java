@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
@@ -44,6 +45,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
     private Button bTag;
     private TextView inquireyCount;
     private View.OnClickListener callClickListener = null;
+    private LSContactProfile lsContactProfile;
 
 
     public ViewHolderInquiryCard(View view) {
@@ -65,7 +67,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         final String number = inquiryCall.getContactNumber();
 
         //        LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(number); // performance drawbacks with this function
-        LSContactProfile lsContactProfile = inquiryCall.getContactProfile();
+        lsContactProfile = inquiryCall.getContactProfile();
         if (lsContactProfile == null) {
             Log.d(TAG, "createOrUpdate: Not Found in LSInquiry Table now getting from ContactProfileProvider");
 //            ContactProfileProvider contactProfileProvider = new ContactProfileProvider(mContext);
@@ -178,6 +180,16 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
             }
         });
 
+        user_avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (lsContactProfile != null && lsContactProfile.getSocial_image() != null && !lsContactProfile.getSocial_image().equals("")) {
+                    mContext.startActivity(new Intent(mContext, LargeImageActivity.class).putExtra(LargeImageActivity.IMAGE_URL, lsContactProfile.getSocial_image()));
+                    //"https://scontent.fkhi1-1.fna.fbcdn.net/v/t1.0-1/p240x240/18485518_1354609427965668_4711169246440864616_n.jpg?_nc_eui2=v1%3AAeFsCbGYLqNrQxQt94LYc1q0t2Z3XYGYUVQgYorL9vgCcLW33wn7pHoAhdZCi1QMrEWj3QZXdvHRtkKtkx_-h4_ztNtaj9uiXSjKttxU2gB6VA&oh=90841f4b57e67147d6f2868e15a23aa1&oe=5AAD2CFB"
+//                mContext.startActivity(new Intent(mContext, ZoomActivity.class));
+                }
+            }
+        });
 
 //        this.bIgnore.setOnClickListener(new View.OnClickListener() {
 //            @Override

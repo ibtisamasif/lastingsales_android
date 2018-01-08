@@ -57,24 +57,26 @@ public class ZoomActivity extends FragmentActivity {
 
         // Hook up clicks on the thumbnail views.
 
-        final View thumb1View = findViewById(R.id.thumb_button_1);
-        thumb1View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                zoomImageFromThumb(thumb1View, R.drawable.image1);
-            }
-        });
-
-        final View thumb2View = findViewById(R.id.thumb_button_2);
-        thumb2View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                zoomImageFromThumb(thumb2View, R.drawable.image2);
-            }
-        });
+//        final View thumb1View = findViewById(R.id.thumb_button_1);
+//        thumb1View.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                zoomImageFromThumb(thumb1View, R.drawable.image1);
+//            }
+//        });
+//
+//        final View thumb2View = findViewById(R.id.thumb_button_2);
+//        thumb2View.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                zoomImageFromThumb(thumb2View, R.drawable.image2);
+//            }
+//        });
 
         // Retrieve and cache the system's default "short" animation time.
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        final View expanded_image = findViewById(R.id.expanded_image);
+        zoomImageFromThumb(expanded_image, R.drawable.image1);
     }
 
     @Override

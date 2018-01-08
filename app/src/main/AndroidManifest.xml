@@ -256,6 +256,11 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.NavigationBottomMainActivity" />
         </activity>
+        <activity android:name=".activities.LargeImageActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
+        </activity>
 
 
         <service android:name=".service.MyFirebaseMessagingService">

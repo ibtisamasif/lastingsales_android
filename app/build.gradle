@@ -7,8 +7,8 @@ android {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 96
-        versionName "2.43" //change mixpanel key too
+        versionCode 97
+        versionName "2.44" //change mixpanel key too
 //        jackOptions {
 //            enabled false
 //        }

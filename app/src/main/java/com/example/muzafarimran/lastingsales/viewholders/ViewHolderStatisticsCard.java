@@ -114,11 +114,11 @@ public class ViewHolderStatisticsCard extends RecyclerView.ViewHolder {
                             long minute = TimeUnit.SECONDS.toMinutes(average_response_time_long) - (TimeUnit.SECONDS.toHours(average_response_time_long) * 60);
                             long second = TimeUnit.SECONDS.toSeconds(average_response_time_long) - (TimeUnit.SECONDS.toMinutes(average_response_time_long) * 60);
                             if (day != 0) {
-                                tvArtValue.setText("D " + day + " H " + hours + " M " + minute + " S " + second);
+                                tvArtValue.setText(day + "d " + hours + "h " + minute + "m " + second + "s");
                             } else if (hours != 0) {
-                                tvArtValue.setText("H " + hours + " M " + minute + " S " + second);
+                                tvArtValue.setText(hours + "h " + minute + "m " + second + "s");
                             } else if (minute != 0) {
-                                tvArtValue.setText(" M " + minute + " S " + second);
+                                tvArtValue.setText(minute + "m " + second + "s ");
                             }
                         }
                     }

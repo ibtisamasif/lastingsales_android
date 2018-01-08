@@ -172,7 +172,7 @@ public class AddEditLeadService extends Service {
                     etContactPhone.setError(null);
                     String contactName = etContactName.getText().toString();
                     String contactPhone = etContactPhone.getText().toString();
-                    IgnoredContact.AddAsIgnoredContact(getApplicationContext(), contactPhone, contactName); //TODO centralize convertion in one class
+                    IgnoredContact.AddAsIgnoredContact(getApplicationContext(), contactPhone, contactName); // centralize convertion in one class
                     String projectToken = MixpanelConfig.projectToken;
                     MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
                     try {

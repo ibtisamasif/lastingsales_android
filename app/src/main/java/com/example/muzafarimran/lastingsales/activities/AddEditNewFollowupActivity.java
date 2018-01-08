@@ -95,7 +95,7 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
                 contactIdLong = Long.parseLong(id);
             }
             selectedContact = LSContact.findById(LSContact.class, contactIdLong);
-            if (selectedContact.getContactName() != null) {
+            if (selectedContact.getContactName() != null && !selectedContact.getContactName().equals("")) {
                 etFollowupTitleText.setText("Followup " + selectedContact.getContactName());
             }else {
                 etFollowupTitleText.setText("Followup " + selectedContact.getPhoneOne());

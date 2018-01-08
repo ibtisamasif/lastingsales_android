@@ -24,6 +24,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ColleagueActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
+import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -69,6 +70,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
     private TextView tvFbFromProfile;
     private RelativeLayout user_profile_group_wrapper;
     private View.OnClickListener callClickListener = null;
+    private LSContactProfile lsContactProfile;
 
     public ViewHolderUnlabeledCard(View v) {
         super(v);
@@ -103,7 +105,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 
         final String contactType = contact.getContactType();
 
-        LSContactProfile lsContactProfile = contact.getContactProfile();
+        lsContactProfile = contact.getContactProfile();
         if (lsContactProfile == null) {
             imSmartBadge.setVisibility(View.GONE);
             Log.d(TAG, "createOrUpdate: Not Found in contact Table now getting from ContactProfileProvider: " + contact.toString());
@@ -214,6 +216,17 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 //            Collection<LSContact> allUntaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
 //                setList(allUntaggedContacts);
             Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
+        });
+
+        user_avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (lsContactProfile != null && lsContactProfile.getSocial_image() != null && !lsContactProfile.getSocial_image().equals("")) {
+                    mContext.startActivity(new Intent(mContext, LargeImageActivity.class).putExtra(LargeImageActivity.IMAGE_URL, lsContactProfile.getSocial_image()));
+                    //"https://scontent.fkhi1-1.fna.fbcdn.net/v/t1.0-1/p240x240/18485518_1354609427965668_4711169246440864616_n.jpg?_nc_eui2=v1%3AAeFsCbGYLqNrQxQt94LYc1q0t2Z3XYGYUVQgYorL9vgCcLW33wn7pHoAhdZCi1QMrEWj3QZXdvHRtkKtkx_-h4_ztNtaj9uiXSjKttxU2gB6VA&oh=90841f4b57e67147d6f2868e15a23aa1&oe=5AAD2CFB"
+//                mContext.startActivity(new Intent(mContext, ZoomActivity.class));
+                }
+            }
         });
 
         switch (contactType) {

@@ -27,7 +27,7 @@ public class CallEndNotification {
     private static final String TAG = "CallEndNotification";
 
     public static Notification createFollowUpNotification(Context ctx, String intlNumber, LSContact contact) {
-//TODO get from LSCONTACT first
+// get from LSCONTACT first
 
         String number_or_name = "";
         number_or_name = contact.getContactName();

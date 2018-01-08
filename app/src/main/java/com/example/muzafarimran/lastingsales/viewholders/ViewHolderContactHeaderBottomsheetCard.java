@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
+import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
@@ -25,7 +26,6 @@ import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
-import com.example.muzafarimran.lastingsales.utils.ZoomActivity;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -45,6 +45,7 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
     private TextView numberDetailTextView;
     private Button bIgnore;
     private Button bSales;
+    private LSContactProfile lsContactProfile;
 
     public ViewHolderContactHeaderBottomsheetCard(View v) {
         super(v);
@@ -66,7 +67,7 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
 
         final String contactType = contact.getContactType();
 
-        LSContactProfile lsContactProfile = contact.getContactProfile();
+        lsContactProfile = contact.getContactProfile();
         if (lsContactProfile == null) {
             imSmartBadge.setVisibility(View.GONE);
             Log.d(TAG, "createOrUpdate: Not Found in contact Table now getting from ContactProfileProvider: " + contact.toString());
@@ -122,9 +123,11 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
         user_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                mContext.startActivity(new Intent(mContext, ZoomActivity.class));
-
+                if (lsContactProfile != null && lsContactProfile.getSocial_image() != null && !lsContactProfile.getSocial_image().equals("")) {
+                    mContext.startActivity(new Intent(mContext, LargeImageActivity.class).putExtra(LargeImageActivity.IMAGE_URL, lsContactProfile.getSocial_image()));
+                    //"https://scontent.fkhi1-1.fna.fbcdn.net/v/t1.0-1/p240x240/18485518_1354609427965668_4711169246440864616_n.jpg?_nc_eui2=v1%3AAeFsCbGYLqNrQxQt94LYc1q0t2Z3XYGYUVQgYorL9vgCcLW33wn7pHoAhdZCi1QMrEWj3QZXdvHRtkKtkx_-h4_ztNtaj9uiXSjKttxU2gB6VA&oh=90841f4b57e67147d6f2868e15a23aa1&oe=5AAD2CFB"
+//                mContext.startActivity(new Intent(mContext, ZoomActivity.class));
+                }
             }
         });
 
