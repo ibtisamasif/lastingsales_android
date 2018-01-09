@@ -1,10 +1,13 @@
 package com.example.muzafarimran.lastingsales.viewholders;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -36,52 +39,33 @@ import java.util.Map;
 
 public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
     private static final String TAG = "ViewHolderConnectionsCa";
-    private TextView tvCallerHistoryName0;
-    private TextView tvCallerHistoryLastCallDateTime0;
-    private TextView tvCallerHistoryLastCallTimeAgo0;
-    private TextView tvCallerHistoryName1;
-    private TextView tvCallerHistoryLastCallDateTime1;
-    private TextView tvCallerHistoryLastCallTimeAgo1;
-    private final TextView tvError;
+
+    private LinearLayout llDynamicConnectionsContainer;
     Context mContext;
     private static SessionManager sessionManager;
     private static RequestQueue queue;
     private LSContact selectedContact;
+    private TextView tvError;
 
     public ViewHolderConnectionsCard(View v) {
         super(v);
 
-        tvCallerHistoryName0 = (TextView) v.findViewById(R.id.tvCallerHistoryName0);
-        tvCallerHistoryLastCallDateTime0 = (TextView) v.findViewById(R.id.tvCallerHistoryLastCallDateTime0);
-        tvCallerHistoryLastCallTimeAgo0 = (TextView) v.findViewById(R.id.tvCallerHistoryLastCallTimeAgo0);
-        tvCallerHistoryName1 = (TextView) v.findViewById(R.id.tvCallerHistoryName1);
-        tvCallerHistoryLastCallDateTime1 = (TextView) v.findViewById(R.id.tvCallerHistoryLastCallDateTime1);
-        tvCallerHistoryLastCallTimeAgo1 = (TextView) v.findViewById(R.id.tvCallerHistoryLastCallTimeAgo1);
-        tvError = (TextView) v.findViewById(R.id.tvError);
+        llDynamicConnectionsContainer = (LinearLayout) v.findViewById(R.id.llDynamicConnectionsContainer);
 
     }
 
     public void bind(Object item, int position, Context mContext) {
         this.mContext = mContext;
         final ConnectionItem connectionItem = (ConnectionItem) item;
-        selectedContact = connectionItem.lsContact;
 
-        tvCallerHistoryName0.setText("");
-        tvCallerHistoryLastCallDateTime0.setText("");
-        tvCallerHistoryLastCallTimeAgo0.setText("");
-        tvCallerHistoryName1.setText("");
-        tvCallerHistoryLastCallDateTime1.setText("");
-        tvCallerHistoryLastCallTimeAgo1.setText("");
-
-        tvCallerHistoryName0.setVisibility(View.GONE);
-        tvCallerHistoryLastCallDateTime0.setVisibility(View.GONE);
-        tvCallerHistoryLastCallTimeAgo0.setVisibility(View.GONE);
-        tvCallerHistoryName1.setVisibility(View.GONE);
-        tvCallerHistoryLastCallDateTime1.setVisibility(View.GONE);
-        tvCallerHistoryLastCallTimeAgo1.setVisibility(View.GONE);
-
+        tvError = new TextView(mContext);
+        tvError.setText("Loading...");
+        tvError.setGravity(Gravity.CENTER);
+        llDynamicConnectionsContainer.addView(tvError);
         tvError.setVisibility(View.VISIBLE);
 
+
+        selectedContact = connectionItem.lsContact;
         sessionManager = new SessionManager(mContext);
         queue = Volley.newRequestQueue(mContext);
         fetchCustomerHistory(selectedContact.getPhoneOne());
@@ -95,7 +79,9 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
         final String BASE_URL = MyURLs.GET_CUSTOMER_HISTORY;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
+//                .appendQueryParameter("phone", "+92 301 4775234")
                 .appendQueryParameter("phone", "" + number)
+//                .appendQueryParameter("api_token", "NVAPN67dqZU4bBW18ykrtylvfyXFogt1dh3Dgw2XsOFuQKaWLySRv058v1If")
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
@@ -111,72 +97,84 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
                     JSONObject response = jObj.getJSONObject("response");
                     JSONArray dataArray = response.getJSONArray("data");
                     Log.d(TAG, "onResponse: dataArray Lenght: " + dataArray.length());
-//                    for (int i = 0; i < dataArray.length(); i++) {
                     if (dataArray.length() > 0) {
-                        JSONObject jsonobject0 = dataArray.getJSONObject(0);
-                        String last_call0 = jsonobject0.getString("last_call");
-                        String user_id0 = jsonobject0.getString("user_id");
-                        String duration0 = jsonobject0.getString("duration");
-                        String firstname0 = jsonobject0.getString("firstname");
-                        String lastname0 = jsonobject0.getString("lastname");
-                        String role_id0 = jsonobject0.getString("role_id");
-                        String name0 = jsonobject0.getString("name");
+                        for (int i = 0; i < dataArray.length(); i++) {
+                            Log.d(TAG, "onResponse: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                            JSONObject jsonobject = dataArray.getJSONObject(i);
+                            String last_call = jsonobject.getString("last_call");
+                            String user_id = jsonobject.getString("user_id");
+                            String duration = jsonobject.getString("duration");
+                            String firstname = jsonobject.getString("firstname");
+                            String lastname = jsonobject.getString("lastname");
+                            String role_id = jsonobject.getString("role_id");
+                            String name = jsonobject.getString("name");
 
-                        Log.d(TAG, "onResponse0: last_call: " + last_call0);
-                        Log.d(TAG, "onResponse0: user_id: " + user_id0);
-                        Log.d(TAG, "onResponse0: duration: " + duration0);
-                        Log.d(TAG, "onResponse0: firstname: " + firstname0);
-                        Log.d(TAG, "onResponse0: lastname: " + lastname0);
-                        Log.d(TAG, "onResponse0: role_id: " + role_id0);
-                        Log.d(TAG, "onResponse0: name: " + name0);
+                            Log.d(TAG, "onResponse0: last_call: " + last_call);
+                            Log.d(TAG, "onResponse0: user_id: " + user_id);
+                            Log.d(TAG, "onResponse0: duration: " + duration);
+                            Log.d(TAG, "onResponse0: firstname: " + firstname);
+                            Log.d(TAG, "onResponse0: lastname: " + lastname);
+                            Log.d(TAG, "onResponse0: role_id: " + role_id);
+                            Log.d(TAG, "onResponse0: name: " + name);
 
-//                        if (name0 != null && !name0.equals("null")) {
-//                            tvName.setText(name0);
-//                        }
+//                            Display display = ((WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+//                            int width = display.getWidth();
 
-                        if (firstname0 != null && lastname0 != null && last_call0 != null) {
-                            tvCallerHistoryName0.setVisibility(View.VISIBLE);
-                            if (!user_id0.equals(sessionManager.getKeyLoginId())) {
-                                tvCallerHistoryName0.setText("Last contacted " + firstname0 + " " + lastname0);
+                            LinearLayout llParentHorizontal = new LinearLayout(mContext);
+                            llParentHorizontal.setFocusable(true);
+                            llParentHorizontal.setFocusableInTouchMode(true);
+                            llParentHorizontal.setOrientation(LinearLayout.HORIZONTAL);
+                            llParentHorizontal.setWeightSum(10);
+
+                            LinearLayout.LayoutParams layoutParamsRow = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            layoutParamsRow.setMargins(8, 8, 8, 8);
+                            llParentHorizontal.setLayoutParams(layoutParamsRow);
+
+                            TextView tvCallerHistoryName = new TextView(mContext);
+                            tvCallerHistoryName.setPadding(0, 0, 0, 0);
+                            tvCallerHistoryName.setMaxLines(3);
+                            tvCallerHistoryName.setGravity(Gravity.LEFT);
+                            tvCallerHistoryName.setTextSize(14);
+                            tvCallerHistoryName.setTypeface(tvCallerHistoryName.getTypeface(), Typeface.BOLD);
+                            if (!user_id.equals(sessionManager.getKeyLoginId())) {
+                                tvCallerHistoryName.setText("Last contacted " + firstname + " " + lastname);
                             } else {
-                                tvCallerHistoryName0.setText("Last contacted with me");
-                            }
-                            tvCallerHistoryLastCallDateTime0.setVisibility(View.VISIBLE);
-                            tvCallerHistoryLastCallTimeAgo0.setVisibility(View.VISIBLE);
-                            tvCallerHistoryLastCallDateTime0.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), "dd-MMM-yyyy"));
-                            tvCallerHistoryLastCallTimeAgo0.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), mContext) + ")");
-                        }
-                    }
-                    if (dataArray.length() > 1) {
-                        JSONObject jsonobject1 = dataArray.getJSONObject(1);
-                        String last_call1 = jsonobject1.getString("last_call");
-                        String user_id1 = jsonobject1.getString("user_id");
-                        String duration1 = jsonobject1.getString("duration");
-                        String firstname1 = jsonobject1.getString("firstname");
-                        String lastname1 = jsonobject1.getString("lastname");
-                        String role_id1 = jsonobject1.getString("role_id");
-                        String name1 = jsonobject1.getString("name");
-
-                        Log.d(TAG, "onResponse1: last_call: " + last_call1);
-                        Log.d(TAG, "onResponse1: user_id: " + user_id1);
-                        Log.d(TAG, "onResponse1: duration: " + duration1);
-                        Log.d(TAG, "onResponse1: firstname: " + firstname1);
-                        Log.d(TAG, "onResponse1: lastname: " + lastname1);
-                        Log.d(TAG, "onResponse1: role_id: " + role_id1);
-                        Log.d(TAG, "onResponse1: name: " + name1);
-
-                        if (firstname1 != null && lastname1 != null && last_call1 != null) {
-                            tvCallerHistoryName1.setVisibility(View.VISIBLE);
-                            if (!user_id1.equals(sessionManager.getKeyLoginId())) {
-                                tvCallerHistoryName1.setText("Last contacted " + firstname1 + " " + lastname1);
-                            } else {
-                                tvCallerHistoryName1.setText("Last contacted with me");
+                                tvCallerHistoryName.setText("Last contacted with me");
                             }
 
-                            tvCallerHistoryLastCallDateTime1.setVisibility(View.VISIBLE);
-                            tvCallerHistoryLastCallTimeAgo1.setVisibility(View.VISIBLE);
-                            tvCallerHistoryLastCallDateTime1.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), "dd-MMM-yyyy"));
-                            tvCallerHistoryLastCallTimeAgo1.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), mContext) + ")");
+                            TextView tvCallerHistoryLastCallTimeAgo = new TextView(mContext);
+                            tvCallerHistoryLastCallTimeAgo.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), mContext) + ")");
+                            tvCallerHistoryLastCallTimeAgo.setPadding(0, 0, 0, 0);
+                            tvCallerHistoryLastCallTimeAgo.setGravity(Gravity.LEFT);
+                            tvCallerHistoryLastCallTimeAgo.setTextSize(10);
+
+                            TextView tvCallerHistoryLastCallDateTime = new TextView(mContext);
+                            tvCallerHistoryLastCallDateTime.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), "dd-MMM-yyyy"));
+                            tvCallerHistoryLastCallDateTime.setPadding(0, 0, 0, 0);
+                            tvCallerHistoryLastCallDateTime.setGravity(Gravity.RIGHT);
+                            tvCallerHistoryLastCallDateTime.setTextSize(14);
+
+                            LinearLayout l1ChildLeft = new LinearLayout(mContext);
+                            l1ChildLeft.setOrientation(LinearLayout.VERTICAL);
+                            LinearLayout.LayoutParams lpChildLeft = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            lpChildLeft.weight = 7;
+                            l1ChildLeft.setLayoutParams(lpChildLeft);
+                            l1ChildLeft.addView(tvCallerHistoryName);
+                            l1ChildLeft.addView(tvCallerHistoryLastCallTimeAgo);
+
+                            LinearLayout llChildRight = new LinearLayout(mContext);
+                            llChildRight.setOrientation(LinearLayout.HORIZONTAL);
+                            llChildRight.setGravity(Gravity.RIGHT);
+                            LinearLayout.LayoutParams lpChildRight = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            lpChildRight.weight = 3;
+                            lpChildRight.gravity = Gravity.RIGHT;
+                            llChildRight.setLayoutParams(lpChildRight);
+                            llChildRight.addView(tvCallerHistoryLastCallDateTime);
+
+                            llParentHorizontal.addView(l1ChildLeft);
+                            llParentHorizontal.addView(llChildRight);
+
+                            llDynamicConnectionsContainer.addView(llParentHorizontal);
                         }
                     }
                 } catch (JSONException e) {
@@ -189,13 +187,14 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
                 Log.d(TAG, "onErrorResponse: CouldNotGetCustomerHistory");
                 if (!NetworkAccess.isNetworkAvailable(mContext)) {
                     tvError.setText("Internet is required to view connections");
+
                 } else {
                     try {
                         if (error.networkResponse != null) {
                             if (error.networkResponse.statusCode == 404) {
-//                                tvError.setText("Connections not found");
+                                tvError.setText("Connections not found");
                             } else {
-                                tvError.setText("Error loading");
+                                tvError.setText("Error Loading");
                             }
                         } else {
                             tvError.setText("Poor Internet Connectivity");

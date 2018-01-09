@@ -119,6 +119,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
             // Redirected Import Contact to LAUNCH_MODE_ADD_NEW_CONTACT
             launchMode = AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT;
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
+            selectRadioButton(LSContact.CONTACT_TYPE_SALES);
         }
         if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
             populateCreateContactView();
@@ -130,6 +131,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                     etContactName.setText(name);
                 }
             }
+            selectRadioButton(LSContact.CONTACT_TYPE_SALES);
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
             populateUpdateContactView(bundle);
