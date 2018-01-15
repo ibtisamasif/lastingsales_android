@@ -183,6 +183,7 @@ public class CallDetectionService extends Service {
     }
 
     protected void onIncomingCallStarted(Context ctx, String number, Date start) {
+//        AddEditLeadServiceBubbleHelper.getInstance(ctx.getApplicationContext()).hide(); // remove old bubble
         sessionManager = new SessionManager(ctx);
         if (!sessionManager.isUserSignedIn()) {
             return;
@@ -195,6 +196,7 @@ public class CallDetectionService extends Service {
     }
 
     protected void onOutgoingCallStarted(Context ctx, String number, Date start) {
+//        AddEditLeadServiceBubbleHelper.getInstance(ctx.getApplicationContext()).hide(); // remove old bubble
         sessionManager = new SessionManager(ctx);
         if (!sessionManager.isUserSignedIn()) {
             return;

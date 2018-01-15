@@ -21,7 +21,6 @@ import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.util.Calendar;
@@ -323,7 +322,7 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
             public void onClick(View view) {
                 Calendar now = Calendar.getInstance();
                 DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(AddEditNewFollowupActivity.this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.setCancelable(false);
+                datePickerDialog.setCancelable(true);
                 datePickerDialog.setTitle("Select Date for Reminder");
                 datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
             }
@@ -333,9 +332,9 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
             public void onClick(View view) {
                 Calendar now = Calendar.getInstance();
                 TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(AddEditNewFollowupActivity.this, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);
-                timePickerDialog.setCancelable(false);
+                timePickerDialog.setCancelable(true);
                 timePickerDialog.setTitle("Select Time for Reminder");
-                timePickerDialog.setMinTime(now.HOUR_OF_DAY, now.MINUTE, now.SECOND);
+//                timePickerDialog.setMinTime(now.get(Calendar.HOUR), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
                 timePickerDialog.show(getFragmentManager(), "Timepickerdialog");
             }
         });
@@ -350,17 +349,28 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
         }
         if (bTime != null) {
             bTime.setText(now.get(Calendar.HOUR_OF_DAY) + " : " + now.get(Calendar.MINUTE));
+//            Log.d(TAG, "setDateTimeFromMiliseconds: (now.get(Calendar.HOUR) + \" : \" + now.get(Calendar.MINUTE): " + now.get(Calendar.HOUR_OF_DAY) + " : " + now.get(Calendar.MINUTE));
         }
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         if (bTime != null) {
             bTime.setText(hourOfDay + ":" + minute);
+//            Log.d(TAG, "onTimeSet: (hourOfDay + \":\" + minute): " + (hourOfDay + ":" + minute));
             mHour = hourOfDay;
             mMinute = minute;
         }
     }
+
+//    @Override
+//    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+//        if (bTime != null) {
+//            bTime.setText(hourOfDay + ":" + minute);
+//            mHour = hourOfDay;
+//            mMinute = minute;
+//        }
+//    }
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {

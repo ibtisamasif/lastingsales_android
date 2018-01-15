@@ -136,6 +136,11 @@ public class AddEditLeadActivity extends AppCompatActivity {
         } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
             populateUpdateContactView(bundle);
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
+            if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+                selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
+            }else {
+                selectRadioButton(LSContact.CONTACT_TYPE_SALES);
+            }
         }
         if (mixpanelSource != null && mixpanelSource.equals(MIXPANEL_SOURCE_NOTIFICATION)) {
             String projectToken = MixpanelConfig.projectToken;

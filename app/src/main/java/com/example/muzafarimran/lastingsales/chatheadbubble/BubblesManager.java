@@ -53,15 +53,15 @@ public class BubblesManager {
     private ServiceConnection bubbleServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            BubblesService.BubblesServiceBinder binder = (BubblesService.BubblesServiceBinder)service;
+            BubblesService.BubblesServiceBinder binder = (BubblesService.BubblesServiceBinder) service;
             BubblesManager.this.bubblesService = binder.getService();
 //            configureBubblesService();
             bounded = true;
             if (listener != null) {
                 listener.onInitialized();
             }
-            if( mpending!=null){
-               addBubble(mpending,x,y);
+            if (mpending != null) {
+                addBubble(mpending, x, y);
             }
         }
 
@@ -92,22 +92,20 @@ public class BubblesManager {
 
     public void addBubble(BubbleLayout bubble, int x, int y) {
         if (bounded) {
-            mpending=null;
+            mpending = null;
             bubblesService.addBubble(bubble, x, y);
-        }
-        else
-        {
-            this.mpending=bubble;
-            this.x=x;
-            this.y=y;
+        } else {
+            this.mpending = bubble;
+            this.x = x;
+            this.y = y;
         }
     }
 
     public void removeBubble(BubbleLayout bubble) {
-        if (bounded) {
+//        if (bounded) {
             bubblesService.removeBubble(bubble);
-        }
-        mpending=null;
+//        }
+        mpending = null;
     }
 
     public static class Builder {
@@ -123,7 +121,7 @@ public class BubblesManager {
         }
 
         public Builder setTrashLayout(int trashLayoutResourceId) {
-            bubblesManager.trashLayoutResourceId =trashLayoutResourceId;
+            bubblesManager.trashLayoutResourceId = trashLayoutResourceId;
             return this;
         }
 

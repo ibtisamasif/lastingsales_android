@@ -101,6 +101,16 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
 
     public void hide() {
         bubblesManager.removeBubble(bubbleView);
+//        if (bubblesManager == null){
+//            Log.d(TAG, "hide: bubblesManager == null");
+//        }else {
+//            Log.d(TAG, "hide: bubblesManager != null");
+//        }
+//        if (bubbleView == null){
+//            Log.d(TAG, "hide: bubbleView == null");
+//        }else {
+//            Log.d(TAG, "hide: bubbleView != null");
+//        }
     }
 
     private void initializeAllViewsFromThisParentView(View bubbleView) {

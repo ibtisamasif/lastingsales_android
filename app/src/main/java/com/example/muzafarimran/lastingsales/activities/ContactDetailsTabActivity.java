@@ -182,7 +182,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("app.lastingsales.com"));
 //                intent.setType("image/png");
                 intent.putExtra("subject", "Greetings");
-                intent.putExtra("address", "03228899906");
+                intent.putExtra("address", selectedContact.getPhoneOne());
                 intent.putExtra(intent.EXTRA_TEXT, "Wellcome to lastingSales");
                 intent.putExtra("sms_body", "Wellcome to lastingSales");
                 startActivity(intent);

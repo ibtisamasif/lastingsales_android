@@ -16,6 +16,8 @@ import static com.google.android.gms.internal.zzahg.runOnUiThread;
 
 public class CallEndTagBoxService {
     private static final String TAG = "CallEndTagBoxService";
+    private static boolean isDialogShown = false;
+
 
     public static void checkShowCallPopupNew(Context ctx, String name, String number) {
         SettingsManager settingsManager = new SettingsManager(ctx);
@@ -30,12 +32,17 @@ public class CallEndTagBoxService {
         } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
             Log.d(TAG, "showTagNumberPopupIfNeeded: tempContact is UNLABELED");
             if (settingsManager.getKeyStateCallEndDialog()) {
-
                 runOnUiThread(new Runnable() {
                     public void run() {
                         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(ctx, number);
                         //        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
+//                        if (!isDialogShown) {
+//                            isDialogShown = true;
+//                            AddEditLeadServiceBubbleHelper.getInstance(ctx.getApplicationContext()).show(LSContact.CONTACT_TYPE_SALES, internationalNumber, name);
+//                        }else {
+                        AddEditLeadServiceBubbleHelper.getInstance(ctx.getApplicationContext()).hide();
                         AddEditLeadServiceBubbleHelper.getInstance(ctx.getApplicationContext()).show(LSContact.CONTACT_TYPE_SALES, internationalNumber, name);
+//                        }
                     }
                 });
 
@@ -51,11 +58,10 @@ public class CallEndTagBoxService {
         } else if (tempContact == null) {
             Log.d(TAG, "showTagNumberPopupIfNeeded: tempContact is NULL");
             if (settingsManager.getKeyStateCallEndDialog()) {
-
-
                 runOnUiThread(new Runnable() {
                     public void run() {
                         String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(ctx, number);
+                        AddEditLeadServiceBubbleHelper.getInstance(ctx.getApplicationContext()).hide();
                         AddEditLeadServiceBubbleHelper.getInstance(ctx.getApplicationContext()).show(LSContact.CONTACT_TYPE_SALES, internationalNumber, name);
                     }
                 });

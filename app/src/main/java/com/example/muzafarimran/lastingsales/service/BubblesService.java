@@ -147,8 +147,8 @@ public class BubblesService extends Service {
 //    }
 
     public void removeBubble(BubbleLayout bubbl) {
-        if (mbbl != null) {
-            recycleBubble(mbbl);
+        if (bubbl != null) {
+            recycleBubble(bubbl);
         }
     }
 
