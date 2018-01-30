@@ -12,7 +12,6 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.AddLeadItem;
-import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONObject;

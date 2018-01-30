@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.viewholders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
@@ -27,6 +28,7 @@ import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivit
 import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -36,6 +38,8 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.net.URLEncoder;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -53,6 +57,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
     TextView name;
     TextView time;
     ImageView call_icon;
+    private final ImageView whatsapp_icon;
     ImageView imSmartBadge;
     RelativeLayout rl_container_buttons;
     TextView numberDetailTextView;
@@ -80,6 +85,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
         this.user_avatar = v.findViewById(R.id.user_avatar);
         this.name = v.findViewById(R.id.call_name);
         this.time = v.findViewById(R.id.call_time);
+        this.whatsapp_icon = v.findViewById(R.id.whatsapp_icon);
         this.call_icon = v.findViewById(R.id.call_icon);
         this.numberDetailTextView = v.findViewById(R.id.tvEmail);
         this.rl_container_buttons = v.findViewById(R.id.rl_container_buttons);
@@ -216,6 +222,9 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 //            Collection<LSContact> allUntaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
 //                setList(allUntaggedContacts);
             Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
+
+            CloseContactBottomSheetEvent closeContactBottomSheetEvent = new NavigationBottomMainActivity();
+            closeContactBottomSheetEvent.closeContactBottomSheetCallback();
         });
 
         user_avatar.setOnClickListener(new View.OnClickListener() {
@@ -243,6 +252,24 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                     long contactId = contact.getId();
                     detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                     mContext.startActivity(detailsActivityIntent);
+                });
+
+                this.whatsapp_icon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        PackageManager packageManager = mContext.getPackageManager();
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        try {
+                            String url = "https://api.whatsapp.com/send?phone=" + number + "&text=" + URLEncoder.encode("Surprised? Now what is the surprise for me?", "UTF-8");
+                            i.setPackage("com.whatsapp");
+                            i.setData(Uri.parse(url));
+                            if (i.resolveActivity(packageManager) != null) {
+                                mContext.startActivity(i);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 });
 
                 //  Deletes the contact, queries db and updates local list plus notifies adapter
@@ -367,7 +394,7 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
 
                 this.cl.setOnClickListener(view -> {
                     NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
-                    navigationBottomMainActivity.onClickUnlabeled((Long) view.getTag());
+                    navigationBottomMainActivity.openContactBottomSheetCallback((Long) view.getTag());
 //                    Intent myIntent = new Intent(mContext, ContactCallDetailsBottomSheetFragment.class);
 //                    myIntent.putExtra("number", (String) view.getTag());
 //                    mContext.startActivity(myIntent);

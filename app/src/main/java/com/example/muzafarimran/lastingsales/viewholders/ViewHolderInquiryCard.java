@@ -155,7 +155,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
-                navigationBottomMainActivity.onClickInquiry((String) view.getTag());
+                navigationBottomMainActivity.openInquiryBottomSheetCallback((String) view.getTag());
             }
         });
 

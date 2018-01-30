@@ -209,13 +209,15 @@ public class DataSenderAsync {
                     if (error != null) {
                         if (error.networkResponse != null) {
                             Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
-                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                            int responseCode = jObj.getInt("responseCode");  //TODO here too
-                            if (responseCode == 409) {
-                                JSONObject responseObject = jObj.getJSONObject("response");
-                                contact.setServerId(responseObject.getString("id"));
-                                contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                                contact.save();
+                            if (error.networkResponse.statusCode == 409) {
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                if (responseCode == 409) {
+                                    JSONObject responseObject = jObj.getJSONObject("response");
+                                    contact.setServerId(responseObject.getString("id"));
+                                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                                    contact.save();
+                                }
                             }
                         }
                     }
@@ -382,7 +384,7 @@ public class DataSenderAsync {
                     if (error.networkResponse != null) {
                         Log.d(TAG, "onErrorResponse: statusCode: " + error.networkResponse.statusCode);
                         if (error.networkResponse.statusCode == 409) {
-//                            call.setServerId(responseObject.getString("id"));
+//                            call.setServerId(responseObject.getString("id")); // Not needed
                             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_SYNCED);
                             call.save();
                         }
@@ -700,7 +702,7 @@ public class DataSenderAsync {
                         Log.d(TAG, "onErrorResponse: no response may be poor internet");
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    e.printStackTrace(); // TODO google pixel
                 }
 
             }

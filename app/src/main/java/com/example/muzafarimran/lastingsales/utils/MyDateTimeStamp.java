@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.utils;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -99,12 +100,12 @@ public class MyDateTimeStamp {
         return timeDurationString;
     }
 
-    public static long dateTimeLong(String dateTimeString){
-
+    public static long dateTimeToLong(String dateTimeString){
+        Log.d("DateTest", "dateTimeToLong: " + dateTimeString);
         java.util.Date dateStart = null;
         long dateTimeLong = 0;
         try {
-            dateTimeLong = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTimeString).getTime(); //TODO google device failed here
+            dateTimeLong = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTimeString).getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }

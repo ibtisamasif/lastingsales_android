@@ -28,7 +28,7 @@ public class CallClickListener implements View.OnClickListener {
     public void onClick(View v) {
         if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
         }
-        if(v.getTag()!=null) {
+        if (v.getTag() != null) {
             String number = v.getTag().toString();
             Intent intent = new Intent(Intent.ACTION_CALL);
             intent.setData(Uri.parse("tel:" + number));

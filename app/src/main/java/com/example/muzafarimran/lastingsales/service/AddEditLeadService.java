@@ -67,7 +67,7 @@ public class AddEditLeadService extends Service {
     private View largeInflatedView;
     private WindowManager.LayoutParams params;
     private WindowManager.LayoutParams shrunkParams;
-    private Button bNo;
+//    private Button bNo;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -121,7 +121,7 @@ public class AddEditLeadService extends Service {
         etContactPhone = (TextView) largeInflatedView.findViewById(R.id.etContactPhone);
         bSave = (Button) largeInflatedView.findViewById(R.id.bSaveFollowupPopup);
         bClose = (ImageView) largeInflatedView.findViewById(R.id.bClose);
-        bNo = (Button) largeInflatedView.findViewById(R.id.bNo);
+//        bNo = (Button) largeInflatedView.findViewById(R.id.bNo);
         cbIgnore = (CheckBox) largeInflatedView.findViewById(R.id.cbIgnore);
         llContactDetailsFollowupScreen = (LinearLayout) largeInflatedView.findViewById(R.id.llContactDetailsAddContactScreen);
         // Mix Panel Event
@@ -154,15 +154,15 @@ public class AddEditLeadService extends Service {
                 Toast.makeText(serviceContext, "Closed!", Toast.LENGTH_SHORT).show();
             }
         });
-        bNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopSelf();
-//                stopThisService();
-//                System.exit(0);
-                Toast.makeText(serviceContext, "Added to Unlabeled!", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        bNo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                stopSelf();
+////                stopThisService();
+////                System.exit(0);
+//                Toast.makeText(serviceContext, "Added to Unlabeled!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

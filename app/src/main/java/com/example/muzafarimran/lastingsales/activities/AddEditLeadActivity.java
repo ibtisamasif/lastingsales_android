@@ -42,33 +42,25 @@ public class AddEditLeadActivity extends AppCompatActivity {
     public static final String LAUNCH_MODE_IMPORT_CONTACT = "launch_mode_import_contact_from_phonebook";
     public static final String LAUNCH_MODE_ADD_NEW_CONTACT = "launch_mode_add_new_contact";
     public static final String LAUNCH_MODE_EDIT_EXISTING_CONTACT = "launch_mode_edit_existing_contact";
-    //    public static final String LAUNCH_MODE_TAG_PHONE_NUMBER = "launch_mode_tag_phone_number";
-//    public static final String LAUNCH_MODE_CONVERT_IGNORED = "launch_mode_convert_non_business";
     public static final String TAG_LAUNCH_MODE_PHONE_NUMBER = "phone_number";
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     private static final String TAG = "AddEditLeadActivity";
-    private static final String TITLE_IMPORT_CONTACT = "Import Contact";
-    private static final String TITLE_ADD_NEW_CONTACT = "Add Contact";
-    private static final String TITLE_EDIT_CONTACT = "Edit Contact";
-    private static final String TITLE_TAG_NUMBER = "Tag Number";
 
     public static final String MIXPANEL_SOURCE = "mixpanel_source";
 
-    public static final String MIXPANEL_SOURCE_CARD = "Card";
+    public static final String MIXPANEL_SOURCE_CARD = "Card"; // Deprecated
+    public static final String MIXPANEL_SOURCE_FAB = "Fab";
     public static final String MIXPANEL_SOURCE_NOTIFICATION = "Notification";
     public static final String MIXPANEL_SOURCE_UNLABELED = "Unlabeled";
     public static final String MIXPANEL_SOURCE_IGNORE = "Ignored";
     public static final String MIXPANEL_SOURCE_COLLEAGUE = "Colleague";
     public static final String MIXPANEL_SOURCE_INQUIRY = "Inquiry";
 
-
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
     String launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
     String selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
-    String phoneNumberFromLastActivity;
     boolean editingMode = false;
     long contactIdLong = -1;
-    //    TextView tvTitleAddContact;
     EditText etContactName;
     EditText etContactPhone;
     EditText etContactEmail;
@@ -79,7 +71,6 @@ public class AddEditLeadActivity extends AppCompatActivity {
     private Button bColleagueRadio;
     private Button bSalesRadio;
     private Uri uriContact;
-    //    private String contactID;
     private LSContact selectedContact = null;
     private String contactPhone;
     private String contactName;

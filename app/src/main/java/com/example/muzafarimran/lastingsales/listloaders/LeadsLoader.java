@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.carditems.AddLeadItem;
 import com.example.muzafarimran.lastingsales.carditems.ChipItem;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
-import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -21,20 +19,24 @@ import java.util.List;
  */
 
 public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
-    private final String leadsToLoad;
+    private  String leadsToLoad;
     private List<Object> list = new ArrayList<Object>();
     Bundle bundle;
 
     public LeadsLoader(Context context, Bundle args) {
         super(context);
         bundle = args;
-        leadsToLoad = bundle.getString("whichLeads");
+        if (bundle != null){
+            leadsToLoad = bundle.getString("whichLeads");
+        }else {
+            leadsToLoad = "All";
+        }
     }
 
     @Override
     public List<Object> loadInBackground() {
-        AddLeadItem addLeadItem = new AddLeadItem();
-        list.add(addLeadItem);
+//        AddLeadItem addLeadItem = new AddLeadItem();
+//        list.add(addLeadItem);
 
         if (leadsToLoad != null && leadsToLoad.equals("All")) {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
@@ -51,6 +53,13 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                list.addAll(listHome);
                 list.add(chipItem);
                 list.addAll(contacts);
+
+                SeparatorItem separatorSpace = new SeparatorItem();
+                separatorItem.text = "";
+
+                list.add(separatorSpace);
+                list.add(separatorSpace);
+
             } else {
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
@@ -78,6 +87,13 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                list.addAll(listHome);
                 list.add(chipItem);
                 list.addAll(contacts);
+
+                SeparatorItem separatorSpace = new SeparatorItem();
+                separatorItem.text = "";
+
+                list.add(separatorSpace);
+                list.add(separatorSpace);
+
             } else {
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
@@ -104,6 +120,13 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                list.addAll(listHome);
                 list.add(chipItem);
                 list.addAll(contacts);
+
+                SeparatorItem separatorSpace = new SeparatorItem();
+                separatorItem.text = "";
+
+                list.add(separatorSpace);
+                list.add(separatorSpace);
+
             } else {
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
@@ -130,6 +153,13 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                list.addAll(listHome);
                 list.add(chipItem);
                 list.addAll(contacts);
+
+                SeparatorItem separatorSpace = new SeparatorItem();
+                separatorItem.text = "";
+
+                list.add(separatorSpace);
+                list.add(separatorSpace);
+
             } else {
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
@@ -156,6 +186,13 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                list.addAll(listHome);
                 list.add(chipItem);
                 list.addAll(contacts);
+
+                SeparatorItem separatorSpace = new SeparatorItem();
+                separatorItem.text = "";
+
+                list.add(separatorSpace);
+                list.add(separatorSpace);
+
             } else {
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
@@ -181,6 +218,13 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                list.addAll(listHome);
                 list.add(chipItem);
                 list.addAll(contacts);
+
+                SeparatorItem separatorSpace = new SeparatorItem();
+                separatorSpace.text = "";
+
+                list.add(separatorSpace);
+                list.add(separatorSpace);
+
             } else {
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();

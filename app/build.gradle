@@ -7,8 +7,8 @@ android {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 98
-        versionName "2.45" //change mixpanel key too
+        versionCode 99
+        versionName "2.46" //change mixpanel key and urls (staging to production) lskey = J7Z/}aB*6'r7q+A~
 //        jackOptions {
 //            enabled false
 //        }
@@ -57,14 +57,19 @@ android {
     }
 }
 dependencies {
-//    implementation fileTree(dir: 'libs', include: ['*.jar'])
-//    // Testing-only dependencies
-//    testImplementation 'junit:junit:4.12'
-//    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.google.android.gms:play-services-plus:11.4.0'
+    //    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //    // Testing-only dependencies
+    //    testImplementation 'junit:junit:4.12'
+    //    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    // Required -- JUnit 4 framework
+    testCompile 'junit:junit:4.12'
+    // Optional -- Mockito framework
+    testCompile 'org.mockito:mockito-core:1.10.19'
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.2'
     compile 'com.android.support:appcompat-v7:27.0.2'
     compile 'com.android.support:design:27.0.2'
     compile 'com.android.support:recyclerview-v7:27.0.2'
@@ -72,13 +77,12 @@ dependencies {
     compile 'com.android.support:palette-v7:27.0.2'
     compile 'com.android.support:cardview-v7:27.0.2'
     compile 'com.android.support:support-core-utils:27.0.2'
-
+    implementation 'com.google.android.gms:play-services-plus:11.4.0'
     compile 'com.google.firebase:firebase-core:11.4.0'
     compile 'com.google.firebase:firebase-messaging:11.4.0'
     compile 'com.google.firebase:firebase-crash:11.4.0'
     compile 'com.google.android.gms:play-services-gcm:11.4.0'
     compile 'com.google.android.gms:play-services-ads:11.4.0'
-
     compile('com.google.android.gms:play-services-auth:11.4.0') {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.guava'
@@ -94,7 +98,6 @@ dependencies {
         exclude module: 'support-annotations'
         exclude group: 'com.google.guava'
     }
-
     compile 'com.wdullaer:materialdatetimepicker:3.5.0'
     compile 'com.github.satyan:sugar:1.5'
     compile 'com.github.satyan:sugar:-SNAPSHOT'
@@ -122,9 +125,7 @@ dependencies {
     //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     compile 'com.evernote:android-job:1.1.7'
     compile 'com.github.paolorotolo:expandableheightlistview:1.0.0'
-
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-
     compile 'com.facebook.fresco:fresco:1.5.0'
 
 }

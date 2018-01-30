@@ -41,7 +41,7 @@
             style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="11"
+            android:ems="10"
             android:layout_marginStart="16dp"
             android:text="name"
             app:layout_constraintStart_toEndOf="@+id/user_avatar"
@@ -102,13 +102,12 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:padding="8dp"
             android:scaleType="fitEnd"
-            app:srcCompat="@drawable/ic_call_green"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/user_avatar" />
+            app:layout_constraintTop_toTopOf="@+id/user_avatar"
+            app:srcCompat="@drawable/ic_call_green" />
 
         <TextView
             android:id="@+id/inquireyCount"
@@ -116,7 +115,7 @@
             android:layout_height="24dp"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
             android:layout_toLeftOf="@id/call_icon"
             android:layout_toStartOf="@id/call_icon"
             android:background="@drawable/inquiry_count_round"

@@ -7,9 +7,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.MatrixCursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
@@ -24,6 +29,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -41,6 +47,8 @@ import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
+import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
+import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listloaders.HomeLoader;
 import com.example.muzafarimran.lastingsales.listloaders.InquiryLoader;
 import com.example.muzafarimran.lastingsales.listloaders.LeadsLoader;
@@ -58,6 +66,8 @@ import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -74,7 +84,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 11/6/2017.
  */
 
-public class NavigationBottomMainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Object>>, ChipClickListener {
+public class NavigationBottomMainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Object>>, ChipClickListener, CloseInquiryBottomSheetEvent, CloseContactBottomSheetEvent {
     public static final String TAG = "NavigationBottomMain";
 
     public static final String KEY_ACTIVE_LOADER = "active_loader";
@@ -127,6 +137,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             return false;
         }
     };
+    private static InquiryCallDetailsBottomSheetFragmentNew contactCallDetails;
+    private static ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment;
+    private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
+    private FloatingActionMenu floatingActionMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,11 +175,58 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 //                super.onDraw(c, parent, state);
 //            }
 //        });
+
+        floatingActionMenu = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
+        floatingActionButtonAdd = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add);
+        floatingActionButtonImport = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_import);
+        floatingActionMenu.setClosedOnTouchOutside(true);
+
+        floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                floatingActionMenu.close(true);
+
+                Intent intent = new Intent(NavigationBottomMainActivity.this, AddEditLeadActivity.class);
+                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+                intent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_FAB);
+                startActivity(intent);
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationBottomMainActivity.this, projectToken);
+                mixpanel.track("Create lead dialog - opened");
+
+//                Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
+//                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
+//                intent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_FAB);
+//                startActivity(intent);
+            }
+        });
+        floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                floatingActionMenu.close(true);
+
+                Intent intent1 = new Intent(NavigationBottomMainActivity.this, AddEditLeadActivity.class);
+                intent1.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
+                intent1.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_FAB);
+                startActivity(intent1);
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationBottomMainActivity.this, projectToken);
+                mixpanel.track("Create lead dialog - opened");
+
+//                Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
+//                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
+//                intent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_FAB);
+//                startActivity(intent);
+            }
+        });
     }
 
     private void initFirst() {
 
+        Log.d(TAG, "initFirst: density: " + getResources().getDisplayMetrics().density);
+
         sessionManager = new SessionManager(getApplicationContext());
+        checkForInvalidTime();
         if (!sessionManager.isUserSignedIn()) {
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
             finish();
@@ -191,6 +252,29 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 //                long now = Calendar.getInstance().getTimeInMillis();
 //                long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
 //                sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
+            }
+        }
+    }
+
+    private void checkForInvalidTime() {
+        String lastAppVisitTime = sessionManager.getLastAppVisit();
+        if (lastAppVisitTime != null && !lastAppVisitTime.equals("")) {
+            Long lastAppVisitTimeLong = Long.parseLong(lastAppVisitTime);
+            Long timeNowLong = Calendar.getInstance().getTimeInMillis();
+            Log.d(TAG, "checkForInvalidTime: getLastAppVisit: " + lastAppVisitTimeLong);
+            Log.d(TAG, "checkForInvalidTime: getSystemTime  : " + timeNowLong);
+            if (timeNowLong < lastAppVisitTimeLong) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(NavigationBottomMainActivity.this);
+                alert.setTitle("Wrong time");
+                alert.setMessage("Your systems date/time needs to be adjusted");
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+//                    finish();
+                    }
+                });
+                alert.show();
             }
         }
     }
@@ -225,7 +309,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         Log.d(TAG, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER);
         Log.d(TAG, "onCreate: Build.BRAND: " + Build.BRAND);
 
-        if (Build.BRAND.equalsIgnoreCase("xiaomi") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
+//        Toast.makeText(this, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "onCreate: Build.BRAND: " + Build.BRAND, Toast.LENGTH_SHORT).show();
+
+        if (Build.MANUFACTURER.equalsIgnoreCase("xiaomi") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
             Log.d(TAG, "onCreate: xiaomi");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
@@ -242,7 +329,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                             }
                         }
                     }).create().show();
-        } else if (Build.BRAND.equalsIgnoreCase("Letv") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
+        } else if (Build.MANUFACTURER.equalsIgnoreCase("Letv") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
             Log.d(TAG, "onCreate: Letv");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
@@ -259,7 +346,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                             }
                         }
                     }).create().show();
-        } else if (Build.BRAND.equalsIgnoreCase("Honor") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
+        } else if (Build.MANUFACTURER.equalsIgnoreCase("Honor") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
             Log.d(TAG, "onCreate: Honor");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
@@ -276,7 +363,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                             }
                         }
                     }).create().show();
-        } else if ("huawei".equalsIgnoreCase(Build.MANUFACTURER) && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
+        } else if (Build.MANUFACTURER.equalsIgnoreCase("Huawei") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
                     .setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -284,9 +371,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                         public void onClick(DialogInterface dialogInterface, int i) {
                             try {
                                 Intent intent = new Intent();
-                                intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
-                                startActivity(intent);
-                                settingsManager.setKeyStateProtectedApp(true);
+                                intent.setClassName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity");
+                                if (isCallable(intent)) {
+//                                    intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+                                    startActivity(intent);
+                                    settingsManager.setKeyStateProtectedApp(true);
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -295,18 +385,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         }
 
 
-//        Intent intentTest = new Intent();
-//        String packageName = NavigationDrawerActivity.this.getPackageName();
-//        PowerManager pm = (PowerManager) NavigationDrawerActivity.this.getSystemService(Context.POWER_SERVICE);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (pm.isIgnoringBatteryOptimizations(packageName))
-//                intentTest.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-//            else {
-//                intentTest.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-//                intentTest.setData(Uri.parse("package:" + packageName));
-//            }
-//            NavigationDrawerActivity.this.startActivity(intentTest);
-//        }
+        Intent intentTest = new Intent();
+        String packageName = NavigationBottomMainActivity.this.getPackageName();
+        PowerManager pm = (PowerManager) NavigationBottomMainActivity.this.getSystemService(Context.POWER_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (pm.isIgnoringBatteryOptimizations(packageName))
+                intentTest.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+            else {
+                intentTest.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intentTest.setData(Uri.parse("package:" + packageName));
+            }
+            NavigationBottomMainActivity.this.startActivity(intentTest);
+        }
 
         final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -333,6 +423,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         }
     }
 
+
+    private boolean isCallable(Intent intent) {
+        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -361,13 +457,13 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 }
             } else {
                 Log.d(TAG, "onCreate: Bundle Not Null Loading Home TAB");
-                getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
-                navigation.setSelectedItemId(R.id.navigation_home);
+                getSupportLoaderManager().initLoader(3, null, NavigationBottomMainActivity.this).forceLoad();
+                navigation.setSelectedItemId(R.id.navigation_leads);
             }
         } else {
             Log.d(TAG, "onCreate: Bundle is Null Loading Home TAB");
-            getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
-            navigation.setSelectedItemId(R.id.navigation_home);
+            getSupportLoaderManager().initLoader(3, null, NavigationBottomMainActivity.this).forceLoad();
+            navigation.setSelectedItemId(R.id.navigation_leads);
         }
     }
 
@@ -402,7 +498,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     public void onInquiryDeletedEventModel(InquiryDeletedEventModel event) {
         if (ACTIVE_LOADER == 1) {
             getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
-            ACTIVE_LOADER = 1;
             navigation.setSelectedItemId(R.id.navigation_inquiries);
         }
     }
@@ -411,7 +506,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     public void onMissedCallEventModel(MissedCallEventModel event) {
         if (ACTIVE_LOADER == 1) {
             getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
-            ACTIVE_LOADER = 1;
             navigation.setSelectedItemId(R.id.navigation_inquiries);
         }
     }
@@ -420,12 +514,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
         if (ACTIVE_LOADER == 2) {
             getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
-            ACTIVE_LOADER = 2;
             navigation.setSelectedItemId(R.id.navigation_home);
         }
         if (ACTIVE_LOADER == 3) {
             getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
-            ACTIVE_LOADER = 3;
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
 //        Toast.makeText(NavigationBottomMainActivity.this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
@@ -435,12 +527,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
         if (ACTIVE_LOADER == 2) {
             getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
-            ACTIVE_LOADER = 2;
             navigation.setSelectedItemId(R.id.navigation_home);
         }
         if (ACTIVE_LOADER == 3) {
             getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
-            ACTIVE_LOADER = 3;
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
 //        Toast.makeText(NavigationBottomMainActivity.this, "ContactDeletedEventModel", Toast.LENGTH_SHORT).show();
@@ -589,7 +679,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         for (LSNote note : notesByDescription) {
             temp[0] = count;
             temp[1] = note.getNoteText();
-            temp[2] = R.drawable.ic_notes_black_48dp;
+            temp[2] = R.drawable.ic_notes_blue_48dp;
             temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
             temp[4] = note.getContactOfNote().getId();
             temp[6] = "type_note";
@@ -645,11 +735,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             if (ACTIVE_LOADER != -1) {
 //            if (getSupportLoaderManager().hasRunningLoaders()) {
                 try {
-                    if (ACTIVE_LOADER == 1 || ACTIVE_LOADER == 3 || ACTIVE_LOADER == 4) {
-                        getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
-                        ACTIVE_LOADER = 2;
-                        navigation.setSelectedItemId(R.id.navigation_home);
-                    } else if (ACTIVE_LOADER == 2) {
+                    if (ACTIVE_LOADER == 1 || ACTIVE_LOADER == 2 || ACTIVE_LOADER == 4) {
+                        getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                        ACTIVE_LOADER = 3;
+                        navigation.setSelectedItemId(R.id.navigation_leads);
+                    } else if (ACTIVE_LOADER == 3) {
                         super.onBackPressed();
                     }
                 } catch (Exception e) {
@@ -696,15 +786,27 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         }
     }
 
-    public void onClickUnlabeled(Long contact_id) {
-        ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragmentNew.newInstance(contact_id, 0);
+    public void openContactBottomSheetCallback(Long contact_id) {
+        contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragmentNew.newInstance(contact_id, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
     }
 
-    public void onClickInquiry(String number) {
-        InquiryCallDetailsBottomSheetFragmentNew contactCallDetails = InquiryCallDetailsBottomSheetFragmentNew.newInstance(number, 0);
+    @Override
+    public void closeContactBottomSheetCallback() {
+        contactCallDetailsBottomSheetFragment.dismiss();
+    }
+
+    public void openInquiryBottomSheetCallback(String number) {
+        contactCallDetails = InquiryCallDetailsBottomSheetFragmentNew.newInstance(number, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         contactCallDetails.show(fragmentManager, "tag");
     }
+
+    @Override
+    public void closeInquiryBottomSheetCallback() {
+        contactCallDetails.dismiss();
+    }
+
+
 }

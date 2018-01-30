@@ -134,27 +134,14 @@
             android:weightSum="10">
 
             <Button
-                android:id="@+id/bNo"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/btn_transparent_black_border"
-                android:padding="0dp"
-                android:radius="5dip"
-                android:text="NO"
-                android:textColor="@color/md_black"
-                android:textSize="10sp" />
-
-            <Button
-                android:id="@+id/bSaveFollowupPopup"
+                android:id="@+id/bSave"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="100dp"
                 android:layout_height="30dp"
                 android:background="@drawable/btn_primary"
                 android:padding="0dp"
                 android:radius="5dip"
-                android:text="YES"
+                android:text="Make Lead"
                 android:textColor="#ffffff"
                 android:textSize="10sp" />
         </LinearLayout>

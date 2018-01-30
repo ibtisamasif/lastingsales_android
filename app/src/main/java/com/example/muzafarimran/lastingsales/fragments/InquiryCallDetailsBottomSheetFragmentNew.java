@@ -9,8 +9,10 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ConnectionItem;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
@@ -19,6 +21,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
+import com.google.firebase.crash.FirebaseCrash;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -28,24 +31,25 @@ import java.util.List;
 
 public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogFragment {
 
-        private static final String TAG = "InquiryCallDetailsBott";
-        public static final String CONTACT_NUM = "contact_num";
-        private List<Object> list = new ArrayList<Object>();
-        private RecyclerView mRecyclerView;
+    private static final String TAG = "InquiryCallDetailsBottomSheetFragmentNew";
+    public static final String CONTACT_NUM = "contact_num";
+    private List<Object> list = new ArrayList<Object>();
+    private RecyclerView mRecyclerView;
 
 
-        private MyRecyclerViewAdapter adapter;
-        private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    dismiss();
-                }
+    private MyRecyclerViewAdapter adapter;
+    private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
+        @Override
+        public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                dismiss();
             }
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            }
-        };
+        }
+
+        @Override
+        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+        }
+    };
 
     public static InquiryCallDetailsBottomSheetFragmentNew newInstance(String contact_num, int page) {
         InquiryCallDetailsBottomSheetFragmentNew fragmentFirst = new InquiryCallDetailsBottomSheetFragmentNew();
@@ -68,47 +72,49 @@ public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
         }
         String contactNum = getArguments().getString(CONTACT_NUM);
         LSContact selectedContact = LSContact.getContactFromNumber(contactNum);
-//        list.add(selectedContact);
+        if (selectedContact != null) {
 
-        ContactHeaderBottomsheetItem contactHeaderBottomsheetItem = new ContactHeaderBottomsheetItem();
-        contactHeaderBottomsheetItem.lsContact = selectedContact;
-        contactHeaderBottomsheetItem.place = "inquiry";
-        list.add(contactHeaderBottomsheetItem);
+            ContactHeaderBottomsheetItem contactHeaderBottomsheetItem = new ContactHeaderBottomsheetItem();
+            contactHeaderBottomsheetItem.lsContact = selectedContact;
+            contactHeaderBottomsheetItem.place = "inquiry";
+            list.add(contactHeaderBottomsheetItem);
 
-        LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(selectedContact.getPhoneOne()); // TODO crash in 97
-        if (lsContactProfile != null){
-            SeparatorItem separatorItemlsContactProfile = new SeparatorItem();
-            separatorItemlsContactProfile.text = "Profile";
-            list.add(separatorItemlsContactProfile);
-            list.add(lsContactProfile);
+            LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(selectedContact.getPhoneOne());
+            if (lsContactProfile != null) {
+                SeparatorItem separatorItemlsContactProfile = new SeparatorItem();
+                separatorItemlsContactProfile.text = "Profile";
+                list.add(separatorItemlsContactProfile);
+                list.add(lsContactProfile);
+            }
+
+            SeparatorItem separatorItemConnections = new SeparatorItem();
+            separatorItemConnections.text = "Connections";
+            list.add(separatorItemConnections);
+
+            ConnectionItem connectionItem = new ConnectionItem();
+            connectionItem.id = 1;
+            connectionItem.lsContact = selectedContact;
+            list.add(connectionItem);
+
+            Collection<LSCall> allCallsOfThisContact = (Collection<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(selectedContact.getPhoneOne())).orderBy("begin_time DESC").list();
+            if (allCallsOfThisContact != null) {
+                SeparatorItem separatorItemallCallsOfThisContact = new SeparatorItem();
+                separatorItemallCallsOfThisContact.text = "Call History";
+                list.add(separatorItemallCallsOfThisContact);
+                list.addAll(allCallsOfThisContact);
+            }
+
+            adapter = new MyRecyclerViewAdapter(getActivity(), list);
+            mRecyclerView = view.findViewById(R.id.mRecyclerView);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mRecyclerView.setAdapter(adapter);
+            mRecyclerView.setNestedScrollingEnabled(false);
+            NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet);
+            nestedScrollView.setScrollY(0);
+        } else {
+            FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught");
+            FirebaseCrash.report(new Exception("Contact of inquiry is null "));
         }
-
-
-        SeparatorItem separatorItemConnections = new SeparatorItem();
-        separatorItemConnections.text = "Connections";
-        list.add(separatorItemConnections);
-
-        ConnectionItem connectionItem = new ConnectionItem();
-        connectionItem.id = 1;
-        connectionItem.lsContact = selectedContact;
-        list.add(connectionItem);
-
-
-        Collection<LSCall> allCallsOfThisContact = (Collection<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(selectedContact.getPhoneOne())).orderBy("begin_time DESC").list();
-        if (allCallsOfThisContact != null){
-            SeparatorItem separatorItemallCallsOfThisContact = new SeparatorItem();
-            separatorItemallCallsOfThisContact.text = "Call History";
-            list.add(separatorItemallCallsOfThisContact);
-            list.addAll(allCallsOfThisContact);
-        }
-
-        adapter = new MyRecyclerViewAdapter(getActivity(), list);
-        mRecyclerView = view.findViewById(R.id.mRecyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setNestedScrollingEnabled(false);
-        NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet);
-        nestedScrollView.setScrollY(0);
     }
 
 

@@ -60,11 +60,11 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
     int mMinute;
     private LSContact selectedContact = null;
     private TempFollowUp selectedFollowup = null;
-//    private TextView tvTitleFollowupPopup;
+    //    private TextView tvTitleFollowupPopup;
     private String lastDayOfMonth;
     private String lastDayOfYear;
     private String otherEditText;
-    String myCurrentDateTime = "";
+    long myCurrentDateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,7 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
         }
 
         if (launchMode.equals(LAUNCH_MODE_ADD_NEW_FOLLOWUP)) {
-            Toast.makeText(this, "Add new Followup", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Add new Followup", Toast.LENGTH_SHORT).show();
 //            tvTitleFollowupPopup.setText(TITLE_ADD_FOLLOWUP);
             editingMode = false;
             String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
@@ -96,7 +96,7 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
             selectedContact = LSContact.findById(LSContact.class, contactIdLong);
             if (selectedContact.getContactName() != null && !selectedContact.getContactName().equals("")) {
                 etFollowupTitleText.setText("Followup " + selectedContact.getContactName());
-            }else {
+            } else {
                 etFollowupTitleText.setText("Followup " + selectedContact.getPhoneOne());
             }
             showAddFollowupLayout();
@@ -171,9 +171,13 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
                                 + String.format("-%02d", selected_month) + String.format("-%02d", selected_day)
                                 + String.format(" %02d", selected_hour) + String.format(":%02d", selected_minute + 30) + ":00";
 
-                        long selectedDateTime = MyDateTimeStamp.dateTimeLong(mySelectedDateTime + ":00");
-                        long currentDateTime = MyDateTimeStamp.dateTimeLong(myCurrentDateTime + ":00"); // NULLL CRASH HERE
-                        if (!mySelectedDateTime.equals(myCurrentDateTime) && selectedDateTime > currentDateTime) {
+                        Log.d(TAG, "mySelectedDateTime: " + mySelectedDateTime);
+                        long selectedDateTime = MyDateTimeStamp.dateTimeToLong(mySelectedDateTime + ":00");
+                        Log.d(TAG, "selectedDateTime:  " + selectedDateTime);
+                        myCurrentDateTime = Calendar.getInstance().getTimeInMillis();
+                        Log.d(TAG, "myCurrentDateTime: " + myCurrentDateTime);
+
+                        if (!mySelectedDateTime.equals(myCurrentDateTime) && selectedDateTime > myCurrentDateTime) {
                             String title = "LastingSales " + selectedContact.getContactName() + "(" + selectedContact.getPhoneOne() + ")";
                             String location = "";
                             String startDatetime = mySelectedDateTime + ":00";
@@ -192,9 +196,11 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
                             } catch (Exception e) {
                                 Log.d(TAG, "" + e);
                             }
+                            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                            dataSenderAsync.run();
+                        } else {
+                            Toast.makeText(AddEditNewFollowupActivity.this, "Selected Date/Time has passed already", Toast.LENGTH_SHORT).show();
                         }
-                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-                        dataSenderAsync.run();
                     }
                     finish();
                 } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP)) {
@@ -235,10 +241,10 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
                                 + String.format("-%02d", selected_month) + String.format("-%02d", selected_day)
                                 + String.format(" %02d", selected_hour) + String.format(":%02d", selected_minute + 30) + ":00";
 
-                        long selectedDateTime = MyDateTimeStamp.dateTimeLong(mySelectedDateTime + ":00");
-                        long currentDateTime = MyDateTimeStamp.dateTimeLong(myCurrentDateTime + ":00");
-                        if (!mySelectedDateTime.equals(myCurrentDateTime) && selectedDateTime > currentDateTime) {
-                            String title = "LastingSales " + selectedContact.getContactName() + "(" + selectedContact.getPhoneOne() + ")"; //crash reported
+                        long selectedDateTime = MyDateTimeStamp.dateTimeToLong(mySelectedDateTime + ":00");
+                        myCurrentDateTime = Calendar.getInstance().getTimeInMillis();
+                        if (!mySelectedDateTime.equals(myCurrentDateTime) && selectedDateTime > myCurrentDateTime) {
+                            String title = "LastingSales " + selectedContact.getContactName() + "(" + selectedContact.getPhoneOne() + ")"; //crash reported but now we have disabled followup editing functionality.
                             String location = "";
                             String startDatetime = mySelectedDateTime + ":00";
                             String description = titleText;
@@ -255,9 +261,11 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
                             } catch (Exception e) {
                                 Log.d(TAG, "" + e);
                             }
+                            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                            dataSenderAsync.run();
+                        } else {
+                            Toast.makeText(AddEditNewFollowupActivity.this, "Selected Date/Time has passed already", Toast.LENGTH_SHORT).show();
                         }
-                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-                        dataSenderAsync.run();
                     }
                     finish();
                     Toast.makeText(AddEditNewFollowupActivity.this, "Followup Added", Toast.LENGTH_SHORT).show();

@@ -102,9 +102,9 @@ public class BubblesManager {
     }
 
     public void removeBubble(BubbleLayout bubble) {
-//        if (bounded) {
+        if (bounded) {
             bubblesService.removeBubble(bubble);
-//        }
+        }
         mpending = null;
     }
 

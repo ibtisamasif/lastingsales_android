@@ -53,6 +53,7 @@ public class LSContact extends SugarRecord {
     private boolean isLeadDeleted;
     private Long updatedAt;
     private LSContactProfile contactProfile;
+    private int version;
 
 
     public LSContact() {
@@ -555,5 +556,13 @@ public class LSContact extends SugarRecord {
                 ", updatedAt=" + updatedAt +
                 ", contactProfile=" + contactProfile +
                 '}';
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

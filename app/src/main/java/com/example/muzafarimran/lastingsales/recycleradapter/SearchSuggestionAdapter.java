@@ -78,12 +78,12 @@ public class SearchSuggestionAdapter extends CursorAdapter {
                     } else if (className.equals(ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
                         long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
                         NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
-                        navigationBottomMainActivity.onClickUnlabeled(intentPutId);
+                        navigationBottomMainActivity.openContactBottomSheetCallback(intentPutId);
 
                     } else if (className.equals(ClassManager.INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
                         String intentPutNumber = cursor.getString(cursor.getColumnIndex("intentPutNumber"));
                         NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
-                        navigationBottomMainActivity.onClickInquiry(intentPutNumber);
+                        navigationBottomMainActivity.openInquiryBottomSheetCallback(intentPutNumber);
                     } else {
                         Toast.makeText(context, "Details not found", Toast.LENGTH_SHORT).show();
                     }

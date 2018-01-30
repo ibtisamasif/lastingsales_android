@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class PhoneNumberAndCallUtils {
+    private static final String TAG = "PhoneNumberAndCallUtils";
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
@@ -74,7 +76,8 @@ public class PhoneNumberAndCallUtils {
                 Phonenumber.PhoneNumber pkNumberProto = phoneNumberUtil.parse(inputString, countryCodeValue.toUpperCase());
                 s = phoneNumberUtil.format(pkNumberProto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
             } catch (NumberParseException e) {
-                e.printStackTrace();
+                Log.e(TAG, "numberToInterNationalNumber: NumberParseException");
+                e.printStackTrace(); //TODO google pixel
             }
             return s;
         } else {

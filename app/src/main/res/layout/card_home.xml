@@ -23,7 +23,7 @@
         android:weightSum="0">
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/ivDrawable"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
@@ -33,7 +33,7 @@
             app:layout_constraintStart_toEndOf="@+id/tvValue"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/bg_collegue_cardxxxhdpi"
+            app:srcCompat="@drawable/bg_unlabeled_cardxxxhdpi"
             android:layout_marginLeft="16dp" />
 
         <TextView

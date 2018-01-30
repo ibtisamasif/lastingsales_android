@@ -7,4 +7,5 @@ package com.example.muzafarimran.lastingsales.carditems;
 public class HomeItem {
     public String value;
     public String text;
+    public int drawable;
 }

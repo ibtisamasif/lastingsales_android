@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:ems="13"
+        android:ems="9"
         android:text="@string/unknown_capital"
         app:layout_constraintStart_toEndOf="@+id/user_avatar"
         app:layout_constraintTop_toTopOf="@+id/user_avatar"
@@ -60,13 +60,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
         android:scaleType="fitEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_call_green" />
+        app:srcCompat="@drawable/ic_call_green"
+        android:layout_marginRight="8dp" />
+
+    <ImageView
+        android:id="@+id/whatsapp_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="7dp"
+        android:scaleType="fitEnd"
+        app:layout_constraintEnd_toStartOf="@+id/call_icon"
+        app:layout_constraintTop_toTopOf="@+id/call_icon"
+        app:srcCompat="@drawable/ic_whatsapp_xxxhdpi" />
 
     <RelativeLayout
         android:id="@+id/user_profile_group_wrapper"

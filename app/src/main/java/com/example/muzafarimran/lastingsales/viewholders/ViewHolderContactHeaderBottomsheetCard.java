@@ -19,7 +19,9 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
+import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -180,9 +182,12 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
             TypeManager.ConvertTo(mContext, contact, oldType, newType);
             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
             dataSenderAsync.run();
-//            Collection<LSContact> allUntaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
-//                setList(allUntaggedContacts);
+
             Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
+
+
+            CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity();
+            closeInquiryBottomSheetEvent.closeInquiryBottomSheetCallback();
         });
     }
 

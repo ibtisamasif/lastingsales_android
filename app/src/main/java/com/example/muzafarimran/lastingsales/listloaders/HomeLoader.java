@@ -7,7 +7,6 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
-import com.example.muzafarimran.lastingsales.carditems.StatisticsItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
@@ -31,22 +30,29 @@ public class HomeLoader extends AsyncTaskLoader<List<Object>> {
         if (!unlabeledContacts.isEmpty()) {
 
             HomeItem homeItem = new HomeItem();
-            homeItem.text = "Unlabeled contacts";
+            homeItem.text = "UNLABELED";
             homeItem.value = "" + unlabeledContacts.size();
+            homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
 
-            StatisticsItem statisticsItem = new StatisticsItem();
-            statisticsItem.artValue = 0;
-            statisticsItem.leadsValue = 0;
-            statisticsItem.inquiriesValue = 0;
-            statisticsItem.callsValue = 0;
+//            StatisticsItem statisticsItem = new StatisticsItem();
+//            statisticsItem.artValue = 0;
+//            statisticsItem.leadsValue = 0;
+//            statisticsItem.inquiriesValue = 0;
+//            statisticsItem.callsValue = 0;
 
             SeparatorItem separatorItem = new SeparatorItem();
             separatorItem.text = "Recent unlabeled contacts";
 
             list.add(homeItem);
-            list.add(statisticsItem);
+//            list.add(statisticsItem);
             list.add(separatorItem);
             list.addAll(unlabeledContacts);
+
+            SeparatorItem separatorSpace = new SeparatorItem();
+            separatorSpace.text = "";
+
+            list.add(separatorSpace);
+            list.add(separatorSpace);
 
         } else {
             ErrorItem erItem = new ErrorItem();

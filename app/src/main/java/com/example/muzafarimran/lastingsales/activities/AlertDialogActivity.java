@@ -23,6 +23,7 @@ import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
  * Created by ahmad on 13-Nov-16.
  */
 
+@Deprecated
 public class AlertDialogActivity extends Activity {
 
     private static NotificationCompat.Builder buildNotificationCommon(Context _context) {
@@ -61,9 +62,9 @@ public class AlertDialogActivity extends Activity {
         View view = inflater.inflate(R.layout.popup_alert_dialog_layout, null);
         TextView message = (TextView) view.findViewById(R.id.followup_popup_note_text);
         try {
-            message.setText(tempFollowUp.getTitle()); // TODO crashes here on deleting lead after setting up a followup of that lead
+            message.setText(tempFollowUp.getTitle());
             TextView contactName = (TextView) view.findViewById(R.id.followup_alert_popup_name);
-            contactName.setText(tempFollowUp.getContact().getContactName()); // TODO crash here too
+            contactName.setText(tempFollowUp.getContact().getContactName());
             ImageButton callButton = (ImageButton) view.findViewById(R.id.followup_alert_call_button);
             callButton.setTag(tempFollowUp.getContact().getPhoneOne());
             callButton.setOnClickListener(new CallClickListener(this));

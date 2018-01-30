@@ -33,10 +33,11 @@ public class InquiryLoader extends AsyncTaskLoader<List<Object>> {
         if (!inquiriesContacts.isEmpty()) {
 
             Collection<HomeItem> listHome = new ArrayList<HomeItem>();
-            HomeItem item = new HomeItem();
-            item.text = "INQUIRIES";
-            item.value = "" + inquiriesContacts.size();
-            listHome.add(item);
+            HomeItem itemInquiry = new HomeItem();
+            itemInquiry.text = "INQUIRIES";
+            itemInquiry.value = "" + inquiriesContacts.size();
+            itemInquiry.drawable = R.drawable.bg_inquiry_cardxxxhdpi;
+            listHome.add(itemInquiry);
 
             SeparatorItem separatorItem = new SeparatorItem();
             separatorItem.text = "Inquiries";
@@ -44,6 +45,13 @@ public class InquiryLoader extends AsyncTaskLoader<List<Object>> {
             list.addAll(listHome);
             list.add(separatorItem);
             list.addAll(inquiriesContacts);
+
+            SeparatorItem separatorSpace = new SeparatorItem();
+            separatorSpace.text = "";
+
+            list.add(separatorSpace);
+            list.add(separatorSpace);
+
         } else {
             Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
             ErrorItem erItem = new ErrorItem();

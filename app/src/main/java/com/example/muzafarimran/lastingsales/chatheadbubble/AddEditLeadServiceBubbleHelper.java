@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,7 +43,6 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
     private TextView etContactPhone;
     private Button bSave;
     private ImageView bClose;
-    private Button bNo;
     private CheckBox cbIgnore;
     private LinearLayout llContactDetailsFollowupScreen;
 
@@ -120,9 +120,8 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
         etPersonName.getBackground().clearColorFilter();
 
         etContactPhone = (TextView) bubbleView.findViewById(R.id.etContactPhone);
-        bSave = (Button) bubbleView.findViewById(R.id.bSaveFollowupPopup);
+        bSave = (Button) bubbleView.findViewById(R.id.bSave);
         bClose = (ImageView) bubbleView.findViewById(R.id.bClose);
-        bNo = (Button) bubbleView.findViewById(R.id.bNo);
         cbIgnore = (CheckBox) bubbleView.findViewById(R.id.cbIgnore);
         llContactDetailsFollowupScreen = (LinearLayout) bubbleView.findViewById(R.id.llContactDetailsAddContactScreen);
         // Mix Panel Event
@@ -155,15 +154,17 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                 Toast.makeText(context, "Closed!", Toast.LENGTH_SHORT).show();
             }
         });
-        bNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hide();
-//                stopThisService();
-//                System.exit(0);
-                Toast.makeText(context, "Added to Unlabeled!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        cbIgnore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                    if (isChecked) {
+                                                        bSave.setText("ADD TO IGNORE");
+                                                    } else {
+                                                        bSave.setText("MAKE LEAD");
+                                                    }
+                                                }
+                                            }
+        );
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,7 +174,7 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                     etContactPhone.setError(null);
                     String contactName = etPersonName.getText().toString();
                     String contactPhone = etContactPhone.getText().toString();
-                    IgnoredContact.AddAsIgnoredContact(context, contactPhone, contactName); //TODO centralize convertion in one class
+                    IgnoredContact.AddAsIgnoredContact(context, contactPhone, contactName); //TODO centralize conversion in one class
                     String projectToken = MixpanelConfig.projectToken;
                     MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
                     try {
@@ -186,7 +187,7 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                     hide();
 //                    stopThisService();
 //                    System.exit(0);
-                    Toast.makeText(context, "Finish", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Added to ignored contacts", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "onClick: Not Checked");
                     etPersonName.setError(null);
@@ -236,10 +237,9 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                                 hide();
 //                                stopThisService();
 //                                System.exit(0);
-                                Toast.makeText(context, "Finish", Toast.LENGTH_SHORT).show();
                             }
                             hide();
-                            Toast.makeText(context, "Already Exists Converted Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Added to lead from unlabeled contacts", Toast.LENGTH_SHORT).show();
                         } else {
                             LSContact tempContact = new LSContact();
                             tempContact.setContactName(contactName);
@@ -269,7 +269,7 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                             hide();
 //                            stopThisService();
 //                            System.exit(0);
-                            Toast.makeText(context, "Finish", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Added to leads", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
