@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -45,7 +46,8 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilder;
+import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
+import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -81,7 +83,8 @@ public class IndividualContactDetailsFragment extends TabFragment {
     private LSContact mContact;
     private TinyBus bus;
     private LinearLayout ll;
-    static DynamicColumnBuilder dynamicColumnBuilder;
+    static DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1;
+    static DynamicColumnBuilderVersion2 dynamicColumnBuilderVersion2;
 
     private CardView cv_social_item;
     private TextView tvNameFromProfile;
@@ -112,7 +115,8 @@ public class IndividualContactDetailsFragment extends TabFragment {
 
     public static IndividualContactDetailsFragment newInstance(int page, String title, Long id) {
         IndividualContactDetailsFragment fragmentFirst = new IndividualContactDetailsFragment();
-        dynamicColumnBuilder = new DynamicColumnBuilder();
+        dynamicColumnBuilderVersion1 = new DynamicColumnBuilderVersion1();
+        dynamicColumnBuilderVersion2 = new DynamicColumnBuilderVersion2();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
@@ -188,11 +192,16 @@ public class IndividualContactDetailsFragment extends TabFragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.contact_profile_details_fragment, container, false);
 //        tvName = (TextView) view.findViewById(R.id.tvName);
-        tvNumber = (TextView) view.findViewById(R.id.tvNumber);
+        tvNumber = (TextView) view.findViewById(R.id.tvContactNumber);
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
         tvAddress = (TextView) view.findViewById(R.id.tvAddress);
 
@@ -227,88 +236,177 @@ public class IndividualContactDetailsFragment extends TabFragment {
             @Override
             public void onClick(View v) {
 
-                List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
-                for (LSDynamicColumns dynamicColumns : allColumns) {
-                    if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
-                        DynamicColumnBuilder.Column column = dynamicColumnBuilder.getById(Integer.parseInt(dynamicColumns.getServerId()));
-                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
-                        String currentValue = et.getText().toString();
-                        // if not exists already
-                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-                            //pass
-                        } else if (column == null) {
-                            //add new column
-                            DynamicColumnBuilder.Column column1 = new DynamicColumnBuilder.Column();
-                            column1.id = dynamicColumns.getServerId();
-                            column1.name = dynamicColumns.getName();
-                            column1.column_type = dynamicColumns.getColumnType();
-                            column1.value = currentValue;
-                            dynamicColumnBuilder.addColumn(column1);
+                if (mContact.getVersion() != 0 && mContact.getVersion() == 2) {
+                    // save according to version2 parsing
+                    List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
+                    for (LSDynamicColumns dynamicColumns : allColumns) {
+                        if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
+                            DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
+                            EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
+                            String currentValue = et.getText().toString();
+                            // if not exists already
+                            if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+                                //pass
+                            } else if (column == null) {
+                                //add new column
+                                DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
+                                column2.id = dynamicColumns.getServerId();
+                                column2.name = dynamicColumns.getName();
+                                column2.column_type = dynamicColumns.getColumnType();
+                                column2.value = currentValue;
+                                dynamicColumnBuilderVersion2.addColumn(column2);
 
-                        } else if (column != null) {
-                            //update column
-                            dynamicColumnBuilder.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+                            } else if (column != null) {
+                                //update column
+                                dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
 
-                        }
-                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
-                        DynamicColumnBuilder.Column column = dynamicColumnBuilder.getById(Integer.parseInt(dynamicColumns.getServerId()));
-                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
-                        String currentValue = et.getText().toString();
-                        //if current value is default no need to add a columns
-                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-                            //pass
-                        } else if (column != null) {
-                            //update column
-                            dynamicColumnBuilder.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+                            }
+                        } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+                            DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
+                            EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
+                            String currentValue = et.getText().toString();
+                            //if current value is default no need to add a columns
+                            if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+                                //pass
+                            } else if (column != null) {
+                                //update column
+                                dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
 
-                        } else if (column == null) {
-                            //add new column
-                            DynamicColumnBuilder.Column column1 = new DynamicColumnBuilder.Column();
-                            column1.id = dynamicColumns.getServerId();
-                            column1.name = dynamicColumns.getName();
-                            column1.column_type = dynamicColumns.getColumnType();
-                            column1.value = currentValue;
-                            dynamicColumnBuilder.addColumn(column1);
+                            } else if (column == null) {
+                                //add new column
+                                DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
+//                                column2.id = dynamicColumns.getServerId();
+                                column2.name = dynamicColumns.getName();
+//                                column2.column_type = dynamicColumns.getColumnType();
+                                column2.value = currentValue;
+                                dynamicColumnBuilderVersion2.addColumn(column2);
 
-                        }
-                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        DynamicColumnBuilder.Column column = dynamicColumnBuilder.getById(Integer.parseInt(dynamicColumns.getServerId())); //TODO Exception java.lang.NullPointerException: SGH-T889 18 sep
-                        Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
+                            }
+                        } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+                            DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())); //TODO Exception java.lang.NullPointerException: SGH-T889 18 sep
+                            Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
 
-                        String currentValue = s.getSelectedItem().toString();
-                        //if current value is default no need to add a columns
-                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-                            //pass
-                        } else if (column != null) {
-                            //update column
-                            dynamicColumnBuilder.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+                            String currentValue = s.getSelectedItem().toString();
+                            //if current value is default no need to add a columns
+                            if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+                                //pass
+                            } else if (column != null) {
+                                //update column
+                                dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
 
-                        } else if (column == null) {
-                            //add new column
-                            DynamicColumnBuilder.Column column1 = new DynamicColumnBuilder.Column();
-                            column1.id = dynamicColumns.getServerId();
-                            column1.name = dynamicColumns.getName();
-                            column1.column_type = dynamicColumns.getColumnType();
-                            column1.value = currentValue;
-                            dynamicColumnBuilder.addColumn(column1);
+                            } else if (column == null) {
+                                //add new column
+                                DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
+//                                column2.id = dynamicColumns.getServerId();
+                                column2.name = dynamicColumns.getName();
+//                                column2.column_type = dynamicColumns.getColumnType();
+                                column2.value = currentValue;
+                                dynamicColumnBuilderVersion2.addColumn(column2);
 
+                            }
                         }
                     }
+                    mContact.setDynamic(dynamicColumnBuilderVersion2.buildJSONversion2()); // TODO PARSE LIKE IN VERSION 2 now
+                    if (mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+                        mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                    }
+                    mContact.save();
+                    Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "JSON Prepared to save for version2 onClick: mContact.getDynamic(): " + mContact.getDynamic());
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getActivity());
+                    dataSenderAsync.run();
+                    Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
+                    mixpanel.track("Dynamic Column Updated");
+
+
+                } else {
+                    // save according to version1 parsing
+                    List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
+                    for (LSDynamicColumns dynamicColumns : allColumns) {
+                        if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
+                            DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
+                            EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
+                            String currentValue = et.getText().toString();
+                            // if not exists already
+                            if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+                                //pass
+                            } else if (column == null) {
+                                //add new column
+                                DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
+                                column1.id = dynamicColumns.getServerId();
+                                column1.name = dynamicColumns.getName();
+                                column1.column_type = dynamicColumns.getColumnType();
+                                column1.value = currentValue;
+                                dynamicColumnBuilderVersion1.addColumn(column1);
+
+                            } else if (column != null) {
+                                //update column
+                                dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+
+                            }
+                        } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+                            DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
+                            EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
+                            String currentValue = et.getText().toString();
+                            //if current value is default no need to add a columns
+                            if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+                                //pass
+                            } else if (column != null) {
+                                //update column
+                                dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+
+                            } else if (column == null) {
+                                //add new column
+                                DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
+                                column1.id = dynamicColumns.getServerId();
+                                column1.name = dynamicColumns.getName();
+                                column1.column_type = dynamicColumns.getColumnType();
+                                column1.value = currentValue;
+                                dynamicColumnBuilderVersion1.addColumn(column1);
+
+                            }
+                        } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+                            DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())); //TODO Exception java.lang.NullPointerException: SGH-T889 18 sep
+                            Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
+
+                            String currentValue = s.getSelectedItem().toString();
+                            //if current value is default no need to add a columns
+                            if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+                                //pass
+                            } else if (column != null) {
+                                //update column
+                                dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+
+                            } else if (column == null) {
+                                //add new column
+                                DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
+                                column1.id = dynamicColumns.getServerId();
+                                column1.name = dynamicColumns.getName();
+                                column1.column_type = dynamicColumns.getColumnType();
+                                column1.value = currentValue;
+                                dynamicColumnBuilderVersion1.addColumn(column1);
+
+                            }
+                        }
+                    }
+                    mContact.setDynamic(dynamicColumnBuilderVersion1.buildJSON());
+                    if (mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+                        mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                    }
+                    mContact.save();
+                    Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "JSON Prepared to save for version1 onClick: mContact.getDynamic(): " + mContact.getDynamic());
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getActivity());
+                    dataSenderAsync.run();
+                    Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
+                    mixpanel.track("Dynamic Column Updated");
                 }
-                mContact.setDynamic(dynamicColumnBuilder.buildJSON());
-                if (mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                }
-                mContact.save();
-                Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onClick: " + mContact.getDynamic());
-                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getActivity());
-                dataSenderAsync.run();
-                Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
-                String projectToken = MixpanelConfig.projectToken;
-                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
-                mixpanel.track("Dynamic Column Updated");
             }
         });
 
@@ -326,7 +424,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
         Log.d(TAG, "Display SIZE: " + display);
         List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
         Log.d(TAG, "onCreateView: Size: " + allColumns.size());
-        if(allColumns == null || allColumns.size() == 0){
+        if (allColumns == null || allColumns.size() == 0) {
             tvDefaultText.setVisibility(View.VISIBLE);
             bSave.setVisibility(View.GONE);
         }
@@ -489,42 +587,92 @@ public class IndividualContactDetailsFragment extends TabFragment {
         contactIDLong = bundle.getLong("someId");
         mContact = LSContact.findById(LSContact.class, contactIDLong);
         Log.d(TAG, "contactID: " + mContact.getId());
-        Log.d(TAG, "dynamicColumns: " + mContact.getDynamic());
+        Log.d(TAG, "contactName: " + mContact.getContactName());
+        Log.d(TAG, "contactServerID: " + mContact.getServerId());
+        Log.d(TAG, "dynamicColumnOfLead: " + mContact.getDynamic());
+        Log.d(TAG, "contactVersion: " + mContact.getVersion());
 
         try {
             if (mContact.getDynamic() != null) {
-                //TODO check for version2 add Version2 column in LSCONTACT
-//                if(mContact.get)
-                dynamicColumnBuilder.parseJson(mContact.getDynamic());
-                Log.d(TAG, "dynamicColumnsJSONN: " + mContact.getDynamic());
-                ArrayList<DynamicColumnBuilder.Column> dynColumns = dynamicColumnBuilder.getColumns();
-                for (DynamicColumnBuilder.Column oneDynamicColumns : dynColumns) {
-                    if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
-                        EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
-                        et.setText(oneDynamicColumns.value);
-                    } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
-                        EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
-                        et.setText(oneDynamicColumns.value);
-                    } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
-                        List<String> list = (List<String>) s.getTag();
-                        int index = -1;
-                        for (int i = 0; i < list.size(); i++) {
-                            if (oneDynamicColumns.value.equals(list.get(i))) {
-                                index = i;
-                            }
-                        }
-                        if (mContact.getDynamic() != null && !mContact.getDynamic().equals("")) {
+                if (mContact.getVersion() != 0 && mContact.getVersion() == 2) {
+                    Log.d(TAG, "dynamicColumns: getVersion = 2");
+                    dynamicColumnBuilderVersion2.parseJson(mContact.getDynamic());
+                    ArrayList<DynamicColumnBuilderVersion2.Column> dynColumns = dynamicColumnBuilderVersion2.getColumns();
+                    for (DynamicColumnBuilderVersion2.Column oneDynamicColumns : dynColumns) {
+                        if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
-                            Log.d(TAG, "dynamicColumns: " + index);
-                            s.setSelection(index, false);
-                        }
-                        s.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
+                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+                            et.setText(oneDynamicColumns.value);
+
+                        } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+
+                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+                            et.setText(oneDynamicColumns.value);
+
+                        } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+
+                            final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
+                            List<String> list = (List<String>) s.getTag();
+                            Log.d(TAG, "dynamicColumns: List: " + list);
+                            int index = -1;
+                            for (int i = 0; i < list.size(); i++) {
+                                if (oneDynamicColumns.value.equals(list.get(i))) {
+                                    index = i;
+                                }
                             }
-                        });
+                            if (mContact.getDynamic() != null && !mContact.getDynamic().equals("")) {
+
+                                Log.d(TAG, "dynamicColumns: " + index);
+                                s.setSelection(index, false);
+                            }
+                            s.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
+                                }
+                            });
+                        }
+                    }
+
+
+                } else {
+                    Log.d(TAG, "dynamicColumns: getVersion = 0");
+                    dynamicColumnBuilderVersion1.parseJson(mContact.getDynamic());
+//                    Log.d(TAG, "dynamicColumnsJSONN: " + mContact.getDynamic());
+                    ArrayList<DynamicColumnBuilderVersion1.Column> dynColumns = dynamicColumnBuilderVersion1.getColumns();
+                    for (DynamicColumnBuilderVersion1.Column oneDynamicColumns : dynColumns) {
+                        if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
+
+                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+                            et.setText(oneDynamicColumns.value);
+
+                        } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+
+                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+                            et.setText(oneDynamicColumns.value);
+
+                        } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+
+                            final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
+                            List<String> list = (List<String>) s.getTag();
+                            int index = -1;
+                            for (int i = 0; i < list.size(); i++) {
+                                if (oneDynamicColumns.value.equals(list.get(i))) {
+                                    index = i;
+                                }
+                            }
+                            if (mContact.getDynamic() != null && !mContact.getDynamic().equals("")) {
+
+                                Log.d(TAG, "dynamicColumns: " + index);
+                                s.setSelection(index, false);
+                            }
+                            s.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -613,6 +761,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
     public void onLeadContactAddedEventModel(LeadContactAddedEventModel event) {
         Log.d(TAG, "onLeadContactAddedEventModel: CalledInFrag");
     }
+
     private void loadSocialProfileData() {
         LSContactProfile lsContactProfile = mContact.getContactProfile();
 
@@ -626,7 +775,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
 //            }
             if (lsContactProfile.getFirstName() != null && !lsContactProfile.getFirstName().equals("")) {
                 tvNameFromProfile.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
-            }else {
+            } else {
                 tvNameFromProfile.setVisibility(View.GONE);
                 tvNameFromProfileTitle.setVisibility(View.GONE);
             }
@@ -678,7 +827,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 tvFbFromProfile.setVisibility(View.GONE);
                 tvFbFromProfileTitle.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             cv_social_item.setVisibility(View.GONE);
         }
     }
@@ -698,9 +847,9 @@ public class IndividualContactDetailsFragment extends TabFragment {
     }
 
     private void fetchCustomerHistory(final String number) {
-        Log.d(TAG, "fetchCustomersHistoryFunc: Fetching Data...");
-        Log.d(TAG, "fetchCustomerHistory: Number: " + number);
-        Log.d(TAG, "fetchCustomerHistory: Token: " + sessionManager.getLoginToken());
+//        Log.d(TAG, "fetchCustomersHistoryFunc: Fetching Data...");
+//        Log.d(TAG, "fetchCustomerHistory: Number: " + number);
+//        Log.d(TAG, "fetchCustomerHistory: Token: " + sessionManager.getLoginToken());
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         final String BASE_URL = MyURLs.GET_CUSTOMER_HISTORY;
         Uri builtUri = Uri.parse(BASE_URL)
@@ -711,21 +860,21 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
-        Log.d(TAG, "fetchCustomerHistory: myUrl: " + myUrl);
+//        Log.d(TAG, "fetchCustomerHistory: myUrl: " + myUrl);
         StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String respon) {
                 tvError.setVisibility(View.GONE);
-                Log.d(TAG, "onResponse() response = [" + respon + "]");
+//                Log.d(TAG, "onResponse() response = [" + respon + "]");
                 try {
                     JSONObject jObj = new JSONObject(respon);
 //                    int responseCode = jObj.getInt("responseCode");
                     JSONObject response = jObj.getJSONObject("response");
                     JSONArray dataArray = response.getJSONArray("data");
-                    Log.d(TAG, "onResponse: dataArray Lenght: " + dataArray.length());
+//                    Log.d(TAG, "onResponse: dataArray Length: " + dataArray.length());
                     if (dataArray.length() > 0) {
                         for (int i = 0; i < dataArray.length(); i++) {
-                            Log.d(TAG, "onResponse: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+//                            Log.d(TAG, "onResponse: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                             JSONObject jsonobject = dataArray.getJSONObject(i);
                             String last_call = jsonobject.getString("last_call");
                             String user_id = jsonobject.getString("user_id");
@@ -735,13 +884,13 @@ public class IndividualContactDetailsFragment extends TabFragment {
                             String role_id = jsonobject.getString("role_id");
                             String name = jsonobject.getString("name");
 
-                            Log.d(TAG, "onResponse0: last_call: " + last_call);
-                            Log.d(TAG, "onResponse0: user_id: " + user_id);
-                            Log.d(TAG, "onResponse0: duration: " + duration);
-                            Log.d(TAG, "onResponse0: firstname: " + firstname);
-                            Log.d(TAG, "onResponse0: lastname: " + lastname);
-                            Log.d(TAG, "onResponse0: role_id: " + role_id);
-                            Log.d(TAG, "onResponse0: name: " + name);
+//                            Log.d(TAG, "onResponse: last_call: " + last_call);
+//                            Log.d(TAG, "onResponse: user_id: " + user_id);
+//                            Log.d(TAG, "onResponse: duration: " + duration);
+//                            Log.d(TAG, "onResponse: firstname: " + firstname);
+//                            Log.d(TAG, "onResponse: lastname: " + lastname);
+//                            Log.d(TAG, "onResponse: role_id: " + role_id);
+//                            Log.d(TAG, "onResponse: name: " + name);
 
 //                            Display display = ((WindowManager) getActivity().getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 //                            int width = display.getWidth();
@@ -811,22 +960,26 @@ public class IndividualContactDetailsFragment extends TabFragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: CouldNotGetCustomerHistory");
-                if (!NetworkAccess.isNetworkAvailable(getActivity())) {
-                    tvError.setText("Internet is required to view connections");
-                } else {
-                    try {
-                        if (error.networkResponse != null) {
-                            if (error.networkResponse.statusCode == 404) {
-                                tvError.setText("Connections not found");
+                if (getActivity() != null) {
+                    if (!NetworkAccess.isNetworkAvailable(getActivity())) {
+                        tvError.setText("Internet is required to view connections");
+                    } else {
+                        try {
+                            if (error.networkResponse != null) {
+                                if (error.networkResponse.statusCode == 404) {
+                                    tvError.setText("Connections not found");
+                                } else {
+                                    tvError.setText("Error Loading");
+                                }
                             } else {
-                                tvError.setText("Error Loading");
+                                tvError.setText("Poor Internet Connectivity");
                             }
-                        } else {
-                            tvError.setText("Poor Internet Connectivity");
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                }else {
+                    tvError.setText("Error Loading");
                 }
             }
         }) {

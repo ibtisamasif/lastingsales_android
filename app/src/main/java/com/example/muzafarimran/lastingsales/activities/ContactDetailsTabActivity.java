@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -183,8 +184,8 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 //                intent.setType("image/png");
                 intent.putExtra("subject", "Greetings");
                 intent.putExtra("address", selectedContact.getPhoneOne());
-                intent.putExtra(intent.EXTRA_TEXT, "Wellcome to lastingSales");
-                intent.putExtra("sms_body", "Wellcome to lastingSales");
+                intent.putExtra(intent.EXTRA_TEXT, "Welcome to lastingSales");
+                intent.putExtra("sms_body", "Welcome to lastingSales");
                 startActivity(intent);
 //                Toast.makeText(this, "Opening Message window", Toast.LENGTH_SHORT).show();
                 break;
@@ -252,6 +253,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 break;
 
             case R.id.ic_action_edit:
+                Log.d("duplicate", "onOptionsItemSelected: ");
                 Intent addContactScreenIntent = new Intent(getApplicationContext(), AddEditLeadActivity.class);
                 addContactScreenIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
                 addContactScreenIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contactIdString);

@@ -10,11 +10,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.MatrixCursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
@@ -44,6 +41,7 @@ import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
+import com.example.muzafarimran.lastingsales.events.TaskAddedEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
@@ -53,6 +51,7 @@ import com.example.muzafarimran.lastingsales.listloaders.HomeLoader;
 import com.example.muzafarimran.lastingsales.listloaders.InquiryLoader;
 import com.example.muzafarimran.lastingsales.listloaders.LeadsLoader;
 import com.example.muzafarimran.lastingsales.listloaders.MoreLoader;
+import com.example.muzafarimran.lastingsales.listloaders.TasksListLoader;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -116,28 +115,33 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 }
             }
             switch (item.getItemId()) {
-                case R.id.navigation_inquiries:
+                case R.id.navigation_tasks:
                     ACTIVE_LOADER = 1;
                     getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this);
                     return true;
-                case R.id.navigation_home:
+                case R.id.navigation_inquiries:
                     ACTIVE_LOADER = 2;
                     getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
+//                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this);
                     return true;
-                case R.id.navigation_leads:
+                case R.id.navigation_home:
                     ACTIVE_LOADER = 3;
                     getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
-                case R.id.navigation_more:
+                case R.id.navigation_leads:
                     ACTIVE_LOADER = 4;
                     getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
+                    return true;
+                case R.id.navigation_more:
+                    ACTIVE_LOADER = 5;
+                    getSupportLoaderManager().restartLoader(5, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
             }
             return false;
         }
     };
-    private static InquiryCallDetailsBottomSheetFragmentNew contactCallDetails;
+    private InquiryCallDetailsBottomSheetFragmentNew inquiryCallDetailsBottomSheetFragment;
     private static ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment;
     private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
     private FloatingActionMenu floatingActionMenu;
@@ -241,7 +245,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             }
             sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
             if (NetworkAccess.isNetworkAvailable(this)) {
-                long contactCount = LSContact.count(LSContact.class);
+                long contactCount = LSContact.count(LSContact.class); // TODO experienced crash here several times confirm it.
                 if (contactCount < 1) {
                     Log.d(TAG, "onCreate: LSContact.count " + contactCount);
                     sessionManager.fetchData();
@@ -346,57 +350,59 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                             }
                         }
                     }).create().show();
-        } else if (Build.MANUFACTURER.equalsIgnoreCase("Honor") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
-            Log.d(TAG, "onCreate: Honor");
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
-                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            try {
-                                Intent intent = new Intent();
-                                intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
-                                startActivity(intent);
-                                settingsManager.setKeyStateProtectedApp(true);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).create().show();
-        } else if (Build.MANUFACTURER.equalsIgnoreCase("Huawei") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
-                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            try {
-                                Intent intent = new Intent();
-                                intent.setClassName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity");
-                                if (isCallable(intent)) {
-//                                    intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
-                                    startActivity(intent);
-                                    settingsManager.setKeyStateProtectedApp(true);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).create().show(); // pistis phone crashed window leaked  android.view.WindowLeaked: Activity com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView{13adf36b V.E..... R.....ID 0,0-683,378} that was originally added here
         }
+//        else if (Build.MANUFACTURER.equalsIgnoreCase("Honor") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
+//            Log.d(TAG, "onCreate: Honor");
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
+//                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            try {
+//                                Intent intent = new Intent();
+//                                intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+//                                startActivity(intent);
+//                                settingsManager.setKeyStateProtectedApp(true);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }).create().show();
+//        }
+//        else if (Build.MANUFACTURER.equalsIgnoreCase("Huawei") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("Is app killing?").setMessage("Add LastingSales to protected apps list to keep it running in background.")
+//                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            try {
+//                                Intent intent = new Intent();
+//                                intent.setClassName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity");
+//                                if (isCallable(intent)) {
+////                                    intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+//                                    startActivity(intent);
+//                                    settingsManager.setKeyStateProtectedApp(true);
+//                                }
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }).create().show(); // pistis phone crashed window leaked  android.view.WindowLeaked: Activity com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView{13adf36b V.E..... R.....ID 0,0-683,378} that was originally added here
+//        }
 
 
-        Intent intentTest = new Intent();
-        String packageName = NavigationBottomMainActivity.this.getPackageName();
-        PowerManager pm = (PowerManager) NavigationBottomMainActivity.this.getSystemService(Context.POWER_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (pm.isIgnoringBatteryOptimizations(packageName))
-                intentTest.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-            else {
-                intentTest.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intentTest.setData(Uri.parse("package:" + packageName));
-            }
-            NavigationBottomMainActivity.this.startActivity(intentTest);
-        }
+//        Intent intentTest = new Intent();
+//        String packageName = NavigationBottomMainActivity.this.getPackageName();
+//        PowerManager pm = (PowerManager) NavigationBottomMainActivity.this.getSystemService(Context.POWER_SERVICE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (pm.isIgnoringBatteryOptimizations(packageName))
+//                intentTest.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+//            else {
+//                intentTest.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+//                intentTest.setData(Uri.parse("package:" + packageName));
+//            }
+//            NavigationBottomMainActivity.this.startActivity(intentTest);
+//        }
 
         final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -452,17 +458,17 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             String tab = bundle1.getString(KEY_SELECTED_TAB);
             if (tab != null) {
                 if (tab.equals(INQUIRIES_TAB)) {
-                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this).forceLoad();
+                    getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
                     navigation.setSelectedItemId(R.id.navigation_inquiries);
                 }
             } else {
                 Log.d(TAG, "onCreate: Bundle Not Null Loading Home TAB");
-                getSupportLoaderManager().initLoader(3, null, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().initLoader(4, null, NavigationBottomMainActivity.this).forceLoad();
                 navigation.setSelectedItemId(R.id.navigation_leads);
             }
         } else {
             Log.d(TAG, "onCreate: Bundle is Null Loading Home TAB");
-            getSupportLoaderManager().initLoader(3, null, NavigationBottomMainActivity.this).forceLoad();
+            getSupportLoaderManager().initLoader(4, null, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
     }
@@ -475,10 +481,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     @Override
     public void onStart() {
-        super.onStart();
         Log.d(TAG, "onStart() called");
         bus = TinyBus.from(this.getApplicationContext());
         bus.register(this);
+        super.onStart();
     }
 
     @Override
@@ -495,29 +501,38 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     @Subscribe
-    public void onInquiryDeletedEventModel(InquiryDeletedEventModel event) {
+    public void onTaskAddedEventModel(TaskAddedEventModel event) {
         if (ACTIVE_LOADER == 1) {
+            Log.d("ViewHolderTask", "onTaskAddedEventModel: ");
             getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
+            navigation.setSelectedItemId(R.id.navigation_tasks);
+        }
+    }
+
+    @Subscribe
+    public void onInquiryDeletedEventModel(InquiryDeletedEventModel event) {
+        if (ACTIVE_LOADER == 2) {
+            getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_inquiries);
         }
     }
 
     @Subscribe
     public void onMissedCallEventModel(MissedCallEventModel event) {
-        if (ACTIVE_LOADER == 1) {
-            getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
+        if (ACTIVE_LOADER == 2) {
+            getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_inquiries);
         }
     }
 
     @Subscribe
     public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
-        if (ACTIVE_LOADER == 2) {
-            getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
-            navigation.setSelectedItemId(R.id.navigation_home);
-        }
         if (ACTIVE_LOADER == 3) {
             getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+            navigation.setSelectedItemId(R.id.navigation_home);
+        }
+        if (ACTIVE_LOADER == 4) {
+            getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
 //        Toast.makeText(NavigationBottomMainActivity.this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
@@ -525,12 +540,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     @Subscribe
     public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
-        if (ACTIVE_LOADER == 2) {
-            getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
-            navigation.setSelectedItemId(R.id.navigation_home);
-        }
         if (ACTIVE_LOADER == 3) {
             getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+            navigation.setSelectedItemId(R.id.navigation_home);
+        }
+        if (ACTIVE_LOADER == 4) {
+            getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
 //        Toast.makeText(NavigationBottomMainActivity.this, "ContactDeletedEventModel", Toast.LENGTH_SHORT).show();
@@ -546,12 +561,14 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
         switch (id) {
             case 1:
-                return new InquiryLoader(NavigationBottomMainActivity.this);
+                return new TasksListLoader(NavigationBottomMainActivity.this);
             case 2:
-                return new HomeLoader(NavigationBottomMainActivity.this);
+                return new InquiryLoader(NavigationBottomMainActivity.this);
             case 3:
-                return new LeadsLoader(NavigationBottomMainActivity.this, args);
+                return new HomeLoader(NavigationBottomMainActivity.this);
             case 4:
+                return new LeadsLoader(NavigationBottomMainActivity.this, args);
+            case 5:
                 return new MoreLoader(NavigationBottomMainActivity.this);
             default:
                 return null;
@@ -597,7 +614,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
             @Override
             public boolean onQueryTextChange(String query) {
-                loadHistory(query);
+                if (query != null) {
+                    loadHistory(query);
+                }
                 return false;
             }
         });
@@ -735,11 +754,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             if (ACTIVE_LOADER != -1) {
 //            if (getSupportLoaderManager().hasRunningLoaders()) {
                 try {
-                    if (ACTIVE_LOADER == 1 || ACTIVE_LOADER == 2 || ACTIVE_LOADER == 4) {
-                        getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
-                        ACTIVE_LOADER = 3;
+                    if (ACTIVE_LOADER == 1 || ACTIVE_LOADER == 2 || ACTIVE_LOADER == 3 || ACTIVE_LOADER == 5) {
+                        getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
+                        ACTIVE_LOADER = 4;
                         navigation.setSelectedItemId(R.id.navigation_leads);
-                    } else if (ACTIVE_LOADER == 3) {
+                    } else if (ACTIVE_LOADER == 4) {
                         super.onBackPressed();
                     }
                 } catch (Exception e) {
@@ -755,31 +774,31 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         switch (chip) {
             case "All":
                 bundle.putString("whichLeads", "All");
-                getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "InProgress":
                 bundle.putString("whichLeads", "InProgress");
-                getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "Won":
                 bundle.putString("whichLeads", "Won");
-                getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                Toast.makeText(this, "WonListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "Lost":
                 bundle.putString("whichLeads", "Lost");
-                getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "InActive":
                 bundle.putString("whichLeads", "InActive");
-                getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                Toast.makeText(this, "InActiveListened", Toast.LENGTH_SHORT).show();
                 break;
             default:
@@ -794,18 +813,25 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     @Override
     public void closeContactBottomSheetCallback() {
-        contactCallDetailsBottomSheetFragment.dismiss();
+        if (contactCallDetailsBottomSheetFragment != null) {
+            Log.d(TAG, "closeContactBottomSheetCallback: is NOT NULL");
+            contactCallDetailsBottomSheetFragment.dismiss(); //TODO s7 edge crashed here null pointer
+        }else {
+            Log.d(TAG, "closeContactBottomSheetCallback: is NULL");
+        }
     }
 
     public void openInquiryBottomSheetCallback(String number) {
-        contactCallDetails = InquiryCallDetailsBottomSheetFragmentNew.newInstance(number, 0);
+        inquiryCallDetailsBottomSheetFragment = InquiryCallDetailsBottomSheetFragmentNew.newInstance(number, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        contactCallDetails.show(fragmentManager, "tag");
+        inquiryCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
     }
 
     @Override
     public void closeInquiryBottomSheetCallback() {
-        contactCallDetails.dismiss();
+        if (inquiryCallDetailsBottomSheetFragment != null) {
+            inquiryCallDetailsBottomSheetFragment.dismiss(); // //TODO KSB and SM-G93F crashed here null pointer
+        }
     }
 
 

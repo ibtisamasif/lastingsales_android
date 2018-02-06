@@ -704,7 +704,6 @@ public class DataSenderAsync {
                 } catch (Exception e) {
                     e.printStackTrace(); // TODO google pixel
                 }
-
             }
         }) {
             @Override

@@ -125,11 +125,12 @@ public class AddEditLeadActivity extends AppCompatActivity {
             selectRadioButton(LSContact.CONTACT_TYPE_SALES);
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
+            Log.d("duplicate", "onCreate: LAUNCH_MODE_EDIT_EXISTING_CONTACT ");
             populateUpdateContactView(bundle);
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
             if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
                 selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
-            }else {
+            } else {
                 selectRadioButton(LSContact.CONTACT_TYPE_SALES);
             }
         }
@@ -151,18 +152,19 @@ public class AddEditLeadActivity extends AppCompatActivity {
                 contactName = etContactName.getText().toString();
                 contactPhone = etContactPhone.getText().toString();
                 contactEmail = etContactEmail.getText().toString();
-
-                String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
-                LSContact checkContact;
-                checkContact = LSContact.getContactFromNumber(intlNum);
-                if (checkContact == null) {
-                    launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
-                } else {
-                    launchMode = LAUNCH_MODE_EDIT_EXISTING_CONTACT;
-                    selectedContact = checkContact;
-                }
-                if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
-                    if (isValid(contactName, contactPhone, contactEmail)) {
+                if (isValid(contactName, contactPhone, contactEmail)) {
+                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
+//                if (selectedContact == null) {
+                    LSContact checkContact;
+                    checkContact = LSContact.getContactFromNumber(intlNum);
+                    if (checkContact == null) {
+                        launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
+                    } else {
+                        launchMode = LAUNCH_MODE_EDIT_EXISTING_CONTACT;
+                        selectedContact = checkContact;
+                    }
+//                }
+                    if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
                         LSContact tempContact = new LSContact();
                         tempContact.setContactName(contactName);
                         tempContact.setPhoneOne(intlNum);
@@ -179,9 +181,8 @@ public class AddEditLeadActivity extends AppCompatActivity {
                         String projectToken = MixpanelConfig.projectToken;
                         MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
                         mixpanel.track("Create lead dialog - created lead");
-                    }
-                } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
-                    if (isValid(contactName, contactPhone, contactEmail)) {
+
+                    } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
 
                         LSContact tempContact = selectedContact;
                         String oldType = selectedContact.getContactType();
@@ -207,20 +208,21 @@ public class AddEditLeadActivity extends AppCompatActivity {
                         }
                         finish();
                         moveToContactDetailScreenIfNeeded(tempContact);
+
+                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    if (mixpanelSource != null) {
+                        String projectToken = MixpanelConfig.projectToken;
+                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                        mixpanel.track("Lead From " + mixpanelSource);
+                        Log.d(TAG, "mixpanelSource: " + mixpanelSource);
+                    }
+                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                    TinyBus bus = TinyBus.from(getApplicationContext());
+                    bus.post(mCallEvent);
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                    dataSenderAsync.run();
                 }
-                if (mixpanelSource != null) {
-                    String projectToken = MixpanelConfig.projectToken;
-                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                    mixpanel.track("Lead From " + mixpanelSource);
-                    Log.d(TAG, "mixpanelSource: " + mixpanelSource);
-                }
-                LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                TinyBus bus = TinyBus.from(getApplicationContext());
-                bus.post(mCallEvent);
-                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-                dataSenderAsync.run();
             }
         });
 
@@ -273,7 +275,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                     etContactName.setText("");
                 }
             } else {
-                if (selectedContact.getContactName() != null){
+                if (selectedContact.getContactName() != null) {
                     etContactName.setText(selectedContact.getContactName());
                 }
             }

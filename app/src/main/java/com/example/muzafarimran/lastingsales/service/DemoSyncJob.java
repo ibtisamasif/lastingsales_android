@@ -32,7 +32,7 @@ public class DemoSyncJob extends Job {
                 .setPeriodic(TimeUnit.MINUTES.toMillis(120), TimeUnit.MINUTES.toMillis(10))
 //                .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
                 .setUpdateCurrent(true)
-                .setPersisted(true) //onReboot
+//                .setPersisted(true) //onReboot //after upgrading it is not supported anymore all jobs are persisted now in 1.2.0 previous version was 1.1.7
                 .setRequiresCharging(true)
 //                .setRequiresDeviceIdle(false)
                 .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)

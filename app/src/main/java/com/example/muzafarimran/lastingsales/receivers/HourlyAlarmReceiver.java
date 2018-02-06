@@ -24,7 +24,10 @@ import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,15 +41,20 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive:Hourly Alarm Fired");
         Log.d("Inquiry", "onReceive:Hourly Alarm Fired");
-
+        if (isDay()) {
+            Log.d(TAG, "onReceive: DAY TIME");
 //        long countLong = intent.getLongExtra(Intent.EXTRA_ALARM_COUNT, 0L);
 //        Log.d(TAG, "onReceive: CountLong: " + countLong);
 //
 //        int count = intent.getIntExtra(Intent.EXTRA_ALARM_COUNT, 0);
 //        Log.d(TAG, "onReceive: CountInt: " + count);
 //        if (count < 2) {
-        new sendNotification(context).execute();
+            new sendNotification(context).execute();
 //        }
+        }else {
+            Log.d(TAG, "onReceive: NIGHT TIME");
+        }
+
 ////        Refresh Service once daily.
 //        context.startService(new Intent(context, CallDetectionService.class));  // is it still needed here as well ?
     }
@@ -119,7 +127,7 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
                         }
                     }
                     Log.d(TAG, "doInBackground: message: " + messageList);
-                }else {
+                } else {
                     Log.d(TAG, "doInBackground: NO INQUIRY TO DISPLAY CALLBACK NOTIFICATION");
                 }
             } catch (Exception e) {
@@ -276,5 +284,46 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
             }
         }
     }
+
+    public boolean isDay() {
+        try {
+            boolean flag = true;
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+            Date date_from = null;
+            date_from = formatter.parse("00:00");
+
+            Date date_to = formatter.parse("09:00");
+            Date dateNow = formatter.parse(formatter.format(new Date()));
+
+            System.out.println("date_to: " + date_from);
+            System.out.println("date_to: " + date_to);
+            System.out.println("dateNow: " + dateNow);
+
+            String check;
+            if (date_from.before(date_to)) { // they are on the same day
+                if (dateNow.after(date_from) && dateNow.before(date_to)) {
+                    check = "nightCycle";
+                    flag = false;
+                } else {
+                    check = "dayCycle";
+                    flag = true;
+                }
+            } else { // interval crossing midnight
+                if (dateNow.before(date_to) || dateNow.after(date_from)) {
+                    check = "nightCycle";
+                    flag = false;
+                } else {
+                    check = "dayCycle";
+                    flag = true;
+                }
+            }
+            System.out.println("Cycle is " + check);
+            return flag;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
 

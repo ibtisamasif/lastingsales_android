@@ -1,1 +1,1 @@
-alter table LS_CONTACT add VERSION INTEGER;
+--alter table LS_CONTACT add VERSION INTEGER;

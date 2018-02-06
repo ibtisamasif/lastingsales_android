@@ -87,7 +87,7 @@ public class FlyerBubbleHelper extends AppCompatActivity {
         tvCallerHistoryName1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName1);
         tvCallerHistoryLastCallDateTime1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime1);
         tvCallerHistoryLastCallTimeAgo1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo1);
-        tvName = (TextView) bubbleView.findViewById(R.id.tvName);
+        tvName = (TextView) bubbleView.findViewById(R.id.tvContactName);
         tvName.setText(number);
         ibClose = (ImageButton) bubbleView.findViewById(R.id.ibClose);
         tvError = (TextView) bubbleView.findViewById(R.id.tvError);
@@ -189,7 +189,7 @@ public class FlyerBubbleHelper extends AppCompatActivity {
         tvCallerHistoryName1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName1);
         tvCallerHistoryLastCallDateTime1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime1);
         tvCallerHistoryLastCallTimeAgo1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo1);
-        tvName = (TextView) bubbleView.findViewById(R.id.tvName);
+        tvName = (TextView) bubbleView.findViewById(R.id.tvContactName);
         tvName.setText(number);
         ibClose = (ImageButton) bubbleView.findViewById(R.id.ibClose);
         tvError = (TextView) bubbleView.findViewById(R.id.tvError);

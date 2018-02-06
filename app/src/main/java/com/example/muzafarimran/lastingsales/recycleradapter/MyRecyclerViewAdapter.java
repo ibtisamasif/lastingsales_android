@@ -23,6 +23,7 @@ import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSeparatorCard
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSettingCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSocialProfileCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderStatisticsCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderTaskCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderUnlabeledCard;
 
 import java.util.List;
@@ -98,6 +99,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.STATISTICS_CLASS_NAME:
                 return ClassNames.STATISTICS_CLASS_TYPE;
 
+                case ClassNames.TASK_CLASS_NAME:
+                return ClassNames.TASK_CLASS_TYPE;
+
             default:
                 Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
                 return -1;
@@ -158,6 +162,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             case ClassNames.STATISTICS_CLASS_TYPE:
                 return new ViewHolderStatisticsCard(LayoutInflater.from(mContext).inflate(ClassNames.STATISTICS_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.TASK_CLASS_TYPE:
+                return new ViewHolderTaskCard(LayoutInflater.from(mContext).inflate(ClassNames.TASK_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -236,6 +243,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.STATISTICS_CLASS_TYPE:
                 ViewHolderStatisticsCard viewHolderStatisticsCard = (ViewHolderStatisticsCard) holder;
                 viewHolderStatisticsCard.bind(item, position, mContext);
+                break;
+            case ClassNames.TASK_CLASS_TYPE:
+                ViewHolderTaskCard viewHolderTaskCard = (ViewHolderTaskCard) holder;
+                viewHolderTaskCard.bind(item, position, mContext);
                 break;
         }
     }

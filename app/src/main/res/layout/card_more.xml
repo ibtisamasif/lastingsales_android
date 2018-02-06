@@ -52,7 +52,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvDescription"
+            android:id="@+id/tvTaskDescription"
             style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

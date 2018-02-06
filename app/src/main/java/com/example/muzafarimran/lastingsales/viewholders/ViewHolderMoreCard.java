@@ -35,7 +35,7 @@ public class ViewHolderMoreCard extends RecyclerView.ViewHolder {
     public ViewHolderMoreCard(View v) {
         super(v);
         tvTitle = v.findViewById(R.id.tvTitle);
-        tvDescription = v.findViewById(R.id.tvDescription);
+        tvDescription = v.findViewById(R.id.tvTaskDescription);
         cl = v.findViewById(R.id.cl);
         ivCardBackground = v.findViewById(R.id.ivCardBackground);
     }

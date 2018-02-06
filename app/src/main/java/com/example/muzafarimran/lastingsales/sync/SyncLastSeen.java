@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.sync;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
 
@@ -26,10 +27,17 @@ public class SyncLastSeen {
     public static final String TAG = "SyncLastSeen";
     private static SessionManager sessionManager;
     private static RequestQueue queue;
+    private static String currentVersionCode;
 
     public static void updateLastSeenToServer(Activity activity) {
         sessionManager = new SessionManager(activity);
         queue = Volley.newRequestQueue(activity);
+
+        try {
+            currentVersionCode = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         final String BASE_URL = MyURLs.UPDATE_AGENT;
@@ -37,6 +45,7 @@ public class SyncLastSeen {
         builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendQueryParameter("last_seen", "" + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Long.parseLong(sessionManager.getLastAppVisit()), "yyyy-MM-dd kk:mm:ss"))
+                .appendQueryParameter("app_version", "" + currentVersionCode)
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();

@@ -55,9 +55,9 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
         this.user_avatar = v.findViewById(R.id.user_avatar);
         this.imSmartBadge = v.findViewById(R.id.imSmartBadge);
         this.llTypeRibbon = v.findViewById(R.id.llTypeRibbon);
-        this.name = v.findViewById(R.id.call_name);
+        this.name = v.findViewById(R.id.tvContactName);
         this.call_icon = v.findViewById(R.id.call_icon);
-        this.numberDetailTextView = v.findViewById(R.id.tvEmail);
+        this.numberDetailTextView = v.findViewById(R.id.tvContactNumber);
         this.bSales = v.findViewById(R.id.bSalesUtaggedItem);
         this.bIgnore = v.findViewById(R.id.bIgnore);
     }
@@ -184,7 +184,6 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
             dataSenderAsync.run();
 
             Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
-
 
             CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity();
             closeInquiryBottomSheetEvent.closeInquiryBottomSheetCallback();

@@ -34,8 +34,8 @@ public class AboutActivity extends AppCompatActivity {
         textViewVersion = (TextView) findViewById(R.id.textViewVersion);
         textViewNumber.setText("03111308308");
         try {
-            String currentVersionCode = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
-            textViewVersion.setText(currentVersionCode);
+            String currentVersionName = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
+            textViewVersion.setText(currentVersionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

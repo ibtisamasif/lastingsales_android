@@ -43,7 +43,7 @@
             android:value="sugar_example.db" />
         <meta-data
             android:name="VERSION"
-            android:value="11" />
+            android:value="12" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -135,6 +135,8 @@
         <!-- <activity -->
         <!-- android:name=".activitContactCallDetailsBottomSheetFragmentails" -->
         <!-- android:screenOrientation="portrait"/> -->
+        <activity android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
+            android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
         <activity
             android:name=".activities.AddEditNewFollowupActivity"
             android:screenOrientation="nosensor"

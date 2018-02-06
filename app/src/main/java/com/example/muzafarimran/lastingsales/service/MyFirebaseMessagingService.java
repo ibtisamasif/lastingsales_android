@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.TaskAddedEventModel;
+import com.example.muzafarimran.lastingsales.providers.models.LSTask;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
@@ -92,6 +94,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (payload.has("dynamic_values")) {
                         dynamic_values = payload.getString("dynamic_values");
                     }
+                    int version = -1;
+                    if (payload.has("version") && !payload.isNull("version")) {
+                        version = payload.getInt("version");
+                    }
 //                    String created_at = null;
 //                    if (payload.has("created_at")) {
 //                        created_at = payload.getString("created_at");
@@ -103,17 +109,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
 
-//                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
+                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
                     LSContact tempContact = LSContact.getContactFromNumber(phone);
                     if (tempContact != null) {
                         tempContact.setServerId(id);
                         tempContact.setContactName(name);
-                        tempContact.setPhoneOne(phone);
+                        tempContact.setPhoneOne(intlNum);
                         tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                         tempContact.setContactSalesStatus(status);
 //                        tempContact.setContactUpdated_at(Calendar.getInstance().getTimeInMillis()+"");
                         if (dynamic_values != null) {
                             tempContact.setDynamic(dynamic_values);
+                        }
+                        if (version != -1) {
+                            tempContact.setVersion(version);
                         }
                         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
 //                        if(created_at != null){
@@ -145,6 +154,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         if (dynamic_values != null) {
                             contact.setDynamic(dynamic_values);
                         }
+                        if (version != -1) {
+                            contact.setVersion(version);
+                        }
                         contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                         contact.save();
                         Log.e(TAG, "Post From Local DB: " + contact.getContactName());
@@ -157,7 +169,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String name = payload.getString("name");
                     String email = payload.getString("email");
                     String phone = payload.getString("phone");
-//                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
+                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
                     String address = payload.getString("address");
                     String status = payload.getString("status");
                     String lead_type = payload.getString("lead_type");
@@ -173,17 +185,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (payload.has("dynamic_values")) {
                         dynamic_values = payload.getString("dynamic_values");
                     }
+                    int version = -1;
+                    if (payload.has("version") && !payload.isNull("version")) {
+                        version = payload.getInt("version");
+                    }
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
                     LSContact contact = LSContact.getContactFromServerId(id);
                     String oldType = contact.getContactType();
                     contact.setContactName(name);
                     contact.setContactEmail(email);
-                    contact.setPhoneOne(phone);
+                    contact.setPhoneOne(intlNum);
                     contact.setContactAddress(address);
                     contact.setContactSalesStatus(status);
                     if (dynamic_values != null) {
                         contact.setDynamic(dynamic_values);
+                    }
+                    if (version != -1) {
+                        contact.setVersion(version);
                     }
                     contact.setContactType(lead_type);
                     if (updated_at != null) {
@@ -420,13 +439,64 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             }
 
+            if (tag.equals("Task")) {
+                if (action.equals("post")) {
+                    String id = payload.getString("id");
+                    String user_id = payload.getString("user_id");
+                    String company_id = payload.getString("company_id");
+                    String workflow_id = payload.getString("workflow_id");
+                    String step_id = payload.getString("step_id");
+                    String lead_id = payload.getString("lead_id");
+                    String name = payload.getString("name");
+                    String description = payload.getString("description");
+//                    String type = payload.getString("type");
+                    String status = payload.getString("status");
+                    String created_by = payload.getString("created_by");
+                    String created_at = payload.getString("created_at");
+//                    String updated_at = payload.getString("updated_at");
+//                    String assigned_at = payload.getString("assigned_at");
+//                    String completed_at = payload.getString("completed_at");
+//                    String remarks = payload.getString("remarks");
+
+                    // ignore if task already exists
+                    LSTask lsTask = LSTask.getTaskFromServerId(id);
+                    if (lsTask == null) {
+                        // check if lead still exists of which the task is
+                        LSContact lsContact = LSContact.getContactFromServerId(lead_id);
+                        if (lsContact != null) {
+                            LSTask newlsTask = new LSTask();
+                            newlsTask.setServerId(id);
+                            newlsTask.setUserId(user_id);
+                            newlsTask.setCompanyId(company_id);
+                            newlsTask.setWorkflowId(workflow_id);
+                            newlsTask.setStepId(step_id);
+                            newlsTask.setLeadId(lead_id);
+                            newlsTask.setName(name);
+                            newlsTask.setDescription(description);
+//                    newlsTask.setType(type);
+                            newlsTask.setStatus(status);
+                            newlsTask.setCreatedBy(created_by);
+                            newlsTask.setCreatedAt(created_at);
+//                    newlsTask.setUpdatedAt(Long.parseLong(updated_at));
+//                    newlsTask.setAssignedAt(assigned_at);
+//                    newlsTask.setCompletedAt(completed_at);
+//                    newlsTask.setRemarks(remarks);
+                            newlsTask.save();
+                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
+                            TinyBus bus = TinyBus.from(getApplicationContext());
+                            bus.post(mCallEvent);
+                        }
+                    }
+                }
+            }
+
             Intent pushNotification = new Intent(FireBaseConfig.PUSH_NOTIFICATION);
             pushNotification.putExtra("message", mMsg);
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
-            // play notification sound
-//            FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
-//            notificationUtils.playNotificationSound();
+//             play notification sound
+            FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
+            notificationUtils.playNotificationSound();
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(TAG, "Json Exception: " + e.getMessage());

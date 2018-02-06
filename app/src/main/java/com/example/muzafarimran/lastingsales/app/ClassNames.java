@@ -75,4 +75,8 @@ public class ClassNames {
     public static final String STATISTICS_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.StatisticsItem";
     public static final int STATISTICS_CLASS_TYPE = 17;
     public static final int STATISTICS_CLASS_RESOURCE = R.layout.card_statistics;
+
+    public static final String TASK_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.LSTask";
+    public static final int TASK_CLASS_TYPE = 18;
+    public static final int TASK_CLASS_RESOURCE = R.layout.card_task;
 }

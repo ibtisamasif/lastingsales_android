@@ -20,10 +20,12 @@ public class MyURLs {
     public static String UPDATE_INQUIRY = "https://" + server + ".lastingsales.com/api/v1/inquiries/";
     public static String DELETE_INQUIRY = "https://" + server + ".lastingsales.com/api/v1/inquiries/";
     public static String GET_INQUIRY = "https://" + server + ".lastingsales.com/api/v1/inquiries/";
+    public static String GET_TASK = "https://" + server + ".lastingsales.com/api/v1/task/";
     public static String DELETE_CONTACT = "https://" + server + ".lastingsales.com/api/v1/lead/";
     public static String UPDATE_CONTACT = "https://" + server + ".lastingsales.com/api/v1/lead/";
     public static String UPDATE_NOTE = "https://" + server + ".lastingsales.com/api/v1/lead/";
     public static String UPDATE_AGENT = "https://" + server + ".lastingsales.com/api/v1/user";
+    public static String UPDATE_TASK = "https://" + server + ".lastingsales.com/api/v1/lead";
     public static String GET_CONTACTS = "https://" + server + ".lastingsales.com/api/v1/lead";
     public static String GET_NOTES = "https://" + server + ".lastingsales.com/api/v1/lead";
     public static String GET_COLUMNS = "https://" + server + ".lastingsales.com/api/v1/column";

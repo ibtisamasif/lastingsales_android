@@ -65,6 +65,8 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
         super.onPostExecute(aVoid);
         AgentInquiriesFetchAsync agentInquiriesFetchAsync = new AgentInquiriesFetchAsync(mContext);
         agentInquiriesFetchAsync.execute();
+        AgentTasksFetchAsync agentTasksFetchAsync = new AgentTasksFetchAsync(mContext);
+        agentTasksFetchAsync.execute();
     }
 
     private void fetchAgentLeadsFunc() {

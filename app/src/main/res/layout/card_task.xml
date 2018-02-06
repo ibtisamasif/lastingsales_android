@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@color/md_white"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <LinearLayout
+
+        android:id="@+id/llTypeRibbon"
+        android:layout_width="4dp"
+        android:layout_height="64dp"
+        android:background="@color/Ls.Color.Warning"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/user_avatar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/tvContactName"
+        app:layout_constraintTop_toTopOf="@+id/tvContactName"
+        fresco:placeholderImage="@drawable/ic_account_circle"
+        fresco:roundAsCircle="true" />
+
+    <TextView
+        android:id="@+id/tvContactName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="9"
+        android:text="@string/unknown_capital"
+        app:layout_constraintStart_toStartOf="@+id/tvTaskDescription"
+        app:layout_constraintTop_toBottomOf="@+id/tvTaskDescription" />
+
+    <TextView
+        android:id="@+id/tvContactNumber"
+        style="@style/Base.TextAppearance.AppCompat.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvContactName"
+        android:layout_toEndOf="@id/missed_call_icon"
+        android:layout_toRightOf="@id/missed_call_icon"
+        android:text="number"
+        app:layout_constraintStart_toStartOf="@+id/tvContactName"
+        app:layout_constraintTop_toBottomOf="@+id/tvContactName" />
+
+    <ImageView
+        android:id="@+id/ivTick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:tint="@color/Ls.Color.Success"
+        android:padding="8dp"
+        android:scaleType="fitEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_check_24dp" />
+
+
+    <ImageView
+        android:id="@+id/imSmartBadge"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        fresco:srcCompat="@drawable/ic_notes_blue_48dp" />
+
+    <TextView
+        android:id="@+id/tvTaskName"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="task name"
+        app:layout_constraintStart_toEndOf="@+id/imSmartBadge"
+        app:layout_constraintTop_toTopOf="@+id/imSmartBadge" />
+
+    <TextView
+        android:id="@+id/tvTaskDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="description"
+        app:layout_constraintStart_toStartOf="@+id/tvTaskName"
+        app:layout_constraintTop_toBottomOf="@+id/tvTaskName" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout10"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/md_grey_300"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tvContactNumber"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
+
+<!--</android.support.v7.widget.CardView>-->

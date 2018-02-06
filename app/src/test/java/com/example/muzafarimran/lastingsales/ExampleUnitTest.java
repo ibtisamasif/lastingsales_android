@@ -1,6 +1,6 @@
 package com.example.muzafarimran.lastingsales;
 
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
 
 import org.junit.Test;
 
@@ -12,6 +12,8 @@ import static junit.framework.Assert.assertEquals;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        assertEquals("+92 322 8899906", PhoneNumberAndCallUtils.numberToInterNationalNumber("03228899906"));
+        DynamicColumnBuilderVersion2 dynamicColumnBuilderVersion2 = new DynamicColumnBuilderVersion2();
+        System.out.println(dynamicColumnBuilderVersion2.buildJSONversion2());
+        assertEquals("{\"firstName\":\"ibtisam\",\"lastName\":\"asif\"}", dynamicColumnBuilderVersion2.buildJSONversion2());
     }
 }

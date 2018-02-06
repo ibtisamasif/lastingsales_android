@@ -1,7 +1,6 @@
 package com.example.muzafarimran.lastingsales.migration;
 
 import android.content.Context;
-
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -16,12 +15,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -59,6 +57,8 @@ public class VersionManager {
         int version = pInfo.versionCode;
         Log.d(TAG, "func: version: " + version);
         try {
+            Log.d(TAG, "runMigrations: STORE VERSION CODE");
+            sessionManager.storeVersionCodeNow();
             Log.d(TAG, "runMigrations: MixPanel Instantiated");
             String projectToken = MixpanelConfig.projectToken;
             MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
@@ -317,7 +317,6 @@ public class VersionManager {
             }
         } else if (version == 16) {
             try {
-                sessionManager.storeVersionCodeNow();
                 Log.d(TAG, "func: Running Script for Mixpanel");
                 if (sessionManager.getLoginMode().equals(SessionManager.MODE_NORMAL)) {
                     Log.d(TAG, "func: case1");
@@ -346,6 +345,32 @@ public class VersionManager {
                     Log.d(TAG, "func: case3");
                     // Do first run stuff here then set 'firstrun' as false
                     // using the following line to edit/commit prefs
+                    return true;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        } else if (version == 102) {
+            try {
+//                sessionManager.storeVersionCodeNow();
+                Log.d(TAG, "func: Running Script for Migration");
+                if (sessionManager.getLoginMode().equals(SessionManager.MODE_NORMAL)) {
+                    Log.d(TAG, "MODE_NORMAL");
+
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_NEW_INSTALL)) {
+                    Log.d(TAG, "MODE_NEW_INSTALL");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    sessionManager.fetchData();
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_UPGRADE)) {
+                    Log.d(TAG, "MODE_UPGRADE");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    sessionManager.fetchData();
                     return true;
                 } else {
                     return true;

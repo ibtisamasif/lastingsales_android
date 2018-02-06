@@ -10,13 +10,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
+import com.example.muzafarimran.lastingsales.utils.HuaweiProtectedAppsModule;
 
 import java.util.Calendar;
 
@@ -32,6 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch swTagDialogPopup;
     private Switch swHourlyAlarmNotification;
     private Switch swDefaultLead;
+    private TextView tvAddToProtectedApp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +53,13 @@ public class SettingsActivity extends AppCompatActivity {
         swTagDialogPopup = (Switch) findViewById(R.id.swTagDialogPopup);
         swHourlyAlarmNotification = (Switch) findViewById(R.id.swHourlyAlarmNotification);
         swDefaultLead = (Switch) findViewById(R.id.swDefaultLead);
+        TextView tvAddToProtectedApp = (TextView) findViewById(R.id.tvAddToProtectedApp);
+        tvAddToProtectedApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new HuaweiProtectedAppsModule(SettingsActivity.this).AlertIfHuaweiDevice("Huawei Protected Apps","This app requires to be enables in 'Protected Apps' to work in background","Dont show again","PROTECTED APPS","CANCEL");
+            }
+        });
 
         if (settingsManager.getKeyStateFlyer()) {
             swFlyer.setChecked(true);

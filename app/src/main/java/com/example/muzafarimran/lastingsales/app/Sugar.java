@@ -4,15 +4,12 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.evernote.android.job.JobManager;
 import com.example.muzafarimran.lastingsales.service.DemoJobCreator;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.orm.SchemaGenerator;
 import com.orm.SugarApp;
 import com.orm.SugarContext;
-import com.orm.SugarDb;
 
 /**
  * Created by ibtisam on 5/17/2017.
@@ -34,8 +31,8 @@ public class Sugar extends SugarApp {
         SugarContext.init(getApplicationContext());
 
         // create table if not exists
-        SchemaGenerator schemaGenerator = new SchemaGenerator(this); //TODO uncomment in production
-        schemaGenerator.createDatabase(new SugarDb(this).getDB());
+//        SchemaGenerator schemaGenerator = new SchemaGenerator(this); //TODO uncomment in production
+//        schemaGenerator.createDatabase(new SugarDb(this).getDB());
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Fresco.initialize(this);
@@ -65,7 +62,7 @@ public class Sugar extends SugarApp {
     @Override
     public void onLowMemory() {
         Log.d(TAG, "onLowMemory: ");
-        Toast.makeText(this, "Memory Low", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Memory Low", Toast.LENGTH_SHORT).show();
         super.onLowMemory();
     }
 }

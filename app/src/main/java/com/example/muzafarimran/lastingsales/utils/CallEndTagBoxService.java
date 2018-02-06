@@ -5,10 +5,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SettingsManager;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.chatheadbubble.AddEditLeadServiceBubbleHelper;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
-import static com.google.android.gms.internal.zzahg.runOnUiThread;
+import static com.google.android.gms.internal.zzahn.runOnUiThread;
 
 /**
  * Created by ibtisam on 7/22/2017.

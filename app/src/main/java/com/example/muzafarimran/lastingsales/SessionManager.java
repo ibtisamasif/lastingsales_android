@@ -9,6 +9,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSTask;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 
@@ -182,6 +183,9 @@ public class SessionManager {
         }
         if (LSDynamicColumns.count(LSDynamicColumns.class) > 0) {
             LSDynamicColumns.deleteAll(LSDynamicColumns.class);
+        }
+        if (LSTask.count(LSTask.class) > 0) {
+            LSTask.deleteAll(LSTask.class);
         }
     }
 

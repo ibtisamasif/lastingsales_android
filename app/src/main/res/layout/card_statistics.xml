@@ -27,7 +27,7 @@
         fresco:roundAsCircle="true" />
 
     <TextView
-        android:id="@+id/call_name"
+        android:id="@+id/tvContactName"
         style="@style/Base.TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,17 +39,17 @@
         android:layout_marginLeft="8dp" />
 
     <TextView
-        android:id="@+id/tvEmail"
+        android:id="@+id/tvContactNumber"
         style="@style/Base.TextAppearance.AppCompat.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/call_name"
+        android:layout_below="@id/tvContactName"
         android:layout_marginStart="8dp"
         android:layout_toEndOf="@id/missed_call_icon"
         android:layout_toRightOf="@id/missed_call_icon"
         android:text="email"
         app:layout_constraintStart_toEndOf="@+id/user_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/call_name" />
+        app:layout_constraintTop_toBottomOf="@+id/tvContactName" />
 
     <LinearLayout
         android:id="@+id/linearLayout4"

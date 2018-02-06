@@ -57,7 +57,7 @@
                 app:layout_constraintTop_toTopOf="@+id/tvNoteHeading" />
 
             <TextView
-                android:id="@+id/tvName"
+                android:id="@+id/tvContactName"
                 style="@style/Base.TextAppearance.AppCompat.Title.Inverse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,13 +80,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/tvNoteTextUIOCallPopup"
                 android:layout_alignStart="@+id/tvNoteTextUIOCallPopup"
-                android:layout_below="@+id/tvName"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
                 android:text="Note:"
                 app:layout_constraintStart_toEndOf="@+id/user_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/tvName"
-                android:layout_marginLeft="8dp" />
+                app:layout_constraintTop_toBottomOf="@+id/tvContactName"
+                android:layout_marginLeft="8dp"/>
 
             <ImageButton
                 android:id="@+id/ibClose"
