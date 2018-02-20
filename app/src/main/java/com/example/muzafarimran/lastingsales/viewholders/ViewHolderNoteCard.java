@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditNoteActivity;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
-import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
@@ -63,7 +61,7 @@ public class ViewHolderNoteCard extends RecyclerView.ViewHolder {
                         } else {
                             noteItem.delete();
                             NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
-                            TinyBus bus = TinyBus.from(mContext);
+                            TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                             bus.post(mNoteAdded);
                             Toast.makeText(mContext, "Deleted successfully.", Toast.LENGTH_SHORT).show();
                         }

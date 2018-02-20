@@ -21,6 +21,8 @@ import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
@@ -30,6 +32,8 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by ibtisam on 11/1/2017.
@@ -185,8 +189,15 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
 
             Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
 
+            CloseContactBottomSheetEvent closeContactBottomSheetEvent = new NavigationBottomMainActivity();
+            closeContactBottomSheetEvent.closeContactBottomSheetCallback();
+
             CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity();
             closeInquiryBottomSheetEvent.closeInquiryBottomSheetCallback();
+
+            LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+            TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+            bus.post(mCallEvent);
         });
     }
 

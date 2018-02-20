@@ -17,11 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
+import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -217,6 +219,10 @@ public class AddEditLeadActivity extends AppCompatActivity {
                         mixpanel.track("Lead From " + mixpanelSource);
                         Log.d(TAG, "mixpanelSource: " + mixpanelSource);
                     }
+                    CloseContactBottomSheetEvent closeContactBottomSheetEvent = new NavigationBottomMainActivity();
+                    closeContactBottomSheetEvent.closeContactBottomSheetCallback();
+                    CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity();
+                    closeInquiryBottomSheetEvent.closeInquiryBottomSheetCallback();
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.post(mCallEvent);

@@ -290,8 +290,8 @@ public class HourlyAlarmReceiver extends WakefulBroadcastReceiver {
             boolean flag = true;
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
             Date date_from = null;
-            date_from = formatter.parse("00:00");
 
+            date_from = formatter.parse("22:00");
             Date date_to = formatter.parse("09:00");
             Date dateNow = formatter.parse(formatter.format(new Date()));
 

@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.SearchManager;
@@ -7,8 +8,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.MatrixCursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,7 +40,6 @@ import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
-import com.example.muzafarimran.lastingsales.events.TaskAddedEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragmentNew;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
@@ -51,7 +49,6 @@ import com.example.muzafarimran.lastingsales.listloaders.HomeLoader;
 import com.example.muzafarimran.lastingsales.listloaders.InquiryLoader;
 import com.example.muzafarimran.lastingsales.listloaders.LeadsLoader;
 import com.example.muzafarimran.lastingsales.listloaders.MoreLoader;
-import com.example.muzafarimran.lastingsales.listloaders.TasksListLoader;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -78,16 +75,21 @@ import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
+import de.halfbit.tinybus.wires.ShakeEventWire;
 
 /**
  * Created by ibtisam on 11/6/2017.
  */
 
-public class NavigationBottomMainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Object>>, ChipClickListener, CloseInquiryBottomSheetEvent, CloseContactBottomSheetEvent {
+public class NavigationBottomMainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Object>>, CloseInquiryBottomSheetEvent, CloseContactBottomSheetEvent, ChipClickListener {
     public static final String TAG = "NavigationBottomMain";
 
     public static final String KEY_ACTIVE_LOADER = "active_loader";
     public static int ACTIVE_LOADER = -1;
+    public static final int INQU_LOADER_ID = 1;
+    public static final int HOME_LOADER_ID = 2;
+    public static final int LEAD_LOADER_ID = 3;
+    public static final int MORE_LOADER_ID = 4;
     public static String KEY_SELECTED_TAB = "key_selected_tab";
     public static String INQUIRIES_TAB = "inquiries_tab";
     private TinyBus bus;
@@ -98,13 +100,19 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     private SettingsManager settingsManager;
     Bundle bundle = new Bundle();
     private SearchView searchView;
+    private FloatingActionMenu floatingActionMenu;
     private BottomNavigationView navigation;
+    private static InquiryCallDetailsBottomSheetFragmentNew inquiryCallDetailsBottomSheetFragment;
+    private static ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment;
+    public static Activity activity;
+    private static boolean sheetShowing = false;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             if (ACTIVE_LOADER != -1) {
                 try {
+                    Log.d(TAG, "onNavigationItemSelected: ACTIVE_LOADER: " + ACTIVE_LOADER);
                     if (getSupportLoaderManager().getLoader(ACTIVE_LOADER).isStarted()) { //still crashing here
                         getSupportLoaderManager().getLoader(ACTIVE_LOADER).cancelLoad();
                     }
@@ -115,43 +123,44 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 }
             }
             switch (item.getItemId()) {
-                case R.id.navigation_tasks:
-                    ACTIVE_LOADER = 1;
-                    getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
-//                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this);
-                    return true;
+//                case R.id.navigation_tasks:
+//                    ACTIVE_LOADER = 1;
+//                    floatingActionMenu.hideMenu(true);
+//                    getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
+////                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this);
+//                    return true;
                 case R.id.navigation_inquiries:
-                    ACTIVE_LOADER = 2;
-                    getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
-//                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this);
+                    ACTIVE_LOADER = INQU_LOADER_ID;
+                    floatingActionMenu.hideMenu(true);
+                    getSupportLoaderManager().restartLoader(INQU_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+//                    getSupportLoaderManager().initLoader(INQU_LOADER_ID, null, NavigationBottomMainActivity.this);
                     return true;
                 case R.id.navigation_home:
-                    ACTIVE_LOADER = 3;
-                    getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+                    ACTIVE_LOADER = HOME_LOADER_ID;
+                    floatingActionMenu.hideMenu(true);
+                    getSupportLoaderManager().restartLoader(HOME_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
                 case R.id.navigation_leads:
-                    ACTIVE_LOADER = 4;
-                    getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
+                    ACTIVE_LOADER = LEAD_LOADER_ID;
+                    floatingActionMenu.showMenu(true);
+                    getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
                 case R.id.navigation_more:
-                    ACTIVE_LOADER = 5;
-                    getSupportLoaderManager().restartLoader(5, bundle, NavigationBottomMainActivity.this).forceLoad();
+                    ACTIVE_LOADER = MORE_LOADER_ID;
+                    floatingActionMenu.hideMenu(true);
+                    getSupportLoaderManager().restartLoader(MORE_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
             }
             return false;
         }
     };
-    private InquiryCallDetailsBottomSheetFragmentNew inquiryCallDetailsBottomSheetFragment;
-    private static ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment;
-    private FloatingActionButton floatingActionButtonAdd, floatingActionButtonImport;
-    private FloatingActionMenu floatingActionMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: called");
 
-        initFirst();
+        initFirst(savedInstanceState);
 
         setContentView(R.layout.activity_bottom_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -164,7 +173,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        sessionManager = new SessionManager(this);
         mRecyclerView.setAdapter(adapter);
 
         initLast();
@@ -181,8 +189,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 //        });
 
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        floatingActionButtonAdd = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add);
-        floatingActionButtonImport = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_import);
+        FloatingActionButton floatingActionButtonAdd = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add);
+        FloatingActionButton floatingActionButtonImport = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_import);
         floatingActionMenu.setClosedOnTouchOutside(true);
 
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
@@ -223,13 +231,47 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 //                startActivity(intent);
             }
         });
+
+        onBackToActivity();
+
     }
 
-    private void initFirst() {
+    private void onBackToActivity() {
+        Bundle bundle1 = getIntent().getExtras();
+        if (bundle1 != null) {
+            Log.d(TAG, "onCreate: Loading Inquiries TAB");
+            String tab = bundle1.getString(KEY_SELECTED_TAB);
+            if (tab != null) {
+                if (tab.equals(INQUIRIES_TAB)) {
+                    getSupportLoaderManager().initLoader(INQU_LOADER_ID, null, NavigationBottomMainActivity.this).forceLoad();
+                    navigation.setSelectedItemId(R.id.navigation_inquiries);
+                }
+            } else {
+                Log.d(TAG, "onCreate: Bundle Not Null Loading Leads TAB");
+                getSupportLoaderManager().initLoader(LEAD_LOADER_ID, null, NavigationBottomMainActivity.this).forceLoad();
+                navigation.setSelectedItemId(R.id.navigation_leads);
+            }
+        } else
+            Log.d(TAG, "onCreate: Bundle is Null Loading Leads TAB");
+        getSupportLoaderManager().initLoader(LEAD_LOADER_ID, null, NavigationBottomMainActivity.this).forceLoad();
+        navigation.setSelectedItemId(R.id.navigation_leads);
+    }
 
+
+    private void initFirst(Bundle savedInstanceState) {
         Log.d(TAG, "initFirst: density: " + getResources().getDisplayMetrics().density);
-
+        activity = this;
         sessionManager = new SessionManager(getApplicationContext());
+        bus = TinyBus.from(this.getApplicationContext());
+        if (savedInstanceState == null) {
+            // Note: ShakeEventWire stays wired when activity is re-created
+            //       on configuration change. That's why we register is
+            //       only once inside if-statement.
+
+            // wire device shake event provider
+            bus.wire(new ShakeEventWire());
+        }
+
         checkForInvalidTime();
         if (!sessionManager.isUserSignedIn()) {
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
@@ -238,14 +280,14 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         } else {
             Intent intent = new Intent(NavigationBottomMainActivity.this, CallDetectionService.class);
             startService(intent);
-            if (sessionManager.isFirstRun()) {
+            if (sessionManager.isFirstRunAfterLogin()) {
                 Log.d(TAG, "initFirst: isFirstRun TRUE");
                 TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
                 theCallLogEngine.execute();
             }
             sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
             if (NetworkAccess.isNetworkAvailable(this)) {
-                long contactCount = LSContact.count(LSContact.class); // TODO experienced crash here several times confirm it.
+                long contactCount = LSContact.count(LSContact.class); // If app is crashed here make sure instant run if off.
                 if (contactCount < 1) {
                     Log.d(TAG, "onCreate: LSContact.count " + contactCount);
                     sessionManager.fetchData();
@@ -429,13 +471,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         }
     }
 
-
-    private boolean isCallable(Intent intent) {
-        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent,
-                PackageManager.MATCH_DEFAULT_ONLY);
-        return list.size() > 0;
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -449,28 +484,39 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+        bus.register(this);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: called");
-        Bundle bundle1 = getIntent().getExtras();
-        if (bundle1 != null) {
-            Log.d(TAG, "onCreate: Loading Inquiries TAB");
-            String tab = bundle1.getString(KEY_SELECTED_TAB);
-            if (tab != null) {
-                if (tab.equals(INQUIRIES_TAB)) {
-                    getSupportLoaderManager().initLoader(2, null, NavigationBottomMainActivity.this).forceLoad();
-                    navigation.setSelectedItemId(R.id.navigation_inquiries);
-                }
-            } else {
-                Log.d(TAG, "onCreate: Bundle Not Null Loading Home TAB");
-                getSupportLoaderManager().initLoader(4, null, NavigationBottomMainActivity.this).forceLoad();
-                navigation.setSelectedItemId(R.id.navigation_leads);
-            }
-        } else {
-            Log.d(TAG, "onCreate: Bundle is Null Loading Home TAB");
-            getSupportLoaderManager().initLoader(4, null, NavigationBottomMainActivity.this).forceLoad();
-            navigation.setSelectedItemId(R.id.navigation_leads);
-        }
+//        Bundle bundle1 = getIntent().getExtras();
+//        if (bundle1 != null) {
+//            Log.d(TAG, "onCreate: Loading Inquiries TAB");
+//            String tab = bundle1.getString(KEY_SELECTED_TAB);
+//            if (tab != null) {
+//                if (tab.equals(INQUIRIES_TAB)) {
+//                    getSupportLoaderManager().initLoader(HOME_LOADER_ID, null, NavigationBottomMainActivity.this).forceLoad();
+//                    navigation.setSelectedItemId(R.id.navigation_inquiries);
+//                }
+//            } else {
+//                Log.d(TAG, "onCreate: Bundle Not Null Loading Leads TAB");
+//                getSupportLoaderManager().initLoader(4, null, NavigationBottomMainActivity.this).forceLoad();
+//                navigation.setSelectedItemId(R.id.navigation_leads);
+//            }
+//        } else {
+//            if (backPressed) {
+//                // Do nothing
+//            } else {
+//                Log.d(TAG, "onCreate: Bundle is Null Loading Leads TAB");
+//                getSupportLoaderManager().initLoader(4, null, NavigationBottomMainActivity.this).forceLoad();
+//                navigation.setSelectedItemId(R.id.navigation_leads);
+//            }
+//        }
     }
 
     @Override
@@ -480,17 +526,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     @Override
-    public void onStart() {
-        Log.d(TAG, "onStart() called");
-        bus = TinyBus.from(this.getApplicationContext());
-        bus.register(this);
-        super.onStart();
-    }
-
-    @Override
     public void onStop() {
-        bus.unregister(this);
         Log.d(TAG, "onStop() called");
+        bus.unregister(this);
         super.onStop();
     }
 
@@ -500,39 +538,83 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         Log.d(TAG, "onDestroy: called");
     }
 
-    @Subscribe
-    public void onTaskAddedEventModel(TaskAddedEventModel event) {
-        if (ACTIVE_LOADER == 1) {
-            Log.d("ViewHolderTask", "onTaskAddedEventModel: ");
-            getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
-            navigation.setSelectedItemId(R.id.navigation_tasks);
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+        } else {
+            if (ACTIVE_LOADER != -1) {
+//            if (getSupportLoaderManager().hasRunningLoaders()) {
+                try {
+                    if (ACTIVE_LOADER == INQU_LOADER_ID || ACTIVE_LOADER == HOME_LOADER_ID || ACTIVE_LOADER == MORE_LOADER_ID ) {
+                        getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+                        ACTIVE_LOADER = LEAD_LOADER_ID;
+                        floatingActionMenu.showMenu(true);
+                        navigation.setSelectedItemId(R.id.navigation_leads);
+                    } else if (ACTIVE_LOADER == LEAD_LOADER_ID) {
+                        super.onBackPressed();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//            }
+            }
         }
     }
 
     @Subscribe
+    public void onShakeEvent(ShakeEventWire.ShakeEvent event) {
+        // device has been shaken
+        Log.d(TAG, "onShakeEvent: Shake Event: " + event);
+        sessionManager.fetchData();
+        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+        theCallLogEngine.execute();
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+        dataSenderAsync.run();
+        Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+        String projectToken = MixpanelConfig.projectToken;
+        MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
+        mixpanel.track("Shaked");
+    }
+
+//    @Subscribe
+//    public void onTaskAddedEventModel(TaskAddedEventModel event) {
+//        Log.d(TAG, "onTaskAddedEventModel: ");
+//        if (ACTIVE_LOADER == INQU_LOADER_ID) {
+//            getSupportLoaderManager().restartLoader(INQU_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+//            navigation.setSelectedItemId(R.id.navigation_tasks);
+//        }
+//    }
+
+    @Subscribe
     public void onInquiryDeletedEventModel(InquiryDeletedEventModel event) {
-        if (ACTIVE_LOADER == 2) {
-            getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
+        Log.d(TAG, "onInquiryDeletedEventModel: ");
+        if (ACTIVE_LOADER == INQU_LOADER_ID) {
+            getSupportLoaderManager().restartLoader(INQU_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_inquiries);
         }
     }
 
     @Subscribe
     public void onMissedCallEventModel(MissedCallEventModel event) {
-        if (ACTIVE_LOADER == 2) {
-            getSupportLoaderManager().restartLoader(2, bundle, NavigationBottomMainActivity.this).forceLoad();
+        Log.d(TAG, "onMissedCallEventModel: ");
+        if (ACTIVE_LOADER == INQU_LOADER_ID) {
+            getSupportLoaderManager().restartLoader(INQU_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_inquiries);
         }
     }
 
     @Subscribe
     public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
-        if (ACTIVE_LOADER == 3) {
-            getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+        Log.d(TAG, "onSaleContactAddedEventModel: ");
+        if (ACTIVE_LOADER == HOME_LOADER_ID) {
+            Log.d(TAG, "onSaleContactAddedEventModel: HOME_LOADER_ID");
+            getSupportLoaderManager().restartLoader(HOME_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_home);
         }
-        if (ACTIVE_LOADER == 4) {
-            getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
+        if (ACTIVE_LOADER == LEAD_LOADER_ID) {
+            Log.d(TAG, "onSaleContactAddedEventModel: LEAD_LOADER_ID");
+            getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
 //        Toast.makeText(NavigationBottomMainActivity.this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
@@ -540,12 +622,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     @Subscribe
     public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
-        if (ACTIVE_LOADER == 3) {
-            getSupportLoaderManager().restartLoader(3, bundle, NavigationBottomMainActivity.this).forceLoad();
+        Log.d(TAG, "onLeadContactDeletedEventModel: ");
+        if (ACTIVE_LOADER == HOME_LOADER_ID) {
+            Log.d(TAG, "onLeadContactDeletedEventModel: HOME_LOADER_ID");
+            getSupportLoaderManager().restartLoader(HOME_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_home);
         }
-        if (ACTIVE_LOADER == 4) {
-            getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
+        if (ACTIVE_LOADER == LEAD_LOADER_ID) {
+            Log.d(TAG, "onLeadContactDeletedEventModel: LEAD_LOADER_ID");
+            getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
 //        Toast.makeText(NavigationBottomMainActivity.this, "ContactDeletedEventModel", Toast.LENGTH_SHORT).show();
@@ -560,15 +645,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         adapter.notifyDataSetChanged();
 
         switch (id) {
-            case 1:
-                return new TasksListLoader(NavigationBottomMainActivity.this);
-            case 2:
+//            case 1:
+//                return new TasksListLoader(NavigationBottomMainActivity.this);
+            case INQU_LOADER_ID:
                 return new InquiryLoader(NavigationBottomMainActivity.this);
-            case 3:
+            case HOME_LOADER_ID:
                 return new HomeLoader(NavigationBottomMainActivity.this);
-            case 4:
+            case LEAD_LOADER_ID:
                 return new LeadsLoader(NavigationBottomMainActivity.this, args);
-            case 5:
+            case MORE_LOADER_ID:
                 return new MoreLoader(NavigationBottomMainActivity.this);
             default:
                 return null;
@@ -591,6 +676,28 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         list.clear();
         list.addAll(new ArrayList<Object>());
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_account:
+                startActivity(new Intent(NavigationBottomMainActivity.this, AccountActivity.class));
+                return true;
+            case R.id.action_refresh:
+                sessionManager.fetchData();
+                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+                theCallLogEngine.execute();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                dataSenderAsync.run();
+                Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
+                mixpanel.track("Refreshed");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -620,13 +727,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 return false;
             }
         });
-
         return true;
-
 //        return super.onCreateOptionsMenu(menu);
     }
-
-    // History
 
     private void loadHistory(String query) {
 
@@ -725,80 +828,35 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_account:
-                startActivity(new Intent(NavigationBottomMainActivity.this, AccountActivity.class));
-                return true;
-            case R.id.action_refresh:
-                sessionManager.fetchData();
-                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-                theCallLogEngine.execute();
-                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-                dataSenderAsync.run();
-                Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
-                String projectToken = MixpanelConfig.projectToken;
-                MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
-                mixpanel.track("Refreshed");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!searchView.isIconified()) {
-            searchView.setIconified(true);
-        } else {
-            if (ACTIVE_LOADER != -1) {
-//            if (getSupportLoaderManager().hasRunningLoaders()) {
-                try {
-                    if (ACTIVE_LOADER == 1 || ACTIVE_LOADER == 2 || ACTIVE_LOADER == 3 || ACTIVE_LOADER == 5) {
-                        getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
-                        ACTIVE_LOADER = 4;
-                        navigation.setSelectedItemId(R.id.navigation_leads);
-                    } else if (ACTIVE_LOADER == 4) {
-                        super.onBackPressed();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-//            }
-            }
-        }
-    }
-
-    @Override
     public void onChipClick(String chip) {
         switch (chip) {
             case "All":
                 bundle.putString("whichLeads", "All");
-                getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "InProgress":
                 bundle.putString("whichLeads", "InProgress");
-                getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "Won":
                 bundle.putString("whichLeads", "Won");
-                getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                Toast.makeText(this, "WonListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "Lost":
                 bundle.putString("whichLeads", "Lost");
-                getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
                 break;
 
             case "InActive":
                 bundle.putString("whichLeads", "InActive");
-                getSupportLoaderManager().restartLoader(4, bundle, NavigationBottomMainActivity.this).forceLoad();
+                getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                Toast.makeText(this, "InActiveListened", Toast.LENGTH_SHORT).show();
                 break;
             default:
@@ -809,15 +867,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragmentNew.newInstance(contact_id, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
+        sheetShowing = true;
     }
 
     @Override
     public void closeContactBottomSheetCallback() {
-        if (contactCallDetailsBottomSheetFragment != null) {
-            Log.d(TAG, "closeContactBottomSheetCallback: is NOT NULL");
-            contactCallDetailsBottomSheetFragment.dismiss(); //TODO s7 edge crashed here null pointer
-        }else {
-            Log.d(TAG, "closeContactBottomSheetCallback: is NULL");
+        if (sheetShowing) {
+            if (contactCallDetailsBottomSheetFragment != null) {
+                Log.d(TAG, "closeContactBottomSheetCallback: is NOT NULL");
+                contactCallDetailsBottomSheetFragment.dismiss();
+            } else {
+                Log.d(TAG, "closeContactBottomSheetCallback: is NULL");
+            }
         }
     }
 
@@ -825,14 +886,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         inquiryCallDetailsBottomSheetFragment = InquiryCallDetailsBottomSheetFragmentNew.newInstance(number, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         inquiryCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
+        sheetShowing = true;
     }
 
     @Override
     public void closeInquiryBottomSheetCallback() {
-        if (inquiryCallDetailsBottomSheetFragment != null) {
-            inquiryCallDetailsBottomSheetFragment.dismiss(); // //TODO KSB and SM-G93F crashed here null pointer
+        if (sheetShowing) {
+            if (inquiryCallDetailsBottomSheetFragment != null) {
+                Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NOT NULL");
+                inquiryCallDetailsBottomSheetFragment.dismiss();
+            } else {
+                Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NULL");
+            }
         }
     }
-
-
 }

@@ -64,7 +64,6 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
         llDynamicConnectionsContainer.addView(tvError);
         tvError.setVisibility(View.VISIBLE);
 
-
         selectedContact = connectionItem.lsContact;
         sessionManager = new SessionManager(mContext);
         queue = Volley.newRequestQueue(mContext);

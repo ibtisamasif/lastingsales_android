@@ -21,13 +21,12 @@ import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.CreateCompanyActivity;
+import com.example.muzafarimran.lastingsales.activities.LogInActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.customview.CustomViewPager;
-import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONException;
@@ -197,7 +196,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         registerUserRequest();
     }
 
-    public void dataFromFragmentG(){
+    public void dataFromFragmentG() {
         registerUserRequest();
     }
 
@@ -254,21 +253,29 @@ public class OnBoardingActivity extends AppCompatActivity {
             } else {
                 try {
                     if (error.networkResponse != null) {
-                        if (error.networkResponse.statusCode == 412) {
+                        if (error.networkResponse.statusCode == 412) { // Invalid email responseCode:222 OR Pass must be greater than 4 char ResponseCode:220 //TODO should move to email correction screen FragE
                             JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-//                                int responseCode = jObj.getInt("responseCode");
+                            int responseCode = jObj.getInt("responseCode");
                             String response = jObj.getString("response");
-                            Toast.makeText(OnBoardingActivity.this, "" + response, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OnBoardingActivity.this, "" + response, Toast.LENGTH_LONG).show();
                             if (fg != null) {
-                                fg.onUserError(response);
+                                fg.onUserError(response, responseCode);
                             }
-                        } else {
+                        } else if (error.networkResponse.statusCode == 409) { // Email is already registered with us ResponseCode:190 //TODO should move to email correction screen FragE
+                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                            int responseCode = jObj.getInt("responseCode");
+                            String response = jObj.getString("response");
+                            Toast.makeText(OnBoardingActivity.this, "" + response, Toast.LENGTH_LONG).show();
+                            if (fg != null) {
+                                fg.onUserError(response, responseCode);
+                            }
+                        } else { // TODO find error and do accordingly
                             if (fg != null) {
                                 fg.onUserError("Server Error");
                             }
                             Toast.makeText(OnBoardingActivity.this, "Server Error.", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
+                    } else { //TODO try again
                         if (fg != null) {
                             fg.onUserError("Poor Internet");
                         }
@@ -399,6 +406,7 @@ public class OnBoardingActivity extends AppCompatActivity {
                         finish();
                     } else {
                         startActivity(new Intent(OnBoardingActivity.this, NavigationBottomMainActivity.class));
+                        LogInActivity.activity.finish();
                         finish();
                     }
                     Log.d(TAG, "onResponse: " + response);
@@ -508,8 +516,6 @@ public class OnBoardingActivity extends AppCompatActivity {
 
 //                        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
 //                        theCallLogEngine.execute();
-//                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-//                        dataSenderAsync.run();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -519,10 +525,8 @@ public class OnBoardingActivity extends AppCompatActivity {
 
 //                RecordingManager recordingManager = new RecordingManager();
 //                recordingManager.execute();
-            TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-            theCallLogEngine.execute();
-            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-            dataSenderAsync.run();
+//            TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+//            theCallLogEngine.execute();
         }) {
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(

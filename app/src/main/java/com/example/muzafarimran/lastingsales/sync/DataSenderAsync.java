@@ -300,7 +300,7 @@ public class DataSenderAsync {
                 Log.d(TAG, "onResponse() updateContact: response = [" + response + "]");
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    int responseCode = jObj.getInt("responseCode");
+//                    int responseCode = jObj.getInt("responseCode");
 //                    if (responseCode == 200) {
                     JSONObject responseObject = jObj.getJSONObject("response");
                     contact.setServerId(responseObject.getString("id"));
@@ -453,6 +453,9 @@ public class DataSenderAsync {
                     inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
                     if (status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)) {
                         inquiry.delete();
+                        InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                        TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                        bus.post(mCallEvent);
                     } else {
                         inquiry.save();
                     }
@@ -479,6 +482,9 @@ public class DataSenderAsync {
                     inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
                     if (status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)) {
                         inquiry.delete();
+                        InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                        TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                        bus.post(mCallEvent);
                     } else {
                         inquiry.save();
                     }
@@ -557,6 +563,33 @@ public class DataSenderAsync {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateInquiry");
+                try {
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
+                            Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
+                            if (error.networkResponse.statusCode == 401) { // unauthorized check token
+                                Log.e(TAG, "onErrorResponse: 401");
+                            } else if (error.networkResponse.statusCode == 412) { // Inquiry record not found
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                String responseObject = jObj.getString("response");
+                                if (responseCode == 236) {
+                                    Log.d(TAG, "onErrorResponse: " + responseObject);
+                                    inquiry.delete();
+                                    InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                                    bus.post(mCallEvent);
+                                    Toast.makeText(mContext, "Inquiry doesn't exist on server", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                }
+                InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                bus.post(mCallEvent);
             }
         });
         sr.setRetryPolicy(new DefaultRetryPolicy(
@@ -626,7 +659,7 @@ public class DataSenderAsync {
                                     InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
                                     TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                                     bus.post(mCallEvent);
-                                    Toast.makeText(mContext, "Inquiry doesnt exist on server", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "Inquiry doesn't exist on server", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }

@@ -66,8 +66,8 @@ public class CompanyActivity extends AppCompatActivity {
 
     @Override
     public void onStop() {
-        bus.unregister(this);
         Log.d(TAG, "onStop() called");
+        bus.unregister(this);
         super.onStop();
     }
 

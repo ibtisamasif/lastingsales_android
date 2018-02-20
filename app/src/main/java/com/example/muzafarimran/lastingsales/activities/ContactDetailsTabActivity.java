@@ -19,17 +19,9 @@ import android.view.View;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
-import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
-import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
-import java.util.List;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -202,45 +194,13 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(selectedContact.getPhoneOne());
-                        if (checkInquiry != null) {
-                            checkInquiry.delete();
-                        }
-//                    if (checkInquiry == null) {
-                        //Flushing Notes Of lead
-                        List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedContact.getId());
-                        if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
-                            for (LSNote oneNote : allNotesOfThisContact) {
-                                oneNote.delete();
-                            }
-                        }
-                        //Flushing Followup Of lead
-                        List<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getFollowupsByContactId(selectedContact.getId());
-                        if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
-                            for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
-                                oneFollowup.delete();
-                            }
-                        }
-                        //contact is deleted and will be hard deleted on syncing.
-                        selectedContact.setLeadDeleted(true);
-                        selectedContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
-                        selectedContact.save();
-//                    selectedContact.delete();
-                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ContactDetailsTabActivity.this);
-                        dataSenderAsync.run();
-                        // FIRE EVENT TO REFRESH LIST
-                        Snackbar.make(toolbar, "Note deleted!", Snackbar.LENGTH_SHORT).show();
-//                    }else {
-//                        Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
-//                    }
-                        ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
-                        TinyBus bus = TinyBus.from(ContactDetailsTabActivity.this);
-                        bus.post(mCallEvent);
+                        DeleteManager.deleteContact(ContactDetailsTabActivity.this, selectedContact);
+                        Snackbar.make(toolbar, "Lead deleted!", Snackbar.LENGTH_SHORT).show();
                         dialog.dismiss();
                         finish();
-                        String projectToken = MixpanelConfig.projectToken;
-                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(ContactDetailsTabActivity.this, projectToken);
-                        mixpanel.track("Note deleted");
+                        InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                        TinyBus bus = TinyBus.from(ContactDetailsTabActivity.this);
+                        bus.post(mCallEvent);
                     }
                 });
                 alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -276,8 +236,8 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        super.onStop();
         bus.unregister(this);
+        super.onStop();
     }
 
     @Override

@@ -3,8 +3,8 @@ package com.example.muzafarimran.lastingsales.providers.models;
 import com.orm.SugarRecord;
 import com.orm.query.Select;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,7 +36,7 @@ public class LSTask extends SugarRecord {
     }
 
     public static List<LSTask> getAllTasksInDescendingOrderOfTime(){
-        return Select.from(LSTask.class).orderBy("updated_at").list();
+        return Select.from(LSTask.class).orderBy("updated_at DESC").list();
     }
 
     public static LSTask getTaskFromServerId(String id) {

@@ -7,11 +7,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
-import com.example.muzafarimran.lastingsales.events.TaskAddedEventModel;
-import com.example.muzafarimran.lastingsales.providers.models.LSTask;
-import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
@@ -23,6 +20,7 @@ import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
 import com.example.muzafarimran.lastingsales.utils.FirebaseCustomNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -429,7 +427,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         TinyBus bus = TinyBus.from(getApplicationContext());
                         bus.post(mCallEvent);
                     }
-                } else if (action.equals("put")) {
+                } else if (action.equals("put")) { // not needed yet hence not implemented
                     String contact_number = "";
                     if (payload.has("contact_number")) {
                         contact_number = payload.getString("contact_number");
@@ -439,56 +437,57 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             }
 
-            if (tag.equals("Task")) {
-                if (action.equals("post")) {
-                    String id = payload.getString("id");
-                    String user_id = payload.getString("user_id");
-                    String company_id = payload.getString("company_id");
-                    String workflow_id = payload.getString("workflow_id");
-                    String step_id = payload.getString("step_id");
-                    String lead_id = payload.getString("lead_id");
-                    String name = payload.getString("name");
-                    String description = payload.getString("description");
-//                    String type = payload.getString("type");
-                    String status = payload.getString("status");
-                    String created_by = payload.getString("created_by");
-                    String created_at = payload.getString("created_at");
+//            if (tag.equals("Task")) {
+//                if (action.equals("post")) {
+//                    String id = payload.getString("id");
+//                    String user_id = payload.getString("user_id");
+//                    String company_id = payload.getString("company_id");
+//                    String workflow_id = payload.getString("workflow_id");
+//                    String step_id = payload.getString("step_id");
+//                    String lead_id = payload.getString("lead_id");
+//                    String name = payload.getString("name");
+//                    String description = payload.getString("description");
+////                    String type = payload.getString("type");
+//                    String status = payload.getString("status");
+//                    String created_by = payload.getString("created_by");
+//                    String created_at = payload.getString("created_at");
 //                    String updated_at = payload.getString("updated_at");
-//                    String assigned_at = payload.getString("assigned_at");
-//                    String completed_at = payload.getString("completed_at");
-//                    String remarks = payload.getString("remarks");
-
-                    // ignore if task already exists
-                    LSTask lsTask = LSTask.getTaskFromServerId(id);
-                    if (lsTask == null) {
-                        // check if lead still exists of which the task is
-                        LSContact lsContact = LSContact.getContactFromServerId(lead_id);
-                        if (lsContact != null) {
-                            LSTask newlsTask = new LSTask();
-                            newlsTask.setServerId(id);
-                            newlsTask.setUserId(user_id);
-                            newlsTask.setCompanyId(company_id);
-                            newlsTask.setWorkflowId(workflow_id);
-                            newlsTask.setStepId(step_id);
-                            newlsTask.setLeadId(lead_id);
-                            newlsTask.setName(name);
-                            newlsTask.setDescription(description);
-//                    newlsTask.setType(type);
-                            newlsTask.setStatus(status);
-                            newlsTask.setCreatedBy(created_by);
-                            newlsTask.setCreatedAt(created_at);
-//                    newlsTask.setUpdatedAt(Long.parseLong(updated_at));
-//                    newlsTask.setAssignedAt(assigned_at);
-//                    newlsTask.setCompletedAt(completed_at);
-//                    newlsTask.setRemarks(remarks);
-                            newlsTask.save();
-                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
-                            TinyBus bus = TinyBus.from(getApplicationContext());
-                            bus.post(mCallEvent);
-                        }
-                    }
-                }
-            }
+////                    String assigned_at = payload.getString("assigned_at");
+////                    String completed_at = payload.getString("completed_at");
+////                    String remarks = payload.getString("remarks");
+//
+//                    // ignore if task already exists
+//                    LSTask lsTask = LSTask.getTaskFromServerId(id);
+//                    if (lsTask == null) {
+//                        // check if lead still exists of which the task is
+//                        LSContact lsContact = LSContact.getContactFromServerId(lead_id);
+//                        if (lsContact != null) {
+//                            LSTask newlsTask = new LSTask();
+//                            newlsTask.setServerId(id);
+//                            newlsTask.setUserId(user_id);
+//                            newlsTask.setCompanyId(company_id);
+//                            newlsTask.setWorkflowId(workflow_id);
+//                            newlsTask.setStepId(step_id);
+//                            newlsTask.setLeadId(lead_id);
+//                            newlsTask.setName(name);
+//                            newlsTask.setDescription(description);
+////                    newlsTask.setType(type);
+//                            newlsTask.setStatus(status);
+//                            newlsTask.setCreatedBy(created_by);
+//                            newlsTask.setCreatedAt(created_at);
+//                            Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+//                            newlsTask.setUpdatedAt(updated_atDate);
+////                    newlsTask.setAssignedAt(assigned_at);
+////                    newlsTask.setCompletedAt(completed_at);
+////                    newlsTask.setRemarks(remarks);
+//                            newlsTask.save();
+//                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
+//                            TinyBus bus = TinyBus.from(getApplicationContext());
+//                            bus.post(mCallEvent);
+//                        }
+//                    }
+//                }
+//            }
 
             Intent pushNotification = new Intent(FireBaseConfig.PUSH_NOTIFICATION);
             pushNotification.putExtra("message", mMsg);

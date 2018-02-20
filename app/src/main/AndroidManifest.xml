@@ -160,7 +160,8 @@
         <activity
             android:name=".activities.LogInActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleInstance"/>
         <activity
             android:name=".activities.SignupActivity"
             android:screenOrientation="portrait"
@@ -198,7 +199,8 @@
         <activity
             android:name=".activities.NavigationBottomMainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -235,10 +237,10 @@
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-        <activity
-            android:name=".activities.TagNotificationDialogActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait" />
+        <!--<activity-->
+            <!--android:name=".activities.TagNotificationDialogActivity"-->
+            <!--android:launchMode="singleInstance"-->
+            <!--android:screenOrientation="portrait" />-->
         <activity
             android:name=".activities.FrameActivity"
             android:screenOrientation="portrait" />
@@ -281,17 +283,17 @@
             android:enabled="true"
             android:exported="false" />
 
-        <service
-            android:name=".service.AddEditLeadService"
-            android:enabled="true"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.Dialog">
-            <intent-filter>
-                <action android:name="inez.apps.customincomingcallscreen.MyService" />
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </service>
+        <!--<service-->
+            <!--android:name=".service.AddEditLeadService"-->
+            <!--android:enabled="true"-->
+            <!--android:launchMode="singleInstance"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/Theme.AppCompat.Light.Dialog">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="inez.apps.customincomingcallscreen.MyService" />-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--</intent-filter>-->
+        <!--</service>-->
         <service
             android:name=".service.CallDetectionService"
             android:enabled="true"

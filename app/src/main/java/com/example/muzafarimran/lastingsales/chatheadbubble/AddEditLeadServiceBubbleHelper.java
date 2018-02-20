@@ -247,9 +247,7 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                             tempContact.setContactType(selectedContactType);
                             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                             tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
-                            if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                                tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                            }
+                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                             tempContact.save();
                             String checkContactInLocalPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, intlNum);
                             if (checkContactInLocalPhonebook == null) {

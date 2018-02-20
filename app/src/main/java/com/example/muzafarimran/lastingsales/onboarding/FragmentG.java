@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.onboarding;
 
-import android.app.MediaRouteButton;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 
@@ -70,8 +68,30 @@ public class FragmentG extends Fragment {
         tvErrorMsg.setText("User registered successfully Registering company now");
     }
 
+    public void onUserError(String error, int responseCode) {
+
+        if (responseCode == 222) { // Invalid email responseCode:222  move to email correction screen FragE
+
+            ((OnBoardingActivity) getActivity()).moveToFragment(3);
+
+        } else if (responseCode == 190) { // Email is already registered with us ResponseCode:190  move to email changing screen FragE
+
+            ((OnBoardingActivity) getActivity()).moveToFragment(3);
+
+        } else if (responseCode == 220) {  //Pass must be greater than 4 char ResponseCode:220 move to fragF
+
+            ((OnBoardingActivity) getActivity()).moveToFragment(4);
+
+        }
+
+        Log.d(TAG, "onUserError: " + error);
+        bTryAgain.setVisibility(View.VISIBLE);
+        tvErrorMsg.setText(error + " while registering user");
+//        Toast.makeText(getActivity(), error + " error occurred while registering user", Toast.LENGTH_SHORT).show();
+    }
+
     public void onUserError(String error) {
-        Log.d(TAG, "onCompanyError: " + error);
+        Log.d(TAG, "onUserError: " + error);
         bTryAgain.setVisibility(View.VISIBLE);
         tvErrorMsg.setText(error + " while registering user");
 //        Toast.makeText(getActivity(), error + " error occurred while registering user", Toast.LENGTH_SHORT).show();
@@ -92,8 +112,8 @@ public class FragmentG extends Fragment {
     }
 
     private void validateAndNext() {
-        if (isUserSuccess && isCompanySuccess){
-            ((OnBoardingActivity)getActivity()).moveToFragment(6);
+        if (isUserSuccess && isCompanySuccess) {
+            ((OnBoardingActivity) getActivity()).moveToFragment(6);
         }
     }
 }

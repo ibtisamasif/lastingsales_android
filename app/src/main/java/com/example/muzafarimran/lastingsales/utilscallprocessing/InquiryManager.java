@@ -27,7 +27,7 @@ public class InquiryManager {
     private static LSInquiry inquiry;
     public static final String TAG = "InquiryManager";
 
-    public static void RemoveByContact(Context context, LSContact tempContact) {
+    public static void removeByContact(Context context, LSContact tempContact) {
         //update inquiry as well if exists
         inquiry = LSInquiry.getInquiryByNumberIfExists(tempContact.getPhoneOne());
         if (inquiry != null) {
@@ -44,7 +44,7 @@ public class InquiryManager {
         }
     }
 
-    static void remove(Context context, LSCall call) {
+    static void removeByCall(Context context, LSCall call) {
         inquiry = LSInquiry.getPendingInquiryByNumberIfExists(call.getContactNumber());
         if (inquiry != null && inquiry.getAverageResponseTime() <= 0) {
             Calendar now = Calendar.getInstance();
@@ -63,6 +63,29 @@ public class InquiryManager {
             mixpanel.track("Inquiry Followed");
             InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
             TinyBus bus = TinyBus.from(context);
+            bus.post(mCallEvent);
+        }
+    }
+
+    public static void removeByNumber(Context context, String number) {
+        inquiry = LSInquiry.getPendingInquiryByNumberIfExists(number);
+        if (inquiry != null && inquiry.getAverageResponseTime() <= 0) {
+            Calendar now = Calendar.getInstance();
+            inquiry.setAverageResponseTime(now.getTimeInMillis() - inquiry.getBeginTime());
+            inquiry.setStatus(LSInquiry.INQUIRY_STATUS_ATTENDED);
+            if (inquiry.getSyncStatus().equals(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED)) {
+                inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_ATTENDED_NOT_SYNCED);
+            } else {
+                inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
+            }
+            inquiry.save();
+            // Update launcher icon count
+            new ShortcutBadgeUpdateAsync(context).execute();
+            String projectToken = MixpanelConfig.projectToken;
+            MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
+            mixpanel.track("Inquiry Followed");
+            InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+            TinyBus bus = TinyBus.from(context.getApplicationContext());
             bus.post(mCallEvent);
         }
     }
@@ -141,7 +164,7 @@ public class InquiryManager {
         bus.post(mCallEvent);
     }
 
-    public static void createOrUpdate(Context context, String status_of_inquiry, long beginTimeFromServer, String contactNumber) {
+    public static void createOrUpdate(Context context,String inquiry_server_id , String status_of_inquiry, long beginTimeFromServer, String contactNumber) {
         if (status_of_inquiry.equals("pending")) {
             inquiry = LSInquiry.getPendingInquiryByBeginDateTimeIfExists(Long.toString(beginTimeFromServer));
             if (inquiry != null) {
@@ -153,6 +176,7 @@ public class InquiryManager {
                 LSContact lsContact = LSContact.getContactFromNumber(contactNumber);
                 if (lsContact != null) {
                     inquiry = new LSInquiry();
+                    inquiry.setServerId(inquiry_server_id);
                     inquiry.setContactNumber(contactNumber);
 //                                    inquiry.setContactName("From Server");
                     inquiry.setContact(lsContact);
@@ -210,10 +234,10 @@ public class InquiryManager {
                     // Update launcher icon count
                     new ShortcutBadgeUpdateAsync(context).execute();
                 }
+                InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                TinyBus bus = TinyBus.from(context);
+                bus.post(mCallEvent);
             }
-            InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
-            TinyBus bus = TinyBus.from(context);
-            bus.post(mCallEvent);
         }
     }
 }

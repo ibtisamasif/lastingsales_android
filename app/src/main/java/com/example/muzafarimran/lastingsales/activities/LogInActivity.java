@@ -23,13 +23,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.onboarding.OnBoardingActivity;
-import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
-import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONException;
@@ -51,10 +49,13 @@ public class LogInActivity extends AppCompatActivity {
     private SessionManager sessionManager;
     private static RequestQueue queue;
 
+    public static Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        activity = this;
         queue = Volley.newRequestQueue(LogInActivity.this, new HurlStack());
 
 //        Version Control
@@ -364,8 +365,6 @@ public class LogInActivity extends AppCompatActivity {
 
 //                        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
 //                        theCallLogEngine.execute();
-//                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-//                        dataSenderAsync.run();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -381,10 +380,8 @@ public class LogInActivity extends AppCompatActivity {
 
 //                RecordingManager recordingManager = new RecordingManager();
 //                recordingManager.execute();
-                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-                theCallLogEngine.execute();
-                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-                dataSenderAsync.run();
+//                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+//                theCallLogEngine.execute();
             }
         }) {
         };

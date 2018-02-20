@@ -35,10 +35,7 @@ public class ContactCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
     private static final String TAG = "ContactCallDetailsBotto";
     public static final String CONTACT_ID = "contact_id";
     private List<Object> list = new ArrayList<Object>();
-    private RecyclerView mRecyclerView;
 
-
-    private MyRecyclerViewAdapter adapter;
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -106,8 +103,8 @@ public class ContactCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
             list.addAll(allCallsOfThisContact);
         }
 
-        adapter = new MyRecyclerViewAdapter(getActivity(), list);
-        mRecyclerView = view.findViewById(R.id.mRecyclerView);
+        MyRecyclerViewAdapter adapter = new MyRecyclerViewAdapter(getActivity(), list);
+        RecyclerView mRecyclerView = view.findViewById(R.id.mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setNestedScrollingEnabled(false);

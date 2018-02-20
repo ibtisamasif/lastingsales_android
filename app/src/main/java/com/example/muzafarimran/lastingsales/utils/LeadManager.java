@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.utils;
 import android.content.Context;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
 
 /**
@@ -15,11 +14,11 @@ public class LeadManager {
 
         // from sales to ignored
         if(newtype.equals(LSContact.CONTACT_TYPE_IGNORED)){
-                InquiryManager.RemoveByContact(context,tempContact);
+                InquiryManager.removeByContact(context,tempContact);
 
             // from sales to business
         }else if(newtype.equals(LSContact.CONTACT_TYPE_BUSINESS)){
-                InquiryManager.RemoveByContact(context, tempContact);
+                InquiryManager.removeByContact(context, tempContact);
 
             // from sales to unlabeled
         }else if(newtype.equals(LSContact.CONTACT_TYPE_UNLABELED)){

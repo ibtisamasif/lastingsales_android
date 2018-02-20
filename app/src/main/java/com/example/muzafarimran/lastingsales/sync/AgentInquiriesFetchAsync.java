@@ -138,7 +138,7 @@ public class AgentInquiriesFetchAsync extends AsyncTask<Object, Void, Void> {
 //                        Log.d(TAG, "onResponse: lead_type: " + lead_type);
 //                        Log.d(TAG, "onResponse: lead_type: " + lead_type);
 
-                        InquiryManager.createOrUpdate(mContext, status_of_inquiry, beginTimeFromServer, contactNumber);
+                        InquiryManager.createOrUpdate(mContext,inquiry_id ,status_of_inquiry, beginTimeFromServer, contactNumber);
 
                     }
 

@@ -1,10 +1,14 @@
 package com.example.muzafarimran.lastingsales.viewholders;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,9 +81,32 @@ public class ViewHolderTaskCard extends RecyclerView.ViewHolder {
         ivTick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTaskToServer(mContext, lsTask);
-//                lsTask.delete();
-                Toast.makeText(mContext, "Syncing task", Toast.LENGTH_SHORT).show();
+
+                LayoutInflater layoutInflaterAndroid = LayoutInflater.from(mContext);
+                View mView = layoutInflaterAndroid.inflate(R.layout.user_input_dialog_box, null);
+                AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(mContext);
+                alertDialogBuilderUserInput.setView(mView);
+                final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
+                alertDialogBuilderUserInput
+                        .setCancelable(false)
+                        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                lsTask.setStatus("Done");
+                                String remarksText = userInputDialogEditText.getText().toString();
+                                if (remarksText != null && !remarksText.equalsIgnoreCase(""))
+                                    lsTask.setRemarks(remarksText);
+                                editTaskToServer(mContext, lsTask);
+                                Toast.makeText(mContext, "Syncing task", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogBox, int id) {
+                                        dialogBox.cancel();
+                                    }
+                                });
+                AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+                alertDialogAndroid.show();
             }
         });
     }
@@ -97,8 +124,8 @@ public class ViewHolderTaskCard extends RecyclerView.ViewHolder {
                 .appendPath("" + lsTask.getLeadId())
                 .appendPath("task")
                 .appendPath("" + lsTask.getServerId())
-                .appendQueryParameter("status", "done")
-//                .appendQueryParameter("status", lsTask.getStatus())
+//                .appendQueryParameter("status", "done")
+                .appendQueryParameter("status", lsTask.getStatus())
                 .appendQueryParameter("remarks", "" + lsTask.getRemarks())
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
@@ -121,7 +148,7 @@ public class ViewHolderTaskCard extends RecyclerView.ViewHolder {
 //                    FirebaseCrash.report(e);
 //                }
                 TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
-                TinyBus bus = TinyBus.from(mContext);
+                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                 bus.post(mCallEvent);
             }
         }, new Response.ErrorListener() {
@@ -134,17 +161,14 @@ public class ViewHolderTaskCard extends RecyclerView.ViewHolder {
                         if (error.networkResponse.statusCode == 410) {
                             Log.e(TAG, "onErrorResponse: alreadyUpdatedTaskToServer");
                             lsTask.delete();
-                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
-                            TinyBus bus = TinyBus.from(mContext);
-                            bus.post(mCallEvent);
                         }
                         if (error.networkResponse.statusCode == 412) {
                             Log.e(TAG, "onErrorResponse: NoFurtherSteps");
                             lsTask.delete();
-                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
-                            TinyBus bus = TinyBus.from(mContext);
-                            bus.post(mCallEvent);
                         }
+                        TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
+                        TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                        bus.post(mCallEvent);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -21,7 +21,7 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by ibtisam on 9/22/2017.
@@ -48,15 +48,16 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
 
     @Override
     protected Void doInBackground(Object... params) {
-//        getBatchContactsProfiles();
+        getBatchContactsProfiles();
         return null;
     }
 
     public void getBatchContactsProfiles() {
         Log.d(TAG, "getBatchContactsProfiles: Job Started");
-        List<LSContact> contactsList = null;
+        ArrayList<LSContact> contactsList = null;
         if (LSContact.count(LSContact.class) > 0) {
-            contactsList = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
+            contactsList = (ArrayList<LSContact>) LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_SALES);
+            contactsList.addAll((ArrayList<LSContact>) LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED));
             Log.d(TAG, "getBatchContactsProfiles: count : " + contactsList.size());
             for (LSContact oneContact : contactsList) {
                 Log.d(TAG, "Found Contacts " + oneContact.getPhoneOne());

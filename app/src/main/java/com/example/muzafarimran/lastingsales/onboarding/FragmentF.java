@@ -91,10 +91,10 @@ public class FragmentF extends Fragment {
                     etLastName.setError("Invalid Last Name!");
                 }
                 if (!passwordVarified) {
-                    etPassword.setError("Invalid Password!");
+                    etPassword.setError("must be greater than 4!");
                 }
                 if (!confirmpasswordVarified) {
-                    etConfirmPassword.setError("Invalid Confirm Password!");
+                    etConfirmPassword.setError("must be greater than 4!");
                 }
                 if (!passwordMatchingVerified) {
                     etPassword.setError("Mismatched!");
@@ -110,6 +110,8 @@ public class FragmentF extends Fragment {
                             etPhoneNumber.getText().toString(),
                             etPassword.getText().toString(),
                             etConfirmPassword.getText().toString());
+                }else {
+
                 }
             }
         });

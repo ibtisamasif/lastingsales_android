@@ -13,6 +13,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.AboutActivity;
 import com.example.muzafarimran.lastingsales.activities.LogInActivity;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.activities.SettingsActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.SettingItem;
@@ -41,7 +42,7 @@ public class ViewHolderSettingCard extends RecyclerView.ViewHolder {
 
         final SettingItem settingItem = (SettingItem) item;
         textView.setText(settingItem.text);
-        if (settingItem.drawable != 0){
+        if (settingItem.drawable != 0) {
             imageView.setImageResource(settingItem.drawable);
         }
         cl_container_setting_item.setOnClickListener(new View.OnClickListener() {
@@ -60,12 +61,13 @@ public class ViewHolderSettingCard extends RecyclerView.ViewHolder {
                         sessionManager.logoutUser();
                         mContext.startActivity(new Intent(mContext, LogInActivity.class));
                         ((Activity) mContext).finish();
+                        NavigationBottomMainActivity.activity.finish();
                         String projectToken = MixpanelConfig.projectToken;
                         MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
                         mixpanel.track("User Logged Out");
                         break;
                     default:
-                        if(settingItem.goAt != null){
+                        if (settingItem.goAt != null) {
                             mContext.startActivity(new Intent(mContext, settingItem.goAt));
                         }
                         break;

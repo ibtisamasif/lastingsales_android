@@ -19,16 +19,16 @@ import java.util.List;
  */
 
 public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
-    private  String leadsToLoad;
+    private String leadsToLoad;
     private List<Object> list = new ArrayList<Object>();
     Bundle bundle;
 
     public LeadsLoader(Context context, Bundle args) {
         super(context);
         bundle = args;
-        if (bundle != null){
+        if (bundle != null) {
             leadsToLoad = bundle.getString("whichLeads");
-        }else {
+        } else {
             leadsToLoad = "All";
         }
     }
@@ -40,7 +40,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
         if (leadsToLoad != null && leadsToLoad.equals("All")) {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
-            if (contacts != null) {
+            if (contacts != null && contacts.size() > 0) {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -74,7 +74,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
         } else if (leadsToLoad != null && leadsToLoad.equals("InProgress")) {
 
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-            if (contacts != null) {
+            if (contacts != null && contacts.size() > 0) {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -107,7 +107,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
         } else if (leadsToLoad != null && leadsToLoad.equals("Won")) {
 
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-            if (contacts != null) {
+            if (contacts != null && contacts.size() > 0) {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -140,7 +140,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
         } else if (leadsToLoad != null && leadsToLoad.equals("Lost")) {
 
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-            if (contacts != null) {
+            if (contacts != null && contacts.size() > 0) {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -173,7 +173,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
         } else if (leadsToLoad != null && leadsToLoad.equals("InActive")) {
 
             Collection<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
-            if (contacts != null) {
+            if (contacts != null && contacts.size() > 0) {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -205,7 +205,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
         } else {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
-            if (contacts != null) {
+            if (contacts != null && contacts.size() > 0) {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";

@@ -4,27 +4,14 @@ package com.example.muzafarimran.lastingsales.receivers;
  * Created by ahmad on 08-Nov-16.
  */
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.telephony.TelephonyManager;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
-import com.example.muzafarimran.lastingsales.migration.VersionManager;
-import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
-import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
-import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
-import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 
 import java.util.Date;
-
-import de.halfbit.tinybus.TinyBus;
 
 public abstract class CallReceiver extends WakefulBroadcastReceiver{
     private static final String TAG = "CallReceiver";

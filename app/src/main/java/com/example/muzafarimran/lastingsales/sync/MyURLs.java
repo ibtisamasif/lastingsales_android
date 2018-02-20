@@ -20,7 +20,7 @@ public class MyURLs {
     public static String UPDATE_INQUIRY = "https://" + server + ".lastingsales.com/api/v1/inquiries/";
     public static String DELETE_INQUIRY = "https://" + server + ".lastingsales.com/api/v1/inquiries/";
     public static String GET_INQUIRY = "https://" + server + ".lastingsales.com/api/v1/inquiries/";
-    public static String GET_TASK = "https://" + server + ".lastingsales.com/api/v1/task/";
+    public static String GET_TASK = "https://" + server + ".lastingsales.com/api/v1/task";
     public static String DELETE_CONTACT = "https://" + server + ".lastingsales.com/api/v1/lead/";
     public static String UPDATE_CONTACT = "https://" + server + ".lastingsales.com/api/v1/lead/";
     public static String UPDATE_NOTE = "https://" + server + ".lastingsales.com/api/v1/lead/";
@@ -31,6 +31,7 @@ public class MyURLs {
     public static String GET_COLUMNS = "https://" + server + ".lastingsales.com/api/v1/column";
     public static String GET_PROFILE = "http://" + server + ".lastingsales.com/api/v1/graph/public/profile";
     public static String GET_CUSTOMER_HISTORY = "https://" + server + ".lastingsales.com/api/v1/graph/lead/agent/relation";
+
     public static final String PRIVACY_POLICY = "https://lastingsales.com/privacy.html";
     public static final String FORGOT_PASSWORD = "https://app.lastingsales.com/#/access/forgotpwd";
 

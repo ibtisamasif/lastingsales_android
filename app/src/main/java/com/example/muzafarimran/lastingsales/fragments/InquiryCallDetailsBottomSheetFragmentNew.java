@@ -14,13 +14,16 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.carditems.ConnectionItem;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
+import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
 import com.google.firebase.crash.FirebaseCrash;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -31,13 +34,10 @@ import java.util.List;
 
 public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogFragment {
 
-    private static final String TAG = "InquiryCallDetailsBottomSheetFragmentNew";
+    private static final String TAG = "InquiryCallDetailsBotto";
     public static final String CONTACT_NUM = "contact_num";
     private List<Object> list = new ArrayList<Object>();
-    private RecyclerView mRecyclerView;
 
-
-    private MyRecyclerViewAdapter adapter;
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -50,6 +50,8 @@ public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
         }
     };
+    private LSContact selectedContact;
+    private String contactNum;
 
     public static InquiryCallDetailsBottomSheetFragmentNew newInstance(String contact_num, int page) {
         InquiryCallDetailsBottomSheetFragmentNew fragmentFirst = new InquiryCallDetailsBottomSheetFragmentNew();
@@ -70,8 +72,8 @@ public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
             ((BottomSheetBehavior) behavior).setPeekHeight(600);
         }
-        String contactNum = getArguments().getString(CONTACT_NUM);
-        LSContact selectedContact = LSContact.getContactFromNumber(contactNum);
+        contactNum = getArguments().getString(CONTACT_NUM);
+        selectedContact = LSContact.getContactFromNumber(contactNum);
         if (selectedContact != null) {
 
             ContactHeaderBottomsheetItem contactHeaderBottomsheetItem = new ContactHeaderBottomsheetItem();
@@ -104,19 +106,32 @@ public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
                 list.addAll(allCallsOfThisContact);
             }
 
-            adapter = new MyRecyclerViewAdapter(getActivity(), list);
-            mRecyclerView = view.findViewById(R.id.mRecyclerView);
+            MyRecyclerViewAdapter adapter = new MyRecyclerViewAdapter(getActivity(), list);
+            RecyclerView mRecyclerView = view.findViewById(R.id.mRecyclerView);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(adapter);
             mRecyclerView.setNestedScrollingEnabled(false);
             NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet);
             nestedScrollView.setScrollY(0);
-        } else {
-            FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught");
-            FirebaseCrash.report(new Exception("Contact of inquiry is null "));
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        if (selectedContact == null){
+            Log.d(TAG, "selectedContact == null");
+            try {
+                CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity(); //TODO fix it
+                closeInquiryBottomSheetEvent.closeInquiryBottomSheetCallback();
+                InquiryManager.removeByNumber(getActivity(), contactNum);
+                FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught");
+                FirebaseCrash.report(new Exception("Contact of inquiry is null "));
+            } catch (Exception e) {
+            }
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

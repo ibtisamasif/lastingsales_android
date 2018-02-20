@@ -31,11 +31,11 @@ import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
-import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -238,6 +238,25 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
             }
         });
 
+        this.whatsapp_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PackageManager packageManager = mContext.getPackageManager();
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                try {
+                    String url = "https://api.whatsapp.com/send?phone=" + number + "&text=" + URLEncoder.encode("", "UTF-8");
+                    i.setPackage("com.whatsapp");
+                    i.setData(Uri.parse(url));
+                    if (i.resolveActivity(packageManager) != null) {
+                        mContext.startActivity(i);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
         switch (contactType) {
             case LSContact.CONTACT_TYPE_SALES:
                 rl_container_buttons.setVisibility(View.GONE);
@@ -252,24 +271,6 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                     long contactId = contact.getId();
                     detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                     mContext.startActivity(detailsActivityIntent);
-                });
-
-                this.whatsapp_icon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        PackageManager packageManager = mContext.getPackageManager();
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        try {
-                            String url = "https://api.whatsapp.com/send?phone=" + number + "&text=" + URLEncoder.encode("Surprised? Now what is the surprise for me?", "UTF-8");
-                            i.setPackage("com.whatsapp");
-                            i.setData(Uri.parse(url));
-                            if (i.resolveActivity(packageManager) != null) {
-                                mContext.startActivity(i);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
                 });
 
                 //  Deletes the contact, queries db and updates local list plus notifies adapter
@@ -334,15 +335,9 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
             case LSContact.CONTACT_TYPE_BUSINESS:
                 rl_container_buttons.setVisibility(View.VISIBLE);
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
-                // navigate to details
-                // show smart info
-
                 this.cl.setOnClickListener(view -> {
                     ColleagueActivity colleagueActivity = (ColleagueActivity) mContext;
                     colleagueActivity.onClickColleague((Long) view.getTag());
-//                    Intent myIntent = new Intent(mContext, ContactCallDetailsBottomSheetFragmentNew.class);
-//                    myIntent.putExtra(ContactCallDetailsBottomSheetFragmentNew.CONTACT_ID, (Long) view.getTag());
-//                    mContext.startActivity(myIntent);
                 });
 
                 this.cl.setOnLongClickListener(view -> {
@@ -358,18 +353,10 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                     alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-//                            LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
-//                            if (checkInquiry == null) {
-                            contact.setLeadDeleted(true);
-                            contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
-                            contact.delete();
-                            Snackbar.make(view, "Personal contact deleted!", Snackbar.LENGTH_SHORT).show();
-                            // FIRE EVENT TO REFRESH LIST
+                            DeleteManager.deleteContact(mContext, contact);
+                            Snackbar.make(view, "Colleague contact deleted!", Snackbar.LENGTH_SHORT).show();
                             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
                             dataSenderAsync.run();
-//                            } else {
-//                                Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
-//                            }
                             ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                             TinyBus bus = TinyBus.from(mContext);
                             bus.post(mCallEvent);
@@ -395,25 +382,18 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                 this.cl.setOnClickListener(view -> {
                     NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
                     navigationBottomMainActivity.openContactBottomSheetCallback((Long) view.getTag());
-//                    Intent myIntent = new Intent(mContext, ContactCallDetailsBottomSheetFragment.class);
-//                    myIntent.putExtra("number", (String) view.getTag());
-//                    mContext.startActivity(myIntent);
                 });
 
                 this.cl.setOnLongClickListener(view -> {
 //                    Snackbar.make(view, "Can not delete unlabeled contact", Snackbar.LENGTH_SHORT).show();
                     return true;
                 });
+
                 break;
 
             case LSContact.CONTACT_TYPE_IGNORED:
-                //No profile layout shown
                 rl_container_buttons.setVisibility(View.GONE);
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Default));
-                //Remove ignore button
-
-                //No navigation on click
-
                 this.cl.setOnLongClickListener(view -> {
                     String nameTextOnDialog;
                     if (contact.getContactName() != null) {
@@ -427,19 +407,10 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                     alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
-//                if (checkInquiry == null) {
-                            contact.setLeadDeleted(true);
-                            contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
-                            contact.save();
+                            DeleteManager.deleteContact(mContext, contact);
+                            Snackbar.make(view, "Ignored contact deleted!", Snackbar.LENGTH_SHORT).show();
                             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
                             dataSenderAsync.run();
-                            // FIRE EVENT TO REFRESH LIST
-//                            Snackbar.make(view, "Ignored Contact Deleted!", Snackbar.LENGTH_SHORT).show();
-                            Toast.makeText(mContext, "Ignored Contact Deleted!", Toast.LENGTH_SHORT).show();
-//                }else {
-//                    Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
-//                }
                             ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                             TinyBus bus = TinyBus.from(mContext);
                             bus.post(mCallEvent);

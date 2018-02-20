@@ -24,8 +24,9 @@ import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
  * Created by ibtisam on 6/15/2017.
  */
 
-public class AlarmAlertDialogActivity extends Activity{
+public class AlarmAlertDialogActivity extends Activity {
     public static final String TAG = "AlarmAlertDialogActivit";
+
     private static NotificationCompat.Builder buildNotificationCommon(Context _context) {
         Log.d(TAG, "InquiryNotificaionBuilder");
         Log.d("InquiryManager", "InquiryNotificaionBuilder");
@@ -66,9 +67,9 @@ public class AlarmAlertDialogActivity extends Activity{
         TextView message = (TextView) view.findViewById(R.id.followup_popup_note_text);
         try {
             TextView contactName = (TextView) view.findViewById(R.id.followup_alert_popup_name);
-            if(tempInquiry.getContactName()!=null){
+            if (tempInquiry.getContactName() != null) {
                 contactName.setText(tempInquiry.getContactName());
-            }else {
+            } else {
                 contactName.setText(tempInquiry.getContactNumber());
             }
             ImageButton callButton = (ImageButton) view.findViewById(R.id.followup_alert_call_button);

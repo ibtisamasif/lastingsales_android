@@ -44,4 +44,10 @@ public class LargeImageActivity extends AppCompatActivity {
 //                .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                .into(imageView);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
 }

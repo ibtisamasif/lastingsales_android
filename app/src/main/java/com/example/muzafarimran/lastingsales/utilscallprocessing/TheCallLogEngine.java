@@ -31,7 +31,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Log.d("testlog", "TheCallLogEngine onPreExecute:");
+        Log.d(TAG, "TheCallLogEngine onPreExecute:");
     }
 
     @Override
@@ -48,7 +48,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        Log.d("testlog", "TheCallLogEngine onPostExecute:");
+        Log.d(TAG, "TheCallLogEngine onPostExecute:");
         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
         dataSenderAsync.run();
     }

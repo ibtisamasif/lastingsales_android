@@ -45,6 +45,8 @@ public class SessionManager {
 
     public static final String LAST_APP_VISIT = "last_app_visit";
 
+    public static final String FIRST_RUN_AFTER_LOGIN = "firstrun";
+
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffs";
     // Shared Preferences
@@ -100,9 +102,9 @@ public class SessionManager {
         editor.commit();
     }
 
-    public Boolean isFirstRun() {
-        if (pref.getBoolean("firstrun", true)) {
-            pref.edit().putBoolean("firstrun", false).commit();
+    public Boolean isFirstRunAfterLogin() {
+        if (getReadyForFirstRun()) {
+            setReadyForFirstRun(false);
             return true;
         } else {
             return false;
@@ -199,6 +201,7 @@ public class SessionManager {
         setKeyLoginFirstName("");
         setKeyLoginLastName("");
         setKeyLoginImagePath("");
+        setReadyForFirstRun(true);
         editor.commit();
     }
 
@@ -382,4 +385,14 @@ public class SessionManager {
         editor.putString(LAST_APP_VISIT, time);
         editor.commit();
     }
+
+    public boolean getReadyForFirstRun() {
+        return pref.getBoolean(FIRST_RUN_AFTER_LOGIN, true);
+    }
+
+    public void setReadyForFirstRun(boolean val) {
+        editor.putBoolean(FIRST_RUN_AFTER_LOGIN, val);
+        editor.commit();
+    }
+
 }

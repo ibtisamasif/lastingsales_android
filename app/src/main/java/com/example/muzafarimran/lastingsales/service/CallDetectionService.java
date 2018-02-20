@@ -78,7 +78,7 @@ public class CallDetectionService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG, "CallDetectionService onStartCommand()");
-        Log.d("testlog", "onStartCommand()");
+        Log.d(TAG, "onStartCommand()");
         showForegroundNotification("Click to open");
 //        Toast.makeText(getApplicationContext(),"LS Running", Toast.LENGTH_LONG).show();
         return START_STICKY;
@@ -109,7 +109,6 @@ public class CallDetectionService extends Service {
 
             callStartTime = new Date();
             Log.d(TAG, "onReceive: Called");
-            Log.d("testlog", "CallReceiver onReceive(): Called");
             VersionManager versionManager = new VersionManager(context);
             if (!versionManager.runMigrations()) {
                 // if migration has failed
@@ -192,7 +191,7 @@ public class CallDetectionService extends Service {
             isBubbleShown = true;
             checkShowCallPopupFlyer(ctx, number);
         }
-        Log.d("testlog", "onIncomingCallStarted:");
+        Log.d(TAG, "onIncomingCallStarted:");
     }
 
     protected void onOutgoingCallStarted(Context ctx, String number, Date start) {
@@ -205,7 +204,7 @@ public class CallDetectionService extends Service {
             isBubbleShown = true;
             checkShowCallPopupFlyer(ctx, number);
         }
-        Log.d("testlog", "onOutgoingCallStarted:");
+        Log.d(TAG, "onOutgoingCallStarted:");
     }
 
     protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end, final Intent intent) {
@@ -227,14 +226,14 @@ public class CallDetectionService extends Service {
         dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
             @Override
             public void onPostExecuteListener() {
-                Log.d("testlog", "onPostExecuteListener: I AM Listened");
+                Log.d(TAG, "onPostExecuteListener: I AM Listened");
                 if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED) {
-                    Log.d("testlog", "TheCallLogEngine Completed: completeWakefulIntent");
+                    Log.d(TAG, "TheCallLogEngine Completed: completeWakefulIntent");
                     CallReceiver.completeWakefulIntent(intent);
                 }
             }
         });
-        Log.d("testlog", "onIncomingCallEnded:");
+        Log.d(TAG, "onIncomingCallEnded:");
     }
 
     protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end, final Intent intent) {
@@ -256,14 +255,14 @@ public class CallDetectionService extends Service {
         dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
             @Override
             public void onPostExecuteListener() {
-                Log.d("testlog", "onPostExecuteListener: I AM Listened");
+                Log.d(TAG, "onPostExecuteListener: I AM Listened");
                 if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED) {
-                    Log.d("testlog", "TheCallLogEngine Completed: completeWakefulIntent");
+                    Log.d(TAG, "TheCallLogEngine Completed: completeWakefulIntent");
                     CallReceiver.completeWakefulIntent(intent);
                 }
             }
         });
-        Log.d("testlog", "onOutgoingCallEnded:");
+        Log.d(TAG, "onOutgoingCallEnded:");
     }
 
     protected void onMissedCall(Context ctx, String number, Date start, final Intent intent) {
@@ -281,14 +280,14 @@ public class CallDetectionService extends Service {
         dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
             @Override
             public void onPostExecuteListener() {
-                Log.d("testlog", "onPostExecuteListener: I AM Listened");
+                Log.d(TAG, "onPostExecuteListener: I AM Listened");
                 if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED) {
-                    Log.d("testlog", "TheCallLogEngine Completed: completeWakefulIntent");
+                    Log.d(TAG, "TheCallLogEngine Completed: completeWakefulIntent");
                     CallReceiver.completeWakefulIntent(intent);
                 }
             }
         });
-        Log.d("testlog", "onMissedCall: End Line");
+        Log.d(TAG, "onMissedCall: End Line");
     }
 
     public void checkShowCallPopupFlyer(Context ctx, String number) {

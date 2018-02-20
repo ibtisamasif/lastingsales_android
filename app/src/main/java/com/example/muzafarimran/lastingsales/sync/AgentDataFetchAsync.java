@@ -53,9 +53,12 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
 
     @Override
     protected Void doInBackground(Object... objects) {
+        Log.d(TAG, "AgentDataFetchAsync doInBackground: ");
         if (NetworkAccess.isNetworkAvailable(mContext)) {
             fetchAgentLeadsFunc();
             fetchDynamicColumns();
+        }else {
+            Log.d(TAG, "AgentDataFetchAsync doInBackground: No Internet");
         }
         return null;
     }
@@ -65,8 +68,8 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
         super.onPostExecute(aVoid);
         AgentInquiriesFetchAsync agentInquiriesFetchAsync = new AgentInquiriesFetchAsync(mContext);
         agentInquiriesFetchAsync.execute();
-        AgentTasksFetchAsync agentTasksFetchAsync = new AgentTasksFetchAsync(mContext);
-        agentTasksFetchAsync.execute();
+//        AgentTasksFetchAsync agentTasksFetchAsync = new AgentTasksFetchAsync(mContext);
+//        agentTasksFetchAsync.execute();
     }
 
     private void fetchAgentLeadsFunc() {
@@ -125,7 +128,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
                     }
 
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                    TinyBus bus = TinyBus.from(mContext);
+                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                     bus.post(mCallEvent);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -318,6 +321,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "onErrorResponse: CouldNotSyncGETDynamicColumns");
+                // for no dynamic columns i am getting 412 instead of 404
             }
         }) {
             @Override

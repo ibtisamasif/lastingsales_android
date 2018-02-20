@@ -43,7 +43,7 @@ class UnknownProcessor {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
-            InquiryManager.remove(mContext, call);
+            InquiryManager.removeByCall(mContext, call);
             // Call Saved
             call.setContact(tempContact);
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
@@ -59,7 +59,7 @@ class UnknownProcessor {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
-            InquiryManager.remove(mContext, call);
+            InquiryManager.removeByCall(mContext, call);
             // Call Saved
             call.setContact(tempContact);
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
@@ -69,7 +69,7 @@ class UnknownProcessor {
             TinyBus bus = TinyBus.from(mContext.getApplicationContext());
             bus.post(mCallEventModel);
 
-        } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
+        } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) { //TODO what is this ?
             //Outgoing
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();

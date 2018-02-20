@@ -23,6 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +92,7 @@ public class AgentTasksFetchAsync extends AsyncTask<Object, Void, Void> {
                         String status = dataObject.getString("status");
                         String created_by = dataObject.getString("created_by");
                         String created_at = dataObject.getString("created_at");
-//                    String updated_at = dataObject.getString("updated_at");
+                        String updated_at = dataObject.getString("updated_at");
 //                    String assigned_at = dataObject.getString("assigned_at");
 //                    String completed_at = dataObject.getString("completed_at");
 //                    String remarks = dataObject.getString("remarks");
@@ -120,7 +123,9 @@ public class AgentTasksFetchAsync extends AsyncTask<Object, Void, Void> {
                                 newTask.setStatus(status);
                                 newTask.setCreatedBy(created_by);
                                 newTask.setCreatedAt(created_at);
-//                    newTask.setUpdatedAt(Long.parseLong(updated_at));
+                                Date updated_atDate = null;
+                                updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+                                newTask.setUpdatedAt(updated_atDate);
 //                    newTask.setAssignedAt(assigned_at);
 //                    newTask.setCompletedAt(completed_at);
 //                    newTask.setRemarks(remarks);
@@ -132,7 +137,7 @@ public class AgentTasksFetchAsync extends AsyncTask<Object, Void, Void> {
                     TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
                     TinyBus bus = TinyBus.from(mContext);
                     bus.post(mCallEvent);
-                } catch (JSONException e) {
+                } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
             }
