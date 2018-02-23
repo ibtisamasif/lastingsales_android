@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
@@ -20,15 +21,16 @@ import de.halfbit.tinybus.TinyBus;
 
 class UnknownProcessor {
     public static final String TAG = "UnknownProcessor";
+    private static final long MILLIS_10_MINUTES = 600000;
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
         //new untagged contact is created, saved, entered in call entry
         LSContact tempContact = new LSContact();
         SettingsManager settingManager = new SettingsManager(mContext);
-        if (settingManager.getKeyStateDefaultLead()){
+        if (settingManager.getKeyStateDefaultLead()) {
             tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        }else {
+        } else {
             tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
         }
         tempContact.setPhoneOne(call.getContactNumber());
@@ -39,7 +41,7 @@ class UnknownProcessor {
         // Check if type is incoming , outgoing or missed
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() > 0L) {
             //Incoming with whome Agent have talked
-            if (showNotification) {
+            if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
@@ -55,9 +57,12 @@ class UnknownProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) && call.getDuration() > 0L) {
             //Outgoing with whome Agent have talked
-            if (showNotification) {
+            if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
+                Log.d(TAG, "Process: CALL IS NOT OLD ENOUGH: " + call.getContactNumber());
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
+            } else {
+                Log.d(TAG, "Process: CALL IS VERY OLD: " + call.getContactNumber());
             }
             InquiryManager.removeByCall(mContext, call);
             // Call Saved
@@ -105,16 +110,4 @@ class UnknownProcessor {
         TinyBus bus = TinyBus.from(mContext.getApplicationContext());
         bus.post(mCallEvent);
     }
-
-//    private static void checkShowCallPopupOld(Context ctx, String name, String number) {
-//        Log.wtf("testlog", "UnknownProcessor checkShowCallPopupNew: ");
-//        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-////        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-//        Intent intent = new Intent(ctx, AddEditLeadService.class);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
-//        ctx.startService(intent);
-//    }
 }

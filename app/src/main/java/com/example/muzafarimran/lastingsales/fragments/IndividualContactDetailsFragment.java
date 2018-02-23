@@ -263,7 +263,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
                 dataSenderAsync.run();
                 Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
-                if (getActivity() != null){
+                if (getActivity() != null) {
                     getActivity().finish();
                 }
                 String projectToken = MixpanelConfig.projectToken;
@@ -351,7 +351,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
                 dataSenderAsync.run();
                 Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
-                if (getActivity() != null){
+                if (getActivity() != null) {
                     getActivity().finish();
                 }
                 String projectToken = MixpanelConfig.projectToken;
@@ -455,7 +455,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
         super.onDetach();
         Log.i(TAG, "onDetach: ");
     }
-
 
 
     private void dynamicColumns(View view) {
@@ -643,35 +642,48 @@ public class IndividualContactDetailsFragment extends TabFragment {
                         if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
-                            et.setText(oneDynamicColumns.value);
+                            if (et != null) {
+                                et.setText(oneDynamicColumns.value);
+                            }else {
+                                Log.d(TAG, "this text dynamic column was set filled for lead but column is no more");
+                            }
 
                         } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
-                            et.setText(oneDynamicColumns.value);
+                            if (et != null) {
+                                et.setText(oneDynamicColumns.value);
+                            }else {
+                                Log.d(TAG, "this number dynamic column was filled for lead but column is no more");
+                            }
 
                         } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
                             final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
-                            List<String> list = (List<String>) s.getTag();
-                            Log.d(TAG, "dynamicColumns: List: " + list);
-                            int index = -1;
-                            for (int i = 0; i < list.size(); i++) {
-                                if (oneDynamicColumns.value.equals(list.get(i))) {
-                                    index = i;
+                            if (s != null) {
+                                List<String> list = (List<String>) s.getTag();
+                                Log.d(TAG, "dynamicColumns: List: " + list);
+                                int index = -1;
+                                for (int i = 0; i < list.size(); i++) {
+                                    if (oneDynamicColumns.value.equals(list.get(i))) {
+                                        index = i;
+                                    }
                                 }
-                            }
-                            if (mContact.getDynamic() != null && !mContact.getDynamic().equals("")) {
+                                if (mContact.getDynamic() != null && !mContact.getDynamic().equals("")) {
 
-                                Log.d(TAG, "dynamicColumns: " + index);
-                                s.setSelection(index, false);
-                            }
-                            s.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
+                                    Log.d(TAG, "dynamicColumns: " + index);
+                                    s.setSelection(index, false);
                                 }
-                            });
+                                s.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
+                                    }
+                                });
+                            }else {
+                                Log.d(TAG, "this spinner dynamic column was filled for lead but column is no more");
+                            }
+
                         }
                     }
 
@@ -685,34 +697,46 @@ public class IndividualContactDetailsFragment extends TabFragment {
                         if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
-                            et.setText(oneDynamicColumns.value);
+                            if (et != null) {
+                                et.setText(oneDynamicColumns.value);
+                            }else {
+                                Log.d(TAG, "this text dynamic column was set filled for lead but column is no more");
+                            }
 
                         } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
-                            et.setText(oneDynamicColumns.value);
+                            if (et != null) {
+                                et.setText(oneDynamicColumns.value);
+                            }else {
+                                Log.d(TAG, "this number dynamic column was set filled for lead but column is no more");
+                            }
 
                         } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
                             final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
-                            List<String> list = (List<String>) s.getTag(); // TODO crash on afias fone here
-                            int index = -1;
-                            for (int i = 0; i < list.size(); i++) {
-                                if (oneDynamicColumns.value.equals(list.get(i))) {
-                                    index = i;
+                            if (s != null) {
+                                List<String> list = (List<String>) s.getTag();
+                                int index = -1;
+                                for (int i = 0; i < list.size(); i++) {
+                                    if (oneDynamicColumns.value.equals(list.get(i))) {
+                                        index = i;
+                                    }
                                 }
-                            }
-                            if (mContact.getDynamic() != null && !mContact.getDynamic().equals("")) {
+                                if (mContact.getDynamic() != null && !mContact.getDynamic().equals("")) {
 
-                                Log.d(TAG, "dynamicColumns: " + index);
-                                s.setSelection(index, false);
-                            }
-                            s.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
+                                    Log.d(TAG, "dynamicColumns: " + index);
+                                    s.setSelection(index, false);
                                 }
-                            });
+                                s.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
+                                    }
+                                });
+                            }else {
+                                Log.d(TAG, "this spinner dynamic column was set filled for lead but column is no more");
+                            }
                         }
                     }
                 }
@@ -739,7 +763,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            if (getActivity() != null){
+            if (getActivity() != null) {
                 getActivity().onBackPressed();
             }
             return true;
@@ -1013,7 +1037,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                             e.printStackTrace();
                         }
                     }
-                }else {
+                } else {
                     tvError.setText("Error Loading");
                 }
             }

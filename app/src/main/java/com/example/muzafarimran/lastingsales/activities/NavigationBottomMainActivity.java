@@ -473,8 +473,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putInt(KEY_ACTIVE_LOADER, ACTIVE_LOADER);
+        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -875,7 +876,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         if (sheetShowing) {
             if (contactCallDetailsBottomSheetFragment != null) {
                 Log.d(TAG, "closeContactBottomSheetCallback: is NOT NULL");
-                contactCallDetailsBottomSheetFragment.dismiss();
+                contactCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
             } else {
                 Log.d(TAG, "closeContactBottomSheetCallback: is NULL");
             }

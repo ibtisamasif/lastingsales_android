@@ -55,7 +55,7 @@ public class InquiryLoader extends AsyncTaskLoader<List<Object>> {
         } else {
             Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
             ErrorItem erItem = new ErrorItem();
-            erItem.message = "Nothing in inquiries";
+            erItem.message = "Nothing in Inquiries";
             erItem.drawable = R.drawable.ic_inquiries_empty_xxxhdpi;
             listError.add(erItem);
             list.addAll(listError);

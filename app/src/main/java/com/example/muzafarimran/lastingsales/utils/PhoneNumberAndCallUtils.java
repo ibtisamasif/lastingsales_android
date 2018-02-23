@@ -78,6 +78,8 @@ public class PhoneNumberAndCallUtils {
             } catch (NumberParseException e) {
                 Log.e(TAG, "numberToInterNationalNumber: NumberParseException");
                 e.printStackTrace(); //TODO google pixel
+            } catch (Exception e){
+                Log.e(TAG, "numberToInterNationalNumber: Exception");
             }
             return s;
         } else {

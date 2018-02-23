@@ -123,7 +123,7 @@ public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
         if (selectedContact == null){
             Log.d(TAG, "selectedContact == null");
             try {
-                CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity(); //TODO fix it
+                CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity();
                 closeInquiryBottomSheetEvent.closeInquiryBottomSheetCallback();
                 InquiryManager.removeByNumber(getActivity(), contactNum);
                 FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught");

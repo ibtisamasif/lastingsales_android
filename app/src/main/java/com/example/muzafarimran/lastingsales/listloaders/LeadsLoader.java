@@ -61,6 +61,15 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 list.add(separatorSpace);
 
             } else {
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                list.add(separatorItem);
+
+                ChipItem chipItem = new ChipItem();
+//                chipItem.selected = 3;
+                chipItem.totalButtons = 5;
+                list.add(chipItem);
+
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
                 erItem.message = "Nothing in leads";
@@ -95,6 +104,15 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 list.add(separatorSpace);
 
             } else {
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                list.add(separatorItem);
+
+                ChipItem chipItem = new ChipItem();
+//                chipItem.selected = 3;
+                chipItem.totalButtons = 5;
+                list.add(chipItem);
+
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
                 erItem.message = "Nothing in InProgress";
@@ -128,6 +146,15 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 list.add(separatorSpace);
 
             } else {
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                list.add(separatorItem);
+
+                ChipItem chipItem = new ChipItem();
+//                chipItem.selected = 3;
+                chipItem.totalButtons = 5;
+                list.add(chipItem);
+
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
                 erItem.message = "Nothing in Won";
@@ -161,6 +188,15 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 list.add(separatorSpace);
 
             } else {
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                list.add(separatorItem);
+
+                ChipItem chipItem = new ChipItem();
+//                chipItem.selected = 3;
+                chipItem.totalButtons = 5;
+                list.add(chipItem);
+
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
                 erItem.message = "Nothing in Lost";
@@ -194,6 +230,15 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 list.add(separatorSpace);
 
             } else {
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                list.add(separatorItem);
+
+                ChipItem chipItem = new ChipItem();
+//                chipItem.selected = 3;
+                chipItem.totalButtons = 5;
+                list.add(chipItem);
+
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
                 erItem.message = "Nothing in InActive";
@@ -228,7 +273,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             } else {
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
-                erItem.message = "Nothing in InActive";
+                erItem.message = "Nothing in Leads";
                 erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
                 listError.add(erItem);
                 list.addAll(listError);

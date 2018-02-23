@@ -19,6 +19,7 @@ import de.halfbit.tinybus.TinyBus;
 
 public class LeadProcessor {
     public static final String TAG = "LeadProcessor";
+    private static final long MILLIS_10_MINUTES = 600000;
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
         Log.d(TAG, "LeadProcessor: Process() Entered");
@@ -30,7 +31,7 @@ public class LeadProcessor {
         // Check if type is incoming , outgoing or missed
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() > 0L) {
             //Incoming
-            if (showNotification) {
+            if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
@@ -44,7 +45,7 @@ public class LeadProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
             //Outgoing
-            if (showNotification) {
+            if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
@@ -83,16 +84,4 @@ public class LeadProcessor {
         }
 
     }
-
-//    private static void checkShowCallPopupNew(Context ctx, String name, String number) {
-//        Log.wtf("testlog", "Lead Processor checkShowCallPopupNew: ");
-//        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-////        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-//        Intent intent = new Intent(ctx, AddEditLeadService.class);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_SALES);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
-//        ctx.startService(intent);
-//    }
 }

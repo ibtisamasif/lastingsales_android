@@ -470,25 +470,29 @@ public class DataSenderAsync {
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddInquiry");
                 try {
-                    Log.d(TAG, "onErrorResponse: error.networkResponse.data: " + error.networkResponse.data);
-                    Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
-                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse.data: " + error.networkResponse.data);
+                            Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
+                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
 //                    int responseCode = jObj.getInt("responseCode");
-                    JSONObject responseObject = jObj.getJSONObject("response");
-                    String id = responseObject.getString("id");
-                    String contactNumber = responseObject.getString("contact_number");
-                    String status = responseObject.getString("status");
-                    inquiry.setServerId(id);
-                    inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
-                    if (status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)) {
-                        inquiry.delete();
-                        InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
-                        TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-                        bus.post(mCallEvent);
-                    } else {
-                        inquiry.save();
+                            JSONObject responseObject = jObj.getJSONObject("response");
+                            String id = responseObject.getString("id");
+                            String contactNumber = responseObject.getString("contact_number");
+                            String status = responseObject.getString("status");
+                            inquiry.setServerId(id);
+                            inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
+                            if (status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)) {
+                                inquiry.delete();
+                                InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                                bus.post(mCallEvent);
+                            } else {
+                                inquiry.save();
+                            }
+                            Log.d(TAG, "onResponse: addInquiryReSync " + contactNumber);
+                        }
                     }
-                    Log.d(TAG, "onResponse: addInquiryReSync " + contactNumber);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1016,13 +1020,18 @@ public class DataSenderAsync {
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteContact");
                 try {
-                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                    int responseCode = jObj.getInt("responseCode");
-                    if (responseCode == 259) {
-                        contact.delete();
-                        ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
-                        TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-                        bus.post(mCallEvent);
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                            int responseCode = jObj.getInt("responseCode");
+                            if (responseCode == 259) {
+                                Log.d(TAG, "onErrorResponse: responseCode == 259 deleted");
+                                contact.delete();
+                                ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+                                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                                bus.post(mCallEvent);
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
