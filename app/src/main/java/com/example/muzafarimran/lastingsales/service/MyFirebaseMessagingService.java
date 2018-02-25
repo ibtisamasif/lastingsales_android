@@ -27,6 +27,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 import de.halfbit.tinybus.TinyBus;
 
 /**
@@ -237,6 +239,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     tempNote.setNoteText(description);
                     tempNote.setContactOfNote(LSContact.getContactFromServerId(lead_id));
                     tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
+                    tempNote.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                     tempNote.save();
                     NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());

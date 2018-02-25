@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SettingsManager;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.UnlabeledContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
@@ -109,5 +110,8 @@ class UnknownProcessor {
         UnlabeledContactAddedEventModel mCallEvent = new UnlabeledContactAddedEventModel();
         TinyBus bus = TinyBus.from(mContext.getApplicationContext());
         bus.post(mCallEvent);
+        LeadContactAddedEventModel mCallEventLead = new LeadContactAddedEventModel();
+        TinyBus busLead = TinyBus.from(mContext.getApplicationContext());
+        busLead.post(mCallEventLead);
     }
 }

@@ -165,7 +165,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         setContentView(R.layout.activity_bottom_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setTitle("Lasting Sales");
         ActionBar actionBar = getSupportActionBar();
         adapter = new MyRecyclerViewAdapter(this, list);
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
@@ -280,11 +280,13 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         } else {
             Intent intent = new Intent(NavigationBottomMainActivity.this, CallDetectionService.class);
             startService(intent);
-            if (sessionManager.isFirstRunAfterLogin()) {
-                Log.d(TAG, "initFirst: isFirstRun TRUE");
-                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-                theCallLogEngine.execute();
-            }
+            // TODO fetch data here
+            // do not run it before AgentDataFetch
+//            if (sessionManager.isFirstRunAfterLogin()) {
+//                Log.d(TAG, "initFirst: isFirstRun TRUE");
+//                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+//                theCallLogEngine.execute();
+//            }
             sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
             if (NetworkAccess.isNetworkAvailable(this)) {
                 long contactCount = LSContact.count(LSContact.class); // If app is crashed here make sure instant run if off.

@@ -68,7 +68,7 @@ public class BubblesService extends Service {
                         bubble.notifyBubbleRemoved();
                         mbbl = null;
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        e.printStackTrace(); // no static method crash google device
                     }
                 }
             }

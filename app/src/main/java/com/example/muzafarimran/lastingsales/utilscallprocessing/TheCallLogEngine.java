@@ -18,7 +18,9 @@ import java.util.Arrays;
  */
 
 public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
-    public static final String TAG = "TheCallLogEngine";
+        public static final String TAG = "TheCallLogEngine";
+//    private static final String TAG = "AppInitializationTest";
+
     public static final String SUB_ID = "subscription";
 
     Context mContext;
@@ -31,11 +33,12 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Log.d(TAG, "TheCallLogEngine onPreExecute:");
+        Log.e(TAG, "TheCallLogEngine onPreExecute:");
     }
 
     @Override
     protected Void doInBackground(Object... objects) {
+        Log.e(TAG, "TheCallLogEngine doInBackground:");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -48,7 +51,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        Log.d(TAG, "TheCallLogEngine onPostExecute:");
+        Log.e(TAG, "TheCallLogEngine onPostExecute:");
         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
         dataSenderAsync.run();
     }
@@ -62,11 +65,10 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
         if (LSCall.getCallHavingLatestCallLogId() != null) {
             Log.d(TAG, "getLatestCallLogId: " + LSCall.getCallHavingLatestCallLogId().getCallLogId());
             latestCallQuery = "_id >= " + LSCall.getCallHavingLatestCallLogId().getCallLogId();
-            managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,latestCallQuery , null, "date DESC");
-        }
-        else {
+            managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, latestCallQuery, null, "date DESC");
+        } else {
             latestCallQuery = null;
-            managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,latestCallQuery , null, "date DESC limit 10");
+            managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, latestCallQuery, null, "date DESC limit 10");
         }
 //        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,latestCallQuery , null, "date DESC limit 10");
 //        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, "_id >= 1" , null, "date DESC limit 100");
@@ -126,7 +128,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     Log.d(TAG, "callDuration: " + callDuration);
 
                     String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(mContext, callNumber);
-                    if (internationalNumber == null){
+                    if (internationalNumber == null) {
                         continue;
                     }
                     LSCall tempCall = new LSCall();

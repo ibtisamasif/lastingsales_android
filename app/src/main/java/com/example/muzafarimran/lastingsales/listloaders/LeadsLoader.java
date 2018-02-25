@@ -44,19 +44,19 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
+                list.add(separatorItem);
+
+//                list.addAll(listHome);
 
                 ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 1;
+//                chipItem.selected = 4;
                 chipItem.totalButtons = 5;
-
-                list.add(separatorItem);
-//                list.addAll(listHome);
                 list.add(chipItem);
+
                 list.addAll(contacts);
 
                 SeparatorItem separatorSpace = new SeparatorItem();
-                separatorItem.text = "";
-
+                separatorSpace.text = "";
                 list.add(separatorSpace);
                 list.add(separatorSpace);
 
@@ -87,19 +87,19 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
+                list.add(separatorItem);
+
+//                list.addAll(listHome);
 
                 ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 2;
+//                chipItem.selected = 4;
                 chipItem.totalButtons = 5;
-
-                list.add(separatorItem);
-//                list.addAll(listHome);
                 list.add(chipItem);
+
                 list.addAll(contacts);
 
                 SeparatorItem separatorSpace = new SeparatorItem();
-                separatorItem.text = "";
-
+                separatorSpace.text = "";
                 list.add(separatorSpace);
                 list.add(separatorSpace);
 
@@ -129,19 +129,19 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
+                list.add(separatorItem);
+
+//                list.addAll(listHome);
 
                 ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 3;
+//                chipItem.selected = 4;
                 chipItem.totalButtons = 5;
-
-                list.add(separatorItem);
-//                list.addAll(listHome);
                 list.add(chipItem);
+
                 list.addAll(contacts);
 
                 SeparatorItem separatorSpace = new SeparatorItem();
-                separatorItem.text = "";
-
+                separatorSpace.text = "";
                 list.add(separatorSpace);
                 list.add(separatorSpace);
 
@@ -171,19 +171,19 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
+                list.add(separatorItem);
+
+//                list.addAll(listHome);
 
                 ChipItem chipItem = new ChipItem();
 //                chipItem.selected = 4;
                 chipItem.totalButtons = 5;
-
-                list.add(separatorItem);
-//                list.addAll(listHome);
                 list.add(chipItem);
+
                 list.addAll(contacts);
 
                 SeparatorItem separatorSpace = new SeparatorItem();
-                separatorItem.text = "";
-
+                separatorSpace.text = "";
                 list.add(separatorSpace);
                 list.add(separatorSpace);
 
@@ -213,19 +213,19 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
+                list.add(separatorItem);
+
+//                list.addAll(listHome);
 
                 ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 5;
+//                chipItem.selected = 4;
                 chipItem.totalButtons = 5;
-
-                list.add(separatorItem);
-//                list.addAll(listHome);
                 list.add(chipItem);
+
                 list.addAll(contacts);
 
                 SeparatorItem separatorSpace = new SeparatorItem();
-                separatorItem.text = "";
-
+                separatorSpace.text = "";
                 list.add(separatorSpace);
                 list.add(separatorSpace);
 

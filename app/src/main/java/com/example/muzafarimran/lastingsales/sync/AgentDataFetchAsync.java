@@ -20,11 +20,13 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +38,7 @@ import de.halfbit.tinybus.TinyBus;
 
 public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
     private static final String TAG = "AgentDataFetchAsync";
+//    private static final String TAG = "AppInitializationTest";
     private SessionManager sessionManager;
     private Context mContext;
     private static RequestQueue queue;
@@ -49,11 +52,12 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        Log.e(TAG, "AgentDataFetchAsync onPreExecute: ");
     }
 
     @Override
     protected Void doInBackground(Object... objects) {
-        Log.d(TAG, "AgentDataFetchAsync doInBackground: ");
+        Log.e(TAG, "AgentDataFetchAsync doInBackground: ");
         if (NetworkAccess.isNetworkAvailable(mContext)) {
             fetchAgentLeadsFunc();
             fetchDynamicColumns();
@@ -66,6 +70,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        Log.e(TAG, "AgentDataFetchAsync onPostExecute: ");
         AgentInquiriesFetchAsync agentInquiriesFetchAsync = new AgentInquiriesFetchAsync(mContext);
         agentInquiriesFetchAsync.execute();
 //        AgentTasksFetchAsync agentTasksFetchAsync = new AgentTasksFetchAsync(mContext);
@@ -196,6 +201,7 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
                         tempNote.setContactOfNote(LSContact.getContactFromServerId(lead_id));
                         tempNote.setNoteText(description);
                         tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
+                        tempNote.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                         tempNote.save();
                     }
 

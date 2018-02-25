@@ -18,6 +18,7 @@ import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +34,9 @@ import de.halfbit.tinybus.TinyBus;
  */
 
 public class AgentInquiriesFetchAsync extends AsyncTask<Object, Void, Void> {
-    private static final String TAG = "AgentInquiriesFetchA";
+        private static final String TAG = "AgentInquiriesFetchA";
+//    private static final String TAG = "AppInitializationTest";
+
     private SessionManager sessionManager;
     private Context mContext;
     private static RequestQueue queue;
@@ -45,11 +48,29 @@ public class AgentInquiriesFetchAsync extends AsyncTask<Object, Void, Void> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        Log.e(TAG, "AgentInquiriesFetchAsync onPreExecute: ");
+    }
+
+    @Override
     protected Void doInBackground(Object... objects) {
+        Log.e(TAG, "AgentInquiriesFetchAsync doInBackground: ");
         if (NetworkAccess.isNetworkAvailable(mContext)) {
             fetchInquiries();
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        Log.e(TAG, "AgentInquiriesFetchAsync onPostExecute: ");
+        if (sessionManager.isFirstRunAfterLogin()) {
+            Log.d(TAG, "initFirst: isFirstRun TRUE");
+            TheCallLogEngine theCallLogEngine = new TheCallLogEngine(mContext);
+            theCallLogEngine.execute();
+        }
     }
 
     private void fetchInquiries() {
@@ -138,7 +159,7 @@ public class AgentInquiriesFetchAsync extends AsyncTask<Object, Void, Void> {
 //                        Log.d(TAG, "onResponse: lead_type: " + lead_type);
 //                        Log.d(TAG, "onResponse: lead_type: " + lead_type);
 
-                        InquiryManager.createOrUpdate(mContext,inquiry_id ,status_of_inquiry, beginTimeFromServer, contactNumber);
+                        InquiryManager.createOrUpdate(mContext, inquiry_id, status_of_inquiry, beginTimeFromServer, contactNumber);
 
                     }
 

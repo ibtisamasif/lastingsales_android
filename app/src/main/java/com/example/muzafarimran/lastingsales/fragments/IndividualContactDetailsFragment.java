@@ -62,7 +62,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
 /**
@@ -82,7 +81,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
     private Spinner leadStatusSpinner;
     private Button bSave;
     private LSContact mContact;
-    private TinyBus bus;
     private LinearLayout ll;
     static DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1;
     static DynamicColumnBuilderVersion2 dynamicColumnBuilderVersion2;
@@ -377,8 +375,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "onStart: ");
-        bus = TinyBus.from(mContext.getApplicationContext());
-        bus.register(this);
     }
 
     @Override
@@ -432,9 +428,9 @@ public class IndividualContactDetailsFragment extends TabFragment {
 
     @Override
     public void onStop() {
-        super.onStop();
         Log.i(TAG, "onStop: ");
-        bus.unregister(this);
+        TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
+        super.onStop();
     }
 
     @Override
@@ -788,7 +784,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
                     Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
+                    dataSenderAsync.run();;
                     break;
                 case 2:
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
@@ -814,11 +810,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
         }
-    }
-
-    @Subscribe
-    public void onLeadContactAddedEventModel(LeadContactAddedEventModel event) {
-        Log.d(TAG, "onLeadContactAddedEventModel: CalledInFrag");
     }
 
     private void loadSocialProfileData() {

@@ -39,6 +39,8 @@ import de.halfbit.tinybus.TinyBus;
 
 public class DataSenderAsync {
     public static final String TAG = "DataSenderAsync";
+//    private static final String TAG = "AppInitializationTest";
+
     private static DataSenderAsync instance = null;
     private static int currentState = 1;
     private static final int IDLE = 1;
@@ -96,7 +98,7 @@ public class DataSenderAsync {
                 protected void onPreExecute() {
                     super.onPreExecute();
                     sessionManager = new SessionManager(mContext);
-                    Log.d("testlog", "DataSenderAsync onPreExecute: ");
+                    Log.d(TAG, "DataSenderAsync onPreExecute: ");
                 }
 
                 @Override
@@ -140,7 +142,7 @@ public class DataSenderAsync {
                 @Override
                 protected void onPostExecute(Void result) {
                     if (DataSenderOnPostExecuteListener != null) {
-                        Log.d("testlog", "DataSenderAsync onPostExecuteListener:");
+                        Log.d(TAG, "DataSenderAsync onPostExecuteListener:");
                         DataSenderOnPostExecuteListener.onPostExecuteListener();
                     }
                     queue.isIdle();
@@ -148,8 +150,6 @@ public class DataSenderAsync {
 //                        Log.d(TAG, "onPostExecuteListener: currentState: " + currentState);
 //                        currentState = IDLE;
 //                    }
-                    Log.d(TAG, "DataSenderAsync onPostExecute:");
-                    Log.d("testlog", "DataSenderAsync onPostExecute:");
                 }
             }.execute();
         } else {

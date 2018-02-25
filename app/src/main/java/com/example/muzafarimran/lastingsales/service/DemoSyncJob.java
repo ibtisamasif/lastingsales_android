@@ -29,7 +29,7 @@ public class DemoSyncJob extends Job {
 
     public static void schedulePeriodic() {
         new JobRequest.Builder(DemoSyncJob.TAG)
-                .setPeriodic(TimeUnit.MINUTES.toMillis(120), TimeUnit.MINUTES.toMillis(10))
+                .setPeriodic(TimeUnit.MINUTES.toMillis(240), TimeUnit.MINUTES.toMillis(10))
 //                .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
                 .setUpdateCurrent(true)
 //                .setPersisted(true) //onReboot //after upgrading it is not supported anymore all jobs are persisted now in 1.2.0 previous version was 1.1.7

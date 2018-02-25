@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -77,9 +78,13 @@ public class PhoneNumberAndCallUtils {
                 s = phoneNumberUtil.format(pkNumberProto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
             } catch (NumberParseException e) {
                 Log.e(TAG, "numberToInterNationalNumber: NumberParseException");
-                e.printStackTrace(); //TODO google pixel
+//                e.printStackTrace(); //TODO no static method crash google device google pixel
+                FirebaseCrash.logcat(Log.ERROR, TAG, "NumberParseException caught: " + inputString);
+                FirebaseCrash.report(e);
             } catch (Exception e){
                 Log.e(TAG, "numberToInterNationalNumber: Exception");
+                FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught: " + inputString);
+                FirebaseCrash.report(e);
             }
             return s;
         } else {

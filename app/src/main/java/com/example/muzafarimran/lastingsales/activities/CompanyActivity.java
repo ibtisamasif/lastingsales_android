@@ -58,7 +58,7 @@ public class CompanyActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Collection<LSContact> contacts;
-        contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
+        contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS); // don't forget to change it when created.
         list.clear();
         list.addAll(contacts);
         adapter.notifyDataSetChanged();
