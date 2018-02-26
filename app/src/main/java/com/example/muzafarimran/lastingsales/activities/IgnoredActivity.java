@@ -9,13 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -94,7 +93,7 @@ public class IgnoredActivity extends AppCompatActivity {
         list.clear();
         list.addAll(contacts);
         adapter.notifyDataSetChanged();
-        Toast.makeText(this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
     }
 
     @Subscribe
@@ -104,7 +103,7 @@ public class IgnoredActivity extends AppCompatActivity {
         list.clear();
         list.addAll(contacts);
         adapter.notifyDataSetChanged();
-        Toast.makeText(this, "ContactDeletedEventModel", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "ContactDeletedEventModel", Toast.LENGTH_SHORT).show();
     }
 
 

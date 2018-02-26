@@ -18,8 +18,8 @@ import java.util.Arrays;
  */
 
 public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
-        public static final String TAG = "TheCallLogEngine";
-//    private static final String TAG = "AppInitializationTest";
+//        public static final String TAG = "TheCallLogEngine";
+    private static final String TAG = "AppInitializationTest";
 
     public static final String SUB_ID = "subscription";
 
@@ -27,6 +27,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     private boolean reRun = true;
 
     public TheCallLogEngine(Context context) {
+        Log.d(TAG, "TheCallLogEngine: ==========================================================================================================================");
         this.mContext = context;
     }
 
@@ -39,11 +40,11 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     @Override
     protected Void doInBackground(Object... objects) {
         Log.e(TAG, "TheCallLogEngine doInBackground:");
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         CallLogFunc();
         return null;
     }

@@ -689,10 +689,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 return true;
             case R.id.action_refresh:
                 sessionManager.fetchData();
-                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-                theCallLogEngine.execute();
-                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-                dataSenderAsync.run();
+//                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+//                theCallLogEngine.execute();
+//                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+//                dataSenderAsync.run();
                 Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
                 String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);

@@ -149,7 +149,7 @@ public class SessionManager {
     public void fetchData() {
         if( isUserSignedIn()){
             AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
-            agentDataFetchAsync.execute();
+//            agentDataFetchAsync.execute();
         }
         else {
             Log.d(TAG, "fetchData: USER IS NOT SIGNED IN");

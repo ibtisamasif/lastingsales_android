@@ -38,8 +38,8 @@ import java.util.Map;
 import de.halfbit.tinybus.TinyBus;
 
 public class DataSenderAsync {
-    public static final String TAG = "DataSenderAsync";
-//    private static final String TAG = "AppInitializationTest";
+//    public static final String TAG = "DataSenderAsync";
+    private static final String TAG = "AppInitializationTest";
 
     private static DataSenderAsync instance = null;
     private static int currentState = 1;
@@ -63,6 +63,7 @@ public class DataSenderAsync {
     }
 
     protected DataSenderAsync(Context context) {
+        Log.d(TAG, "DataSenderAsync: ==========================================================================================================================");
         mContext = context;
         queue = Volley.newRequestQueue(mContext);
         firstThreadIsRunning = false;

@@ -44,7 +44,7 @@ public class LSInquiry extends SugarRecord {
             ArrayList<LSInquiry> allInquiries = (ArrayList<LSInquiry>) Select.from(LSInquiry.class).where(Condition.prop("status").eq(LSInquiry.INQUIRY_STATUS_PENDING)).orderBy("begin_time DESC").list();
             return allInquiries;
         } catch (Exception e) {
-            return null;
+            return new ArrayList<LSInquiry>();
         }
     }
 

@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales.sync;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -15,7 +14,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
@@ -33,45 +31,47 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 12/26/2017.
  */
 
-public class AgentInquiriesFetchAsync extends AsyncTask<Object, Void, Void> {
-        private static final String TAG = "AgentInquiriesFetchA";
-//    private static final String TAG = "AppInitializationTest";
+public class AgentInquiriesFetchAsync {
+    //        private static final String TAG = "AgentInquiriesFetchA";
+    private static final String TAG = "AppInitializationTest";
 
     private SessionManager sessionManager;
     private Context mContext;
     private static RequestQueue queue;
 
     public AgentInquiriesFetchAsync(Context context) {
+        Log.d(TAG, "AgentInquiriesFetchAsync: ==========================================================================================================================");
         mContext = context;
         sessionManager = new SessionManager(mContext);
         queue = Volley.newRequestQueue(mContext);
+        fetchInquiries();
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        Log.e(TAG, "AgentInquiriesFetchAsync onPreExecute: ");
-    }
+//    @Override
+//    protected void onPreExecute() {
+//        super.onPreExecute();
+//        Log.e(TAG, "AgentInquiriesFetchAsync onPreExecute: ");
+//    }
 
-    @Override
-    protected Void doInBackground(Object... objects) {
-        Log.e(TAG, "AgentInquiriesFetchAsync doInBackground: ");
-        if (NetworkAccess.isNetworkAvailable(mContext)) {
-            fetchInquiries();
-        }
-        return null;
-    }
+//    @Override
+//    protected Void doInBackground(Object... objects) {
+//        Log.e(TAG, "AgentInquiriesFetchAsync doInBackground: ");
+//        if (NetworkAccess.isNetworkAvailable(mContext)) {
+//            fetchInquiries();
+//        }
+//        return null;
+//    }
 
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        Log.e(TAG, "AgentInquiriesFetchAsync onPostExecute: ");
-        if (sessionManager.isFirstRunAfterLogin()) {
-            Log.d(TAG, "initFirst: isFirstRun TRUE");
-            TheCallLogEngine theCallLogEngine = new TheCallLogEngine(mContext);
-            theCallLogEngine.execute();
-        }
-    }
+//    @Override
+//    protected void onPostExecute(Void aVoid) {
+//        super.onPostExecute(aVoid);
+//        Log.e(TAG, "AgentInquiriesFetchAsync onPostExecute: ");
+////        if (sessionManager.isFirstRunAfterLogin()) {
+//            Log.d(TAG, "initFirst: isFirstRun TRUE");
+//            TheCallLogEngine theCallLogEngine = new TheCallLogEngine(mContext);
+//            theCallLogEngine.execute();
+////        }
+//    }
 
     private void fetchInquiries() {
         Log.d(TAG, "fetchInquiries: Fetching Data...");
@@ -166,6 +166,12 @@ public class AgentInquiriesFetchAsync extends AsyncTask<Object, Void, Void> {
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                     TinyBus bus = TinyBus.from(mContext);
                     bus.post(mCallEvent);
+
+//                    if (sessionManager.isFirstRunAfterLogin()) {
+//                        Log.d(TAG, "initFirst: isFirstRun TRUE");
+                        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(mContext);
+                        theCallLogEngine.execute();
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -174,6 +180,11 @@ public class AgentInquiriesFetchAsync extends AsyncTask<Object, Void, Void> {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "onErrorResponse: CouldNotSyncGETInquiries");
+//                if (sessionManager.isFirstRunAfterLogin()) {
+//                    Log.d(TAG, "initFirst: isFirstRun TRUE");
+                    TheCallLogEngine theCallLogEngine = new TheCallLogEngine(mContext);
+                    theCallLogEngine.execute();
+//                }
             }
         }) {
             @Override

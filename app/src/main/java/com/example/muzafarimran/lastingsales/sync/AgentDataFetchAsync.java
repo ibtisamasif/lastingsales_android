@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales.sync;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -19,7 +18,6 @@ import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import org.json.JSONArray;
@@ -36,46 +34,48 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 3/14/2017.
  */
 
-public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
-    private static final String TAG = "AgentDataFetchAsync";
-//    private static final String TAG = "AppInitializationTest";
+public class AgentDataFetchAsync {
+    //    private static final String TAG = "AgentDataFetchAsync";
+    private static final String TAG = "AppInitializationTest";
     private SessionManager sessionManager;
     private Context mContext;
     private static RequestQueue queue;
 
     public AgentDataFetchAsync(Context context) {
+        Log.d(TAG, "AgentDataFetchAsync: ==========================================================================================================================");
         mContext = context;
         sessionManager = new SessionManager(mContext);
         queue = Volley.newRequestQueue(mContext);
+        fetchAgentLeadsFunc();
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        Log.e(TAG, "AgentDataFetchAsync onPreExecute: ");
-    }
+//    @Override
+//    protected void onPreExecute() {
+//        super.onPreExecute();
+//        Log.e(TAG, "AgentDataFetchAsync onPreExecute: ");
+//    }
 
-    @Override
-    protected Void doInBackground(Object... objects) {
-        Log.e(TAG, "AgentDataFetchAsync doInBackground: ");
-        if (NetworkAccess.isNetworkAvailable(mContext)) {
-            fetchAgentLeadsFunc();
-            fetchDynamicColumns();
-        }else {
-            Log.d(TAG, "AgentDataFetchAsync doInBackground: No Internet");
-        }
-        return null;
-    }
+//    @Override
+//    protected Void doInBackground(Object... objects) {
+//        Log.e(TAG, "AgentDataFetchAsync doInBackground: ");
+//        if (NetworkAccess.isNetworkAvailable(mContext)) {
+//            fetchAgentLeadsFunc();
+//            fetchDynamicColumns();
+//        }else {
+//            Log.d(TAG, "AgentDataFetchAsync doInBackground: No Internet");
+//        }
+//        return null;
+//    }
 
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        Log.e(TAG, "AgentDataFetchAsync onPostExecute: ");
-        AgentInquiriesFetchAsync agentInquiriesFetchAsync = new AgentInquiriesFetchAsync(mContext);
-        agentInquiriesFetchAsync.execute();
-//        AgentTasksFetchAsync agentTasksFetchAsync = new AgentTasksFetchAsync(mContext);
-//        agentTasksFetchAsync.execute();
-    }
+//    @Override
+//    protected void onPostExecute(Void aVoid) {
+//        super.onPostExecute(aVoid);
+//        Log.e(TAG, "AgentDataFetchAsync onPostExecute: ");
+//        AgentInquiriesFetchAsync agentInquiriesFetchAsync = new AgentInquiriesFetchAsync(mContext);
+//        agentInquiriesFetchAsync.execute();
+////        AgentTasksFetchAsync agentTasksFetchAsync = new AgentTasksFetchAsync(mContext);
+////        agentTasksFetchAsync.execute();
+//    }
 
     private void fetchAgentLeadsFunc() {
         Log.d(TAG, "fetchAgentLeadsFunc: Fetching Data...");
@@ -135,6 +135,9 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                     TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                     bus.post(mCallEvent);
+
+                    fetchDynamicColumns();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -319,6 +322,10 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
 //                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
 //                    TinyBus bus = TinyBus.from(mContext);
 //                    bus.post(mCallEvent);
+
+                    AgentInquiriesFetchAsync agentInquiriesFetchAsync = new AgentInquiriesFetchAsync(mContext);
+//                    agentInquiriesFetchAsync.execute();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -328,6 +335,13 @@ public class AgentDataFetchAsync extends AsyncTask<Object, Void, Void> {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "onErrorResponse: CouldNotSyncGETDynamicColumns");
                 // for no dynamic columns i am getting 412 instead of 404
+                if (error != null){
+                    if (error.networkResponse != null){
+                        if (error.networkResponse.statusCode == 404){
+                            AgentInquiriesFetchAsync agentInquiriesFetchAsync = new AgentInquiriesFetchAsync(mContext);
+                        }
+                    }
+                }
             }
         }) {
             @Override
