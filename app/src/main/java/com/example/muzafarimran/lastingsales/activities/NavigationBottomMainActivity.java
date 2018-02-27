@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.MatrixCursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,6 +60,7 @@ import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapt
 import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
+import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
@@ -106,6 +109,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     private static ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment;
     public static Activity activity;
     private static boolean sheetShowing = false;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            handleResult(bundle);
+        }
+
+
+    };
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -280,19 +292,16 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         } else {
             Intent intent = new Intent(NavigationBottomMainActivity.this, CallDetectionService.class);
             startService(intent);
-            // TODO fetch data here
-            // do not run it before AgentDataFetch
-//            if (sessionManager.isFirstRunAfterLogin()) {
-//                Log.d(TAG, "initFirst: isFirstRun TRUE");
-//                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-//                theCallLogEngine.execute();
-//            }
             sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
             if (NetworkAccess.isNetworkAvailable(this)) {
-                long contactCount = LSContact.count(LSContact.class); // If app is crashed here make sure instant run if off.
+                long contactCount = LSContact.count(LSContact.class); // If app is crashed here make sure instant run is off.
                 if (contactCount < 1) {
                     Log.d(TAG, "onCreate: LSContact.count " + contactCount);
-                    sessionManager.fetchData();
+
+                    Intent intentInitService = new Intent(this, InitService.class);
+                    startService(intentInitService);
+
+//                    sessionManager.fetchData();
                 }
                 SyncLastSeen.updateLastSeenToServer(NavigationBottomMainActivity.this);
 //                Log.d("rating", "onCreate: setLastAppVisit");
@@ -497,6 +506,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: called");
+        registerReceiver(receiver, new IntentFilter(InitService.NOTIFICATION));
 //        Bundle bundle1 = getIntent().getExtras();
 //        if (bundle1 != null) {
 //            Log.d(TAG, "onCreate: Loading Inquiries TAB");
@@ -549,7 +559,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             if (ACTIVE_LOADER != -1) {
 //            if (getSupportLoaderManager().hasRunningLoaders()) {
                 try {
-                    if (ACTIVE_LOADER == INQU_LOADER_ID || ACTIVE_LOADER == HOME_LOADER_ID || ACTIVE_LOADER == MORE_LOADER_ID ) {
+                    if (ACTIVE_LOADER == INQU_LOADER_ID || ACTIVE_LOADER == HOME_LOADER_ID || ACTIVE_LOADER == MORE_LOADER_ID) {
                         getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                         ACTIVE_LOADER = LEAD_LOADER_ID;
                         floatingActionMenu.showMenu(true);
@@ -900,6 +910,20 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 inquiryCallDetailsBottomSheetFragment.dismiss();
             } else {
                 Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NULL");
+            }
+        }
+    }
+
+    private void handleResult(Bundle bundle) {
+        if (bundle != null) {
+            int resultCode = bundle.getInt(InitService.RESULT);
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(NavigationBottomMainActivity.this,
+                        "Init complete",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(NavigationBottomMainActivity.this, "Init failed",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
