@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -110,15 +109,13 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     private static ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment;
     public static Activity activity;
     private static boolean sheetShowing = false;
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             handleResult(bundle);
         }
-
-
     };
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -273,11 +270,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
 
     private void initFirst(Bundle savedInstanceState) {
-        progressDialog = new ProgressDialog(NavigationBottomMainActivity.this);
-        progressDialog.setTitle("Fetching data");
-        //this method will be running on UI thread
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.setCancelable(false);
+//        progressDialog = new ProgressDialog(NavigationBottomMainActivity.this);
+//        progressDialog.setTitle("Fetching data");
+//        //this method will be running on UI thread
+//        progressDialog.setMessage("Please Wait...");
+//        progressDialog.setCancelable(false);
         Log.d(TAG, "initFirst: density: " + getResources().getDisplayMetrics().density);
         activity = this;
         sessionManager = new SessionManager(getApplicationContext());
@@ -307,7 +304,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
                     Intent intentInitService = new Intent(this, InitService.class);
                     startService(intentInitService);
-                    progressDialog.show();
+//                    progressDialog.show();
 //                    sessionManager.fetchData();
                 }
                 SyncLastSeen.updateLastSeenToServer(NavigationBottomMainActivity.this);
@@ -555,9 +552,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     @Override
     protected void onDestroy() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
+//        if (progressDialog != null && progressDialog.isShowing()) {
+//            progressDialog.dismiss();
+//        }
         Log.d(TAG, "onDestroy: called");
         super.onDestroy();
     }
@@ -711,7 +708,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             case R.id.action_refresh:
                 Intent intentInitService = new Intent(this, InitService.class);
                 startService(intentInitService);
-                progressDialog.show();
+//                progressDialog.show();
 //                sessionManager.fetchData();
                 TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
                 theCallLogEngine.execute();
@@ -951,9 +948,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             int resultCode = bundle.getInt(InitService.RESULT);
             if (resultCode == RESULT_OK) {
 
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
+//                if (progressDialog != null && progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
 
                 if (sessionManager.isFirstRunAfterLogin()) {
                     Log.d(TAG, "initFirst: isFirstRun TRUE");
@@ -964,9 +961,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();
 
             } else if (resultCode == RESULT_CANCELED) {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
+//                if (progressDialog != null && progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
                 sessionManager.deleteAllUserData();
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setTitle("Backup");
@@ -976,7 +973,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                         Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
                         alert.show();
                     } else {
-                        progressDialog.show();
+//                        progressDialog.show();
                         // try fetching again.
                         Intent intentInitService = new Intent(NavigationBottomMainActivity.this, InitService.class);
                         startService(intentInitService);

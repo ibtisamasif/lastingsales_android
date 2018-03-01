@@ -18,8 +18,8 @@ import java.util.Arrays;
  */
 
 public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
-//        public static final String TAG = "TheCallLogEngine";
-    private static final String TAG = "AppInitializationTest";
+        public static final String TAG = "TheCallLogEngine";
+//    private static final String TAG = "AppInitializationTest";
 
     public static final String SUB_ID = "subscription";
 

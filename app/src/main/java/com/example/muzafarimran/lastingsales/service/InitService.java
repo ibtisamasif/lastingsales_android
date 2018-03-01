@@ -49,7 +49,7 @@ public class InitService extends IntentService {
     private static RequestQueue queue;
     AtomicInteger requestsCounter;
 
-    boolean initError = false;
+//    boolean initError = false;
 
     public InitService() {
         super("InitService");
@@ -156,13 +156,15 @@ public class InitService extends IntentService {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    fetchDynamicColumns();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "onErrorResponse: CouldNotGETContacts");
-                initError = true;
+//                initError = true;
+                fetchDynamicColumns();
             }
         }) {
             @Override
@@ -237,7 +239,7 @@ public class InitService extends IntentService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "onErrorResponse: CouldNotGETNotes");
-                initError = true;
+//                initError = true;
             }
         }) {
             @Override
@@ -359,10 +361,10 @@ public class InitService extends IntentService {
                         if (error.networkResponse.statusCode == 404) {
                             fetchInquiries();
                         } else {
-                            initError = true;
+//                            initError = true;
                         }
                     } else {
-                        initError = true;
+//                        initError = true;
                     }
                 }
             }
@@ -501,7 +503,7 @@ public class InitService extends IntentService {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "onErrorResponse: CouldNotGETInquiries");
 
-                initError = true;
+//                initError = true;
 
 //                if (sessionManager.isFirstRunAfterLogin()) {
 //                    Log.d(TAG, "initFirst: isFirstRun TRUE");
