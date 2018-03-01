@@ -98,6 +98,7 @@ public class InitService extends IntentService {
         final String BASE_URL = MyURLs.GET_CONTACTS;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
+                .appendQueryParameter("per_page", "50000")
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
