@@ -15,7 +15,7 @@ import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 public class RestartServiceReceiver extends BroadcastReceiver
 {
 
-    private static final String TAG = "AutoRestartApp";
+    private static final String TAG = "RestartServiceReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {

@@ -11,7 +11,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSTask;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 
 import java.util.Calendar;
 
@@ -146,15 +145,15 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void fetchData() {
-        if( isUserSignedIn()){
-            AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
+//    public void fetchData() {
+//        if( isUserSignedIn()){
+//            AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
 //            agentDataFetchAsync.execute();
-        }
-        else {
-            Log.d(TAG, "fetchData: USER IS NOT SIGNED IN");
-        }
-    }
+//        }
+//        else {
+//            Log.d(TAG, "fetchData: USER IS NOT SIGNED IN");
+//        }
+//    }
 
     private void deleteDataIfDifferentUser(String number) {
         String oldUserNumber = getLoginNumber();
@@ -163,7 +162,7 @@ public class SessionManager {
         }
     }
 
-    private void deleteAllUserData() {
+    public void deleteAllUserData() {
         Log.d(TAG, "Different Agent: deleting data...");
         if (LSInquiry.count(LSInquiry.class) > 0) {
             LSInquiry.deleteAll(LSInquiry.class);

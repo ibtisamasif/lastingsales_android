@@ -23,7 +23,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
 
     public static final String SUB_ID = "subscription";
 
-    Context mContext;
+    private Context mContext;
     private boolean reRun = true;
 
     public TheCallLogEngine(Context context) {
@@ -40,11 +40,11 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     @Override
     protected Void doInBackground(Object... objects) {
         Log.e(TAG, "TheCallLogEngine doInBackground:");
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Thread.sleep(1000); // Delay is important as android might not have saved new call in call logs yet.
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         CallLogFunc();
         return null;
     }
@@ -57,7 +57,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
         dataSenderAsync.run();
     }
 
-    public void CallLogFunc() {
+    private void CallLogFunc() {
         boolean showNotification = false;
 
         String latestCallQuery;

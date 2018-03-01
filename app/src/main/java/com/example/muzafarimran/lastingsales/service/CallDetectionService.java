@@ -77,8 +77,9 @@ public class CallDetectionService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
         Log.e(TAG, "CallDetectionService onStartCommand()");
-        Log.d(TAG, "onStartCommand()");
+        Log.e(TAG, "onStartCommand: intent: " + intent);
         showForegroundNotification("Click to open");
 //        Toast.makeText(getApplicationContext(),"LS Running", Toast.LENGTH_LONG).show();
         return START_STICKY;
@@ -100,6 +101,7 @@ public class CallDetectionService extends Service {
         PendingIntent pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 5000, pendingIntent);
+        sendBroadcast(new Intent("YouWillNeverKillMe"));
         super.onTaskRemoved(rootIntent);
     }
 

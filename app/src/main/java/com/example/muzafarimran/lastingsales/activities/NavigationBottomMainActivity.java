@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -109,6 +110,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     private static ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment;
     public static Activity activity;
     private static boolean sheetShowing = false;
+    private ProgressDialog progressDialog;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -130,7 +132,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                     }
                 } catch (Exception e) {
 //                    e.printStackTrace();
-                    FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught");
+                    FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught ACTIVE_LOADER");
                     FirebaseCrash.report(e);
                 }
             }
@@ -271,6 +273,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
 
     private void initFirst(Bundle savedInstanceState) {
+        progressDialog = new ProgressDialog(NavigationBottomMainActivity.this);
+        progressDialog.setTitle("Fetching data");
+        //this method will be running on UI thread
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.setCancelable(false);
         Log.d(TAG, "initFirst: density: " + getResources().getDisplayMetrics().density);
         activity = this;
         sessionManager = new SessionManager(getApplicationContext());
@@ -294,13 +301,13 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             startService(intent);
             sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
             if (NetworkAccess.isNetworkAvailable(this)) {
-                long contactCount = LSContact.count(LSContact.class); // If app is crashed here make sure instant run is off.
+                long contactCount = LSContact.count(LSContact.class); // If app is crashed here make sure instant run is off. // TODO instead of checking for zero contacts check app init.
                 if (contactCount < 1) {
                     Log.d(TAG, "onCreate: LSContact.count " + contactCount);
 
                     Intent intentInitService = new Intent(this, InitService.class);
                     startService(intentInitService);
-
+                    progressDialog.show();
 //                    sessionManager.fetchData();
                 }
                 SyncLastSeen.updateLastSeenToServer(NavigationBottomMainActivity.this);
@@ -536,6 +543,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: called");
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -547,8 +555,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         Log.d(TAG, "onDestroy: called");
+        super.onDestroy();
     }
 
     @Override
@@ -579,7 +590,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     public void onShakeEvent(ShakeEventWire.ShakeEvent event) {
         // device has been shaken
         Log.d(TAG, "onShakeEvent: Shake Event: " + event);
-        sessionManager.fetchData();
+//        sessionManager.fetchData();
         TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
         theCallLogEngine.execute();
         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
@@ -698,12 +709,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 startActivity(new Intent(NavigationBottomMainActivity.this, AccountActivity.class));
                 return true;
             case R.id.action_refresh:
-                sessionManager.fetchData();
-//                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-//                theCallLogEngine.execute();
-//                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-//                dataSenderAsync.run();
-                Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+                Intent intentInitService = new Intent(this, InitService.class);
+                startService(intentInitService);
+                progressDialog.show();
+//                sessionManager.fetchData();
+                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+                theCallLogEngine.execute();
+                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                dataSenderAsync.run();
+                Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
                 String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
                 mixpanel.track("Refreshed");
@@ -888,7 +902,16 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         if (sheetShowing) {
             if (contactCallDetailsBottomSheetFragment != null) {
                 Log.d(TAG, "closeContactBottomSheetCallback: is NOT NULL");
-                contactCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+                try {
+                    if (Build.VERSION.SDK_INT > 21) {
+                        contactCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+                    } else {
+                        contactCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
+                    }
+                } catch (IllegalStateException ignored) {
+                    FirebaseCrash.logcat(Log.ERROR, TAG, "IllegalStateException caught");
+                    FirebaseCrash.report(new Exception("closeContactBottomSheetCallback dismiss() called after onSaveInstanceState"));
+                }
             } else {
                 Log.d(TAG, "closeContactBottomSheetCallback: is NULL");
             }
@@ -907,7 +930,16 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         if (sheetShowing) {
             if (inquiryCallDetailsBottomSheetFragment != null) {
                 Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NOT NULL");
-                inquiryCallDetailsBottomSheetFragment.dismiss();
+                try {
+                    if (Build.VERSION.SDK_INT > 21) {
+                        inquiryCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+                    } else {
+                        inquiryCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
+                    }
+                } catch (IllegalStateException ignored) {
+                    FirebaseCrash.logcat(Log.ERROR, TAG, "IllegalStateException caught");
+                    FirebaseCrash.report(new Exception("closeInquiryBottomSheetCallback dismiss() called after onSaveInstanceState"));
+                }
             } else {
                 Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NULL");
             }
@@ -918,12 +950,52 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         if (bundle != null) {
             int resultCode = bundle.getInt(InitService.RESULT);
             if (resultCode == RESULT_OK) {
-                Toast.makeText(NavigationBottomMainActivity.this,
-                        "Init complete",
-                        Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(NavigationBottomMainActivity.this, "Init failed",
-                        Toast.LENGTH_LONG).show();
+
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+
+                if (sessionManager.isFirstRunAfterLogin()) {
+                    Log.d(TAG, "initFirst: isFirstRun TRUE");
+                    TheCallLogEngine theCallLogEngine = new TheCallLogEngine(NavigationBottomMainActivity.this);
+                    theCallLogEngine.execute();
+                }
+
+                Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();
+
+            } else if (resultCode == RESULT_CANCELED) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                sessionManager.deleteAllUserData();
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Backup");
+                alert.setMessage("Could not fetch data please try again");
+                alert.setPositiveButton("Try Again", (dialog, which) -> {
+                    if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
+                        Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
+                        alert.show();
+                    } else {
+                        progressDialog.show();
+                        // try fetching again.
+                        Intent intentInitService = new Intent(NavigationBottomMainActivity.this, InitService.class);
+                        startService(intentInitService);
+                        dialog.dismiss();
+                    }
+                });
+                alert.setNegativeButton("Cancel", (dialog, which) -> {
+                    sessionManager.logoutUser();
+                    startActivity(new Intent(NavigationBottomMainActivity.this, LogInActivity.class));
+                    finish();
+                    dialog.dismiss();
+                }).setCancelable(false);
+                alert.show();
+
+//                sessionManager.logoutUser();
+//                startActivity(new Intent(NavigationBottomMainActivity.this, LogInActivity.class));
+//                finish();
+
+                Toast.makeText(NavigationBottomMainActivity.this, "Init failed", Toast.LENGTH_LONG).show();
             }
         }
     }

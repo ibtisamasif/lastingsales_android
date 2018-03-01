@@ -364,13 +364,13 @@ public class VersionManager {
                     Log.d(TAG, "MODE_NEW_INSTALL");
                     // Do first run stuff here then set 'firstrun' as false
                     // using the following line to edit/commit prefs
-                    sessionManager.fetchData();
+//                    sessionManager.fetchData();
                     return true;
                 } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_UPGRADE)) {
                     Log.d(TAG, "MODE_UPGRADE");
                     // Do first run stuff here then set 'firstrun' as false
                     // using the following line to edit/commit prefs
-                    sessionManager.fetchData();
+//                    sessionManager.fetchData();
                     return true;
                 } else {
                     return true;

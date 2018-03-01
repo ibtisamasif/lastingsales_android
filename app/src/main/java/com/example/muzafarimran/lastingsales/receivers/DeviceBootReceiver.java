@@ -4,8 +4,6 @@ package com.example.muzafarimran.lastingsales.receivers;
  * Created by ahmad on 31-Oct-16.
  */
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,11 +13,9 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 
-import java.util.Calendar;
-
 public class DeviceBootReceiver extends BroadcastReceiver {
     private static final String TAG = "DeviceBootReceiver";
-    private SessionManager sessionManager;
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -28,7 +24,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             Log.d(TAG, "DeviceBootReceiver onReceive() Intent Action: BOOT_COMPLETED ");
 
-            sessionManager = new SessionManager(context);
+            SessionManager sessionManager = new SessionManager(context);
             if (sessionManager.isUserSignedIn()) {
                 context.startService(new Intent(context, CallDetectionService.class));
                 Log.d(TAG, "DeviceBootReceiver: Service Started");

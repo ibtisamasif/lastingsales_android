@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 
 /**
@@ -27,6 +30,12 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 
                 Log.d(TAG, "Network " + ni.getTypeName() + " connected");
 
+                SessionManager sessionManager = new SessionManager(context);
+                if (sessionManager.isUserSignedIn()) {
+                    context.startService(new Intent(context, CallDetectionService.class));
+                    Log.d(TAG, "CallDetectionService: Service Started");
+                }
+
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
                 dataSenderAsync.run();
 
@@ -37,5 +46,6 @@ public class NetworkStateReceiver extends BroadcastReceiver {
             }
         }
 
+        Toast.makeText(context, "Connectivity changed", Toast.LENGTH_SHORT).show();
     }
 }

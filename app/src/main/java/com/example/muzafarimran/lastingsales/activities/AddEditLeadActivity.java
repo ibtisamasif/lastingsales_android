@@ -39,6 +39,7 @@ import de.halfbit.tinybus.TinyBus;
  */
 
 public class AddEditLeadActivity extends AppCompatActivity {
+    private static final String TAG = "AddEditLeadActivity";
 
     public static final String ACTIVITY_LAUNCH_MODE = "activity_launch_mode";
     public static final String LAUNCH_MODE_IMPORT_CONTACT = "launch_mode_import_contact_from_phonebook";
@@ -46,7 +47,6 @@ public class AddEditLeadActivity extends AppCompatActivity {
     public static final String LAUNCH_MODE_EDIT_EXISTING_CONTACT = "launch_mode_edit_existing_contact";
     public static final String TAG_LAUNCH_MODE_PHONE_NUMBER = "phone_number";
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
-    private static final String TAG = "AddEditLeadActivity";
 
     public static final String MIXPANEL_SOURCE = "mixpanel_source";
 
@@ -115,6 +115,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
             selectRadioButton(LSContact.CONTACT_TYPE_SALES);
         }
         if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
+            Log.d(TAG, "onCreate: LAUNCH_MODE_ADD_NEW_CONTACT ");
             populateCreateContactView();
             String num = bundle.getString(TAG_LAUNCH_MODE_PHONE_NUMBER);
             if (num != null) {
@@ -127,7 +128,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
             selectRadioButton(LSContact.CONTACT_TYPE_SALES);
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
-            Log.d("duplicate", "onCreate: LAUNCH_MODE_EDIT_EXISTING_CONTACT ");
+            Log.d(TAG, "onCreate: LAUNCH_MODE_EDIT_EXISTING_CONTACT ");
             populateUpdateContactView(bundle);
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
             if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
@@ -155,17 +156,19 @@ public class AddEditLeadActivity extends AppCompatActivity {
                 contactPhone = etContactPhone.getText().toString();
                 contactEmail = etContactEmail.getText().toString();
                 if (isValid(contactName, contactPhone, contactEmail)) {
-                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
 //                if (selectedContact == null) {
                     LSContact checkContact;
-                    checkContact = LSContact.getContactFromNumber(intlNum);
+                    checkContact = LSContact.getContactFromNumber(contactPhone);
                     if (checkContact == null) {
+                        Log.d(TAG, "onClick: LAUNCH_MODE_ADD_NEW_CONTACT");
                         launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
                     } else {
+                        Log.d(TAG, "onClick: LAUNCH_MODE_EDIT_EXISTING_CONTACT");
                         launchMode = LAUNCH_MODE_EDIT_EXISTING_CONTACT;
                         selectedContact = checkContact;
                     }
 //                }
+                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
                     if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
                         LSContact tempContact = new LSContact();
                         tempContact.setContactName(contactName);
