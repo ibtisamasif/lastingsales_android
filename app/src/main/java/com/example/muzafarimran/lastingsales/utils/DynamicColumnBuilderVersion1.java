@@ -30,7 +30,7 @@ public class DynamicColumnBuilderVersion1 {
                 column.id = jsonobject.getString("id");
                 column.value = jsonobject.getString("value");
                 column.name = jsonobject.getString("name");
-                column.column_type = jsonobject.getString("column_type");
+                column.column_type = jsonobject.getString("column_type"); // crash here org.json.JSONException: No value for column_type "column_type" OR "type"
                 columnCollection.add(column);
 
             }

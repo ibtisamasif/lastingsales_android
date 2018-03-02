@@ -65,9 +65,9 @@ public class ViewHolderStatisticsCard extends RecyclerView.ViewHolder {
         tvInquiriesValue.setText(MessageFormat.format("{0}", statisticsItem.inquiriesValue));
         tvCallsValue.setText(MessageFormat.format("{0}", statisticsItem.callsValue));
 
-        fetchInquiries(mContext);
-        fetchAgentLeadsFunc();
-        fetchAgentCallsFunc();
+//        fetchInquiries(mContext);
+//        fetchAgentLeadsFunc();
+//        fetchAgentCallsFunc();
     }
 
     private void fetchInquiries(Context mContext) {

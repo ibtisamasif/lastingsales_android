@@ -686,7 +686,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
 
                 } else {
                     Log.d(TAG, "dynamicColumns: getVersion = 0");
-                    dynamicColumnBuilderVersion1.parseJson(mContact.getDynamic());
+                    dynamicColumnBuilderVersion1.parseJson(mContact.getDynamic()); //TODO Crash here
 //                    Log.d(TAG, "dynamicColumnsJSONN: " + mContact.getDynamic());
                     ArrayList<DynamicColumnBuilderVersion1.Column> dynColumns = dynamicColumnBuilderVersion1.getColumns();
                     for (DynamicColumnBuilderVersion1.Column oneDynamicColumns : dynColumns) {

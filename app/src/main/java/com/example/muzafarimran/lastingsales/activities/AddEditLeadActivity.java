@@ -156,36 +156,43 @@ public class AddEditLeadActivity extends AppCompatActivity {
                 contactPhone = etContactPhone.getText().toString();
                 contactEmail = etContactEmail.getText().toString();
                 if (isValid(contactName, contactPhone, contactEmail)) {
-//                if (selectedContact == null) {
-                    LSContact checkContact;
-                    checkContact = LSContact.getContactFromNumber(contactPhone);
-                    if (checkContact == null) {
-                        Log.d(TAG, "onClick: LAUNCH_MODE_ADD_NEW_CONTACT");
-                        launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
-                    } else {
-                        Log.d(TAG, "onClick: LAUNCH_MODE_EDIT_EXISTING_CONTACT");
-                        launchMode = LAUNCH_MODE_EDIT_EXISTING_CONTACT;
-                        selectedContact = checkContact;
-                    }
-//                }
+//                    LSContact checkContact;
+//                    checkContact = LSContact.getContactFromNumber(contactPhone);
+//                    if (checkContact == null) {
+//                        Log.d(TAG, "onClick: LAUNCH_MODE_ADD_NEW_CONTACT");
+//                        launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
+//                    } else {
+//                        Log.d(TAG, "onClick: LAUNCH_MODE_EDIT_EXISTING_CONTACT");
+//                        launchMode = LAUNCH_MODE_EDIT_EXISTING_CONTACT;
+//                        selectedContact = checkContact;
+//                    }
                     String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
                     if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
-                        LSContact tempContact = new LSContact();
-                        tempContact.setContactName(contactName);
-                        tempContact.setPhoneOne(intlNum);
-                        tempContact.setContactType(selectedContactType);
-                        tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
-                        tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
-                        tempContact.save();
-                        Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
-                        finish();
-                        //Saving contact in native phonebook as well
-                        PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), tempContact.getContactName(), tempContact.getPhoneOne());
-                        moveToContactDetailScreenIfNeeded(tempContact);
-                        String projectToken = MixpanelConfig.projectToken;
-                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
-                        mixpanel.track("Create lead dialog - created lead");
+
+                        LSContact checkContactUnFormated = LSContact.getContactFromNumber(contactPhone);
+                        LSContact checkContactInternationalFormat = LSContact.getContactFromNumber(intlNum);
+                        if (checkContactUnFormated == null && checkContactInternationalFormat == null) {
+
+                            LSContact tempContact = new LSContact();
+                            tempContact.setContactName(contactName);
+                            tempContact.setPhoneOne(intlNum);
+                            tempContact.setContactType(selectedContactType);
+                            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+                            tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+                            tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+                            tempContact.save();
+                            Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
+                            finish();
+                            //Saving contact in native phonebook as well
+                            PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), tempContact.getContactName(), tempContact.getPhoneOne());
+                            moveToContactDetailScreenIfNeeded(tempContact);
+                            String projectToken = MixpanelConfig.projectToken;
+                            MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                            mixpanel.track("Create lead dialog - created lead");
+
+                        } else {
+                            Toast.makeText(AddEditLeadActivity.this, "Contact already Exists in app", Toast.LENGTH_SHORT).show();
+                        }
 
                     } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
 

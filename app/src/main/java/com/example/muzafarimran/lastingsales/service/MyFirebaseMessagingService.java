@@ -220,11 +220,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 } else if (action.equals("delete")) {
                     String id = payload.getString("id");
                     LSContact contact = LSContact.getContactFromServerId(id);
-                    Log.e(TAG, "handleDataMessage: contact: " + contact.toString());
-                    contact.delete();
-                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                    TinyBus bus = TinyBus.from(getApplicationContext());
-                    bus.post(mCallEvent);
+                    if (contact != null) {
+                        Log.e(TAG, "handleDataMessage: contact: " + contact.toString());
+                        contact.delete();
+                        LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                        TinyBus bus = TinyBus.from(getApplicationContext());
+                        bus.post(mCallEvent);
+                    }
                 }
             }
 

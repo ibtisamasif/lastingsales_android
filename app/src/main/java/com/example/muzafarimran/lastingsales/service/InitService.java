@@ -76,6 +76,7 @@ public class InitService extends IntentService {
 
         if (sessionManager.isUserSignedIn()) {
             fetchAgentLeadsFunc();
+            fetchDynamicColumns();
         }
 
         queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
@@ -152,19 +153,19 @@ public class InitService extends IntentService {
                     TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                     bus.post(mCallEvent);
 
-                    fetchDynamicColumns();
+                    fetchInquiries();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    fetchDynamicColumns();
+                    Log.e(TAG, "onResponse: JSONException Contacts");
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "onErrorResponse: CouldNotGETContacts");
+                Log.e(TAG, "onErrorResponse: CouldNotGETContacts"); //404 no lead
 //                initError = true;
-                fetchDynamicColumns();
+//                fetchDynamicColumns();
             }
         }) {
             @Override
@@ -233,6 +234,7 @@ public class InitService extends IntentService {
                     bus.post(mCallEvent);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e(TAG, "onResponse: JSONException Notes");
                 }
             }
         }, new Response.ErrorListener() {
@@ -349,6 +351,7 @@ public class InitService extends IntentService {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e(TAG, "onResponse: JSONException DynamicColumns");
                 }
             }
         }, new Response.ErrorListener() {
@@ -359,7 +362,7 @@ public class InitService extends IntentService {
                 if (error != null) {
                     if (error.networkResponse != null) {
                         if (error.networkResponse.statusCode == 404) {
-                            fetchInquiries();
+                            // No dynamic columns
                         } else {
 //                            initError = true;
                         }
@@ -405,28 +408,31 @@ public class InitService extends IntentService {
         StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "onResponse() getContact: response = [" + response + "]");
+                Log.d(TAG, "onResponse() getContact: response = " + response);
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    JSONObject responseObject = jObj.getJSONObject("response");
-                    String totalInquiries = responseObject.getString("total");
-                    Log.d(TAG, "onResponse: TotalInquiries: " + totalInquiries);
+                    if (!jObj.isNull("response")) {
+                        JSONObject responseObject = jObj.getJSONObject("response");
 
-                    JSONArray jsonarray = responseObject.getJSONArray("data");
+                        if (responseObject != null) {
+                            String totalInquiries = responseObject.getString("total");
+                            Log.d(TAG, "onResponse: TotalInquiries: " + totalInquiries);
 
-                    for (int i = 0; i < jsonarray.length(); i++) {
-                        Log.d(TAG, "INDEX " + i);
-                        JSONObject jsonobject = jsonarray.getJSONObject(i);
-                        String inquiry_id = jsonobject.getString("id");
-                        String agent_id = jsonobject.getString("agent_id");
-                        String date = jsonobject.getString("date");
-                        String time = jsonobject.getString("time");
-                        String contactNumber = jsonobject.getString("contact_number");
-                        String status_of_inquiry = jsonobject.getString("status");
-                        String inquiry_created_by = jsonobject.getString("created_by");
-                        String user_id_of_inquiry = jsonobject.getString("user_id");
-                        String company_id_of_inquiry = jsonobject.getString("company_id");
-                        String avg_response_time = jsonobject.getString("avg_response_time");
+                            JSONArray jsonarray = responseObject.getJSONArray("data");
+
+                            for (int i = 0; i < jsonarray.length(); i++) {
+                                Log.d(TAG, "INDEX " + i);
+                                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                                String inquiry_id = jsonobject.getString("id");
+                                String agent_id = jsonobject.getString("agent_id");
+                                String date = jsonobject.getString("date");
+                                String time = jsonobject.getString("time");
+                                String contactNumber = jsonobject.getString("contact_number");
+                                String status_of_inquiry = jsonobject.getString("status");
+                                String inquiry_created_by = jsonobject.getString("created_by");
+                                String user_id_of_inquiry = jsonobject.getString("user_id");
+                                String company_id_of_inquiry = jsonobject.getString("company_id");
+                                String avg_response_time = jsonobject.getString("avg_response_time");
 
 //                        JSONObject leadObj = jsonobject.getJSONObject("lead");
 //                        String lead_id = leadObj.getString("id");
@@ -447,20 +453,20 @@ public class InitService extends IntentService {
 //                        String image_path = leadObj.getString("image_path");
 //                        String lead_type = leadObj.getString("lead_type");
 
-                        Log.d(TAG, "onResponse: inquiry_id: " + inquiry_id);
-                        Log.d(TAG, "onResponse: agent_id: " + agent_id);
-                        Log.d(TAG, "onResponse: date: " + date);
-                        Log.d(TAG, "onResponse: time: " + time);
-                        Log.d(TAG, "onResponse: contactNumber: " + contactNumber);
-                        Log.d(TAG, "onResponse: status_of_inquiry: " + status_of_inquiry);
-                        Log.d(TAG, "onResponse: inquiry_created_by: " + inquiry_created_by);
-                        Log.d(TAG, "onResponse: user_id_of_inquiry: " + user_id_of_inquiry);
-                        Log.d(TAG, "onResponse: company_id_of_inquiry: " + company_id_of_inquiry);
-                        Log.d(TAG, "onResponse: avg_response_time: " + avg_response_time);
+                                Log.d(TAG, "onResponse: inquiry_id: " + inquiry_id);
+                                Log.d(TAG, "onResponse: agent_id: " + agent_id);
+                                Log.d(TAG, "onResponse: date: " + date);
+                                Log.d(TAG, "onResponse: time: " + time);
+                                Log.d(TAG, "onResponse: contactNumber: " + contactNumber);
+                                Log.d(TAG, "onResponse: status_of_inquiry: " + status_of_inquiry);
+                                Log.d(TAG, "onResponse: inquiry_created_by: " + inquiry_created_by);
+                                Log.d(TAG, "onResponse: user_id_of_inquiry: " + user_id_of_inquiry);
+                                Log.d(TAG, "onResponse: company_id_of_inquiry: " + company_id_of_inquiry);
+                                Log.d(TAG, "onResponse: avg_response_time: " + avg_response_time);
 
-                        Log.d(TAG, "onResponse: date + time: " + date + " " + time);
-                        long beginTimeFromServer = PhoneNumberAndCallUtils.getMillisFromSqlFormattedDateAndTime(date + " " + time);
-                        Log.d(TAG, "onResponse: date + time in Millis: " + beginTimeFromServer);
+                                Log.d(TAG, "onResponse: date + time: " + date + " " + time);
+                                long beginTimeFromServer = PhoneNumberAndCallUtils.getMillisFromSqlFormattedDateAndTime(date + " " + time);
+                                Log.d(TAG, "onResponse: date + time in Millis: " + beginTimeFromServer);
 
 //                        Log.d(TAG, "onResponse: lead_id: " + lead_id);
 //                        Log.d(TAG, "onResponse: name: " + name);
@@ -478,15 +484,13 @@ public class InitService extends IntentService {
 //                        Log.d(TAG, "onResponse: lead_type: " + lead_type);
 //                        Log.d(TAG, "onResponse: lead_type: " + lead_type);
 
-                        InquiryManager.createOrUpdate(mContext, inquiry_id, status_of_inquiry, beginTimeFromServer, contactNumber);
+                                InquiryManager.createOrUpdate(mContext, inquiry_id, status_of_inquiry, beginTimeFromServer, contactNumber);
 
-                    }
+                            }
 
-                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                    TinyBus bus = TinyBus.from(mContext);
-                    bus.post(mCallEvent);
-
-                    result = Activity.RESULT_OK;
+                            LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                            TinyBus bus = TinyBus.from(mContext);
+                            bus.post(mCallEvent);
 
 
 //                    if (sessionManager.isFirstRunAfterLogin()) {
@@ -494,8 +498,14 @@ public class InitService extends IntentService {
 //                        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(mContext);
 //                        theCallLogEngine.execute();
 //                    }
+                        }
+                    }else {
+                        Log.d(TAG, "onResponse: No Inquiries");
+                    }
+                    result = Activity.RESULT_OK;
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e(TAG, "onResponse: JSONException Inquiries");
                 }
             }
         }, new Response.ErrorListener() {

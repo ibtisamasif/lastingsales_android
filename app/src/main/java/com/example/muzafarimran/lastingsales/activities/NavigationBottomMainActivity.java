@@ -109,7 +109,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     private static ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment;
     public static Activity activity;
     private static boolean sheetShowing = false;
-//    private ProgressDialog progressDialog;
+    //    private ProgressDialog progressDialog;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -706,15 +706,19 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 startActivity(new Intent(NavigationBottomMainActivity.this, AccountActivity.class));
                 return true;
             case R.id.action_refresh:
-                Intent intentInitService = new Intent(this, InitService.class);
-                startService(intentInitService);
-//                progressDialog.show();
-//                sessionManager.fetchData();
+                Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
+                if (NetworkAccess.isNetworkAvailable(getApplicationContext())) {
+                    Intent intentInitService = new Intent(this, InitService.class);
+                    startService(intentInitService);
+//                    progressDialog.show();
+//                    sessionManager.fetchData();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_SHORT).show();
+                }
                 TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
                 theCallLogEngine.execute();
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
-                Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
                 String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
                 mixpanel.track("Refreshed");
@@ -958,41 +962,41 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                     theCallLogEngine.execute();
                 }
 
-                Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();
+//                Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();
 
             } else if (resultCode == RESULT_CANCELED) {
 //                if (progressDialog != null && progressDialog.isShowing()) {
 //                    progressDialog.dismiss();
 //                }
-                sessionManager.deleteAllUserData();
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.setTitle("Backup");
-                alert.setMessage("Could not fetch data please try again");
-                alert.setPositiveButton("Try Again", (dialog, which) -> {
-                    if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
-                        Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
-                        alert.show();
-                    } else {
-//                        progressDialog.show();
-                        // try fetching again.
-                        Intent intentInitService = new Intent(NavigationBottomMainActivity.this, InitService.class);
-                        startService(intentInitService);
-                        dialog.dismiss();
-                    }
-                });
-                alert.setNegativeButton("Cancel", (dialog, which) -> {
-                    sessionManager.logoutUser();
-                    startActivity(new Intent(NavigationBottomMainActivity.this, LogInActivity.class));
-                    finish();
-                    dialog.dismiss();
-                }).setCancelable(false);
-                alert.show();
+//                sessionManager.deleteAllUserData();
+//                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//                alert.setTitle("Backup");
+//                alert.setMessage("Could not fetch data please try again");
+//                alert.setPositiveButton("Try Again", (dialog, which) -> {
+//                    if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
+//                        Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
+//                        alert.show();
+//                    } else {
+////                        progressDialog.show();
+//                        // try fetching again.
+//                        Intent intentInitService = new Intent(NavigationBottomMainActivity.this, InitService.class);
+//                        startService(intentInitService);
+//                        dialog.dismiss();
+//                    }
+//                });
+//                alert.setNegativeButton("Cancel", (dialog, which) -> {
+//                    sessionManager.logoutUser();
+//                    startActivity(new Intent(NavigationBottomMainActivity.this, LogInActivity.class));
+//                    finish();
+//                    dialog.dismiss();
+//                }).setCancelable(false);
+//                alert.show();
 
 //                sessionManager.logoutUser();
 //                startActivity(new Intent(NavigationBottomMainActivity.this, LogInActivity.class));
 //                finish();
 
-                Toast.makeText(NavigationBottomMainActivity.this, "Init failed", Toast.LENGTH_LONG).show();
+//                Toast.makeText(NavigationBottomMainActivity.this, "Init failed", Toast.LENGTH_LONG).show();
             }
         }
     }

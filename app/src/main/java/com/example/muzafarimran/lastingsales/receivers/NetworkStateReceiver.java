@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
@@ -46,6 +45,6 @@ public class NetworkStateReceiver extends BroadcastReceiver {
             }
         }
 
-        Toast.makeText(context, "Connectivity changed", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "Connectivity changed", Toast.LENGTH_SHORT).show();
     }
 }
