@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '26.0.3'
     defaultConfig {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
@@ -64,9 +64,9 @@ dependencies {
     //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     // Required -- JUnit 4 framework
-    testCompile 'junit:junit:4.12'
+//    testCompile 'junit:junit:4.12'
     // Optional -- Mockito framework
-    testCompile 'org.mockito:mockito-core:1.10.19'
+//    testCompile 'org.mockito:mockito-core:1.10.19'
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:multidex:1.0.2'

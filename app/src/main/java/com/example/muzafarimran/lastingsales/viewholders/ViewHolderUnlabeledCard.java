@@ -355,8 +355,6 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                         public void onClick(DialogInterface dialog, int which) {
                             DeleteManager.deleteContact(mContext, contact);
                             Snackbar.make(view, "Colleague contact deleted!", Snackbar.LENGTH_SHORT).show();
-                            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
-                            dataSenderAsync.run();
                             ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                             TinyBus bus = TinyBus.from(mContext);
                             bus.post(mCallEvent);
@@ -409,8 +407,6 @@ public class ViewHolderUnlabeledCard extends RecyclerView.ViewHolder {
                         public void onClick(DialogInterface dialog, int which) {
                             DeleteManager.deleteContact(mContext, contact);
                             Snackbar.make(view, "Ignored contact deleted!", Snackbar.LENGTH_SHORT).show();
-                            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
-                            dataSenderAsync.run();
                             ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                             TinyBus bus = TinyBus.from(mContext);
                             bus.post(mCallEvent);

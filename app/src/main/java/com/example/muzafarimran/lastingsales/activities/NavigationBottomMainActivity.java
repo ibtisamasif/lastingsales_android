@@ -654,6 +654,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
             navigation.setSelectedItemId(R.id.navigation_leads);
         }
+        if (ACTIVE_LOADER == MORE_LOADER_ID) {
+            Log.d(TAG, "onLeadContactDeletedEventModel: MORE_LOADER_ID");
+            getSupportLoaderManager().restartLoader(MORE_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+            navigation.setSelectedItemId(R.id.navigation_more);
+        }
 //        Toast.makeText(NavigationBottomMainActivity.this, "ContactDeletedEventModel", Toast.LENGTH_SHORT).show();
     }
 
