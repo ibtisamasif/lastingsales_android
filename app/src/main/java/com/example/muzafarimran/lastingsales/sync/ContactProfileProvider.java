@@ -12,7 +12,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
@@ -21,8 +20,6 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by ibtisam on 10/20/2017.
@@ -56,7 +53,6 @@ public class ContactProfileProvider {
         }
     }
 
-
     private void fetchProfileFromServer(final String contactNumber, final LSContactProfileCallback callback) {
         final LSContactProfile[] contactProfile = {null};
         String formatedNumber = "";
@@ -75,6 +71,7 @@ public class ContactProfileProvider {
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
+        Log.d(TAG, "ContactProfileProvider: fetchProfileFromServer: myURL: " + myUrl);
         StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

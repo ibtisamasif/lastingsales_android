@@ -831,7 +831,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
             temp[1] = note.getNoteText();
             temp[2] = R.drawable.ic_notes_blue_48dp;
             temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
-            temp[4] = note.getContactOfNote().getId();
+            temp[4] = note.getContactOfNote().getId();  // Contact of note is null
             temp[6] = "type_note";
             cursor.addRow(temp);
             count++;

@@ -16,6 +16,7 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import org.json.JSONException;
@@ -44,12 +45,22 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        Log.d(TAG, "onPreExecute: AllContactProfilesFetchingEngineAsync");
+        FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(mContext.getApplicationContext());
+        notificationUtils.playNotificationSound();
     }
 
     @Override
     protected Void doInBackground(Object... params) {
+        Log.d(TAG, "doInBackground: AllContactProfilesFetchingEngineAsync");
         getBatchContactsProfiles();
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        Log.d(TAG, "onPostExecute: AllContactProfilesFetchingEngineAsync");
+        super.onPostExecute(aVoid);
     }
 
     public void getBatchContactsProfiles() {
@@ -60,12 +71,16 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
             contactsList.addAll((ArrayList<LSContact>) LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED));
             Log.d(TAG, "getBatchContactsProfiles: count : " + contactsList.size());
             for (LSContact oneContact : contactsList) {
-                Log.d(TAG, "Found Contacts " + oneContact.getPhoneOne());
-                String number = oneContact.getPhoneOne();
-                if (number != null) {
-                    fetchProfileFromServer(number);
-                } else {
-                    Log.d(TAG, "getBatchContactsProfiles: NUMBER IS NULL CHECK STORED NUMBER");
+                if (!oneContact.isDoNotFetchProfile()) {
+                    Log.d(TAG, "Found Contacts " + oneContact.getPhoneOne());
+                    String number = oneContact.getPhoneOne();
+                    if (number != null) {
+                        fetchProfileFromServer(number);
+                    } else {
+                        Log.d(TAG, "getBatchContactsProfiles: NUMBER IS NULL CHECK STORED NUMBER");
+                    }
+                }else {
+                    Log.i(TAG, "getBatchContactsProfiles: isDoNotFetchProfile() == TRUE");
                 }
             }
         }
@@ -79,7 +94,7 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
             formatedNumber = formatedNumber.replaceAll("\\s", "").trim();
         }
 
-        Log.d(TAG, "fetchProfileFromServer: Fetching Data... " + contactNumber);
+        Log.d(TAG, "AllContactProfilesFetchingEngineAsync: fetchProfileFromServer: Fetching Data... " + contactNumber);
 
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         final String BASE_URL = MyURLs.GET_PROFILE;
@@ -89,6 +104,7 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
+        Log.d(TAG, "fetchProfileFromServer: myUrl: " + myUrl);
         StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -230,7 +246,11 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
                     if (error.networkResponse != null) {
                         Log.e(TAG, "onErrorResponse: statusCode: " + error.networkResponse.statusCode);
                         if (error.networkResponse.statusCode == 404) {
-                            Log.e(TAG, "onErrorResponse: ProfileNotFound");
+                            Log.e(TAG, "onErrorResponse: ProfileNotFound 404");
+                            LSContact lsContact = LSContact.getContactFromNumber(contactNumber);
+                            if (lsContact != null) {
+                                lsContact.setDoNotFetchProfile(true);
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -243,10 +263,5 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -176,6 +177,11 @@ public class SessionManager {
         if (LSContact.count(LSContact.class) > 0) {
             LSContact.deleteAll(LSContact.class);
         }
+
+        if (LSContactProfile.count(LSContactProfile.class) > 0) {
+            LSContactProfile.deleteAll(LSContactProfile.class);
+        }
+
         if (LSNote.count(LSNote.class) > 0) {
             LSNote.deleteAll(LSNote.class);
         }

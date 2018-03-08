@@ -41,9 +41,11 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
+import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
@@ -640,7 +642,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
                             if (et != null) {
                                 et.setText(oneDynamicColumns.value);
-                            }else {
+                            } else {
                                 Log.d(TAG, "this text dynamic column was set filled for lead but column is no more");
                             }
 
@@ -649,7 +651,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
                             if (et != null) {
                                 et.setText(oneDynamicColumns.value);
-                            }else {
+                            } else {
                                 Log.d(TAG, "this number dynamic column was filled for lead but column is no more");
                             }
 
@@ -676,7 +678,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                                         s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
                                     }
                                 });
-                            }else {
+                            } else {
                                 Log.d(TAG, "this spinner dynamic column was filled for lead but column is no more");
                             }
 
@@ -695,7 +697,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
                             if (et != null) {
                                 et.setText(oneDynamicColumns.value);
-                            }else {
+                            } else {
                                 Log.d(TAG, "this text dynamic column was set filled for lead but column is no more");
                             }
 
@@ -704,7 +706,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
                             if (et != null) {
                                 et.setText(oneDynamicColumns.value);
-                            }else {
+                            } else {
                                 Log.d(TAG, "this number dynamic column was set filled for lead but column is no more");
                             }
 
@@ -730,7 +732,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                                         s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
                                     }
                                 });
-                            }else {
+                            } else {
                                 Log.d(TAG, "this spinner dynamic column was set filled for lead but column is no more");
                             }
                         }
@@ -784,7 +786,8 @@ public class IndividualContactDetailsFragment extends TabFragment {
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
                     Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();;
+                    dataSenderAsync.run();
+                    ;
                     break;
                 case 2:
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
@@ -879,6 +882,75 @@ public class IndividualContactDetailsFragment extends TabFragment {
             }
         } else {
             cv_social_item.setVisibility(View.GONE);
+            Log.d(TAG, "loadSocialProfileData: lsContactProfile == NULL " + mContact.getPhoneOne());
+            ContactProfileProvider contactProfileProvider = new ContactProfileProvider(getActivity());
+            contactProfileProvider.getContactProfile(mContact.getPhoneOne(), new LSContactProfileCallback() {
+                @Override
+                public void onSuccess(LSContactProfile result) {
+                    Log.d(TAG, "onSuccess: lsContactProfile: " + result);
+                    if (result != null) {
+                        cv_social_item.setVisibility(View.VISIBLE);
+                        Log.d(TAG, "onSuccess: Updating Data");
+                        //            if (lsContactProfile.getSocial_image() != null) {
+//                MyDateTimeStamp.setFrescoImage(user_avatar_ind, lsContactProfile.getSocial_image());
+//            }
+                        if (result.getFirstName() != null && !result.getFirstName().equals("")) {
+                            tvNameFromProfile.setText(result.getFirstName() + " " + result.getLastName());
+                        } else {
+                            tvNameFromProfile.setVisibility(View.GONE);
+                            tvNameFromProfileTitle.setVisibility(View.GONE);
+                        }
+                        if (result.getCity() != null && !result.getCity().equals("")) {
+                            tvCityFromProfile.setText(result.getCity());
+                        } else {
+                            tvCityFromProfile.setVisibility(View.GONE);
+                            tvCityFromProfileTitle.setVisibility(View.GONE);
+                        }
+                        if (result.getCountry() != null && !result.getCountry().equals("")) {
+                            tvCountryFromProfile.setText(result.getCountry());
+                        } else {
+                            tvCountryFromProfile.setVisibility(View.GONE);
+                            tvCountryFromProfileTitle.setVisibility(View.GONE);
+                        }
+                        if (result.getWork() != null && !result.getWork().equals("")) {
+                            tvWorkFromProfile.setText(result.getWork());
+                        } else {
+                            tvWorkFromProfile.setVisibility(View.GONE);
+                            tvWorkFromProfileTitle.setVisibility(View.GONE);
+                        }
+                        if (result.getCompany() != null && !result.getCompany().equals("")) {
+                            tvCompanyFromProfile.setText(result.getCompany());
+                        } else {
+                            tvCompanyFromProfile.setVisibility(View.GONE);
+                            tvCompanyFromProfileTitle.setVisibility(View.GONE);
+                        }
+                        if (result.getWhatsapp() != null && !result.getWhatsapp().equals("")) {
+                            tvWhatsappFromProfile.setText(result.getWhatsapp());
+                        } else {
+                            tvWhatsappFromProfile.setVisibility(View.GONE);
+                            tvWhatsappFromProfileTitle.setVisibility(View.GONE);
+                        }
+                        if (result.getTweet() != null && !result.getTweet().equals("")) {
+                            tvTweeterFromProfile.setText(result.getTweet());
+                        } else {
+                            tvTweeterFromProfile.setVisibility(View.GONE);
+                            tvTweeterFromProfileTitle.setVisibility(View.GONE);
+                        }
+                        if (result.getLinkd() != null && !result.getLinkd().equals("")) {
+                            tvLinkdnFromProfile.setText(result.getLinkd());
+                        } else {
+                            tvLinkdnFromProfile.setVisibility(View.GONE);
+                            tvLinkdnFromProfileTitle.setVisibility(View.GONE);
+                        }
+                        if (result.getFb() != null && !result.getFb().equals("")) {
+                            tvFbFromProfile.setText(result.getFb());
+                        } else {
+                            tvFbFromProfile.setVisibility(View.GONE);
+                            tvFbFromProfileTitle.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            });
         }
     }
 

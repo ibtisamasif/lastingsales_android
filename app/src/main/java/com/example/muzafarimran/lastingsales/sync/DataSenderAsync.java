@@ -229,7 +229,6 @@ public class DataSenderAsync {
         }) {
             @Override
             protected Map<String, String> getParams() {
-//                sessionManager.setLoginToken("7rTuA4srHYnUuB1UOUskHsqEscZIslmWFzQM4jHfNaxKa5nkEzBAAuai6Hs1");
 
                 Map<String, String> params = new HashMap<String, String>();
 
@@ -248,6 +247,7 @@ public class DataSenderAsync {
                 params.put("status", "" + contact.getContactSalesStatus());
                 params.put("api_token", "" + sessionManager.getLoginToken());
                 params.put("lead_type", "" + contact.getContactType());
+                Log.d(TAG, "getParams: addContactToServerSync " + params);
                 return params;
             }
         };
@@ -295,6 +295,7 @@ public class DataSenderAsync {
                 .appendQueryParameter("dynamic_values", "" + contact.getDynamic())
                 .build();
         final String myUrl = builtUri.toString();
+        Log.d(TAG, "updateContactToServerSync: myUrl: " + myUrl);
         StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -683,14 +684,18 @@ public class DataSenderAsync {
     }
 
     private void addNotesToServer() {
-
         List<LSNote> notesList = null;
         if (LSNote.count(LSNote.class) > 0) {
             notesList = LSNote.find(LSNote.class, "sync_status = ?", SyncStatus.SYNC_STATUS_NOTE_ADDED_NOT_SYNCED);
             Log.d(TAG, "addNoteToServer: count : " + notesList.size());
             for (LSNote oneNote : notesList) {
                 Log.d(TAG, "Found Notes");
-                addNoteToServerSync(oneNote);
+                if (oneNote.getContactOfNote() != null){
+                    addNoteToServerSync(oneNote);
+                }else {
+                    Log.d(TAG, "addNotesToServer: Contact of note is NULL, Deleting.. " + oneNote.getNoteText());
+                    oneNote.delete();
+                }
             }
         }
     }

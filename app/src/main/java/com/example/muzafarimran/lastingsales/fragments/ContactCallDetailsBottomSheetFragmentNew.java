@@ -9,16 +9,19 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ConnectionItem;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
+import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
+import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -47,6 +50,7 @@ public class ContactCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
         }
     };
+    private LSContact selectedContact;
 
     public static ContactCallDetailsBottomSheetFragmentNew newInstance(Long contact_id, int page) {
         ContactCallDetailsBottomSheetFragmentNew fragmentFirst = new ContactCallDetailsBottomSheetFragmentNew();
@@ -68,7 +72,7 @@ public class ContactCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
             ((BottomSheetBehavior) behavior).setPeekHeight(600);
         }
         Long contactId = getArguments().getLong(CONTACT_ID);
-        LSContact selectedContact = LSContact.findById(LSContact.class, contactId);
+        selectedContact = LSContact.findById(LSContact.class, contactId);
 //        list.add(selectedContact);
 
         ContactHeaderBottomsheetItem contactHeaderBottomsheetItem = new ContactHeaderBottomsheetItem();
@@ -82,8 +86,20 @@ public class ContactCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
             separatorItemlsContactProfile.text = "Profile";
             list.add(separatorItemlsContactProfile);
             list.add(lsContactProfile);
+        } else {
+            Log.d(TAG, "loadSocialProfileData: lsContactProfile == NULL " + selectedContact.getPhoneOne());
+            ContactProfileProvider contactProfileProvider = new ContactProfileProvider(getActivity());
+            contactProfileProvider.getContactProfile(selectedContact.getPhoneOne(), new LSContactProfileCallback() {
+                @Override
+                public void onSuccess(LSContactProfile result) {
+                    Log.d(TAG, "onSuccess: lsContactProfile: " + result);
+                    if (result != null) {
+                        Log.d(TAG, "onSuccess: Updating Data");
+                        loadFetchedProfile(view);
+                    }
+                }
+            });
         }
-
 
         SeparatorItem separatorItemConnections = new SeparatorItem();
         separatorItemConnections.text = "Connections";
@@ -110,6 +126,47 @@ public class ContactCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
         mRecyclerView.setNestedScrollingEnabled(false);
         NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet);
         nestedScrollView.setScrollY(0);
+    }
+
+    private void loadFetchedProfile(View view) {
+        list.clear();
+//        list.add(selectedContact);
+
+        ContactHeaderBottomsheetItem contactHeaderBottomsheetItem = new ContactHeaderBottomsheetItem();
+        contactHeaderBottomsheetItem.lsContact = selectedContact;
+        contactHeaderBottomsheetItem.place = "contact";
+        list.add(contactHeaderBottomsheetItem);
+
+        LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(selectedContact.getPhoneOne());
+        if (lsContactProfile != null){
+            SeparatorItem separatorItemlsContactProfile = new SeparatorItem();
+            separatorItemlsContactProfile.text = "Profile";
+            list.add(separatorItemlsContactProfile);
+            list.add(lsContactProfile);
+        }
+
+        SeparatorItem separatorItemConnections = new SeparatorItem();
+        separatorItemConnections.text = "Connections";
+        list.add(separatorItemConnections);
+
+        ConnectionItem connectionItem = new ConnectionItem();
+        connectionItem.id = 1;
+        connectionItem.lsContact = selectedContact;
+        list.add(connectionItem);
+
+
+        Collection<LSCall> allCallsOfThisContact = (Collection<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(selectedContact.getPhoneOne())).orderBy("begin_time DESC").list();
+        if (allCallsOfThisContact != null){
+            SeparatorItem separatorItemallCallsOfThisContact = new SeparatorItem();
+            separatorItemallCallsOfThisContact.text = "Call History";
+            list.add(separatorItemallCallsOfThisContact);
+            list.addAll(allCallsOfThisContact);
+        }
+
+        MyRecyclerViewAdapter adapter = new MyRecyclerViewAdapter(getActivity(), list);
+        RecyclerView mRecyclerView = view.findViewById(R.id.mRecyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(adapter);
     }
 
 

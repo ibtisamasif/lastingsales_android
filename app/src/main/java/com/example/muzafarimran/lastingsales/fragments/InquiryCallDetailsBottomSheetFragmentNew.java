@@ -19,10 +19,12 @@ import com.example.muzafarimran.lastingsales.carditems.ConnectionItem;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
+import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
+import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
 import com.google.firebase.crash.FirebaseCrash;
 import com.orm.query.Condition;
@@ -87,6 +89,19 @@ public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
                 separatorItemlsContactProfile.text = "Profile";
                 list.add(separatorItemlsContactProfile);
                 list.add(lsContactProfile);
+            } else {
+                Log.d(TAG, "loadSocialProfileData: lsContactProfile == NULL " + selectedContact.getPhoneOne());
+                ContactProfileProvider contactProfileProvider = new ContactProfileProvider(getActivity());
+                contactProfileProvider.getContactProfile(selectedContact.getPhoneOne(), new LSContactProfileCallback() {
+                    @Override
+                    public void onSuccess(LSContactProfile result) {
+                        Log.d(TAG, "onSuccess: lsContactProfile: " + result);
+                        if (result != null) {
+                            Log.d(TAG, "onSuccess: Updating Data");
+                            loadFetchedProfile(view);
+                        }
+                    }
+                });
             }
 
             SeparatorItem separatorItemConnections = new SeparatorItem();
@@ -116,11 +131,50 @@ public class InquiryCallDetailsBottomSheetFragmentNew extends BottomSheetDialogF
         }
     }
 
+    private void loadFetchedProfile(View view) {
+        list.clear();
+
+        ContactHeaderBottomsheetItem contactHeaderBottomsheetItem = new ContactHeaderBottomsheetItem();
+        contactHeaderBottomsheetItem.lsContact = selectedContact;
+        contactHeaderBottomsheetItem.place = "inquiry";
+        list.add(contactHeaderBottomsheetItem);
+
+        LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(selectedContact.getPhoneOne());
+        if (lsContactProfile != null) {
+            SeparatorItem separatorItemlsContactProfile = new SeparatorItem();
+            separatorItemlsContactProfile.text = "Profile";
+            list.add(separatorItemlsContactProfile);
+            list.add(lsContactProfile);
+        }
+
+        SeparatorItem separatorItemConnections = new SeparatorItem();
+        separatorItemConnections.text = "Connections";
+        list.add(separatorItemConnections);
+
+        ConnectionItem connectionItem = new ConnectionItem();
+        connectionItem.id = 1;
+        connectionItem.lsContact = selectedContact;
+        list.add(connectionItem);
+
+        Collection<LSCall> allCallsOfThisContact = (Collection<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(selectedContact.getPhoneOne())).orderBy("begin_time DESC").list();
+        if (allCallsOfThisContact != null) {
+            SeparatorItem separatorItemallCallsOfThisContact = new SeparatorItem();
+            separatorItemallCallsOfThisContact.text = "Call History";
+            list.add(separatorItemallCallsOfThisContact);
+            list.addAll(allCallsOfThisContact);
+        }
+
+        MyRecyclerViewAdapter adapter = new MyRecyclerViewAdapter(getActivity(), list);
+        RecyclerView mRecyclerView = view.findViewById(R.id.mRecyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(adapter);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
-        if (selectedContact == null){
+        if (selectedContact == null) {
             Log.d(TAG, "selectedContact == null");
             try {
                 CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity();

@@ -54,6 +54,7 @@ public class LSContact extends SugarRecord {
     private Long updatedAt;
     private LSContactProfile contactProfile;
     private int version;
+    private boolean doNotFetchProfile;
 
 
     public LSContact() {
@@ -533,6 +534,14 @@ public class LSContact extends SugarRecord {
 
     public void setContactProfile(LSContactProfile contactProfile) {
         this.contactProfile = contactProfile;
+    }
+
+    public boolean isDoNotFetchProfile() {
+        return doNotFetchProfile;
+    }
+
+    public void setDoNotFetchProfile(boolean doNotFetchProfile) {
+        this.doNotFetchProfile = doNotFetchProfile;
     }
 
     @Override
