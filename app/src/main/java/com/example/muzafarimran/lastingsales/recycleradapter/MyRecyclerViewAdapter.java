@@ -11,8 +11,10 @@ import com.example.muzafarimran.lastingsales.viewholders.ViewHolderAddLeadCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderCallCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderChipCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderConnectionsCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderContactCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderContactHeaderBottomsheetCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderErrorCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderFilterCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderHomeCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderInquiryCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderLoadingCard;
@@ -24,7 +26,6 @@ import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSettingCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSocialProfileCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderStatisticsCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderTaskCard;
-import com.example.muzafarimran.lastingsales.viewholders.ViewHolderUnlabeledCard;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ import java.util.List;
  * Created by ibtisam on 11/9/2016.
  */
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private String TAG = "MyRecyclerViewAdapter";
     private List<?> mItem;
     private Context mContext;
@@ -99,8 +100,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.STATISTICS_CLASS_NAME:
                 return ClassNames.STATISTICS_CLASS_TYPE;
 
-                case ClassNames.TASK_CLASS_NAME:
+            case ClassNames.TASK_CLASS_NAME:
                 return ClassNames.TASK_CLASS_TYPE;
+
+            case ClassNames.FILTER_CLASS_NAME:
+                return ClassNames.FILTER_CLASS_TYPE;
 
             default:
                 Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
@@ -113,7 +117,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         Log.d(TAG, "onCreateViewHolder: viewType = " + viewType);
         switch (viewType) {
             case ClassNames.LSCONTACTS_CLASS_TYPE:
-                return new ViewHolderUnlabeledCard(LayoutInflater.from(mContext).inflate(ClassNames.LSCONTACTS_CLASS_RESOURCE, viewGroup, false));
+                return new ViewHolderContactCard(LayoutInflater.from(mContext).inflate(ClassNames.LSCONTACTS_CLASS_RESOURCE, viewGroup, false));
 
             case ClassNames.LSINQUIRY_CLASS_TYPE:
                 return new ViewHolderInquiryCard(LayoutInflater.from(mContext).inflate(ClassNames.LSINQUIRY_CLASS_RESOURCE, viewGroup, false));
@@ -165,6 +169,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             case ClassNames.TASK_CLASS_TYPE:
                 return new ViewHolderTaskCard(LayoutInflater.from(mContext).inflate(ClassNames.TASK_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.FILTER_CLASS_TYPE:
+                return new ViewHolderFilterCard(LayoutInflater.from(mContext).inflate(ClassNames.FILTER_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -177,8 +184,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 //        int type = item.type;
         switch (holder.getItemViewType()) {
             case ClassNames.LSCONTACTS_CLASS_TYPE:
-                ViewHolderUnlabeledCard viewHolderUnlabeledCard = (ViewHolderUnlabeledCard) holder;
-                viewHolderUnlabeledCard.bind(item, position, mContext);
+                ViewHolderContactCard viewHolderContactCard = (ViewHolderContactCard) holder;
+                viewHolderContactCard.bind(item, position, mContext);
                 break;
             case ClassNames.LSINQUIRY_CLASS_TYPE:
                 ViewHolderInquiryCard viewHolderInquiryCard = (ViewHolderInquiryCard) holder;
@@ -247,6 +254,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.TASK_CLASS_TYPE:
                 ViewHolderTaskCard viewHolderTaskCard = (ViewHolderTaskCard) holder;
                 viewHolderTaskCard.bind(item, position, mContext);
+                break;
+            case ClassNames.FILTER_CLASS_TYPE:
+                ViewHolderFilterCard viewHolderFilterCard = (ViewHolderFilterCard) holder;
+                viewHolderFilterCard.bind(item, position, mContext);
                 break;
         }
     }

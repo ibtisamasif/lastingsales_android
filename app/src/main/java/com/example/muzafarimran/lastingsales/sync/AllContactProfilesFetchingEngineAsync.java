@@ -16,7 +16,6 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import org.json.JSONException;
@@ -46,8 +45,6 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
     protected void onPreExecute() {
         super.onPreExecute();
         Log.d(TAG, "onPreExecute: AllContactProfilesFetchingEngineAsync");
-        FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(mContext.getApplicationContext());
-        notificationUtils.playNotificationSound();
     }
 
     @Override

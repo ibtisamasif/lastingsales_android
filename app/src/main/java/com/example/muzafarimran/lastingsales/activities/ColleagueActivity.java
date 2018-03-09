@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
+import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -87,7 +87,7 @@ public class ColleagueActivity  extends AppCompatActivity{
     }
 
     public void onClickColleague(Long contact_id) {
-        ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragmentNew.newInstance(contact_id, 0);
+        ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragment.newInstance(contact_id, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
     }

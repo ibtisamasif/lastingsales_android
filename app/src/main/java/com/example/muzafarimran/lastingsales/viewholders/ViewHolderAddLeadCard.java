@@ -5,16 +5,11 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
-import com.example.muzafarimran.lastingsales.carditems.AddLeadItem;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
-import org.json.JSONObject;
 
 /**
  * Created by ibtisam on 11/2/2017.
@@ -33,7 +28,6 @@ public class ViewHolderAddLeadCard extends RecyclerView.ViewHolder {
 
     public void bind(Object item, int position, Context mContext) {
 
-        final AddLeadItem addLeadItem = (AddLeadItem) item;
         bAddLead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

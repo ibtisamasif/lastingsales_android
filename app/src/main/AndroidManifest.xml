@@ -43,7 +43,7 @@
             android:value="sugar_example.db" />
         <meta-data
             android:name="VERSION"
-            android:value="13" />
+            android:value="14" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -271,7 +271,11 @@
             android:name=".activities.LargeImageActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+
+        <activity
+            android:name=".activities.DealsDetailActivity"
+            android:screenOrientation="portrait"/>
 
 
         <service android:name=".service.MyFirebaseMessagingService">

@@ -55,6 +55,9 @@ public class LSContact extends SugarRecord {
     private LSContactProfile contactProfile;
     private int version;
     private boolean doNotFetchProfile;
+    private int createdBy;
+    private int userId;
+    private String src;
 
 
     public LSContact() {
@@ -324,6 +327,14 @@ public class LSContact extends SugarRecord {
         }
     }
 
+//    public static ArrayList<LSContact> getContactByDynamicValue(String val) {
+//        try {
+//            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' ORDER BY updated_at DESC");
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+
     public ArrayList<TempFollowUp> getAllFollowups() {
         ArrayList<TempFollowUp> allFollowupsOfThisContact = null;
         allFollowupsOfThisContact = (ArrayList<TempFollowUp>) TempFollowUp.find(TempFollowUp.class, "contact = ? ", getId() + "");
@@ -336,45 +347,6 @@ public class LSContact extends SugarRecord {
         allNotesOfThisContact = (ArrayList<LSNote>) LSNote.find(LSNote.class, "contact_of_note = ? ", getId() + "");
         return allNotesOfThisContact;
     }
-
-
-//    @TargetApi(Build.VERSION_CODES.KITKAT)
-//    @Override
-//    public boolean equals(Object obj) {
-//        LSContact c = (LSContact) obj;
-//        return (
-//                Objects.equals(c.getContactName(), this.contactName) &&
-//                        Objects.equals(c.getContactEmail(), this.contactEmail) &&
-//                        Objects.equals(c.getContactType(), this.contactType) &&
-//                        Objects.equals(c.getPhoneOne(), this.phoneOne) &&
-//                        Objects.equals(c.getPhoneTwo(), this.phoneTwo) &&
-//                        Objects.equals(c.getContactCompany(), this.contactCompany) &&
-//                        Objects.equals(c.getContactDescription(), this.contactDescription) &&
-//                        Objects.equals(c.getContactAddress(), this.contactAddress) &&
-//                        Objects.equals(c.getContactCreated_at(), this.contactCreated_at) &&
-//                        Objects.equals(c.getContactUpdated_at(), this.contactUpdated_at) &&
-//                        Objects.equals(c.getContactDeleted_at(), this.contactDeleted_at) &&
-//                        Objects.equals(c.getContactSalesStatus(), this.contactSalesStatus)
-//        );
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return
-//                (this.contactName != null ? this.contactName.hashCode() : 0) +
-//                        (this.contactEmail != null ? this.contactEmail.hashCode() : 0) +
-//                        (this.contactType != null ? this.contactType.hashCode() : 0) +
-//                        (this.phoneOne != null ? this.phoneOne.hashCode() : 0) +
-//                        (this.phoneTwo != null ? this.phoneTwo.hashCode() : 0) +
-//                        (this.contactCompany != null ? this.contactCompany.hashCode() : 0) +
-//                        (this.contactDescription != null ? this.contactDescription.hashCode() : 0) +
-//                        (this.contactAddress != null ? this.contactAddress.hashCode() : 0) +
-//                        (this.contactCreated_at != null ? this.contactCreated_at.hashCode() : 0) +
-//                        (this.contactUpdated_at != null ? this.contactUpdated_at.hashCode() : 0) +
-//                        (this.contactDeleted_at != null ? this.contactDeleted_at.hashCode() : 0) +
-//                        (this.contactSalesStatus != null ? this.contactSalesStatus.hashCode() : 0)
-//                ;
-//    }
 
     @Deprecated
     public boolean isDetailsDropDownOpen() {
@@ -544,6 +516,38 @@ public class LSContact extends SugarRecord {
         this.doNotFetchProfile = doNotFetchProfile;
     }
 
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public int getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(int createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
     @Override
     public String toString() {
         return "LSContact{" +
@@ -567,13 +571,5 @@ public class LSContact extends SugarRecord {
                 ", updatedAt=" + updatedAt +
                 ", contactProfile=" + contactProfile +
                 '}';
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
 }

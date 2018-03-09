@@ -79,4 +79,8 @@ public class ClassNames {
     public static final String TASK_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.LSTask";
     public static final int TASK_CLASS_TYPE = 18;
     public static final int TASK_CLASS_RESOURCE = R.layout.card_task;
+
+    public static final String FILTER_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.FilterItem";
+    public static final int FILTER_CLASS_TYPE = 19;
+    public static final int FILTER_CLASS_RESOURCE = R.layout.card_filter;
 }

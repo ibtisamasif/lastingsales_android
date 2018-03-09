@@ -40,7 +40,7 @@ import de.halfbit.tinybus.TinyBus;
  */
 
 public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHolder {
-    public static final String TAG = "ViewHolderUnlabeledCard";
+    public static final String TAG = "ViewHolderContactCard";
     //    private final CardView cv_item;
     private final ConstraintLayout cl;
     private final LinearLayout llTypeRibbon;

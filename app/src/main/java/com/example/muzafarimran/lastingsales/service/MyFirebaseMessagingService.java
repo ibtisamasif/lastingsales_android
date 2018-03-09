@@ -80,13 +80,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String id = payload.getString("id");
                     String name = payload.getString("name");
                     String email = null;
-                    if (payload.has("email")) {
-                        email = data.getString("email");
+                    if (payload.has("email") && !payload.isNull("email")) {
+                        email = payload.getString("email");
                     }
                     String phone = payload.getString("phone");
                     String address = null;
                     if (payload.has("address")) {
-                        address = data.getString("address");
+                        address = payload.getString("address");
                     }
                     String status = payload.getString("status");
 
@@ -106,6 +106,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (payload.has("updated_at")) {
                         updated_at = payload.getString("updated_at");
                     }
+
+                    int created_by = 0;
+                    if (payload.has("created_by")) {
+                        created_by = payload.getInt("created_by");
+                    }
+
+                    int user_id = 0;
+                    if (payload.has("user_id")) {
+                        user_id = payload.getInt("user_id");
+                    }
+                    String src = null;
+                    if (payload.has("src")) {
+                        src = payload.getString("src");
+                    }
+
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
 
@@ -114,6 +129,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (tempContact != null) {
                         tempContact.setServerId(id);
                         tempContact.setContactName(name);
+                        if (email != null) {
+                            tempContact.setContactEmail(email);
+                        }
+                        if (address != null) {
+                            tempContact.setContactAddress(address);
+                        }
                         tempContact.setPhoneOne(intlNum);
                         tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                         tempContact.setContactSalesStatus(status);
@@ -131,7 +152,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         if (updated_at != null) {
                             tempContact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
                         }
+                        if (created_by != 0) {
+                            tempContact.setCreatedBy(created_by);
+                        }
+                        if (user_id != 0) {
+                            tempContact.setUserId(user_id);
+                        }
+                        if (src != null) {
+                            tempContact.setSrc(src);
+                        }
                         tempContact.save();
+                        if (src.equals("facebook")) {
+                            Log.d(TAG, "handleDataMessage: Notification Message: Lead from FB: " + name);
+                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseFacebookLeadNotification(getApplicationContext(), name));
+                        }
                     } else {
                         LSContact contact = new LSContact();
                         contact.setServerId(id);
@@ -148,9 +183,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                        if(created_at != null){
 //                            tempContact.setContactCreated_at(created_at);
 //                        }
-                        if (updated_at != null) {
-                            contact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
-                        }
                         if (dynamic_values != null) {
                             contact.setDynamic(dynamic_values);
                         }
@@ -158,7 +190,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             contact.setVersion(version);
                         }
                         contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                        if (updated_at != null) {
+                            contact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
+                        }
+                        if (created_by != 0) {
+                            contact.setCreatedBy(created_by);
+                        }
+                        if (user_id != 0) {
+                            contact.setUserId(user_id);
+                        }
+                        if (src != null) {
+                            contact.setSrc(src);
+                        }
                         contact.save();
+                        if (src.equals("facebook")) {
+                            Log.d(TAG, "handleDataMessage: Notification Message: Lead from FB: " + name);
+                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseFacebookLeadNotification(getApplicationContext(), name));
+                        }
                         Log.e(TAG, "Post From Local DB: " + contact.getContactName());
                         LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                         TinyBus bus = TinyBus.from(getApplicationContext());
@@ -167,7 +216,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 } else if (action.equals("put")) {
                     String id = payload.getString("id");
                     String name = payload.getString("name");
-                    String email = payload.getString("email");
+                    String email = null;
+                    if (payload.has("email")) {
+                        email = payload.getString("email");
+                    }
                     String phone = payload.getString("phone");
                     String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
                     String address = payload.getString("address");
@@ -180,6 +232,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String updated_at = null;
                     if (payload.has("updated_at")) {
                         updated_at = payload.getString("updated_at");
+                    }
+                    int created_by = 0;
+                    if (payload.has("created_by")) {
+                        created_by = payload.getInt("created_by");
+                    }
+
+                    int user_id = 0;
+                    if (payload.has("user_id")) {
+                        user_id = payload.getInt("user_id");
+                    }
+                    String src = null;
+                    if (payload.has("src")) {
+                        src = payload.getString("src");
                     }
                     String dynamic_values = null;
                     if (payload.has("dynamic_values")) {
@@ -208,11 +273,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (updated_at != null) {
                         contact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
                     }
+                    if (created_by != 0) {
+                        contact.setCreatedBy(created_by);
+                    }
+                    if (user_id != 0) {
+                        contact.setUserId(user_id);
+                    }
+                    if (src != null) {
+                        contact.setSrc(src);
+                    }
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                     contact.save();
                     String newType = contact.getContactType();
                     TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType);
-                    Log.e(TAG, "Put From Local DB: " + contact.getContactName());
+                    if (src.equals("facebook")) {
+                        Log.d(TAG, "handleDataMessage: Notification Message: Lead from FB: " + name);
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseFacebookLeadNotification(getApplicationContext(), name));
+                    }
                     ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.post(mCallEvent);

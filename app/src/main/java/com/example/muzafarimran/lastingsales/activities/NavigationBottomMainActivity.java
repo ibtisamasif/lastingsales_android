@@ -42,8 +42,8 @@ import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
-import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
-import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragmentNew;
+import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
 import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
@@ -105,8 +105,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     private SearchView searchView;
     private FloatingActionMenu floatingActionMenu;
     private BottomNavigationView navigation;
-    private static InquiryCallDetailsBottomSheetFragmentNew inquiryCallDetailsBottomSheetFragment;
-    private static ContactCallDetailsBottomSheetFragmentNew contactCallDetailsBottomSheetFragment;
+    private static InquiryCallDetailsBottomSheetFragment inquiryCallDetailsBottomSheetFragment;
+    private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
     public static Activity activity;
     private static boolean sheetShowing = false;
     //    private ProgressDialog progressDialog;
@@ -511,6 +511,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         super.onResume();
         Log.d(TAG, "onResume: called");
         registerReceiver(receiver, new IntentFilter(InitService.NOTIFICATION));
+
+        //TODO if selected tab is leads and is in loading form. triger something to get it finished
+
 //        Bundle bundle1 = getIntent().getExtras();
 //        if (bundle1 != null) {
 //            Log.d(TAG, "onCreate: Loading Inquiries TAB");
@@ -897,7 +900,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     public void openContactBottomSheetCallback(Long contact_id) {
-        contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragmentNew.newInstance(contact_id, 0);
+        contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragment.newInstance(contact_id, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
         sheetShowing = true;
@@ -925,7 +928,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
     }
 
     public void openInquiryBottomSheetCallback(String number) {
-        inquiryCallDetailsBottomSheetFragment = InquiryCallDetailsBottomSheetFragmentNew.newInstance(number, 0);
+        inquiryCallDetailsBottomSheetFragment = InquiryCallDetailsBottomSheetFragment.newInstance(number, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         inquiryCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
         sheetShowing = true;

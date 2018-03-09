@@ -4,7 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.muzafarimran.lastingsales.fragments.CallLogsInContactDetailsFragmentNew;
+import com.example.muzafarimran.lastingsales.fragments.CallLogsInContactDetailsFragment;
+import com.example.muzafarimran.lastingsales.fragments.DealsInContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.IndividualContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.NotesInContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
@@ -14,7 +15,7 @@ import com.example.muzafarimran.lastingsales.fragments.TabFragment;
  */
 
 public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
-    final int TAB_COUNT = 3;
+    private final int TAB_COUNT = 4;
     private Long id;
     private String number;
 
@@ -35,7 +36,10 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = NotesInContactDetailsFragment.newInstance(1, NotesInContactDetailsFragment.TAG, id);
                 break;
             case 2:
-                fragment = CallLogsInContactDetailsFragmentNew.newInstance(3, CallLogsInContactDetailsFragmentNew.TAG, id);
+                fragment = CallLogsInContactDetailsFragment.newInstance(2, CallLogsInContactDetailsFragment.TAG, id);
+                break;
+            case 3:
+                fragment = DealsInContactDetailsFragment.newInstance(3, DealsInContactDetailsFragment.TAG, id);
                 break;
         }
         return fragment;
@@ -55,6 +59,8 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
                 return "Notes & Followup";
             case 2:
                 return "Calls";
+            case 3:
+                return "Deals";
             default:
                 return null;
         }

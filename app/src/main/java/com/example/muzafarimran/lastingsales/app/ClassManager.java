@@ -1,11 +1,9 @@
 package com.example.muzafarimran.lastingsales.app;
 
-import android.content.Intent;
-
 import com.example.muzafarimran.lastingsales.activities.AboutActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
-import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragmentNew;
-import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragmentNew;
+import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
 
 import java.util.HashMap;
 
@@ -24,8 +22,8 @@ public class ClassManager {
         HashMap<String, Class> hashMap = new HashMap<>();
         hashMap.put(ABOUT_ACTIVITY, AboutActivity.class);
         hashMap.put(CONTACT_DETAILS_TAB_ACTIVITY, ContactDetailsTabActivity.class);
-        hashMap.put(CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT, ContactCallDetailsBottomSheetFragmentNew.class);
-        hashMap.put(INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT, InquiryCallDetailsBottomSheetFragmentNew.class);
+        hashMap.put(CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT, ContactCallDetailsBottomSheetFragment.class);
+        hashMap.put(INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT, InquiryCallDetailsBottomSheetFragment.class);
         return hashMap.get(name);
     }
 }
