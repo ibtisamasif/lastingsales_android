@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -109,21 +107,6 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
 
     public void bind(Object item, int position, Context mContext) {
         final LSContact contact = (LSContact) item;
-        if (contact.getCreatedBy() != 0 && contact.getUserId() != 0 && contact.getCreatedBy() == contact.getUserId()) {
-            //if item userId = createdBy, set foreground color of layout.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_green_200)));
-            } else {
-                cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_green_200)));
-            }
-        } else {
-            //else remove selected item color.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, android.R.color.transparent)));
-            } else {
-                cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, android.R.color.transparent)));
-            }
-        }
         final String number = contact.getPhoneOne();
         final String contactType = contact.getContactType();
         lsContactProfile = contact.getContactProfile();
@@ -213,7 +196,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
         this.bIgnore.setTag(number);
         this.cl.setTag(contact.getId());
         this.numberDetailTextView.setText(number);
-//        this.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(contact.getBeginTime()));
+        //        this.time.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(contact.getBeginTime()));
         this.callClickListener = new CallClickListener(mContext);
         this.call_icon.setOnClickListener(this.callClickListener);
         this.call_icon.setTag(contact.getPhoneOne());
@@ -439,6 +422,10 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 });
                 break;
             default:
+        }
+        if(contact.getSrc() != null && contact.getSrc().equalsIgnoreCase("facebook")){
+            this.numberDetailTextView.setText(number + (" ( facebook )"));
+            llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
         }
     }
 

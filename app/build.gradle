@@ -8,8 +8,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 111 //110
-        versionName "2.58"
-        //2.57 in production. Change mixpanel key and urls (staging to production) lskey = J7Z/}aB*6'r7q+A~
+        versionName "2.58" //2.57 in production. Change mixpanel key and urls (staging to production) lskey = J7Z/}aB*6'r7q+A~
 //        jackOptions {
 //            enabled false
 //        }
