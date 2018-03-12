@@ -167,6 +167,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                             mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseFacebookLeadNotification(getApplicationContext(), name));
                         }
+                        if (src.equals("assigned")) {
+                            Log.d(TAG, "handleDataMessage: Notification Message: Lead from assigned: " + name);
+                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name));
+                        }
                     } else {
                         LSContact contact = new LSContact();
                         contact.setServerId(id);
@@ -207,6 +212,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             Log.d(TAG, "handleDataMessage: Notification Message: Lead from FB: " + name);
                             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                             mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseFacebookLeadNotification(getApplicationContext(), name));
+                        }
+                        if (src.equals("assigned")) {
+                            Log.d(TAG, "handleDataMessage: Notification Message: Lead from assigned: " + name);
+                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name));
                         }
                         Log.e(TAG, "Post From Local DB: " + contact.getContactName());
                         LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
@@ -290,6 +300,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         Log.d(TAG, "handleDataMessage: Notification Message: Lead from FB: " + name);
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                         mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseFacebookLeadNotification(getApplicationContext(), name));
+                    }
+                    if (src.equals("assigned")) {
+                        Log.d(TAG, "handleDataMessage: Notification Message: Lead from assigned: " + name);
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name));
                     }
                     ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());

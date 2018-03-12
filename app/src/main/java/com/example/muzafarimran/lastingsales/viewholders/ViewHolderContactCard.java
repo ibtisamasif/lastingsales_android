@@ -423,6 +423,10 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 break;
             default:
         }
+        if(contact.getSrc() != null && contact.getSrc().equalsIgnoreCase("assigned")){
+            this.numberDetailTextView.setText(number + (" ( assigned )"));
+            llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
+        }
         if(contact.getSrc() != null && contact.getSrc().equalsIgnoreCase("facebook")){
             this.numberDetailTextView.setText(number + (" ( facebook )"));
             llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));

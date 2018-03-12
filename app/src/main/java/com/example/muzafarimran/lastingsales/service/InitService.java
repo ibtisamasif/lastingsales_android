@@ -124,6 +124,12 @@ public class InitService extends IntentService {
                         String lead_type = jsonobject.getString("lead_type");
                         String email = jsonobject.getString("email");
                         String dynamic_values = jsonobject.getString("dynamic_values");
+                        int created_by = 0;
+                        if (jsonobject.has("created_by")) {
+                            created_by = jsonobject.getInt("created_by");
+                        }
+                        int user_id = jsonobject.getInt("user_id");
+                        String src = jsonobject.getString("src");
 
                         Log.d(TAG, "onResponse: ID: " + contactId);
                         Log.d(TAG, "onResponse: Name: " + contactName);
@@ -132,6 +138,9 @@ public class InitService extends IntentService {
                         Log.d(TAG, "onResponse: lead_type: " + lead_type);
                         Log.d(TAG, "onResponse: email: " + email);
                         Log.d(TAG, "onResponse: dynamic_values: " + dynamic_values);
+                        Log.d(TAG, "onResponse: created_by: " + created_by);
+                        Log.d(TAG, "onResponse: user_id: " + user_id);
+                        Log.d(TAG, "onResponse: src: " + src);
 
                         if (LSContact.getContactFromNumber(contactNumber) == null) {
                             LSContact tempContact = new LSContact();
@@ -143,6 +152,11 @@ public class InitService extends IntentService {
                             tempContact.setContactType(lead_type);
                             tempContact.setContactSalesStatus(contactStatus);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                            if(created_by != 0){
+                                tempContact.setCreatedBy(created_by);
+                            }
+                            tempContact.setUserId(user_id);
+                            tempContact.setSrc(src);
                             tempContact.save();
                             Log.d(TAG, "onResponse: gettingDynamic: " + tempContact.getDynamic());
                             fetchAgentNotesFunc(tempContact);
