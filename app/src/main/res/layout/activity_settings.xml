@@ -1,0 +1,129 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.SettingsActivity">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tvFlyerText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Enable Flyer on every call" />
+
+        <Switch
+            android:id="@+id/swFlyer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvFlyerText"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:padding="8dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tvDialogPopupText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Enable Popup after call" />
+
+        <Switch
+            android:id="@+id/swTagDialogPopup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvDialogPopupText"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:padding="8dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tvHourlyAlarm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Enable inquiry notifications occasionally" />
+
+        <Switch
+            android:id="@+id/swHourlyAlarmNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvHourlyAlarm"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:padding="8dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tvDefaultLeadText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Make lead on call instead of unlabeled" />
+
+        <Switch
+            android:id="@+id/swDefaultLead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvDefaultLeadText"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:padding="8dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvAddToProtectedApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Add to protected app list"
+            android:textColor="@color/colorAccent"
+            android:layout_marginLeft="8dp" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

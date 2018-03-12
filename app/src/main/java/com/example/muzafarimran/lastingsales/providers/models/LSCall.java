@@ -47,6 +47,25 @@ public class LSCall extends SugarRecord {
     public LSCall() {
     }
 
+    public static LSCall getCallHavingLatestCallLogId() {
+        ArrayList<LSCall> list = null;
+        try {
+            list = (ArrayList<LSCall>) LSCall.find(LSCall.class, null, null, null, "call_log_id DESC", "1");
+//            list = (ArrayList<LSCall>) LSCall.findWithQuery(LSCall.class, "SELECT MAX(call_log_id) FROM LS_CALL");
+//            list = (ArrayList<LSCall>) LSCall.find(LSCall.class, "call_log_id = ?", "MAX");
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
 
     public static boolean ifExist(String id) {
         ArrayList<LSCall> list = null;
@@ -106,6 +125,7 @@ public class LSCall extends SugarRecord {
         ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("type").eq(type)).orderBy("begin_time DESC").list();
         return allCalls;
     }
+
     /*
     // COMPARATORS
     public static Comparator<LSCall> ASCENDING_COMPARE_BY_DATA_DOUBLE = new Comparator<AnalysisCell>() {
@@ -140,7 +160,7 @@ public class LSCall extends SugarRecord {
 */
     public static ArrayList<LSCall> getAllUniqueCallsInDescendingOrder() {
 
-        ArrayList<LSCall> allCalls = (ArrayList<LSCall>)LSCall.findWithQuery(LSCall.class, "Select DISTINCT contact_number from LS_CALL ORDER BY begin_time DESC");
+        ArrayList<LSCall> allCalls = (ArrayList<LSCall>) LSCall.findWithQuery(LSCall.class, "Select DISTINCT contact_number from LS_CALL ORDER BY begin_time DESC");
 //        ArrayList<LSCall> allCalls = (ArrayList<LSCall>)LSCall.findWithQuery(LSCall.class, "Select * from LS_CALL_RECORDING where sync_status = 'recording_not_synced' and server_id_of_call IS NOT NULL");
 //        ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).orderBy("begin_time DESC").list();
         return allCalls;
@@ -245,5 +265,23 @@ public class LSCall extends SugarRecord {
 
     public void setCallLogId(String callLogId) {
         this.callLogId = callLogId;
+    }
+
+    @Override
+    public String toString() {
+        return "LSCall{" +
+                "contactNumber='" + contactNumber + '\'' +
+                ", contact=" + contact +
+                ", type='" + type + '\'' +
+                ", duration=" + duration +
+                ", contactName='" + contactName + '\'' +
+                ", beginTime=" + beginTime +
+                ", inquiryHandledState=" + inquiryHandledState +
+                ", countOfInquiries=" + countOfInquiries +
+                ", serverId='" + serverId + '\'' +
+                ", callLogId='" + callLogId + '\'' +
+                ", syncStatus='" + syncStatus + '\'' +
+                ", audioPath='" + audioPath + '\'' +
+                '}';
     }
 }

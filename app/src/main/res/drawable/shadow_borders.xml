@@ -20,7 +20,7 @@
 
     <item>
         <shape>
-            <solid android:color="#40444444" />
+            <solid android:color="#40b9b6b6" />
             <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
             <corners android:radius="@dimen/corners_radius_size"/>
 
@@ -29,7 +29,7 @@
 
     <item>
         <shape>
-            <solid android:color="#50444444" />
+            <solid android:color="#50acacac" />
             <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
             <corners android:radius="@dimen/corners_radius_size"/>
 
@@ -38,7 +38,7 @@
 
     <item>
         <shape>
-            <solid android:color="#60444444" />
+            <solid android:color="#60b9b8b8" />
             <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
             <corners android:radius="@dimen/corners_radius_size"/>
 
@@ -54,21 +54,21 @@
 
 
             <!-- Specify a dark green border -->
-<!--            <stroke
-                android:width="2dp"
-                android:color="#0071BC"
-                />-->
+            <!--            <stroke
+                            android:width="2dp"
+                            android:color="#0071BC"
+                            />-->
             <corners android:radius="@dimen/corners_radius_size" />
             <!-- Specify the margins that all content inside the drawable must adhere to -->
-<!--
-            <padding
-                android:left="2dp"
-                android:right="2dp"
-                android:top="2dp"
-                android:bottom="2dp"
-                />
+            <!--
+                        <padding
+                            android:left="2dp"
+                            android:right="2dp"
+                            android:top="2dp"
+                            android:bottom="2dp"
+                            />
 
--->
+            -->
 
         </shape>
 

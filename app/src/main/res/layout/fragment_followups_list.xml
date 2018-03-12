@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/followups_list_view_in_fragment"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    >
-</se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView>

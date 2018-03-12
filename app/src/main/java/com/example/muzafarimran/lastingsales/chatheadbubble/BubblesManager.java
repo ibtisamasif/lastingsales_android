@@ -30,6 +30,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
+import com.example.muzafarimran.lastingsales.service.BubblesService;
+
 public class BubblesManager {
     private static BubblesManager INSTANCE;
     private Context context;
@@ -51,15 +53,15 @@ public class BubblesManager {
     private ServiceConnection bubbleServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            BubblesService.BubblesServiceBinder binder = (BubblesService.BubblesServiceBinder)service;
+            BubblesService.BubblesServiceBinder binder = (BubblesService.BubblesServiceBinder) service;
             BubblesManager.this.bubblesService = binder.getService();
-            configureBubblesService();
+//            configureBubblesService();
             bounded = true;
             if (listener != null) {
                 listener.onInitialized();
             }
-            if( mpending!=null){
-               addBubble(mpending,x,y);
+            if (mpending != null) {
+                addBubble(mpending, x, y);
             }
         }
 
@@ -73,18 +75,15 @@ public class BubblesManager {
         this.context = context;
     }
 
-    private void configureBubblesService() {
-        bubblesService.addTrash(trashLayoutResourceId);
-    }
+//    private void configureBubblesService() {
+//        bubblesService.addTrash(trashLayoutResourceId);
+//    }
 
     public void initialize() {
         Intent serviceIntent = new Intent(context, BubblesService.class);
-
-        context.startService(serviceIntent);
-        context.bindService(serviceIntent, bubbleServiceConnection,
+        context.getApplicationContext().startService(serviceIntent);
+        context.getApplicationContext().bindService(serviceIntent, bubbleServiceConnection,
                 Context.BIND_AUTO_CREATE);
-
-
     }
 
     public void recycle() {
@@ -93,14 +92,12 @@ public class BubblesManager {
 
     public void addBubble(BubbleLayout bubble, int x, int y) {
         if (bounded) {
-            mpending=null;
+            mpending = null;
             bubblesService.addBubble(bubble, x, y);
-        }
-        else
-        {
-            this.mpending=bubble;
-            this.x=x;
-            this.y=y;
+        } else {
+            this.mpending = bubble;
+            this.x = x;
+            this.y = y;
         }
     }
 
@@ -108,7 +105,7 @@ public class BubblesManager {
         if (bounded) {
             bubblesService.removeBubble(bubble);
         }
-        mpending=null;
+        mpending = null;
     }
 
     public static class Builder {
@@ -124,7 +121,7 @@ public class BubblesManager {
         }
 
         public Builder setTrashLayout(int trashLayoutResourceId) {
-            bubblesManager.trashLayoutResourceId =trashLayoutResourceId;
+            bubblesManager.trashLayoutResourceId = trashLayoutResourceId;
             return this;
         }
 

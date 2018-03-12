@@ -15,4 +15,5 @@ public class LeadContactAddedEventModel {
     public LeadContactAddedEventModel geLastCallReceivedEvent() {
         return this;
     }
+
 }

@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.muzafarimran.lastingsales">
 
+    <permission
+        android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="android.permission.REAL_GET_TASKS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!-- <uses-permission android:name="android.permission.READ_SYNC_STATS" /> -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -13,19 +23,16 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
-    <!--<uses-permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" />-->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" />
 
     <application
-        android:name="com.orm.SugarApp"
+        android:name=".app.Sugar"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -36,152 +43,239 @@
             android:value="sugar_example.db" />
         <meta-data
             android:name="VERSION"
-            android:value="6" />
+            android:value="14" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
-        <meta-data
-            android:name="DOMAIN_PACKAGE_NAME"
-            android:value="com.example.muzafarimran.lastingsales" />
+        <!-- <meta-data -->
+        <!-- android:name="DOMAIN_PACKAGE_NAME" -->
+        <!-- android:value="com.example.muzafarimran.lastingsales" /> -->
 
         <receiver android:name=".receivers.NetworkStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receivers.TagAsIgnored">
+
+        <receiver android:name=".receivers.AppUpdateReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receivers.TagAsIgnored">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+            <!-- </intent-filter> -->
         </receiver>
         <receiver android:name=".receivers.FollowupNotiCancelBtnReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+            <!-- </intent-filter> -->
         </receiver>
         <receiver android:name=".receivers.CallsStatesReceiver">
-            <intent-filter android:priority="999">
-                <action android:name="android.intent.action.PHONE_STATE" />
-                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
-            </intent-filter>
+
+            <!-- <intent-filter android:priority="999"> -->
+            <!-- <action android:name="android.intent.action.PHONE_STATE" /> -->
+            <!-- <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> -->
+            <!-- </intent-filter> -->
         </receiver>
         <receiver
             android:name=".receivers.AlarmReceiver"
             android:enabled="true"
             android:exported="true">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+            <!-- </intent-filter> -->
         </receiver>
         <receiver
-            android:name=".receivers.DeviceBootReceiver"
-            android:enabled="false">
+            android:name=".receivers.HourlyAlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <!-- <receiver -->
+        <!-- android:name=".receivers.DayStartHighlightAlarmReceiver" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <!-- <receiver -->
+        <!-- android:name=".receivers.RatingAlarmReceiver" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <receiver
+            android:name=".receivers.DeviceBootReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.RestartServiceReceiver">
+            <intent-filter>
+                <action android:name="YouWillNeverKillMe" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
+                <category android:name="com.example.muzafarimran.lastingsales" />
+            </intent-filter>
+        </receiver>
+
+        <!-- <activity -->
+        <!-- android:name=".activitContactCallDetailsBottomSheetFragmentails" -->
+        <!-- android:screenOrientation="portrait"/> -->
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
+            android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme" />
+        <activity
+            android:name=".activities.AddEditNewFollowupActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ContactCallDetails"
+            android:name=".activities.AboutActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.AddContactActivity" />
-        <activity
-            android:name=".activities.LSContactChooserActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.AddNewFollowUpsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".activities.FollowupsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="nosensor" />
-        <activity android:name=".activities.NotesActivity" />
-        <activity android:name=".activities.AboutActivity" />
         <activity
             android:name=".activities.AddEditNoteActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base"
-            />
+            android:screenOrientation="nosensor"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
             android:name=".activities.AlertDialogActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyAlertDialogStyle" />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.AlarmAlertDialogActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LogInActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
-
-
-        <activity android:name=".activities.ContactDetailsActivity" />
-
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.SignupActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.CreateCompanyActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.ContactDetailsTabActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".activities.NotesByContactsActivity2" />
-
-        <service
-            android:name=".service.PopupUIService"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="inez.apps.customincomingcallscreen.MyService" />
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </service>
-
         <activity
-            android:name=".activities.TagNumberActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
+            android:name=".activities.AccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ColleagueActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.IgnoredActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CompanyActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SplashActivity"
             android:label="@string/title_activity_splash"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".activities.NavigationBottomMainActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="com.example.muzafarimran.lastingsales.recycleradapter.ExampleActivity" />
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="lastingsales.com"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".onboarding.OnBoardingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-
-        <activity
-            android:name=".activities.NavigationDrawerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".activities.FireBaseMainActivity"
-            android:label="@string/title_main_activity"
-            android:screenOrientation="portrait">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-
+        <!--<activity-->
+        <!--android:name=".activities.TagNotificationDialogActivity"-->
+        <!--android:launchMode="singleInstance"-->
+        <!--android:screenOrientation="portrait" />-->
         <activity
             android:name=".activities.FrameActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.TagNumberAndAddFollowupActivity"
+            android:name=".activities.AddEditLeadActivity"
+            android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity android:name=".chatheadbubble.FlyerBubbleHelper" />
+        <activity android:name=".chatheadbubble.AddEditLeadServiceBubbleHelper" />
+        <activity
+            android:name=".utils.ZoomActivity"
+            android:label="Zoom"
+            android:parentActivityName=".activities.NavigationBottomMainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.NavigationBottomMainActivity" />
+        </activity>
+        <activity
+            android:name=".activities.LargeImageActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
 
         <activity
-            android:name=".activities.AddEditLeadActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:name=".activities.DealsDetailActivity"
+            android:screenOrientation="portrait"/>
 
 
         <service android:name=".service.MyFirebaseMessagingService">
@@ -189,20 +283,53 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".service.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <!--<service android:name=".chatheadbubble.BubblesService"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="false" />-->
+        <service
+            android:name=".service.BubblesService"
+            android:enabled="true"
+            android:exported="false" />
 
         <!--<service-->
-            <!--android:name=".service.CallRecordService"-->
-            <!--android:exported="true"/>-->
+        <!--android:name=".service.AddEditLeadService"-->
+        <!--android:enabled="true"-->
+        <!--android:launchMode="singleInstance"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:theme="@style/Theme.AppCompat.Light.Dialog">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="inez.apps.customincomingcallscreen.MyService" />-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--</intent-filter>-->
+        <!--</service>-->
+        <service
+            android:name=".service.CallDetectionService"
+            android:enabled="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:stopWithTask="false">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="inez.apps.customincomingcallscreen.MyService" /> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- </intent-filter> -->
+        </service>
+        <service
+            android:name=".service.InitService">
+            <!--android:process=":testing">-->
+        </service>
+
+        <!-- <service -->
+        <!-- android:name=".service.ProfileFetchService" -->
+        <!-- android:permission="android.permission.BIND_JOB_SERVICE" -->
+        <!-- android:exported="true"/> -->
+
+
+        <!-- <service -->
+        <!-- android:name=".service.CallRecordService" -->
+        <!-- android:exported="true"/> -->
 
     </application>
 

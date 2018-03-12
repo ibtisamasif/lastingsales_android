@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 
 public class LSContact extends SugarRecord {
+    private static final String TAG = "LSContact";
 
     @Ignore
     public static final String SALES_STATUS_INPROGRESS = "InProgress";
@@ -49,6 +51,13 @@ public class LSContact extends SugarRecord {
     private String serverId;
     private String dynamic;
     private boolean isLeadDeleted;
+    private Long updatedAt;
+    private LSContactProfile contactProfile;
+    private int version;
+    private boolean doNotFetchProfile;
+    private int createdBy;
+    private int userId;
+    private String src;
 
 
     public LSContact() {
@@ -67,8 +76,7 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getContactsByTypeInDescOrder(String type) {
         try {
-            return Select.from(LSContact.class).where(Condition.prop("contact_type").eq(type)).orderBy("id DESC").list();
-//            return LSContact.find(LSContact.class, "contact_type = ? ", type);
+            return Select.from(LSContact.class).where(Condition.prop("contact_type").eq(type)).orderBy("updated_at DESC").list();
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
@@ -87,53 +95,28 @@ public class LSContact extends SugarRecord {
         }
     }
 
-//    public static List<LSContact> getContactsListArrangedByLastContacted(String leadType) {
-//        try {
-//            return LSContact.find(LSContact.class,  "contact_type = ? ", LSContact.CONTACT_TYPE_UNLABELED);
-//        } catch (SQLiteException e) {
-//            return new ArrayList<LSContact>();
-//        }
-//    }
-
-    public static List<LSContact> getSalesContactsByLeadSalesStatus(String leadType) {
+    // used in All leads
+    public static List<LSContact> getDateArrangedSalesContacts() {
         try {
-            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = ? and contact_sales_status = ? ", LSContact.CONTACT_TYPE_SALES, leadType);
-//            return Select.from(LSContact.class)
-//                    .where(Condition.prop("contact_sales_status").eq(leadType),
-//                            Condition.prop("contact_type").eq(LSContact.CONTACT_TYPE_SALES),
-//                            Condition.prop("is_lead_deleted").eq(0),
-//                            Condition.prop("is_lead_deleted").eq(null))
-//                    .list();
-//            return LSContact.find(LSContact.class, "contact_sales_status = ? and contact_type = ? ", leadType, LSContact.CONTACT_TYPE_SALES);
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' ORDER BY updated_at DESC");
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
     }
 
-    // This method is to be used for developer purpose only i.e. to find if there
-    public static List<LSContact> getDeletedSalesContactsByLeadSalesStatus(String leadType) {
+    // used in Rest of sales funnel screens i.e Inprogress , lost , won
+    public static List<LSContact> getDateArrangedSalesContactsByLeadSalesStatus(String leadType) {
         try {
-            return Select.from(LSContact.class)
-                    .where(Condition.prop("contact_sales_status").eq(leadType),
-                            Condition.prop("contact_type").eq(LSContact.CONTACT_TYPE_SALES),
-                            Condition.prop("is_lead_deleted").eq(1))
-                    .list();
-        } catch (SQLiteException e) {
-            return new ArrayList<LSContact>();
-        }
-    }
-
-    public static List<LSContact> getContactsByLeadSalesStatus(String leadType) {
-        try {
-            return LSContact.find(LSContact.class, "contact_sales_status = ? ", leadType);
+            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' and contact_sales_status = '" + leadType + "'" + " ORDER BY updated_at DESC");
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
     }
 
     public static List<LSContact> getAllInactiveLeadContacts() {
+        Log.d(TAG, "getAllInactiveLeadContacts: ");
         try {
-            ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getSalesContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
+            ArrayList<LSContact> allLeads = (ArrayList<LSContact>) LSContact.getDateArrangedSalesContactsByLeadSalesStatus(SALES_STATUS_INPROGRESS);
             ArrayList<LSContact> allInactiveLeads = new ArrayList<LSContact>();
             long milisecondsIn3Days = 259200000;
 //            long milliSecondsIn1Min = 30000; // 30 seconds for now
@@ -162,78 +145,124 @@ public class LSContact extends SugarRecord {
         }
     }
 
-    public static List<LSContact> getSalesAndColleguesContacts() {
-        try {
-            ArrayList<LSContact> salesAndColleguesContacts = new ArrayList<LSContact>();
-            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
-            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
-            salesAndColleguesContacts.addAll(contactsColleagues);
-            salesAndColleguesContacts.addAll(contactsSales);
-            return salesAndColleguesContacts;
-        } catch (SQLiteException e) {
-            return new ArrayList<LSContact>();
-        }
-    }
-
-    public static List<LSContact> getAllContactsHavingNotes() {
-        try {
-            ArrayList<LSContact> contactsAllHavingNotes = new ArrayList<LSContact>();
-            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
-            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
-            ArrayList<LSContact> contacts = new ArrayList<LSContact>();
-            contacts = contactsSales;
-            contacts.addAll(contactsColleagues);
-            for (LSContact oneContact : contacts) {
-                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(oneContact.getId());
-                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
-                    contactsAllHavingNotes.add(oneContact);
-                }
-            }
-            return contactsAllHavingNotes;
-        } catch (SQLiteException e) {
-            return new ArrayList<LSContact>();
-        }
-    }
-
-    public static List<LSContact> getAllContactsNotHavingNotes() {
-        try {
-            ArrayList<LSContact> contactsAllNotHavingNotes = new ArrayList<LSContact>();
-            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
-            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
-            ArrayList<LSContact> contacts = new ArrayList<LSContact>();
-            contacts = contactsSales;
-            contacts.addAll(contactsColleagues);
-            for (LSContact oneContact : contacts) {
-                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(oneContact.getId());
-                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
-                    //Nothing to do
-                } else {
-                    contactsAllNotHavingNotes.add(oneContact);
-                }
-            }
-            return contactsAllNotHavingNotes;
-        } catch (SQLiteException e) {
-            return new ArrayList<LSContact>();
-        }
-    }
-
-    public static List<LSContact> getAllSalesContactsHavingNotes() {
-        try {
-            ArrayList<LSContact> contactsAllNotHavingNotes = new ArrayList<LSContact>();
-            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
-            ArrayList<LSContact> contacts = new ArrayList<LSContact>();
-            contacts = contactsSales;
-            for (LSContact oneContact : contacts) {
-                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(oneContact.getId());
-                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
-                    contactsAllNotHavingNotes.add(oneContact);
-                }
-            }
-            return contactsAllNotHavingNotes;
-        } catch (SQLiteException e) {
-            return new ArrayList<LSContact>();
-        }
-    }
+//    public static List<LSContact> getContactsListArrangedByLastContacted(String leadType) {
+//        try {
+//            return LSContact.find(LSContact.class, "contact_type = ? ", LSContact.CONTACT_TYPE_UNLABELED);
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+//
+//    // All Fragment
+//    public static List<LSContact> getDateArrangedSalesContacts(String offset) {
+//        try {
+//            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where contact_type = 'type_sales' ORDER BY updated_at DESC LIMIT 10 OFFSET " + offset);
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+//
+//    public static List<LSContact> getDateArrangedSalesContactsByLeadSalesStatus(String leadType, String offset) {
+//        try {
+//            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where contact_type = 'type_sales' and contact_sales_status = '" + leadType + "'" + " ORDER BY updated_at DESC LIMIT 10 OFFSET " + offset);
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+//
+//    // This method is to be used for developer purpose only i.e. to find if there
+//    public static List<LSContact> getDeletedSalesContactsByLeadSalesStatus(String leadType) {
+//        try {
+//            return Select.from(LSContact.class)
+//                    .where(Condition.prop("contact_sales_status").eq(leadType),
+//                            Condition.prop("contact_type").eq(LSContact.CONTACT_TYPE_SALES),
+//                            Condition.prop("is_lead_deleted").eq(1))
+//                    .list();
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+//
+//    public static List<LSContact> getContactsByLeadSalesStatus(String leadType) {
+//        try {
+//            return LSContact.find(LSContact.class, "contact_sales_status = ? ", leadType);
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+//
+//    public static List<LSContact> getSalesAndColleguesContacts() {
+//        try {
+//            ArrayList<LSContact> salesAndColleguesContacts = new ArrayList<LSContact>();
+//            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
+//            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+//            salesAndColleguesContacts.addAll(contactsColleagues);
+//            salesAndColleguesContacts.addAll(contactsSales);
+//            return salesAndColleguesContacts;
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+//
+//    public static List<LSContact> getAllContactsHavingNotes() {
+//        try {
+//            ArrayList<LSContact> contactsAllHavingNotes = new ArrayList<LSContact>();
+//            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
+//            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+//            ArrayList<LSContact> contacts = new ArrayList<LSContact>();
+//            contacts = contactsSales;
+//            contacts.addAll(contactsColleagues);
+//            for (LSContact oneContact : contacts) {
+//                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(oneContact.getId());
+//                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
+//                    contactsAllHavingNotes.add(oneContact);
+//                }
+//            }
+//            return contactsAllHavingNotes;
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+//
+//    public static List<LSContact> getAllContactsNotHavingNotes() {
+//        try {
+//            ArrayList<LSContact> contactsAllNotHavingNotes = new ArrayList<LSContact>();
+//            ArrayList<LSContact> contactsColleagues = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
+//            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+//            ArrayList<LSContact> contacts = new ArrayList<LSContact>();
+//            contacts = contactsSales;
+//            contacts.addAll(contactsColleagues);
+//            for (LSContact oneContact : contacts) {
+//                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(oneContact.getId());
+//                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
+//                    //Nothing to do
+//                } else {
+//                    contactsAllNotHavingNotes.add(oneContact);
+//                }
+//            }
+//            return contactsAllNotHavingNotes;
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+//
+//    public static List<LSContact> getAllSalesContactsHavingNotes() {
+//        try {
+//            ArrayList<LSContact> contactsAllNotHavingNotes = new ArrayList<LSContact>();
+//            ArrayList<LSContact> contactsSales = (ArrayList<LSContact>) LSContact.getContactsByType(LSContact.CONTACT_TYPE_SALES);
+//            ArrayList<LSContact> contacts = new ArrayList<LSContact>();
+//            contacts = contactsSales;
+//            for (LSContact oneContact : contacts) {
+//                List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(oneContact.getId());
+//                if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
+//                    contactsAllNotHavingNotes.add(oneContact);
+//                }
+//            }
+//            return contactsAllNotHavingNotes;
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
 //    @Deprecated
 //    public static List<LSContact> getAllPendingProspectsContacts() {
 //        try {
@@ -259,17 +288,16 @@ public class LSContact extends SugarRecord {
 //            return new ArrayList<LSContact>();
 //        }
 //    }
-
-    @Deprecated
-    public static LSContact getContactFromLocalId(Long id) {
-        LSContact contact = null;
-        try {
-            contact = LSContact.findById(LSContact.class, id);
-            return contact;
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
+//
+//    public static LSContact getContactFromLocalId(Long id) {
+//        LSContact contact = null;
+//        try {
+//            contact = LSContact.findById(LSContact.class, id);
+//            return contact;
+//        } catch (IllegalArgumentException e) {
+//            return null;
+//        }
+//    }
 
     public static LSContact getContactFromServerId(String id) {
         ArrayList<LSContact> list = null;
@@ -299,6 +327,14 @@ public class LSContact extends SugarRecord {
         }
     }
 
+//    public static ArrayList<LSContact> getContactByDynamicValue(String val) {
+//        try {
+//            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' ORDER BY updated_at DESC");
+//        } catch (SQLiteException e) {
+//            return new ArrayList<LSContact>();
+//        }
+//    }
+
     public ArrayList<TempFollowUp> getAllFollowups() {
         ArrayList<TempFollowUp> allFollowupsOfThisContact = null;
         allFollowupsOfThisContact = (ArrayList<TempFollowUp>) TempFollowUp.find(TempFollowUp.class, "contact = ? ", getId() + "");
@@ -312,50 +348,13 @@ public class LSContact extends SugarRecord {
         return allNotesOfThisContact;
     }
 
-
-//    @TargetApi(Build.VERSION_CODES.KITKAT)
-//    @Override
-//    public boolean equals(Object obj) {
-//        LSContact c = (LSContact) obj;
-//        return (
-//                Objects.equals(c.getContactName(), this.contactName) &&
-//                        Objects.equals(c.getContactEmail(), this.contactEmail) &&
-//                        Objects.equals(c.getContactType(), this.contactType) &&
-//                        Objects.equals(c.getPhoneOne(), this.phoneOne) &&
-//                        Objects.equals(c.getPhoneTwo(), this.phoneTwo) &&
-//                        Objects.equals(c.getContactCompany(), this.contactCompany) &&
-//                        Objects.equals(c.getContactDescription(), this.contactDescription) &&
-//                        Objects.equals(c.getContactAddress(), this.contactAddress) &&
-//                        Objects.equals(c.getContactCreated_at(), this.contactCreated_at) &&
-//                        Objects.equals(c.getContactUpdated_at(), this.contactUpdated_at) &&
-//                        Objects.equals(c.getContactDeleted_at(), this.contactDeleted_at) &&
-//                        Objects.equals(c.getContactSalesStatus(), this.contactSalesStatus)
-//        );
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return
-//                (this.contactName != null ? this.contactName.hashCode() : 0) +
-//                        (this.contactEmail != null ? this.contactEmail.hashCode() : 0) +
-//                        (this.contactType != null ? this.contactType.hashCode() : 0) +
-//                        (this.phoneOne != null ? this.phoneOne.hashCode() : 0) +
-//                        (this.phoneTwo != null ? this.phoneTwo.hashCode() : 0) +
-//                        (this.contactCompany != null ? this.contactCompany.hashCode() : 0) +
-//                        (this.contactDescription != null ? this.contactDescription.hashCode() : 0) +
-//                        (this.contactAddress != null ? this.contactAddress.hashCode() : 0) +
-//                        (this.contactCreated_at != null ? this.contactCreated_at.hashCode() : 0) +
-//                        (this.contactUpdated_at != null ? this.contactUpdated_at.hashCode() : 0) +
-//                        (this.contactDeleted_at != null ? this.contactDeleted_at.hashCode() : 0) +
-//                        (this.contactSalesStatus != null ? this.contactSalesStatus.hashCode() : 0)
-//                ;
-//    }
-
+    @Deprecated
     public boolean isDetailsDropDownOpen() {
         return detailsDropDownOpen;
     }
 
-    public void setDetailsDropDownOpen(boolean detailsDropDownOpen) { // TODO check in previous versions
+    @Deprecated
+    public void setDetailsDropDownOpen(boolean detailsDropDownOpen) {
         this.detailsDropDownOpen = detailsDropDownOpen;
     }
 
@@ -423,28 +422,42 @@ public class LSContact extends SugarRecord {
         this.contactAddress = contactAddress;
     }
 
+    @Deprecated
     public String getContactCreated_at() {
         return contactCreated_at;
     }
 
+    @Deprecated
     public void setContactCreated_at(String contactCreated_at) {
         this.contactCreated_at = contactCreated_at;
     }
 
+    @Deprecated
     public String getContactUpdated_at() {
         return contactUpdated_at;
     }
 
+    @Deprecated
     public void setContactUpdated_at(String contactUpdated_at) {
         this.contactUpdated_at = contactUpdated_at;
     }
 
+    @Deprecated
     public String getContactDeleted_at() {
         return contactDeleted_at;
     }
 
+    @Deprecated
     public void setContactDeleted_at(String contactDeleted_at) {
         this.contactDeleted_at = contactDeleted_at;
+    }
+
+    public Long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getContactSalesStatus() {
@@ -487,6 +500,54 @@ public class LSContact extends SugarRecord {
         isLeadDeleted = leadDeleted;
     }
 
+    public LSContactProfile getContactProfile() {
+        return contactProfile;
+    }
+
+    public void setContactProfile(LSContactProfile contactProfile) {
+        this.contactProfile = contactProfile;
+    }
+
+    public boolean isDoNotFetchProfile() {
+        return doNotFetchProfile;
+    }
+
+    public void setDoNotFetchProfile(boolean doNotFetchProfile) {
+        this.doNotFetchProfile = doNotFetchProfile;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public int getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(int createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
     @Override
     public String toString() {
         return "LSContact{" +
@@ -505,6 +566,10 @@ public class LSContact extends SugarRecord {
                 ", detailsDropDownOpen=" + detailsDropDownOpen +
                 ", syncStatus='" + syncStatus + '\'' +
                 ", serverId='" + serverId + '\'' +
+                ", dynamic='" + dynamic + '\'' +
+                ", isLeadDeleted=" + isLeadDeleted +
+                ", updatedAt=" + updatedAt +
+                ", contactProfile=" + contactProfile +
                 '}';
     }
 }

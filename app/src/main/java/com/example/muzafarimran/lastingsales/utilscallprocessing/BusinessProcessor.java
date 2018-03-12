@@ -4,7 +4,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+
+import java.util.Calendar;
 
 /**
  * Created by ibtisam on 3/16/2017.
@@ -12,9 +15,14 @@ import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 class BusinessProcessor {
     public static final String TAG = "BusinessProcessor";
-//TODO FIX This class
+
     public static void Process(Context mContext, LSCall call) {
         Log.d(TAG, "BusinessProcessor: Process() Entered");
+        LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());
+        if(contact != null){
+            contact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+            contact.save();
+        }
         // Check if type is incoming , outgoing or missed
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
             //Incoming

@@ -1,32 +1,23 @@
 package com.example.muzafarimran.lastingsales;
 
-/**
- * Created by ahmad on 15-Feb-16.
- */
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
-import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSTask;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.sync.AgentDataFetchAsync;
 
 import java.util.Calendar;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 public class SessionManager {
     public static final String TAG = "SessionManager";
-    public static final String KEY_IS_APP_INITIALIZED = "isSDKIniatialized";
-    static final String KEY_FEEDBACK_ENABLED = "feedback enabled key";
     private static final String KEY_LOGIN_ID = "user_login_id";
     private static final String KEY_LOGIN_TOKEN = "user_login_token";
     private static final String KEY_LOGIN_TIMESTAMP = "user_login_timestamp";
@@ -35,20 +26,33 @@ public class SessionManager {
     private static final String KEY_LOGIN_LASTNAME = "user_login_lastname";
     private static final String KEY_LOGIN_IMAGEPATH = "user_login_imagepath";
     private static final String KEY_LOGIN_FIREBASE_REG_ID = "user_login_firebase_reg_id";
+    private static final String KEY_LOGIN_EMAIL = "user_login_email";
+    private static final String KEY_LOGIN_COMPANY_ID = "user_login_company_id";
+    private static final String KEY_LOGIN_COMPANY_NAME = "user_login_company_name";
+    private static final String KEY_LOGIN_ROLE_ID = "user_login_role_id";
+    private static final String KEY_LOGIN_ROLE_NAME = "user_login_role_name";
+
+    public static final String KEY_INIT_COMPLETED = "init_completed";
+    public static final String KEY_INIT_TEAM_ADDED = "init_team_added";
+    public static final String KEY_INIT_APP_DOWNLOADED = "init_app_downloaded";
+    public static final String KEY_INIT_COMPANY_CREATED = "init_company_created";
+    public static final String KEY_INIT_ACCOUNT_TYPE_SELECTED = "init_account_type_selected";
 
     private static final String KEY_LOGIN_MODE = "user_login_mode";
-
     public static final String MODE_NORMAL = "user_login_normal";
     public static final String MODE_NEW_INSTALL = "user_login_new_install";
     public static final String MODE_UPGRADE = "user_login_upgrade";
 
+    public static final String LAST_APP_VISIT = "last_app_visit";
+
+    public static final String FIRST_RUN_AFTER_LOGIN = "firstrun";
 
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffs";
     // Shared Preferences
     SharedPreferences pref;
     // Editor for Shared preferences
-    Editor editor;
+    SharedPreferences.Editor editor;
     // Context
     Context _context;
     // Shared pref mode
@@ -98,6 +102,15 @@ public class SessionManager {
         editor.commit();
     }
 
+    public Boolean isFirstRunAfterLogin() {
+        if (getReadyForFirstRun()) {
+            setReadyForFirstRun(false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public Boolean isUserSignedIn() {
 
         if (getLoginToken().equals("")) {
@@ -115,7 +128,7 @@ public class SessionManager {
         return true;
     }
 
-    public void loginnUser(String userId, String token, Long timeStamp, String number, String firstName, String lastName, String imagePath) {
+    public void loginnUser(String userId, String token, Long timeStamp, String number, String firstName, String lastName, String imagePath, String email, String company_id, String company_name, String role_id, String role_role) {
         Log.d(TAG, "loginnUser: ");
         deleteDataIfDifferentUser(number);
         setLoginNumber(number);
@@ -125,14 +138,23 @@ public class SessionManager {
         setKeyLoginFirstName(firstName);
         setKeyLoginLastName(lastName);
         setKeyLoginImagePath(imagePath);
-        fetchData();
+        setKeyLoginEmail(email);
+        setKeyLoginCompanyId(company_id);
+        setKeyLoginCompanyName(company_name);
+        setKeyLoginRoleId(role_id);
+        setKeyLoginRoleName(role_role);
         editor.commit();
     }
 
-    private void fetchData() {
-        AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
-        agentDataFetchAsync.execute();
-    }
+//    public void fetchData() {
+//        if( isUserSignedIn()){
+//            AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
+//            agentDataFetchAsync.execute();
+//        }
+//        else {
+//            Log.d(TAG, "fetchData: USER IS NOT SIGNED IN");
+//        }
+//    }
 
     private void deleteDataIfDifferentUser(String number) {
         String oldUserNumber = getLoginNumber();
@@ -141,20 +163,25 @@ public class SessionManager {
         }
     }
 
-    private void deleteAllUserData() {
+    public void deleteAllUserData() {
         Log.d(TAG, "Different Agent: deleting data...");
         if (LSInquiry.count(LSInquiry.class) > 0) {
             LSInquiry.deleteAll(LSInquiry.class);
         }
         if (LSCall.count(LSCall.class) > 0) {
-            LSInquiry.deleteAll(LSCall.class);
+            LSCall.deleteAll(LSCall.class);
         }
-        if (LSCallRecording.count(LSCallRecording.class) > 0) {
-            LSCallRecording.deleteAll(LSCallRecording.class);
-        }
+//        if (LSCallRecording.count(LSCallRecording.class) > 0) {
+//            LSCallRecording.deleteAll(LSCallRecording.class);
+//        }
         if (LSContact.count(LSContact.class) > 0) {
             LSContact.deleteAll(LSContact.class);
         }
+
+        if (LSContactProfile.count(LSContactProfile.class) > 0) {
+            LSContactProfile.deleteAll(LSContactProfile.class);
+        }
+
         if (LSNote.count(LSNote.class) > 0) {
             LSNote.deleteAll(LSNote.class);
         }
@@ -163,6 +190,9 @@ public class SessionManager {
         }
         if (LSDynamicColumns.count(LSDynamicColumns.class) > 0) {
             LSDynamicColumns.deleteAll(LSDynamicColumns.class);
+        }
+        if (LSTask.count(LSTask.class) > 0) {
+            LSTask.deleteAll(LSTask.class);
         }
     }
 
@@ -176,6 +206,7 @@ public class SessionManager {
         setKeyLoginFirstName("");
         setKeyLoginLastName("");
         setKeyLoginImagePath("");
+        setReadyForFirstRun(true);
         editor.commit();
     }
 
@@ -259,4 +290,114 @@ public class SessionManager {
         editor.putString(KEY_LOGIN_MODE, mode);
         editor.commit();
     }
+
+    public String getKeyLoginEmail() {
+        return pref.getString(KEY_LOGIN_EMAIL, "");
+    }
+
+    public void setKeyLoginEmail(String email) {
+        editor.putString(KEY_LOGIN_EMAIL, email);
+        editor.commit();
+    }
+
+    public String getKeyLoginCompanyId() {
+        return pref.getString(KEY_LOGIN_COMPANY_ID, "");
+    }
+
+    public void setKeyLoginCompanyId(String id) {
+        editor.putString(KEY_LOGIN_COMPANY_ID, id);
+        editor.commit();
+    }
+
+    public String getKeyLoginCompanyName() {
+        return pref.getString(KEY_LOGIN_COMPANY_NAME, "");
+    }
+
+    public void setKeyLoginCompanyName(String name) {
+        editor.putString(KEY_LOGIN_COMPANY_NAME, name);
+        editor.commit();
+    }
+
+    public String getKeyLoginRoleId() {
+        return pref.getString(KEY_LOGIN_ROLE_ID, "");
+    }
+
+    public void setKeyLoginRoleId(String email) {
+        editor.putString(KEY_LOGIN_ROLE_ID, email);
+        editor.commit();
+    }
+
+    public String getKeyLoginRoleName() {
+        return pref.getString(KEY_LOGIN_ROLE_NAME, "");
+    }
+
+    public void setKeyLoginRoleName(String name) {
+        editor.putString(KEY_LOGIN_ROLE_NAME, name);
+        editor.commit();
+    }
+
+
+    public String getKeyInitCompleted() {
+        return pref.getString(KEY_INIT_COMPLETED, "");
+    }
+
+    public void setKeyInitCompleted(String boolVal) {
+        editor.putString(KEY_INIT_COMPLETED, boolVal);
+        editor.commit();
+    }
+
+    public String getKeyInitTeamAdded() {
+        return pref.getString(KEY_INIT_TEAM_ADDED, "");
+    }
+
+    public void setKeyInitTeamAdded(String boolVal) {
+        editor.putString(KEY_INIT_TEAM_ADDED, boolVal);
+        editor.commit();
+    }
+
+    public String getKeyInitAppDownloaded() {
+        return pref.getString(KEY_INIT_APP_DOWNLOADED, "");
+    }
+
+    public void setKeyInitAppDownloaded(String boolVal) {
+        editor.putString(KEY_INIT_APP_DOWNLOADED, boolVal);
+        editor.commit();
+    }
+
+    public String getKeyInitCompanyCreated() {
+        return pref.getString(KEY_INIT_COMPANY_CREATED, "");
+    }
+
+    public void setKeyInitCompanyCreated(String boolVal) {
+        editor.putString(KEY_INIT_COMPANY_CREATED, boolVal);
+        editor.commit();
+    }
+
+    public String getKeyInitAccountTypeSelected() {
+        return pref.getString(KEY_INIT_ACCOUNT_TYPE_SELECTED, "");
+    }
+
+    public void setKeyInitAccountTypeSelected(String type) {
+        editor.putString(KEY_INIT_ACCOUNT_TYPE_SELECTED, type);
+        editor.commit();
+    }
+
+    public String getLastAppVisit() {
+        return pref.getString(LAST_APP_VISIT, "");
+    }
+
+    public void setLastAppVisit(String time) {
+        editor.putString(LAST_APP_VISIT, time);
+        editor.commit();
+    }
+
+    public boolean getReadyForFirstRun() {
+        return pref.getBoolean(FIRST_RUN_AFTER_LOGIN, true);
+    }
+
+    public void setReadyForFirstRun(boolean val) {
+        editor.putBoolean(FIRST_RUN_AFTER_LOGIN, val);
+        editor.commit();
+    }
+
 }

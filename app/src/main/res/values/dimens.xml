@@ -1,12 +1,39 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="Ls.Dimen.Radius">2dp</dimen>
+    <dimen name="Ls.Dimen.ListItemHeight">72dp</dimen>
+    <dimen name="Ls.Dimen.ListItemIconMargin">16dp</dimen>
+    <dimen name="Ls.Dimen.space">8dp</dimen>
+
+    <dimen name="Ls.Dimen.CardHorizontalMargin">8dp</dimen>
+    <dimen name="Ls.Dimen.CardVerticalMargin">4dp</dimen>
+    <dimen name="Ls.Dimen.CardMarginSmall">4dp</dimen>
+    <dimen name="Ls.Dimen.CardMarginMedium">8dp</dimen>
+
+    <dimen name="Ls.Dimen.ListIconHeight">48dp</dimen>
+    <dimen name="Ls.Dimen.ListIconWidth">48dp</dimen>
+    <dimen name="Ls.Dimen.ListIconTouchTarget">48dp</dimen>
+    <dimen name="Ls.Dimen.ListIconHeightSmall">24dp</dimen>
+    <dimen name="Ls.Dimen.ListIconWidthSmall">24dp</dimen>
+
+    <dimen name="Ls.Dimen.SubtitleHeight">48dp</dimen>
+    <!-- <dimen name="Ls.Dimen.SubtitleWidth">40dp</dimen> -->
+    <!-- <dimen name="Ls.Dimen.SubtitleTouchTarget">48dp</dimen> -->
+    <!-- <dimen name="Ls.Dimen.SubtitleHeightSmall">24dp</dimen> -->
+    <!-- <dimen name="Ls.Dimen.SubtitleWidthSmall">24dp</dimen> -->
+
+    <dimen name="Ls.Dimen.AppHorizontalMargin">16dp</dimen>
+    <dimen name="Ls.Dimen.AppHorizontalMarginNone">0dp</dimen>
+
+
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_text_margin_left">15dp</dimen>
     <dimen name="normalMargin">10dp</dimen>
     <!--UIOCALL popup stuff-->
-    <dimen name="corners_radius_size">1dp</dimen>
+    <dimen name="corners_radius_size">4dp</dimen>
+    <dimen name="corners_radius_size_textview_bg">2dp</dimen>
     <dimen name="corners_radius_size_edittext_bg">0dp</dimen>
     <dimen name="corners_radius_size_promo_button">3dp</dimen>
 

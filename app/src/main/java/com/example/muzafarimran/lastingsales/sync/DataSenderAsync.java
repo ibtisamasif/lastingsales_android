@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -15,33 +16,21 @@ import com.android.volley.toolbox.Volley;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
-import com.example.muzafarimran.lastingsales.events.LeadContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
+import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
-import com.example.muzafarimran.lastingsales.providers.models.LSCallRecording;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.utils.AndroidMultiPartEntity;
-import com.example.muzafarimran.lastingsales.utils.AndroidMultiPartEntity.ProgressListener;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,11 +39,12 @@ import de.halfbit.tinybus.TinyBus;
 
 public class DataSenderAsync {
     public static final String TAG = "DataSenderAsync";
+//    private static final String TAG = "AppInitializationTest";
+
     private static DataSenderAsync instance = null;
     private static int currentState = 1;
     private static final int IDLE = 1;
     private static final int PENDING = 2;
-
     private static boolean firstThreadIsRunning = false;
     private Context mContext;
     private SessionManager sessionManager;
@@ -62,8 +52,18 @@ public class DataSenderAsync {
     private static RequestQueue queue;
     private final int MY_TIMEOUT_MS = 2500;
     private final int MY_MAX_RETRIES = 0;
+    private PostExecuteListener DataSenderOnPostExecuteListener = null;
+
+    public PostExecuteListener getDataSenderOnPostExecuteListener() {
+        return DataSenderOnPostExecuteListener;
+    }
+
+    public void setDataSenderOnPostExecuteListener(PostExecuteListener dataSenderOnPostExecuteListener) {
+        this.DataSenderOnPostExecuteListener = dataSenderOnPostExecuteListener;
+    }
 
     protected DataSenderAsync(Context context) {
+        Log.d(TAG, "DataSenderAsync: ==========================================================================================================================");
         mContext = context;
         queue = Volley.newRequestQueue(mContext);
         firstThreadIsRunning = false;
@@ -72,7 +72,7 @@ public class DataSenderAsync {
     public static DataSenderAsync getInstance(Context context) {
         final Context appContext = context.getApplicationContext();
         if (instance == null) {
-//            synchronized ((Object) firstThreadIsRunning){ //TODO make it thread safe
+//            synchronized ((Object) firstThreadIsRunning){
             if (!firstThreadIsRunning) {
                 firstThreadIsRunning = true;
                 instance = new DataSenderAsync(appContext);
@@ -86,7 +86,7 @@ public class DataSenderAsync {
         Log.d(TAG, "run: ");
         if (currentState == IDLE) {
             currentState = PENDING;
-            Log.d(TAG, "run: InsideRUNING"+this.toString());
+            Log.d(TAG, "run: InsideRUNING" + this.toString());
             queue.setmAllFinishedListener(new RequestQueue.AllFinishedListener() {
                 @Override
                 public void onAllFinished() {
@@ -99,32 +99,33 @@ public class DataSenderAsync {
                 protected void onPreExecute() {
                     super.onPreExecute();
                     sessionManager = new SessionManager(mContext);
+                    Log.d(TAG, "DataSenderAsync onPreExecute: ");
                 }
 
                 @Override
                 protected Void doInBackground(Object... params) {
                     try {
-//                        if (NetworkAccess.isNetworkAvailable(mContext)) {
-                        if (sessionManager.isUserSignedIn()) {
-                            Log.d(TAG, "Syncing");
-                            Log.d(TAG, "Token : " + sessionManager.getLoginToken());
-                            Log.d(TAG, "user_id : " + sessionManager.getKeyLoginId());
-                            addContactsToServer();
-                            updateContactsToServer();
-                            addCallsToServer();
-                            addInquiriesToServer();
-                            updateInquiriesToServer();
-                            deleteInquiriesFromServer();
-                            addNotesToServer();
-                            updateNotesToServer();
-                            addFollowupsToServer();
-                            deleteContactsFromServer();
-                            if (NetworkAccess.isWifiConnected(mContext)) {
-                                addRecordingToServer();
+                        if (NetworkAccess.isNetworkAvailable(mContext)) {
+                            if (sessionManager.isUserSignedIn()) {
+                                Log.d(TAG, "Syncing");
+                                Log.d(TAG, "Token : " + sessionManager.getLoginToken());
+                                Log.d(TAG, "user_id : " + sessionManager.getKeyLoginId());
+                                addContactsToServer();
+                                updateContactsToServer();
+                                addCallsToServer();
+                                addInquiriesToServer();
+                                updateInquiriesToServer();
+                                deleteInquiriesFromServer();
+                                addNotesToServer();
+                                updateNotesToServer();
+                                deleteNotesFromServer();
+                                addFollowupsToServer();
+                                deleteContactsFromServer();
+//                            if (NetworkAccess.isWifiConnected(mContext)) {
+//                                addRecordingToServer();
+//                            }
                             }
-                        }
-//                        }
-                        else {
+                        } else {
                             Log.d(TAG, "SyncNoInternet");
                         }
                     } catch (Exception e) {
@@ -141,10 +142,15 @@ public class DataSenderAsync {
                 //this method is executed when doInBackground function finishes
                 @Override
                 protected void onPostExecute(Void result) {
-                    if(currentState != PENDING){
-                        currentState = IDLE;
+                    if (DataSenderOnPostExecuteListener != null) {
+                        Log.d(TAG, "DataSenderAsync onPostExecuteListener:");
+                        DataSenderOnPostExecuteListener.onPostExecuteListener();
                     }
-                    Log.d(TAG, "onPostExecute: Stopped");
+                    queue.isIdle();
+//                    if (currentState != PENDING) {
+//                        Log.d(TAG, "onPostExecuteListener: currentState: " + currentState);
+//                        currentState = IDLE;
+//                    }
                 }
             }.execute();
         } else {
@@ -199,16 +205,22 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddContact");
                 try {
-                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                    int responseCode = jObj.getInt("responseCode");
-                    if (responseCode == 409) {
-                        JSONObject responseObject = jObj.getJSONObject("response");
-                        contact.setServerId(responseObject.getString("id"));
-                        contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                        contact.save();
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
+                            if (error.networkResponse.statusCode == 409) {
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                if (responseCode == 409) {
+                                    JSONObject responseObject = jObj.getJSONObject("response");
+                                    contact.setServerId(responseObject.getString("id"));
+                                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                                    contact.save();
+                                }
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -217,7 +229,6 @@ public class DataSenderAsync {
         }) {
             @Override
             protected Map<String, String> getParams() {
-//                sessionManager.setLoginToken("7rTuA4srHYnUuB1UOUskHsqEscZIslmWFzQM4jHfNaxKa5nkEzBAAuai6Hs1");
 
                 Map<String, String> params = new HashMap<String, String>();
 
@@ -236,6 +247,7 @@ public class DataSenderAsync {
                 params.put("status", "" + contact.getContactSalesStatus());
                 params.put("api_token", "" + sessionManager.getLoginToken());
                 params.put("lead_type", "" + contact.getContactType());
+                Log.d(TAG, "getParams: addContactToServerSync " + params);
                 return params;
             }
         };
@@ -283,20 +295,23 @@ public class DataSenderAsync {
                 .appendQueryParameter("dynamic_values", "" + contact.getDynamic())
                 .build();
         final String myUrl = builtUri.toString();
+        Log.d(TAG, "updateContactToServerSync: myUrl: " + myUrl);
         StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() updateContact: response = [" + response + "]");
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    int responseCode = jObj.getInt("responseCode");
+//                    int responseCode = jObj.getInt("responseCode");
 //                    if (responseCode == 200) {
                     JSONObject responseObject = jObj.getJSONObject("response");
                     contact.setServerId(responseObject.getString("id"));
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED);
                     contact.save();
-                    Log.d(TAG, "onResponse : ServerID : " + responseObject.getString("id"));
-//                    }
+                    Log.d(TAG, "onResponse : ServerIDofNote : " + responseObject.getString("id"));
+                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                    TinyBus bus = TinyBus.from(mContext);
+                    bus.post(mCallEvent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -304,7 +319,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateContact");
             }
         }) {
@@ -341,7 +355,7 @@ public class DataSenderAsync {
 //                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
 
 //                    if (responseCode == 200) {
-                    JSONObject responseObject = jObj.getJSONObject("response"); //TODO crashed here check response properly Caused by java.lang.OutOfMemoryError: Could not allocate JNI Env
+                    JSONObject responseObject = jObj.getJSONObject("response"); //crashed here check response properly Caused by java.lang.OutOfMemoryError: Could not allocate JNI Env //onResponse() Add Call: response = [{"responseCode":"200","response":"error while generating message"}]
                     String id = responseObject.getString("id");
                     String contactNumber = responseObject.getString("contact_number");
                     call.setServerId(id);
@@ -366,54 +380,40 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-//                Log.d(TAG, "onErrorResponse: statusCode: "+error.networkResponse.statusCode);
+//                Log.d(TAG, "onErrorResponse: error.networkResponse.data " +(new String(error.networkResponse.data)));
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddCall");
-//                try {
-//                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-//                    int responseCode = jObj.getInt("responseCode");
-//                    if (responseCode == 409) {
-//                        JSONObject responseObject = jObj.getJSONObject("response");
-//                        call.setServerId(responseObject.getString("id"));
-//                        call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_SYNCED);
-//                        call.save();
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    if (error.networkResponse != null) {
+                        Log.d(TAG, "onErrorResponse: statusCode: " + error.networkResponse.statusCode);
+                        if (error.networkResponse.statusCode == 409) {
+//                            call.setServerId(responseObject.getString("id")); // Not needed
+                            call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_SYNCED);
+                            call.save();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 //because server does not accept 0 duration
-                String duration;
-                if (call.getDuration() != null && call.getDuration() > 0) {
-                    duration = "" + call.getDuration();
-                } else {
-                    duration = "1";
-                }
-
-                String durration = PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss");
-                String date = PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "yyyy-MM-dd");
-
-
-                params.put("duration", "" + duration);
+//                String duration;
+//                if (call.getDuration() != null && call.getDuration() > 0) {
+//                    duration = "" + call.getDuration();
+//                } else {
+//                    duration = "1";
+//                }
+                params.put("duration", "" + call.getDuration());
+//                params.put("duration", "" + duration);
                 params.put("contact_number", "" + call.getContactNumber());
                 params.put("call_type", "" + call.getType());
                 params.put("date", "" + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "yyyy-MM-dd"));
                 params.put("from_time", "" + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss"));
-//                Log.d(TAG, "getParams: "+PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(call.getBeginTime(), "kk:mm:ss"));
                 params.put("api_token", "" + sessionManager.getLoginToken());
-
                 Log.d(TAG, "getParams: " + params.toString());
-
-//                params.put("duration", ""+call.getDuration());
-//                params.put("contact_number", ""+call.getContactNumber());
-//                params.put("call_type", ""+call.getType());
-//                params.put("date", "2017-06-20");
-//                params.put("from_time", ""+call.getBeginTime());
-//                params.put("api_token", ""+sessionManager.getLoginToken());
                 return params;
             }
         };
@@ -455,6 +455,9 @@ public class DataSenderAsync {
                     inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
                     if (status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)) {
                         inquiry.delete();
+                        InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                        TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                        bus.post(mCallEvent);
                     } else {
                         inquiry.save();
                     }
@@ -467,23 +470,31 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddInquiry");
                 try {
-                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                    int responseCode = jObj.getInt("responseCode");
-                    JSONObject responseObject = jObj.getJSONObject("response");
-                    String id = responseObject.getString("id");
-                    String contactNumber = responseObject.getString("contact_number");
-                    String status = responseObject.getString("status");
-                    inquiry.setServerId(id);
-                    inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
-                    if (status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)) {
-                        inquiry.delete();
-                    } else {
-                        inquiry.save();
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse.data: " + error.networkResponse.data);
+                            Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
+                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+//                    int responseCode = jObj.getInt("responseCode");
+                            JSONObject responseObject = jObj.getJSONObject("response");
+                            String id = responseObject.getString("id");
+                            String contactNumber = responseObject.getString("contact_number");
+                            String status = responseObject.getString("status");
+                            inquiry.setServerId(id);
+                            inquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_SYNCED);
+                            if (status.equals(LSInquiry.INQUIRY_STATUS_ATTENDED)) {
+                                inquiry.delete();
+                                InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                                bus.post(mCallEvent);
+                            } else {
+                                inquiry.save();
+                            }
+                            Log.d(TAG, "onResponse: addInquiryReSync " + contactNumber);
+                        }
                     }
-                    Log.d(TAG, "onResponse: addInquiryReSync " + contactNumber);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -498,6 +509,7 @@ public class DataSenderAsync {
                 params.put("status", "" + inquiry.getStatus());
                 params.put("avg_response_time", "" + inquiry.getAverageResponseTime() / 1000);
                 params.put("api_token", "" + sessionManager.getLoginToken());
+                Log.d(TAG, "addInquiryToServerSync getParams: " + params);
                 return params;
             }
         };
@@ -556,8 +568,34 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateInquiry");
+                try {
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
+                            Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
+                            if (error.networkResponse.statusCode == 401) { // unauthorized check token
+                                Log.e(TAG, "onErrorResponse: 401");
+                            } else if (error.networkResponse.statusCode == 412) { // Inquiry record not found
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                String responseObject = jObj.getString("response");
+                                if (responseCode == 236) {
+                                    Log.d(TAG, "onErrorResponse: " + responseObject);
+                                    inquiry.delete();
+                                    InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                                    bus.post(mCallEvent);
+                                    Toast.makeText(mContext, "Inquiry doesn't exist on server", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                }
+                InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                bus.post(mCallEvent);
             }
         });
         sr.setRetryPolicy(new DefaultRetryPolicy(
@@ -611,8 +649,30 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteInquiry");
+                try {
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
+                            Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
+                            if (error.networkResponse.statusCode == 412) {
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                String responseObject = jObj.getString("response");
+                                if (responseCode == 236) {
+                                    Log.d(TAG, "onErrorResponse: " + responseObject);
+                                    inquiry.delete();
+                                    InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
+                                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                                    bus.post(mCallEvent);
+                                    Toast.makeText(mContext, "Inquiry doesn't exist on server", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }) {
         };
@@ -624,14 +684,18 @@ public class DataSenderAsync {
     }
 
     private void addNotesToServer() {
-
         List<LSNote> notesList = null;
         if (LSNote.count(LSNote.class) > 0) {
             notesList = LSNote.find(LSNote.class, "sync_status = ?", SyncStatus.SYNC_STATUS_NOTE_ADDED_NOT_SYNCED);
             Log.d(TAG, "addNoteToServer: count : " + notesList.size());
             for (LSNote oneNote : notesList) {
                 Log.d(TAG, "Found Notes");
-                addNoteToServerSync(oneNote);
+                if (oneNote.getContactOfNote() != null){
+                    addNoteToServerSync(oneNote);
+                }else {
+                    Log.d(TAG, "addNotesToServer: Contact of note is NULL, Deleting.. " + oneNote.getNoteText());
+                    oneNote.delete();
+                }
             }
         }
     }
@@ -663,26 +727,26 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddNote");
-
                 try {
-                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                    int responseCode = jObj.getInt("responseCode");
+                    if (error.networkResponse != null) {
+                        JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                        int responseCode = jObj.getInt("responseCode");
 //                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
 //                    if (responseCode == 200) {
-                    JSONObject responseObject = jObj.getJSONObject("response");
-                    String description = responseObject.getString("description");
-                    String id = responseObject.getString("id");
-                    note.setServerId(id);
-                    note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
-                    note.save();
-                    Log.d(TAG, "onResponse addNoteReSynced: " + description + " ServerNoteID : " + note.getServerId());
-
+                        JSONObject responseObject = jObj.getJSONObject("response");
+                        String description = responseObject.getString("description");
+                        String id = responseObject.getString("id");
+                        note.setServerId(id);
+                        note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
+                        note.save();
+                        Log.d(TAG, "onResponse addNoteReSynced: " + description + " ServerNoteID : " + note.getServerId());
+                    } else {
+                        Log.d(TAG, "onErrorResponse: no response may be poor internet");
+                    }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    e.printStackTrace(); // TODO google pixel
                 }
-
             }
         }) {
             @Override
@@ -750,8 +814,98 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateNote");
+            }
+        }) {
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void deleteNotesFromServer() {
+
+        List<LSNote> notesList = null;
+        if (LSNote.count(LSNote.class) > 0) {
+            notesList = LSNote.find(LSNote.class, "sync_status = ?", SyncStatus.SYNC_STATUS_NOTE_DELETE_NOT_SYNCED);
+            Log.d(TAG, "deleteNotesFromServer: count : " + notesList.size());
+            for (LSNote oneNote : notesList) {
+                Log.d(TAG, "Found Notes");
+                deleteNoteFromServerSync(oneNote);
+            }
+        }
+    }
+
+
+    private void deleteNoteFromServerSync(final LSNote note) {
+        Log.d(TAG, "deleteNoteFromServerSync: ServerIdOfNote: " + note.getServerId());
+        currentState = PENDING;
+        final String BASE_URL = MyURLs.DELETE_NOTE;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath("" + note.getContactOfNote().getServerId())
+                .appendPath("notes")
+                .appendPath("" + note.getServerId())
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        StringRequest sr = new StringRequest(Request.Method.DELETE, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() delete note called with: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    // ignoring responseCode etc because server is sending wrong Json format
+//                    int responseCode = jObj.getInt("responseCode");
+//                    Log.d(TAG, "onResponse: DeleteInquiry: "+jObj.toString());
+//                    if (responseCode == 200) {
+//                        JSONObject responseObject = jObj.getJSONObject("response");
+                    note.delete();
+                    NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
+                    TinyBus bus = TinyBus.from(mContext);
+                    bus.post(mNoteAdded);
+//                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteNote");
+                try {
+                    if (error.networkResponse != null) {
+                        Log.d(TAG, "onErrorResponse: error.networkResponse.statusCode: " + error.networkResponse.statusCode);
+                        if (error.networkResponse.statusCode == 412) {
+                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                            int responseCode = jObj.getInt("responseCode");
+                            String responseObject = jObj.getString("response");
+                            if (responseCode == 236) {
+                                Log.d(TAG, "onErrorResponse: " + responseObject);
+                                note.delete();
+                                NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
+                                TinyBus bus = TinyBus.from(mContext);
+                                bus.post(mNoteAdded);
+                                Log.d(TAG, "onErrorResponse: Note doesn't exist on server");
+//                                Toast.makeText(mContext, "Note doesn't exist on server", Toast.LENGTH_SHORT).show();
+                            }
+                        } else if (error.networkResponse.statusCode == 404) {
+//                        note.delete();
+//                        Log.d(TAG, "onErrorResponse: Note doesn't exist on server deleted and from mobile.");
+//                        Toast.makeText(mContext, "Note doesn't exist on server deleted and from mobile.", Toast.LENGTH_SHORT).show();
+                        } else if (error.networkResponse.statusCode == 401) {
+                            // Doesn't Exist on server.
+                            note.delete();
+                        }
+                    } else {
+                        Log.d(TAG, "onErrorResponse: no response may be poor internet");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }) {
         };
@@ -801,7 +955,6 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddFollowup");
             }
         }) {
@@ -860,7 +1013,7 @@ public class DataSenderAsync {
 //                    if (responseCode == 200) {
 //                        JSONObject responseObject = jObj.getJSONObject("response");
                     contact.delete();
-                    LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
+                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                     TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                     bus.post(mCallEvent);
 //                    }
@@ -871,16 +1024,20 @@ public class DataSenderAsync {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteContact");
                 try {
-                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                    int responseCode = jObj.getInt("responseCode");
-                    if (responseCode == 259) {
-                        contact.delete();
-                        LeadContactDeletedEventModel mCallEvent = new LeadContactDeletedEventModel();
-                        TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-                        bus.post(mCallEvent);
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                            int responseCode = jObj.getInt("responseCode");
+                            if (responseCode == 259) {
+                                Log.d(TAG, "onErrorResponse: responseCode == 259 deleted");
+                                contact.delete();
+                                ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+                                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                                bus.post(mCallEvent);
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -894,154 +1051,4 @@ public class DataSenderAsync {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
-
-    private void addRecordingToServer() {
-        List<LSCallRecording> recordingList = null;
-        if (LSCallRecording.count(LSCallRecording.class) > 0) {
-            recordingList = LSCallRecording.findWithQuery(LSCallRecording.class, "Select * from LS_CALL_RECORDING where sync_status = 'recording_not_synced' and server_id_of_call IS NOT NULL");
-//            recordingList = LSCallRecording.find(LSCallRecording.class, "sync_status = ?", SyncStatus.SYNC_STATUS_RECORDING_NOT_SYNCED);
-            Log.d(TAG, "addRecordingsToServer: count : " + recordingList.size());
-            for (LSCallRecording oneRecording : recordingList) {
-                Log.d(TAG, "Found Call");
-                addRecordingToServer(oneRecording);
-            }
-//        uploadFile(CallsStatesReceiver.mAudio_FilePath + CallsStatesReceiver.mAudio_FileName + "_outgoing_429683239.amr");
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private void addRecordingToServer(LSCallRecording recording) {
-        currentState = PENDING;
-        Log.d(TAG, "uploadFile: Path: " + recording.getAudioPath());
-//        String filePath = "/storage/emulated/0/Pictures/Android File Upload/myrec.amr";
-        String responseString = null;
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(MyURLs.FILE_UPLOAD_URL);
-        try {
-            Log.d(TAG, "uploadFile: 0");
-            AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                    new ProgressListener() {
-                        @Override
-                        public void transferred(long num) {
-                            Log.d(TAG, "uploading..." + (int) ((num / (float) totalSize) * 100));
-//                            publishProgress((int) ((num / (float) totalSize) * 100));
-                        }
-                    });
-            File sourceFile = new File(recording.getAudioPath());
-            // Adding file data to http body
-            entity.addPart("recording_file", new FileBody(sourceFile));
-            // Extra parameters if you want to pass to server
-            entity.addPart("call_id", new StringBody("" + recording.getServerIdOfCall()));
-            entity.addPart("api_token", new StringBody(sessionManager.getLoginToken()));
-            totalSize = entity.getContentLength();
-            httppost.setEntity(entity);
-            // Making server call
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity r_entity = response.getEntity();
-
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode == 200) {
-                recording.setSyncStatus(SyncStatus.SYNC_STATUS_RECORDING_SYNCED);
-                recording.save();
-                // Server response
-                responseString = EntityUtils.toString(r_entity);
-            } else {
-                responseString = "Error occurred! Http Status Code: " + statusCode;
-            }
-            Log.d(TAG, "uploadFile: ResponseCode: " + statusCode);
-            Log.d(TAG, "uploadFile: ResponseString: " + responseString);
-
-        } catch (ClientProtocolException e) {
-            responseString = e.toString();
-            Log.d(TAG, "ClientProtocolException: " + responseString);
-        } catch (FileNotFoundException e) {
-            responseString = e.toString();
-            Log.d(TAG, "FileNotFoundException: " + responseString);
-            recording.delete();
-        } catch (IOException e) {
-            responseString = e.toString();
-            Log.d(TAG, "IOException: " + responseString);
-        }
-    }
-
-//    public void addCallRecordingsToServer(){
-//        String path;
-//        File[] myFiles = new File[0];
-//        File pathToRecordings = new File(Environment.getExternalStorageDirectory() + AudioFilePath.audioFileDirectoryPath);
-//        if(pathToRecordings.exists())
-//        {
-//            myFiles = pathToRecordings.listFiles();
-//        }
-//        else {
-//            Log.d(TAG,  "17)AudioFile: No files found");
-//        }
-//        Log.d(TAG,  "17)PathToRecordings: "+pathToRecordings);
-//        try {
-//            if (myFiles.length != 0) {
-//                try {
-//                    if (myFiles.length !=0){
-//                        for (File file : myFiles) {
-//                            try {
-//                                path = file.getAbsolutePath();
-//                                MediaPlayer mediaPlayer = MediaPlayer.create(mContext, Uri.parse(path));
-//                                int file_duration = mediaPlayer.getDuration();
-//                                Log.d(TAG,  "17)AudioFile: Duration: "+file_duration+" path: "+path);
-//                                uploadFile(path, sessionManager.getLoginToken());
-//                            }catch (Exception e){
-//                                Log.d(TAG, "17)AudioFileSyncing Deleting Corrupted File: "+e.getMessage());
-//                                file.delete();
-//                            }
-//                        }
-//                    }
-//                }catch (Exception e){
-//                    Log.d(TAG, "17)AudioFileSyncing Exception: "+e.getMessage());
-//                }
-//            }else {
-//                pathToRecordings.delete();
-//            }
-//        }catch (Exception e){
-//            Log.d(TAG, "17)AudioFileSyncing Exception: "+e.getMessage());
-//        }
-//
-//    }
-//
-//    @SuppressWarnings("deprecation")
-//    private String uploadFile(String filePath) {
-//        String status = "Other";
-//
-//        List<NameValuePair> params = new ArrayList<NameValuePair>();
-//        String responseString = null;
-//        try {
-//            File sourceFile = new File(filePath);
-//            FileBody sourceFileBody = new FileBody(new File(filePath));
-//
-//            MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
-//            multipartEntityBuilder.addPart("status", new StringBody(status));
-//
-//            multipartEntityBuilder.addBinaryBody("audiofile",sourceFile);
-//
-//            Log.d(TAG, "17)Audio file Sending...");
-//            responseString = Http_Request.getHttpPostFile(MyURLs.AUDIO_FILE_UPLOAD_URL, params, multipartEntityBuilder);
-//            Log.d(TAG, "17)Audio file Response: "+responseString);
-//            JSONObject jobj = new JSONObject(responseString);
-//
-//            int error = jobj.getInt("error");
-//            if (error == 0){
-//                String fileOutputPath;
-//                File pathToRecordings = new File(Environment.getExternalStorageDirectory() + AudioFilePath.audioFileDirectoryOutputPath);
-//                fileOutputPath = pathToRecordings.getAbsolutePath();
-//
-//                Log.d(TAG, "17)VoiceRecord: audio deleted from mobile.");
-//            }
-//        } catch (IOException e) {
-//            responseString = e.toString();
-//            Log.d(TAG, "17)VoiceRecord: responseStringIOException: " + responseString);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Log.d(TAG, "17)VoiceRecord: JSONException: " + e.getMessage());
-//        }
-//
-//        return responseString;
-//
-//    }
 }

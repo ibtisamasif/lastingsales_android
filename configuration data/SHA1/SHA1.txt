@@ -1,0 +1,12 @@
+Variant: debug
+Config: debug
+Store: E:\ibtii\work\Vivid\configuration data\lskey.jks
+Alias: lastingSales
+MD5: 72:FE:6F:31:BD:8B:E7:F9:05:D5:7C:B1:C6:CD:E6:15
+SHA1: 87:0A:EF:29:DF:06:BC:A1:9B:FD:A6:20:93:B4:BA:D0:89:9F:6C:89
+Valid until: Saturday, January 18, 2042
+
+
+
+Client ID	
+44843550731-5u4oasqo8ajrt6o6ei4nimcr5mdiufq0.apps.googleusercontent.com

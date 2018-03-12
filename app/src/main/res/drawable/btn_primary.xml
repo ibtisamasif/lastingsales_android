@@ -5,27 +5,23 @@
     <item android:state_pressed="true" >
         <shape android:shape="rectangle"  >
             <corners android:radius="4dip" />
-            <stroke android:width="1dip" android:color="@color/white" />
-            <solid android:color="@color/button_state_pressed"/>
+            <stroke android:width="1dip" android:color="@color/md_white" />
+            <solid android:color="@color/colorPrimaryDark"/>
         </shape>
     </item>
     <item android:state_focused="true">
         <shape android:shape="rectangle"  >
             <corners android:radius="4dip" />
-            <stroke android:width="1dip" android:color="@color/button_state_focused" />
-            <solid android:color="@color/button_state_focused"/>
+            <stroke android:width="1dip" android:color="@color/colorPrimaryDark" />
+            <solid android:color="@color/colorPrimaryDark"/>
         </shape>
     </item>
     <item >
         <shape android:shape="rectangle"  >
             <corners android:radius="4dip" />
-            <stroke android:width="1dip" android:color="@color/button_state_normal" />
-            <solid android:color="@color/button_state_normal"/>
+            <stroke android:width="1dip" android:color="@color/colorPrimary" />
+            <solid android:color="@color/colorPrimary"/>
         </shape>
     </item>
 </selector>
-
-
-
-
 

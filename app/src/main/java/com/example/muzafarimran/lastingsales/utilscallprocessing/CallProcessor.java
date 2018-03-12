@@ -31,7 +31,7 @@ class CallProcessor {
 
         } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
             // Contact is in Ignored list. Do Nothing
-
+            // No ignored processor hence contact updatedAt will not be updated upon call.
         } else {
             // new call
             UnknownProcessor.Process(mContext, call, showNotification);

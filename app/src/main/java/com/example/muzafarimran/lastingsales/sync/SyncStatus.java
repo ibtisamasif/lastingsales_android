@@ -23,6 +23,9 @@ public class SyncStatus {
     public static final String SYNC_STATUS_NOTE_EDIT_NOT_SYNCED = "note_edit_not_synced";
     public static final String SYNC_STATUS_NOTE_EDIT_SYNCED = "note_edit_synced";
 
+    public static final String SYNC_STATUS_NOTE_DELETE_NOT_SYNCED = "note_delete_not_synced";
+    public static final String SYNC_STATUS_NOTE_DELETE_SYNCED = "note_delete_synced";
+
     //Followup Add
     public static final String SYNC_STATUS_FOLLOWUP_ADDED_NOT_SYNCED = "followup_added_not_synced";
     public static final String SYNC_STATUS_FOLLOWUP_ADDED_SYNCED = "followup_added_synced";

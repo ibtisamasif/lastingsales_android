@@ -136,4 +136,20 @@ public class LSDynamicColumns extends SugarRecord {
     public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
+
+    @Override
+    public String toString() {
+        return "LSDynamicColumns{" +
+                "serverId='" + serverId + '\'' +
+                ", columnType='" + columnType + '\'' +
+                ", name='" + name + '\'' +
+                ", defaultValueOption='" + defaultValueOption + '\'' +
+                ", range='" + range + '\'' +
+                ", created_by='" + created_by + '\'' +
+                ", updated_by='" + updated_by + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", updated_at='" + updated_at + '\'' +
+                ", companyId='" + companyId + '\'' +
+                '}';
+    }
 }

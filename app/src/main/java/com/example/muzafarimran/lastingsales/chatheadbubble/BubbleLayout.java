@@ -27,12 +27,9 @@ package com.example.muzafarimran.lastingsales.chatheadbubble;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Context;
-import android.graphics.Point;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
@@ -85,7 +82,7 @@ public class BubbleLayout extends BubbleBaseLayout {
         this.shouldStickToWall = shouldStick;
     }
 
-    void notifyBubbleRemoved() {
+    public void notifyBubbleRemoved() {
         if (onBubbleRemoveListener != null) {
             onBubbleRemoveListener.onBubbleRemoved(this);
         }
@@ -110,17 +107,21 @@ public class BubbleLayout extends BubbleBaseLayout {
                     initialY = getViewParams().y;
                     initialTouchX = event.getRawX();
                     initialTouchY = event.getRawY();
-                    playAnimationClickDown();
+//                    playAnimationClickDown();
                     lastTouchDown = System.currentTimeMillis();
-                    updateSize();
+//                    updateSize();
                     animator.stop();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    int x = initialX + (int)(event.getRawX() - initialTouchX);
-                    int y = initialY + (int)(event.getRawY() - initialTouchY);
+                    int x = initialX + (int) (event.getRawX() - initialTouchX);
+                    int y = initialY + (int) (event.getRawY() - initialTouchY);
                     getViewParams().x = x;
                     getViewParams().y = y;
-                    getWindowManager().updateViewLayout(this, getViewParams());
+                    try {
+                        getWindowManager().updateViewLayout(this, getViewParams());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     if (getLayoutCoordinator() != null) {
                         getLayoutCoordinator().notifyBubblePositionChanged(this, x, y);
                     }
@@ -129,7 +130,7 @@ public class BubbleLayout extends BubbleBaseLayout {
                     goToWall();
                     if (getLayoutCoordinator() != null) {
                         getLayoutCoordinator().notifyBubbleRelease(this);
-                        playAnimationClickUp();
+//                        playAnimationClickUp();
                     }
                     if (System.currentTimeMillis() - lastTouchDown < TOUCH_TIME_THRESHOLD) {
                         if (onBubbleClickListener != null) {
@@ -151,33 +152,33 @@ public class BubbleLayout extends BubbleBaseLayout {
         }
     }
 
-    private void playAnimationClickDown() {
-        if (!isInEditMode()) {
-            AnimatorSet animator = (AnimatorSet) AnimatorInflater
-                    .loadAnimator(getContext(), R.animator.bubble_down_click_animator);
-            animator.setTarget(this);
-            animator.start();
-        }
-    }
-
-    private void playAnimationClickUp() {
-        if (!isInEditMode()) {
-            AnimatorSet animator = (AnimatorSet) AnimatorInflater
-                    .loadAnimator(getContext(), R.animator.bubble_up_click_animator);
-            animator.setTarget(this);
-            animator.start();
-        }
-    }
-
-    private void updateSize() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(metrics);
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        width = (size.x - this.getWidth());
-
-    }
+//    private void playAnimationClickDown() {
+//        if (!isInEditMode()) {
+//            AnimatorSet animator = (AnimatorSet) AnimatorInflater
+//                    .loadAnimator(getContext(), R.animator.bubble_down_click_animator);
+//            animator.setTarget(this);
+//            animator.start();
+//        }
+//    }
+//
+//    private void playAnimationClickUp() {
+//        if (!isInEditMode()) {
+//            AnimatorSet animator = (AnimatorSet) AnimatorInflater
+//                    .loadAnimator(getContext(), R.animator.bubble_up_click_animator);
+//            animator.setTarget(this);
+//            animator.start();
+//        }
+//    }
+//
+//    private void updateSize() {
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        windowManager.getDefaultDisplay().getMetrics(metrics);
+//        Display display = getWindowManager().getDefaultDisplay();
+//        Point size = new Point();
+//        display.getSize(size);
+//        width = (size.x - this.getWidth());
+//
+//    }
 
     public interface OnBubbleRemoveListener {
         void onBubbleRemoved(BubbleLayout bubble);
@@ -188,7 +189,7 @@ public class BubbleLayout extends BubbleBaseLayout {
     }
 
     public void goToWall() {
-        if(shouldStickToWall){
+        if (shouldStickToWall) {
             int middle = width / 2;
             float nearestXWall = getViewParams().x >= middle ? width : 0;
             animator.start(nearestXWall, getViewParams().y);
@@ -219,8 +220,8 @@ public class BubbleLayout extends BubbleBaseLayout {
         public void run() {
             if (getRootView() != null && getRootView().getParent() != null) {
                 float progress = Math.min(1, (System.currentTimeMillis() - startingTime) / 400f);
-                float deltaX = (destinationX -  getViewParams().x) * progress;
-                float deltaY = (destinationY -  getViewParams().y) * progress;
+                float deltaX = (destinationX - getViewParams().x) * progress;
+                float deltaY = (destinationY - getViewParams().y) * progress;
                 move(deltaX, deltaY);
                 if (progress < 1) {
                     handler.post(this);

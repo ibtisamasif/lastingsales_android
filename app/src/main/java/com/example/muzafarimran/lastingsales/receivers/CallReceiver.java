@@ -4,26 +4,17 @@ package com.example.muzafarimran.lastingsales.receivers;
  * Created by ahmad on 08-Nov-16.
  */
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.telephony.TelephonyManager;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.migration.VersionManager;
-import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
-import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
-import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
-import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 
 import java.util.Date;
 
-import de.halfbit.tinybus.TinyBus;
-
-public abstract class CallReceiver extends BroadcastReceiver {
-
+public abstract class CallReceiver extends WakefulBroadcastReceiver{
+    private static final String TAG = "CallReceiver";
     //The receiver will be recreated whenever android feels like it.  We need a static variable to remember data between instantiations
     private static int lastState = TelephonyManager.CALL_STATE_IDLE;
     private static Date callStartTime;
@@ -32,32 +23,20 @@ public abstract class CallReceiver extends BroadcastReceiver {
     private SessionManager sessionManager;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        VersionManager versionManager = new VersionManager(context);
-        if(!versionManager.runMigrations()){
-            // if migration has failed
-            Toast.makeText(context, "Migration Failed", Toast.LENGTH_SHORT).show();
-        }
-        sessionManager = new SessionManager(context);
-        if (!sessionManager.isUserSignedIn()) {
-            return;
-        }
-        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(context);
-        theCallLogEngine.execute();
-        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
-        dataSenderAsync.run();
-        IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
-        TinyBus inBus = TinyBus.from(context.getApplicationContext());
-        inBus.post(InCallEvent);
-        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
-        TinyBus mBus = TinyBus.from(context.getApplicationContext());
-        mBus.post(mCallEvent);
-        OutgoingCallEventModel outCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
-        TinyBus outBus = TinyBus.from(context.getApplicationContext());
-        outBus.post(outCallEvent);
-
-
+    public void onReceive(Context context, final Intent intent) {
 //        callStartTime = new Date();
+//        Log.d(TAG, "onReceive: Called");
+//        Log.d("testlog", "CallReceiver onReceive(): Called");
+//        VersionManager versionManager = new VersionManager(context);
+//        if (!versionManager.runMigrations()) {
+//            // if migration has failed
+//            Toast.makeText(context, "Migration Failed", Toast.LENGTH_SHORT).show();
+//        }
+//        sessionManager = new SessionManager(context);
+//        if (!sessionManager.isUserSignedIn()) {
+//            return;
+//        }
+//
 //        //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.
 //        if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
 //            savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
@@ -72,7 +51,7 @@ public abstract class CallReceiver extends BroadcastReceiver {
 //            } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 //                state = TelephonyManager.CALL_STATE_RINGING;
 //            }
-//            onCallStateChanged(context, state, number);
+//            onCallStateChanged(context, state, number, intent);
 //        }
     }
 
@@ -83,19 +62,19 @@ public abstract class CallReceiver extends BroadcastReceiver {
     protected void onOutgoingCallStarted(Context ctx, String number, Date start) {
     }
 
-    protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end) {
+    protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end, Intent intent) {
     }
 
-    protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end) {
+    protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end, Intent intent) {
     }
 
-    protected void onMissedCall(Context ctx, String number, Date start) {
+    protected void onMissedCall(Context ctx, String number, Date start, Intent intent) {
     }
 
     //Deals with actual events
     //Incoming call-  goes from IDLE to RINGING when it rings, to OFFHOOK when it's answered, to IDLE when its hung up
     //Outgoing call-  goes from IDLE to OFFHOOK when it dials out, to IDLE when hung up
-    public void onCallStateChanged(Context context, int state, String number) {
+    public void onCallStateChanged(Context context, int state, String number, Intent intent) {
         if (lastState == state) {
             //No change, debounce extras
             return;
@@ -119,11 +98,11 @@ public abstract class CallReceiver extends BroadcastReceiver {
                 //Went to idle-  this is the end of a call.  What type depends on previous state(s)
                 if (lastState == TelephonyManager.CALL_STATE_RINGING) {
                     //Ring but no pickup-  a miss
-                    onMissedCall(context, savedNumber, callStartTime);
+                    onMissedCall(context, savedNumber, callStartTime, intent);
                 } else if (isIncoming) {
-                    onIncomingCallEnded(context, savedNumber, callStartTime, new Date());
+                    onIncomingCallEnded(context, savedNumber, callStartTime, new Date(), intent);
                 } else {
-                    onOutgoingCallEnded(context, savedNumber, callStartTime, new Date());
+                    onOutgoingCallEnded(context, savedNumber, callStartTime, new Date(), intent);
                 }
                 break;
         }

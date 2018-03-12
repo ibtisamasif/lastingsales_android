@@ -1,0 +1,1 @@
+--alter table LS_CONTACT add DO_NOT_FETCH_PROFILE bool;

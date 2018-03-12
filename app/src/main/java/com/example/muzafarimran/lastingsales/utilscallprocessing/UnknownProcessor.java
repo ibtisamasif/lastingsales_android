@@ -1,13 +1,18 @@
 package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.example.muzafarimran.lastingsales.SettingsManager;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.UnlabeledContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utils.NotificationBuilder;
+import com.example.muzafarimran.lastingsales.utils.CallEndTagBoxService;
+
+import java.util.Calendar;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -17,22 +22,31 @@ import de.halfbit.tinybus.TinyBus;
 
 class UnknownProcessor {
     public static final String TAG = "UnknownProcessor";
+    private static final long MILLIS_10_MINUTES = 600000;
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
         //new untagged contact is created, saved, entered in call entry
         LSContact tempContact = new LSContact();
-        tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
+        SettingsManager settingManager = new SettingsManager(mContext);
+        if (settingManager.getKeyStateDefaultLead()) {
+            tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
+            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+        } else {
+            tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
+        }
         tempContact.setPhoneOne(call.getContactNumber());
         tempContact.setContactName(call.getContactName());
         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+        tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
         tempContact.save();
         // Check if type is incoming , outgoing or missed
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() > 0L) {
             //Incoming with whome Agent have talked
-            if (showNotification) {
-                NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+            if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
+                CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
+//                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
-            InquiryManager.Remove(mContext, call);
+            InquiryManager.removeByCall(mContext, call);
             // Call Saved
             call.setContact(tempContact);
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
@@ -44,10 +58,14 @@ class UnknownProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) && call.getDuration() > 0L) {
             //Outgoing with whome Agent have talked
-            if (showNotification) {
-                NotificationBuilder.showTagNumberPopup(mContext, call.getContactNumber());
+            if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
+                Log.d(TAG, "Process: CALL IS NOT OLD ENOUGH: " + call.getContactNumber());
+                CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
+//                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
+            } else {
+                Log.d(TAG, "Process: CALL IS VERY OLD: " + call.getContactNumber());
             }
-            InquiryManager.Remove(mContext, call);
+            InquiryManager.removeByCall(mContext, call);
             // Call Saved
             call.setContact(tempContact);
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
@@ -57,7 +75,7 @@ class UnknownProcessor {
             TinyBus bus = TinyBus.from(mContext.getApplicationContext());
             bus.post(mCallEventModel);
 
-        } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
+        } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) { //TODO what is this ?
             //Outgoing
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
@@ -70,7 +88,7 @@ class UnknownProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_MISSED)) {
             //Missed
-            InquiryManager.CreateOrUpdate(call);
+            InquiryManager.createOrUpdate(mContext, call);
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
@@ -80,7 +98,7 @@ class UnknownProcessor {
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_REJECTED) || call.getType().equals(LSCall.CALL_TYPE_INCOMING) && call.getDuration() == 0L) {
             //Incoming Rejected
-            InquiryManager.CreateOrUpdate(call);
+            InquiryManager.createOrUpdate(mContext, call);
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
@@ -92,5 +110,8 @@ class UnknownProcessor {
         UnlabeledContactAddedEventModel mCallEvent = new UnlabeledContactAddedEventModel();
         TinyBus bus = TinyBus.from(mContext.getApplicationContext());
         bus.post(mCallEvent);
+        LeadContactAddedEventModel mCallEventLead = new LeadContactAddedEventModel();
+        TinyBus busLead = TinyBus.from(mContext.getApplicationContext());
+        busLead.post(mCallEventLead);
     }
 }

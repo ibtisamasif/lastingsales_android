@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">LastingSales</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="app_name">  LastingSales</string>
     <string name="mixpanel_key">347487b41c2e70ed4dcef0f8454ad710</string>
     <string name="title_activity_splash">LastingSales</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -8,7 +13,7 @@
     <string name="followUps">Followups</string>
     <string name="notifications">Notifications</string>
     <string name="about">About</string>
-    <string name="popup_title_add_new_followup">Add new Followup</string>
+    <string name="popup_title_add_new_reminder">Add New Reminder</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="change">Change</string>
@@ -42,7 +47,7 @@
     <string name="calls">Calls</string>
     <string name="status">Status</string>
     <string name="details">Details</string>
-    <string name="followup">Followup</string>
+    <string name="reminder">Reminder</string>
     <string name="please_add_followup_to_this_call">Please Add Follow Up</string>
     <string name="followUp">Follow Up</string>
     <string name="collegue">COLLEGUE</string>
@@ -72,7 +77,7 @@
     <string name="title">Title</string>
     <string name="non_busines_capital">IGNORE</string>
     <string name="colleague_capital">COLLEAGUE</string>
-    <string name="salesCapital">TRACK</string>
+    <string name="salesCapital">Make Lead</string>
     <string name="connections">Connections</string>
     <!--        TAB NAMES-->
     <string name="tab_home">Home</string>
@@ -96,5 +101,44 @@
     <string name="em_ignored_delight">Ignored Contacts are your Friend and Family contacts. They are not Tracked!</string>
     <string name="em_business_delight">Business Contacts are people who are not your customers!</string>
     <string name="lead_details">Lead Details</string>
+    <string name="details_button">DETAILS</string>
+
+
+    <string name="onstoptask">onStopTask</string>
+    <string name="onstarttask">onStartTask</string>
+    <string name="defaultparamtext">task params will show up here.</string>
+    <string name="schedule_job_button_text">Schedule Job</string>
+    <string name="cancel_all_jobs_button_text">Cancel all</string>
+    <string name="finish_job_button_text">Finish last task</string>
+    <string name="idle_mode_text">Requires device in idle mode.</string>
+    <string name="charging_caption">Charging:</string>
+    <string name="charging_text">Requires device plugged in.</string>
+    <string name="idle_caption">Idle:</string>
+    <string name="connectivity">Connectivity:</string>
+    <string name="any">Any</string>
+    <string name="unmetered">WiFi</string>
+    <string name="timing">Timing:</string>
+    <string name="delay">Delay:</string>
+    <string name="deadline">Deadline:</string>
+    <string name="work_duration">Work duration:</string>
+    <string name="cancelled_job">Cancelled job %d</string>
+    <string name="no_jobs_to_cancel">No jobs to cancel</string>
+    <string name="all_jobs_cancelled">All jobs cancelled</string>
+
+    <string name="google_card_background_color">#F2F2F2</string>
+    <string name="google_card_color">#FFFFFF</string>
+    <string name="navigation_tasks">Tasks</string>
+    <string name="navigation_inquiries">Inquiries</string>
+    <string name="navigation_unlabeled">Unlabeled</string>
+    <string name="navigation_leads">Leads</string>
+    <string name="navigation_more">More</string>
+    <string name="account_setting"><![CDATA[account & setting]]></string>
+
+    <string name="message_zoom_touch_expand">Touch a photo to expand it.</string>
+
+    <!-- Accessibility-only descriptions -->
+    <string name="description_image_1">Image 1</string>
+    <string name="description_image_2">Image 2</string>
+    <string name="description_zoom_touch_close">Expanded image (touch to close)</string>
 
 </resources>

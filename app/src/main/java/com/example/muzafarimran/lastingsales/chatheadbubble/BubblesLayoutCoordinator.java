@@ -27,7 +27,9 @@ package com.example.muzafarimran.lastingsales.chatheadbubble;
 import android.view.View;
 import android.view.WindowManager;
 
-final class BubblesLayoutCoordinator {
+import com.example.muzafarimran.lastingsales.service.BubblesService;
+
+public final class BubblesLayoutCoordinator {
     private static BubblesLayoutCoordinator INSTANCE;
     private BubbleTrashLayout trashView;
     private WindowManager windowManager;

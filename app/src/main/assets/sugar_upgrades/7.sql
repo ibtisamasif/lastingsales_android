@@ -1,0 +1,1 @@
+alter table LS_CONTACT add UPDATED_AT Long;

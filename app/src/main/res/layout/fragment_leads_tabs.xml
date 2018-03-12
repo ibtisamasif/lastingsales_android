@@ -4,7 +4,8 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <android.support.design.widget.TabLayout
         android:id="@+id/lead_types"
@@ -21,7 +22,7 @@
         app:tabSelectedTextColor="#ffffff"
         app:tabTextColor="#ffffff" />
 
-    <android.support.v4.view.ViewPager
+    <com.example.muzafarimran.lastingsales.customview.CustomViewPager
         android:id="@+id/vp_leads_types"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,13 +46,9 @@
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
-        fab:menu_colorNormal="@color/fab_contact_menu_normal"
-        fab:menu_colorPressed="@color/fab_contact_menu_pressed"
         fab:menu_colorRipple="#99d4d4d4"
         fab:menu_fab_size="normal"
-        fab:menu_icon="@drawable/fab_add"
-        fab:menu_labels_colorNormal="@color/fab_contact_menu_text_background_normal"
-        fab:menu_labels_colorPressed="@color/fab_contact_menu_text_background_pressed"
+        fab:menu_icon="@drawable/ic_person_add_white"
         fab:menu_labels_colorRipple="#66efecec"
         fab:menu_labels_cornerRadius="3dp"
         fab:menu_labels_ellipsize="none"
@@ -66,7 +63,6 @@
         fab:menu_labels_textColor="#f2f1f1"
         fab:menu_labels_textSize="15sp"
         fab:menu_openDirection="up"
-        fab:menu_shadowColor="@color/darkGray"
         fab:menu_shadowRadius="4dp"
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="4dp"
@@ -76,9 +72,7 @@
             android:id="@+id/material_design_floating_action_menu_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_input_add"
-            app:fab_colorNormal="@color/fab_add_contact_normal"
-            app:fab_colorPressed="@color/fab_add_contact_pressed"
+            app:srcCompat="@drawable/ic_input_add"
             fab:fab_label="Add Lead"
             fab:fab_size="mini" />
 
@@ -86,9 +80,7 @@
             android:id="@+id/material_design_floating_action_menu_import"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_action_search"
-            app:fab_colorNormal="@color/fab_import_contact_normal"
-            app:fab_colorPressed="@color/fab_import_contact_pressed"
+            app:srcCompat="@drawable/ic_action_action_search"
             fab:fab_label="Import from Phonebook"
             fab:fab_size="mini" />
 

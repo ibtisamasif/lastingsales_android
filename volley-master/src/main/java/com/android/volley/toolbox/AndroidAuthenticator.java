@@ -30,7 +30,6 @@ import android.os.Bundle;
  * An Authenticator that uses {@link AccountManager} to get auth
  * tokens of a specified type for a specified account.
  */
-// TODO: Update this to account for runtime permissions
 @SuppressLint("MissingPermission")
 public class AndroidAuthenticator implements Authenticator {
     private final AccountManager mAccountManager;
@@ -83,7 +82,6 @@ public class AndroidAuthenticator implements Authenticator {
         return mAuthTokenType;
     }
 
-    // TODO: Figure out what to do about notifyAuthFailure
     @SuppressWarnings("deprecation")
     @Override
     public String getAuthToken() throws AuthFailureError {

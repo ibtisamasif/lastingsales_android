@@ -1,36 +1,42 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
-
+    compileSdkVersion 27
+    buildToolsVersion '26.0.3'
     defaultConfig {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 15
-        versionName "1.12"
-        jackOptions {
-            enabled false
-        }
+        versionCode 113 //110
+        versionName "2.60" //2.57 in production. Change mixpanel key and urls (staging to production) lskey = J7Z/}aB*6'r7q+A~
+//        jackOptions {
+//            enabled false
+//        }
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
     signingConfigs {
         debug {
-            storeFile file('E:/ibtii/work/Vivid/configuration data/lskey.jks')
+            storeFile file('C:/work/lastingsales-app_new2/configuration data/lskey.jks')
             storePassword "J7Z/}aB*6'r7q+A~"
             keyAlias "lastingSales"
             keyPassword "J7Z/}aB*6'r7q+A~"
         }
     }
-
     buildTypes {
         release {
+//            debuggable false
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             debuggable true
+            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
     }
     packagingOptions {
@@ -46,39 +52,82 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
     compileOptions {
-        targetCompatibility 1.7
-        sourceCompatibility 1.7
+        android.compileOptions.targetCompatibility JavaVersion.VERSION_1_8
+        android.compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 dependencies {
+    //    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //    // Testing-only dependencies
+    //    testImplementation 'junit:junit:4.12'
+    //    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    // Required -- JUnit 4 framework
+//    testCompile 'junit:junit:4.12'
+    // Optional -- Mockito framework
+//    testCompile 'org.mockito:mockito-core:1.10.19'
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:palette-v7:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.wdullaer:materialdatetimepicker:2.5.0'
-    testCompile 'junit:junit:4.12'
-    compile 'com.github.satyan:sugar:1.4'
+    compile 'com.android.support:multidex:1.0.2'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.android.support:palette-v7:27.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
+    compile 'com.android.support:support-core-utils:27.0.2'
+    implementation 'com.google.android.gms:play-services-plus:11.8.0'
+    compile 'com.google.firebase:firebase-core:11.8.0'
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
+    compile 'com.google.firebase:firebase-crash:11.8.0'
+    compile 'com.google.android.gms:play-services-gcm:11.8.0'
+    compile 'com.google.android.gms:play-services-ads:11.8.0'
+    compile('com.google.android.gms:play-services-auth:11.8.0') {
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'com.google.guava'
+    }
+    compile 'pub.devrel:easypermissions:0.2.1'
+    compile('com.google.api-client:google-api-client-android:1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'com.google.guava'
+    }
+    compile('com.google.apis:google-api-services-calendar:v3-rev243-1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'com.android.support'
+        exclude module: 'support-annotations'
+        exclude group: 'com.google.guava'
+    }
+    compile 'com.wdullaer:materialdatetimepicker:3.5.0'
+    compile 'com.github.satyan:sugar:1.5'
+    compile 'com.github.satyan:sugar:-SNAPSHOT'
     compile 'com.googlecode.libphonenumber:libphonenumber:7.7.3'
     compile 'de.halfbit:tinybus:3.0.2'
-    //    compile 'com.android.volley:volley:1.0.0'
+    compile 'de.halfbit:tinybus-extensions:3.0.2'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.github.clans:fab:1.6.4'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
+    //    compile 'com.android.support:support-annotations:26.0.2'
+    //    compile 'com.github.bumptech.glide:glide:4.1.1'
+    //    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.google.firebase:firebase-core:10.2.0'
-    compile 'com.google.firebase:firebase-messaging:10.2.0'
-    compile 'com.google.firebase:firebase-crash:10.2.0'
     //    compile 'com.aykuttasil:callrecord:1.2.1'
-    compile files('libs/httpclient-4.3.6.jar')
-    compile files('libs/httpcore-4.3.3.jar')
-    compile files('libs/httpmime-4.3.6.jar')
+    //    compile files('libs/httpclient-4.3.6.jar')
+    //    compile files('libs/httpcore-4.3.3.jar')
+    //    compile files('libs/httpmime-4.3.6.jar')
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'com.google.code.gson:gson:2.8.0'
-    //    compile 'com.google.android.gms:play-services:10.2.0'
-    compile 'com.mixpanel.android:mixpanel-android:5.0.1'
+    compile 'com.mixpanel.android:mixpanel-android:5.2.1'
     compile project(':volley-master')
+    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
+    compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
+    compile 'me.leolin:ShortcutBadger:1.1.18@aar'
+    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    compile 'com.evernote:android-job:1.2.0'
+    compile 'com.github.paolorotolo:expandableheightlistview:1.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.facebook.fresco:fresco:1.5.0'
+
 }
 apply plugin: 'com.google.gms.google-services'
