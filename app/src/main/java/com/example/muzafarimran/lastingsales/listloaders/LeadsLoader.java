@@ -7,6 +7,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ChipItem;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
+import com.example.muzafarimran.lastingsales.carditems.FilterItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -42,8 +43,8 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                list.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                list.add(filterItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -88,8 +89,8 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                list.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                list.add(filterItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -133,8 +134,8 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                list.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                list.add(filterItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -178,8 +179,8 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                list.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                list.add(filterItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -223,8 +224,8 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                list.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                list.add(filterItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
@@ -267,8 +268,8 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                list.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                list.add(filterItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";

@@ -327,9 +327,9 @@ public class LSContact extends SugarRecord {
         }
     }
 
-//    public static ArrayList<LSContact> getContactByDynamicValue(String val) {
+//    public static ArrayList<LSContact> getContactsByDynamicName(String val) {
 //        try {
-//            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' ORDER BY updated_at DESC");
+////            return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' ORDER BY updated_at DESC");
 //        } catch (SQLiteException e) {
 //            return new ArrayList<LSContact>();
 //        }
