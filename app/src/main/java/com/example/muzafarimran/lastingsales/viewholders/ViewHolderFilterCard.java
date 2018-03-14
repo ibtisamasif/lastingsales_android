@@ -32,14 +32,16 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
     private final LinearLayout llFilterDynamicArea;
 
     private Button bFilter;
-    private Spinner spinnerNames;
-    private ArrayList<String> list;
     private RelativeLayout relativeLayout;
     private LinearLayout l;
     private LinearLayout l2;
     private int width;
     private LinearLayout l3;
+    private Spinner spinnerNames;
+    private Spinner spinnerValues;
+    private ArrayList<String> list;
     private ArrayList<String> listValues = new ArrayList<String>();
+    private ArrayList<LSContact> lsContacts = new ArrayList<LSContact>();
 
     public ViewHolderFilterCard(View v) {
         super(v);
@@ -121,7 +123,7 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
             Log.d(TAG, "onItemSelected: listHash: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + list.size());
 
 
-            Toast.makeText(view.getContext(), "onItemSelected: " + spinnerNames.getSelectedItem(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), "onItemSelectedspinnerNames: " + spinnerNames.getSelectedItem(), Toast.LENGTH_SHORT).show();
 
             //TODO search for the value of spinnerName.getSelectedItem() in the dynamic column of each contact and store result in an array to populate in SpinnerValues.
 
@@ -142,20 +144,20 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
                         for (DynamicColumnBuilderVersion1.Column oneDynamicColumns : dynColumns) {
                             if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
                                 Log.d(TAG, "onItemSelected: COLUMN_TYPE_TEXT");
-                                if (oneDynamicColumns.value != null && !oneDynamicColumns.value.equalsIgnoreCase("")){
+                                if (oneDynamicColumns.value != null && !oneDynamicColumns.value.equalsIgnoreCase("")) {
                                     String selectedSpinnerName = spinnerNames.getSelectedItem().toString();
-                                    if(selectedSpinnerName.equals(oneDynamicColumns.name)){
-                                        if (!listValues.contains(oneDynamicColumns.value)){
+                                    if (selectedSpinnerName.equals(oneDynamicColumns.name)) {
+                                        if (!listValues.contains(oneDynamicColumns.value)) {
                                             listValues.add(oneDynamicColumns.value);
                                         }
                                     }
                                 }
                             } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
                                 Log.d(TAG, "onItemSelected: COLUMN_TYPE_NUMBER");
-                                if (oneDynamicColumns.value != null && !oneDynamicColumns.value.equalsIgnoreCase("")){
+                                if (oneDynamicColumns.value != null && !oneDynamicColumns.value.equalsIgnoreCase("")) {
                                     String selectedSpinnerName = spinnerNames.getSelectedItem().toString();
-                                    if(selectedSpinnerName.equals(oneDynamicColumns.name)){
-                                        if (!listValues.contains(oneDynamicColumns.value)){
+                                    if (selectedSpinnerName.equals(oneDynamicColumns.name)) {
+                                        if (!listValues.contains(oneDynamicColumns.value)) {
                                             listValues.add(oneDynamicColumns.value);
                                         }
                                     }
@@ -193,14 +195,7 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
 
             }
 
-
-//            ArrayList<LSContact> lsContacts = LSContact.getContactsByDynamicName("honda City");
-//            if (lsContacts.size() > 0) {
-//
-//            }
-
-
-            Spinner spinnerValues = new Spinner(view.getContext());
+            spinnerValues = new Spinner(view.getContext());
             spinnerValues.setId(listValues.size() + 1);
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.spinner_item, listValues);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -212,7 +207,7 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
             spinnerValues.post(new Runnable() {
                 @Override
                 public void run() {
-//                    spinnerValues.setOnItemSelectedListener(new DynamicSpinnerValuesOnItemSelectedListener());
+                    spinnerValues.setOnItemSelectedListener(new DynamicSpinnerValuesOnItemSelectedListener());
                 }
             });
             LinearLayout.LayoutParams lpSpinner = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -240,6 +235,65 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
             Toast.makeText(parent.getContext(), "onNothingSelected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class DynamicSpinnerValuesOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            Toast.makeText(view.getContext(), spinnerNames.getSelectedItem() + " " + spinnerValues.getSelectedItem(), Toast.LENGTH_SHORT).show();
+            //TODO apply query here to search for all LEADS date arranged leads having  Name = spinnerName.getSelectedItem() && value = spinnerValues.getSelectedItem().
+            lsContacts.clear();
+
+            Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
+            if (contacts != null && contacts.size() > 0) {
+
+                for (LSContact oneContact : contacts) {
+
+                    if (oneContact.getDynamic() != null) {
+
+                        DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1 = new DynamicColumnBuilderVersion1();
+
+                        Log.d(TAG, "dynamicColumns: getVersion = 0");
+                        dynamicColumnBuilderVersion1.parseJson(oneContact.getDynamic());
+                        Log.d(TAG, "dynamicColumnsJSONN: " + oneContact.getDynamic());
+                        ArrayList<DynamicColumnBuilderVersion1.Column> dynColumns = dynamicColumnBuilderVersion1.getColumns();
+                        for (DynamicColumnBuilderVersion1.Column oneDynamicColumns : dynColumns) {
+                            if (oneDynamicColumns.name != null && !oneDynamicColumns.name.equalsIgnoreCase("") && oneDynamicColumns.value != null && !oneDynamicColumns.value.equalsIgnoreCase("")) {
+                                String selectedSpinnerName = spinnerNames.getSelectedItem().toString();
+                                String selectedSpinnerValue = spinnerValues.getSelectedItem().toString();
+                                if (selectedSpinnerName.equals(oneDynamicColumns.name) && selectedSpinnerValue.equals(oneDynamicColumns.value)) {
+                                    lsContacts.add(oneContact);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+//            ArrayList<LSContact> lsContacts = LSContact.getContactsByDynamicNameAndValue("myCar","honda City");
+//            if (lsContacts.size() > 0) {
+//                Log.e(TAG, "onItemSelected: lsContacts: " + lsContacts.toString());
+//            }
+
+            if (lsContacts != null) {
+                Log.d(TAG, "onItemSelected: lsContacts: MATCHED : " + lsContacts);
+                for (LSContact oneMatchedContact :
+                        lsContacts) {
+                    Log.d(TAG, "oneMatchedContact: " + oneMatchedContact.getPhoneOne());
+                }
+//                Toast.makeText(view.getContext(), "" + lsContacts.toString(), Toast.LENGTH_SHORT).show();
+
+//                NavigationBottomMainActivity navigationBottomMainActivity = new NavigationBottomMainActivity();
+//                navigationBottomMainActivity.onLoadFilteredContacts(lsContacts);
+            }
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     }
 }

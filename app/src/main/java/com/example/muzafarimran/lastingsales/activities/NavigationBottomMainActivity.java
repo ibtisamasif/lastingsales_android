@@ -665,6 +665,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 //        Toast.makeText(NavigationBottomMainActivity.this, "ContactDeletedEventModel", Toast.LENGTH_SHORT).show();
     }
 
+//    public void onLoadFilteredContacts(ArrayList<LSContact> lsContacts){
+//        getSupportLoaderManager().restartLoader(FILTERCONTACTS_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+//    }
+
     @Override
     public Loader<List<Object>> onCreateLoader(int id, Bundle args) {
         list.clear();
@@ -684,6 +688,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 return new LeadsLoader(NavigationBottomMainActivity.this, args);
             case MORE_LOADER_ID:
                 return new MoreLoader(NavigationBottomMainActivity.this);
+//            case FILTERCONTACTS_LOADER_ID:
+//                return new FilteredContactsLoader(NavigationBottomMainActivity.this);
             default:
                 return null;
         }
