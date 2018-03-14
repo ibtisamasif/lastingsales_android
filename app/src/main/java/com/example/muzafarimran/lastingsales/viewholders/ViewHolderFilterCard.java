@@ -15,9 +15,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
+import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,6 +38,8 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
     private LinearLayout l;
     private LinearLayout l2;
     private int width;
+    private LinearLayout l3;
+    private ArrayList<String> listValues = new ArrayList<String>();
 
     public ViewHolderFilterCard(View v) {
         super(v);
@@ -55,12 +60,6 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
                 if (allColumns != null) {
                     Log.d(TAG, "onClick: allColumns Size: " + allColumns.size());
                     Log.d(TAG, "onClick: allColumns : " + allColumns.toString());
-
-
-//                        ArrayList<LSContact> lsContacts = LSContact.getContactsByDynamicName("honda city");
-//                        if(lsContacts.size() > 0){
-//
-//                        }
 
                     l = new LinearLayout(mContext);
                     l.setFocusable(true);
@@ -99,13 +98,6 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
                     relativeLayout.setBackgroundResource(R.drawable.dynamic_border);
                     relativeLayout.addView(spinnerNames, lpSpinner);
 
-
-//                        LinearLayout l1 = new LinearLayout(mContext);
-//                        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
-//                        lp1.weight = 5;
-//                        l1.setLayoutParams(lp1);
-//                        l1.addView(tv);
-
                     l2 = new LinearLayout(mContext);
                     LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
                     lp2.weight = 5;
@@ -125,17 +117,97 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
     private class DynamicSpinnerNamesOnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            listValues.clear();
+            Log.d(TAG, "onItemSelected: listHash: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + list.size());
 
-            Log.d(TAG, "onItemSelected: listHash: " + list.size());
 
             Toast.makeText(view.getContext(), "onItemSelected: " + spinnerNames.getSelectedItem(), Toast.LENGTH_SHORT).show();
 
+            //TODO search for the value of spinnerName.getSelectedItem() in the dynamic column of each contact and store result in an array to populate in SpinnerValues.
+
+
+            Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
+            if (contacts != null && contacts.size() > 0) {
+
+                for (LSContact oneContact : contacts) {
+
+                    if (oneContact.getDynamic() != null) {
+
+                        DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1 = new DynamicColumnBuilderVersion1();
+
+                        Log.d(TAG, "dynamicColumns: getVersion = 0");
+                        dynamicColumnBuilderVersion1.parseJson(oneContact.getDynamic());
+                        Log.d(TAG, "dynamicColumnsJSONN: " + oneContact.getDynamic());
+                        ArrayList<DynamicColumnBuilderVersion1.Column> dynColumns = dynamicColumnBuilderVersion1.getColumns();
+                        for (DynamicColumnBuilderVersion1.Column oneDynamicColumns : dynColumns) {
+                            if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
+                                Log.d(TAG, "onItemSelected: COLUMN_TYPE_TEXT");
+                                if (oneDynamicColumns.value != null && !oneDynamicColumns.value.equalsIgnoreCase("")){
+                                    String selectedSpinnerName = spinnerNames.getSelectedItem().toString();
+                                    if(selectedSpinnerName.equals(oneDynamicColumns.name)){
+                                        if (!listValues.contains(oneDynamicColumns.value)){
+                                            listValues.add(oneDynamicColumns.value);
+                                        }
+                                    }
+                                }
+                            } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+                                Log.d(TAG, "onItemSelected: COLUMN_TYPE_NUMBER");
+                                if (oneDynamicColumns.value != null && !oneDynamicColumns.value.equalsIgnoreCase("")){
+                                    String selectedSpinnerName = spinnerNames.getSelectedItem().toString();
+                                    if(selectedSpinnerName.equals(oneDynamicColumns.name)){
+                                        if (!listValues.contains(oneDynamicColumns.value)){
+                                            listValues.add(oneDynamicColumns.value);
+                                        }
+                                    }
+                                }
+                            } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+                                Log.d(TAG, "onItemSelected: COLUMN_TYPE_SINGLE");
+//                            final Spinner s = (Spinner) llFilterDynamicArea.findViewById(Integer.parseInt(oneDynamicColumns.id));
+//                            if (s != null) {
+//                                List<String> list = (List<String>) s.getTag();
+//                                int index = -1;
+//                                for (int i = 0; i < list.size(); i++) {
+//                                    if (oneDynamicColumns.value.equals(list.get(i))) {
+//                                        index = i;
+//                                    }
+//                                }
+//                                if (oneContact.getDynamic() != null && !oneContact.getDynamic().equals("")) {
+//
+//                                    Log.d(TAG, "dynamicColumns: " + index);
+//                                    s.setSelection(index, false);
+//                                }
+//                                s.post(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+////                                        s.setOnItemSelectedListener(new IndividualContactDetailsFragment.DynamicSpinnerOnItemSelectedListener());
+//                                    }
+//                                });
+//                            } else {
+//                                Log.d(TAG, "this spinner dynamic column was set filled for lead but column is no more");
+//                            }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+
+//            ArrayList<LSContact> lsContacts = LSContact.getContactsByDynamicName("honda City");
+//            if (lsContacts.size() > 0) {
+//
+//            }
+
 
             Spinner spinnerValues = new Spinner(view.getContext());
-            spinnerValues.setId(list.size()+1);
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.spinner_item, list);
+            spinnerValues.setId(listValues.size() + 1);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.spinner_item, listValues);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerValues.setAdapter(dataAdapter);
+
+//            spinnerValues.setSelection(position);
+
 
             spinnerValues.post(new Runnable() {
                 @Override
@@ -149,21 +221,18 @@ public class ViewHolderFilterCard extends RecyclerView.ViewHolder {
 
             relativeLayout = new RelativeLayout(view.getContext());
             relativeLayout.setBackgroundResource(R.drawable.dynamic_border);
+            relativeLayout.removeAllViews();
             relativeLayout.addView(spinnerValues, lpSpinner);
 
-
-//            TextView tv = new TextView(view.getContext());
-//            tv.setText(((String) spinnerNames.getSelectedItem()));
-//
-//            LinearLayout l1 = new LinearLayout(view.getContext());
-//            LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            lp1.weight = 5;
-//            l1.setLayoutParams(lp1);
-//            l1.addView(tv);
+            l3 = new LinearLayout(view.getContext());
+            LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp2.weight = 5;
+            l3.setLayoutParams(lp2);
+            l3.addView(relativeLayout);
 
             l.removeAllViews();
             l.addView(l2);
-            l.addView(relativeLayout);
+            l.addView(l3);
             llFilterDynamicArea.removeView(l);
             llFilterDynamicArea.addView(l);
         }
