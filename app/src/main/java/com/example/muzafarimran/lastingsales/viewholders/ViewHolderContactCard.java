@@ -26,9 +26,7 @@ import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ColleagueActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
-import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
-import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -221,8 +219,8 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
 //                setList(allUntaggedContacts);
             Toast.makeText(mContext, "Added to Ignored Contact!", Toast.LENGTH_SHORT).show();
 
-            CloseContactBottomSheetEvent closeContactBottomSheetEvent = new NavigationBottomMainActivity();
-            closeContactBottomSheetEvent.closeContactBottomSheetCallback();
+//            CloseContactBottomSheetEvent closeContactBottomSheetEvent = new NavigationBottomMainActivity();
+//            closeContactBottomSheetEvent.closeContactBottomSheetCallback();
         });
 
         user_avatar.setOnClickListener(new View.OnClickListener() {
@@ -376,8 +374,8 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Warning));
 
                 this.cl.setOnClickListener(view -> {
-                    NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
-                    navigationBottomMainActivity.openContactBottomSheetCallback((Long) view.getTag());
+//                    NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
+//                    navigationBottomMainActivity.openContactBottomSheetCallback((Long) view.getTag());
                 });
 
                 this.cl.setOnLongClickListener(view -> {

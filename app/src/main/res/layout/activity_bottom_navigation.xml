@@ -13,12 +13,13 @@
         layout="@layout/layout_toolbar" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/mRecyclerView"
+    <LinearLayout
+        android:id="@+id/llFragmentContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +50,7 @@
         app:fab_hideAnimation="@anim/fab_scale_down"
         app:fab_showAnimation="@anim/fab_scale_up"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintEnd_toEndOf="@+id/mRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/llFragmentContainer"
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"

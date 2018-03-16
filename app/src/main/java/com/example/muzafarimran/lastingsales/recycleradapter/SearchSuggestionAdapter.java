@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.recycleradapter;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
-import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.app.ClassManager;
 
 import java.util.List;
@@ -77,13 +75,13 @@ public class SearchSuggestionAdapter extends CursorAdapter {
                         }
                     } else if (className.equals(ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
                         long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
-                        NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
-                        navigationBottomMainActivity.openContactBottomSheetCallback(intentPutId);
+//                        NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
+//                        navigationBottomMainActivity.openContactBottomSheetCallback(intentPutId);
 
                     } else if (className.equals(ClassManager.INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
                         String intentPutNumber = cursor.getString(cursor.getColumnIndex("intentPutNumber"));
-                        NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
-                        navigationBottomMainActivity.openInquiryBottomSheetCallback(intentPutNumber);
+//                        NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
+//                        navigationBottomMainActivity.openInquiryBottomSheetCallback(intentPutNumber);
                     } else {
                         Toast.makeText(context, "Details not found", Toast.LENGTH_SHORT).show();
                     }

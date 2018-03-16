@@ -7,7 +7,6 @@ import android.widget.Button;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ChipItem;
-import com.example.muzafarimran.lastingsales.listeners.ChipClickListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.Collection;
@@ -25,7 +24,7 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
     private Button bLost;
     private Button bInActive;
 
-    ChipClickListener chipClickListener;
+//    ChipClickListener chipClickListener;
 
     public ViewHolderChipCard(View v) {
         super(v);
@@ -38,7 +37,7 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
 
     public void bind(Object item, int position, Context mContext) {
         final ChipItem chipItem = (ChipItem) item;
-        chipClickListener = (ChipClickListener) mContext;
+//        chipClickListener = (ChipClickListener) mContext;
 
         Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
         if (contacts != null) {
@@ -54,7 +53,7 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
                 bLost.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 bAll.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 bInActive.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
-                chipClickListener.onChipClick("All");
+//                chipClickListener.onChipClick("All");
 //                Toast.makeText(mContext, "bAll Leads", Toast.LENGTH_SHORT).show();
             }
         });
@@ -73,7 +72,7 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
                 bLost.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 bAll.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 bInActive.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
-                chipClickListener.onChipClick("InProgress");
+//                chipClickListener.onChipClick("InProgress");
 //                Toast.makeText(mContext, "bInProgress Leads", Toast.LENGTH_SHORT).show();
             }
         });
@@ -91,7 +90,7 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
                 bWon.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_selected));
                 bLost.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 bInActive.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
-                chipClickListener.onChipClick("Won");
+//                chipClickListener.onChipClick("Won");
 //                Toast.makeText(mContext, "bWon Leads", Toast.LENGTH_SHORT).show();
             }
         });
@@ -109,7 +108,7 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
                 bWon.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 bLost.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_selected));
                 bInActive.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
-                chipClickListener.onChipClick("Lost");
+//                chipClickListener.onChipClick("Lost");
 //                Toast.makeText(mContext, "bLost Leads", Toast.LENGTH_SHORT).show();
             }
         });
@@ -127,7 +126,7 @@ public class ViewHolderChipCard extends RecyclerView.ViewHolder {
                 bWon.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 bLost.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_normal));
                 bInActive.setBackground(mContext.getResources().getDrawable(R.drawable.shape_chip_selected));
-                chipClickListener.onChipClick("InActive");
+//                chipClickListener.onChipClick("InActive");
 //                Toast.makeText(mContext, "bInActive Leads", Toast.LENGTH_SHORT).show();
             }
         });
