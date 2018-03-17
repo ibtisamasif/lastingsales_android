@@ -53,6 +53,7 @@ public class FlyerBubbleHelper extends AppCompatActivity {
     private TextView tvName;
     private TextView tvCallerHistoryLastCallDateTime1;
     private TextView tvCallerHistoryLastCallTimeAgo1;
+    private TextView tvMore;
     private SimpleDraweeView user_avatar;
     private static RequestQueue queue;
     private TextView tvError;
@@ -87,6 +88,7 @@ public class FlyerBubbleHelper extends AppCompatActivity {
         tvCallerHistoryName1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName1);
         tvCallerHistoryLastCallDateTime1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime1);
         tvCallerHistoryLastCallTimeAgo1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo1);
+        tvMore = (TextView) bubbleView.findViewById(R.id.tvMore);
         tvName = (TextView) bubbleView.findViewById(R.id.tvContactName);
         tvName.setText(number);
         ibClose = (ImageButton) bubbleView.findViewById(R.id.ibClose);
@@ -98,13 +100,14 @@ public class FlyerBubbleHelper extends AppCompatActivity {
         tvCallerHistoryLastCallDateTime1.setText("");
         tvCallerHistoryLastCallTimeAgo1.setText("");
 
-        tvError.setVisibility(View.VISIBLE);
         tvCallerHistoryName0.setVisibility(View.GONE);
         tvCallerHistoryLastCallDateTime0.setVisibility(View.GONE);
         tvCallerHistoryLastCallTimeAgo0.setVisibility(View.GONE);
         tvCallerHistoryName1.setVisibility(View.GONE);
         tvCallerHistoryLastCallDateTime1.setVisibility(View.GONE);
         tvCallerHistoryLastCallTimeAgo1.setVisibility(View.GONE);
+        tvError.setVisibility(View.VISIBLE);
+        tvMore.setVisibility(View.GONE);
 
         ibClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,27 +127,21 @@ public class FlyerBubbleHelper extends AppCompatActivity {
                 }
             }
         });
-
-
-//        if (oneContact != null) {
-//            tvName.setText(oneContact.getContactName());
-//        }
-//
-//        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
-//        if (tvName.getText().toString().equals("null") && name != null) {
-//            tvName.setText(name);
-//        }
-
         String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
         if (oneContact != null) {
             if (oneContact.getContactName() != null) {
+                Log.d(TAG, "show1: oneContact != null & oneContact.getContactName() != null " + oneContact.getContactName());
                 tvName.setText(oneContact.getContactName());
+            } else {
+                if (name != null) {
+                    Log.d(TAG, "show1: oneContact != null & oneContact.getContactName() == null & name != null " + name);
+                    tvName.setText(name);
+                }
             }
         } else {
             if (name != null) {
+                Log.d(TAG, "show1: oneContact == null & name != null " + name);
                 tvName.setText(name);
-            } else {
-                tvName.setText(number);
             }
         }
 
@@ -171,10 +168,8 @@ public class FlyerBubbleHelper extends AppCompatActivity {
 //                Toast.makeText(context, "Clicked !", Toast.LENGTH_SHORT).show();
             }
         });
-
         // add bubble view into bubble manager
         bubblesManager.addBubble(bubbleView, 0, 0);
-
         fetchCustomerHistory(number);
     }
 
@@ -189,6 +184,7 @@ public class FlyerBubbleHelper extends AppCompatActivity {
         tvCallerHistoryName1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryName1);
         tvCallerHistoryLastCallDateTime1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallDateTime1);
         tvCallerHistoryLastCallTimeAgo1 = (TextView) bubbleView.findViewById(R.id.tvCallerHistoryLastCallTimeAgo1);
+        tvMore = (TextView) bubbleView.findViewById(R.id.tvMore);
         tvName = (TextView) bubbleView.findViewById(R.id.tvContactName);
         tvName.setText(number);
         ibClose = (ImageButton) bubbleView.findViewById(R.id.ibClose);
@@ -201,13 +197,14 @@ public class FlyerBubbleHelper extends AppCompatActivity {
         tvCallerHistoryLastCallDateTime1.setText("");
         tvCallerHistoryLastCallTimeAgo1.setText("");
 
-        tvError.setVisibility(View.VISIBLE);
         tvCallerHistoryName0.setVisibility(View.GONE);
         tvCallerHistoryLastCallDateTime0.setVisibility(View.GONE);
         tvCallerHistoryLastCallTimeAgo0.setVisibility(View.GONE);
         tvCallerHistoryName1.setVisibility(View.GONE);
         tvCallerHistoryLastCallDateTime1.setVisibility(View.GONE);
         tvCallerHistoryLastCallTimeAgo1.setVisibility(View.GONE);
+        tvError.setVisibility(View.VISIBLE);
+        tvMore.setVisibility(View.GONE);
 
         ibClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,28 +225,22 @@ public class FlyerBubbleHelper extends AppCompatActivity {
             }
         });
 
-        LSContact oneContact;
-        oneContact = LSContact.getContactFromNumber(PhoneNumberAndCallUtils.numberToInterNationalNumber(context, number));
-
-//        if (oneContact != null) {
-//            tvName.setText(oneContact.getContactName());
-//        }
-//
-//        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
-//        if (tvName.getText().toString().equals("null") && name != null) {
-//            tvName.setText(name);
-//        }
-
+        LSContact oneContact = LSContact.getContactFromNumber(PhoneNumberAndCallUtils.numberToInterNationalNumber(context, number));
         String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(context, number);
         if (oneContact != null) {
             if (oneContact.getContactName() != null) {
+                Log.d(TAG, "show1: oneContact != null & oneContact.getContactName() != null " + oneContact.getContactName());
                 tvName.setText(oneContact.getContactName());
+            } else {
+                if (name != null) {
+                    Log.d(TAG, "show1: oneContact != null & oneContact.getContactName() == null & name != null " + name);
+                    tvName.setText(name);
+                }
             }
         } else {
             if (name != null) {
+                Log.d(TAG, "show1: oneContact == null & name != null " + name);
                 tvName.setText(name);
-            } else {
-                tvName.setText(number);
             }
         }
 
@@ -300,74 +291,65 @@ public class FlyerBubbleHelper extends AppCompatActivity {
 //                    int responseCode = jObj.getInt("responseCode");
                     JSONObject response = jObj.getJSONObject("response");
                     JSONArray dataArray = response.getJSONArray("data");
-                    Log.d(TAG, "onResponse: dataArray Lenght: " + dataArray.length());
-//                    for (int i = 0; i < dataArray.length(); i++) {
+                    Log.d(TAG, "onResponse: dataArray LENGTH: " + dataArray.length());
                     if (dataArray.length() > 0) {
-                        JSONObject jsonobject0 = dataArray.getJSONObject(0);
-                        String last_call0 = jsonobject0.getString("last_call");
-                        String user_id0 = jsonobject0.getString("user_id");
-                        String duration0 = jsonobject0.getString("duration");
-                        String firstname0 = jsonobject0.getString("firstname");
-                        String lastname0 = jsonobject0.getString("lastname");
-                        String role_id0 = jsonobject0.getString("role_id");
-                        String name0 = jsonobject0.getString("name");
+                        for (int i = 0; i < dataArray.length(); i++) {
+                            JSONObject jsonobject = dataArray.getJSONObject(i);
+                            String last_call = jsonobject.getString("last_call");
+                            String user_id = jsonobject.getString("user_id");
+                            String duration = jsonobject.getString("duration");
+                            String firstname = jsonobject.getString("firstname");
+                            String lastname = jsonobject.getString("lastname");
+                            String role_id = jsonobject.getString("role_id");
+                            String name = jsonobject.getString("name");
 
-                        Log.d(TAG, "onResponse0: last_call: " + last_call0);
-                        Log.d(TAG, "onResponse0: user_id: " + user_id0);
-                        Log.d(TAG, "onResponse0: duration: " + duration0);
-                        Log.d(TAG, "onResponse0: firstname: " + firstname0);
-                        Log.d(TAG, "onResponse0: lastname: " + lastname0);
-                        Log.d(TAG, "onResponse0: role_id: " + role_id0);
-                        Log.d(TAG, "onResponse0: name: " + name0);
+                            Log.d(TAG, "onResponse: last_call: " + last_call);
+                            Log.d(TAG, "onResponse: user_id: " + user_id);
+                            Log.d(TAG, "onResponse: duration: " + duration);
+                            Log.d(TAG, "onResponse: firstname: " + firstname);
+                            Log.d(TAG, "onResponse: lastname: " + lastname);
+                            Log.d(TAG, "onResponse: role_id: " + role_id);
+                            Log.d(TAG, "onResponse: name: " + name);
 
-                        if (name0 != null && !name0.equals("null")) {
-                            tvName.setText(name0);
-                        }
-
-                        if (firstname0 != null && lastname0 != null && last_call0 != null) {
-                            tvCallerHistoryName0.setVisibility(View.VISIBLE);
-                            if (!user_id0.equals(sessionManager.getKeyLoginId())) {
-                                tvCallerHistoryName0.setText("Last contacted " + firstname0 + " " + lastname0);
-                            } else {
-                                tvCallerHistoryName0.setText("Last contacted with me");
+                            String valueOnTvName = tvName.getText().toString();
+                            Log.d(TAG, "onResponse: valueOnTvName: " + valueOnTvName);
+                            if (valueOnTvName.equalsIgnoreCase("null") || valueOnTvName.equalsIgnoreCase(number)) {
+                                if (name != null && !name.equals("null")) {
+                                    Log.d(TAG, "onResponse: NAME FROM SERVER");
+                                    tvName.setText(name);
+                                }
                             }
-                            tvCallerHistoryLastCallDateTime0.setVisibility(View.VISIBLE);
-                            tvCallerHistoryLastCallTimeAgo0.setVisibility(View.VISIBLE);
-                            tvCallerHistoryLastCallDateTime0.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), "dd-MMM-yyyy"));
-                            tvCallerHistoryLastCallTimeAgo0.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call0), context) + ")");
+
+                            if (firstname != null && lastname != null && last_call != null) {
+                                if (i == 0) {
+                                    tvCallerHistoryName0.setVisibility(View.VISIBLE);
+                                    if (!user_id.equals(sessionManager.getKeyLoginId())) {
+                                        tvCallerHistoryName0.setText("Last contacted " + firstname + " " + lastname);
+                                    } else {
+                                        tvCallerHistoryName0.setText("Last contacted with me");
+                                    }
+                                    tvCallerHistoryLastCallDateTime0.setVisibility(View.VISIBLE);
+                                    tvCallerHistoryLastCallTimeAgo0.setVisibility(View.VISIBLE);
+                                    tvCallerHistoryLastCallDateTime0.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), "dd-MMM-yyyy"));
+                                    tvCallerHistoryLastCallTimeAgo0.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), context) + ")");
+                                } else if (i == 1) {
+                                    tvCallerHistoryName1.setVisibility(View.VISIBLE);
+                                    if (!user_id.equals(sessionManager.getKeyLoginId())) {
+                                        tvCallerHistoryName1.setText("Last contacted " + firstname + " " + lastname);
+                                    } else {
+                                        tvCallerHistoryName1.setText("Last contacted with me");
+                                    }
+                                    tvCallerHistoryLastCallDateTime1.setVisibility(View.VISIBLE);
+                                    tvCallerHistoryLastCallTimeAgo1.setVisibility(View.VISIBLE);
+                                    tvCallerHistoryLastCallDateTime1.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), "dd-MMM-yyyy"));
+                                    tvCallerHistoryLastCallTimeAgo1.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), context) + ")");
+                                }
+                            }
                         }
                     }
-                    if (dataArray.length() > 1) {
-                        JSONObject jsonobject1 = dataArray.getJSONObject(1);
-                        String last_call1 = jsonobject1.getString("last_call");
-                        String user_id1 = jsonobject1.getString("user_id");
-                        String duration1 = jsonobject1.getString("duration");
-                        String firstname1 = jsonobject1.getString("firstname");
-                        String lastname1 = jsonobject1.getString("lastname");
-                        String role_id1 = jsonobject1.getString("role_id");
-                        String name1 = jsonobject1.getString("name");
-
-                        Log.d(TAG, "onResponse1: last_call: " + last_call1);
-                        Log.d(TAG, "onResponse1: user_id: " + user_id1);
-                        Log.d(TAG, "onResponse1: duration: " + duration1);
-                        Log.d(TAG, "onResponse1: firstname: " + firstname1);
-                        Log.d(TAG, "onResponse1: lastname: " + lastname1);
-                        Log.d(TAG, "onResponse1: role_id: " + role_id1);
-                        Log.d(TAG, "onResponse1: name: " + name1);
-
-                        if (firstname1 != null && lastname1 != null && last_call1 != null) {
-                            tvCallerHistoryName1.setVisibility(View.VISIBLE);
-                            if (!user_id1.equals(sessionManager.getKeyLoginId())) {
-                                tvCallerHistoryName1.setText("Last contacted " + firstname1 + " " + lastname1);
-                            } else {
-                                tvCallerHistoryName1.setText("Last contacted with me");
-                            }
-
-                            tvCallerHistoryLastCallDateTime1.setVisibility(View.VISIBLE);
-                            tvCallerHistoryLastCallTimeAgo1.setVisibility(View.VISIBLE);
-                            tvCallerHistoryLastCallDateTime1.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), "dd-MMM-yyyy"));
-                            tvCallerHistoryLastCallTimeAgo1.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call1), context) + ")");
-                        }
+                    if (dataArray.length() > 2) {
+                        tvMore.setVisibility(View.VISIBLE);
+                        tvMore.setText("and " + (dataArray.length() - 2) + " more..");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
