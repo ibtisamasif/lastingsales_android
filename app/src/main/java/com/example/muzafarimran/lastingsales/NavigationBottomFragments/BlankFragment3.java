@@ -72,7 +72,7 @@ public class BlankFragment3 extends Fragment implements LoaderManager.LoaderCall
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG, "onActivityCreated: ");
-        getLoaderManager().initLoader(LEAD_LOADER_ID, null, BlankFragment3.this).forceLoad();
+        getLoaderManager().initLoader(LEAD_LOADER_ID, null, BlankFragment3.this);
     }
 
 
