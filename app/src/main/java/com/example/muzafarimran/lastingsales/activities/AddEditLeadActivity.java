@@ -67,7 +67,9 @@ public class AddEditLeadActivity extends AppCompatActivity {
     EditText etContactName;
     EditText etContactPhone;
     EditText etContactEmail;
+    EditText etContactAddress;
     LinearLayout llEmailAddress;
+    LinearLayout llAddress;
     LinearLayout llContactType;
     Button bCancel;
     Button bSave;
@@ -78,6 +80,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
     private String contactPhone;
     private String contactName;
     private String contactEmail;
+    private String contactAddress;
     private String mixpanelSource = null;
 
     @Override
@@ -89,7 +92,9 @@ public class AddEditLeadActivity extends AppCompatActivity {
         etContactName = (EditText) findViewById(R.id.etNameAddLead);
         etContactPhone = (EditText) findViewById(R.id.etNumberAddLead);
         llEmailAddress = (LinearLayout) findViewById(R.id.llEmailAddress);
-        etContactEmail = (EditText) findViewById(R.id.etEmailAddLead);
+        llAddress = (LinearLayout) findViewById(R.id.llAddress);
+        etContactEmail = (EditText) findViewById(R.id.etContactEmail);
+        etContactAddress = (EditText) findViewById(R.id.etContactAddress);
         llContactType = (LinearLayout) findViewById(R.id.llContactType);
         bSave = (Button) findViewById(R.id.bSaveAddLead);
         bCancel = (Button) findViewById(R.id.bCancelAddLead);
@@ -156,7 +161,8 @@ public class AddEditLeadActivity extends AppCompatActivity {
                 contactName = etContactName.getText().toString();
                 contactPhone = etContactPhone.getText().toString();
                 contactEmail = etContactEmail.getText().toString();
-                if (isValid(contactName, contactPhone, contactEmail)) {
+                contactAddress = etContactAddress.getText().toString();
+                if (isValid(contactName, contactPhone, contactEmail, contactAddress)) {
 //                    LSContact checkContact;
 //                    checkContact = LSContact.getContactFromNumber(contactPhone);
 //                    if (checkContact == null) {
@@ -317,6 +323,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                         tempContact.setPhoneOne(intlNum);
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactEmail(contactEmail);
+                        tempContact.setContactAddress(contactAddress);
                         tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                         if (tempContact.getContactSalesStatus() == null) {
                             tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
@@ -381,6 +388,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
 
     private void populateCreateContactView() {
         llEmailAddress.setVisibility(View.GONE);
+        llAddress.setVisibility(View.GONE);
 //        tvTitleAddContact.setText(TITLE_ADD_NEW_CONTACT);
         editingMode = false;
         selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
@@ -419,14 +427,20 @@ public class AddEditLeadActivity extends AppCompatActivity {
         } else {
             etContactEmail.setText("");
         }
+        if (selectedContact.getContactAddress() != null && !selectedContact.getContactAddress().equals("")) {
+            etContactAddress.setText(selectedContact.getContactAddress());
+        } else {
+            etContactAddress.setText("");
+        }
         etContactPhone.setText(selectedContact.getPhoneOne());
 //            etContactPhone.setFocusable(false);
     }
 
-    private boolean isValid(String contactName, String contactPhone, String contactEmail) {
+    private boolean isValid(String contactName, String contactPhone, String contactEmail, String contactAddress) {
         etContactName.setError(null);
         etContactPhone.setError(null);
         etContactEmail.setError(null);
+        etContactAddress.setError(null);
         boolean validation = true;
         if (contactName.equals("") || contactName.length() < 3) {
             validation = false;

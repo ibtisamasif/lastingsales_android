@@ -123,6 +123,7 @@ public class InitService extends IntentService {
                         String contactStatus = jsonobject.getString("status");
                         String lead_type = jsonobject.getString("lead_type");
                         String email = jsonobject.getString("email");
+                        String address = jsonobject.getString("address");
                         String dynamic_values = jsonobject.getString("dynamic_values");
                         int created_by = 0;
                         if (jsonobject.has("created_by")) {
@@ -137,6 +138,7 @@ public class InitService extends IntentService {
                         Log.d(TAG, "onResponse: Status: " + contactStatus);
                         Log.d(TAG, "onResponse: lead_type: " + lead_type);
                         Log.d(TAG, "onResponse: email: " + email);
+                        Log.d(TAG, "onResponse: address: " + address);
                         Log.d(TAG, "onResponse: dynamic_values: " + dynamic_values);
                         Log.d(TAG, "onResponse: created_by: " + created_by);
                         Log.d(TAG, "onResponse: user_id: " + user_id);
@@ -148,6 +150,7 @@ public class InitService extends IntentService {
                             tempContact.setContactName(contactName);
                             tempContact.setPhoneOne(contactNumber);
                             tempContact.setContactEmail(email);
+                            tempContact.setContactAddress(address);
                             tempContact.setDynamic(dynamic_values);
                             tempContact.setContactType(lead_type);
                             tempContact.setContactSalesStatus(contactStatus);

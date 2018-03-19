@@ -159,6 +159,12 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
                     myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
                     myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_COLLEAGUE);
                     mContext.startActivity(myIntent);
+                }else if (contactType.equals(LSContact.CONTACT_TYPE_IGNORED)) {
+                    Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
+                    myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
+                    myIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId() + "");
+                    myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_COLLEAGUE);
+                    mContext.startActivity(myIntent);
                 }
             } else if (contactHeaderBottomsheetItem.place.equals("inquiry")) {
                 if (contact == null) {
