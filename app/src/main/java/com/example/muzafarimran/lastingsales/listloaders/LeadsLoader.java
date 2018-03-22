@@ -7,9 +7,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.carditems.ChipItem;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
-import com.example.muzafarimran.lastingsales.carditems.FilterItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -47,19 +45,19 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
             if (contacts != null && contacts.size() > 0) {
 
-                FilterItem filterItem = new FilterItem();
-                data.add(filterItem);
+//                FilterItem filterItem = new FilterItem();
+//                data.add(filterItem);
 
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
 //                data.addAll(listHome);
 
-                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 4;
-                chipItem.totalButtons = 5;
-                data.add(chipItem);
+//                ChipItem chipItem = new ChipItem();
+////                chipItem.selected = 4;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
                 data.addAll(contacts);
 
@@ -69,14 +67,14 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 data.add(separatorSpace);
 
             } else {
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
-                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 3;
-                chipItem.totalButtons = 5;
-                data.add(chipItem);
+//                ChipItem chipItem = new ChipItem();
+////                chipItem.selected = 3;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
@@ -93,19 +91,19 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
             if (contacts != null && contacts.size() > 0) {
 
-                FilterItem filterItem = new FilterItem();
-                data.add(filterItem);
+//                FilterItem filterItem = new FilterItem();
+//                data.add(filterItem);
 
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
 //                data.addAll(listHome);
 
-                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 4;
-                chipItem.totalButtons = 5;
-                data.add(chipItem);
+//                ChipItem chipItem = new ChipItem();
+////                chipItem.selected = 4;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
                 data.addAll(contacts);
 
@@ -115,14 +113,14 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 data.add(separatorSpace);
 
             } else {
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
-                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 3;
-                chipItem.totalButtons = 5;
-                data.add(chipItem);
+//                ChipItem chipItem = new ChipItem();
+////                chipItem.selected = 3;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
@@ -138,19 +136,19 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
             if (contacts != null && contacts.size() > 0) {
 
-                FilterItem filterItem = new FilterItem();
-                data.add(filterItem);
+//                FilterItem filterItem = new FilterItem();
+//                data.add(filterItem);
 
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
 //                data.addAll(listHome);
 
-                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 4;
-                chipItem.totalButtons = 5;
-                data.add(chipItem);
+//                ChipItem chipItem = new ChipItem();
+////                chipItem.selected = 4;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
                 data.addAll(contacts);
 
@@ -160,14 +158,14 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 data.add(separatorSpace);
 
             } else {
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
-                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 3;
-                chipItem.totalButtons = 5;
-                data.add(chipItem);
+//                ChipItem chipItem = new ChipItem();
+////                chipItem.selected = 3;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
@@ -183,19 +181,19 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
             if (contacts != null && contacts.size() > 0) {
 
-                FilterItem filterItem = new FilterItem();
-                data.add(filterItem);
+//                FilterItem filterItem = new FilterItem();
+//                data.add(filterItem);
 
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
 //                data.addAll(listHome);
 
-                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 4;
-                chipItem.totalButtons = 5;
-                data.add(chipItem);
+//                ChipItem chipItem = new ChipItem();
+////                chipItem.selected = 4;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
                 data.addAll(contacts);
 
@@ -205,14 +203,14 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 data.add(separatorSpace);
 
             } else {
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
-                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 3;
-                chipItem.totalButtons = 5;
-                data.add(chipItem);
+//                ChipItem chipItem = new ChipItem();
+////                chipItem.selected = 3;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
@@ -228,19 +226,19 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
             if (contacts != null && contacts.size() > 0) {
 
-                FilterItem filterItem = new FilterItem();
-                data.add(filterItem);
+//                FilterItem filterItem = new FilterItem();
+//                data.add(filterItem);
 
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
 //                data.addAll(listHome);
 
-                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 4;
-                chipItem.totalButtons = 5;
-                data.add(chipItem);
+//                ChipItem chipItem = new ChipItem();
+////                chipItem.selected = 4;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
                 data.addAll(contacts);
 
@@ -250,14 +248,14 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
                 data.add(separatorSpace);
 
             } else {
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
-                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 3;
-                chipItem.totalButtons = 5;
-                data.add(chipItem);
+//                ChipItem chipItem = new ChipItem();
+////                chipItem.selected = 3;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
@@ -272,24 +270,23 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
             if (contacts != null && contacts.size() > 0) {
 
-                FilterItem filterItem = new FilterItem();
-                data.add(filterItem);
+//                FilterItem filterItem = new FilterItem();
+//                data.add(filterItem);
 
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
+//                SeparatorItem separatorItem = new SeparatorItem();
+//                separatorItem.text = "Leads";
+//                data.add(separatorItem);
 
-                ChipItem chipItem = new ChipItem();
-                chipItem.selected = 1;
-                chipItem.totalButtons = 5;
+//                ChipItem chipItem = new ChipItem();
+//                chipItem.selected = 1;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
 
-                data.add(separatorItem);
 //                data.addAll(listHome);
-                data.add(chipItem);
                 data.addAll(contacts);
 
                 SeparatorItem separatorSpace = new SeparatorItem();
                 separatorSpace.text = "";
-
                 data.add(separatorSpace);
                 data.add(separatorSpace);
 

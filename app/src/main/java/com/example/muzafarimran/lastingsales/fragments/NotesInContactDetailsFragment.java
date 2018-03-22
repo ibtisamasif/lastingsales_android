@@ -96,7 +96,7 @@ public class NotesInContactDetailsFragment extends TabFragment {
         separatorFollowup.text = "Follow Up";
         list.add(separatorFollowup);
 
-        ArrayList<TempFollowUp> allFollowupsOfThisContact = selectedContact.getAllFollowups();
+        ArrayList<TempFollowUp> allFollowupsOfThisContact = selectedContact.getAllFollowups(); //TODO crash here when contact is deleted because of syncing.
 //        ArrayList<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getAllFollowupsFromContactId(selectedContact.getId()+"");
         Calendar now = Calendar.getInstance();
         TempFollowUp selectedFollowup = null;

@@ -1,37 +1,38 @@
 package com.example.muzafarimran.lastingsales.NavigationBottomFragments;
 
+import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
-import com.example.muzafarimran.lastingsales.listloaders.HomeLoader;
-import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
+import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
+import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
+import com.google.firebase.crash.FirebaseCrash;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class BlankFragment2 extends Fragment implements LoaderManager.LoaderCallbacks<List<Object>> {
+public class BlankFragment2 extends Fragment implements CloseContactBottomSheetEvent, CloseInquiryBottomSheetEvent{
     public static final String TAG = "BlankFragment2";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public static final int HOME_LOADER_ID = 2;
-
 
     private String mParam1;
     private String mParam2;
 
-    private List<Object> list = new ArrayList<Object>();
-    private MyRecyclerViewAdapter adapter;
+
+    private static InquiryCallDetailsBottomSheetFragment inquiryCallDetailsBottomSheetFragment;
+    private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
+    public static Activity activity;
+    private static boolean sheetShowing = false;
 
     public BlankFragment2() {
     }
@@ -57,11 +58,44 @@ public class BlankFragment2 extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_blank2, container, false);
-        adapter = new MyRecyclerViewAdapter(getActivity(), list); //TODO potential bug getActivity can be null.
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mRecyclerView.setAdapter(adapter);
+        ViewPager mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        mViewPager.setAdapter(new MyUnlabeledPagerAdapter(getChildFragmentManager()));
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        tab.setIcon(R.drawable.call_icon);
+                        break;
+                    case 1:
+                        tab.setIcon(R.drawable.call_icon_incoming_ind);
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        tab.setIcon(R.drawable.call_icon);
+                        break;
+                    case 1:
+                        tab.setIcon(R.drawable.call_icon_out_going_ind);
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
 
         return view;
     }
@@ -70,41 +104,64 @@ public class BlankFragment2 extends Fragment implements LoaderManager.LoaderCall
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG, "onActivityCreated: ");
-        getLoaderManager().initLoader(HOME_LOADER_ID, null, BlankFragment2.this);
     }
 
-
-    @Override
-    public Loader<List<Object>> onCreateLoader(int id, Bundle args) {
-        list.clear();
-        LoadingItem loadingItem = new LoadingItem();
-        loadingItem.text = "Loading items...";
-        list.add(loadingItem);
-        adapter.notifyDataSetChanged();
-
-        switch (id) {
-            case HOME_LOADER_ID:
-                return new HomeLoader(getActivity());
-            default:
-                return null;
-        }
+    public void openContactBottomSheetCallback(Long contact_id) {
+        if (!isAdded()) return;
+        contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragment.newInstance(contact_id, 0);
+        FragmentManager fragmentManager = getChildFragmentManager();
+        contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
+        sheetShowing = true;
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Object>> loader, List<Object> data) {
-        if (data != null) {
-            if (!data.isEmpty()) {
-                list.clear();
-                list.addAll(data);
-                adapter.notifyDataSetChanged();
+    public void closeContactBottomSheetCallback() {
+        if (sheetShowing) {
+            if (contactCallDetailsBottomSheetFragment != null) {
+                Log.d(TAG, "closeContactBottomSheetCallback: is NOT NULL");
+                try {
+                    if (Build.VERSION.SDK_INT > 21) {
+                        contactCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+                    } else {
+                        contactCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
+                    }
+                } catch (IllegalStateException ignored) {
+                    FirebaseCrash.logcat(Log.ERROR, TAG, "IllegalStateException caught");
+                    FirebaseCrash.report(new Exception("closeContactBottomSheetCallback dismiss() called after onSaveInstanceState"));
+                }
+            } else {
+                Log.d(TAG, "closeContactBottomSheetCallback: is NULL");
             }
         }
     }
 
-    @Override
-    public void onLoaderReset(Loader<List<Object>> loader) {
-        list.clear();
-        list.addAll(new ArrayList<Object>());
-        adapter.notifyDataSetChanged();
+    public void openInquiryBottomSheetCallback(String number) {
+        if (!isAdded()) return;
+        inquiryCallDetailsBottomSheetFragment = InquiryCallDetailsBottomSheetFragment.newInstance(number, 0);
+        FragmentManager fragmentManager = getChildFragmentManager();
+        inquiryCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
+        sheetShowing = true;
     }
+
+    @Override
+    public void closeInquiryBottomSheetCallback() {
+        if (sheetShowing) {
+            if (inquiryCallDetailsBottomSheetFragment != null) {
+                Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NOT NULL");
+                try {
+                    if (Build.VERSION.SDK_INT > 21) {
+                        inquiryCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+                    } else {
+                        inquiryCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
+                    }
+                } catch (IllegalStateException ignored) {
+                    FirebaseCrash.logcat(Log.ERROR, TAG, "IllegalStateException caught");
+                    FirebaseCrash.report(new Exception("closeInquiryBottomSheetCallback dismiss() called after onSaveInstanceState"));
+                }
+            } else {
+                Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NULL");
+            }
+        }
+    }
+
 }

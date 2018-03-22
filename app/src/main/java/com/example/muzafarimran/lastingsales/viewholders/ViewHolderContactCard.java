@@ -374,8 +374,9 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Warning));
 
                 this.cl.setOnClickListener(view -> {
-//                    NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
-//                    navigationBottomMainActivity.openContactBottomSheetCallback((Long) view.getTag());
+                    Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
+//                    BlankFragment2 blankFragment2 = (BlankFragment2) mContext;
+//                    blankFragment2.openContactBottomSheetCallback((Long) view.getTag());
                 });
 
                 this.cl.setOnLongClickListener(view -> {
@@ -402,7 +403,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             DeleteManager.deleteContact(mContext, contact);
-                            Snackbar.make(view, "Ignored contact deleted!", Snackbar.LENGTH_SHORT).show();
+//                            Snackbar.make(view, "Ignored contact deleted!", Snackbar.LENGTH_SHORT).show();
                             ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                             TinyBus bus = TinyBus.from(mContext);
                             bus.post(mCallEvent);
