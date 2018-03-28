@@ -31,7 +31,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 12/20/2016.
  */
 
-public class NotesInContactDetailsFragment extends TabFragment {
+public class NotesInDealDetailsFragment extends TabFragment {
     public static final String TAG = "NotesInContactDetailsFr";
     public static final String CONTACT_ID = "contact_id";
     LSContact selectedContact;
@@ -41,12 +41,12 @@ public class NotesInContactDetailsFragment extends TabFragment {
     private List<Object> list = new ArrayList<Object>();
     private Long contactIDLong;
 
-    public static NotesInContactDetailsFragment newInstance(int page, String title, Long id) {
-        NotesInContactDetailsFragment fragmentFirst = new NotesInContactDetailsFragment();
+    public static NotesInDealDetailsFragment newInstance(int page, String title, Long id) {
+        NotesInDealDetailsFragment fragmentFirst = new NotesInDealDetailsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
-        args.putLong(NotesInContactDetailsFragment.CONTACT_ID, id);
+        args.putLong(NotesInDealDetailsFragment.CONTACT_ID, id);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -89,7 +89,7 @@ public class NotesInContactDetailsFragment extends TabFragment {
         list.clear();
 
         Bundle bundle = this.getArguments();
-        contactIDLong = bundle.getLong(NotesInContactDetailsFragment.CONTACT_ID);
+        contactIDLong = bundle.getLong(NotesInDealDetailsFragment.CONTACT_ID);
         selectedContact = LSContact.findById(LSContact.class, contactIDLong);
 
         SeparatorItem separatorFollowup = new SeparatorItem();

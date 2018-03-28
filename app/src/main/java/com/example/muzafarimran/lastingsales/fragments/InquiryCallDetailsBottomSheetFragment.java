@@ -14,11 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.carditems.ConnectionItem;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
-import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -177,8 +175,8 @@ public class InquiryCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
         if (selectedContact == null) {
             Log.d(TAG, "selectedContact == null");
             try {
-                CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity();
-                closeInquiryBottomSheetEvent.closeInquiryBottomSheetCallback();
+//                CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity();
+//                closeInquiryBottomSheetEvent.closeInquiryBottomSheetCallback();
                 InquiryManager.removeByNumber(getActivity(), contactNum);
                 FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught");
                 FirebaseCrash.report(new Exception("Contact of inquiry is null "));

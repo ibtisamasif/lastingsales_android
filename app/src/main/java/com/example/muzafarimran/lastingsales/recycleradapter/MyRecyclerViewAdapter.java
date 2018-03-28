@@ -13,6 +13,7 @@ import com.example.muzafarimran.lastingsales.viewholders.ViewHolderChipCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderConnectionsCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderContactCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderContactHeaderBottomsheetCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderDealCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderErrorCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderFilterCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderHomeCard;
@@ -106,6 +107,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.FILTER_CLASS_NAME:
                 return ClassNames.FILTER_CLASS_TYPE;
 
+            case ClassNames.DEAL_CLASS_NAME:
+                return ClassNames.DEAL_CLASS_TYPE;
+
             default:
                 Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
                 return -1;
@@ -172,6 +176,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             case ClassNames.FILTER_CLASS_TYPE:
                 return new ViewHolderFilterCard(LayoutInflater.from(mContext).inflate(ClassNames.FILTER_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.DEAL_CLASS_TYPE:
+                return new ViewHolderDealCard(LayoutInflater.from(mContext).inflate(ClassNames.DEAL_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -258,6 +265,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.FILTER_CLASS_TYPE:
                 ViewHolderFilterCard viewHolderFilterCard = (ViewHolderFilterCard) holder;
                 viewHolderFilterCard.bind(item, position, mContext);
+                break;
+            case ClassNames.DEAL_CLASS_TYPE:
+                ViewHolderDealCard viewHolderDealCard = (ViewHolderDealCard) holder;
+                viewHolderDealCard.bind(item, position, mContext);
                 break;
         }
     }

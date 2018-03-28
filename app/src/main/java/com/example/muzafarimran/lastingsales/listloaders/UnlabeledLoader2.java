@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.listloaders;
 
-
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.content.AsyncTaskLoader;
@@ -10,7 +9,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
-import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,35 +19,38 @@ import java.util.List;
  * Created by ibtisam on 11/7/2017.
  */
 
-public class InquiryLoader extends AsyncTaskLoader<List<Object>> {
-    public static final String TAG = "BlankFragment1";
-    List<Object> mData;
+public class UnlabeledLoader2 extends AsyncTaskLoader<List<Object>> {
+    public static final String TAG = "HomeLoader";
+    private List<Object> mData;
 
-    public InquiryLoader(Context context) {
+    public UnlabeledLoader2(Context context) {
         super(context);
-        Log.d(TAG, "InquiryLoader: ");
     }
 
     @Override
     public List<Object> loadInBackground() {
-        Log.d(TAG, "loadInBackground: ");
         List<Object> data = new ArrayList<Object>();
-        Collection<LSInquiry> inquiriesContacts = LSInquiry.getAllPendingInquiriesInDescendingOrder();
-        if (!inquiriesContacts.isEmpty()) {
+        Collection<LSContact> unlabeledContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
+        if (!unlabeledContacts.isEmpty()) {
 
-            Collection<HomeItem> listHome = new ArrayList<HomeItem>();
-            HomeItem itemInquiry = new HomeItem();
-            itemInquiry.text = "INQUIRIES";
-            itemInquiry.value = "" + inquiriesContacts.size();
-            itemInquiry.drawable = R.drawable.bg_inquiry_cardxxxhdpi;
-            listHome.add(itemInquiry);
+            HomeItem homeItem = new HomeItem();
+            homeItem.text = "Frequent";
+            homeItem.value = "" + unlabeledContacts.size();
+            homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+
+//            StatisticsItem statisticsItem = new StatisticsItem();
+//            statisticsItem.artValue = 0;
+//            statisticsItem.leadsValue = 0;
+//            statisticsItem.inquiriesValue = 0;
+//            statisticsItem.callsValue = 0;
 
             SeparatorItem separatorItem = new SeparatorItem();
-            separatorItem.text = "Inquiries";
+            separatorItem.text = "Frequent unlabeled contacts";
 
-            data.addAll(listHome);
+            data.add(homeItem);
+//            data.add(statisticsItem);
             data.add(separatorItem);
-            data.addAll(inquiriesContacts);
+            data.addAll(unlabeledContacts);
 
             SeparatorItem separatorSpace = new SeparatorItem();
             separatorSpace.text = "";
@@ -57,15 +59,14 @@ public class InquiryLoader extends AsyncTaskLoader<List<Object>> {
             data.add(separatorSpace);
 
         } else {
-            Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
             ErrorItem erItem = new ErrorItem();
-            erItem.message = "Nothing in Inquiries";
-            erItem.drawable = R.drawable.ic_inquiries_empty_xxxhdpi;
-            listError.add(erItem);
-            data.addAll(listError);
+            erItem.message = "Nothing in Frequent Unlabeled";
+            erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
+            data.add(erItem);
         }
         return data;
     }
+
 
     @Override
     public void deliverResult(@Nullable List<Object> data) {

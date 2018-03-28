@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
@@ -13,6 +14,7 @@ import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -28,7 +30,9 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -536,6 +540,108 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
                 }
             }
+
+            if (tag.equals("Deal")) {
+                if (action.equals("post")) {
+                    String id = payload.getString("id");
+                    int user_id = 0;
+                    if (payload.has("user_id")) {
+                        user_id = payload.getInt("user_id");
+                    }
+                    int company_id = 0;
+                    if (payload.has("company_id")) {
+                        company_id = payload.getInt("company_id");
+                    }
+                    String workflow_id = payload.getString("workflow_id");
+                    String workflow_stage_id = payload.getString("workflow_stage_id");
+                    int lead_id = 0;
+                    if (payload.has("lead_id")) {
+                        lead_id = payload.getInt("lead_id");
+                    }
+                    String name = payload.getString("name");
+                    String status = payload.getString("status");
+                    int created_by = 0;
+                    if (payload.has("created_by")) {
+                        created_by = payload.getInt("created_by");
+                    }
+                    String created_at = payload.getString("created_at");
+                    String updated_at = payload.getString("updated_at");
+
+
+                    // ignore if task already exists
+                    LSDeal lsDeal = LSDeal.getDealFromServerId(id);
+                    if (lsDeal == null) {
+                        // check if lead still exists of which the deal is
+                        LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
+                        if (lsContact != null) {
+                            lsDeal = new LSDeal();
+                            lsDeal.setServerId(id);
+                            lsDeal.setUserId(Integer.toString(user_id));
+                            lsDeal.setCompanyId(Integer.toString(company_id));
+                            lsDeal.setWorkflowId(workflow_id);
+                            lsDeal.setLeadId(Integer.toString(lead_id));
+                            lsDeal.setName(name);
+                            lsDeal.setStatus(status);
+                            lsDeal.setCreatedBy(Integer.toString(created_by));
+                            lsDeal.setCreatedAt(created_at);
+                            Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+                            lsDeal.setUpdatedAt(updated_atDate);
+                            lsDeal.save();
+
+//                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
+//                            TinyBus bus = TinyBus.from(getApplicationContext());
+//                            bus.post(mCallEvent);
+                        }
+                    }
+                }
+            }
+
+            if (tag.equals("Comment")) {
+                if (action.equals("post")) {
+                    String id = payload.getString("id");
+                    int lead_id = 0;
+                    if (payload.has("lead_id")) {
+                        lead_id = payload.getInt("lead_id");
+                    }
+                    String comment = payload.getString("comment");
+                    String status = payload.getString("status");
+                    int created_by = 0;
+                    if (payload.has("created_by")) {
+                        created_by = payload.getInt("created_by");
+                    }
+                    String created_at = payload.getString("created_at");
+                    String updated_at = payload.getString("updated_at");
+
+                    Toast.makeText(getApplicationContext(), "Comment: " + comment, Toast.LENGTH_SHORT).show();
+
+//                    // ignore if task already exists
+//                    LSDeal lsDeal = LSDeal.getDealFromServerId(id);
+//                    if (lsDeal == null) {
+//                        // check if lead still exists of which the deal is
+//                        LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
+//                        if (lsContact != null) {
+//                            lsDeal = new LSDeal();
+//                            lsDeal.setServerId(id);
+//                            lsDeal.setUserId(Integer.toString(user_id));
+//                            lsDeal.setCompanyId(Integer.toString(company_id));
+//                            lsDeal.setWorkflowId(workflow_id);
+//                            lsDeal.setLeadId(Integer.toString(lead_id));
+//                            lsDeal.setName(name);
+//                            lsDeal.setStatus(status);
+//                            lsDeal.setCreatedBy(Integer.toString(created_by));
+//                            lsDeal.setCreatedAt(created_at);
+//                            Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+//                            lsDeal.setUpdatedAt(updated_atDate);
+//                            lsDeal.save();
+//
+////                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
+////                            TinyBus bus = TinyBus.from(getApplicationContext());
+////                            bus.post(mCallEvent);
+//                        }
+//                    }
+                }
+            }
+
 
 //            if (tag.equals("Task")) {
 //                if (action.equals("post")) {
