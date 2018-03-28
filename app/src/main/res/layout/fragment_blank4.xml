@@ -1,19 +1,57 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment4">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/mRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent">
 
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/AppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+        <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?actionBarSize"-->
+        <!--app:layout_collapseMode="pin" />-->
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="center_horizontal|center_vertical"
+            app:tabGravity="fill"
+            app:tabMode="scrollable"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager_itemList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AppBarLayout"
+        ></android.support.v4.view.ViewPager>
+
+    <RelativeLayout
+        android:id="@+id/viewPagerIndicators"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/indicators"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -31,6 +31,7 @@ import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFrag
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment4;
+import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment5;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
@@ -139,8 +140,14 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
                     floatingActionMenu.showMenu(true);
 //                    getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
-                case R.id.navigation_more:
+                case R.id.navigation_deals:
                     switchToFragment4();
+//                    ACTIVE_LOADER = LEAD_LOADER_ID;
+                    floatingActionMenu.hideMenu(true);
+//                    getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+                    return true;
+                case R.id.navigation_more:
+                    switchToFragment5();
 //                    ACTIVE_LOADER = MORE_LOADER_ID;
                     floatingActionMenu.hideMenu(true);
 //                    getSupportLoaderManager().restartLoader(MORE_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
@@ -166,11 +173,22 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment4()).commit();
     }
+    public void switchToFragment5() {
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment5()).commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: called");
+
+//        LSDeal lsDeal = new LSDeal();
+//        lsDeal.setName("Toyota deal");
+//        lsDeal.setContact(LSContact.getContactFromNumber("+92 334 4222306"));
+//        lsDeal.setLeadId(Long.toString(LSContact.getContactFromNumber("+92 334 4222306").getId()));
+//        lsDeal.setStatus(LSDeal.DEAL_STATUS_PENDING);
+//        lsDeal.save();
 
         switchToFragment1();
 

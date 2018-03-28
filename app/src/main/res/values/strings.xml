@@ -131,6 +131,7 @@
     <string name="navigation_inquiries">Inquiries</string>
     <string name="navigation_unlabeled">Unlabeled</string>
     <string name="navigation_leads">Leads</string>
+    <string name="navigation_deals">Deals</string>
     <string name="navigation_more">More</string>
     <string name="account_setting"><![CDATA[account & setting]]></string>
 

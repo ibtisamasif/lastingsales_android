@@ -83,4 +83,8 @@ public class ClassNames {
     public static final String FILTER_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.FilterItem";
     public static final int FILTER_CLASS_TYPE = 19;
     public static final int FILTER_CLASS_RESOURCE = R.layout.card_filter;
+
+    public static final String DEAL_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.LSDeal";
+    public static final int DEAL_CLASS_TYPE = 20;
+    public static final int DEAL_CLASS_RESOURCE = R.layout.card_deal;
 }

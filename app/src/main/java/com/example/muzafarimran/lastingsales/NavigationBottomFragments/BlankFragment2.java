@@ -72,10 +72,10 @@ public class BlankFragment2 extends Fragment implements CloseContactBottomSheetE
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        tab.setIcon(R.drawable.call_icon);
+//                        tab.setIcon(R.drawable.call_icon);
                         break;
                     case 1:
-                        tab.setIcon(R.drawable.call_icon_incoming_ind);
+//                        tab.setIcon(R.drawable.call_icon_incoming_ind);
                         break;
                 }
             }
@@ -84,10 +84,10 @@ public class BlankFragment2 extends Fragment implements CloseContactBottomSheetE
             public void onTabUnselected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        tab.setIcon(R.drawable.call_icon);
+//                        tab.setIcon(R.drawable.call_icon);
                         break;
                     case 1:
-                        tab.setIcon(R.drawable.call_icon_out_going_ind);
+//                        tab.setIcon(R.drawable.call_icon_out_going_ind);
                         break;
                 }
             }
