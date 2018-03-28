@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -169,18 +168,18 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.ic_action_message:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("sms:"));
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("app.lastingsales.com"));
-//                intent.setType("image/png");
-                intent.putExtra("subject", "Greetings");
-                intent.putExtra("address", selectedContact.getPhoneOne());
-                intent.putExtra(intent.EXTRA_TEXT, "Welcome to lastingSales");
-                intent.putExtra("sms_body", "Welcome to lastingSales");
-                startActivity(intent);
-//                Toast.makeText(this, "Opening Message window", Toast.LENGTH_SHORT).show();
-                break;
+//            case R.id.ic_action_message:
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setData(Uri.parse("sms:"));
+//                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("app.lastingsales.com"));
+////                intent.setType("image/png");
+//                intent.putExtra("subject", "Greetings");
+//                intent.putExtra("address", selectedContact.getPhoneOne());
+//                intent.putExtra(intent.EXTRA_TEXT, "Welcome to lastingSales");
+//                intent.putExtra("sms_body", "Welcome to lastingSales");
+//                startActivity(intent);
+////                Toast.makeText(this, "Opening Message window", Toast.LENGTH_SHORT).show();
+//                break;
             case R.id.ic_action_delete:
                 String nameTextOnDialog;
                 if (selectedContact.getContactName() != null) {

@@ -188,6 +188,20 @@
                 android:layout_marginRight="8dp" />
 
             <TextView
+                android:id="@+id/tvMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="and 1 more.."
+                android:textSize="10sp"
+                android:visibility="visible"
+                card_view:layout_editor_absoluteX="175dp"
+                card_view:layout_editor_absoluteY="129dp"
+                fresco:layout_constraintStart_toStartOf="parent"
+                fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo1" />
+
+            <TextView
                 android:id="@+id/tvError"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -201,7 +215,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo1" />
+                app:layout_constraintTop_toBottomOf="@+id/tvMore" />
 
         </android.support.constraint.ConstraintLayout>
 

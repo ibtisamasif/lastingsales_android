@@ -131,13 +131,36 @@
                             android:text="Email    " />
 
                         <EditText
-                            android:id="@+id/etEmailAddLead"
+                            android:id="@+id/etContactEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="16dp"
                             android:layout_weight="1"
                             android:padding="8dp"
                             tools:text="ibtisamasif@gmail.com" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="6dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="Address    " />
+
+                        <EditText
+                            android:id="@+id/etContactAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:layout_weight="1"
+                            android:padding="8dp"
+                            tools:text="146 ahmad block garden town, Lahore" />
                     </LinearLayout>
 
                 </LinearLayout>

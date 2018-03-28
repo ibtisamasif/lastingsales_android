@@ -21,6 +21,7 @@ import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
 import com.example.muzafarimran.lastingsales.utils.FirebaseCustomNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -315,7 +316,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     LSContact contact = LSContact.getContactFromServerId(id);
                     if (contact != null) {
                         Log.e(TAG, "handleDataMessage: contact: " + contact.toString());
-                        contact.delete();
+                        DeleteManager.deleteContact(getApplicationContext(), contact);
+//                        contact.delete();
                         LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                         TinyBus bus = TinyBus.from(getApplicationContext());
                         bus.post(mCallEvent);

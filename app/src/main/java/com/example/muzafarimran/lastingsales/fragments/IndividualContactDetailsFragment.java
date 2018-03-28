@@ -692,7 +692,8 @@ public class IndividualContactDetailsFragment extends TabFragment {
 //                    Log.d(TAG, "dynamicColumnsJSONN: " + mContact.getDynamic());
                     ArrayList<DynamicColumnBuilderVersion1.Column> dynColumns = dynamicColumnBuilderVersion1.getColumns();
                     for (DynamicColumnBuilderVersion1.Column oneDynamicColumns : dynColumns) {
-                        if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
+                        //TODO find column_type from LSDynamic column using the name of column from leads dynamic column.
+                        if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
                             if (et != null) {
@@ -701,7 +702,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                                 Log.d(TAG, "this text dynamic column was set filled for lead but column is no more");
                             }
 
-                        } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+                        } else if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
                             if (et != null) {
@@ -710,7 +711,7 @@ public class IndividualContactDetailsFragment extends TabFragment {
                                 Log.d(TAG, "this number dynamic column was set filled for lead but column is no more");
                             }
 
-                        } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+                        } else if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
                             final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
                             if (s != null) {

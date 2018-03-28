@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.utils;
 
 import android.util.Log;
 
+import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by ibtisam on 4/10/2017.
@@ -30,7 +32,15 @@ public class DynamicColumnBuilderVersion1 {
                 column.id = jsonobject.getString("id");
                 column.value = jsonobject.getString("value");
                 column.name = jsonobject.getString("name");
-                column.column_type = jsonobject.getString("column_type"); // crash here org.json.JSONException: No value for column_type "column_type" OR "type"
+                List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
+                if (allColumns != null) {
+                    for (int k = 0; k < allColumns.size(); k++) {
+                        if (jsonobject.getString("name").equalsIgnoreCase(allColumns.get(k).getName())) {
+                            column.column_type = allColumns.get(k).getColumnType();
+                        }
+                    }
+                }
+//                column.column_type = jsonobject.getString("column_type"); // crash here org.json.JSONException: No value for column_type "column_type" OR "type"
                 columnCollection.add(column);
 
             }
@@ -50,7 +60,7 @@ public class DynamicColumnBuilderVersion1 {
     }
 
 
-    public int getLength(){
+    public int getLength() {
         return columnCollection.size();
     }
 
@@ -64,15 +74,15 @@ public class DynamicColumnBuilderVersion1 {
         }
     }
 
-    public ArrayList<Column> getColumns(){
+    public ArrayList<Column> getColumns() {
         return columnCollection;
     }
 
-    public String buildJSON(){
+    public String buildJSON() {
         Gson gson = new Gson();
         Collection<Column> ints = columnCollection;
         String json = gson.toJson(ints);  // ==> json is [1,2,3,4,5]
-        Log.d(TAG, "buildJSON: "+json);
+        Log.d(TAG, "buildJSON: " + json);
         return json;
     }
 

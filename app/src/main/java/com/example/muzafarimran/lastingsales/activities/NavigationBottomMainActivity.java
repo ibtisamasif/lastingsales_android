@@ -775,6 +775,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
 
         MatrixCursor cursor = new MatrixCursor(columns);
 
+//        matrixCursor.addRow(new Object[] { value1, value2 });
+
         int count = 0;
 
         // From LSContacts where number = query
@@ -790,10 +792,14 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 temp[4] = contact.getId();
             } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
                 // Dont navigate anywhere on clicking colleagues as discussed
-                temp[3] = ClassManager.ABOUT_ACTIVITY;
+                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
+                temp[4] = contact.getId();
+                temp[5] = contact.getPhoneOne();
             } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
                 // Dont navigate anywhere on clicking colleagues as discussed
-                temp[3] = ClassManager.ABOUT_ACTIVITY;
+                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
+                temp[4] = contact.getId();
+                temp[5] = contact.getPhoneOne();
             } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
                 temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
                 temp[4] = contact.getId();
@@ -817,10 +823,14 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
                 temp[4] = contact.getId();
             } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
                 // Dont navigate anywhere on clicking colleagues as discussed
-                temp[3] = ClassManager.ABOUT_ACTIVITY;
+                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
+                temp[4] = contact.getId();
+                temp[5] = contact.getPhoneOne();
             } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
                 // Dont navigate anywhere on clicking colleagues as discussed
-                temp[3] = ClassManager.ABOUT_ACTIVITY;
+                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
+                temp[4] = contact.getId();
+                temp[5] = contact.getPhoneOne();
             } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
                 temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
                 temp[4] = contact.getId();
@@ -835,14 +845,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements L
         Collection<LSNote> notesByDescription = LSNote.findWithQuery(LSNote.class, myQuery);
 
         for (LSNote note : notesByDescription) {
-            temp[0] = count;
-            temp[1] = note.getNoteText();
-            temp[2] = R.drawable.ic_notes_blue_48dp;
-            temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
-            temp[4] = note.getContactOfNote().getId();  // Contact of note is null
-            temp[6] = "type_note";
-            cursor.addRow(temp);
-            count++;
+            if (note.getContactOfNote() != null) {
+                temp[0] = count;
+                temp[1] = note.getNoteText();
+                temp[2] = R.drawable.ic_notes_blue_48dp;
+                temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
+                temp[4] = note.getContactOfNote().getId();
+                temp[6] = "type_note";
+                cursor.addRow(temp);
+                count++;
+            } else {
+                note.delete();
+            }
         }
         // From LSInquiry where number = query
         myQuery = "SELECT * FROM LS_INQUIRY where contact_number like '%" + query + "%' limit 5";

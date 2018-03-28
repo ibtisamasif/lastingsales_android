@@ -7,8 +7,8 @@ android {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 113 //110
-        versionName "2.60" //2.57 in production. Change mixpanel key and urls (staging to production) lskey = J7Z/}aB*6'r7q+A~
+        versionCode 115 //110
+        versionName "2.62" //2.57 in production. Change mixpanel key and urls (staging to production) lskey = J7Z/}aB*6'r7q+A~
 //        jackOptions {
 //            enabled false
 //        }
