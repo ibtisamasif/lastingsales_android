@@ -12,6 +12,7 @@ public class MyURLs {
     public static String ADD_COMPANY_URL = server + "/api/v1/company";
     public static String IMAGE_URL = server + "/";
     public static String ADD_CONTACT = server + "/api/v1/lead";
+    public static String ADD_DEAL = server + "/api/v1/deal";
     public static String ADD_FOLLOWUP = server + "/api/v1/lead/"; //SampleFormatComplete ADD_FOLLOWUP = "http://staging/api/v1/lead/85/followup";
     public static String ADD_NOTE = server + "/api/v1/lead/"; //SampleFormatComplete ADD_NOTE = "http://staging/api/v1/lead/145/notes";
     public static String DELETE_NOTE = server + "/api/v1/lead/";
@@ -23,13 +24,17 @@ public class MyURLs {
     public static String GET_INQUIRY = server + "/api/v1/inquiries/";
     public static String GET_TASK = server + "/api/v1/task";
     public static String DELETE_CONTACT = server + "/api/v1/lead/";
+    public static String DELETE_DEAL = server + "/api/v1/deal/";
     public static String UPDATE_CONTACT = server + "/api/v1/lead/";
+    public static String UPDATE_DEAL = server + "/api/v1/deal/";
     public static String UPDATE_NOTE = server + "/api/v1/lead/";
     public static String UPDATE_AGENT = server + "/api/v1/user";
     public static String UPDATE_TASK = server + "/api/v1/lead";
     public static String GET_CONTACTS = server + "/api/v1/lead";
+    public static String GET_DEALS = server + "/api/v1/deal";
     public static String GET_NOTES = server + "/api/v1/lead";
     public static String GET_COLUMNS = server + "/api/v1/column";
+    public static String GET_WORKFLOW = server + "/api/v1/admin/workflow";
     public static String GET_PROFILE = server + "/api/v1/graph/public/profile";
     public static String GET_CUSTOMER_HISTORY = server + "/api/v1/graph/lead/agent/relation";
 

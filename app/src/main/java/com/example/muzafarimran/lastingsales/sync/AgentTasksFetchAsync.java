@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,8 +25,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -146,22 +143,7 @@ public class AgentTasksFetchAsync extends AsyncTask<Object, Void, Void> {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "onErrorResponse: CouldNotSyncGETTasks");
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-//                sessionManager.setLoginToken("gVLqb2w8XEpdaQOK8wU7MpNXL9ZpZtBhiN1sbxImCuIOIiFQbMN3AHN098Ua");
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("api_token", "" + sessionManager.getLoginToken());
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-        };
+        });
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

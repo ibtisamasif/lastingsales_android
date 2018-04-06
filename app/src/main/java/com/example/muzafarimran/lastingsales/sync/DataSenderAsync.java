@@ -22,6 +22,7 @@ import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
@@ -112,6 +113,10 @@ public class DataSenderAsync {
                                 Log.d(TAG, "user_id : " + sessionManager.getKeyLoginId());
                                 addContactsToServer();
                                 updateContactsToServer();
+                                deleteContactsFromServer();
+                                addDealToServer();
+                                updateDealsToServer();
+                                deleteDealsFromServer();
                                 addCallsToServer();
                                 addInquiriesToServer();
                                 updateInquiriesToServer();
@@ -120,7 +125,6 @@ public class DataSenderAsync {
                                 updateNotesToServer();
                                 deleteNotesFromServer();
                                 addFollowupsToServer();
-                                deleteContactsFromServer();
 //                            if (NetworkAccess.isWifiConnected(mContext)) {
 //                                addRecordingToServer();
 //                            }
@@ -308,7 +312,7 @@ public class DataSenderAsync {
                     contact.setServerId(responseObject.getString("id"));
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED);
                     contact.save();
-                    Log.d(TAG, "onResponse : ServerIDofNote : " + responseObject.getString("id"));
+                    Log.d(TAG, "onResponse : ServerIDofContact : " + responseObject.getString("id"));
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                     TinyBus bus = TinyBus.from(mContext);
                     bus.post(mCallEvent);
@@ -324,7 +328,310 @@ public class DataSenderAsync {
         }) {
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void deleteContactsFromServer() {
+        List<LSContact> contactsList = null;
+        if (LSContact.count(LSContact.class) > 0) {
+            contactsList = LSContact.find(LSContact.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+            Log.d(TAG, "deleteContactsFromServer: count : " + contactsList.size());
+            for (LSContact oneContact : contactsList) {
+                Log.d(TAG, "Found Contact : " + oneContact.getContactName());
+                Log.d(TAG, "Server ID : " + oneContact.getServerId());
+                deleteContactFromServerSync(oneContact);
+            }
+        }
+    }
+
+    private void deleteContactFromServerSync(final LSContact contact) {
+        currentState = PENDING;
+//        Log.d(TAG, "deleteContactFromServerSync: DELETE LEAD SERVER ID : "+contact.getServerId());
+        final String BASE_URL = MyURLs.DELETE_CONTACT;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath("" + contact.getServerId())
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        StringRequest sr = new StringRequest(Request.Method.DELETE, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() called with: response (deleteContact) = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+//                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
+
+//                    if (responseCode == 200) {
+//                        JSONObject responseObject = jObj.getJSONObject("response");
+                    contact.delete();
+                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                    bus.post(mCallEvent);
+//                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteContact");
+                try {
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                            int responseCode = jObj.getInt("responseCode");
+                            if (responseCode == 259) {
+                                Log.d(TAG, "onErrorResponse: responseCode == 259 deleted");
+                                contact.delete();
+                                ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+                                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                                bus.post(mCallEvent);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }) {
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void addDealToServer() {
+        List<LSDeal> dealsList = null;
+        if (LSDeal.count(LSDeal.class) > 0) {
+            dealsList = LSDeal.find(LSDeal.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_DEAL_ADD_NOT_SYNCED);
+            Log.d(TAG, "addDealToServer: count : " + dealsList.size());
+            for (LSDeal oneDeal : dealsList) {
+                Log.d(TAG, "Found Deals " + oneDeal.getName());
+                addDealToServerSync(oneDeal);
+            }
+        }
+    }
+
+    private void addDealToServerSync(final LSDeal deal) {
+        currentState = PENDING;
+        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_DEAL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() addDeal: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    deal.setServerId(responseObject.getString("id"));
+                    Log.d(TAG, "onResponse: addDealServerID : " + responseObject.getString("id"));
+                    deal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
+                    deal.save();
+
+//                    int responseCode = jObj.getInt("responseCode");
+//                    if (responseCode ==  200) {
+//                        JSONObject responseObject = jObj.getJSONObject("response");
+//                        deal.setServerId(responseObject.getString("id"));
+//                        Log.d(TAG, "onResponse: ServerID : " +responseObject.getString("id"));
+//                        deal.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+//                        deal.save();
+//                    } else if (responseCode ==  409) {
+//                        JSONObject responseObject = jObj.getJSONObject("response");
+//                        deal.setServerId(responseObject.getString("id"));
+//                        deal.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+//                        deal.save();
+//                        Log.d(TAG, "onResponse: Lead already Exists");
+//                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: CouldNotSyncAddDeal");
+                try {
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
+                            if (error.networkResponse.statusCode == 409) {
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                if (responseCode == 409) {
+                                    JSONObject responseObject = jObj.getJSONObject("response");
+                                    deal.setServerId(responseObject.getString("id"));
+                                    deal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
+                                    deal.save();
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", "" + deal.getName());
+                if (deal.getDynamic() != null) {
+                    params.put("dynamic_values", "" + deal.getDynamic());
+                }
+                params.put("status", "" + deal.getStatus());
+                params.put("lead_id", "" + deal.getContact().getServerId()); // TODO can crash here
+                params.put("workflow_id", "" + deal.getWorkflowId());
+                params.put("workflow_stage_id", "" + deal.getWorkflowStageId());
+                params.put("api_token", "" + sessionManager.getLoginToken());
+                Log.d(TAG, "getParams: addDealToServerSync " + params);
+                return params;
+            }
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void updateDealsToServer() {
+        List<LSDeal> dealsList = null;
+        if (LSDeal.count(LSDeal.class) > 0) {
+            dealsList = LSDeal.find(LSDeal.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
+            Log.d(TAG, "updateDealsToServer: count : " + dealsList.size());
+            for (LSDeal oneDeal : dealsList) {
+                Log.d(TAG, "Found Deal : " + oneDeal.getName());
+                Log.d(TAG, "Server ID : " + oneDeal.getServerId());
+                updateDealToServerSync(oneDeal);
+            }
+        }
+    }
+
+    private void updateDealToServerSync(final LSDeal deal) {
+        currentState = PENDING;
+        final String BASE_URL = MyURLs.UPDATE_DEAL;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath("" + deal.getServerId())
+                .appendQueryParameter("name", "" + deal.getName())
+                .appendQueryParameter("status", "" + deal.getStatus())
+                .appendQueryParameter("dynamic_values", "" + deal.getDynamic())
+                .appendQueryParameter("workflow_id", "" + deal.getWorkflowId())
+                .appendQueryParameter("workflow_stage_id", "" + deal.getWorkflowStageId())
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .appendQueryParameter("dynamic_values", "" + deal.getDynamic())
+                .build();
+        final String myUrl = builtUri.toString();
+        Log.d(TAG, "updateDealToServerSync: myUrl: " + myUrl);
+        StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() updateDeal: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+//                    int responseCode = jObj.getInt("responseCode");
+//                    if (responseCode == 200) {
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    deal.setServerId(responseObject.getString("id"));
+                    deal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_SYNCED);
+                    deal.save();
+                    Log.d(TAG, "onResponse : updateDealServerId : " + responseObject.getString("id"));
+//                    LeadDealAddedEventModel mCallEvent = new LeadDealAddedEventModel();
+//                    TinyBus bus = TinyBus.from(mContext);
+//                    bus.post(mCallEvent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateDeal");
+            }
+        }) {
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void deleteDealsFromServer() {
+        List<LSDeal> dealsList = null;
+        if (LSDeal.count(LSDeal.class) > 0) {
+            dealsList = LSDeal.find(LSDeal.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_DEAL_DELETE_NOT_SYNCED);
+            Log.d(TAG, "deleteDealsFromServer: count : " + dealsList.size());
+            for (LSDeal oneDeal : dealsList) {
+                Log.d(TAG, "Found Deal : " + oneDeal.getName());
+                Log.d(TAG, "Server ID : " + oneDeal.getServerId());
+                deleteDealFromServerSync(oneDeal);
+            }
+        }
+    }
+
+    private void deleteDealFromServerSync(final LSDeal deal) {
+        currentState = PENDING;
+//        Log.d(TAG, "deleteDealFromServerSync: DELETE LEAD SERVER ID : "+deal.getServerId());
+        final String BASE_URL = MyURLs.DELETE_DEAL;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath("" + deal.getServerId())
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        StringRequest sr = new StringRequest(Request.Method.DELETE, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() called with: response (deleteDeal) = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+//                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
+
+//                    if (responseCode == 200) {
+//                        JSONObject responseObject = jObj.getJSONObject("response");
+                    deal.delete();
+//                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+//                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+//                    bus.post(mCallEvent);
+//                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteDeal");
+                try {
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                            int responseCode = jObj.getInt("responseCode");
+                            if (responseCode == 259) {
+                                Log.d(TAG, "onErrorResponse: responseCode == 259 deleted");
+                                deal.delete();
+//                                DealDeletedEventModel mCallEvent = new DealDeletedEventModel();
+//                                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+//                                bus.post(mCallEvent);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }) {
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
                 MY_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
@@ -418,7 +725,7 @@ public class DataSenderAsync {
             }
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_TIMEOUT_MS,
                 MY_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
@@ -973,80 +1280,6 @@ public class DataSenderAsync {
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_TIMEOUT_MS,
-                MY_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(sr);
-    }
-
-    private void deleteContactsFromServer() {
-        List<LSContact> contactsList = null;
-        if (LSContact.count(LSContact.class) > 0) {
-            contactsList = LSContact.find(LSContact.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
-            Log.d(TAG, "deleteContactsFromServer: count : " + contactsList.size());
-            for (LSContact oneContact : contactsList) {
-                Log.d(TAG, "Found Contact : " + oneContact.getContactName());
-                Log.d(TAG, "Server ID : " + oneContact.getServerId());
-                deleteContactFromServerSync(oneContact);
-            }
-        }
-    }
-
-    private void deleteContactFromServerSync(final LSContact contact) {
-        currentState = PENDING;
-//        Log.d(TAG, "deleteContactFromServerSync: DELETE LEAD SERVER ID : "+contact.getServerId());
-        final String BASE_URL = MyURLs.DELETE_CONTACT;
-        Uri builtUri = Uri.parse(BASE_URL)
-                .buildUpon()
-                .appendPath("" + contact.getServerId())
-                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
-                .build();
-        final String myUrl = builtUri.toString();
-        StringRequest sr = new StringRequest(Request.Method.DELETE, myUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "onResponse() called with: response (deleteContact) = [" + response + "]");
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    int responseCode = jObj.getInt("responseCode");
-//                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
-
-//                    if (responseCode == 200) {
-//                        JSONObject responseObject = jObj.getJSONObject("response");
-                    contact.delete();
-                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
-                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-                    bus.post(mCallEvent);
-//                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteContact");
-                try {
-                    if (error != null) {
-                        if (error.networkResponse != null) {
-                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                            int responseCode = jObj.getInt("responseCode");
-                            if (responseCode == 259) {
-                                Log.d(TAG, "onErrorResponse: responseCode == 259 deleted");
-                                contact.delete();
-                                ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
-                                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-                                bus.post(mCallEvent);
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }) {
-        };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 MY_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);

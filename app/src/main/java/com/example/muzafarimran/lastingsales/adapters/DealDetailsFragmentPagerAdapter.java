@@ -55,9 +55,9 @@ public class DealDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Fields";
+                return "Details";
             case 1:
-                return "Comments";
+                return "Notes";
             default:
                 return null;
         }

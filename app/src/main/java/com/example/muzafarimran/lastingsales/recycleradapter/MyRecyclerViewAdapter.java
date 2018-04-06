@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.app.ClassNames;
-import com.example.muzafarimran.lastingsales.viewholders.ViewHolderAddLeadCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderAddDealCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderCallCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderChipCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderConnectionsCard;
@@ -26,7 +26,6 @@ import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSeparatorCard
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSettingCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSocialProfileCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderStatisticsCard;
-import com.example.muzafarimran.lastingsales.viewholders.ViewHolderTaskCard;
 
 import java.util.List;
 
@@ -95,14 +94,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_NAME:
                 return ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_TYPE;
 
-            case ClassNames.ADD_lEAD_CLASS_NAME:
-                return ClassNames.ADD_lEAD_CLASS_TYPE;
+            case ClassNames.ADD_DEAL_CLASS_NAME:
+                return ClassNames.ADD_DEAL_CLASS_TYPE;
 
             case ClassNames.STATISTICS_CLASS_NAME:
                 return ClassNames.STATISTICS_CLASS_TYPE;
 
-            case ClassNames.TASK_CLASS_NAME:
-                return ClassNames.TASK_CLASS_TYPE;
+//            case ClassNames.TASK_CLASS_NAME:
+//                return ClassNames.TASK_CLASS_TYPE;
 
             case ClassNames.FILTER_CLASS_NAME:
                 return ClassNames.FILTER_CLASS_TYPE;
@@ -165,14 +164,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_TYPE:
                 return new ViewHolderContactHeaderBottomsheetCard(LayoutInflater.from(mContext).inflate(ClassNames.CONTACT_HEADER_BOTTOMSHEET_CLASS_RESOURCE, viewGroup, false));
 
-            case ClassNames.ADD_lEAD_CLASS_TYPE:
-                return new ViewHolderAddLeadCard(LayoutInflater.from(mContext).inflate(ClassNames.ADD_lEAD_CLASS_RESOURCE, viewGroup, false));
+            case ClassNames.ADD_DEAL_CLASS_TYPE:
+                return new ViewHolderAddDealCard(LayoutInflater.from(mContext).inflate(ClassNames.ADD_DEAL_CLASS_RESOURCE, viewGroup, false));
 
             case ClassNames.STATISTICS_CLASS_TYPE:
                 return new ViewHolderStatisticsCard(LayoutInflater.from(mContext).inflate(ClassNames.STATISTICS_CLASS_RESOURCE, viewGroup, false));
 
-            case ClassNames.TASK_CLASS_TYPE:
-                return new ViewHolderTaskCard(LayoutInflater.from(mContext).inflate(ClassNames.TASK_CLASS_RESOURCE, viewGroup, false));
+//            case ClassNames.TASK_CLASS_TYPE:
+//                return new ViewHolderTaskCard(LayoutInflater.from(mContext).inflate(ClassNames.TASK_CLASS_RESOURCE, viewGroup, false));
 
             case ClassNames.FILTER_CLASS_TYPE:
                 return new ViewHolderFilterCard(LayoutInflater.from(mContext).inflate(ClassNames.FILTER_CLASS_RESOURCE, viewGroup, false));
@@ -250,18 +249,18 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 ViewHolderContactHeaderBottomsheetCard viewHolderContactHeaderBottomsheetCard = (ViewHolderContactHeaderBottomsheetCard) holder;
                 viewHolderContactHeaderBottomsheetCard.bind(item, position, mContext);
                 break;
-            case ClassNames.ADD_lEAD_CLASS_TYPE:
-                ViewHolderAddLeadCard viewHolderAddLeadCard = (ViewHolderAddLeadCard) holder;
-                viewHolderAddLeadCard.bind(item, position, mContext);
+            case ClassNames.ADD_DEAL_CLASS_TYPE:
+                ViewHolderAddDealCard viewHolderAddDealCard = (ViewHolderAddDealCard) holder;
+                viewHolderAddDealCard.bind(item, position, mContext);
                 break;
             case ClassNames.STATISTICS_CLASS_TYPE:
                 ViewHolderStatisticsCard viewHolderStatisticsCard = (ViewHolderStatisticsCard) holder;
                 viewHolderStatisticsCard.bind(item, position, mContext);
                 break;
-            case ClassNames.TASK_CLASS_TYPE:
-                ViewHolderTaskCard viewHolderTaskCard = (ViewHolderTaskCard) holder;
-                viewHolderTaskCard.bind(item, position, mContext);
-                break;
+//            case ClassNames.TASK_CLASS_TYPE:
+//                ViewHolderTaskCard viewHolderTaskCard = (ViewHolderTaskCard) holder;
+//                viewHolderTaskCard.bind(item, position, mContext);
+//                break;
             case ClassNames.FILTER_CLASS_TYPE:
                 ViewHolderFilterCard viewHolderFilterCard = (ViewHolderFilterCard) holder;
                 viewHolderFilterCard.bind(item, position, mContext);

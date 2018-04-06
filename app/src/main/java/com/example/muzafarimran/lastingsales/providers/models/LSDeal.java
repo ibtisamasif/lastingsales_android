@@ -4,8 +4,6 @@ import android.database.sqlite.SQLiteException;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,21 +23,36 @@ public class LSDeal extends SugarRecord {
     @Ignore
     public static final String DEAL_STATUS_CLOSED_LOST = "lost";
 
+    @Ignore
+    public static final String DEAL_VISIBILITY_STATUS_PUBLIC = "0";
+    @Ignore
+    public static final String DEAL_VISIBILITY_STATUS_PRIVATE = "1";
+
     private String name;
     private String serverId;
     private String userId;
     private String createdBy;
-    private String leadId;
     private String companyId;
-    private String ascCompanyId;
     private String status;
     private String workflowId;
     private String workflowStageId;
     private String createdAt;
     private Date updatedAt;
     private LSContact contact;
+    private String syncStatus;
+    private String dynamic;
+    private String isPrivate;
 
     public LSDeal() {
+    }
+
+    public static List<LSDeal> getDealFromWorkflowStageId(String id) {
+        try {
+            return LSDeal.find(LSDeal.class, "workflow_stage_id = " + id);
+//            return LSDeal.findWithQuery(LSDeal.class, "Select * from LS_DEAL where workflow_stage_id = '" + id + "'" + " ORDER BY updated_at DESC");
+        } catch (SQLiteException e) {
+            return new ArrayList<LSDeal>();
+        }
     }
 
     public static LSDeal getDealFromId(String id) {
@@ -69,26 +82,6 @@ public class LSDeal extends SugarRecord {
             return null;
         }
     }
-
-    public ArrayList<LSDeal> getDealByName(String name){
-        try {
-            ArrayList<LSDeal> deals = (ArrayList<LSDeal>) Select.from(LSDeal.class).where(Condition.prop("name").eq(name)).list();
-            return deals;
-        } catch (Exception e) {
-            return new ArrayList<LSDeal>();
-        }
-    }
-
-
-    // used in All leads
-    public static List<LSDeal> getDateArrangedDeals() {
-        try {
-            return LSDeal.findWithQuery(LSDeal.class, "Select * from LS_Deal where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = 'type_sales' ORDER BY updated_at DESC");
-        } catch (SQLiteException e) {
-            return new ArrayList<LSDeal>();
-        }
-    }
-
 
     public String getName() {
         return name;
@@ -122,28 +115,12 @@ public class LSDeal extends SugarRecord {
         this.createdBy = createdBy;
     }
 
-    public String getLeadId() {
-        return leadId;
-    }
-
-    public void setLeadId(String leadId) {
-        this.leadId = leadId;
-    }
-
     public String getCompanyId() {
         return companyId;
     }
 
     public void setCompanyId(String companyId) {
         this.companyId = companyId;
-    }
-
-    public String getAscCompanyId() {
-        return ascCompanyId;
-    }
-
-    public void setAscCompanyId(String ascCompanyId) {
-        this.ascCompanyId = ascCompanyId;
     }
 
     public String getStatus() {
@@ -194,22 +171,27 @@ public class LSDeal extends SugarRecord {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "LSDeal{" +
-                "name='" + name + '\'' +
-                ", serverId='" + serverId + '\'' +
-                ", userId='" + userId + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", leadId='" + leadId + '\'' +
-                ", companyId='" + companyId + '\'' +
-                ", ascCompanyId='" + ascCompanyId + '\'' +
-                ", status='" + status + '\'' +
-                ", workflowId='" + workflowId + '\'' +
-                ", workflowStageId='" + workflowStageId + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt=" + updatedAt +
-                ", contact=" + contact +
-                '}';
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
+    }
+
+    public String getDynamic() {
+        return dynamic;
+    }
+
+    public void setDynamic(String dynamic) {
+        this.dynamic = dynamic;
+    }
+
+    public String getIsPrivate() {
+        return isPrivate;
+    }
+
+    public void setIsPrivate(String isPrivate) {
+        this.isPrivate = isPrivate;
     }
 }

@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
+import com.example.muzafarimran.lastingsales.carditems.FilterItem;
+import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -37,7 +39,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
     @Override
     public List<Object> loadInBackground() {
-//        AddLeadItem addLeadItem = new AddLeadItem();
+//        AddDealItem addLeadItem = new AddDealItem();
 //        mData.add(addLeadItem);
 
         List<Object> data = new ArrayList<Object>();
@@ -45,14 +47,18 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                data.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                data.add(filterItem);
 
-//                SeparatorItem separatorItem = new SeparatorItem();
-//                separatorItem.text = "Leads";
-//                data.add(separatorItem);
+                HomeItem homeItem = new HomeItem();
+                homeItem.text = "Leads";
+                homeItem.value = "" + contacts.size();
+                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+                data.add(homeItem);
 
-//                data.addAll(listHome);
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
 
 //                ChipItem chipItem = new ChipItem();
 ////                chipItem.selected = 4;
@@ -91,14 +97,18 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                data.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                data.add(filterItem);
 
-//                SeparatorItem separatorItem = new SeparatorItem();
-//                separatorItem.text = "Leads";
-//                data.add(separatorItem);
+                HomeItem homeItem = new HomeItem();
+                homeItem.text = "Leads";
+                homeItem.value = "" + contacts.size();
+                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+                data.add(homeItem);
 
-//                data.addAll(listHome);
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
 
 //                ChipItem chipItem = new ChipItem();
 ////                chipItem.selected = 4;
@@ -136,14 +146,18 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                data.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                data.add(filterItem);
 
-//                SeparatorItem separatorItem = new SeparatorItem();
-//                separatorItem.text = "Leads";
-//                data.add(separatorItem);
+                HomeItem homeItem = new HomeItem();
+                homeItem.text = "Leads";
+                homeItem.value = "" + contacts.size();
+                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+                data.add(homeItem);
 
-//                data.addAll(listHome);
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
 
 //                ChipItem chipItem = new ChipItem();
 ////                chipItem.selected = 4;
@@ -181,14 +195,18 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                data.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                data.add(filterItem);
 
-//                SeparatorItem separatorItem = new SeparatorItem();
-//                separatorItem.text = "Leads";
-//                data.add(separatorItem);
+                HomeItem homeItem = new HomeItem();
+                homeItem.text = "Leads";
+                homeItem.value = "" + contacts.size();
+                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+                data.add(homeItem);
 
-//                data.addAll(listHome);
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
 
 //                ChipItem chipItem = new ChipItem();
 ////                chipItem.selected = 4;
@@ -226,14 +244,18 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                data.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                data.add(filterItem);
 
-//                SeparatorItem separatorItem = new SeparatorItem();
-//                separatorItem.text = "Leads";
-//                data.add(separatorItem);
+                HomeItem homeItem = new HomeItem();
+                homeItem.text = "Leads";
+                homeItem.value = "" + contacts.size();
+                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+                data.add(homeItem);
 
-//                data.addAll(listHome);
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
 
 //                ChipItem chipItem = new ChipItem();
 ////                chipItem.selected = 4;
@@ -270,19 +292,24 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
             if (contacts != null && contacts.size() > 0) {
 
-//                FilterItem filterItem = new FilterItem();
-//                data.add(filterItem);
+                FilterItem filterItem = new FilterItem();
+                data.add(filterItem);
 
-//                SeparatorItem separatorItem = new SeparatorItem();
-//                separatorItem.text = "Leads";
-//                data.add(separatorItem);
+                HomeItem homeItem = new HomeItem();
+                homeItem.text = "Leads";
+                homeItem.value = "" + contacts.size();
+                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+                data.add(homeItem);
 
-//                ChipItem chipItem = new ChipItem();
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
+
+                //                ChipItem chipItem = new ChipItem();
 //                chipItem.selected = 1;
 //                chipItem.totalButtons = 5;
 //                data.add(chipItem);
 
-//                data.addAll(listHome);
                 data.addAll(contacts);
 
                 SeparatorItem separatorSpace = new SeparatorItem();

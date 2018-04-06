@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
+import com.example.muzafarimran.lastingsales.deals.DynamicFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 
 
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class DealsLoader extends AsyncTaskLoader<List<Object>> {
     public static final String TAG = "DealsLoader";
-    private String leadsToLoad;
+    private String dealsIdToLoad;
     private List<Object> mData;
     Bundle bundle;
 
@@ -30,21 +31,20 @@ public class DealsLoader extends AsyncTaskLoader<List<Object>> {
         super(context);
         bundle = args;
         if (bundle != null) {
-            leadsToLoad = bundle.getString("whichLeads");
+            dealsIdToLoad = bundle.getString(DynamicFragment.DEALS_WORKFLOW_STAGE_ID);
         } else {
-            leadsToLoad = "All";
+            dealsIdToLoad = "0";
         }
     }
 
     @Override
     public List<Object> loadInBackground() {
-//        AddLeadItem addLeadItem = new AddLeadItem();
+//        AddDealItem addLeadItem = new AddDealItem();
 //        mData.add(addLeadItem);
 
         List<Object> data = new ArrayList<Object>();
-        if (leadsToLoad != null && leadsToLoad.equals("All")) {
-            Collection<LSDeal> deals = LSDeal.listAll(LSDeal.class);
-//            Collection<LSContact> deals = LSContact.getDateArrangedSalesContacts();
+        if (dealsIdToLoad != null) {
+            List<LSDeal> deals = LSDeal.getDealFromWorkflowStageId(dealsIdToLoad);
             if (deals != null && deals.size() > 0) {
 
                 data.addAll(deals);
@@ -58,40 +58,15 @@ public class DealsLoader extends AsyncTaskLoader<List<Object>> {
 
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
-                erItem.message = "Nothing in leads";
-                erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
-                listError.add(erItem);
-                data.addAll(listError);
-            }
-
-            return data;
-
-        } else if (leadsToLoad != null && leadsToLoad.equals("InProgress")) {
-            Collection<LSDeal> deals = LSDeal.listAll(LSDeal.class);
-//            List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-            if (deals != null && deals.size() > 0) {
-
-                data.addAll(deals);
-
-                SeparatorItem separatorSpace = new SeparatorItem();
-                separatorSpace.text = "";
-                data.add(separatorSpace);
-                data.add(separatorSpace);
-
-            } else {
-
-                Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
-                ErrorItem erItem = new ErrorItem();
-                erItem.message = "Nothing in InProgress";
+                erItem.message = "Nothing in Prospect " + dealsIdToLoad;
                 erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
                 listError.add(erItem);
                 data.addAll(listError);
             }
             return data;
 
-        } else if (leadsToLoad != null && leadsToLoad.equals("Won")) {
-            Collection<LSDeal> deals = LSDeal.listAll(LSDeal.class);
-//            List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+        } else if (dealsIdToLoad != null && dealsIdToLoad.equals("41")) {
+            List<LSDeal> deals = LSDeal.getDealFromWorkflowStageId("41");
             if (deals != null && deals.size() > 0) {
 
                 data.addAll(deals);
@@ -105,53 +80,7 @@ public class DealsLoader extends AsyncTaskLoader<List<Object>> {
 
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
-                erItem.message = "Nothing in Won";
-                erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
-                listError.add(erItem);
-                data.addAll(listError);
-            }
-            return data;
-
-        } else if (leadsToLoad != null && leadsToLoad.equals("Lost")) {
-            Collection<LSDeal> deals = LSDeal.listAll(LSDeal.class);
-//            List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-            if (deals != null && deals.size() > 0) {
-
-                data.addAll(deals);
-
-                SeparatorItem separatorSpace = new SeparatorItem();
-                separatorSpace.text = "";
-                data.add(separatorSpace);
-                data.add(separatorSpace);
-
-            } else {
-
-                Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
-                ErrorItem erItem = new ErrorItem();
-                erItem.message = "Nothing in Lost";
-                erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
-                listError.add(erItem);
-                data.addAll(listError);
-            }
-            return data;
-
-        } else if (leadsToLoad != null && leadsToLoad.equals("InActive")) {
-            Collection<LSDeal> deals = LSDeal.listAll(LSDeal.class);
-//            Collection<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
-            if (deals != null && deals.size() > 0) {
-
-                data.addAll(deals);
-
-                SeparatorItem separatorSpace = new SeparatorItem();
-                separatorSpace.text = "";
-                data.add(separatorSpace);
-                data.add(separatorSpace);
-
-            } else {
-
-                Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
-                ErrorItem erItem = new ErrorItem();
-                erItem.message = "Nothing in InActive";
+                erItem.message = "Nothing in Negotiation41";
                 erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
                 listError.add(erItem);
                 data.addAll(listError);
@@ -160,7 +89,6 @@ public class DealsLoader extends AsyncTaskLoader<List<Object>> {
 
         } else {
             Collection<LSDeal> deals = LSDeal.listAll(LSDeal.class);
-//            Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
             if (deals != null && deals.size() > 0) {
 
                 data.addAll(deals);
@@ -173,7 +101,7 @@ public class DealsLoader extends AsyncTaskLoader<List<Object>> {
             } else {
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
-                erItem.message = "Nothing in Leads";
+                erItem.message = "Nothing in Deals";
                 erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
                 listError.add(erItem);
                 data.addAll(listError);

@@ -8,6 +8,7 @@ import android.util.Log;
 import com.evernote.android.job.JobManager;
 import com.example.muzafarimran.lastingsales.service.DemoJobCreator;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.stetho.Stetho;
 import com.orm.SugarApp;
 import com.orm.SugarContext;
 
@@ -51,6 +52,10 @@ public class Sugar extends SugarApp {
 //        LeakCanary.install(this);
 //        // Normal app init code...
 
+        Stetho.initialize(Stetho.newInitializerBuilder(this)
+                .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                .build());
     }
 
     @Override

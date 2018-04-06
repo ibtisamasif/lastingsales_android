@@ -14,9 +14,10 @@ import android.widget.LinearLayout;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.deals.FragmentAdapter;
-import com.example.muzafarimran.lastingsales.deals.LSDynamicDealPipeline;
+import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class BlankFragment4 extends Fragment  implements ViewPager.OnPageChangeListener {
@@ -27,12 +28,11 @@ public class BlankFragment4 extends Fragment  implements ViewPager.OnPageChangeL
     private String mParam1;
     private String mParam2;
 
-
     private LinearLayout indicator;
     private int mDotCount;
     private LinearLayout[] mDots;
     private ViewPager viewPager;
-    private List<LSDynamicDealPipeline> listItem = new ArrayList<>();
+    private List<LSStage> listItem = new ArrayList<>();
     private FragmentAdapter fragmentAdapter;
 
     public BlankFragment4() {
@@ -64,7 +64,6 @@ public class BlankFragment4 extends Fragment  implements ViewPager.OnPageChangeL
         View view = inflater.inflate(R.layout.fragment_blank4, container, false);
         indicator = (LinearLayout) view.findViewById(R.id.indicators);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager_itemList);
-
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
@@ -122,41 +121,10 @@ public class BlankFragment4 extends Fragment  implements ViewPager.OnPageChangeL
     }
 
     private void setData(){
-        LSDynamicDealPipeline LSDynamicDealPipeline1 = new LSDynamicDealPipeline();
-        LSDynamicDealPipeline1.setName("Prospect");
-        LSDynamicDealPipeline1.save();
 
-        LSDynamicDealPipeline LSDynamicDealPipeline2 = new LSDynamicDealPipeline();
-        LSDynamicDealPipeline2.setName("Negotiation");
-        LSDynamicDealPipeline2.save();
+        Collection<LSStage> lsSteps = LSStage.getAllStagesInSequence(); //TODO Change this query
 
-        LSDynamicDealPipeline LSDynamicDealPipeline3 = new LSDynamicDealPipeline();
-        LSDynamicDealPipeline3.setName("OnBoarding");
-        LSDynamicDealPipeline3.save();
-
-        LSDynamicDealPipeline LSDynamicDealPipeline4 = new LSDynamicDealPipeline();
-        LSDynamicDealPipeline4.setName("Payment");
-        LSDynamicDealPipeline4.save();
-
-        LSDynamicDealPipeline LSDynamicDealPipeline5 = new LSDynamicDealPipeline();
-        LSDynamicDealPipeline5.setName("Returning customer");
-        LSDynamicDealPipeline5.save();
-
-        LSDynamicDealPipeline LSDynamicDealPipeline6 = new LSDynamicDealPipeline();
-        LSDynamicDealPipeline6.setName("workflow 6");
-        LSDynamicDealPipeline6.save();
-
-        LSDynamicDealPipeline LSDynamicDealPipeline7 = new LSDynamicDealPipeline();
-        LSDynamicDealPipeline7.setName("workflow 7");
-        LSDynamicDealPipeline7.save();
-
-        listItem.add(LSDynamicDealPipeline1);
-        listItem.add(LSDynamicDealPipeline2);
-        listItem.add(LSDynamicDealPipeline3);
-        listItem.add(LSDynamicDealPipeline4);
-        listItem.add(LSDynamicDealPipeline5);
-        listItem.add(LSDynamicDealPipeline6);
-        listItem.add(LSDynamicDealPipeline7);
+        listItem.addAll(lsSteps);
 
         fragmentAdapter = new FragmentAdapter(getActivity(), getFragmentManager(), listItem);
         viewPager.setAdapter(fragmentAdapter);

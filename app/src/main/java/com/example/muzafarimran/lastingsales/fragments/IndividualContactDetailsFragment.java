@@ -6,7 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
@@ -23,7 +27,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,11 +43,14 @@ import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
+import com.example.muzafarimran.lastingsales.listloaders.DealsOfALeadLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
+import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
@@ -70,15 +76,21 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 1/9/2017.
  */
 
-public class IndividualContactDetailsFragment extends TabFragment {
+public class IndividualContactDetailsFragment extends TabFragment  implements LoaderManager.LoaderCallbacks<List<Object>> {
 
-    public static final String TAG = "IndividualConDetailFrag";
+    public static final String TAG = "IndividualContDetailFra";
+    public static final java.lang.String DEALS_LEAD_ID = "deals_lead_id";
+    public static final int DEALS_OF_A_LEAD = 31;
     //    TextView tvName;
     TextView tvNumber;
     TextView tvDefaultText;
+
     //    TextView tvEmail;
     TextView tvAddress;
-    ListView listView = null;
+    RecyclerView mRecyclerView = null;
+    private List<Object> listLoader = new ArrayList<Object>();
+    private MyRecyclerViewAdapter adapter;
+
     private Long contactIDLong;
     private Spinner leadStatusSpinner;
     private Button bSave;
@@ -150,9 +162,16 @@ public class IndividualContactDetailsFragment extends TabFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.contact_profile_details_fragment, container, false);
 //        tvName = (TextView) view.findViewById(R.id.tvName);
-        tvNumber = (TextView) view.findViewById(R.id.tvContactNumber);
+        tvNumber = (TextView) view.findViewById(R.id.tvNumber);
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
         tvAddress = (TextView) view.findViewById(R.id.tvAddress);
+
+        adapter = new MyRecyclerViewAdapter(getActivity(), listLoader); //TODO potential bug getActivity can be null.
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setNestedScrollingEnabled(false);
+
 
 //      social Profile views
         cv_social_item = view.findViewById(R.id.cv_social_item);
@@ -420,6 +439,9 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 leadStatusSpinner.setOnItemSelectedListener(new CustomSpinnerLeadStatusOnItemSelectedListener());
             }
         });
+        Bundle args = new Bundle();
+        args.putString(DEALS_LEAD_ID, mContact.getId() + "");
+        getLoaderManager().initLoader(DEALS_OF_A_LEAD, args, IndividualContactDetailsFragment.this);
     }
 
     @Override
@@ -439,7 +461,6 @@ public class IndividualContactDetailsFragment extends TabFragment {
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "onDestroyView: ");
-        listView = null;
     }
 
     @Override
@@ -1124,6 +1145,44 @@ public class IndividualContactDetailsFragment extends TabFragment {
                 MY_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
+    }
+
+
+    @Override
+    public Loader<List<Object>> onCreateLoader(int id, Bundle args) {
+        Log.d(TAG, "onCreateLoader: ");
+        listLoader.clear();
+        LoadingItem loadingItem = new LoadingItem();
+        loadingItem.text = "Loading items...";
+        listLoader.add(loadingItem);
+        adapter.notifyDataSetChanged();
+
+        switch (id) {
+            case DEALS_OF_A_LEAD:
+                return new DealsOfALeadLoader(getActivity(), args);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Object>> loader, List<Object> data) {
+        Log.d(TAG, "onLoadFinished: ");
+        if (data != null) {
+            if (!data.isEmpty()) {
+                listLoader.clear();
+                listLoader.addAll(data);
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Object>> loader) {
+        Log.d(TAG, "onLoaderReset: ");
+        listLoader.clear();
+        listLoader.addAll(new ArrayList<Object>());
+        adapter.notifyDataSetChanged();
     }
 
 }

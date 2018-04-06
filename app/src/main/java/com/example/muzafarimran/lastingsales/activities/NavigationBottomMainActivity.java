@@ -69,7 +69,7 @@ import de.halfbit.tinybus.wires.ShakeEventWire;
 public class NavigationBottomMainActivity extends AppCompatActivity {
     public static final String TAG = "NavigationBottomMain";
 
-//    public static final String KEY_ACTIVE_LOADER = "active_loader";
+    //    public static final String KEY_ACTIVE_LOADER = "active_loader";
 //    public static int ACTIVE_LOADER = -1;
 //    public static final int INQU_LOADER_ID = 1;
 //    public static final int HOME_LOADER_ID = 2;
@@ -78,16 +78,17 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
     public static String KEY_SELECTED_TAB = "key_selected_tab";
     public static String INQUIRIES_TAB = "inquiries_tab";
     private TinyBus bus;
-//    private List<Object> list = new ArrayList<Object>();
+    //    private List<Object> list = new ArrayList<Object>();
 //    private MyRecyclerViewAdapter adapter;
     private FirebaseAnalytics mFirebaseAnalytics;
     private SessionManager sessionManager;
     private SettingsManager settingsManager;
     Bundle bundle = new Bundle();
     private SearchView searchView;
-    private FloatingActionMenu floatingActionMenu;
+    private android.support.design.widget.FloatingActionButton floatingActionButtonDeal;
+    private FloatingActionMenu floatingActionMenuLead;
     private BottomNavigationView navigation;
-//    private static InquiryCallDetailsBottomSheetFragment inquiryCallDetailsBottomSheetFragment;
+    //    private static InquiryCallDetailsBottomSheetFragment inquiryCallDetailsBottomSheetFragment;
 //    private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
     public static Activity activity;
     private static boolean sheetShowing = false;
@@ -118,38 +119,43 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
 //                case R.id.navigation_tasks:
 //                    ACTIVE_LOADER = 1;
-//                    floatingActionMenu.hideMenu(true);
+//                    floatingActionMenuLead.hideMenu(true);
 //                    getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
 ////                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this);
 //                    return true;
                 case R.id.navigation_inquiries:
                     switchToFragment1();
 //                    ACTIVE_LOADER = INQU_LOADER_ID;
-                    floatingActionMenu.hideMenu(true);
+                    floatingActionButtonDeal.hide();
+                    floatingActionMenuLead.hideMenu(true);
 //                    getSupportLoaderManager().restartLoader(INQU_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
                 case R.id.navigation_home:
                     switchToFragment2();
 //                    ACTIVE_LOADER = HOME_LOADER_ID;
-                    floatingActionMenu.hideMenu(true);
+                    floatingActionButtonDeal.hide();
+                    floatingActionMenuLead.hideMenu(true);
 //                    getSupportLoaderManager().restartLoader(HOME_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
                 case R.id.navigation_leads:
                     switchToFragment3();
 //                    ACTIVE_LOADER = LEAD_LOADER_ID;
-                    floatingActionMenu.showMenu(true);
+                    floatingActionButtonDeal.hide();
+                    floatingActionMenuLead.showMenu(true);
 //                    getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
                 case R.id.navigation_deals:
                     switchToFragment4();
 //                    ACTIVE_LOADER = LEAD_LOADER_ID;
-                    floatingActionMenu.hideMenu(true);
+                    floatingActionMenuLead.hideMenu(true);
+                    floatingActionButtonDeal.show();
 //                    getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
                 case R.id.navigation_more:
                     switchToFragment5();
 //                    ACTIVE_LOADER = MORE_LOADER_ID;
-                    floatingActionMenu.hideMenu(true);
+                    floatingActionButtonDeal.hide();
+                    floatingActionMenuLead.hideMenu(true);
 //                    getSupportLoaderManager().restartLoader(MORE_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
             }
@@ -159,38 +165,38 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
 
     public void switchToFragment1() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment1()).commit();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment1()).commitAllowingStateLoss();
+//        navigation.setSelectedItemId(R.id.navigation_inquiries);
     }
+
     public void switchToFragment2() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment2()).commit();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment2()).commitAllowingStateLoss();
+//        navigation.setSelectedItemId(R.id.navigation_home);
     }
+
     public void switchToFragment3() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment3()).commit();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment3()).commitAllowingStateLoss();
+//        navigation.setSelectedItemId(R.id.navigation_leads);
     }
+
     public void switchToFragment4() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment4()).commit();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment4()).commitAllowingStateLoss();
+//        navigation.setSelectedItemId(R.id.navigation_deals);
     }
+
     public void switchToFragment5() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment5()).commit();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment5()).commitAllowingStateLoss();
+//        navigation.setSelectedItemId(R.id.navigation_more);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: called");
-
-//        LSDeal lsDeal = new LSDeal();
-//        lsDeal.setName("Toyota deal");
-//        lsDeal.setContact(LSContact.getContactFromNumber("+92 334 4222306"));
-//        lsDeal.setLeadId(Long.toString(LSContact.getContactFromNumber("+92 334 4222306").getId()));
-//        lsDeal.setStatus(LSDeal.DEAL_STATUS_PENDING);
-//        lsDeal.save();
-
-        switchToFragment1();
 
         initFirst(savedInstanceState);
 
@@ -220,15 +226,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        floatingActionMenu = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
+        floatingActionMenuLead = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         FloatingActionButton floatingActionButtonAdd = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add);
         FloatingActionButton floatingActionButtonImport = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_import);
-        floatingActionMenu.setClosedOnTouchOutside(true);
+        floatingActionMenuLead.setClosedOnTouchOutside(true);
 
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                floatingActionMenu.close(true);
+                floatingActionMenuLead.close(true);
 
                 Intent intent = new Intent(NavigationBottomMainActivity.this, AddEditLeadActivity.class);
                 intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
@@ -247,7 +253,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
         floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                floatingActionMenu.close(true);
+                floatingActionMenuLead.close(true);
 
                 Intent intent1 = new Intent(NavigationBottomMainActivity.this, AddEditLeadActivity.class);
                 intent1.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
@@ -261,6 +267,16 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
 //                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
 //                intent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_FAB);
 //                startActivity(intent);
+            }
+        });
+
+        floatingActionButtonDeal = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab_add_deal);
+        floatingActionButtonDeal.hide();
+        floatingActionButtonDeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AddDealActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -482,18 +498,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
 //            NavigationBottomMainActivity.this.startActivity(intentTest);
 //        }
 
-        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread thread, Throwable ex) {
-                Log.d(TAG, "uncaughtException: ");
-                Intent launchIntent = new Intent(getIntent());
-                PendingIntent pending = PendingIntent.getActivity(NavigationBottomMainActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pending);
-                defaultHandler.uncaughtException(thread, ex);
-                System.exit(2);
-            }
-        });
+//        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+//            public void uncaughtException(Thread thread, Throwable ex) {
+//                Log.d(TAG, "uncaughtException: ");
+//                Intent launchIntent = new Intent(getIntent());
+//                PendingIntent pending = PendingIntent.getActivity(NavigationBottomMainActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pending);
+//                defaultHandler.uncaughtException(thread, ex);
+//                System.exit(2);
+//            }
+//        });
 
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
@@ -507,18 +523,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
 //        outState.putInt(KEY_ACTIVE_LOADER, ACTIVE_LOADER);
-//        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
-//        super.onSaveInstanceState(outState);
-//    }
-//
-//    @Override
-//    public void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
+        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
 //        ACTIVE_LOADER = savedInstanceState.getInt(KEY_ACTIVE_LOADER);
-//    }
+    }
 
     @Override
     public void onStart() {
@@ -558,6 +574,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
 //                navigation.setSelectedItemId(R.id.navigation_leads);
 //            }
 //        }
+
+        navigation.setSelectedItemId(R.id.navigation_leads);
     }
 
     @Override
@@ -594,7 +612,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
 //                    if (ACTIVE_LOADER == INQU_LOADER_ID || ACTIVE_LOADER == HOME_LOADER_ID || ACTIVE_LOADER == MORE_LOADER_ID) {
 //                        getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
 //                        ACTIVE_LOADER = LEAD_LOADER_ID;
-//                        floatingActionMenu.showMenu(true);
+//                        floatingActionMenuLead.showMenu(true);
 //                        navigation.setSelectedItemId(R.id.navigation_leads);
 //                    } else if (ACTIVE_LOADER == LEAD_LOADER_ID) {
 //                        super.onBackPressed();

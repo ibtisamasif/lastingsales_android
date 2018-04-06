@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView13" />
 
     <ImageView
-        android:id="@+id/lead_number_icon"
+        android:id="@+id/number_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginTop="8dp"
@@ -61,8 +61,8 @@
         android:layout_marginStart="8dp"
         android:text="Ibtisam Asif"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintStart_toEndOf="@+id/lead_number_icon"
-        app:layout_constraintTop_toTopOf="@+id/lead_number_icon" />
+        app:layout_constraintStart_toEndOf="@+id/number_icon"
+        app:layout_constraintTop_toTopOf="@+id/number_icon" />
 
     <TextView
         android:id="@+id/textView16"
@@ -81,10 +81,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="Enter shot note here.."
+        android:hint="Enter short note here.."
         android:inputType="textPersonName"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintStart_toStartOf="@+id/lead_number_icon"
+        app:layout_constraintStart_toStartOf="@+id/number_icon"
         app:layout_constraintTop_toBottomOf="@+id/contactName" />
 
     <Spinner

@@ -104,4 +104,20 @@
 
     </com.github.clans.fab.FloatingActionMenu>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_deal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_deal"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="@+id/llFragmentContainer"/>
+
 </android.support.constraint.ConstraintLayout>

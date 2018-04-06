@@ -39,7 +39,7 @@
         android:layout_marginLeft="8dp" />
 
     <TextView
-        android:id="@+id/tvContactNumber"
+        android:id="@+id/tvNumber"
         style="@style/Base.TextAppearance.AppCompat.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

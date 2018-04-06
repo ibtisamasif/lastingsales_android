@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_deal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <!--<LinearLayout-->
+                    <!--android:id="@+id/llDealType"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginBottom="8dp"-->
+                    <!--android:layout_marginLeft="20dp"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<TextView-->
+                    <!--android:layout_width="45dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Status" />-->
+
+                    <!--<Button-->
+                    <!--android:id="@+id/bPendingRadio"-->
+                    <!--style="@style/Widget.AppCompat.Button.Colored"-->
+                    <!--android:layout_width="120dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_marginRight="10dp"-->
+                    <!--android:layout_marginEnd="10dp"-->
+                    <!--android:layout_weight="0.33"-->
+                    <!--android:tag="collegue_radio"-->
+                    <!--android:text="Pending"-->
+
+                    <!--/>-->
+
+                    <!--<Button-->
+                    <!--android:id="@+id/bWonRadio"-->
+                    <!--style="@style/Widget.AppCompat.Button.Colored"-->
+                    <!--android:layout_width="120dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_marginRight="16dp"-->
+                    <!--android:layout_marginEnd="10dp"-->
+                    <!--android:layout_weight="0.33"-->
+                    <!--android:tag="sale_radio"-->
+                    <!--android:text="Won" />-->
+
+                    <!--<Button-->
+                    <!--android:id="@+id/bLostRadio"-->
+                    <!--style="@style/Widget.AppCompat.Button.Colored"-->
+                    <!--android:layout_width="120dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_marginRight="16dp"-->
+                    <!--android:layout_marginEnd="10dp"-->
+                    <!--android:layout_weight="0.33"-->
+                    <!--android:tag="sale_radio"-->
+                    <!--android:text="Lost" />-->
+
+                    <!--</LinearLayout>-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/name" />
+
+                        <EditText
+                            android:id="@+id/etNameAddDeal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:layout_weight="1"
+                            android:inputType="textPersonName"
+                            android:padding="8dp"
+                            android:text="deal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="Lead" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/etNumberAddDeal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:padding="8dp"
+                            tools:text=""
+                            android:hint="john doe"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            >
+                            <requestFocus />
+                        </AutoCompleteTextView>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/status_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Is private?" />
+
+                        <Spinner
+                            android:id="@+id/isPrivateSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="43dp"
+                            android:gravity="center"
+                            android:spinnerMode="dropdown" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!--contact Details  end here-->
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/bCancelAddDeal"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_transparent_black_border"
+                        android:text="@string/cancel"
+                        android:textColor="@color/md_black" />
+
+                    <Button
+                        android:id="@+id/bSaveAddDeal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_transparent_black_border"
+                        android:text="@string/save"
+                        android:textColor="@color/md_black" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+        <!--work above this line-->
+    </LinearLayout>
+
+</RelativeLayout>

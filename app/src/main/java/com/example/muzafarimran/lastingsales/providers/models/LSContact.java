@@ -313,6 +313,20 @@ public class LSContact extends SugarRecord {
         }
     }
 
+    public static LSContact getContactFromId(String id) {
+        ArrayList<LSContact> list = null;
+        try {
+            list = (ArrayList<LSContact>) LSContact.find(LSContact.class, "id = ? ", id);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
+
     public static LSContact getContactFromNumber(String number) {
         ArrayList<LSContact> list = null;
         try {
@@ -334,6 +348,12 @@ public class LSContact extends SugarRecord {
 //            return new ArrayList<LSContact>();
 //        }
 //    }
+
+    public ArrayList<LSDeal> getAllDeals() {
+        ArrayList<LSDeal> allFollowupsOfThisContact = null;
+        allFollowupsOfThisContact = (ArrayList<LSDeal>) LSDeal.find(LSDeal.class, "contact = ? ", getId() + "");
+        return allFollowupsOfThisContact;
+    }
 
     public ArrayList<TempFollowUp> getAllFollowups() {
         ArrayList<TempFollowUp> allFollowupsOfThisContact = null;
@@ -550,26 +570,6 @@ public class LSContact extends SugarRecord {
 
     @Override
     public String toString() {
-        return "LSContact{" +
-                "contactName='" + contactName + '\'' +
-                ", contactEmail='" + contactEmail + '\'' +
-                ", contactType='" + contactType + '\'' +
-                ", phoneOne='" + phoneOne + '\'' +
-                ", phoneTwo='" + phoneTwo + '\'' +
-                ", contactDescription='" + contactDescription + '\'' +
-                ", contactCompany='" + contactCompany + '\'' +
-                ", contactAddress='" + contactAddress + '\'' +
-                ", contactCreated_at='" + contactCreated_at + '\'' +
-                ", contactUpdated_at='" + contactUpdated_at + '\'' +
-                ", contactDeleted_at='" + contactDeleted_at + '\'' +
-                ", contactSalesStatus='" + contactSalesStatus + '\'' +
-                ", detailsDropDownOpen=" + detailsDropDownOpen +
-                ", syncStatus='" + syncStatus + '\'' +
-                ", serverId='" + serverId + '\'' +
-                ", dynamic='" + dynamic + '\'' +
-                ", isLeadDeleted=" + isLeadDeleted +
-                ", updatedAt=" + updatedAt +
-                ", contactProfile=" + contactProfile +
-                '}';
+        return contactName;
     }
 }

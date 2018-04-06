@@ -45,7 +45,7 @@ public class UnlabeledLoader1 extends AsyncTaskLoader<List<Object>> {
 //            statisticsItem.callsValue = 0;
 
             SeparatorItem separatorItem = new SeparatorItem();
-            separatorItem.text = "Recent unlabeled contacts";
+            separatorItem.text = "Recent calls";
 
             data.add(homeItem);
 //            data.add(statisticsItem);

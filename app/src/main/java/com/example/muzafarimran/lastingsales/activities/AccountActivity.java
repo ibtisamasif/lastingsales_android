@@ -63,7 +63,7 @@ public class AccountActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         ivPic = (SimpleDraweeView) findViewById(R.id.ivPic);
         tvName = (TextView) findViewById(R.id.tvContactName);
-        tvEmail = (TextView) findViewById(R.id.tvContactNumber);
+        tvEmail = (TextView) findViewById(R.id.tvNumber);
         tvRole = (TextView) findViewById(R.id.tvRole);
         tvSupportNumber = (TextView) findViewById(R.id.tvSupportNumber);
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_about);

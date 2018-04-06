@@ -566,8 +566,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
                     String created_at = payload.getString("created_at");
                     String updated_at = payload.getString("updated_at");
-
-
+                    String dynamic_values = "";
+                    if (payload.has("dynamic_values")) {
+                        dynamic_values = payload.getString("dynamic_values");
+                    }
+                    String is_private = "";
+                    if (payload.has("is_private")) {
+                        is_private = payload.getString("is_private");
+                    }
                     // ignore if task already exists
                     LSDeal lsDeal = LSDeal.getDealFromServerId(id);
                     if (lsDeal == null) {
@@ -579,19 +585,93 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             lsDeal.setUserId(Integer.toString(user_id));
                             lsDeal.setCompanyId(Integer.toString(company_id));
                             lsDeal.setWorkflowId(workflow_id);
-                            lsDeal.setLeadId(Integer.toString(lead_id));
+                            lsDeal.setWorkflowStageId(workflow_stage_id);
                             lsDeal.setName(name);
                             lsDeal.setStatus(status);
                             lsDeal.setCreatedBy(Integer.toString(created_by));
                             lsDeal.setCreatedAt(created_at);
                             Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
                             lsDeal.setUpdatedAt(updated_atDate);
+                            lsDeal.setDynamic(dynamic_values);
+                            lsDeal.setIsPrivate(is_private);
+                            lsDeal.setContact(lsContact);
                             lsDeal.save();
 
 //                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
 //                            TinyBus bus = TinyBus.from(getApplicationContext());
 //                            bus.post(mCallEvent);
                         }
+                    }
+                }
+
+                if (action.equals("put")) {
+                    String id = payload.getString("id");
+                    int user_id = 0;
+                    if (payload.has("user_id")) {
+                        user_id = payload.getInt("user_id");
+                    }
+                    int company_id = 0;
+                    if (payload.has("company_id")) {
+                        company_id = payload.getInt("company_id");
+                    }
+                    String workflow_id = payload.getString("workflow_id");
+                    String workflow_stage_id = payload.getString("workflow_stage_id");
+                    int lead_id = 0;
+                    if (payload.has("lead_id")) {
+                        lead_id = payload.getInt("lead_id");
+                    }
+                    String name = payload.getString("name");
+                    String status = payload.getString("status");
+                    int created_by = 0;
+                    if (payload.has("created_by")) {
+                        created_by = payload.getInt("created_by");
+                    }
+                    String created_at = payload.getString("created_at");
+                    String updated_at = payload.getString("updated_at");
+                    String dynamic_values = payload.getString("dynamic_values");
+                    String is_private = "";
+                    if (payload.has("is_private")) {
+                        is_private = payload.getString("is_private");
+                    }
+
+                    // ignore if task already exists
+                    LSDeal lsDeal = LSDeal.getDealFromServerId(id);
+                    if (lsDeal != null) {
+                        // check if lead still exists of which the deal is
+                        LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
+                        if (lsContact != null) {
+                            lsDeal.setServerId(id);
+                            lsDeal.setUserId(Integer.toString(user_id));
+                            lsDeal.setCompanyId(Integer.toString(company_id));
+                            lsDeal.setWorkflowId(workflow_id);
+                            lsDeal.setWorkflowStageId(workflow_stage_id);
+                            lsDeal.setName(name);
+                            lsDeal.setStatus(status);
+                            lsDeal.setCreatedBy(Integer.toString(created_by));
+                            lsDeal.setCreatedAt(created_at);
+                            Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+                            lsDeal.setUpdatedAt(updated_atDate);
+                            lsDeal.setDynamic(dynamic_values);
+                            lsDeal.setIsPrivate(is_private);
+                            lsDeal.setContact(lsContact);
+                            lsDeal.save();
+
+//                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
+//                            TinyBus bus = TinyBus.from(getApplicationContext());
+//                            bus.post(mCallEvent);
+                        } else {
+                            // may be to aggressive to delete contact
+                            lsDeal.delete();
+                        }
+                    }
+                }
+
+                if (action.equals("delete")) {
+                    String id = payload.getString("id");
+                    // ignore if task already exists
+                    LSDeal lsDeal = LSDeal.getDealFromServerId(id);
+                    if (lsDeal != null) {
+                        lsDeal.delete();
                     }
                 }
             }
@@ -700,8 +780,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
 ////             play notification sound
-//            FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
-//            notificationUtils.playNotificationSound();
+            FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
+            notificationUtils.playNotificationSound();
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(TAG, "Json Exception: " + e.getMessage());

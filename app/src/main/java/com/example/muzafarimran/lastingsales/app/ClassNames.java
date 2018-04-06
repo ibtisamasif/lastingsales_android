@@ -68,9 +68,9 @@ public class ClassNames {
     public static final int CONTACT_HEADER_BOTTOMSHEET_CLASS_TYPE = 15;
     public static final int CONTACT_HEADER_BOTTOMSHEET_CLASS_RESOURCE = R.layout.card_contact_header_bottomsheet;
 
-    public static final String ADD_lEAD_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.AddLeadItem";
-    public static final int ADD_lEAD_CLASS_TYPE = 16;
-    public static final int ADD_lEAD_CLASS_RESOURCE = R.layout.card_add_lead;
+    public static final String ADD_DEAL_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.AddDealItem";
+    public static final int ADD_DEAL_CLASS_TYPE = 16;
+    public static final int ADD_DEAL_CLASS_RESOURCE = R.layout.card_add_deal;
 
     public static final String STATISTICS_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.StatisticsItem";
     public static final int STATISTICS_CLASS_TYPE = 17;

@@ -21,13 +21,17 @@ import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapt
 import java.util.ArrayList;
 import java.util.List;
 
-public class DynamicFragment extends Fragment  implements LoaderManager.LoaderCallbacks<List<Object>> {
+public class DynamicFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Object>> {
     public static final String TAG = "DynamicFragment";
+    public static final String DEALS_WORKFLOW_STAGE_ID = "deals_workflow_stage_id";
     public static final int DEAL_LOADER_ID = 4;
 
     private TextView tvDetailFragment;
 
     private String detail;
+
+    private String stepId;
+
     private List<Object> listLoader = new ArrayList<Object>();
 
     private MyRecyclerViewAdapter adapter;
@@ -50,7 +54,11 @@ public class DynamicFragment extends Fragment  implements LoaderManager.LoaderCa
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
 
-        getLoaderManager().initLoader(DEAL_LOADER_ID, null, DynamicFragment.this);
+        String stepId = getStepId();
+        Log.d(TAG, "onViewCreated: stepId: " + stepId);
+        Bundle args = new Bundle();
+        args.putString(DEALS_WORKFLOW_STAGE_ID, getStepId());
+        getLoaderManager().initLoader(DEAL_LOADER_ID, args, DynamicFragment.this);
     }
 
     public String getDetail() {
@@ -59,6 +67,14 @@ public class DynamicFragment extends Fragment  implements LoaderManager.LoaderCa
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public String getStepId() {
+        return stepId;
+    }
+
+    public void setStepId(String stepId) {
+        this.stepId = stepId;
     }
 
     @Override

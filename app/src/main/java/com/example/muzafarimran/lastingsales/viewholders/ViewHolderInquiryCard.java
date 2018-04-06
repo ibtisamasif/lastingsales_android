@@ -54,7 +54,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         this.name = view.findViewById(R.id.tvContactName);
         this.time = view.findViewById(R.id.call_time);
         this.call_icon = view.findViewById(R.id.call_icon);
-        this.numberDetailTextView = view.findViewById(R.id.tvContactNumber);
+        this.numberDetailTextView = view.findViewById(R.id.tvNumber);
 //        this.bIgnore = view.findViewById(R.id.bIgnore);
         this.inquireyCount = view.findViewById(R.id.inquireyCount);
         this.bTag = view.findViewById(R.id.bTag);

@@ -101,6 +101,7 @@
     <string name="em_ignored_delight">Ignored Contacts are your Friend and Family contacts. They are not Tracked!</string>
     <string name="em_business_delight">Business Contacts are people who are not your customers!</string>
     <string name="lead_details">Lead Details</string>
+    <string name="deal_details">Deal Details</string>
     <string name="details_button">DETAILS</string>
 
 

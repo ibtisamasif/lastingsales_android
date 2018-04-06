@@ -46,7 +46,7 @@ public class ViewHolderTaskCard extends RecyclerView.ViewHolder {
         super(v);
 
         tvContactName = v.findViewById(R.id.tvContactName);
-        tvContactNumber = v.findViewById(R.id.tvContactNumber);
+        tvContactNumber = v.findViewById(R.id.tvNumber);
         tvTaskName = v.findViewById(R.id.tvTaskName);
         tvTaskDescription = v.findViewById(R.id.tvTaskDescription);
         ivTick = v.findViewById(R.id.ivTick);

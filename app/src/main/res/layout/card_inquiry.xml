@@ -49,7 +49,7 @@
             android:layout_marginLeft="16dp" />
 
         <TextView
-            android:id="@+id/tvContactNumber"
+            android:id="@+id/tvNumber"
             style="@style/Base.TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,8 +65,8 @@
             android:layout_height="16dp"
             android:layout_below="@id/tvContactName"
             app:srcCompat="@drawable/missed_call_icon"
-            app:layout_constraintStart_toStartOf="@+id/tvContactNumber"
-            app:layout_constraintTop_toBottomOf="@+id/tvContactNumber" />
+            app:layout_constraintStart_toStartOf="@+id/tvNumber"
+            app:layout_constraintTop_toBottomOf="@+id/tvNumber" />
 
         <TextView
             android:id="@+id/call_time"

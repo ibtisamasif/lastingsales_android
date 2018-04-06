@@ -1,11 +1,13 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.DealDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -46,7 +49,6 @@ public class DealDetailsTabActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
         Bundle extras = getIntent().getExtras();
         Long dealIDLong;
         if (extras != null) {
@@ -56,21 +58,6 @@ public class DealDetailsTabActivity extends AppCompatActivity {
                 selectedDeal = LSDeal.findById(LSDeal.class, dealIDLong);
             }
         }
-        if (selectedDeal != null) {
-            if (selectedDeal.getName() == null || selectedDeal.getName().equals("")) {
-//                tvName.setVisibility(View.GONE);
-            } else {
-                toolbar.setTitle(selectedDeal.getName());
-                setSupportActionBar(toolbar);
-//                collapsingToolbarLayout.setTitle(selectedDeal.getContactName());
-            }
-//            if (selectedDeal.getPhoneOne() == null || selectedDeal.getPhoneOne().equals("")) {
-////                tvNumberOne.setVisibility(View.GONE);
-//            } else {
-////                tvNumberOne.setText(selectedDeal.getPhoneOne());
-//            }
-        }
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new DealDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedDeal.getId())); //TODO crash getId was null
 
@@ -128,13 +115,6 @@ public class DealDetailsTabActivity extends AppCompatActivity {
                 }
             }
         });
-
-        if (extras != null) {
-            selectedTab = extras.getString(DealDetailsTabActivity.KEY_SET_SELECTED_TAB);
-            if (selectedTab != null && selectedTab != "") {
-                viewPager.setCurrentItem(1, true);
-            }
-        }
     }
 
     public void onBackPressed() {
@@ -148,13 +128,13 @@ public class DealDetailsTabActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.lead_options_menu, menu);
+        getMenuInflater().inflate(R.menu.lead_options_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
+        switch (item.getItemId()) {
 //            case R.id.ic_action_message:
 //                Intent intent = new Intent(Intent.ACTION_VIEW);
 //                intent.setData(Uri.parse("sms:"));
@@ -167,49 +147,46 @@ public class DealDetailsTabActivity extends AppCompatActivity {
 //                startActivity(intent);
 ////                Toast.makeText(this, "Opening Message window", Toast.LENGTH_SHORT).show();
 //                break;
-//            case R.id.ic_action_delete:
-//                String nameTextOnDialog;
-//                if (selectedContact.getContactName() != null) {
-//                    nameTextOnDialog = selectedContact.getContactName();
-//                } else {
-//                    nameTextOnDialog = selectedContact.getPhoneOne();
-//                }
-//                AlertDialog.Builder alert = new AlertDialog.Builder(DealDetailsTabActivity.this);
-//                alert.setTitle("Delete");
-//                alert.setMessage("Are you sure to delete " + nameTextOnDialog);
-//                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        DeleteManager.deleteContact(DealDetailsTabActivity.this, selectedContact);
+            case R.id.ic_action_delete:
+                String nameTextOnDialog = "";
+                if (selectedDeal.getName() != null) {
+                    nameTextOnDialog = selectedDeal.getName();
+                }
+                AlertDialog.Builder alert = new AlertDialog.Builder(DealDetailsTabActivity.this);
+                alert.setTitle("Delete");
+                alert.setMessage("Are you sure to delete " + nameTextOnDialog);
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        selectedDeal.delete();
+                        DeleteManager.deleteDeal(DealDetailsTabActivity.this, selectedDeal);
 //                        Snackbar.make(toolbar, "Lead deleted!", Snackbar.LENGTH_SHORT).show();
-//                        dialog.dismiss();
-//                        finish();
+                        dialog.dismiss();
+                        finish();
 //                        InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
 //                        TinyBus bus = TinyBus.from(DealDetailsTabActivity.this);
 //                        bus.post(mCallEvent);
-//                    }
-//                });
-//                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                alert.show();
-//                break;
-//
-//            case R.id.ic_action_edit:
-//                Log.d("duplicate", "onOptionsItemSelected: ");
-//                Intent addContactScreenIntent = new Intent(getApplicationContext(), AddEditLeadActivity.class);
-//                addContactScreenIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
-//                addContactScreenIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, dealIdString);
-//                startActivity(addContactScreenIntent);
-//                break;
-//
-//            case android.R.id.home:
-//                onBackPressed();
-//                return true;
-//        }
+                    }
+                });
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+                break;
+
+            case R.id.ic_action_edit:
+                Intent addContactScreenIntent = new Intent(getApplicationContext(), EditDealActivity.class);
+                addContactScreenIntent.putExtra(EditDealActivity.TAG_LAUNCH_MODE_DEAL_ID, dealIdString);
+                startActivity(addContactScreenIntent);
+                break;
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -238,7 +215,35 @@ public class DealDetailsTabActivity extends AppCompatActivity {
                 selectedDeal = LSDeal.findById(LSDeal.class, dealIDLong);
             }
         }
+
+        if (selectedDeal != null) {
+            if (selectedDeal.getName() == null || selectedDeal.getName().equals("")) {
+//                tvName.setVisibility(View.GONE);
+            } else {
+                if (selectedDeal.getContact() != null && selectedDeal.getContact().getContactName() != null && !selectedDeal.getContact().getContactName().equals("")) {
+                    toolbar.setTitle(selectedDeal.getName() + " (" + selectedDeal.getContact().getContactName() + ") ");
+                    setSupportActionBar(toolbar);
+//                collapsingToolbarLayout.setTitle(selectedDeal.getContactName());
+                } else {
+                    toolbar.setTitle(selectedDeal.getName());
+                    setSupportActionBar(toolbar);
+                }
+            }
+//            if (selectedDeal.getPhoneOne() == null || selectedDeal.getPhoneOne().equals("")) {
+////                tvNumberOne.setVisibility(View.GONE);
+//            } else {
+////                tvNumberOne.setText(selectedDeal.getPhoneOne());
+//            }
+        }
+
         toolbar.setTitle(selectedDeal.getName());
         setSupportActionBar(toolbar);
+
+        if (extras != null) {
+            selectedTab = extras.getString(DealDetailsTabActivity.KEY_SET_SELECTED_TAB);
+            if (selectedTab != null && selectedTab != "") {
+                viewPager.setCurrentItem(1, true);
+            }
+        }
     }
 }

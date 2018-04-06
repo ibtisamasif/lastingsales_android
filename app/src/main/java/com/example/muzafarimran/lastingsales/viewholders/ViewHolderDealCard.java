@@ -6,14 +6,13 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.DealDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 
 /**
  * Created by ibtisam on 2/1/2018.
@@ -27,17 +26,17 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
     private final TextView tvContactNumber;
     private final TextView tvDealName;
     private final TextView tvDealDescription;
-    private final ImageView ivTick;
+//    private final ImageView ivTick;
 
     public ViewHolderDealCard(View v) {
         super(v);
 
         cl = v.findViewById(R.id.cl);
         tvContactName = v.findViewById(R.id.tvContactName);
-        tvContactNumber = v.findViewById(R.id.tvContactNumber);
+        tvContactNumber = v.findViewById(R.id.tvNumber);
         tvDealName = v.findViewById(R.id.tvDealName);
         tvDealDescription = v.findViewById(R.id.tvDealDescription);
-        ivTick = v.findViewById(R.id.ivTick);
+//        ivTick = v.findViewById(R.id.ivTick);
 
     }
 
@@ -60,9 +59,13 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
             tvContactNumber.setText("number");
         }
 
-
         if (lsDeal.getName() != null) {
             tvDealName.setText(lsDeal.getName());
+            if (lsDeal.getIsPrivate() != null && lsDeal.getIsPrivate().equalsIgnoreCase("1")){
+                tvDealName.setText(lsDeal.getName() + " (Private)");
+            }else if (lsDeal.getIsPrivate() != null && lsDeal.getIsPrivate().equalsIgnoreCase("0")){
+                tvDealName.setText(lsDeal.getName() + " (Public)");
+            }
         }
 
         cl.setOnClickListener(new View.OnClickListener() {
@@ -74,44 +77,45 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
                     detailsActivityIntent.putExtra(DealDetailsTabActivity.KEY_DEAL_ID, contactId + "");
                     mContext.startActivity(detailsActivityIntent);
                 }else {
-                    lsDeal.delete();
+                    DeleteManager.deleteDeal(mContext, lsDeal);
+//                    lsDeal.delete();
                 }
             }
         });
 
-        ivTick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
-
-//                LayoutInflater layoutInflaterAndroid = LayoutInflater.from(mContext);
-//                View mView = layoutInflaterAndroid.inflate(R.layout.user_input_dialog_box, null);
-//                AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(mContext);
-//                alertDialogBuilderUserInput.setView(mView);
-//                final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
-//                alertDialogBuilderUserInput
-//                        .setCancelable(false)
-//                        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialogBox, int id) {
-//                                lsTask.setStatus("Done");
-//                                String remarksText = userInputDialogEditText.getText().toString();
-//                                if (remarksText != null && !remarksText.equalsIgnoreCase(""))
-//                                    lsTask.setRemarks(remarksText);
-////                                editTaskToServer(mContext, lsTask);
-//                                Toast.makeText(mContext, "Syncing task", Toast.LENGTH_SHORT).show();
-//                            }
-//                        })
-//                        .setNegativeButton("Cancel",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialogBox, int id) {
-//                                        dialogBox.cancel();
-//                                    }
-//                                });
-//                AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
-//                alertDialogAndroid.show();
-            }
-        });
+//        ivTick.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
+//
+////                LayoutInflater layoutInflaterAndroid = LayoutInflater.from(mContext);
+////                View mView = layoutInflaterAndroid.inflate(R.layout.user_input_dialog_box, null);
+////                AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(mContext);
+////                alertDialogBuilderUserInput.setView(mView);
+////                final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
+////                alertDialogBuilderUserInput
+////                        .setCancelable(false)
+////                        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+////                            public void onClick(DialogInterface dialogBox, int id) {
+////                                lsTask.setStatus("Done");
+////                                String remarksText = userInputDialogEditText.getText().toString();
+////                                if (remarksText != null && !remarksText.equalsIgnoreCase(""))
+////                                    lsTask.setRemarks(remarksText);
+//////                                editTaskToServer(mContext, lsTask);
+////                                Toast.makeText(mContext, "Syncing task", Toast.LENGTH_SHORT).show();
+////                            }
+////                        })
+////                        .setNegativeButton("Cancel",
+////                                new DialogInterface.OnClickListener() {
+////                                    public void onClick(DialogInterface dialogBox, int id) {
+////                                        dialogBox.cancel();
+////                                    }
+////                                });
+////                AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+////                alertDialogAndroid.show();
+//            }
+//        });
     }
 
 //    private void editTaskToServer(final Context mContext, final LSTask lsTask) {

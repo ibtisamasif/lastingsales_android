@@ -7,10 +7,13 @@ import android.util.Log;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
+import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSTask;
+import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 
 import java.util.Calendar;
@@ -190,6 +193,15 @@ public class SessionManager {
         }
         if (LSDynamicColumns.count(LSDynamicColumns.class) > 0) {
             LSDynamicColumns.deleteAll(LSDynamicColumns.class);
+        }
+        if (LSDeal.count(LSDeal.class) > 0) {
+            LSDeal.deleteAll(LSDeal.class);
+        }
+        if (LSWorkflow.count(LSWorkflow.class) > 0) {
+            LSWorkflow.deleteAll(LSWorkflow.class);
+        }
+        if (LSStage.count(LSStage.class) > 0) {
+            LSStage.deleteAll(LSStage.class);
         }
         if (LSTask.count(LSTask.class) > 0) {
             LSTask.deleteAll(LSTask.class);

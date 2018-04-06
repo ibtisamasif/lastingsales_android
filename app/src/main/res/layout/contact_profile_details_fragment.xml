@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +14,7 @@
 
 
         <ImageView
-            android:id="@+id/lead_number_icon"
+            android:id="@+id/number_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
@@ -28,20 +28,20 @@
             android:layout_marginLeft="16dp" />
 
         <TextView
-            android:id="@+id/lead_number_text"
+            android:id="@+id/number_text"
             style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Number"
-            app:layout_constraintStart_toEndOf="@+id/lead_number_icon"
-            app:layout_constraintTop_toTopOf="@+id/lead_number_icon"
+            app:layout_constraintStart_toEndOf="@+id/number_icon"
+            app:layout_constraintTop_toTopOf="@+id/number_icon"
             tools:layout_conversion_absoluteHeight="16dp"
             tools:layout_conversion_absoluteWidth="43dp"
             android:layout_marginLeft="8dp" />
 
         <TextView
-            android:id="@+id/tvContactNumber"
+            android:id="@+id/tvNumber"
             style="@style/Base.TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,35 +49,35 @@
             android:gravity="center|right"
             android:text="  "
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/lead_number_text"
+            app:layout_constraintTop_toTopOf="@+id/number_text"
             tools:layout_conversion_absoluteHeight="40dp"
             tools:layout_conversion_absoluteWidth="196dp"
             android:layout_marginRight="8dp" />
 
 
         <ImageView
-            android:id="@+id/lead_address_icon"
+            android:id="@+id/address_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:tint="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lead_number_icon"
+            app:layout_constraintTop_toBottomOf="@+id/number_icon"
             app:srcCompat="@drawable/ic_location_on_24dp"
             tools:layout_conversion_absoluteHeight="30dp"
             tools:layout_conversion_absoluteWidth="30dp"
             android:layout_marginLeft="16dp" />
 
         <TextView
-            android:id="@+id/lead_address_text"
+            android:id="@+id/address_text"
             style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Address"
-            app:layout_constraintStart_toEndOf="@+id/lead_address_icon"
-            app:layout_constraintTop_toTopOf="@+id/lead_address_icon"
+            app:layout_constraintStart_toEndOf="@+id/address_icon"
+            app:layout_constraintTop_toTopOf="@+id/address_icon"
             tools:layout_conversion_absoluteHeight="16dp"
             tools:layout_conversion_absoluteWidth="45dp"
             android:layout_marginLeft="8dp" />
@@ -91,21 +91,21 @@
             android:gravity="center|right"
             android:text="  "
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/lead_address_text"
+            app:layout_constraintTop_toTopOf="@+id/address_text"
             tools:layout_conversion_absoluteHeight="40dp"
             tools:layout_conversion_absoluteWidth="194dp"
             android:layout_marginRight="8dp" />
 
 
         <ImageView
-            android:id="@+id/lead_icon"
+            android:id="@+id/status_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:tint="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lead_address_icon"
+            app:layout_constraintTop_toBottomOf="@+id/address_icon"
             app:srcCompat="@drawable/ic_filter_list_24dp"
             tools:layout_conversion_absoluteHeight="30dp"
             tools:layout_conversion_absoluteWidth="30dp"
@@ -113,14 +113,14 @@
 
 
         <TextView
-            android:id="@+id/lead_status_label"
+            android:id="@+id/status_label"
             style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Status"
-            app:layout_constraintStart_toEndOf="@+id/lead_icon"
-            app:layout_constraintTop_toTopOf="@+id/lead_icon"
+            app:layout_constraintStart_toEndOf="@+id/status_icon"
+            app:layout_constraintTop_toTopOf="@+id/status_icon"
             tools:layout_conversion_absoluteHeight="16dp"
             tools:layout_conversion_absoluteWidth="37dp"
             android:layout_marginLeft="8dp" />
@@ -134,7 +134,7 @@
             android:gravity="center"
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/lead_status_label"
+            app:layout_constraintTop_toTopOf="@+id/status_label"
             tools:layout_conversion_absoluteHeight="24dp"
             tools:layout_conversion_absoluteWidth="131dp"
             android:layout_marginRight="8dp" />
@@ -157,7 +157,7 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lead_icon"
+            app:layout_constraintTop_toBottomOf="@+id/status_icon"
             card_view:cardCornerRadius="3dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
@@ -493,6 +493,19 @@
         </android.support.v7.widget.CardView>
 
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:divider="@null"
+            android:drawSelectorOnTop="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv_connection_item"
+            />
+
+
         <TextView
             android:id="@+id/textView6"
             style="@style/Base.TextAppearance.AppCompat.Title"
@@ -502,7 +515,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/lead_details"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cv_connection_item"
+            app:layout_constraintTop_toBottomOf="@+id/mRecyclerView"
             tools:layout_conversion_absoluteHeight="21dp"
             tools:layout_conversion_absoluteWidth="91dp"
             android:layout_marginLeft="16dp" />
@@ -554,4 +567,4 @@
             tools:layout_conversion_absoluteWidth="160dp" />
 
     </android.support.constraint.ConstraintLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

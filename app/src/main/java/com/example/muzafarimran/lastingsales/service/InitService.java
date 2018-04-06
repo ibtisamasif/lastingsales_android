@@ -20,8 +20,11 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSStage;
+import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -31,7 +34,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -77,6 +83,7 @@ public class InitService extends IntentService {
         if (sessionManager.isUserSignedIn()) {
             fetchAgentLeadsFunc();
             fetchDynamicColumns();
+            fetchWorkflow();
         }
 
         queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
@@ -94,7 +101,7 @@ public class InitService extends IntentService {
     }
 
     private void fetchAgentLeadsFunc() {
-        Log.d(TAG, "fetchAgentLeadsFunc: Fetching Data...");
+        Log.d(TAG, "fetchAgentLeadsFunc: Fetching leads...");
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         final String BASE_URL = MyURLs.GET_CONTACTS;
         Uri builtUri = Uri.parse(BASE_URL)
@@ -155,7 +162,7 @@ public class InitService extends IntentService {
                             tempContact.setContactType(lead_type);
                             tempContact.setContactSalesStatus(contactStatus);
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                            if(created_by != 0){
+                            if (created_by != 0) {
                                 tempContact.setCreatedBy(created_by);
                             }
                             tempContact.setUserId(user_id);
@@ -171,7 +178,7 @@ public class InitService extends IntentService {
                     bus.post(mCallEvent);
 
                     fetchInquiries();
-
+                    fetchDeals();
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e(TAG, "onResponse: JSONException Contacts");
@@ -209,7 +216,7 @@ public class InitService extends IntentService {
     }
 
     private void fetchAgentNotesFunc(LSContact contact) {
-        Log.d(TAG, "fetchAgentNotesFunc: Fetching Data...");
+        Log.d(TAG, "fetchAgentNotesFunc: Fetching notes...");
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         final String BASE_URL = MyURLs.GET_NOTES;
         Uri builtUri = Uri.parse(BASE_URL)
@@ -412,6 +419,265 @@ public class InitService extends IntentService {
         requestsCounter.incrementAndGet();
     }
 
+    private void fetchWorkflow() {
+
+        Log.d(TAG, "fetchWorkflow: Fetching workflow...");
+        final int MY_SOCKET_TIMEOUT_MS = 60000;
+        final String BASE_URL = MyURLs.GET_WORKFLOW;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        Log.d(TAG, "fetchWorkflow: MYURL: " + myUrl);
+        StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() getWorkflow: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    String totalWorkflows = responseObject.getString("total");
+                    Log.d(TAG, "onResponse: totalWorkflows: " + totalWorkflows);
+
+                    JSONArray jsonarrayData = responseObject.getJSONArray("data");
+
+                    for (int i = 0; i < jsonarrayData.length(); i++) {
+                        JSONObject jsonDataObject = jsonarrayData.getJSONObject(i);
+                        String id = jsonDataObject.getString("id");
+                        String name = jsonDataObject.getString("name");
+                        String status = jsonDataObject.getString("status");
+                        String company_id = jsonDataObject.getString("company_id");
+                        String created_by = jsonDataObject.getString("created_by");
+                        String created_at = jsonDataObject.getString("created_at");
+                        String updated_at = jsonDataObject.getString("updated_at");
+                        String is_default = jsonDataObject.getString("is_default");
+
+                        Log.d(TAG, "onResponse: ID: " + id);
+                        Log.d(TAG, "onResponse: name: " + name);
+                        Log.d(TAG, "onResponse: created_by: " + created_by);
+                        Log.d(TAG, "onResponse: created_at: " + created_at);
+                        Log.d(TAG, "onResponse: updated_at: " + updated_at);
+                        Log.d(TAG, "onResponse: company_id: " + company_id);
+                        Log.d(TAG, "onResponse: is_default: " + is_default);
+
+                        if (is_default.equalsIgnoreCase("1")) {
+                            LSWorkflow checkWorkflow = LSWorkflow.getWorkflowFromServerId(id);
+                            if (checkWorkflow == null) {
+                                LSWorkflow newWorkflow = new LSWorkflow();
+                                newWorkflow.setServerId(id);
+                                newWorkflow.setName(name);
+                                newWorkflow.setStatus(status);
+                                newWorkflow.setCreated_by(created_by);
+                                Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+                                newWorkflow.setUpdated_at(updated_atDate);
+                                newWorkflow.setCompanyId(company_id);
+                                newWorkflow.setIsDefault(is_default);
+                                newWorkflow.save();
+
+                                JSONArray jsonarrayStages = jsonDataObject.getJSONArray("stages");
+                                for (int j = 0; j < jsonarrayStages.length(); j++) {
+                                    JSONObject jsonStageObject = jsonarrayStages.getJSONObject(j);
+                                    String stage_id = jsonStageObject.getString("id");
+                                    String stage_workflow_id = jsonStageObject.getString("workflow_id");
+                                    String stage_company_id = jsonStageObject.getString("company_id");
+                                    String stage_name = jsonStageObject.getString("name");
+                                    String stage_description = jsonStageObject.getString("description");
+                                    String stage_created_by = jsonStageObject.getString("created_by");
+                                    String stage_created_at = jsonStageObject.getString("created_at");
+                                    String stage_updated_at = jsonStageObject.getString("updated_at");
+                                    String stage_next_to = jsonStageObject.getString("next_to");
+
+                                    Log.d(TAG, "onResponse: stage_id: " + stage_id);
+                                    Log.d(TAG, "onResponse: stage_workflow_id: " + stage_workflow_id);
+                                    Log.d(TAG, "onResponse: stage_company_id: " + stage_company_id);
+                                    Log.d(TAG, "onResponse: stage_name: " + stage_name);
+                                    Log.d(TAG, "onResponse: stage_description: " + stage_description);
+                                    Log.d(TAG, "onResponse: stage_created_by: " + stage_created_by);
+                                    Log.d(TAG, "onResponse: stage_created_at: " + stage_created_at);
+                                    Log.d(TAG, "onResponse: stage_updated_at: " + stage_updated_at);
+                                    Log.d(TAG, "onResponse: stage_next_to: " + stage_next_to);
+
+                                    LSStage checkSteps = LSStage.getStageFromServerId(id);
+                                    if (checkSteps == null) {
+                                        LSStage newSteps = new LSStage();
+                                        newSteps.setServerId(stage_id);
+                                        newSteps.setWorkflowId(stage_workflow_id);
+                                        newSteps.setCompanyId(stage_company_id);
+                                        newSteps.setName(stage_name);
+                                        newSteps.setDescription(stage_description);
+                                        newSteps.setCreatedBy(stage_created_by);
+//                                newSteps.setCreatedAt(stage_created_at);
+                                        Date stage_updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(stage_updated_at);
+                                        newSteps.setUpdatedAt(stage_updated_atDate);
+                                        newSteps.setNextTo(stage_next_to);
+                                        newSteps.setWorkflow(newWorkflow);
+                                        newSteps.save();
+                                    }
+                                }
+                            }
+                        }
+                    }
+//                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+//                    TinyBus bus = TinyBus.from(mContext);
+//                    bus.post(mCallEvent);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "onResponse: JSONException fetchWorkflow");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "onResponse: ParseException fetchWorkflow");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "onErrorResponse: CouldNotGETWorkflow");
+                if (error != null) {
+                    if (error.networkResponse != null) {
+                        if (error.networkResponse.statusCode == 404) {
+                        } else {
+                        }
+                    } else {
+                    }
+                }
+            }
+        });
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+        requestsCounter.incrementAndGet();
+    }
+
+    private void fetchDeals() {
+        Log.d(TAG, "fetchAgentLeadsFunc: Fetching Deals...");
+        final int MY_SOCKET_TIMEOUT_MS = 60000;
+        final String BASE_URL = MyURLs.GET_DEALS;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendQueryParameter("per_page", "50000")
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() getDeals: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    String totalDeals = responseObject.getString("total");
+                    Log.d(TAG, "onResponse: TotalDeals: " + totalDeals);
+
+                    JSONArray jsonarray = responseObject.getJSONArray("data");
+
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        JSONObject jsonobject = jsonarray.getJSONObject(i);
+                        String id = jsonobject.getString("id");
+                        String name = jsonobject.getString("name");
+                        int created_by = 0;
+                        if (jsonobject.has("created_by")) {
+                            created_by = jsonobject.getInt("created_by");
+                        }
+//                        int updated_by = 0;
+//                        if (jsonobject.has("updated_by")) {
+//                            updated_by = jsonobject.getInt("updated_by");
+//                        }
+                        String created_at = jsonobject.getString("created_at");
+                        String updated_at = jsonobject.getString("updated_at");
+                        int user_id = jsonobject.getInt("user_id");
+                        int lead_id = jsonobject.getInt("lead_id");
+                        int workflow_id = jsonobject.getInt("workflow_id");
+                        int workflow_stage_id = jsonobject.getInt("workflow_stage_id");
+                        String Status = jsonobject.getString("status");
+//                        String follow_up_date = jsonobject.getgetStringInt("follow_up_date");
+//                        String follow_up_description = jsonobject.getString("follow_up_description");
+                        String dynamic_values = jsonobject.getString("dynamic_values");
+                        int company_id = jsonobject.getInt("company_id");
+                        String src = jsonobject.getString("src");
+                        String src_id = jsonobject.getString("src_id");
+                        String is_private = jsonobject.getString("is_private");
+                        String version = jsonobject.getString("version");
+
+
+                        Log.d(TAG, "onResponse: ID: " + id);
+                        Log.d(TAG, "onResponse: Name: " + name);
+                        Log.d(TAG, "onResponse: Status: " + Status);
+                        Log.d(TAG, "onResponse: dynamic_values: " + dynamic_values);
+                        Log.d(TAG, "onResponse: created_by: " + created_by);
+                        Log.d(TAG, "onResponse: created_at: " + created_at);
+                        Log.d(TAG, "onResponse: updated_at: " + updated_at);
+                        Log.d(TAG, "onResponse: user_id: " + user_id);
+                        Log.d(TAG, "onResponse: company_id: " + company_id);
+                        Log.d(TAG, "onResponse: src_id: " + src_id);
+                        Log.d(TAG, "onResponse: lead_id: " + lead_id);
+                        Log.d(TAG, "onResponse: workflow_id: " + workflow_id);
+                        Log.d(TAG, "onResponse: workflow_stage_id: " + workflow_stage_id);
+                        Log.d(TAG, "onResponse: src: " + src);
+                        Log.d(TAG, "onResponse: is_private: " + is_private);
+                        Log.d(TAG, "onResponse: version: " + version);
+
+                        if (LSDeal.getDealFromId(id) == null) {
+                            LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
+                            if (lsContact != null) {
+                                LSDeal tempDeal = new LSDeal();
+                                tempDeal.setServerId(id);
+                                tempDeal.setName(name);
+                                tempDeal.setStatus(Status);
+//                            tempDeal.setEmail(email);
+                                tempDeal.setDynamic(dynamic_values);
+                                if (created_by != 0) {
+                                    tempDeal.setCreatedBy(Integer.toString(created_by));
+                                }
+                                tempDeal.setCreatedAt(created_at);
+                                Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+                                tempDeal.setUpdatedAt(updated_atDate);
+                                tempDeal.setUserId(Integer.toString(user_id));
+                                tempDeal.setCompanyId(Integer.toString(company_id));
+//                            tempDeal.setSrcId(Integer.toString(src_id));
+//                                tempDeal.setLeadId(Integer.toString(lead_id));
+                                tempDeal.setWorkflowId(Integer.toString(workflow_id));
+                                tempDeal.setWorkflowStageId(Integer.toString(workflow_stage_id));
+//                            tempDeal.setSrc(src);
+                                tempDeal.setIsPrivate(is_private);
+//                            tempDeal.setVersion(version);
+                                tempDeal.setContact(lsContact);
+                                tempDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
+                                tempDeal.save();
+                            }
+                        }
+                    }
+
+                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+                    bus.post(mCallEvent);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "onResponse: JSONException Deals");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "onResponse: ParseException Deals");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "onErrorResponse: CouldNotGETDeals");
+            }
+        });
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+        requestsCounter.incrementAndGet();
+    }
+
     private void fetchInquiries() {
         Log.d(TAG, "fetchInquiries: Fetching Data...");
         final int MY_SOCKET_TIMEOUT_MS = 60000;
@@ -516,7 +782,7 @@ public class InitService extends IntentService {
 //                        theCallLogEngine.execute();
 //                    }
                         }
-                    }else {
+                    } else {
                         Log.d(TAG, "onResponse: No Inquiries");
                     }
                     result = Activity.RESULT_OK;

@@ -6,6 +6,6 @@ import android.widget.Button;
  * Created by ibtisam on 11/2/2017.
  */
 
-public class AddLeadItem {
+public class AddDealItem {
     public Button bAddLead;
 }

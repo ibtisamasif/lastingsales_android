@@ -3,6 +3,21 @@ package com.example.muzafarimran.lastingsales.sync;
 
 public class SyncStatus {
 
+
+    //Lead Add
+    public static final String SYNC_STATUS_DEAL_ADD_NOT_SYNCED = "deal_add_not_synced";
+    public static final String SYNC_STATUS_DEAL_ADD_SYNCED = "deal_add_synced";
+
+    //Lead Update
+    public static final String SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED = "deal_update_not_synced";
+    public static final String SYNC_STATUS_DEAL_UPDATE_SYNCED = "deal_update_synced";
+
+    //Lead Delete
+    public static final String SYNC_STATUS_DEAL_DELETE_NOT_SYNCED = "deal_delete_not_synced";
+    public static final String SYNC_STATUS_DEAL_DELETE_SYNCED = "deal_delete_synced";
+
+
+
     //Lead Add
     public static final String SYNC_STATUS_LEAD_ADD_NOT_SYNCED = "lead_add_not_synced";
     public static final String SYNC_STATUS_LEAD_ADD_SYNCED = "lead_add_synced";

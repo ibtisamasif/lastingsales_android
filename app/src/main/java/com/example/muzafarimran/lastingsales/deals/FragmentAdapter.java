@@ -5,14 +5,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.muzafarimran.lastingsales.providers.models.LSStage;
+
 import java.util.List;
 
 public class FragmentAdapter extends FragmentStatePagerAdapter {
     private Context ctx;
-    private List<LSDynamicDealPipeline> data;
+    private List<LSStage> data;
     private Fragment[] fragments;
 
-    public FragmentAdapter(Context ctx, FragmentManager fm, List<LSDynamicDealPipeline> data) {
+    public FragmentAdapter(Context ctx, FragmentManager fm, List<LSStage> data) {
         super(fm);
         this.ctx = ctx;
         this.data = data;
@@ -22,11 +24,11 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
-        LSDynamicDealPipeline items = (LSDynamicDealPipeline) data.get(position);
-
+        LSStage steps = (LSStage) data.get(position);
 
         DynamicFragment dynamicFragment = new DynamicFragment();
-        dynamicFragment.setDetail(items.getName());
+        dynamicFragment.setDetail(steps.getName() + "" + steps.getServerId());
+        dynamicFragment.setStepId(steps.getServerId() + "");
         fragment = dynamicFragment;
 
         if (fragments[position] == null) {

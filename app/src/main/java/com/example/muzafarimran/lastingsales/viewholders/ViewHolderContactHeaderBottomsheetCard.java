@@ -58,7 +58,7 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
         this.llTypeRibbon = v.findViewById(R.id.llTypeRibbon);
         this.name = v.findViewById(R.id.tvContactName);
         this.call_icon = v.findViewById(R.id.call_icon);
-        this.numberDetailTextView = v.findViewById(R.id.tvContactNumber);
+        this.numberDetailTextView = v.findViewById(R.id.tvNumber);
         this.bSales = v.findViewById(R.id.bSalesUtaggedItem);
         this.bIgnore = v.findViewById(R.id.bIgnore);
     }

@@ -85,7 +85,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
         this.time = v.findViewById(R.id.call_time);
         this.whatsapp_icon = v.findViewById(R.id.whatsapp_icon);
         this.call_icon = v.findViewById(R.id.call_icon);
-        this.numberDetailTextView = v.findViewById(R.id.tvContactNumber);
+        this.numberDetailTextView = v.findViewById(R.id.tvNumber);
         this.rl_container_buttons = v.findViewById(R.id.rl_container_buttons);
         this.bSales = v.findViewById(R.id.bSalesUtaggedItem);
         this.bIgnore = v.findViewById(R.id.bIgnore);
