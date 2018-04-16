@@ -12,14 +12,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
-import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
 /**
@@ -64,6 +67,28 @@ public class ColleagueActivity  extends AppCompatActivity{
         list.addAll(contacts);
         adapter.notifyDataSetChanged();
     }
+
+
+    @Subscribe
+    public void onLeadContactAddedEventModel(LeadContactAddedEventModel event) {
+        Log.d(TAG, "onLeadContactAddedEventModel: ");
+        Collection<LSContact> contacts;
+        contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
+        list.clear();
+        list.addAll(contacts);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
+        Log.d(TAG, "onLeadContactDeletedEventModel: ");
+        Collection<LSContact> contacts;
+        contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_BUSINESS);
+        list.clear();
+        list.addAll(contacts);
+        adapter.notifyDataSetChanged();
+    }
+
 
     @Override
     public void onStop() {

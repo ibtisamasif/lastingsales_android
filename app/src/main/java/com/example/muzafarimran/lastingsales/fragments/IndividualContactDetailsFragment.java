@@ -125,6 +125,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
     private SessionManager sessionManager;
     private RequestQueue queue;
     private Context mContext;
+    private Bundle args;
 
 
     public static IndividualContactDetailsFragment newInstance(int page, String title, Long id) {
@@ -249,7 +250,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
 
                         }
                     } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())); //TODO Exception java.lang.NullPointerException: SGH-T889 18 sep
+                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
                         Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
 
                         String currentValue = s.getSelectedItem().toString();
@@ -337,7 +338,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
 
                         }
                     } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())); //TODO Exception java.lang.NullPointerException: SGH-T889 18 sep
+                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
                         Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
 
                         String currentValue = s.getSelectedItem().toString();
@@ -380,6 +381,9 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
         });
         addItemsOnSpinnerLeadStatus(view);
         dynamicColumns(view);
+        args = new Bundle();
+        args.putString(DEALS_LEAD_ID, mContact.getId() + "");
+        getLoaderManager().initLoader(DEALS_OF_A_LEAD, args, IndividualContactDetailsFragment.this);
         setHasOptionsMenu(true);
         return view;
     }
@@ -439,9 +443,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
                 leadStatusSpinner.setOnItemSelectedListener(new CustomSpinnerLeadStatusOnItemSelectedListener());
             }
         });
-        Bundle args = new Bundle();
-        args.putString(DEALS_LEAD_ID, mContact.getId() + "");
-        getLoaderManager().initLoader(DEALS_OF_A_LEAD, args, IndividualContactDetailsFragment.this);
+        getLoaderManager().restartLoader(DEALS_OF_A_LEAD, args, IndividualContactDetailsFragment.this);
     }
 
     @Override
@@ -709,11 +711,11 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
 
                 } else {
                     Log.d(TAG, "dynamicColumns: getVersion = 0");
-                    dynamicColumnBuilderVersion1.parseJson(mContact.getDynamic()); //TODO Crash here
+                    dynamicColumnBuilderVersion1.parseJson(mContact.getDynamic());
 //                    Log.d(TAG, "dynamicColumnsJSONN: " + mContact.getDynamic());
                     ArrayList<DynamicColumnBuilderVersion1.Column> dynColumns = dynamicColumnBuilderVersion1.getColumns();
                     for (DynamicColumnBuilderVersion1.Column oneDynamicColumns : dynColumns) {
-                        //TODO find column_type from LSDynamic column using the name of column from leads dynamic column.
+                        //find column_type from LSDynamic column using the name of column from leads dynamic column.
                         if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
                             EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);

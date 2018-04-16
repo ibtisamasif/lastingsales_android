@@ -2,9 +2,9 @@ package com.example.muzafarimran.lastingsales.sync;
 
 public class MyURLs {
 
-    private static final String server = "http://192.168.100.50/lastingsales-api/public";
+//    private static final String server = "http://192.168.100.50/lastingsales-api/public";
 //    private static final String server = "https://staging.lastingsales.com";
-//    private static final String server = "https://api.lastingsales.com";
+    private static final String server = "https://api.lastingsales.com";
 
     //    public static String LOGIN_URL_OLD = "http://api.lastingsales.com/api/auth/login";
     public static String LOGIN_URL = server + "/api/v1/auth/login";

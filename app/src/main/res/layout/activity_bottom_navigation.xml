@@ -116,7 +116,7 @@
         android:layout_marginLeft="11dp"
         android:layout_marginRight="11dp"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_deal"
+        app:srcCompat="@drawable/ic_input_add"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="@+id/llFragmentContainer"/>
 

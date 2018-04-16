@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales.autocompletetext;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
 
@@ -12,7 +11,7 @@ import com.example.muzafarimran.lastingsales.R;
  * Simple custom view example to show how to get selected events from the token
  * view. See ContactsCompletionView and contact_token.xml for usage
  */
-public class TokenTextView extends TextView {
+public class TokenTextView extends android.support.v7.widget.AppCompatTextView {
 
     public TokenTextView(Context context) {
         super(context);

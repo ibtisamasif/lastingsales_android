@@ -30,7 +30,7 @@ public class UnlabeledLoader2 extends AsyncTaskLoader<List<Object>> {
     @Override
     public List<Object> loadInBackground() {
         List<Object> data = new ArrayList<Object>();
-        Collection<LSContact> unlabeledContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
+        Collection<LSContact> unlabeledContacts = LSContact.getFrequentContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
         if (!unlabeledContacts.isEmpty()) {
 
             HomeItem homeItem = new HomeItem();
@@ -45,7 +45,7 @@ public class UnlabeledLoader2 extends AsyncTaskLoader<List<Object>> {
 //            statisticsItem.callsValue = 0;
 
             SeparatorItem separatorItem = new SeparatorItem();
-            separatorItem.text = "Frequent calls";
+            separatorItem.text = "Frequent 10 calls";
 
             data.add(homeItem);
 //            data.add(statisticsItem);
@@ -60,7 +60,7 @@ public class UnlabeledLoader2 extends AsyncTaskLoader<List<Object>> {
 
         } else {
             ErrorItem erItem = new ErrorItem();
-            erItem.message = "Nothing in Frequent Unlabeled";
+            erItem.message = "Nothing in Frequent calls";
             erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
             data.add(erItem);
         }

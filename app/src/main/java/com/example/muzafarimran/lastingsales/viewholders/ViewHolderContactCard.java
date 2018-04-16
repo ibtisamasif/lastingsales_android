@@ -26,7 +26,9 @@ import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.ColleagueActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -221,6 +223,8 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
 
 //            CloseContactBottomSheetEvent closeContactBottomSheetEvent = new NavigationBottomMainActivity();
 //            closeContactBottomSheetEvent.closeContactBottomSheetCallback();
+
+            TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
         });
 
         user_avatar.setOnClickListener(new View.OnClickListener() {
@@ -258,9 +262,6 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 rl_container_buttons.setVisibility(View.GONE);
                 user_profile_group_wrapper.setVisibility(View.GONE);
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Success));
-                // navigate to lead
-                // dont show smart info
-                // add delete followup button
 
                 this.cl.setOnClickListener(view -> {
                     Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
@@ -268,66 +269,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                     detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                     mContext.startActivity(detailsActivityIntent);
                 });
-
-                //  Deletes the contact, queries db and updates local list plus notifies adapter
-                this.cl.setOnLongClickListener(view -> {
-//                    String nameTextOnDialog;
-//                    if(contact.getContactName() != null){
-//                        nameTextOnDialog = contact.getContactName();
-//                    }else {
-//                        nameTextOnDialog = contact.getPhoneOne();
-//                    }
-//                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-//                    alert.setTitle("Alert!!");
-//                    alert.setMessage("Are you sure to delete " + nameTextOnDialog);
-//                    alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            LSInquiry checkInquiry = LSInquiry.getInquiryByNumberIfExists(contact.getPhoneOne());
-//                            if (checkInquiry != null) {
-//                                checkInquiry.delete();
-//                            }
-////                    if (checkInquiry == null) {
-//                            //Flushing Notes Of lead
-//                            List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(contact.getId());
-//                            if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
-//                                for (LSNote oneNote : allNotesOfThisContact) {
-//                                    oneNote.delete();
-//                                }
-//                            }
-//                            //Flushing Followup Of lead
-//                            List<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getFollowupsByContactId(contact.getId());
-//                            if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
-//                                for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
-//                                    oneFollowup.delete();
-//                                }
-//                            }
-//                            //contact is deleted and will be hard deleted on syncing.
-//                            contact.setLeadDeleted(true);
-//                            contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
-//                            contact.save();
-////                    contact.delete();
-//                            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
-//                            dataSenderAsync.run();
-//                            // FIRE EVENT TO REFRESH LIST
-//                            Snackbar.make(view, "Lead deleted!", Snackbar.LENGTH_SHORT).show();
-////                    }else {
-////                        Toast.makeText(mContext, "Please Handle Inquiry First", Toast.LENGTH_SHORT).show();
-////                    }
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    alert.show();
-                    return true;
-                });
                 break;
-
             case LSContact.CONTACT_TYPE_BUSINESS:
                 rl_container_buttons.setVisibility(View.VISIBLE);
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
@@ -375,8 +317,8 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
 
                 this.cl.setOnClickListener(view -> {
                     Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
-//                    BlankFragment2 blankFragment2 = (BlankFragment2) mContext;
-//                    blankFragment2.openContactBottomSheetCallback((Long) view.getTag());
+                    NavigationBottomMainActivity obj = (NavigationBottomMainActivity) mContext;
+                    obj.openContactBottomSheetCallback((Long) view.getTag());
                 });
 
                 this.cl.setOnLongClickListener(view -> {
@@ -422,11 +364,11 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 break;
             default:
         }
-        if(contact.getSrc() != null && contact.getSrc().equalsIgnoreCase("assigned")){
+        if (contact.getSrc() != null && contact.getSrc().equalsIgnoreCase("assigned")) {
             this.numberDetailTextView.setText(number + (" ( assigned )"));
             llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
         }
-        if(contact.getSrc() != null && contact.getSrc().equalsIgnoreCase("facebook")){
+        if (contact.getSrc() != null && contact.getSrc().equalsIgnoreCase("facebook")) {
             this.numberDetailTextView.setText(number + (" ( facebook )"));
             llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
         }

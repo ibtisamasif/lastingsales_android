@@ -39,9 +39,6 @@ public class DealsLoader extends AsyncTaskLoader<List<Object>> {
 
     @Override
     public List<Object> loadInBackground() {
-//        AddDealItem addLeadItem = new AddDealItem();
-//        mData.add(addLeadItem);
-
         List<Object> data = new ArrayList<Object>();
         if (dealsIdToLoad != null) {
             List<LSDeal> deals = LSDeal.getDealFromWorkflowStageId(dealsIdToLoad);
@@ -58,29 +55,7 @@ public class DealsLoader extends AsyncTaskLoader<List<Object>> {
 
                 Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
                 ErrorItem erItem = new ErrorItem();
-                erItem.message = "Nothing in Prospect " + dealsIdToLoad;
-                erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
-                listError.add(erItem);
-                data.addAll(listError);
-            }
-            return data;
-
-        } else if (dealsIdToLoad != null && dealsIdToLoad.equals("41")) {
-            List<LSDeal> deals = LSDeal.getDealFromWorkflowStageId("41");
-            if (deals != null && deals.size() > 0) {
-
-                data.addAll(deals);
-
-                SeparatorItem separatorSpace = new SeparatorItem();
-                separatorSpace.text = "";
-                data.add(separatorSpace);
-                data.add(separatorSpace);
-
-            } else {
-
-                Collection<ErrorItem> listError = new ArrayList<ErrorItem>();
-                ErrorItem erItem = new ErrorItem();
-                erItem.message = "Nothing in Negotiation41";
+                erItem.message = "Nothing to show";
                 erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
                 listError.add(erItem);
                 data.addAll(listError);
@@ -109,7 +84,6 @@ public class DealsLoader extends AsyncTaskLoader<List<Object>> {
             return data;
         }
     }
-
 
     @Override
     public void deliverResult(@Nullable List<Object> data) {

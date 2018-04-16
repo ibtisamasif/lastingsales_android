@@ -45,7 +45,7 @@ public class UnlabeledLoader1 extends AsyncTaskLoader<List<Object>> {
 //            statisticsItem.callsValue = 0;
 
             SeparatorItem separatorItem = new SeparatorItem();
-            separatorItem.text = "Recent calls";
+            separatorItem.text = "All recent calls";
 
             data.add(homeItem);
 //            data.add(statisticsItem);
@@ -60,7 +60,7 @@ public class UnlabeledLoader1 extends AsyncTaskLoader<List<Object>> {
 
         } else {
             ErrorItem erItem = new ErrorItem();
-            erItem.message = "Nothing in Recent Unlabeled";
+            erItem.message = "Nothing in Recent calls";
             erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
             data.add(erItem);
         }

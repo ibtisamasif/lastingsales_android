@@ -130,7 +130,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
             }
         });
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add_note);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add_deal);
         floatingActionButton.hide();
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

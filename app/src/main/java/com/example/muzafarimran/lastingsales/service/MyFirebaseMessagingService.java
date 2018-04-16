@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
@@ -18,6 +19,8 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSStage;
+import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
 import com.example.muzafarimran.lastingsales.utils.FirebaseCustomNotification;
@@ -352,6 +355,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String description = payload.getString("description");
                     LSNote note = LSNote.getNoteByServerId(id);
                     note.setNoteText(description);
+                    note.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                     note.save();
                     NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
@@ -541,6 +545,81 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             }
 
+            if (tag.equals("Stage")) {
+                if (action.equals("post")) {
+                    String id = payload.getString("id");
+                    int company_id = 0;
+                    if (payload.has("company_id")) {
+                        company_id = payload.getInt("company_id");
+                    }
+                    String workflow_id = payload.getString("workflow_id");
+                    String name = payload.getString("name");
+                    int created_by = 0;
+                    if (payload.has("created_by")) {
+                        created_by = payload.getInt("created_by");
+                    }
+                    String created_at = payload.getString("created_at");
+                    String updated_at = payload.getString("updated_at");
+                    String position = payload.getString("position");
+                    LSStage lsStage = LSStage.getStageFromServerId(id);
+                    if (lsStage == null) {
+                        // check if lead still exists of which the deal is
+                        LSWorkflow lsWorkflow = LSWorkflow.getWorkflowFromServerId(workflow_id);
+                        if (lsWorkflow != null) {
+                            lsStage = new LSStage();
+                            lsStage.setServerId(id);
+                            lsStage.setCompanyId(Integer.toString(company_id));
+                            lsStage.setWorkflowId(workflow_id);
+                            lsStage.setName(name);
+                            lsStage.setCreatedBy(Integer.toString(created_by));
+//                            lsStage.setCreatedAt(created_at);
+                            Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+                            lsStage.setUpdatedAt(updated_atDate);
+                            lsStage.setWorkflow(lsWorkflow);
+                            lsStage.setPosition(position);
+                            lsStage.save();
+
+                        }
+                    }
+                }
+
+                if (action.equals("put")) {
+                    String id = payload.getString("id");
+                    int company_id = 0;
+                    if (payload.has("company_id")) {
+                        company_id = payload.getInt("company_id");
+                    }
+                    String workflow_id = payload.getString("workflow_id");
+                    String name = payload.getString("name");
+                    int created_by = 0;
+                    if (payload.has("created_by")) {
+                        created_by = payload.getInt("created_by");
+                    }
+                    String created_at = payload.getString("created_at");
+                    String updated_at = payload.getString("updated_at");
+                    String position = payload.getString("position");
+                    LSStage lsStage = LSStage.getStageFromServerId(id);
+                    if (lsStage != null) {
+                        // check if lead still exists of which the deal is
+                        LSWorkflow lsWorkflow = LSWorkflow.getWorkflowFromServerId(workflow_id);
+                        if (lsWorkflow != null) {
+                            lsStage.setServerId(id);
+                            lsStage.setCompanyId(Integer.toString(company_id));
+                            lsStage.setWorkflowId(workflow_id);
+                            lsStage.setName(name);
+                            lsStage.setCreatedBy(Integer.toString(created_by));
+//                            lsStage.setCreatedAt(created_at);
+                            Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+                            lsStage.setUpdatedAt(updated_atDate);
+                            lsStage.setWorkflow(lsWorkflow);
+                            lsStage.setPosition(position);
+                            lsStage.save();
+
+                        }
+                    }
+                }
+            }
+
             if (tag.equals("Deal")) {
                 if (action.equals("post")) {
                     String id = payload.getString("id");
@@ -590,16 +669,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             lsDeal.setStatus(status);
                             lsDeal.setCreatedBy(Integer.toString(created_by));
                             lsDeal.setCreatedAt(created_at);
-                            Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
-                            lsDeal.setUpdatedAt(updated_atDate);
+                            lsDeal.setUpdatedAt(Calendar.getInstance().getTime());
                             lsDeal.setDynamic(dynamic_values);
                             lsDeal.setIsPrivate(is_private);
                             lsDeal.setContact(lsContact);
+                            lsDeal.setStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
                             lsDeal.save();
-
-//                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
-//                            TinyBus bus = TinyBus.from(getApplicationContext());
-//                            bus.post(mCallEvent);
+                            TinyBus.from(getApplicationContext()).post(new DealAddedEventModel());
                         }
                     }
                 }
@@ -649,16 +725,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             lsDeal.setStatus(status);
                             lsDeal.setCreatedBy(Integer.toString(created_by));
                             lsDeal.setCreatedAt(created_at);
-                            Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
-                            lsDeal.setUpdatedAt(updated_atDate);
+                            lsDeal.setUpdatedAt(Calendar.getInstance().getTime());
                             lsDeal.setDynamic(dynamic_values);
                             lsDeal.setIsPrivate(is_private);
                             lsDeal.setContact(lsContact);
+                            lsDeal.setStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_SYNCED);
                             lsDeal.save();
-
-//                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
-//                            TinyBus bus = TinyBus.from(getApplicationContext());
-//                            bus.post(mCallEvent);
+                            TinyBus.from(getApplicationContext()).post(new DealAddedEventModel());
                         } else {
                             // may be to aggressive to delete contact
                             lsDeal.delete();
@@ -672,6 +745,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     LSDeal lsDeal = LSDeal.getDealFromServerId(id);
                     if (lsDeal != null) {
                         lsDeal.delete();
+                        TinyBus.from(getApplicationContext()).post(new DealAddedEventModel());
                     }
                 }
             }
@@ -753,7 +827,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                            newlsTask.setUserId(user_id);
 //                            newlsTask.setCompanyId(company_id);
 //                            newlsTask.setWorkflowId(workflow_id);
-//                            newlsTask.setStepId(step_id);
+//                            newlsTask.setStageId(step_id);
 //                            newlsTask.setLeadId(lead_id);
 //                            newlsTask.setName(name);
 //                            newlsTask.setDescription(description);

@@ -15,6 +15,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
@@ -433,21 +434,7 @@ public class DataSenderAsync {
                     Log.d(TAG, "onResponse: addDealServerID : " + responseObject.getString("id"));
                     deal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
                     deal.save();
-
-//                    int responseCode = jObj.getInt("responseCode");
-//                    if (responseCode ==  200) {
-//                        JSONObject responseObject = jObj.getJSONObject("response");
-//                        deal.setServerId(responseObject.getString("id"));
-//                        Log.d(TAG, "onResponse: ServerID : " +responseObject.getString("id"));
-//                        deal.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-//                        deal.save();
-//                    } else if (responseCode ==  409) {
-//                        JSONObject responseObject = jObj.getJSONObject("response");
-//                        deal.setServerId(responseObject.getString("id"));
-//                        deal.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-//                        deal.save();
-//                        Log.d(TAG, "onResponse: Lead already Exists");
-//                    }
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -468,6 +455,7 @@ public class DataSenderAsync {
                                     deal.setServerId(responseObject.getString("id"));
                                     deal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
                                     deal.save();
+                                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
                                 }
                             }
                         }
@@ -488,6 +476,7 @@ public class DataSenderAsync {
                 params.put("lead_id", "" + deal.getContact().getServerId()); // TODO can crash here
                 params.put("workflow_id", "" + deal.getWorkflowId());
                 params.put("workflow_stage_id", "" + deal.getWorkflowStageId());
+                params.put("is_private", "" + deal.getIsPrivate());
                 params.put("api_token", "" + sessionManager.getLoginToken());
                 Log.d(TAG, "getParams: addDealToServerSync " + params);
                 return params;
@@ -524,8 +513,9 @@ public class DataSenderAsync {
                 .appendQueryParameter("dynamic_values", "" + deal.getDynamic())
                 .appendQueryParameter("workflow_id", "" + deal.getWorkflowId())
                 .appendQueryParameter("workflow_stage_id", "" + deal.getWorkflowStageId())
-                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .appendQueryParameter("dynamic_values", "" + deal.getDynamic())
+                .appendQueryParameter("is_private", "" + deal.getIsPrivate())
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
         Log.d(TAG, "updateDealToServerSync: myUrl: " + myUrl);
@@ -542,9 +532,7 @@ public class DataSenderAsync {
                     deal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_SYNCED);
                     deal.save();
                     Log.d(TAG, "onResponse : updateDealServerId : " + responseObject.getString("id"));
-//                    LeadDealAddedEventModel mCallEvent = new LeadDealAddedEventModel();
-//                    TinyBus bus = TinyBus.from(mContext);
-//                    bus.post(mCallEvent);
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -592,16 +580,12 @@ public class DataSenderAsync {
                 Log.d(TAG, "onResponse() called with: response (deleteDeal) = [" + response + "]");
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    int responseCode = jObj.getInt("responseCode");
-//                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
-
+//                    int responseCode = jObj.getInt("responseCode");
 //                    if (responseCode == 200) {
 //                        JSONObject responseObject = jObj.getJSONObject("response");
+//                }
                     deal.delete();
-//                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
-//                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-//                    bus.post(mCallEvent);
-//                    }
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -613,14 +597,14 @@ public class DataSenderAsync {
                 try {
                     if (error != null) {
                         if (error.networkResponse != null) {
-                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                            int responseCode = jObj.getInt("responseCode");
-                            if (responseCode == 259) {
-                                Log.d(TAG, "onErrorResponse: responseCode == 259 deleted");
-                                deal.delete();
-//                                DealDeletedEventModel mCallEvent = new DealDeletedEventModel();
-//                                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-//                                bus.post(mCallEvent);
+                            if (error.networkResponse.statusCode == 404) {
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                if (responseCode == 450001) {
+                                    Log.d(TAG, "onErrorResponse: responseCode == 450001 deal deleted");
+                                    deal.delete();
+                                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
+                                }
                             }
                         }
                     }
@@ -997,9 +981,9 @@ public class DataSenderAsync {
             Log.d(TAG, "addNoteToServer: count : " + notesList.size());
             for (LSNote oneNote : notesList) {
                 Log.d(TAG, "Found Notes");
-                if (oneNote.getContactOfNote() != null){
+                if (oneNote.getContactOfNote() != null) {
                     addNoteToServerSync(oneNote);
-                }else {
+                } else {
                     Log.d(TAG, "addNotesToServer: Contact of note is NULL, Deleting.. " + oneNote.getNoteText());
                     oneNote.delete();
                 }
@@ -1052,7 +1036,7 @@ public class DataSenderAsync {
                         Log.d(TAG, "onErrorResponse: no response may be poor internet");
                     }
                 } catch (Exception e) {
-                    e.printStackTrace(); // TODO google pixel
+                    e.printStackTrace();
                 }
             }
         }) {

@@ -14,11 +14,16 @@ import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
+import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.listloaders.InquiryLoader;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.halfbit.tinybus.Subscribe;
+import de.halfbit.tinybus.TinyBus;
 
 public class BlankFragment1 extends Fragment implements LoaderManager.LoaderCallbacks<List<Object>> {
     public static final String TAG = "BlankFragment1";
@@ -31,6 +36,7 @@ public class BlankFragment1 extends Fragment implements LoaderManager.LoaderCall
 
     private List<Object> list = new ArrayList<Object>();
     private MyRecyclerViewAdapter adapter;
+    private TinyBus bus;
 
     public BlankFragment1() {
     }
@@ -58,13 +64,15 @@ public class BlankFragment1 extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
+        if (getActivity() != null)
+            bus = TinyBus.from(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.fragment_blank1, container, false);
         adapter = new MyRecyclerViewAdapter(getActivity(), list); //TODO potential bug getActivity can be null.
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mRecyclerView.setAdapter(adapter);
-        
+
         return view;
     }
 
@@ -78,14 +86,27 @@ public class BlankFragment1 extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: ");
+        Log.d(TAG, "onStart() called");
+        bus.register(this);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume: ");
-//        getLoaderManager().restartLoader(INQU_LOADER_ID, null, BlankFragment1.this).forceLoad();
+    public void onStop() {
+        Log.d(TAG, "onStop() called");
+        bus.unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onInquiryDeletedEventModel(InquiryDeletedEventModel event) {
+        Log.d(TAG, "onInquiryDeletedEventModel: ");
+        getLoaderManager().restartLoader(INQU_LOADER_ID, null, BlankFragment1.this);
+    }
+
+    @Subscribe
+    public void onMissedCallEventModel(MissedCallEventModel event) {
+        Log.d(TAG, "onMissedCallEventModel: ");
+        getLoaderManager().restartLoader(INQU_LOADER_ID, null, BlankFragment1.this);
     }
 
     @Override

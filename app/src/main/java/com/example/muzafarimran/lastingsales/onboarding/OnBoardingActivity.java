@@ -253,7 +253,7 @@ public class OnBoardingActivity extends AppCompatActivity {
             } else {
                 try {
                     if (error.networkResponse != null) {
-                        if (error.networkResponse.statusCode == 412) { // Invalid email responseCode:222 OR Pass must be greater than 4 char ResponseCode:220 //TODO should move to email correction screen FragE
+                        if (error.networkResponse.statusCode == 412) { // Invalid email responseCode:222 OR Pass must be greater than 4 char ResponseCode:220 // should move to email correction screen FragE
                             JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
                             int responseCode = jObj.getInt("responseCode");
                             String response = jObj.getString("response");
@@ -261,7 +261,7 @@ public class OnBoardingActivity extends AppCompatActivity {
                             if (fg != null) {
                                 fg.onUserError(response, responseCode);
                             }
-                        } else if (error.networkResponse.statusCode == 409) { // Email is already registered with us ResponseCode:190 //TODO should move to email correction screen FragE
+                        } else if (error.networkResponse.statusCode == 409) { // Email is already registered with us ResponseCode:190 //should move to email correction screen FragE
                             JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
                             int responseCode = jObj.getInt("responseCode");
                             String response = jObj.getString("response");
@@ -269,13 +269,13 @@ public class OnBoardingActivity extends AppCompatActivity {
                             if (fg != null) {
                                 fg.onUserError(response, responseCode);
                             }
-                        } else { // TODO find error and do accordingly
+                        } else { // find error and do accordingly
                             if (fg != null) {
                                 fg.onUserError("Server Error");
                             }
                             Toast.makeText(OnBoardingActivity.this, "Server Error.", Toast.LENGTH_SHORT).show();
                         }
-                    } else { //TODO try again
+                    } else { // try again
                         if (fg != null) {
                             fg.onUserError("Poor Internet");
                         }

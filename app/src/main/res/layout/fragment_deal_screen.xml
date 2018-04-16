@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvFragTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Title"
-        android:textColor="@android:color/holo_blue_light"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="18dp"/>
+    <!--<TextView-->
+        <!--android:id="@+id/tvFragTitle"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Title"-->
+        <!--android:textColor="@android:color/holo_blue_light"-->
+        <!--android:gravity="center"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textSize="18dp"/>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mRecyclerView"

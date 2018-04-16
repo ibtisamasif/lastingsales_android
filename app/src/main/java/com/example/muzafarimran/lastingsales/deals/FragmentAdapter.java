@@ -13,6 +13,7 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
     private Context ctx;
     private List<LSStage> data;
     private Fragment[] fragments;
+    private LSStage currentStageVisible;
 
     public FragmentAdapter(Context ctx, FragmentManager fm, List<LSStage> data) {
         super(fm);
@@ -24,17 +25,21 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
-        LSStage steps = (LSStage) data.get(position);
-
+        LSStage stage = (LSStage) data.get(position);
+        currentStageVisible = stage;
         DynamicFragment dynamicFragment = new DynamicFragment();
-        dynamicFragment.setDetail(steps.getName() + "" + steps.getServerId());
-        dynamicFragment.setStepId(steps.getServerId() + "");
-        fragment = dynamicFragment;
+        dynamicFragment.setPageTitle(stage.getName());
+        dynamicFragment.setStageId(stage.getServerId());
 
+        fragment = dynamicFragment;
         if (fragments[position] == null) {
             fragments[position] = fragment;
         }
         return fragments[position];
+    }
+
+    public LSStage getStage() {
+        return currentStageVisible;
     }
 
     @Override

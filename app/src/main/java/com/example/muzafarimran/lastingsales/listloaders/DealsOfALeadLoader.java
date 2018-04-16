@@ -7,7 +7,6 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.carditems.AddDealItem;
-import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.fragments.IndividualContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
@@ -43,16 +42,20 @@ public class DealsOfALeadLoader extends AsyncTaskLoader<List<Object>> {
             Collection<LSDeal> deals = lsContact.getAllDeals();
             if (deals != null && deals.size() > 0) {
 
-                SeparatorItem separatorDeals = new SeparatorItem();
-                separatorDeals.text = "Deals";
-                data.add(separatorDeals);
+//                SeparatorItem separatorDeals = new SeparatorItem();
+//                separatorDeals.text = "Deals";
+//                data.add(separatorDeals);
 
                 data.addAll(deals);
 
-                SeparatorItem separatorSpace = new SeparatorItem();
-                separatorSpace.text = "";
-                data.add(separatorSpace);
-                data.add(separatorSpace);
+                AddDealItem addDealItem = new AddDealItem();
+                addDealItem.leadLocalId = lead_id;
+                data.add(addDealItem);
+
+//                SeparatorItem separatorSpace = new SeparatorItem();
+//                separatorSpace.text = "";
+//                data.add(separatorSpace);
+//                data.add(separatorSpace);
 
             } else {
 
@@ -64,11 +67,12 @@ public class DealsOfALeadLoader extends AsyncTaskLoader<List<Object>> {
 //                data.addAll(listError);
 
                 AddDealItem addDealItem = new AddDealItem();
+                addDealItem.leadLocalId = lead_id;
                 data.add(addDealItem);
             }
             return data;
 
-        }else {
+        } else {
             return null;
         }
     }

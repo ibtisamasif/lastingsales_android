@@ -32,7 +32,7 @@ public class Sugar extends SugarApp {
         SugarContext.init(getApplicationContext());
 
         // create table if not exists
-//        SchemaGenerator schemaGenerator = new SchemaGenerator(this); //TODO uncomment in production
+//        SchemaGenerator schemaGenerator = new SchemaGenerator(this);
 //        schemaGenerator.createDatabase(new SugarDb(this).getDB());
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

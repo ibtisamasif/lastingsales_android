@@ -8,4 +8,5 @@ import android.widget.Button;
 
 public class AddDealItem {
     public Button bAddLead;
+    public String leadLocalId;
 }

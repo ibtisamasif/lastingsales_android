@@ -13,12 +13,17 @@ import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 import com.example.muzafarimran.lastingsales.listloaders.UnlabeledLoader2;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.halfbit.tinybus.Subscribe;
+import de.halfbit.tinybus.TinyBus;
 
 public class BlankFragment2_2 extends TabFragment implements LoaderManager.LoaderCallbacks<List<Object>> {
     public static final String TAG = "BlankFragment2";
@@ -32,6 +37,7 @@ public class BlankFragment2_2 extends TabFragment implements LoaderManager.Loade
 
     private List<Object> list = new ArrayList<Object>();
     private MyRecyclerViewAdapter adapter;
+    private TinyBus bus;
 
     public BlankFragment2_2() {
     }
@@ -57,6 +63,8 @@ public class BlankFragment2_2 extends TabFragment implements LoaderManager.Loade
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (getActivity() != null)
+            bus = TinyBus.from(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.fragment_blank2_2, container, false);
         adapter = new MyRecyclerViewAdapter(getActivity(), list); //TODO potential bug getActivity can be null.
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
@@ -74,6 +82,31 @@ public class BlankFragment2_2 extends TabFragment implements LoaderManager.Loade
         getLoaderManager().initLoader(HOME_LOADER2_ID, null, BlankFragment2_2.this);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        Log.d(TAG, "onStop() called");
+        bus.unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
+        Log.d(TAG, "onSaleContactAddedEventModel: ");
+        getLoaderManager().restartLoader(HOME_LOADER2_ID, null, BlankFragment2_2.this);
+    }
+
+    @Subscribe
+    public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
+        Log.d(TAG, "onLeadContactDeletedEventModel: ");
+        getLoaderManager().restartLoader(HOME_LOADER2_ID, null, BlankFragment2_2.this);
+    }
 
     @Override
     public Loader<List<Object>> onCreateLoader(int id, Bundle args) {

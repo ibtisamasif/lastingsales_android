@@ -136,6 +136,10 @@ public class InitService extends IntentService {
                         if (jsonobject.has("created_by")) {
                             created_by = jsonobject.getInt("created_by");
                         }
+                        String updated_at = "";
+                        if (jsonobject.has("updated_at")) {
+                            updated_at = jsonobject.getString("updated_at");
+                        }
                         int user_id = jsonobject.getInt("user_id");
                         String src = jsonobject.getString("src");
 
@@ -148,6 +152,7 @@ public class InitService extends IntentService {
                         Log.d(TAG, "onResponse: address: " + address);
                         Log.d(TAG, "onResponse: dynamic_values: " + dynamic_values);
                         Log.d(TAG, "onResponse: created_by: " + created_by);
+                        Log.d(TAG, "onResponse: updated_at: " + updated_at);
                         Log.d(TAG, "onResponse: user_id: " + user_id);
                         Log.d(TAG, "onResponse: src: " + src);
 
@@ -164,6 +169,9 @@ public class InitService extends IntentService {
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                             if (created_by != 0) {
                                 tempContact.setCreatedBy(created_by);
+                            }
+                            if (updated_at != null) {
+                                tempContact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
                             }
                             tempContact.setUserId(user_id);
                             tempContact.setSrc(src);
@@ -462,59 +470,60 @@ public class InitService extends IntentService {
                         Log.d(TAG, "onResponse: company_id: " + company_id);
                         Log.d(TAG, "onResponse: is_default: " + is_default);
 
-                        if (is_default.equalsIgnoreCase("1")) {
-                            LSWorkflow checkWorkflow = LSWorkflow.getWorkflowFromServerId(id);
-                            if (checkWorkflow == null) {
-                                LSWorkflow newWorkflow = new LSWorkflow();
-                                newWorkflow.setServerId(id);
-                                newWorkflow.setName(name);
-                                newWorkflow.setStatus(status);
-                                newWorkflow.setCreated_by(created_by);
-                                Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
-                                newWorkflow.setUpdated_at(updated_atDate);
-                                newWorkflow.setCompanyId(company_id);
-                                newWorkflow.setIsDefault(is_default);
-                                newWorkflow.save();
+                        LSWorkflow checkWorkflow = LSWorkflow.getWorkflowFromServerId(id);
+                        if (checkWorkflow == null) {
+                            LSWorkflow newWorkflow = new LSWorkflow();
+                            newWorkflow.setServerId(id);
+                            newWorkflow.setName(name);
+                            newWorkflow.setStatus(status);
+                            newWorkflow.setCreated_by(created_by);
+                            Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+                            newWorkflow.setUpdated_at(updated_atDate);
+                            newWorkflow.setCompanyId(company_id);
+                            newWorkflow.setIsDefault(is_default);
+                            newWorkflow.save();
 
-                                JSONArray jsonarrayStages = jsonDataObject.getJSONArray("stages");
-                                for (int j = 0; j < jsonarrayStages.length(); j++) {
-                                    JSONObject jsonStageObject = jsonarrayStages.getJSONObject(j);
-                                    String stage_id = jsonStageObject.getString("id");
-                                    String stage_workflow_id = jsonStageObject.getString("workflow_id");
-                                    String stage_company_id = jsonStageObject.getString("company_id");
-                                    String stage_name = jsonStageObject.getString("name");
-                                    String stage_description = jsonStageObject.getString("description");
-                                    String stage_created_by = jsonStageObject.getString("created_by");
-                                    String stage_created_at = jsonStageObject.getString("created_at");
-                                    String stage_updated_at = jsonStageObject.getString("updated_at");
-                                    String stage_next_to = jsonStageObject.getString("next_to");
+                            JSONArray jsonarrayStages = jsonDataObject.getJSONArray("stages");
+                            for (int j = 0; j < jsonarrayStages.length(); j++) {
+                                JSONObject jsonStageObject = jsonarrayStages.getJSONObject(j);
+                                String stage_id = jsonStageObject.getString("id");
+                                String stage_workflow_id = jsonStageObject.getString("workflow_id");
+                                String stage_company_id = jsonStageObject.getString("company_id");
+                                String stage_name = jsonStageObject.getString("name");
+                                String stage_description = jsonStageObject.getString("description");
+                                String stage_created_by = jsonStageObject.getString("created_by");
+                                String stage_created_at = jsonStageObject.getString("created_at");
+                                String stage_updated_at = jsonStageObject.getString("updated_at");
+                                String stage_next_to = jsonStageObject.getString("next_to");
+                                String stage_position = jsonStageObject.getString("position");
 
-                                    Log.d(TAG, "onResponse: stage_id: " + stage_id);
-                                    Log.d(TAG, "onResponse: stage_workflow_id: " + stage_workflow_id);
-                                    Log.d(TAG, "onResponse: stage_company_id: " + stage_company_id);
-                                    Log.d(TAG, "onResponse: stage_name: " + stage_name);
-                                    Log.d(TAG, "onResponse: stage_description: " + stage_description);
-                                    Log.d(TAG, "onResponse: stage_created_by: " + stage_created_by);
-                                    Log.d(TAG, "onResponse: stage_created_at: " + stage_created_at);
-                                    Log.d(TAG, "onResponse: stage_updated_at: " + stage_updated_at);
-                                    Log.d(TAG, "onResponse: stage_next_to: " + stage_next_to);
+                                Log.d(TAG, "onResponse: stage_id: " + stage_id);
+                                Log.d(TAG, "onResponse: stage_workflow_id: " + stage_workflow_id);
+                                Log.d(TAG, "onResponse: stage_company_id: " + stage_company_id);
+                                Log.d(TAG, "onResponse: stage_name: " + stage_name);
+                                Log.d(TAG, "onResponse: stage_description: " + stage_description);
+                                Log.d(TAG, "onResponse: stage_created_by: " + stage_created_by);
+                                Log.d(TAG, "onResponse: stage_created_at: " + stage_created_at);
+                                Log.d(TAG, "onResponse: stage_updated_at: " + stage_updated_at);
+                                Log.d(TAG, "onResponse: stage_next_to: " + stage_next_to);
+                                Log.d(TAG, "onResponse: stage_position: " + stage_position);
 
-                                    LSStage checkSteps = LSStage.getStageFromServerId(id);
-                                    if (checkSteps == null) {
-                                        LSStage newSteps = new LSStage();
-                                        newSteps.setServerId(stage_id);
-                                        newSteps.setWorkflowId(stage_workflow_id);
-                                        newSteps.setCompanyId(stage_company_id);
-                                        newSteps.setName(stage_name);
-                                        newSteps.setDescription(stage_description);
-                                        newSteps.setCreatedBy(stage_created_by);
+                                LSStage checkSteps = LSStage.getStageFromServerId(id);
+                                if (checkSteps == null) {
+                                    LSStage newSteps = new LSStage();
+                                    newSteps.setServerId(stage_id);
+                                    newSteps.setCompanyId(stage_company_id);
+                                    newSteps.setName(stage_name);
+                                    newSteps.setDescription(stage_description);
+                                    newSteps.setCreatedBy(stage_created_by);
 //                                newSteps.setCreatedAt(stage_created_at);
-                                        Date stage_updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(stage_updated_at);
-                                        newSteps.setUpdatedAt(stage_updated_atDate);
-                                        newSteps.setNextTo(stage_next_to);
-                                        newSteps.setWorkflow(newWorkflow);
-                                        newSteps.save();
-                                    }
+                                    Date stage_updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(stage_updated_at);
+                                    newSteps.setUpdatedAt(stage_updated_atDate);
+                                    newSteps.setNextTo(stage_next_to);
+                                    newSteps.setPosition(stage_position);
+                                    newSteps.setWorkflowId(stage_workflow_id);
+                                    newSteps.setWorkflow(newWorkflow);
+                                    newSteps.save();
                                 }
                             }
                         }
@@ -603,6 +612,10 @@ public class InitService extends IntentService {
                         String is_private = jsonobject.getString("is_private");
                         String version = jsonobject.getString("version");
 
+                        String value = jsonobject.getString("value");
+                        String currency = jsonobject.getString("currency");
+                        String success_rate = jsonobject.getString("success_rate");
+                        String success_eta = jsonobject.getString("success_eta");
 
                         Log.d(TAG, "onResponse: ID: " + id);
                         Log.d(TAG, "onResponse: Name: " + name);
@@ -620,6 +633,10 @@ public class InitService extends IntentService {
                         Log.d(TAG, "onResponse: src: " + src);
                         Log.d(TAG, "onResponse: is_private: " + is_private);
                         Log.d(TAG, "onResponse: version: " + version);
+                        Log.d(TAG, "onResponse: value: " + value);
+                        Log.d(TAG, "onResponse: currency: " + currency);
+                        Log.d(TAG, "onResponse: success_rate: " + success_rate);
+                        Log.d(TAG, "onResponse: success_eta: " + success_eta);
 
                         if (LSDeal.getDealFromId(id) == null) {
                             LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
@@ -634,8 +651,7 @@ public class InitService extends IntentService {
                                     tempDeal.setCreatedBy(Integer.toString(created_by));
                                 }
                                 tempDeal.setCreatedAt(created_at);
-                                Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
-                                tempDeal.setUpdatedAt(updated_atDate);
+                                tempDeal.setUpdatedAt(Calendar.getInstance().getTime());
                                 tempDeal.setUserId(Integer.toString(user_id));
                                 tempDeal.setCompanyId(Integer.toString(company_id));
 //                            tempDeal.setSrcId(Integer.toString(src_id));
@@ -646,6 +662,10 @@ public class InitService extends IntentService {
                                 tempDeal.setIsPrivate(is_private);
 //                            tempDeal.setVersion(version);
                                 tempDeal.setContact(lsContact);
+                                tempDeal.setValue(value);
+                                tempDeal.setCurrency(currency);
+                                tempDeal.setSuccessRate(success_rate);
+                                tempDeal.setSuccessEta(success_eta);
                                 tempDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
                                 tempDeal.save();
                             }
@@ -659,9 +679,6 @@ public class InitService extends IntentService {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e(TAG, "onResponse: JSONException Deals");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "onResponse: ParseException Deals");
                 }
             }
         }, new Response.ErrorListener() {

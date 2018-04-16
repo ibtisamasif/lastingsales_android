@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.deals;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,34 +12,48 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
+import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.listloaders.DealsLoader;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.halfbit.tinybus.Subscribe;
+import de.halfbit.tinybus.TinyBus;
+
 public class DynamicFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Object>> {
     public static final String TAG = "DynamicFragment";
     public static final String DEALS_WORKFLOW_STAGE_ID = "deals_workflow_stage_id";
     public static final int DEAL_LOADER_ID = 4;
 
-    private TextView tvDetailFragment;
+//    private TextView tvDetailFragment;
 
-    private String detail;
+    private String pageTitle;
 
-    private String stepId;
+    private String stageId;
 
     private List<Object> listLoader = new ArrayList<Object>();
 
     private MyRecyclerViewAdapter adapter;
+    private Bundle args;
+    private TinyBus bus;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG, "onAttach: ");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
+        if (getActivity() != null)
+            bus = TinyBus.from(getActivity().getApplicationContext());
+
         return inflater.inflate(R.layout.fragment_deal_screen, container, false);
     }
 
@@ -46,35 +61,55 @@ public class DynamicFragment extends Fragment implements LoaderManager.LoaderCal
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "onViewCreated: ");
-        tvDetailFragment = (TextView) view.findViewById(R.id.tvFragTitle);
-        tvDetailFragment.setText(getDetail());
+//        tvDetailFragment = (TextView) view.findViewById(R.id.tvFragTitle);
+//        tvDetailFragment.setText(getPageTitle());
 
         adapter = new MyRecyclerViewAdapter(getActivity(), listLoader); //TODO potential bug getActivity can be null.
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
 
-        String stepId = getStepId();
-        Log.d(TAG, "onViewCreated: stepId: " + stepId);
-        Bundle args = new Bundle();
-        args.putString(DEALS_WORKFLOW_STAGE_ID, getStepId());
+        String stepId = getStageId();
+        Log.d(TAG, "onViewCreated: stageId: " + stepId);
+        args = new Bundle();
+        args.putString(DEALS_WORKFLOW_STAGE_ID, getStageId());
         getLoaderManager().initLoader(DEAL_LOADER_ID, args, DynamicFragment.this);
     }
 
-    public String getDetail() {
-        return detail;
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+        bus.register(this);
     }
 
-    public void setDetail(String detail) {
-        this.detail = detail;
+    @Override
+    public void onStop() {
+        Log.d(TAG, "onStop() called");
+        bus.unregister(this);
+        super.onStop();
     }
 
-    public String getStepId() {
-        return stepId;
+    public String getPageTitle() {
+        return pageTitle;
     }
 
-    public void setStepId(String stepId) {
-        this.stepId = stepId;
+    public void setPageTitle(String pageTitle) {
+        this.pageTitle = pageTitle;
+    }
+
+    public String getStageId() {
+        return stageId;
+    }
+
+    public void setStageId(String stepId) {
+        this.stageId = stepId;
+    }
+
+    @Subscribe
+    public void onDealEventModel(DealAddedEventModel event) {
+        Log.d(TAG, "onDealEventModel: ");
+        getLoaderManager().restartLoader(DEAL_LOADER_ID, args, DynamicFragment.this);
     }
 
     @Override

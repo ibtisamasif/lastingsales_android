@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_add_deal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,57 +30,6 @@
                     android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
-                    <!--<LinearLayout-->
-                    <!--android:id="@+id/llDealType"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginBottom="8dp"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<TextView-->
-                    <!--android:layout_width="45dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Status" />-->
-
-                    <!--<Button-->
-                    <!--android:id="@+id/bPendingRadio"-->
-                    <!--style="@style/Widget.AppCompat.Button.Colored"-->
-                    <!--android:layout_width="120dp"-->
-                    <!--android:layout_height="40dp"-->
-                    <!--android:layout_marginRight="10dp"-->
-                    <!--android:layout_marginEnd="10dp"-->
-                    <!--android:layout_weight="0.33"-->
-                    <!--android:tag="collegue_radio"-->
-                    <!--android:text="Pending"-->
-
-                    <!--/>-->
-
-                    <!--<Button-->
-                    <!--android:id="@+id/bWonRadio"-->
-                    <!--style="@style/Widget.AppCompat.Button.Colored"-->
-                    <!--android:layout_width="120dp"-->
-                    <!--android:layout_height="40dp"-->
-                    <!--android:layout_marginRight="16dp"-->
-                    <!--android:layout_marginEnd="10dp"-->
-                    <!--android:layout_weight="0.33"-->
-                    <!--android:tag="sale_radio"-->
-                    <!--android:text="Won" />-->
-
-                    <!--<Button-->
-                    <!--android:id="@+id/bLostRadio"-->
-                    <!--style="@style/Widget.AppCompat.Button.Colored"-->
-                    <!--android:layout_width="120dp"-->
-                    <!--android:layout_height="40dp"-->
-                    <!--android:layout_marginRight="16dp"-->
-                    <!--android:layout_marginEnd="10dp"-->
-                    <!--android:layout_weight="0.33"-->
-                    <!--android:tag="sale_radio"-->
-                    <!--android:text="Lost" />-->
-
-                    <!--</LinearLayout>-->
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -104,7 +51,7 @@
                             android:layout_weight="1"
                             android:inputType="textPersonName"
                             android:padding="8dp"
-                            android:text="deal" />
+                            android:text="Deal" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -118,20 +65,19 @@
                             android:layout_height="wrap_content"
                             android:text="Lead" />
 
-                        <AutoCompleteTextView
-                            android:id="@+id/etNumberAddDeal"
+                        <com.example.muzafarimran.lastingsales.autocompletetext.ContactsCompletionView
+                            android:id="@+id/etLeadAddDeal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="16dp"
+                            android:focusableInTouchMode="true"
+                            android:hint="Type lead name"
+                            android:imeOptions="actionDone"
+                            android:inputType="text|textNoSuggestions|textMultiLine"
+                            android:lineSpacingExtra="1dp"
                             android:padding="8dp"
-                            tools:text=""
-                            android:hint="john doe"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            >
-                            <requestFocus />
-                        </AutoCompleteTextView>
-
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -146,7 +92,7 @@
                             android:id="@+id/status_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Is private?" />
+                            android:text="Visibility" />
 
                         <Spinner
                             android:id="@+id/isPrivateSpinner"
@@ -155,7 +101,6 @@
                             android:layout_marginStart="43dp"
                             android:gravity="center"
                             android:spinnerMode="dropdown" />
-
 
                     </LinearLayout>
 
@@ -199,8 +144,6 @@
             </LinearLayout>
         </ScrollView>
 
-
-        <!--work above this line-->
     </LinearLayout>
 
 </RelativeLayout>

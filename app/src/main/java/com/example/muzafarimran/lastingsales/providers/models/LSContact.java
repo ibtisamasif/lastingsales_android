@@ -82,6 +82,24 @@ public class LSContact extends SugarRecord {
         }
     }
 
+    public static List<LSContact> getFrequentContactsByTypeInDescOrder(String type) {
+        try {
+            List<LSContact> frequentContacts = new ArrayList<LSContact>();
+            List<LSCall> topFrequentArragnedCalls = LSCall.findWithQuery(LSCall.class, "Select * , count (*) AS c from LS_CALL group by contact_number order by c DESC LIMIT 10");
+            for (LSCall oneCall :
+                    topFrequentArragnedCalls) {
+                LSContact contact = LSContact.getContactFromNumber(oneCall.getContactNumber());
+                if (contact != null && !contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+                    frequentContacts.add(contact);
+                }
+            }
+            return frequentContacts;
+//            return Select.from(LSContact.class).where(Condition.prop("contact_type").eq(type)).orderBy("updated_at DESC").list();
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
+
     public static List<LSContact> getContactsByType(String type) {
         try {
             return LSContact.findWithQuery(LSContact.class, "Select * from LS_CONTACT where (is_lead_deleted = 0 or is_lead_deleted IS NULL) and contact_type = ? ", type);
@@ -350,9 +368,9 @@ public class LSContact extends SugarRecord {
 //    }
 
     public ArrayList<LSDeal> getAllDeals() {
-        ArrayList<LSDeal> allFollowupsOfThisContact = null;
-        allFollowupsOfThisContact = (ArrayList<LSDeal>) LSDeal.find(LSDeal.class, "contact = ? ", getId() + "");
-        return allFollowupsOfThisContact;
+        ArrayList<LSDeal> allDealsOfThisContact = null;
+        allDealsOfThisContact = (ArrayList<LSDeal>) LSDeal.findWithQuery(LSDeal.class, "Select * from LS_DEAL where contact = '" + getId() + "'" + " ORDER BY updated_at DESC");
+        return allDealsOfThisContact;
     }
 
     public ArrayList<TempFollowUp> getAllFollowups() {

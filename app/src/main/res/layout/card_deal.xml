@@ -96,7 +96,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            fresco:srcCompat="@drawable/ic_monetization_on_blue_24dp" />
+            app:srcCompat="@drawable/ic_monetization_on_24dp" />
 
         <TextView
             android:id="@+id/tvDealName"

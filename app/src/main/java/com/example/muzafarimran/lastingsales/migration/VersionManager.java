@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.migration;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -371,6 +373,30 @@ public class VersionManager {
                     // Do first run stuff here then set 'firstrun' as false
                     // using the following line to edit/commit prefs
 //                    sessionManager.fetchData();
+                    return true;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        } else if (version == 116) {
+            try {
+                Log.d(TAG, "func: Running Script for Migration");
+                if (sessionManager.getLoginMode().equals(SessionManager.MODE_NORMAL)) {
+                    Log.d(TAG, "MODE_NORMAL");
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_NEW_INSTALL)) {
+                    Log.d(TAG, "MODE_NEW_INSTALL");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_UPGRADE)) {
+                    Log.d(TAG, "MODE_UPGRADE");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    Intent intentInitService = new Intent(mContext, InitService.class);
+                    mContext.startService(intentInitService);
                     return true;
                 } else {
                     return true;

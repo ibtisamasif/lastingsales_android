@@ -1,7 +1,7 @@
 package com.example.muzafarimran.lastingsales.NavigationBottomFragments;
 
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -10,17 +10,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.deals.FragmentAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
+import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BlankFragment4 extends Fragment  implements ViewPager.OnPageChangeListener {
+public class BlankFragment4 extends Fragment implements ViewPager.OnPageChangeListener {
     public static final String TAG = "BlankFragment4";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -34,6 +37,7 @@ public class BlankFragment4 extends Fragment  implements ViewPager.OnPageChangeL
     private ViewPager viewPager;
     private List<LSStage> listItem = new ArrayList<>();
     private FragmentAdapter fragmentAdapter;
+    private TabLayout tabLayout;
 
     public BlankFragment4() {
     }
@@ -64,81 +68,34 @@ public class BlankFragment4 extends Fragment  implements ViewPager.OnPageChangeL
         View view = inflater.inflate(R.layout.fragment_blank4, container, false);
         indicator = (LinearLayout) view.findViewById(R.id.indicators);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager_itemList);
-
         // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
+        tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(viewPager);
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-//                        floatingActionButton.hide();
-//                        tab.setIcon(R.drawable.menu_icon_details_selected);
-                        break;
-                    case 1:
-//                        floatingActionButton.show();
-//                        tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        break;
-                    case 2:
-//                        floatingActionButton.hide();
-//                        tab.setIcon(R.drawable.menu_icon_contact_selected);
-                        break;
-                    case 3:
-//                        floatingActionButton.hide();
-//                        tab.setIcon(R.drawable.add_contact_notes_field_icon);
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-//                        tab.setIcon(R.drawable.menu_icon_details);
-                        break;
-                    case 1:
-//                        tab.setIcon(R.drawable.menu_icon_phone);
-                        break;
-                    case 2:
-//                        tab.setIcon(R.drawable.menu_icon_contact);
-                        break;
-                    case 3:
-//                        tab.setIcon(R.drawable.add_contact_notes_field_icon_unselected);
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-
         setData();
         return view;
     }
 
-    private void setData(){
-
-        Collection<LSStage> lsSteps = LSStage.getAllStagesInSequence(); //TODO Change this query
-
-        listItem.addAll(lsSteps);
-
-        fragmentAdapter = new FragmentAdapter(getActivity(), getFragmentManager(), listItem);
-        viewPager.setAdapter(fragmentAdapter);
-        viewPager.setCurrentItem(0);
-        viewPager.setOnPageChangeListener(this);
-        setUiPageViewController();
-
+    private void setData() {
+        LSWorkflow defaultWorkFlow = LSWorkflow.getDefaultWorkflow();
+        if (defaultWorkFlow != null) {
+            Collection<LSStage> lsSteps = LSStage.getAllStagesInPositionSequenceByWorkflowServerId(defaultWorkFlow.getServerId());
+            if (lsSteps != null) {
+                listItem.addAll(lsSteps);
+                fragmentAdapter = new FragmentAdapter(getActivity(), getFragmentManager(), listItem);
+                viewPager.setAdapter(fragmentAdapter);
+                viewPager.setCurrentItem(0);
+                viewPager.setOnPageChangeListener(this);
+                setUiPageViewController();
+            }
+        }
     }
 
-    private void setUiPageViewController(){
+    private void setUiPageViewController() {
         mDotCount = fragmentAdapter.getCount();
         mDots = new LinearLayout[mDotCount];
 
-        for(int i=0; i<mDotCount; i++){
+        for (int i = 0; i < mDotCount; i++) {
             mDots[i] = new LinearLayout(getActivity());
             mDots[i].setBackgroundResource(R.drawable.nonselected_item);
 
@@ -147,20 +104,50 @@ public class BlankFragment4 extends Fragment  implements ViewPager.OnPageChangeL
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
 
-            params.setMargins(4,0,4,0);
-            indicator.addView(mDots[i],params);
+            params.setMargins(4, 0, 4, 0);
+            indicator.addView(mDots[i], params);
             mDots[0].setBackgroundResource(R.drawable.selected_item);
         }
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (getActivity() != null) {
+                Window window = getActivity().getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                LSStage lsStage = fragmentAdapter.getStage();
+                if (lsStage != null) {
+                    switch (lsStage.getPosition()) {
+                        case "800":
+//                            android.app.ActionBar bar = getActivity().getActionBar();
+//                            bar.setBackgroundDrawable(new ColorDrawable(Color.GREEN));
+//                            ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.md_light_blue_600));
+//                            getActivity().getActionBar().setBackgroundDrawable(colorDrawable);
+//                            window.setStatusBarColor(getResources().getColor(R.color.md_light_blue_800));
+//                            tabLayout.setBackgroundColor(getResources().getColor(R.color.md_light_blue_600));
+                            break;
+                        case "999":
+//                            ColorDrawable colorDrawable1 = new ColorDrawable(getResources().getColor(R.color.md_red_600));
+//                            getActivity().getActionBar().setBackgroundDrawable(colorDrawable1);
+//                            window.setStatusBarColor(getResources().getColor(R.color.md_red_800));
+//                            tabLayout.setBackgroundColor(getResources().getColor(R.color.md_red_600));
+                            break;
+                        default:
+//                            ColorDrawable colorDrawable2 = new ColorDrawable(getResources().getColor(R.color.colorPrimary));
+//                            getActivity().getActionBar().setBackgroundDrawable(colorDrawable2);
+//                            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+//                            tabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                            break;
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public void onPageSelected(int position) {
-        for (int i=0; i<mDotCount; i++){
+        for (int i = 0; i < mDotCount; i++) {
             mDots[i].setBackgroundResource(R.drawable.nonselected_item);
         }
         mDots[position].setBackgroundResource(R.drawable.selected_item);
@@ -170,53 +157,4 @@ public class BlankFragment4 extends Fragment  implements ViewPager.OnPageChangeL
     public void onPageScrollStateChanged(int state) {
 
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, "onActivityCreated: ");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: ");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume: ");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause: ");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: ");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(TAG, "onDestroyView: ");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d(TAG, "onDetach: ");
-    }
-
 }

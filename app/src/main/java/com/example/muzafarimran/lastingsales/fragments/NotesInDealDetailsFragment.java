@@ -96,13 +96,13 @@ public class NotesInDealDetailsFragment extends TabFragment {
         separatorFollowup.text = "Follow Up";
         list.add(separatorFollowup);
 
-        ArrayList<TempFollowUp> allFollowupsOfThisContact = selectedContact.getAllFollowups(); //TODO crash here when contact is deleted because of syncing.
+        ArrayList<TempFollowUp> allFollowupsOfThisContact = selectedContact.getAllFollowups();
 //        ArrayList<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getAllFollowupsFromContactId(selectedContact.getId()+"");
         Calendar now = Calendar.getInstance();
         TempFollowUp selectedFollowup = null;
         if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
             for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
-                if (oneFollowup.getDateTimeForFollowup() - 30000 > now.getTimeInMillis()) { //TODO not an ethical way to fix this bug.
+                if (oneFollowup.getDateTimeForFollowup() - 30000 > now.getTimeInMillis()) {
                     Log.d(TAG, "updateUi time difference: " + (oneFollowup.getDateTimeForFollowup() - now.getTimeInMillis()));
                     selectedFollowup = oneFollowup;
                     break;

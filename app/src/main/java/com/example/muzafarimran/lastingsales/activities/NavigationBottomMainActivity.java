@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -38,11 +39,17 @@ import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.app.ClassManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelper;
+import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
+import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
+import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.service.InitService;
@@ -53,6 +60,7 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngin
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
@@ -66,8 +74,13 @@ import de.halfbit.tinybus.wires.ShakeEventWire;
  * Created by ibtisam on 11/6/2017.
  */
 
-public class NavigationBottomMainActivity extends AppCompatActivity {
+public class NavigationBottomMainActivity extends AppCompatActivity implements CloseContactBottomSheetEvent, CloseInquiryBottomSheetEvent{
     public static final String TAG = "NavigationBottomMain";
+    private static final String FRAGMENT_TAG_INQUIRIES = "fragment_tag_inquiries";
+    private static final String FRAGMENT_TAG_UNLABELED = "fragment_tag_unlabeled";
+    private static final String FRAGMENT_TAG_LEADS = "fragment_tag_leads";
+    private static final String FRAGMENT_TAG_DEALS = "fragment_tag_deals";
+    private static final String FRAGMENT_TAG_MORE = "fragment_tag_more";
 
     //    public static final String KEY_ACTIVE_LOADER = "active_loader";
 //    public static int ACTIVE_LOADER = -1;
@@ -88,8 +101,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
     private android.support.design.widget.FloatingActionButton floatingActionButtonDeal;
     private FloatingActionMenu floatingActionMenuLead;
     private BottomNavigationView navigation;
-    //    private static InquiryCallDetailsBottomSheetFragment inquiryCallDetailsBottomSheetFragment;
-//    private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
+        private static InquiryCallDetailsBottomSheetFragment inquiryCallDetailsBottomSheetFragment;
+    private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
     public static Activity activity;
     private static boolean sheetShowing = false;
     //    private ProgressDialog progressDialog;
@@ -104,18 +117,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//            if (ACTIVE_LOADER != -1) {
-//                try {
-//                    Log.d(TAG, "onNavigationItemSelected: ACTIVE_LOADER: " + ACTIVE_LOADER);
-//                    if (getSupportLoaderManager().getLoader(ACTIVE_LOADER).isStarted()) { //still crashing here
-//                        getSupportLoaderManager().getLoader(ACTIVE_LOADER).cancelLoad();
-//                    }
-//                } catch (Exception e) {
-////                    e.printStackTrace();
-//                    FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught ACTIVE_LOADER");
-//                    FirebaseCrash.report(e);
-//                }
-//            }
             switch (item.getItemId()) {
 //                case R.id.navigation_tasks:
 //                    ACTIVE_LOADER = 1;
@@ -165,31 +166,31 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
 
     public void switchToFragment1() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment1()).commitAllowingStateLoss();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment1(), FRAGMENT_TAG_INQUIRIES).commitAllowingStateLoss();
 //        navigation.setSelectedItemId(R.id.navigation_inquiries);
     }
 
     public void switchToFragment2() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment2()).commitAllowingStateLoss();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment2(), FRAGMENT_TAG_UNLABELED).commitAllowingStateLoss();
 //        navigation.setSelectedItemId(R.id.navigation_home);
     }
 
     public void switchToFragment3() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment3()).commitAllowingStateLoss();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment3(), FRAGMENT_TAG_LEADS).commitAllowingStateLoss();
 //        navigation.setSelectedItemId(R.id.navigation_leads);
     }
 
     public void switchToFragment4() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment4()).commitAllowingStateLoss();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment4(), FRAGMENT_TAG_DEALS).commitAllowingStateLoss();
 //        navigation.setSelectedItemId(R.id.navigation_deals);
     }
 
     public void switchToFragment5() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment5()).commitAllowingStateLoss();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment5(), FRAGMENT_TAG_MORE).commitAllowingStateLoss();
 //        navigation.setSelectedItemId(R.id.navigation_more);
     }
 
@@ -280,30 +281,28 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
             }
         });
 
-//        onBackToActivity();
+        onBackToActivity();
 
     }
 
-//    private void onBackToActivity() {
-//        Bundle bundle1 = getIntent().getExtras();
-//        if (bundle1 != null) {
-//            Log.d(TAG, "onCreate: Loading Inquiries TAB");
-//            String tab = bundle1.getString(KEY_SELECTED_TAB);
-//            if (tab != null) {
-//                if (tab.equals(INQUIRIES_TAB)) {
-//                    getSupportLoaderManager().initLoader(INQU_LOADER_ID, null, NavigationBottomMainActivity.this).forceLoad();
-//                    navigation.setSelectedItemId(R.id.navigation_inquiries);
-//                }
-//            } else {
-//                Log.d(TAG, "onCreate: Bundle Not Null Loading Leads TAB");
-//                getSupportLoaderManager().initLoader(LEAD_LOADER_ID, null, NavigationBottomMainActivity.this).forceLoad();
-//                navigation.setSelectedItemId(R.id.navigation_leads);
-//            }
-//        } else
-//            Log.d(TAG, "onCreate: Bundle is Null Loading Leads TAB");
-//        getSupportLoaderManager().initLoader(LEAD_LOADER_ID, null, NavigationBottomMainActivity.this).forceLoad();
-//        navigation.setSelectedItemId(R.id.navigation_leads);
-//    }
+    private void onBackToActivity() {
+        Bundle bundle1 = getIntent().getExtras();
+        if (bundle1 != null) {
+            String tab = bundle1.getString(KEY_SELECTED_TAB);
+            if (tab != null) {
+                if (tab.equals(INQUIRIES_TAB)) {
+                    Log.d(TAG, "onCreate: Loading Inquiries TAB");
+                    navigation.setSelectedItemId(R.id.navigation_inquiries);
+                }
+            } else {
+                Log.d(TAG, "onCreate: Bundle Not Null TAB unknown Loading Leads TAB");
+                navigation.setSelectedItemId(R.id.navigation_leads);
+            }
+        } else {
+            Log.d(TAG, "onCreate: Bundle is Null Loading Leads TAB");
+            navigation.setSelectedItemId(R.id.navigation_leads);
+        }
+    }
 
 
     private void initFirst(Bundle savedInstanceState) {
@@ -525,7 +524,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-//        outState.putInt(KEY_ACTIVE_LOADER, ACTIVE_LOADER);
         outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
         super.onSaveInstanceState(outState);
     }
@@ -548,34 +546,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "onResume: called");
         registerReceiver(receiver, new IntentFilter(InitService.NOTIFICATION));
-
-        //TODO if selected tab is leads and is in loading form. triger something to get it finished
-
-//        Bundle bundle1 = getIntent().getExtras();
-//        if (bundle1 != null) {
-//            Log.d(TAG, "onCreate: Loading Inquiries TAB");
-//            String tab = bundle1.getString(KEY_SELECTED_TAB);
-//            if (tab != null) {
-//                if (tab.equals(INQUIRIES_TAB)) {
-//                    getSupportLoaderManager().initLoader(HOME_LOADER_ID, null, NavigationBottomMainActivity.this).forceLoad();
-//                    navigation.setSelectedItemId(R.id.navigation_inquiries);
-//                }
-//            } else {
-//                Log.d(TAG, "onCreate: Bundle Not Null Loading Leads TAB");
-//                getSupportLoaderManager().initLoader(4, null, NavigationBottomMainActivity.this).forceLoad();
-//                navigation.setSelectedItemId(R.id.navigation_leads);
-//            }
-//        } else {
-//            if (backPressed) {
-//                // Do nothing
-//            } else {
-//                Log.d(TAG, "onCreate: Bundle is Null Loading Leads TAB");
-//                getSupportLoaderManager().initLoader(4, null, NavigationBottomMainActivity.this).forceLoad();
-//                navigation.setSelectedItemId(R.id.navigation_leads);
-//            }
-//        }
-
-        navigation.setSelectedItemId(R.id.navigation_leads);
     }
 
     @Override
@@ -601,29 +571,20 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if (!searchView.isIconified()) {
-//            searchView.setIconified(true);
-//        } else {
-//            if (ACTIVE_LOADER != -1) {
-////            if (getSupportLoaderManager().hasRunningLoaders()) {
-//                try {
-//                    if (ACTIVE_LOADER == INQU_LOADER_ID || ACTIVE_LOADER == HOME_LOADER_ID || ACTIVE_LOADER == MORE_LOADER_ID) {
-//                        getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-//                        ACTIVE_LOADER = LEAD_LOADER_ID;
-//                        floatingActionMenuLead.showMenu(true);
-//                        navigation.setSelectedItemId(R.id.navigation_leads);
-//                    } else if (ACTIVE_LOADER == LEAD_LOADER_ID) {
-//                        super.onBackPressed();
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-////            }
-//            }
-//        }
-//    }
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+        } else {
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.llFragmentContainer);
+            if (f instanceof BlankFragment3) {
+                super.onBackPressed();
+            } else {
+                navigation.setSelectedItemId(R.id.navigation_leads);
+                floatingActionMenuLead.showMenu(true);
+            }
+        }
+    }
 
     @Subscribe
     public void onShakeEvent(ShakeEventWire.ShakeEvent event) {
@@ -639,114 +600,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
         mixpanel.track("Shaked");
     }
-
-//    @Subscribe
-//    public void onTaskAddedEventModel(TaskAddedEventModel event) {
-//        Log.d(TAG, "onTaskAddedEventModel: ");
-//        if (ACTIVE_LOADER == INQU_LOADER_ID) {
-//            getSupportLoaderManager().restartLoader(INQU_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-//            navigation.setSelectedItemId(R.id.navigation_tasks);
-//        }
-//    }
-
-//    @Subscribe
-//    public void onInquiryDeletedEventModel(InquiryDeletedEventModel event) {
-//        Log.d(TAG, "onInquiryDeletedEventModel: ");
-//        if (ACTIVE_LOADER == INQU_LOADER_ID) {
-//            getSupportLoaderManager().restartLoader(INQU_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-//            navigation.setSelectedItemId(R.id.navigation_inquiries);
-//        }
-//    }
-//
-//    @Subscribe
-//    public void onMissedCallEventModel(MissedCallEventModel event) {
-//        Log.d(TAG, "onMissedCallEventModel: ");
-//        if (ACTIVE_LOADER == INQU_LOADER_ID) {
-//            getSupportLoaderManager().restartLoader(INQU_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-//            navigation.setSelectedItemId(R.id.navigation_inquiries);
-//        }
-//    }
-//
-//    @Subscribe
-//    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
-//        Log.d(TAG, "onSaleContactAddedEventModel: ");
-//        if (ACTIVE_LOADER == HOME_LOADER_ID) {
-//            Log.d(TAG, "onSaleContactAddedEventModel: HOME_LOADER_ID");
-//            getSupportLoaderManager().restartLoader(HOME_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-//            navigation.setSelectedItemId(R.id.navigation_home);
-//        }
-//        if (ACTIVE_LOADER == LEAD_LOADER_ID) {
-//            Log.d(TAG, "onSaleContactAddedEventModel: LEAD_LOADER_ID");
-//            getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-//            navigation.setSelectedItemId(R.id.navigation_leads);
-//        }
-////        Toast.makeText(NavigationBottomMainActivity.this, "LeadContactAddedEventModel", Toast.LENGTH_SHORT).show();
-//    }
-//
-//    @Subscribe
-//    public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
-//        Log.d(TAG, "onLeadContactDeletedEventModel: ");
-//        if (ACTIVE_LOADER == HOME_LOADER_ID) {
-//            Log.d(TAG, "onLeadContactDeletedEventModel: HOME_LOADER_ID");
-//            getSupportLoaderManager().restartLoader(HOME_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-//            navigation.setSelectedItemId(R.id.navigation_home);
-//        }
-//        if (ACTIVE_LOADER == LEAD_LOADER_ID) {
-//            Log.d(TAG, "onLeadContactDeletedEventModel: LEAD_LOADER_ID");
-//            getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-//            navigation.setSelectedItemId(R.id.navigation_leads);
-//        }
-//        if (ACTIVE_LOADER == MORE_LOADER_ID) {
-//            Log.d(TAG, "onLeadContactDeletedEventModel: MORE_LOADER_ID");
-//            getSupportLoaderManager().restartLoader(MORE_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-//            navigation.setSelectedItemId(R.id.navigation_more);
-//        }
-//    }
-
-
-//    @Override
-//    public Loader<List<Object>> onCreateLoader(int id, Bundle args) {
-//        list.clear();
-//        LoadingItem loadingItem = new LoadingItem();
-//        loadingItem.text = "Loading items...";
-//        list.add(loadingItem);
-//        adapter.notifyDataSetChanged();
-//
-//        switch (id) {
-////            case 1:
-////                return new TasksListLoader(NavigationBottomMainActivity.this);
-//            case INQU_LOADER_ID:
-//                return new InquiryLoader(NavigationBottomMainActivity.this);
-//            case HOME_LOADER_ID:
-//                return new HomeLoader(NavigationBottomMainActivity.this);
-//            case LEAD_LOADER_ID:
-//                return new LeadsLoader(NavigationBottomMainActivity.this, args);
-//            case MORE_LOADER_ID:
-//                return new MoreLoader(NavigationBottomMainActivity.this);
-////            case FILTERCONTACTS_LOADER_ID:
-////                return new FilteredContactsLoader(NavigationBottomMainActivity.this);
-//            default:
-//                return null;
-//        }
-//    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<List<Object>> loader, List<Object> data) {
-//        if (data != null) {
-//            if (!data.isEmpty()) {
-//                list.clear();
-//                list.addAll(data);
-//                adapter.notifyDataSetChanged();
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<List<Object>> loader) {
-//        list.clear();
-//        list.addAll(new ArrayList<Object>());
-//        adapter.notifyDataSetChanged();
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -815,9 +668,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
         Object[] temp = new Object[]{0, "default", R.drawable.inquiry_count_round, "", "", "", ""};
 
         MatrixCursor cursor = new MatrixCursor(columns);
-
-//        matrixCursor.addRow(new Object[] { value1, value2 });
-
         int count = 0;
 
         // From LSContacts where number = query
@@ -906,7 +756,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
         for (LSInquiry inquiry : inquiriesByNumber) {
             temp[0] = count;
             temp[1] = inquiry.getContactNumber();
-            temp[2] = R.drawable.inquiry_count_round;
+            temp[2] = R.drawable.ic_phone_missed_red_24dp;
             temp[3] = ClassManager.INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
             temp[4] = null;
             temp[5] = inquiry.getContactNumber();
@@ -915,100 +765,20 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
             count++;
         }
 
-//        searchView.setSuggestionsAdapter(new SearchSuggestionAdapter(this, cursor, list));
+        myQuery = "SELECT * FROM LS_DEAL where name like '%" + query + "%' limit 5";
+        Collection<LSDeal> dealsByName = LSDeal.findWithQuery(LSDeal.class, myQuery);
+        for(LSDeal oneDeal : dealsByName){
+            temp[0] = count;
+            temp[1] = oneDeal.getName();
+            temp[2] = R.drawable.ic_monetization_on_48dp;
+            temp[3] = ClassManager.DEAL_DETAILS_TAB_ACTIVITY;
+            temp[4] = oneDeal.getId();
+            temp[6] = "type_deal";
+            cursor.addRow(temp);
+            count++;
+        }
+        searchView.setSuggestionsAdapter(new SearchSuggestionAdapter(this, cursor));
     }
-
-//    @Override
-//    public void onChipClick(String chip) {
-//        switch (chip) {
-//            case "All":
-//                bundle.putString("whichLeads", "All");
-//                getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-////                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case "InProgress":
-//                bundle.putString("whichLeads", "InProgress");
-//                getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-////                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case "Won":
-//                bundle.putString("whichLeads", "Won");
-//                getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-////                Toast.makeText(this, "WonListened", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case "Lost":
-//                bundle.putString("whichLeads", "Lost");
-//                getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-////                Toast.makeText(this, "InProgressListened", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case "InActive":
-//                bundle.putString("whichLeads", "InActive");
-//                getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-////                Toast.makeText(this, "InActiveListened", Toast.LENGTH_SHORT).show();
-//                break;
-//            default:
-//        }
-//    }
-
-//    public void openContactBottomSheetCallback(Long contact_id) {
-//        contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragment.newInstance(contact_id, 0);
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
-//        sheetShowing = true;
-//    }
-
-//    @Override
-//    public void closeContactBottomSheetCallback() {
-//        if (sheetShowing) {
-//            if (contactCallDetailsBottomSheetFragment != null) {
-//                Log.d(TAG, "closeContactBottomSheetCallback: is NOT NULL");
-//                try {
-//                    if (Build.VERSION.SDK_INT > 21) {
-//                        contactCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
-//                    } else {
-//                        contactCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
-//                    }
-//                } catch (IllegalStateException ignored) {
-//                    FirebaseCrash.logcat(Log.ERROR, TAG, "IllegalStateException caught");
-//                    FirebaseCrash.report(new Exception("closeContactBottomSheetCallback dismiss() called after onSaveInstanceState"));
-//                }
-//            } else {
-//                Log.d(TAG, "closeContactBottomSheetCallback: is NULL");
-//            }
-//        }
-//    }
-//
-//    public void openInquiryBottomSheetCallback(String number) {
-//        inquiryCallDetailsBottomSheetFragment = InquiryCallDetailsBottomSheetFragment.newInstance(number, 0);
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        inquiryCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
-//        sheetShowing = true;
-//    }
-//
-//    @Override
-//    public void closeInquiryBottomSheetCallback() {
-//        if (sheetShowing) {
-//            if (inquiryCallDetailsBottomSheetFragment != null) {
-//                Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NOT NULL");
-//                try {
-//                    if (Build.VERSION.SDK_INT > 21) {
-//                        inquiryCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
-//                    } else {
-//                        inquiryCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
-//                    }
-//                } catch (IllegalStateException ignored) {
-//                    FirebaseCrash.logcat(Log.ERROR, TAG, "IllegalStateException caught");
-//                    FirebaseCrash.report(new Exception("closeInquiryBottomSheetCallback dismiss() called after onSaveInstanceState"));
-//                }
-//            } else {
-//                Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NULL");
-//            }
-//        }
-//    }
 
     private void handleResult(Bundle bundle) {
         if (bundle != null) {
@@ -1060,6 +830,62 @@ public class NavigationBottomMainActivity extends AppCompatActivity {
 //                finish();
 
 //                Toast.makeText(NavigationBottomMainActivity.this, "Init failed", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public void openContactBottomSheetCallback(Long contact_id) {
+        contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragment.newInstance(contact_id, 0);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
+        sheetShowing = true;
+    }
+
+    @Override
+    public void closeContactBottomSheetCallback() {
+        if (sheetShowing) {
+            if (contactCallDetailsBottomSheetFragment != null) {
+                Log.d(TAG, "closeContactBottomSheetCallback: is NOT NULL");
+                try {
+                    if (Build.VERSION.SDK_INT > 21) {
+                        contactCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+                    } else {
+                        contactCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
+                    }
+                } catch (IllegalStateException ignored) {
+                    FirebaseCrash.logcat(Log.ERROR, TAG, "IllegalStateException caught");
+                    FirebaseCrash.report(new Exception("closeContactBottomSheetCallback dismiss() called after onSaveInstanceState"));
+                }
+            } else {
+                Log.d(TAG, "closeContactBottomSheetCallback: is NULL");
+            }
+        }
+    }
+
+    public void openInquiryBottomSheetCallback(String number) {
+        inquiryCallDetailsBottomSheetFragment = InquiryCallDetailsBottomSheetFragment.newInstance(number, 0);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        inquiryCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
+        sheetShowing = true;
+    }
+
+    @Override
+    public void closeInquiryBottomSheetCallback() {
+        if (sheetShowing) {
+            if (inquiryCallDetailsBottomSheetFragment != null) {
+                Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NOT NULL");
+                try {
+                    if (Build.VERSION.SDK_INT > 21) {
+                        inquiryCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+                    } else {
+                        inquiryCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
+                    }
+                } catch (IllegalStateException ignored) {
+                    FirebaseCrash.logcat(Log.ERROR, TAG, "IllegalStateException caught");
+                    FirebaseCrash.report(new Exception("closeInquiryBottomSheetCallback dismiss() called after onSaveInstanceState"));
+                }
+            } else {
+                Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NULL");
             }
         }
     }

@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.DealDetailsFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
@@ -98,7 +99,7 @@ public class DealDetailsTabActivity extends AppCompatActivity {
             }
         });
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add_note);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add_deal);
         floatingActionButton.hide();
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,9 +164,7 @@ public class DealDetailsTabActivity extends AppCompatActivity {
 //                        Snackbar.make(toolbar, "Lead deleted!", Snackbar.LENGTH_SHORT).show();
                         dialog.dismiss();
                         finish();
-//                        InquiryDeletedEventModel mCallEvent = new InquiryDeletedEventModel();
-//                        TinyBus bus = TinyBus.from(DealDetailsTabActivity.this);
-//                        bus.post(mCallEvent);
+                        TinyBus.from(DealDetailsTabActivity.this.getApplicationContext()).post(new DealAddedEventModel());
                     }
                 });
                 alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {

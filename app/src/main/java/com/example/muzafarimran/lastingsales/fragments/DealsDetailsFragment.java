@@ -230,7 +230,7 @@ public class DealsDetailsFragment extends TabFragment {
 
                         }
                     } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())); //TODO Exception java.lang.NullPointerException: SGH-T889 18 sep
+                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
                         Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
 
                         String currentValue = s.getSelectedItem().toString();
@@ -318,7 +318,7 @@ public class DealsDetailsFragment extends TabFragment {
 
                         }
                     } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())); //TODO Exception java.lang.NullPointerException: SGH-T889 18 sep
+                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
                         Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
 
                         String currentValue = s.getSelectedItem().toString();
@@ -688,7 +688,7 @@ public class DealsDetailsFragment extends TabFragment {
 
                 } else {
                     Log.d(TAG, "dynamicColumns: getVersion = 0");
-                    dynamicColumnBuilderVersion1.parseJson(mContact.getDynamic()); //TODO Crash here
+                    dynamicColumnBuilderVersion1.parseJson(mContact.getDynamic());
 //                    Log.d(TAG, "dynamicColumnsJSONN: " + mContact.getDynamic());
                     ArrayList<DynamicColumnBuilderVersion1.Column> dynColumns = dynamicColumnBuilderVersion1.getColumns();
                     for (DynamicColumnBuilderVersion1.Column oneDynamicColumns : dynColumns) {

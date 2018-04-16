@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 /**
@@ -19,7 +20,7 @@ import com.tokenautocomplete.TokenCompleteTextView;
  * Created on 9/12/13.
  * @author mgod
  */
-public class ContactsCompletionView extends TokenCompleteTextView<Person> {
+public class ContactsCompletionView extends TokenCompleteTextView<LSContact> {
 
     InputConnection testAccessibleInputConnection;
 
@@ -36,22 +37,23 @@ public class ContactsCompletionView extends TokenCompleteTextView<Person> {
     }
 
     @Override
-    protected View getViewForObject(Person person) {
+    protected View getViewForObject(LSContact lsContact) {
         LayoutInflater l = (LayoutInflater)getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         TokenTextView token = (TokenTextView) l.inflate(R.layout.contact_token, (ViewGroup) getParent(), false);
-        token.setText(person.getEmail());
+        token.setText(lsContact.getContactName());
         return token;
     }
 
     @Override
-    protected Person defaultObject(String completionText) {
-        //Stupid simple example of guessing if we have an email or not
-        int index = completionText.indexOf('@');
-        if (index == -1) {
-            return new Person(completionText, completionText.replace(" ", "") + "@example.com");
-        } else {
-            return new Person(completionText.substring(0, index), completionText);
-        }
+    protected LSContact defaultObject(String completionText) {
+//        //Stupid simple example of guessing if we have an email or not
+//        int index = completionText.indexOf('@');
+//        if (index == -1) {
+//            return new LSContact(completionText, completionText.replace(" ", "") + "@example.com");
+//        } else {
+//            return new LSContact(completionText.substring(0, index), completionText);
+//        }
+        return null;
     }
 
     @Override

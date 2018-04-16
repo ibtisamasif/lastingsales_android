@@ -8,485 +8,413 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-        <ImageView
-            android:id="@+id/number_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:tint="@color/colorPrimary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_account_circle_white"
-            tools:layout_conversion_absoluteHeight="30dp"
-            tools:layout_conversion_absoluteWidth="30dp"
-            android:layout_marginLeft="16dp" />
-
-        <TextView
-            android:id="@+id/number_text"
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Number"
-            app:layout_constraintStart_toEndOf="@+id/number_icon"
-            app:layout_constraintTop_toTopOf="@+id/number_icon"
-            tools:layout_conversion_absoluteHeight="16dp"
-            tools:layout_conversion_absoluteWidth="43dp"
-            android:layout_marginLeft="8dp" />
-
-        <TextView
-            android:id="@+id/tvNumber"
-            style="@style/Base.TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <include
+            android:id="@+id/include"
+            layout="@layout/card_contact"
             android:layout_marginEnd="8dp"
-            android:gravity="center|right"
-            android:text="  "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/number_text"
-            tools:layout_conversion_absoluteHeight="40dp"
-            tools:layout_conversion_absoluteWidth="196dp"
-            android:layout_marginRight="8dp" />
-
-
-        <ImageView
-            android:id="@+id/address_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:tint="@color/colorPrimary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/number_icon"
-            app:srcCompat="@drawable/ic_location_on_24dp"
-            tools:layout_conversion_absoluteHeight="30dp"
-            tools:layout_conversion_absoluteWidth="30dp"
-            android:layout_marginLeft="16dp" />
-
-        <TextView
-            android:id="@+id/address_text"
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Address"
-            app:layout_constraintStart_toEndOf="@+id/address_icon"
-            app:layout_constraintTop_toTopOf="@+id/address_icon"
-            tools:layout_conversion_absoluteHeight="16dp"
-            tools:layout_conversion_absoluteWidth="45dp"
-            android:layout_marginLeft="8dp" />
-
-        <TextView
-            android:id="@+id/tvAddress"
-            style="@style/Base.TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:gravity="center|right"
-            android:text="  "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/address_text"
-            tools:layout_conversion_absoluteHeight="40dp"
-            tools:layout_conversion_absoluteWidth="194dp" />
-
-
-        <ImageView
-            android:id="@+id/status_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:tint="@color/colorPrimary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/address_icon"
-            app:srcCompat="@drawable/ic_filter_list_24dp"
-            tools:layout_conversion_absoluteHeight="30dp"
-            tools:layout_conversion_absoluteWidth="30dp"
-            android:layout_marginLeft="16dp" />
-
-
-        <TextView
-            android:id="@+id/status_label"
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Status"
-            app:layout_constraintStart_toEndOf="@+id/status_icon"
-            app:layout_constraintTop_toTopOf="@+id/status_icon"
-            tools:layout_conversion_absoluteHeight="16dp"
-            tools:layout_conversion_absoluteWidth="37dp"
-            android:layout_marginLeft="8dp" />
-
-
-        <Spinner
-            android:id="@+id/statusSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:gravity="center"
-            android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/status_label"
-            tools:layout_conversion_absoluteHeight="24dp"
-            tools:layout_conversion_absoluteWidth="131dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!--<ImageView-->
+        <!--android:id="@+id/status_icon"-->
+        <!--android:layout_width="24dp"-->
+        <!--android:layout_height="24dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:tint="@color/colorPrimary"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/address_icon"-->
+        <!--app:srcCompat="@drawable/ic_filter_list_24dp"-->
+        <!--tools:layout_conversion_absoluteHeight="30dp"-->
+        <!--tools:layout_conversion_absoluteWidth="30dp"-->
+        <!--android:layout_marginLeft="16dp" />-->
+
+
+        <!--<TextView-->
+        <!--android:id="@+id/status_label"-->
+        <!--style="@style/Base.TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:text="Status"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/status_icon"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/status_icon"-->
+        <!--tools:layout_conversion_absoluteHeight="16dp"-->
+        <!--tools:layout_conversion_absoluteWidth="37dp"-->
+        <!--android:layout_marginLeft="8dp" />-->
+
+
+        <!--<Spinner-->
+        <!--android:id="@+id/statusSpinner"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:gravity="center"-->
+        <!--android:spinnerMode="dropdown"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/status_label"-->
+        <!--tools:layout_conversion_absoluteHeight="24dp"-->
+        <!--tools:layout_conversion_absoluteWidth="131dp" />-->
 
 
         <!--<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-            <!--xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
-            <!--xmlns:fresco="http://schemas.android.com/apk/res-auto"-->
-            <!--xmlns:tools="http://schemas.android.com/tools"-->
-            <!--android:id="@+id/cv_social_item"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:clickable="true"-->
-            <!--android:focusable="true"-->
-            <!--android:foreground="?android:attr/selectableItemBackground"-->
-            <!--android:visibility="visible"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/lead_icon"-->
-            <!--card_view:cardCornerRadius="3dp"-->
-            <!--card_view:cardElevation="2dp"-->
-            <!--card_view:cardUseCompatPadding="true">-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+        <!--xmlns:fresco="http://schemas.android.com/apk/res-auto"-->
+        <!--xmlns:tools="http://schemas.android.com/tools"-->
+        <!--android:id="@+id/cv_social_item"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:clickable="true"-->
+        <!--android:focusable="true"-->
+        <!--android:foreground="?android:attr/selectableItemBackground"-->
+        <!--android:visibility="visible"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/lead_icon"-->
+        <!--card_view:cardCornerRadius="3dp"-->
+        <!--card_view:cardElevation="2dp"-->
+        <!--card_view:cardUseCompatPadding="true">-->
 
-            <!--<android.support.constraint.ConstraintLayout-->
-                <!--android:id="@+id/cl"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--app:layout_constraintEnd_toEndOf="parent"-->
-                <!--app:layout_constraintStart_toStartOf="parent"-->
-                <!--app:layout_constraintTop_toTopOf="parent">-->
+        <!--<android.support.constraint.ConstraintLayout-->
+        <!--android:id="@+id/cl"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent">-->
 
 
-                <!--<android.support.constraint.ConstraintLayout-->
-                    <!--android:id="@+id/constraintLayout"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginEnd="8dp"-->
-                    <!--android:layout_marginStart="8dp"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--app:layout_constraintStart_toStartOf="parent">-->
+        <!--<android.support.constraint.ConstraintLayout-->
+        <!--android:id="@+id/constraintLayout"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent">-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvNameFromProfile"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:text=""-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/tvNameFromProfileTitle"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/tvNameFromProfileTitle" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvNameFromProfile"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:text=""-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/tvNameFromProfileTitle"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/tvNameFromProfileTitle" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvNameFromProfileTitle"-->
-                        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:text="Name: "-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/tvNameFromProfile"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toTopOf="parent" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvNameFromProfileTitle"-->
+        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="Name: "-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/tvNameFromProfile"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvCityFromProfileTitle"-->
-                        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:text="City: "-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/tvCityFromProfile"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/tvNameFromProfile" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvCityFromProfileTitle"-->
+        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="City: "-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/tvCityFromProfile"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/tvNameFromProfile" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvCityFromProfile"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:text=""-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/tvCityFromProfileTitle"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/tvCityFromProfileTitle" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvCityFromProfile"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:text=""-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/tvCityFromProfileTitle"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/tvCityFromProfileTitle" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvCountryFromProfileTitle"-->
-                        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:text="Counrty: "-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/tvCountryFromProfile"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/tvCityFromProfile" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvCountryFromProfileTitle"-->
+        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="Counrty: "-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/tvCountryFromProfile"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/tvCityFromProfile" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvCountryFromProfile"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:text=""-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/tvCountryFromProfileTitle"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/tvCountryFromProfileTitle" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvCountryFromProfile"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:text=""-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/tvCountryFromProfileTitle"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/tvCountryFromProfileTitle" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvWorkFromProfileTitle"-->
-                        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:text="Work: "-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/tvWorkFromProfile"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/tvCountryFromProfile" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvWorkFromProfileTitle"-->
+        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="Work: "-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/tvWorkFromProfile"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/tvCountryFromProfile" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvWorkFromProfile"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:text=""-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/tvWorkFromProfileTitle"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/tvWorkFromProfileTitle" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvWorkFromProfile"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:text=""-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/tvWorkFromProfileTitle"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/tvWorkFromProfileTitle" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvCompanyFromProfileTitle"-->
-                        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:text="Company: "-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/tvCompanyFromProfile"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/tvWorkFromProfile" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvCompanyFromProfileTitle"-->
+        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="Company: "-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/tvCompanyFromProfile"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/tvWorkFromProfile" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvCompanyFromProfile"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:text=""-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/tvCompanyFromProfileTitle"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/tvCompanyFromProfileTitle" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvCompanyFromProfile"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:text=""-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/tvCompanyFromProfileTitle"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/tvCompanyFromProfileTitle" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvWhatsappFromProfileTitle"-->
-                        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:text="Whatsapp: "-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/tvWhatsappFromProfile"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/tvCompanyFromProfile" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvWhatsappFromProfileTitle"-->
+        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="Whatsapp: "-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/tvWhatsappFromProfile"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/tvCompanyFromProfile" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvWhatsappFromProfile"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:text=""-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/tvWhatsappFromProfileTitle"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/tvWhatsappFromProfileTitle" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvWhatsappFromProfile"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:text=""-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/tvWhatsappFromProfileTitle"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/tvWhatsappFromProfileTitle" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvTweeterFromProfileTitle"-->
-                        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:text="Twitter: "-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/tvTweeterFromProfile"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/tvWhatsappFromProfile" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvTweeterFromProfileTitle"-->
+        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="Twitter: "-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/tvTweeterFromProfile"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/tvWhatsappFromProfile" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvTweeterFromProfile"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_below="@+id/llWhatsappFromProfile"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:autoLink="web"-->
-                        <!--android:linksClickable="true"-->
-                        <!--android:text=""-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/tvTweeterFromProfileTitle"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/tvTweeterFromProfileTitle" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvTweeterFromProfile"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/llWhatsappFromProfile"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:autoLink="web"-->
+        <!--android:linksClickable="true"-->
+        <!--android:text=""-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/tvTweeterFromProfileTitle"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/tvTweeterFromProfileTitle" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvLinkdnFromProfileTitle"-->
-                        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:text="LinkdIn: "-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/tvLinkdnFromProfile"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/tvTweeterFromProfile" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvLinkdnFromProfileTitle"-->
+        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="LinkdIn: "-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/tvLinkdnFromProfile"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/tvTweeterFromProfile" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvLinkdnFromProfile"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:autoLink="web"-->
-                        <!--android:linksClickable="true"-->
-                        <!--android:text=""-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/tvLinkdnFromProfileTitle"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/tvLinkdnFromProfileTitle" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvLinkdnFromProfile"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:autoLink="web"-->
+        <!--android:linksClickable="true"-->
+        <!--android:text=""-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/tvLinkdnFromProfileTitle"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/tvLinkdnFromProfileTitle" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvFbFromProfileTitle"-->
-                        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:text="Facebook: "-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/tvFbFromProfile"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/tvLinkdnFromProfile" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvFbFromProfileTitle"-->
+        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="Facebook: "-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/tvFbFromProfile"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/tvLinkdnFromProfile" />-->
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tvFbFromProfile"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginEnd="8dp"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--android:autoLink="web"-->
-                        <!--android:linksClickable="true"-->
-                        <!--android:text=""-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/tvFbFromProfileTitle"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/tvFbFromProfileTitle" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/tvFbFromProfile"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:autoLink="web"-->
+        <!--android:linksClickable="true"-->
+        <!--android:text=""-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/tvFbFromProfileTitle"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/tvFbFromProfileTitle" />-->
 
-                    <!--<LinearLayout-->
-                        <!--android:id="@+id/space"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginBottom="16dp"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:orientation="horizontal"-->
-                        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintHorizontal_bias="0.498"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/tvFbFromProfile" />-->
-                <!--</android.support.constraint.ConstraintLayout>-->
+        <!--<LinearLayout-->
+        <!--android:id="@+id/space"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="16dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.498"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/tvFbFromProfile" />-->
+        <!--</android.support.constraint.ConstraintLayout>-->
 
-                <!--<LinearLayout-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="1dp"-->
-                    <!--android:layout_alignParentTop="true"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--android:background="@color/md_grey_300"-->
-                    <!--android:orientation="vertical"-->
-                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--app:layout_constraintHorizontal_bias="0.0"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--app:layout_constraintVertical_bias="1.0" />-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:background="@color/md_grey_300"-->
+        <!--android:orientation="vertical"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintVertical_bias="1.0" />-->
 
-            <!--</android.support.constraint.ConstraintLayout>-->
+        <!--</android.support.constraint.ConstraintLayout>-->
 
         <!--</android.support.v7.widget.CardView>-->
 
         <!--<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-            <!--xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
-            <!--android:id="@+id/cv_connection_item"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="@dimen/Ls.Dimen.CardHorizontalMargin"-->
-            <!--android:layout_marginStart="@dimen/Ls.Dimen.CardHorizontalMargin"-->
-            <!--android:layout_marginTop="@dimen/Ls.Dimen.CardVerticalMargin"-->
-            <!--android:clickable="true"-->
-            <!--android:focusable="true"-->
-            <!--android:foreground="?android:attr/selectableItemBackground"-->
-            <!--android:visibility="visible"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/cv_social_item"-->
-            <!--card_view:cardCornerRadius="3dp"-->
-            <!--card_view:cardElevation="2dp"-->
-            <!--card_view:cardUseCompatPadding="true">-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/cv_connection_item"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="@dimen/Ls.Dimen.CardHorizontalMargin"-->
+        <!--android:layout_marginStart="@dimen/Ls.Dimen.CardHorizontalMargin"-->
+        <!--android:layout_marginTop="@dimen/Ls.Dimen.CardVerticalMargin"-->
+        <!--android:clickable="true"-->
+        <!--android:focusable="true"-->
+        <!--android:foreground="?android:attr/selectableItemBackground"-->
+        <!--android:visibility="visible"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/cv_social_item"-->
+        <!--card_view:cardCornerRadius="3dp"-->
+        <!--card_view:cardElevation="2dp"-->
+        <!--card_view:cardUseCompatPadding="true">-->
 
-            <!--<android.support.constraint.ConstraintLayout-->
-                <!--android:id="@+id/cl_connection"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--app:layout_constraintEnd_toEndOf="parent"-->
-                <!--app:layout_constraintStart_toStartOf="parent"-->
-                <!--app:layout_constraintTop_toTopOf="parent">-->
+        <!--<android.support.constraint.ConstraintLayout-->
+        <!--android:id="@+id/cl_connection"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent">-->
 
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/llDynamicConnectionsContainer"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginEnd="8dp"-->
-                    <!--android:layout_marginStart="8dp"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--android:gravity="center"-->
-                    <!--android:orientation="vertical"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--app:layout_constraintTop_toTopOf="parent" />-->
+        <!--<LinearLayout-->
+        <!--android:id="@+id/llDynamicConnectionsContainer"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="vertical"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-                <!--<Space-->
-                    <!--android:id="@+id/space2"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="8dp"-->
-                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--app:layout_constraintTop_toBottomOf="@+id/llDynamicConnectionsContainer" />-->
+        <!--<Space-->
+        <!--android:id="@+id/space2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/llDynamicConnectionsContainer" />-->
 
-            <!--</android.support.constraint.ConstraintLayout>-->
+        <!--</android.support.constraint.ConstraintLayout>-->
 
         <!--</android.support.v7.widget.CardView>-->
 
@@ -499,7 +427,7 @@
             android:layout_marginTop="16dp"
             android:tint="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/status_icon"
+            app:layout_constraintTop_toBottomOf="@+id/include"
             app:srcCompat="@drawable/ic_filter_list_24dp"
             tools:layout_conversion_absoluteHeight="30dp"
             tools:layout_conversion_absoluteWidth="30dp" />
@@ -528,8 +456,191 @@
             tools:layout_conversion_absoluteHeight="24dp"
             tools:layout_conversion_absoluteWidth="131dp" />
 
+        <ImageView
+            android:id="@+id/value_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:tint="@color/colorPrimary"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stage_icon"
+            app:srcCompat="@drawable/ic_attach_money_24dp"
+            tools:layout_conversion_absoluteHeight="30dp"
+            tools:layout_conversion_absoluteWidth="30dp" />
 
+        <TextView
+            android:id="@+id/value_label"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Value"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/value_icon"
+            app:layout_constraintTop_toTopOf="@+id/value_icon"
+            tools:layout_conversion_absoluteHeight="16dp"
+            tools:layout_conversion_absoluteWidth="37dp" />
 
+        <EditText
+            android:id="@+id/valueEditText"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/value_label"
+            tools:layout_conversion_absoluteHeight="24dp"
+            tools:layout_conversion_absoluteWidth="131dp" />
+
+        <ImageView
+            android:id="@+id/currency_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:tint="@color/colorPrimary"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/value_icon"
+            app:srcCompat="@drawable/ic_monetization_on_24dp"
+            tools:layout_conversion_absoluteHeight="30dp"
+            tools:layout_conversion_absoluteWidth="30dp" />
+
+        <TextView
+            android:id="@+id/currency_label"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Currency"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/currency_icon"
+            app:layout_constraintTop_toTopOf="@+id/currency_icon"
+            tools:layout_conversion_absoluteHeight="16dp"
+            tools:layout_conversion_absoluteWidth="37dp" />
+
+        <TextView
+            android:id="@+id/currencyTextView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/currency_label"
+            tools:layout_conversion_absoluteHeight="24dp"
+            tools:layout_conversion_absoluteWidth="131dp" />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/success_rate_icon"-->
+            <!--android:layout_width="24dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:layout_marginTop="24dp"-->
+            <!--android:tint="@color/colorPrimary"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/currency_icon"-->
+            <!--app:srcCompat="@drawable/ic_thumb_up_24dp"-->
+            <!--tools:layout_conversion_absoluteHeight="30dp"-->
+            <!--tools:layout_conversion_absoluteWidth="30dp" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/success_rate_label"-->
+            <!--style="@style/Base.TextAppearance.AppCompat.Subhead"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:text="Success rate"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/success_rate_icon"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/success_rate_icon"-->
+            <!--tools:layout_conversion_absoluteHeight="16dp"-->
+            <!--tools:layout_conversion_absoluteWidth="37dp" />-->
+
+        <!--<EditText-->
+            <!--android:id="@+id/success_rateEditText"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:gravity="center"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/success_rate_label"-->
+            <!--tools:layout_conversion_absoluteHeight="24dp"-->
+            <!--tools:layout_conversion_absoluteWidth="131dp" />-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/ETA_icon"-->
+            <!--android:layout_width="24dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:layout_marginTop="24dp"-->
+            <!--android:tint="@color/colorPrimary"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/success_rate_icon"-->
+            <!--app:srcCompat="@drawable/ic_access_time_24dp"-->
+            <!--tools:layout_conversion_absoluteHeight="30dp"-->
+            <!--tools:layout_conversion_absoluteWidth="30dp" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/ETA_label"-->
+            <!--style="@style/Base.TextAppearance.AppCompat.Subhead"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:text="ETA"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/ETA_icon"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/ETA_icon"-->
+            <!--tools:layout_conversion_absoluteHeight="16dp"-->
+            <!--tools:layout_conversion_absoluteWidth="37dp" />-->
+
+        <!--<EditText-->
+            <!--android:id="@+id/success_ETAEditText"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:gravity="center"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/ETA_label"-->
+            <!--tools:layout_conversion_absoluteHeight="24dp"-->
+            <!--tools:layout_conversion_absoluteWidth="131dp" />-->
+
+        <ImageView
+            android:id="@+id/created_ago_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:tint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/currency_icon"
+            app:srcCompat="@drawable/ic_access_time_24dp"
+            tools:layout_conversion_absoluteHeight="30dp"
+            tools:layout_conversion_absoluteWidth="30dp" />
+
+        <TextView
+            android:id="@+id/created_ago_label"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Created at"
+            app:layout_constraintStart_toEndOf="@+id/created_ago_icon"
+            app:layout_constraintTop_toTopOf="@+id/created_ago_icon"
+            tools:layout_conversion_absoluteHeight="16dp"
+            tools:layout_conversion_absoluteWidth="37dp" />
+
+        <TextView
+            android:id="@+id/created_agoTextView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/created_ago_label"
+            tools:layout_conversion_absoluteHeight="24dp"
+            tools:layout_conversion_absoluteWidth="131dp" />
 
         <ImageView
             android:id="@+id/private_icon"
@@ -539,8 +650,8 @@
             android:layout_marginTop="16dp"
             android:tint="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stage_icon"
-            app:srcCompat="@drawable/ic_filter_list_24dp"
+            app:layout_constraintTop_toBottomOf="@+id/created_ago_icon"
+            app:srcCompat="@drawable/ic_visibility_black_24dp"
             tools:layout_conversion_absoluteHeight="30dp"
             tools:layout_conversion_absoluteWidth="30dp" />
 
@@ -550,7 +661,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Is Private?"
+            android:text="Visibility"
             app:layout_constraintStart_toEndOf="@+id/private_icon"
             app:layout_constraintTop_toTopOf="@+id/private_icon"
             tools:layout_conversion_absoluteHeight="16dp"
@@ -576,6 +687,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/deal_details"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/isPrivateSpinner"
             tools:layout_conversion_absoluteHeight="21dp"
@@ -609,23 +721,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6"></LinearLayout>
 
-        <Button
-            android:id="@+id/bSave"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:tag="personal_radio"
-            android:text="Save"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contactDetailsDropDownLayoutinner"
-            tools:layout_conversion_absoluteHeight="40dp"
-            tools:layout_conversion_absoluteWidth="160dp" />
+        <!--<Button-->
+        <!--android:id="@+id/bSave"-->
+        <!--style="@style/Widget.AppCompat.Button.Colored"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="32dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="32dp"-->
+        <!--android:tag="personal_radio"-->
+        <!--android:text="Save"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/contactDetailsDropDownLayoutinner"-->
+        <!--tools:layout_conversion_absoluteHeight="40dp"-->
+        <!--tools:layout_conversion_absoluteWidth="160dp" />-->
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

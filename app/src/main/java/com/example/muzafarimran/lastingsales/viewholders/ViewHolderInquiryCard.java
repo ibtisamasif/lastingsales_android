@@ -16,6 +16,7 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -153,8 +154,8 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         this.cv_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
-//                navigationBottomMainActivity.openInquiryBottomSheetCallback((String) view.getTag());
+                NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) mContext;
+                navigationBottomMainActivity.openInquiryBottomSheetCallback((String) view.getTag());
             }
         });
 

@@ -1,9 +1,14 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
+import android.database.sqlite.SQLiteException;
+
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ibtisam on 3/29/2018.
@@ -12,52 +17,42 @@ import java.util.Date;
 public class LSStage extends SugarRecord {
 
     private String serverId;
-    private String workflowId;
+    private String workflowId; //TODO workflowServerId;
     private String companyId;
     private String name;
     private String description;
     private String createdBy;
     private Date updatedAt;
     private String nextTo;
+    private String position;
     private LSWorkflow workflow;
 
     public LSStage() {
     }
 
-    public static LSStage getFirstStage() {
-        ArrayList<LSStage> list = null;
+    public static LSStage getStageByWorkflowServerIdAndPosition(String workflowServerId, String position) {// TODO CHANGE IT
+        List<LSStage> list = null;
         try {
-            list = (ArrayList<LSStage>) LSStage.find(LSStage.class, "next_to = ? ", "0");
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-        if (list.size() > 0) {
-            return list.get(0);
-        } else {
+            list = Select.from(LSStage.class)
+                    .where(Condition.prop("workflow_id").eq(workflowServerId),
+                            Condition.prop("position").eq(position))
+                    .list();
+            if (list.size() > 0) {
+                return list.get(0);
+            } else {
+                return null;
+            }
+        } catch (SQLiteException | IllegalArgumentException e) {
             return null;
         }
     }
 
-    public static ArrayList <LSStage> getAllStagesInSequence() {
+    public static ArrayList<LSStage> getAllStagesInPositionSequenceByWorkflowServerId(String id) {
         ArrayList<LSStage> list = null;
         try {
-            list = (ArrayList<LSStage>) LSStage.listAll(LSStage.class);
+            list = (ArrayList<LSStage>) LSStage.findWithQuery(LSStage.class, "Select * from LS_STAGE where workflow_id = '" + id + "' order by position ASC");
             return list;
         } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
-
-    public static LSStage getStageByName(String name) {
-        ArrayList<LSStage> list = null;
-        try {
-            list = (ArrayList<LSStage>) LSStage.find(LSStage.class, "name = ? ", name);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-        if (list.size() > 0) {
-            return list.get(0);
-        } else {
             return null;
         }
     }
@@ -146,6 +141,14 @@ public class LSStage extends SugarRecord {
 
     public void setWorkflow(LSWorkflow workflow) {
         this.workflow = workflow;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     @Override

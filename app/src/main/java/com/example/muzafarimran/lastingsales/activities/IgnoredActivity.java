@@ -87,7 +87,7 @@ public class IgnoredActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
+    public void onContactAddedEventModel(LeadContactAddedEventModel event) {
         Collection<LSContact> contacts;
         contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
         list.clear();
@@ -97,7 +97,7 @@ public class IgnoredActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
+    public void onContactDeletedEventModel(ContactDeletedEventModel event) {
         Collection<LSContact> contacts;
         contacts = LSContact.getContactsByType(LSContact.CONTACT_TYPE_IGNORED);
         list.clear();

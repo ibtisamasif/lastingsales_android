@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
+import com.example.muzafarimran.lastingsales.activities.DealDetailsTabActivity;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.app.ClassManager;
-
-import java.util.List;
 
 /**
  * Created by ibtisam on 11/20/2017.
@@ -26,7 +26,6 @@ import java.util.List;
 public class SearchSuggestionAdapter extends CursorAdapter {
 
     private static final String TAG = "SearchSuggestionAdapter";
-    private List<Object> items;
 
     private ConstraintLayout cl;
 
@@ -34,19 +33,9 @@ public class SearchSuggestionAdapter extends CursorAdapter {
 
     private ImageView ivAvatar;
 
-//    private long INTENT_PUT_ID;
-//
-//    private String INTENT_PUT_NUMBER;
-//
-//    private String INTENT_TYPE;
-//
-//    private String INTENT_CLASSNAME;
-
-    public SearchSuggestionAdapter(Context context, Cursor cursor, List<Object> items) {
+    public SearchSuggestionAdapter(Context context, Cursor cursor) {
 
         super(context, cursor, false);
-
-        this.items = items;
 
     }
 
@@ -77,28 +66,36 @@ public class SearchSuggestionAdapter extends CursorAdapter {
 //                        String type = cursor.getString(cursor.getColumnIndex("type"));
                         if (INTENT_TYPE.equals("type_note")) {
 //                            long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
-                            Intent detailsActivityIntent = new Intent(context, ClassManager.getClass(INTENT_CLASSNAME));
+                            Intent i = new Intent(context, ClassManager.getClass(INTENT_CLASSNAME));
                             long contactId = INTENT_PUT_ID;
-                            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "1");
-                            context.startActivity(detailsActivityIntent);
+                            i.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
+                            i.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "1");
+                            context.startActivity(i);
 
                         } else {
 //                            long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
-                            Intent detailsActivityIntent = new Intent(context, ClassManager.getClass(INTENT_CLASSNAME));
+                            Intent i = new Intent(context, ClassManager.getClass(INTENT_CLASSNAME));
                             long contactId = INTENT_PUT_ID;
-                            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                            context.startActivity(detailsActivityIntent);
+                            i.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
+                            context.startActivity(i);
                         }
-                    } else if (INTENT_CLASSNAME.equals(ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
-//                        long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
-//                        NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
-//                        navigationBottomMainActivity.openContactBottomSheetCallback(INTENT_PUT_ID);
+                    }else if(INTENT_CLASSNAME.equals(ClassManager.DEAL_DETAILS_TAB_ACTIVITY)){
+                        if (INTENT_TYPE.equals("type_deal")){
+                            //                            long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
+                            Intent i = new Intent(context, ClassManager.getClass(INTENT_CLASSNAME));
+                            long dealId = INTENT_PUT_ID;
+                            i.putExtra(DealDetailsTabActivity.KEY_DEAL_ID, dealId + "");
+                            context.startActivity(i);
+                        }
+                    }else if (INTENT_CLASSNAME.equals(ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
+                        long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
+                        NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
+                        navigationBottomMainActivity.openContactBottomSheetCallback(INTENT_PUT_ID);
 
                     } else if (INTENT_CLASSNAME.equals(ClassManager.INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
-//                        String intentPutNumber = cursor.getString(cursor.getColumnIndex("intentPutNumber"));
-//                        NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
-//                        navigationBottomMainActivity.openInquiryBottomSheetCallback(INTENT_PUT_NUMBER);
+                        String intentPutNumber = cursor.getString(cursor.getColumnIndex("intentPutNumber"));
+                        NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
+                        navigationBottomMainActivity.openInquiryBottomSheetCallback(INTENT_PUT_NUMBER);
                     } else {
                         Toast.makeText(context, "Details not found", Toast.LENGTH_SHORT).show();
                     }

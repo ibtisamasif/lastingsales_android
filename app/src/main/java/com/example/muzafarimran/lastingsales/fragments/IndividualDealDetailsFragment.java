@@ -1,6 +1,9 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,20 +14,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.LSStageSpinAdapter;
+import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
+import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -39,10 +50,10 @@ public class IndividualDealDetailsFragment extends TabFragment {
 
     public static final String TAG = "IndividualDealDetailFra";
     //    TextView tvName;
-    TextView tvNumber;
+//    TextView tvNumber;
     TextView tvDefaultText;
     //    TextView tvEmail;
-    TextView tvAddress;
+//    TextView tvAddress;
 
 //    private CardView cv_social_item;
 //    private TextView tvNameFromProfile;
@@ -68,15 +79,21 @@ public class IndividualDealDetailsFragment extends TabFragment {
 //    private SessionManager sessionManager;
 //    private RequestQueue queue;
 
-    private Spinner statusSpinner;
+    //    private Spinner statusSpinner;
     private Spinner isPrivateSpinner;
     private Spinner stageSpinner;
     List<LSStage> stageList = new ArrayList<LSStage>();
-    private Button bSave;
+    //    private Button bSave;
     private Long dealIDLong;
     private Context mContext;
     private LSDeal mDeal;
     private LSContact mContact;
+    private View.OnClickListener callClickListener = null;
+    private EditText valueEditText;
+    private TextView currencyTextView;
+//    private EditText success_rateEditText;
+//    private EditText success_ETAEditText;
+    private TextView created_agoTextView;
 
 
     public static IndividualDealDetailsFragment newInstance(int page, String title, Long id) {
@@ -112,9 +129,9 @@ public class IndividualDealDetailsFragment extends TabFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.deal_profile_details_fragment, container, false);
 //        tvName = (TextView) view.findViewById(R.id.tvName);
-        tvNumber = (TextView) view.findViewById(R.id.tvNumber);
+//        tvNumber = (TextView) view.findViewById(R.id.tvNumber);
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
-        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
+//        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
 
 //        //      social Profile views
 //        cv_social_item = view.findViewById(R.id.cv_social_item);
@@ -140,15 +157,16 @@ public class IndividualDealDetailsFragment extends TabFragment {
 //        llDynamicConnectionsContainer = (LinearLayout) view.findViewById(R.id.llDynamicConnectionsContainer);
 
         tvDefaultText = (TextView) view.findViewById(R.id.tvDefaultText);
-        bSave = (Button) view.findViewById(R.id.bSave);
+//        bSave = (Button) view.findViewById(R.id.bSave);
         tvDefaultText.setVisibility(View.GONE);
 //        bSave.setVisibility(View.GONE);
-        bSave.setOnClickListener(v -> {
-            Toast.makeText(mContext, "Saving..", Toast.LENGTH_SHORT).show();
-        });
-        addItemsOnSpinnerDealStatus(view);
-        addItemsOnSpinnerDealIsPrivate(view);
+//        bSave.setOnClickListener(v -> {
+//            Toast.makeText(mContext, "Saving..", Toast.LENGTH_SHORT).show();
+//        });
+//        addItemsOnSpinnerDealStatus(view);
         addItemsOnSpinnerDealStage(view);
+        addViews(view);
+        addItemsOnSpinnerDealIsPrivate(view);
         setHasOptionsMenu(true);
         return view;
     }
@@ -174,32 +192,100 @@ public class IndividualDealDetailsFragment extends TabFragment {
         mDeal = LSDeal.findById(LSDeal.class, dealIDLong);
         if (mDeal != null) {
             mContact = mDeal.getContact();
-        }
-//        if (mDeal != null && mDeal.getContactName() != null) {
-//            tvName.setText(mDeal.getContactName());
-//        }
-        if (mContact != null && mContact.getPhoneOne() != null) {
-            tvNumber.setText(mContact.getPhoneOne());
-        }
-//        if (mDeal != null && mDeal.getContactEmail() != null) {
-//            tvEmail.setText(mDeal.getContactEmail());
-//        }
-        if (mContact != null && mContact.getContactAddress() != null) {
-            tvAddress.setText(mContact.getContactAddress());
-        }
-        if (mDeal != null) {
-            // populate status spinner
-            switch (mDeal.getStatus()) {
-                case LSDeal.DEAL_STATUS_PENDING:
-                    statusSpinner.setSelection(0, false);
-                    break;
-                case LSDeal.DEAL_STATUS_CLOSED_WON:
-                    statusSpinner.setSelection(1, false);
-                    break;
-                case LSDeal.DEAL_STATUS_CLOSED_LOST:
-                    statusSpinner.setSelection(2, false);
-                    break;
+            if (mContact != null) {
+                View myLayout = getView().findViewById(R.id.include);
+                RelativeLayout user_profile_group_wrapper = myLayout.findViewById(R.id.user_profile_group_wrapper);
+                user_profile_group_wrapper.setVisibility(View.GONE);
+                RelativeLayout rl_container_buttons = myLayout.findViewById(R.id.rl_container_buttons);
+                rl_container_buttons.setVisibility(View.GONE);
+                TextView tvContactName = myLayout.findViewById(R.id.tvContactName);
+                TextView tvNumber = myLayout.findViewById(R.id.tvNumber);
+                ImageView imSmartBadge = myLayout.findViewById(R.id.imSmartBadge);
+                ImageView whatsapp_icon = myLayout.findViewById(R.id.whatsapp_icon);
+                ImageView call_icon = myLayout.findViewById(R.id.call_icon);
+
+                LSContactProfile lsContactProfile = mContact.getContactProfile();
+                if (lsContactProfile == null) {
+                    imSmartBadge.setVisibility(View.GONE);
+                    Log.d(TAG, "createOrUpdate: Not Found in mContact Table now getting from ContactProfileProvider: " + mContact.toString());
+                    lsContactProfile = LSContactProfile.getProfileFromNumber(mContact.getPhoneOne());
+                } else {
+                    imSmartBadge.setVisibility(View.VISIBLE);
+                    Log.d(TAG, "createOrUpdate: Found in mContact Table: " + mContact);
+                }
+                if (mContact.getContactName() != null) {
+                    if (mContact.getContactName().equals("null")) {
+                        tvContactName.setText("");
+                    } else if (mContact.getContactName().equals("Unlabeled Contact") || mContact.getContactName().equals("Ignored Contact")) {
+                        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, mContact.getPhoneOne());
+                        if (name != null) {
+                            tvContactName.setText(name);
+                        } else {
+                            if (lsContactProfile != null) {
+                                tvContactName.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
+                            } else {
+                                tvContactName.setText(mContact.getPhoneOne());
+                            }
+                        }
+                    } else {
+                        tvContactName.setText(mContact.getContactName());
+                    }
+                } else {
+                    if (lsContactProfile != null) {
+                        tvContactName.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
+                    } else {
+                        tvContactName.setText(mContact.getPhoneOne());
+                    }
+                }
+                whatsapp_icon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        PackageManager packageManager = mContext.getPackageManager();
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        try {
+                            String url = "https://api.whatsapp.com/send?phone=" + mContact.getPhoneOne() + "&text=" + URLEncoder.encode("", "UTF-8");
+                            i.setPackage("com.whatsapp");
+                            i.setData(Uri.parse(url));
+                            if (i.resolveActivity(packageManager) != null) {
+                                mContext.startActivity(i);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                callClickListener = new CallClickListener(mContext);
+                call_icon.setOnClickListener(this.callClickListener);
+                call_icon.setTag(mContact.getPhoneOne());
             }
+        if (mDeal.getValue() != null) {
+            valueEditText.setText(mDeal.getValue());
+        }
+        if (mDeal.getCurrency() != null) {
+            currencyTextView.setText(mDeal.getCurrency());
+        }
+//        if (mDeal.getSuccessRate() != null) {
+//            success_rateEditText.setText(mDeal.getSuccessRate());
+//        }
+//        if (mDeal.getSuccessEta() != null) {
+//            success_ETAEditText.setText(mDeal.getSuccessEta());
+//        }
+        if (mDeal.getCreatedAt() != null) {
+            created_agoTextView.setText(mDeal.getCreatedAt());
+        }
+
+//            // populate status spinner
+//            switch (mDeal.getStatus()) {
+//                case LSDeal.DEAL_STATUS_PENDING:
+//                    statusSpinner.setSelection(0, false);
+//                    break;
+//                case LSDeal.DEAL_STATUS_CLOSED_WON:
+//                    statusSpinner.setSelection(1, false);
+//                    break;
+//                case LSDeal.DEAL_STATUS_CLOSED_LOST:
+//                    statusSpinner.setSelection(2, false);
+//                    break;
+//            }
             switch (mDeal.getIsPrivate()) {
                 case LSDeal.DEAL_VISIBILITY_STATUS_PUBLIC:
                     isPrivateSpinner.setSelection(0, false);
@@ -218,11 +304,11 @@ public class IndividualDealDetailsFragment extends TabFragment {
             }
             stageSpinner.setSelection(index, false);
         }
-        statusSpinner.post(new Runnable() {
-            public void run() {
-                statusSpinner.setOnItemSelectedListener(new CustomSpinnerDealStatusOnItemSelectedListener());
-            }
-        });
+//        statusSpinner.post(new Runnable() {
+//            public void run() {
+//                statusSpinner.setOnItemSelectedListener(new CustomSpinnerDealStatusOnItemSelectedListener());
+//            }
+//        });
         isPrivateSpinner.post(new Runnable() {
             public void run() {
                 isPrivateSpinner.setOnItemSelectedListener(new CustomSpinnerDealIsPrivateOnItemSelectedListener());
@@ -270,15 +356,23 @@ public class IndividualDealDetailsFragment extends TabFragment {
         Log.i(TAG, "onDetach: ");
     }
 
-    public void addItemsOnSpinnerDealStatus(View view) {
-        statusSpinner = (Spinner) view.findViewById(R.id.statusSpinner);
-        List<String> list = new ArrayList<String>();
-        list.add("Pending");
-        list.add("Won");
-        list.add("Lost");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(dataAdapter);
+//    public void addItemsOnSpinnerDealStatus(View view) {
+//        statusSpinner = (Spinner) view.findViewById(R.id.statusSpinner);
+//        List<String> list = new ArrayList<String>();
+//        list.add("Pending");
+//        list.add("Won");
+//        list.add("Lost");
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, list);
+//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        statusSpinner.setAdapter(dataAdapter);
+//    }
+
+    private void addViews(View view) {
+        valueEditText = (EditText) view.findViewById(R.id.valueEditText);
+        currencyTextView = (TextView) view.findViewById(R.id.currencyTextView);
+//        success_rateEditText = (EditText) view.findViewById(R.id.success_rateEditText);
+//        success_ETAEditText = (EditText) view.findViewById(R.id.success_ETAEditText);
+        created_agoTextView = (TextView) view.findViewById(R.id.created_agoTextView);
     }
 
     public void addItemsOnSpinnerDealIsPrivate(View view) {
@@ -293,7 +387,8 @@ public class IndividualDealDetailsFragment extends TabFragment {
 
     public void addItemsOnSpinnerDealStage(View view) {
         stageSpinner = (Spinner) view.findViewById(R.id.stage_spinner);
-        Collection<LSStage> lsStages = LSStage.getAllStagesInSequence();
+        LSWorkflow defaultWorkFlow = LSWorkflow.getDefaultWorkflow();
+        Collection<LSStage> lsStages = LSStage.getAllStagesInPositionSequenceByWorkflowServerId(defaultWorkFlow.getServerId());
         if (lsStages != null) {
             stageList.addAll(lsStages);
         }
@@ -313,40 +408,39 @@ public class IndividualDealDetailsFragment extends TabFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public class CustomSpinnerDealStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
-            switch (pos) {
-                case 0:
-                    mDeal.setStatus(LSDeal.DEAL_STATUS_PENDING);
-                    mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
-                    mDeal.save();
-                    Toast.makeText(parent.getContext(), "Status Changed to Pending", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-                case 1:
-                    mDeal.setStatus(LSDeal.DEAL_STATUS_CLOSED_WON);
-                    mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
-                    mDeal.save();
-                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    ;
-                    break;
-                case 2:
-                    mDeal.setStatus(LSDeal.DEAL_STATUS_CLOSED_LOST);
-                    mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
-                    mDeal.save();
-                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-    }
+//    public class CustomSpinnerDealStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+//
+//        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
+//            switch (pos) {
+//                case 0:
+//                    mDeal.setStatus(LSDeal.DEAL_STATUS_PENDING);
+//                    mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
+//                    mDeal.save();
+//                    Toast.makeText(parent.getContext(), "Status Changed to Pending", Toast.LENGTH_SHORT).show();
+//                    dataSenderAsync.run();
+//                    break;
+//                case 1:
+//                    mDeal.setStatus(LSDeal.DEAL_STATUS_CLOSED_WON);
+//                    mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
+//                    mDeal.save();
+//                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
+//                    dataSenderAsync.run();
+//                    break;
+//                case 2:
+//                    mDeal.setStatus(LSDeal.DEAL_STATUS_CLOSED_LOST);
+//                    mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
+//                    mDeal.save();
+//                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
+//                    dataSenderAsync.run();
+//                    break;
+//            }
+//        }
+//
+//        @Override
+//        public void onNothingSelected(AdapterView<?> parent) {
+//        }
+//    }
 
     public class CustomSpinnerDealIsPrivateOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
@@ -357,6 +451,7 @@ public class IndividualDealDetailsFragment extends TabFragment {
                     mDeal.setIsPrivate(LSDeal.DEAL_VISIBILITY_STATUS_PUBLIC);
                     mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
                     mDeal.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
                     Toast.makeText(parent.getContext(), "Status Changed to Public", Toast.LENGTH_SHORT).show();
                     dataSenderAsync.run();
                     break;
@@ -364,6 +459,7 @@ public class IndividualDealDetailsFragment extends TabFragment {
                     mDeal.setIsPrivate(LSDeal.DEAL_VISIBILITY_STATUS_PRIVATE);
                     mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
                     mDeal.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
                     Toast.makeText(parent.getContext(), "Status Changed to Private", Toast.LENGTH_SHORT).show();
                     dataSenderAsync.run();
                     break;
@@ -386,6 +482,7 @@ public class IndividualDealDetailsFragment extends TabFragment {
                 mDeal.save();
                 Toast.makeText(mContext, "Stage Changed to " + selectedStage.getName(), Toast.LENGTH_SHORT).show();
 //                Toast.makeText(parent.getContext(), "Stage Changed to " + mDeal.getWorkflowStageId(), Toast.LENGTH_SHORT).show();
+                TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
                 dataSenderAsync.run();
             }

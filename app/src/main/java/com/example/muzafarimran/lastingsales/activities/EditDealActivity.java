@@ -8,11 +8,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+
+import java.util.Calendar;
 
 /**
  * Created by ibtisam on 3/28/2018.
@@ -23,7 +23,7 @@ public class EditDealActivity extends AppCompatActivity {
     public static final String TAG_LAUNCH_MODE_DEAL_ID = "deal_id";
 
     private EditText etNameAddDeal;
-    private EditText etNumberAddDeal;
+    private EditText etLeadAddDeal;
     private Button bSaveAddDeal;
     private Button bCancelAddDeal;
 //    private Button bPendingRadio;
@@ -41,14 +41,13 @@ public class EditDealActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_deal);
 
         etNameAddDeal = (EditText) findViewById(R.id.etNameAddDeal);
-        etNumberAddDeal = (EditText) findViewById(R.id.etNumberAddDeal);
+        etLeadAddDeal = (EditText) findViewById(R.id.etLeadAddDeal);
 //        llDealType = (LinearLayout) findViewById(R.id.llDealType);
         bSaveAddDeal = (Button) findViewById(R.id.bSaveAddDeal);
         bCancelAddDeal = (Button) findViewById(R.id.bCancelAddDeal);
 //        bPendingRadio = (Button) findViewById(R.id.bPendingRadio);
 //        bWonRadio = (Button) findViewById(R.id.bWonRadio);
 //        bLostRadio = (Button) findViewById(R.id.bLostRadio);
-
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -87,32 +86,22 @@ public class EditDealActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String dealName = etNameAddDeal.getText().toString();
-                String dealPhone = etNumberAddDeal.getText().toString();
-
-                if (isValid(dealName, dealPhone)) {
-
-                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(EditDealActivity.this, dealPhone);
-                    LSContact tempContact = LSContact.getContactFromNumber(intlNum);
-                    if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                        if (selectedDeal != null) {
-                            LSDeal lsDeal = selectedDeal;
-                            lsDeal.setName(dealName);
-                            lsDeal.setContact(tempContact);
+                if (isValid(dealName)) {
+                    if (selectedDeal != null) {
+                        LSDeal lsDeal = selectedDeal;
+                        lsDeal.setName(dealName);
 //                            lsDeal.setLeadId(Long.toString(tempContact.getId()));
-                            lsDeal.setStatus(selectedDealType);
-                            lsDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
-                            lsDeal.save();
-                            finish();
-                            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(EditDealActivity.this);
-                            dataSenderAsync.run();
-                        }else {
-                            Toast.makeText(EditDealActivity.this, "Deal doesn't exists", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
+                        lsDeal.setStatus(selectedDealType);
+                        lsDeal.setUpdatedAt(Calendar.getInstance().getTime());
+                        lsDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
+                        lsDeal.save();
+                        finish();
+                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(EditDealActivity.this);
+                        dataSenderAsync.run();
                     } else {
-                        Toast.makeText(EditDealActivity.this, "Corresponding Lead doesn't exists", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditDealActivity.this, "Deal doesn't exists", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
-
                 }
             }
         });
@@ -131,26 +120,18 @@ public class EditDealActivity extends AppCompatActivity {
         } else {
             etNameAddDeal.setText("");
         }
-        if (selectedDeal.getContact() != null && !selectedDeal.getContact().getPhoneOne().equalsIgnoreCase(null)) {
-            etNumberAddDeal.setText(selectedDeal.getContact().getPhoneOne());
+        if (selectedDeal.getContact() != null && !selectedDeal.getContact().getContactName().equalsIgnoreCase(null)) {
+            etLeadAddDeal.setText(selectedDeal.getContact().getContactName());
         } else {
-            etNumberAddDeal.setText("");
+            etLeadAddDeal.setText("");
         }
-        etNumberAddDeal.setFocusable(false);
     }
 
-    private boolean isValid(String dealName, String dealPhone) {
+    private boolean isValid(String dealName) {
         etNameAddDeal.setError(null);
-        etNumberAddDeal.setError(null);
-        boolean validation = true;
+        etLeadAddDeal.setError(null);
         if (dealName.equals("") || dealName.length() < 3) {
-            validation = false;
             etNameAddDeal.setError("Invalid Name!");
-            return false;
-        }
-        if (dealPhone.equals("") || dealPhone.length() < 3) {
-            validation = false;
-            etNumberAddDeal.setError("Invalid Number!");
             return false;
         }
         return true;

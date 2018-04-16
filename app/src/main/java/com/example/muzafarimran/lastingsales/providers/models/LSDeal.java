@@ -42,14 +42,17 @@ public class LSDeal extends SugarRecord {
     private String syncStatus;
     private String dynamic;
     private String isPrivate;
+    private String value;
+    private String currency;
+    private String successRate;
+    private String successEta;
 
     public LSDeal() {
     }
 
     public static List<LSDeal> getDealFromWorkflowStageId(String id) {
         try {
-            return LSDeal.find(LSDeal.class, "workflow_stage_id = " + id);
-//            return LSDeal.findWithQuery(LSDeal.class, "Select * from LS_DEAL where workflow_stage_id = '" + id + "'" + " ORDER BY updated_at DESC");
+            return LSDeal.findWithQuery(LSDeal.class, "Select * from LS_DEAL where workflow_stage_id = '" + id + "'" + " ORDER BY updated_at DESC");
         } catch (SQLiteException e) {
             return new ArrayList<LSDeal>();
         }
@@ -193,5 +196,37 @@ public class LSDeal extends SugarRecord {
 
     public void setIsPrivate(String isPrivate) {
         this.isPrivate = isPrivate;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getSuccessRate() {
+        return successRate;
+    }
+
+    public void setSuccessRate(String successRate) {
+        this.successRate = successRate;
+    }
+
+    public String getSuccessEta() {
+        return successEta;
+    }
+
+    public void setSuccessEta(String successEta) {
+        this.successEta = successEta;
     }
 }
