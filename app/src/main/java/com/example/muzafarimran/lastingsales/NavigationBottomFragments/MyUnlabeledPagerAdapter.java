@@ -11,7 +11,7 @@ import com.example.muzafarimran.lastingsales.fragments.TabFragment;
  */
 
 public class MyUnlabeledPagerAdapter extends FragmentPagerAdapter {
-    final int TAB_COUNT = 2;
+    private final int TAB_COUNT = 2;
 //    private Long id;
 //    private String number;
 

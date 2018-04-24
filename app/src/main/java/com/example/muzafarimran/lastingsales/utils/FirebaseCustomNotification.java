@@ -8,8 +8,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.activities.FrameActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
+import com.example.muzafarimran.lastingsales.app.ClassManager;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 /**
  * Created by ibtisam on 10/9/2017.
@@ -117,6 +120,69 @@ public class FirebaseCustomNotification {
         Intent homescreenIntent = new Intent(context, NavigationBottomMainActivity.class);
         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), homescreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        Notification.Builder notificationBuilder = new Notification.Builder(context)
+                .setContentIntent(pContentIntent)
+                .setSmallIcon(R.drawable.ic_notification_small)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification_small))
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle("Lasting Sales")
+                .setTicker("Lasting Sales")
+                .setStyle(new Notification.BigTextStyle().bigText(message))
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setContentText(message);
+        return notificationBuilder.build();
+    }
+
+    public static Notification createFirebaseCustomNotification(Context context, String message, String type, String id) {
+        Intent intent = new Intent(context, NavigationBottomMainActivity.class);
+        PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        switch (type) {
+            case "type_note": {
+                LSContact lsContact = LSContact.getContactFromServerId(id);
+                if (lsContact != null) {
+                    intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                    intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "1");
+                    pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                }
+            }
+            break;
+            case "type_contact": {
+                LSContact lsContact = LSContact.getContactFromServerId(id);
+                if (lsContact != null) {
+                    if (lsContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+                        intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                        intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
+                        pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    }
+//                    else {
+//                        intent = new Intent(context, NavigationBottomMainActivity.class);
+//                        intent.putExtra(NavigationBottomMainActivity.KEY_SELECTED_TAB, "3");
+//                        intent.putExtra(NavigationBottomMainActivity.KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID, lsContact.getId() + "");
+//                        pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                    }
+                }
+            }
+            break;
+            case "type_comment": {
+                LSContact lsContact = LSContact.getContactFromServerId(id);
+                if (lsContact != null) {
+                    intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                    intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "3");
+                    pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                }
+            }
+            break;
+            default:
+                intent = new Intent(context, NavigationBottomMainActivity.class);
+                pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                break;
+        }
         Notification.Builder notificationBuilder = new Notification.Builder(context)
                 .setContentIntent(pContentIntent)
                 .setSmallIcon(R.drawable.ic_notification_small)

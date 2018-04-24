@@ -8,8 +8,11 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.events.CommentEventModel;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+
+import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by ibtisam on 2/18/2017.
@@ -34,16 +37,16 @@ public class NetworkStateReceiver extends BroadcastReceiver {
                     context.startService(new Intent(context, CallDetectionService.class));
                     Log.d(TAG, "CallDetectionService: Service Started");
                 }
-
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
                 dataSenderAsync.run();
-
             } else if (intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
 
                 Log.d(TAG, "There's no network connectivity");
 
             }
         }
+
+        TinyBus.from(context.getApplicationContext()).post(new CommentEventModel());
 
 //        Toast.makeText(context, "Connectivity changed", Toast.LENGTH_SHORT).show();
     }

@@ -10,6 +10,7 @@ import com.example.muzafarimran.lastingsales.app.ClassNames;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderAddDealCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderCallCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderChipCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderCommentCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderConnectionsCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderContactCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderContactHeaderBottomsheetCard;
@@ -26,6 +27,7 @@ import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSeparatorCard
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSettingCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSocialProfileCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderStatisticsCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderTryAgainCard;
 
 import java.util.List;
 
@@ -109,6 +111,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.DEAL_CLASS_NAME:
                 return ClassNames.DEAL_CLASS_TYPE;
 
+            case ClassNames.COMMENT_CLASS_NAME:
+                return ClassNames.COMMENT_CLASS_TYPE;
+
+                case ClassNames.TRYAGAIN_CLASS_NAME:
+                return ClassNames.TRYAGAIN_CLASS_TYPE;
+
             default:
                 Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
                 return -1;
@@ -178,6 +186,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             case ClassNames.DEAL_CLASS_TYPE:
                 return new ViewHolderDealCard(LayoutInflater.from(mContext).inflate(ClassNames.DEAL_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.COMMENT_CLASS_TYPE:
+                return new ViewHolderCommentCard(LayoutInflater.from(mContext).inflate(ClassNames.COMMENT_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.TRYAGAIN_CLASS_TYPE:
+                return new ViewHolderTryAgainCard(LayoutInflater.from(mContext).inflate(ClassNames.TRYAGAIN_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -268,6 +282,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.DEAL_CLASS_TYPE:
                 ViewHolderDealCard viewHolderDealCard = (ViewHolderDealCard) holder;
                 viewHolderDealCard.bind(item, position, mContext);
+                break;
+            case ClassNames.COMMENT_CLASS_TYPE:
+                ViewHolderCommentCard viewHolderCommentCard = (ViewHolderCommentCard) holder;
+                viewHolderCommentCard.bind(item, position, mContext);
+                break;
+            case ClassNames.TRYAGAIN_CLASS_TYPE:
+                ViewHolderTryAgainCard viewHolderTryAgainCard = (ViewHolderTryAgainCard) holder;
+                viewHolderTryAgainCard.bind(item, position, mContext);
                 break;
         }
     }

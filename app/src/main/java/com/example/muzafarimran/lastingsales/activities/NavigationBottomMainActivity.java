@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment1;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3;
+import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3_1;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment4;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment5;
 import com.example.muzafarimran.lastingsales.R;
@@ -74,7 +75,7 @@ import de.halfbit.tinybus.wires.ShakeEventWire;
  * Created by ibtisam on 11/6/2017.
  */
 
-public class NavigationBottomMainActivity extends AppCompatActivity implements CloseContactBottomSheetEvent, CloseInquiryBottomSheetEvent{
+public class NavigationBottomMainActivity extends AppCompatActivity implements CloseContactBottomSheetEvent, CloseInquiryBottomSheetEvent {
     public static final String TAG = "NavigationBottomMain";
     private static final String FRAGMENT_TAG_INQUIRIES = "fragment_tag_inquiries";
     private static final String FRAGMENT_TAG_UNLABELED = "fragment_tag_unlabeled";
@@ -90,6 +91,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //    public static final int MORE_LOADER_ID = 4;
     public static String KEY_SELECTED_TAB = "key_selected_tab";
     public static String INQUIRIES_TAB = "inquiries_tab";
+    public static String BOTTOMSHEET_TAB = "bottomsheet_tab";
+    public static String KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID = "bottomsheet_contact_id";
+
     private TinyBus bus;
     //    private List<Object> list = new ArrayList<Object>();
 //    private MyRecyclerViewAdapter adapter;
@@ -101,7 +105,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     private android.support.design.widget.FloatingActionButton floatingActionButtonDeal;
     private FloatingActionMenu floatingActionMenuLead;
     private BottomNavigationView navigation;
-        private static InquiryCallDetailsBottomSheetFragment inquiryCallDetailsBottomSheetFragment;
+    private static InquiryCallDetailsBottomSheetFragment inquiryCallDetailsBottomSheetFragment;
     private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
     public static Activity activity;
     private static boolean sheetShowing = false;
@@ -293,6 +297,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 if (tab.equals(INQUIRIES_TAB)) {
                     Log.d(TAG, "onCreate: Loading Inquiries TAB");
                     navigation.setSelectedItemId(R.id.navigation_inquiries);
+                } else if (tab.equals(BOTTOMSHEET_TAB)) {
+                    Log.d(TAG, "onCreate: Loading Leads TAB with bottomsheet open");
+                    String contactId = bundle1.getString(KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID);
+                    navigation.setSelectedItemId(R.id.navigation_leads);
+                    openContactBottomSheetCallback(Long.parseLong(contactId));
                 }
             } else {
                 Log.d(TAG, "onCreate: Bundle Not Null TAB unknown Loading Leads TAB");
@@ -577,7 +586,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             searchView.setIconified(true);
         } else {
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.llFragmentContainer);
-            if (f instanceof BlankFragment3) {
+            if (f instanceof BlankFragment3_1) {
                 super.onBackPressed();
             } else {
                 navigation.setSelectedItemId(R.id.navigation_leads);
@@ -767,7 +776,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
         myQuery = "SELECT * FROM LS_DEAL where name like '%" + query + "%' limit 5";
         Collection<LSDeal> dealsByName = LSDeal.findWithQuery(LSDeal.class, myQuery);
-        for(LSDeal oneDeal : dealsByName){
+        for (LSDeal oneDeal : dealsByName) {
             temp[0] = count;
             temp[1] = oneDeal.getName();
             temp[2] = R.drawable.ic_monetization_on_48dp;

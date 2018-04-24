@@ -15,6 +15,7 @@ public class MyURLs {
     public static String ADD_DEAL = server + "/api/v1/deal";
     public static String ADD_FOLLOWUP = server + "/api/v1/lead/"; //SampleFormatComplete ADD_FOLLOWUP = "http://staging/api/v1/lead/85/followup";
     public static String ADD_NOTE = server + "/api/v1/lead/"; //SampleFormatComplete ADD_NOTE = "http://staging/api/v1/lead/145/notes";
+    public static String ADD_COMMENT = server + "/api/v1/lead/";
     public static String DELETE_NOTE = server + "/api/v1/lead/";
     public static String ADD_CALL = server + "/api/v1/call";
     public static String GET_CALL = server + "/api/v1/call";
@@ -33,6 +34,7 @@ public class MyURLs {
     public static String GET_CONTACTS = server + "/api/v1/lead";
     public static String GET_DEALS = server + "/api/v1/deal";
     public static String GET_NOTES = server + "/api/v1/lead";
+    public static String GET_COMMENTS = server + "/api/v1/lead";
     public static String GET_COLUMNS = server + "/api/v1/column";
     public static String GET_WORKFLOW = server + "/api/v1/admin/workflow";
     public static String GET_PROFILE = server + "/api/v1/graph/public/profile";

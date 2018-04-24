@@ -87,4 +87,12 @@ public class ClassNames {
     public static final String DEAL_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.LSDeal";
     public static final int DEAL_CLASS_TYPE = 20;
     public static final int DEAL_CLASS_RESOURCE = R.layout.card_deal;
+
+    public static final String COMMENT_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.CommentItem";
+    public static final int COMMENT_CLASS_TYPE = 21;
+    public static final int COMMENT_CLASS_RESOURCE = R.layout.card_comment;
+
+    public static final String TRYAGAIN_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.TryAgainItem";
+    public static final int TRYAGAIN_CLASS_TYPE = 22;
+    public static final int TRYAGAIN_CLASS_RESOURCE = R.layout.card_tryagain;
 }

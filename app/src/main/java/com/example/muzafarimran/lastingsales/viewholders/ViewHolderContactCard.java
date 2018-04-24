@@ -274,8 +274,13 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 rl_container_buttons.setVisibility(View.VISIBLE);
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
                 this.cl.setOnClickListener(view -> {
-                    ColleagueActivity colleagueActivity = (ColleagueActivity) mContext;
-                    colleagueActivity.onClickColleague((Long) view.getTag());
+                    if ( mContext instanceof NavigationBottomMainActivity ) {
+                        NavigationBottomMainActivity obj = (NavigationBottomMainActivity) mContext;
+                        obj.openContactBottomSheetCallback((Long) view.getTag());
+                    }else if (mContext instanceof ColleagueActivity){
+                        ColleagueActivity obj = (ColleagueActivity) mContext;
+                        obj.openContactBottomSheetCallback((Long) view.getTag());
+                    }
                 });
 
                 this.cl.setOnLongClickListener(view -> {
@@ -316,7 +321,6 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Warning));
 
                 this.cl.setOnClickListener(view -> {
-                    Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
                     NavigationBottomMainActivity obj = (NavigationBottomMainActivity) mContext;
                     obj.openContactBottomSheetCallback((Long) view.getTag());
                 });

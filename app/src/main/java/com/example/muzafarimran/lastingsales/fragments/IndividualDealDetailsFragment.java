@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.adapters.LSStageSpinAdapter;
 import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
@@ -193,6 +195,7 @@ public class IndividualDealDetailsFragment extends TabFragment {
         if (mDeal != null) {
             mContact = mDeal.getContact();
             if (mContact != null) {
+                CardView cv_item = getView().findViewById(R.id.cv_item);
                 View myLayout = getView().findViewById(R.id.include);
                 RelativeLayout user_profile_group_wrapper = myLayout.findViewById(R.id.user_profile_group_wrapper);
                 user_profile_group_wrapper.setVisibility(View.GONE);
@@ -257,6 +260,15 @@ public class IndividualDealDetailsFragment extends TabFragment {
                 callClickListener = new CallClickListener(mContext);
                 call_icon.setOnClickListener(this.callClickListener);
                 call_icon.setTag(mContact.getPhoneOne());
+                cv_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
+                        long contactId = mContact.getId();
+                        detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
+                        mContext.startActivity(detailsActivityIntent);
+                    }
+                });
             }
         if (mDeal.getValue() != null) {
             valueEditText.setText(mDeal.getValue());

@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
+import com.example.muzafarimran.lastingsales.events.CommentEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
@@ -758,15 +758,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         lead_id = payload.getInt("lead_id");
                     }
                     String comment = payload.getString("comment");
-                    String status = payload.getString("status");
+                    int user_id = 0;
+                    if (payload.has("user_id")) {
+                        user_id = payload.getInt("user_id");
+                    }
                     int created_by = 0;
                     if (payload.has("created_by")) {
                         created_by = payload.getInt("created_by");
                     }
                     String created_at = payload.getString("created_at");
                     String updated_at = payload.getString("updated_at");
-
-                    Toast.makeText(getApplicationContext(), "Comment: " + comment, Toast.LENGTH_SHORT).show();
 
 //                    // ignore if task already exists
 //                    LSDeal lsDeal = LSDeal.getDealFromServerId(id);
@@ -791,11 +792,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 ////                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
 ////                            TinyBus bus = TinyBus.from(getApplicationContext());
 ////                            bus.post(mCallEvent);
+                    TinyBus.from(getApplicationContext()).post(new CommentEventModel());
 //                        }
 //                    }
                 }
             }
-
 
 //            if (tag.equals("Task")) {
 //                if (action.equals("post")) {
@@ -849,13 +850,29 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                }
 //            }
 
+            if (tag.equals("Custom")) {
+                if (action.equals("custom")) {
+
+                    String id = payload.getString("id");
+                    String type = payload.getString("type");
+                    String title = payload.getString("title");
+
+                    Log.d(TAG, "handleDataMessage: id: " + id);
+                    Log.d(TAG, "handleDataMessage: id: " + type);
+                    Log.d(TAG, "handleDataMessage: id: " + title);
+
+                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseCustomNotification(getApplicationContext(), title, type, id));
+                }
+            }
+
             Intent pushNotification = new Intent(FireBaseConfig.PUSH_NOTIFICATION);
             pushNotification.putExtra("message", mMsg);
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
 ////             play notification sound
-            FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
-            notificationUtils.playNotificationSound();
+//            FireBaseNotificationUtils notificationUtils = new FireBaseNotificationUtils(getApplicationContext());
+//            notificationUtils.playNotificationSound();
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(TAG, "Json Exception: " + e.getMessage());

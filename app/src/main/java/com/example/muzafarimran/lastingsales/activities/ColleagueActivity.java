@@ -29,11 +29,14 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 11/9/2017.
  */
 
-public class ColleagueActivity  extends AppCompatActivity{
+public class ColleagueActivity extends AppCompatActivity {
     private static final String TAG = "ColleagueActivity";
     private MyRecyclerViewAdapter adapter;
     private List<Object> list = new ArrayList<Object>();
     private TinyBus bus;
+
+    private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
+    private static boolean sheetShowing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +114,10 @@ public class ColleagueActivity  extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    public void onClickColleague(Long contact_id) {
-        ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragment.newInstance(contact_id, 0);
+    public void openContactBottomSheetCallback(Long contact_id) {
+        contactCallDetailsBottomSheetFragment = ContactCallDetailsBottomSheetFragment.newInstance(contact_id, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         contactCallDetailsBottomSheetFragment.show(fragmentManager, "tag");
+        sheetShowing = true;
     }
 }

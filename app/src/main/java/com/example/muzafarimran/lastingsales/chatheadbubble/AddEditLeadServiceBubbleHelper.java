@@ -11,7 +11,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +43,6 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
     private Button bSave;
     private ImageView bClose;
     private CheckBox cbIgnore;
-    private LinearLayout llContactDetailsFollowupScreen;
 
     String selectedContactType = LSContact.CONTACT_TYPE_SALES;
     String phoneNumberFromLastActivity;
@@ -123,7 +121,6 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
         bSave = (Button) bubbleView.findViewById(R.id.bSave);
         bClose = (ImageView) bubbleView.findViewById(R.id.bClose);
         cbIgnore = (CheckBox) bubbleView.findViewById(R.id.cbIgnore);
-        llContactDetailsFollowupScreen = (LinearLayout) bubbleView.findViewById(R.id.llContactDetailsAddContactScreen);
         // Mix Panel Event
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);

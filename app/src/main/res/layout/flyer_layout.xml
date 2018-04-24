@@ -9,83 +9,53 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/shadow_borders"
+        android:scaleType="centerCrop"
+        android:windowAnimationStyle="@android:style/Animation.Translucent"
+        android:windowBackground="@android:color/transparent"
+        android:windowIsTranslucent="true">
+
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/avatar"
+            android:id="@+id/linearLayout11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:animateLayoutChanges="true"
-            android:background="@drawable/shadow_borders"
-            android:scaleType="centerCrop"
-            android:windowAnimationStyle="@android:style/Animation.Translucent"
-            android:windowBackground="@android:color/transparent"
-            android:windowIsTranslucent="true">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:background="@drawable/shape_rounded_rectangle"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:background="@drawable/shape_rounded_rectangle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/user_avatar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                fresco:roundAsCircle="true"
                 fresco:placeholderImage="@drawable/ic_account_circle_white_img"
-                android:layout_marginLeft="8dp" />
-
-            <TextView
-                android:id="@+id/tvNoteTextUIOCallPopup"
-                style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-                android:layout_width="200dp"
-                android:layout_height="20dp"
-                android:layout_below="@+id/tvNoteHeading"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:maxLines="4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tvNoteHeading"
-                app:layout_constraintTop_toTopOf="@+id/tvNoteHeading" />
+                fresco:roundAsCircle="true" />
 
             <TextView
                 android:id="@+id/tvContactName"
                 style="@style/Base.TextAppearance.AppCompat.Title.Inverse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tvNoteTextUIOCallPopup"
-                android:layout_alignStart="@+id/tvNoteTextUIOCallPopup"
+                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:ems="12"
                 android:ellipsize="end"
+                android:ems="10"
                 android:text="UNKNOWN"
                 android:textColor="@color/md_white"
+                android:visibility="visible"
                 app:layout_constraintStart_toEndOf="@+id/user_avatar"
-                app:layout_constraintTop_toTopOf="@+id/user_avatar"
-                android:layout_marginLeft="8dp" />
-
-            <TextView
-                android:id="@+id/tvNoteHeading"
-                style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tvNoteTextUIOCallPopup"
-                android:layout_alignStart="@+id/tvNoteTextUIOCallPopup"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:text="Note:"
-                app:layout_constraintStart_toEndOf="@+id/user_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/tvContactName"
-                android:layout_marginLeft="8dp"/>
+                app:layout_constraintTop_toTopOf="@+id/user_avatar" />
 
             <ImageButton
                 android:id="@+id/ibClose"
@@ -93,130 +63,159 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/close_icon"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginRight="8dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvCallerHistoryName0"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:id="@+id/tvNoteHeading"
+                style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_weight="2.5"
-                android:maxLines="3"
-                android:text="Last contacted with me"
-                android:textSize="12sp"
-                android:textColor="@color/md_black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_avatar"
-                android:layout_marginLeft="8dp" />
+                android:text="Note:"
+                app:layout_constraintStart_toEndOf="@+id/user_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/tvContactName" />
 
             <TextView
-                android:id="@+id/tvCallerHistoryLastCallDateTime0"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:maxLines="3"
-                android:text="3-Jan-2017"
-                android:textSize="10sp"
-                android:textColor="@color/md_black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName0"
-                android:layout_marginRight="8dp" />
-
-            <TextView
-                android:id="@+id/tvCallerHistoryLastCallTimeAgo0"
-                style="@style/Base.TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:maxLines="1"
-                android:textSize="10sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryName0"
-                tools:text="1 day ago"
-                android:layout_marginLeft="8dp" />
-
-            <TextView
-                android:id="@+id/tvCallerHistoryName1"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="2.5"
-                android:maxLines="1"
-                android:text="Last contacted Ibtisam Asif"
-                android:textSize="12sp"
-                android:textColor="@color/md_black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo0"
-                android:layout_marginLeft="8dp" />
-
-            <TextView
-                android:id="@+id/tvCallerHistoryLastCallTimeAgo1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_goneMarginBottom="16dp"
-                android:maxLines="3"
-                android:textSize="10sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryName1"
-                tools:text="1 day ago"
-                android:layout_marginLeft="8dp" />
-
-            <TextView
-                android:id="@+id/tvCallerHistoryLastCallDateTime1"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:maxLines="3"
-                android:text="2-Jan-2017"
-                android:textSize="10sp"
-                android:textColor="@color/md_black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName1"
-                android:layout_marginRight="8dp" />
-
-            <TextView
-                android:id="@+id/tvMore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="and 1 more.."
-                android:textSize="10sp"
-                android:visibility="visible"
-                card_view:layout_editor_absoluteX="175dp"
-                card_view:layout_editor_absoluteY="129dp"
-                fresco:layout_constraintStart_toStartOf="parent"
-                fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo1" />
-
-            <TextView
-                android:id="@+id/tvError"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvNoteTextUIOCallPopup"
+                style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Loading..."
-                card_view:layout_editor_absoluteX="109dp"
-                card_view:layout_editor_absoluteY="146dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:maxLines="4"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvMore" />
+                app:layout_constraintStart_toEndOf="@+id/tvNoteHeading"
+                app:layout_constraintTop_toTopOf="@+id/tvNoteHeading"
+                fresco:layout_constraintBottom_toBottomOf="parent"
+                tools:text="today is lorem ipsum's birthday and we are going to have a big blast party at last vegas studio" />
 
         </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvCallerHistoryName0"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="2.5"
+            android:maxLines="3"
+            android:text="Last contacted with me"
+            android:textColor="@color/md_black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />
+
+        <TextView
+            android:id="@+id/tvCallerHistoryLastCallDateTime0"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:maxLines="3"
+            android:text="3-Jan-2017"
+            android:textColor="@color/md_black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName0" />
+
+        <TextView
+            android:id="@+id/tvCallerHistoryLastCallTimeAgo0"
+            style="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryName0"
+            tools:text="1 day ago" />
+
+        <TextView
+            android:id="@+id/tvCallerHistoryName1"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="2.5"
+            android:maxLines="1"
+            android:text="Last contacted Ibtisam Asif"
+            android:textColor="@color/md_black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo0" />
+
+        <TextView
+            android:id="@+id/tvCallerHistoryLastCallTimeAgo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:maxLines="3"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryName1"
+            app:layout_goneMarginBottom="16dp"
+            tools:text="1 day ago" />
+
+        <TextView
+            android:id="@+id/tvCallerHistoryLastCallDateTime1"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:maxLines="3"
+            android:text="2-Jan-2017"
+            android:textColor="@color/md_black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvCallerHistoryName1" />
+
+        <TextView
+            android:id="@+id/tvMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="and 1 more.."
+            android:textSize="10sp"
+            android:visibility="visible"
+            card_view:layout_editor_absoluteX="175dp"
+            card_view:layout_editor_absoluteY="129dp"
+            fresco:layout_constraintStart_toStartOf="parent"
+            fresco:layout_constraintTop_toBottomOf="@+id/tvCallerHistoryLastCallTimeAgo1" />
+
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Loading..."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMore"
+            card_view:layout_editor_absoluteX="109dp"
+            card_view:layout_editor_absoluteY="146dp" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </com.example.muzafarimran.lastingsales.chatheadbubble.BubbleLayout>

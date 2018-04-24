@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
-import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -22,6 +21,13 @@ import java.util.List;
 
 public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
     public static final String TAG = "LeadsLoader";
+    public static final String KEY_LEADS_TO_LOAD = "key_leads_to_load";
+    public static final String ALL_LEADS = "all_leads";
+    public static final String INPROGRESS_LEADS = "inprogress_leads";
+    public static final String WON_LEADS = "won_leads";
+    public static final String LOST_LEADS = "lost_leads";
+    public static final String INACTIVE_LEADS = "inactive_leads";
+
     private String leadsToLoad;
     private List<Object> mData;
     Bundle bundle;
@@ -30,9 +36,9 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
         super(context);
         bundle = args;
         if (bundle != null) {
-            leadsToLoad = bundle.getString("whichLeads");
+            leadsToLoad = bundle.getString(KEY_LEADS_TO_LOAD);
         } else {
-            leadsToLoad = "All";
+            leadsToLoad = ALL_LEADS;
         }
     }
 
@@ -42,27 +48,27 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //        mData.add(addLeadItem);
 
         List<Object> data = new ArrayList<Object>();
-        if (leadsToLoad != null && leadsToLoad.equals("All")) {
+        if (leadsToLoad != null && leadsToLoad.equals(ALL_LEADS)) {
             Collection<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
             if (contacts != null && contacts.size() > 0) {
 
 //                FilterItem filterItem = new FilterItem();
 //                data.add(filterItem);
 
-                HomeItem homeItem = new HomeItem();
-                homeItem.text = "Leads";
-                homeItem.value = "" + contacts.size();
-                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
-                data.add(homeItem);
-
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
-
 //                ChipItem chipItem = new ChipItem();
 ////                chipItem.selected = 4;
 //                chipItem.totalButtons = 5;
 //                data.add(chipItem);
+
+//                HomeItem homeItem = new HomeItem();
+//                homeItem.text = "Leads";
+//                homeItem.value = "" + contacts.size();
+//                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+//                data.add(homeItem);
+
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
 
                 data.addAll(contacts);
 
@@ -91,7 +97,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 
             return data;
 
-        } else if (leadsToLoad != null && leadsToLoad.equals("InProgress")) {
+        } else if (leadsToLoad != null && leadsToLoad.equals(INPROGRESS_LEADS)) {
 
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
             if (contacts != null && contacts.size() > 0) {
@@ -99,20 +105,20 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                FilterItem filterItem = new FilterItem();
 //                data.add(filterItem);
 
-                HomeItem homeItem = new HomeItem();
-                homeItem.text = "Leads";
-                homeItem.value = "" + contacts.size();
-                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
-                data.add(homeItem);
-
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
-
 //                ChipItem chipItem = new ChipItem();
 ////                chipItem.selected = 4;
 //                chipItem.totalButtons = 5;
 //                data.add(chipItem);
+
+//                HomeItem homeItem = new HomeItem();
+//                homeItem.text = "Leads";
+//                homeItem.value = "" + contacts.size();
+//                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+//                data.add(homeItem);
+
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
 
                 data.addAll(contacts);
 
@@ -140,7 +146,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             }
             return data;
 
-        } else if (leadsToLoad != null && leadsToLoad.equals("Won")) {
+        } else if (leadsToLoad != null && leadsToLoad.equals(WON_LEADS)) {
 
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
             if (contacts != null && contacts.size() > 0) {
@@ -148,20 +154,20 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                FilterItem filterItem = new FilterItem();
 //                data.add(filterItem);
 
-                HomeItem homeItem = new HomeItem();
-                homeItem.text = "Leads";
-                homeItem.value = "" + contacts.size();
-                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
-                data.add(homeItem);
-
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
-
 //                ChipItem chipItem = new ChipItem();
 ////                chipItem.selected = 4;
 //                chipItem.totalButtons = 5;
 //                data.add(chipItem);
+
+//                HomeItem homeItem = new HomeItem();
+//                homeItem.text = "Leads";
+//                homeItem.value = "" + contacts.size();
+//                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+//                data.add(homeItem);
+
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
 
                 data.addAll(contacts);
 
@@ -189,7 +195,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             }
             return data;
 
-        } else if (leadsToLoad != null && leadsToLoad.equals("Lost")) {
+        } else if (leadsToLoad != null && leadsToLoad.equals(LOST_LEADS)) {
 
             List<LSContact> contacts = LSContact.getDateArrangedSalesContactsByLeadSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
             if (contacts != null && contacts.size() > 0) {
@@ -197,20 +203,20 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                FilterItem filterItem = new FilterItem();
 //                data.add(filterItem);
 
-                HomeItem homeItem = new HomeItem();
-                homeItem.text = "Leads";
-                homeItem.value = "" + contacts.size();
-                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
-                data.add(homeItem);
-
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
-
 //                ChipItem chipItem = new ChipItem();
 ////                chipItem.selected = 4;
 //                chipItem.totalButtons = 5;
 //                data.add(chipItem);
+
+//                HomeItem homeItem = new HomeItem();
+//                homeItem.text = "Leads";
+//                homeItem.value = "" + contacts.size();
+//                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+//                data.add(homeItem);
+
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
 
                 data.addAll(contacts);
 
@@ -238,7 +244,7 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
             }
             return data;
 
-        } else if (leadsToLoad != null && leadsToLoad.equals("InActive")) {
+        } else if (leadsToLoad != null && leadsToLoad.equals(INACTIVE_LEADS)) {
 
             Collection<LSContact> contacts = LSContact.getAllInactiveLeadContacts();
             if (contacts != null && contacts.size() > 0) {
@@ -246,20 +252,20 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                FilterItem filterItem = new FilterItem();
 //                data.add(filterItem);
 
-                HomeItem homeItem = new HomeItem();
-                homeItem.text = "Leads";
-                homeItem.value = "" + contacts.size();
-                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
-                data.add(homeItem);
-
-                SeparatorItem separatorItem = new SeparatorItem();
-                separatorItem.text = "Leads";
-                data.add(separatorItem);
-
 //                ChipItem chipItem = new ChipItem();
 ////                chipItem.selected = 4;
 //                chipItem.totalButtons = 5;
 //                data.add(chipItem);
+
+//                HomeItem homeItem = new HomeItem();
+//                homeItem.text = "Leads";
+//                homeItem.value = "" + contacts.size();
+//                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+//                data.add(homeItem);
+
+                SeparatorItem separatorItem = new SeparatorItem();
+                separatorItem.text = "Leads";
+                data.add(separatorItem);
 
                 data.addAll(contacts);
 
@@ -294,20 +300,20 @@ public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
 //                FilterItem filterItem = new FilterItem();
 //                data.add(filterItem);
 
-                HomeItem homeItem = new HomeItem();
-                homeItem.text = "Leads";
-                homeItem.value = "" + contacts.size();
-                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
-                data.add(homeItem);
+//                ChipItem chipItem = new ChipItem();
+//                chipItem.selected = 1;
+//                chipItem.totalButtons = 5;
+//                data.add(chipItem);
+
+//                HomeItem homeItem = new HomeItem();
+//                homeItem.text = "Leads";
+//                homeItem.value = "" + contacts.size();
+//                homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+//                data.add(homeItem);
 
                 SeparatorItem separatorItem = new SeparatorItem();
                 separatorItem.text = "Leads";
                 data.add(separatorItem);
-
-                //                ChipItem chipItem = new ChipItem();
-//                chipItem.selected = 1;
-//                chipItem.totalButtons = 5;
-//                data.add(chipItem);
 
                 data.addAll(contacts);
 

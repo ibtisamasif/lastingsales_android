@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.fragments.CallLogsInContactDetailsFragment;
+import com.example.muzafarimran.lastingsales.fragments.CommentsInDealDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.IndividualContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.NotesInContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
@@ -14,7 +15,7 @@ import com.example.muzafarimran.lastingsales.fragments.TabFragment;
  */
 
 public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
-    final int TAB_COUNT = 3;
+    final int TAB_COUNT = 4;
     private Long id;
     private String number;
 
@@ -37,6 +38,9 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 fragment = CallLogsInContactDetailsFragment.newInstance(3, CallLogsInContactDetailsFragment.TAG, id);
                 break;
+            case 3:
+                fragment = CommentsInDealDetailsFragment.newInstance(3, CommentsInDealDetailsFragment.TAG, id);
+                break;
         }
         return fragment;
     }
@@ -55,6 +59,8 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
                 return "Notes & Followup";
             case 2:
                 return "Calls";
+            case 3:
+                return "Comments";
             default:
                 return null;
         }

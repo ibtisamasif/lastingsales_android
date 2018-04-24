@@ -144,8 +144,16 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 
         if (extras != null) {
             selectedTab = extras.getString(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB);
-            if (selectedTab != null && selectedTab != "") {
-                viewPager.setCurrentItem(1, true);
+            if (selectedTab != null && !selectedTab.equals("")) {
+                if (selectedTab.equals("3")) {
+                    viewPager.setCurrentItem(3, true);
+                } else if (selectedTab.equals("2")) {
+                    viewPager.setCurrentItem(2, true);
+                } else if (selectedTab.equals("1")) {
+                    viewPager.setCurrentItem(1, true);
+                } else {
+                    viewPager.setCurrentItem(0, true);
+                }
             }
         }
     }
