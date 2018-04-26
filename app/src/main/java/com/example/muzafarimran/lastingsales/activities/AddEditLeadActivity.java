@@ -202,6 +202,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                                 if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                                     tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                                 }
+                                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                                 tempContact.save();
                                 if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {//sales selected
                                     moveToContactDetailScreenIfNeeded(tempContact);
@@ -232,6 +233,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                                 if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                                     tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                                 }
+                                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                                 tempContact.save();
 
                                 if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {//sales selected
@@ -263,6 +265,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                                 if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                                     tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                                 }
+                                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                                 tempContact.save();
 
                                 if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {//sales selected
@@ -297,6 +300,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                                     if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
                                         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                                     }
+                                    tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                                     tempContact.save();
                                     //update inquiry as well if exists
                                     LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);

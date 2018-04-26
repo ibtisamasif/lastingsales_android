@@ -21,11 +21,25 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 public class FirebaseCustomNotification {
     public static final int NOTIFICATION_ID = 3;
 
-    public static Notification createFirebaseAssignedLeadNotification(Context context, String name) {
+    public static final String NOTIFICATION_TYPE_NOTE = "type_note";
+    public static final String NOTIFICATION_TYPE_CONTACT = "type_contact";
+    public static final String NOTIFICATION_TYPE_COMMENT = "type_comment";
 
-        Intent homescreenIntent = new Intent(context, NavigationBottomMainActivity.class);
-//        homescreenIntent.putExtra("KEY_SELECTED_TAB", "LEADS_TAB");
-        PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), homescreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    public static Notification createFirebaseAssignedLeadNotification(Context context, String name, String lead_id) {
+
+        Intent intent;
+        PendingIntent pContentIntent;
+        LSContact lsContact = LSContact.getContactFromServerId(lead_id);
+        if (lsContact != null) {
+            intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+            intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
+            intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "0");
+            pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            intent = new Intent(context, NavigationBottomMainActivity.class);
+//        intent.putExtra("KEY_SELECTED_TAB", "LEADS_TAB");
+            pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         Notification.Builder notificationBuilder = new Notification.Builder(context)
                 .setContentIntent(pContentIntent)
@@ -136,12 +150,84 @@ public class FirebaseCustomNotification {
         return notificationBuilder.build();
     }
 
+    public static Notification createFirebaseLeadAssignedNotification(Context context, String user_name, String message, String type, String lead_id, String lead_name) {
+        Intent intent = new Intent(context, NavigationBottomMainActivity.class);
+        PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        switch (type) {
+            case NOTIFICATION_TYPE_COMMENT: {
+                LSContact lsContact = LSContact.getContactFromServerId(lead_id);
+                if (lsContact != null) {
+                    intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                    intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "3");
+                    pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                }
+            }
+            break;
+            default:
+                intent = new Intent(context, NavigationBottomMainActivity.class);
+                pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                break;
+        }
+        Notification.Builder notificationBuilder = new Notification.Builder(context)
+                .setContentIntent(pContentIntent)
+                .setSmallIcon(R.drawable.ic_notification_small)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification_small))
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle("Message on " + lead_name)
+                .setTicker("one new comment")
+                .setStyle(new Notification.BigTextStyle().bigText(message))
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setContentText(user_name + " : " + message);
+        return notificationBuilder.build();
+    }
+
+    public static Notification createFirebaseCommentNotification(Context context, String user_name, String message, String type, String lead_id, String lead_name) {
+        Intent intent = new Intent(context, NavigationBottomMainActivity.class);
+        PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        switch (type) {
+            case NOTIFICATION_TYPE_COMMENT: {
+                LSContact lsContact = LSContact.getContactFromServerId(lead_id);
+                if (lsContact != null) {
+                    intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                    intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "3");
+                    pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                }
+            }
+            break;
+            default:
+                intent = new Intent(context, NavigationBottomMainActivity.class);
+                pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                break;
+        }
+        Notification.Builder notificationBuilder = new Notification.Builder(context)
+                .setContentIntent(pContentIntent)
+                .setSmallIcon(R.drawable.ic_notification_small)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification_small))
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle("Message on " + lead_name)
+                .setTicker("one new comment")
+                .setStyle(new Notification.BigTextStyle().bigText(message))
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setContentText(user_name + " : " + message);
+        return notificationBuilder.build();
+    }
+
     public static Notification createFirebaseCustomNotification(Context context, String message, String type, String id) {
         Intent intent = new Intent(context, NavigationBottomMainActivity.class);
         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         switch (type) {
-            case "type_note": {
+            case NOTIFICATION_TYPE_NOTE: {
                 LSContact lsContact = LSContact.getContactFromServerId(id);
                 if (lsContact != null) {
                     intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
@@ -151,7 +237,7 @@ public class FirebaseCustomNotification {
                 }
             }
             break;
-            case "type_contact": {
+            case NOTIFICATION_TYPE_CONTACT: {
                 LSContact lsContact = LSContact.getContactFromServerId(id);
                 if (lsContact != null) {
                     if (lsContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
@@ -168,7 +254,7 @@ public class FirebaseCustomNotification {
                 }
             }
             break;
-            case "type_comment": {
+            case NOTIFICATION_TYPE_COMMENT: {
                 LSContact lsContact = LSContact.getContactFromServerId(id);
                 if (lsContact != null) {
                     intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
@@ -189,8 +275,8 @@ public class FirebaseCustomNotification {
                 .setPriority(Notification.PRIORITY_MAX)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification_small))
                 .setWhen(System.currentTimeMillis())
-                .setContentTitle("Lasting Sales")
-                .setTicker("Lasting Sales")
+                .setContentTitle("LastingSales")
+                .setTicker("LastingSales")
                 .setStyle(new Notification.BigTextStyle().bigText(message))
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_SOUND)

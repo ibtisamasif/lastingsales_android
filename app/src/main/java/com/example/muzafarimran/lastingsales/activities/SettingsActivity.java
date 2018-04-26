@@ -105,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        if (settingsManager.getKeyStateCallEndDialog()) {
+        if (settingsManager.getKeyStateHourlyNotification()) {
             swHourlyAlarmNotification.setChecked(true);
         } else {
             swHourlyAlarmNotification.setChecked(false);
@@ -124,8 +124,10 @@ public class SettingsActivity extends AppCompatActivity {
                     calendar.set(Calendar.MINUTE, 0);
                     calendar.set(Calendar.SECOND, 0);
                     PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SettingsActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
-                    AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                    am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * 2, pi);
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    if (alarmManager != null) {
+                        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * 2, pi);
+                    }
                     Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Enabled Start App for changes to take effect", Toast.LENGTH_SHORT).show();
                 } else {
                     settingsManager.setKeyStateHourlyNotification(false);
@@ -135,7 +137,9 @@ public class SettingsActivity extends AppCompatActivity {
                         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 //                        Intent myIntent = new Intent(SettingsActivity.this, HourlyAlarmReceiver.class);
 //                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0 , myIntent, 0);
-                        alarmManager.cancel(pendingIntent);
+                        if (alarmManager != null) {
+                            alarmManager.cancel(pendingIntent);
+                        }
                     }
                     Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Disabled", Toast.LENGTH_SHORT).show();
                 }

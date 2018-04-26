@@ -26,7 +26,7 @@ import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
 public class BlankFragment3_2 extends TabFragment implements LoaderManager.LoaderCallbacks<List<Object>> {
-    public static final String TAG = "BlankFragment2";
+    public static final String TAG = "BlankFragment3_2";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public static final int LEADS_LOADER_ID = 3;

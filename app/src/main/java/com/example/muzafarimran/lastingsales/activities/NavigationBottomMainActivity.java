@@ -31,7 +31,6 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment1;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3_1;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment4;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment5;
 import com.example.muzafarimran.lastingsales.R;
@@ -585,8 +584,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         if (!searchView.isIconified()) {
             searchView.setIconified(true);
         } else {
-            Fragment f = getSupportFragmentManager().findFragmentById(R.id.llFragmentContainer);
-            if (f instanceof BlankFragment3_1) {
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.llFragmentContainer); //TODO NPE
+            if (f instanceof BlankFragment3) {
                 super.onBackPressed();
             } else {
                 navigation.setSelectedItemId(R.id.navigation_leads);

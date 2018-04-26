@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.NavigationBottomFragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -26,7 +27,7 @@ import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
 public class BlankFragment3_4 extends TabFragment implements LoaderManager.LoaderCallbacks<List<Object>> {
-    public static final String TAG = "BlankFragment2";
+    public static final String TAG = "BlankFragment3_4";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public static final int LEADS_LOADER_ID = 3;
@@ -63,7 +64,7 @@ public class BlankFragment3_4 extends TabFragment implements LoaderManager.Loade
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getActivity() != null)
             bus = TinyBus.from(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.fragment_blank3_1, container, false);

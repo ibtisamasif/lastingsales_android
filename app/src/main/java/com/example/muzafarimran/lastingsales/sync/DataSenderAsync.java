@@ -541,6 +541,7 @@ public class DataSenderAsync {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateDeal");
+                TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
             }
         }) {
         };

@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 
 public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
-        public static final String TAG = "TheCallLogEngine";
+    public static final String TAG = "TheCallLogEngine";
 //    private static final String TAG = "AppInitializationTest";
 
     public static final String SUB_ID = "subscription";
@@ -135,7 +135,8 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     LSCall tempCall = new LSCall();
                     tempCall.setCallLogId(callId);
                     tempCall.setContactNumber(internationalNumber);
-                    tempCall.setContactName(callName);
+                    if (callName != null && !callName.equals("null"))
+                        tempCall.setContactName(callName);
                     tempCall.setBeginTime(Long.parseLong(callDate));
                     tempCall.setDuration(Long.parseLong(callDuration));
 

@@ -802,6 +802,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
                     Toast.makeText(parent.getContext(), "Status Changed to InProgress", Toast.LENGTH_SHORT).show();
                     dataSenderAsync.run();
                     break;
@@ -809,14 +810,15 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
                     Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
                     dataSenderAsync.run();
-                    ;
                     break;
                 case 2:
                     mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
                     mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                     mContact.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
                     Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
                     dataSenderAsync.run();
                     break;

@@ -9,7 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -38,7 +40,11 @@ import java.util.Map;
 
 public class OnBoardingActivity extends AppCompatActivity {
     private static final String TAG = "OnBoardingActivity";
+    private LinearLayout indicator;
+    private int mDotCount;
+    private LinearLayout[] mDots;
     private CustomViewPager viewPager;
+    private TutorialsFragmentPagerAdapter tutorialsFragmentPagerAdapter;
     private static RequestQueue queue;
     private SessionManager sessionManager;
     private String companyName;
@@ -52,10 +58,11 @@ public class OnBoardingActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutorial);
+        setContentView(R.layout.activity_onboarding);
+        indicator = (LinearLayout) findViewById(R.id.indicators);
         viewPager = findViewById(R.id.viewpager);
         FragmentManager fm = getSupportFragmentManager();
-        TutorialsFragmentPagerAdapter tutorialsFragmentPagerAdapter = new TutorialsFragmentPagerAdapter(fm);
+        tutorialsFragmentPagerAdapter = new TutorialsFragmentPagerAdapter(fm);
         viewPager.setAdapter(tutorialsFragmentPagerAdapter);
         viewPager.setCurrentItem(0);
         queue = Volley.newRequestQueue(OnBoardingActivity.this, new HurlStack());
@@ -81,6 +88,11 @@ public class OnBoardingActivity extends AppCompatActivity {
                 } else if (position == 6) {
                     viewPager.setPagingEnabled(false);
                 }
+
+                for (int i = 0; i < mDotCount; i++) {
+                    mDots[i].setBackgroundResource(R.drawable.nonselected_item);
+                }
+                mDots[position].setBackgroundResource(R.drawable.selected_item);
             }
 
             @Override
@@ -88,6 +100,26 @@ public class OnBoardingActivity extends AppCompatActivity {
 
             }
         });
+        setUiPageViewController();
+    }
+
+    private void setUiPageViewController() {
+        mDotCount = tutorialsFragmentPagerAdapter.getCount();
+        mDots = new LinearLayout[mDotCount];
+
+        for (int i = 0; i < mDotCount; i++) {
+            mDots[i] = new LinearLayout(OnBoardingActivity.this);
+            mDots[i].setBackgroundResource(R.drawable.nonselected_item);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            params.setMargins(4, 0, 4, 0);
+            indicator.addView(mDots[i], params);
+            mDots[0].setBackgroundResource(R.drawable.selected_item);
+        }
     }
 
     public class TutorialsFragmentPagerAdapter extends FragmentPagerAdapter {

@@ -404,6 +404,30 @@ public class VersionManager {
             } catch (Exception e) {
                 return false;
             }
+        } else if (version == 119) {
+            try {
+                Log.d(TAG, "func: Running Script for Migration");
+                if (sessionManager.getLoginMode().equals(SessionManager.MODE_NORMAL)) {
+                    Log.d(TAG, "MODE_NORMAL");
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_NEW_INSTALL)) {
+                    Log.d(TAG, "MODE_NEW_INSTALL");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    return true;
+                } else if (sessionManager.getLoginMode().equals(SessionManager.MODE_UPGRADE)) {
+                    Log.d(TAG, "MODE_UPGRADE");
+                    // Do first run stuff here then set 'firstrun' as false
+                    // using the following line to edit/commit prefs
+                    Intent intentInitService = new Intent(mContext, InitService.class);
+                    mContext.startService(intentInitService);
+                    return true;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
+            }
         }
         else {
             return true;

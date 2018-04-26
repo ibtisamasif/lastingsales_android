@@ -50,7 +50,7 @@ public class SettingsManager {
     }
 
     public Boolean getKeyStateHourlyNotification() {
-        return pref.getBoolean(KEY_STATE_HOURLY_NOTIFICATION, true);
+        return pref.getBoolean(KEY_STATE_HOURLY_NOTIFICATION, false);
     }
 
     public void setKeyStateHourlyNotification(Boolean state) {

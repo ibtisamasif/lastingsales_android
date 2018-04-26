@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -62,7 +61,7 @@ public class CommentsInDealDetailsFragment extends TabFragment {
     private Context mContext;
     private static RequestQueue queue;
 
-    private ProgressDialog pdLoading;
+//    private ProgressDialog pdLoading;
     private Button buttonSend;
     private EditText chatText;
 
@@ -84,10 +83,10 @@ public class CommentsInDealDetailsFragment extends TabFragment {
         mContext = context;
         sessionManager = new SessionManager(context);
         queue = Volley.newRequestQueue(context);
-        pdLoading = new ProgressDialog(context);
-        pdLoading.setTitle("Loading data");
+//        pdLoading = new ProgressDialog(context);
+//        pdLoading.setTitle("Loading data");
         //this method will be running on UI thread
-        pdLoading.setMessage("Please Wait...");
+//        pdLoading.setMessage("Please Wait...");
     }
 
     @Override
@@ -114,9 +113,9 @@ public class CommentsInDealDetailsFragment extends TabFragment {
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pdLoading != null) {
-                    pdLoading.show();
-                }
+//                if (pdLoading != null) {
+//                    pdLoading.show();
+//                }
                 String comment = chatText.getText().toString();
                 addCommentToServer(comment);
                 chatText.setText("");
@@ -155,9 +154,9 @@ public class CommentsInDealDetailsFragment extends TabFragment {
 
     @Override
     public void onDestroy() {
-        if (pdLoading != null && pdLoading.isShowing()) {
-            pdLoading.dismiss();
-        }
+//        if (pdLoading != null && pdLoading.isShowing()) {
+//            pdLoading.dismiss();
+//        }
         super.onDestroy();
     }
 
@@ -175,10 +174,10 @@ public class CommentsInDealDetailsFragment extends TabFragment {
 //            list.add(separatorNotes);
 
 
-            //Fetch Comments from Api now and put it in the list
-            if (pdLoading != null) {
-                pdLoading.show();
-            }
+//            //Fetch Comments from Api now and put it in the list
+//            if (pdLoading != null) {
+//                pdLoading.show();
+//            }
             fetchAgentCommentsFunc(selectedContact);
 
 
@@ -220,9 +219,9 @@ public class CommentsInDealDetailsFragment extends TabFragment {
             public void onResponse(String response) {
                 try {
                     Log.d(TAG, "onResponse() getComments: response = [" + response + "]");
-                    if (pdLoading != null && pdLoading.isShowing()) {
-                        pdLoading.dismiss();
-                    }
+//                    if (pdLoading != null && pdLoading.isShowing()) {
+//                        pdLoading.dismiss();
+//                    }
                     JSONObject jObj = new JSONObject(response);
                     JSONObject respObject = jObj.getJSONObject("response");
                     JSONArray dataArray = respObject.getJSONArray("data");
@@ -266,9 +265,9 @@ public class CommentsInDealDetailsFragment extends TabFragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if (pdLoading != null && pdLoading.isShowing()) {
-                        pdLoading.dismiss();
-                    }
+//                    if (pdLoading != null && pdLoading.isShowing()) {
+//                        pdLoading.dismiss();
+//                    }
                     Log.e(TAG, "onResponse: JSONException Comments");
                 }
             }
@@ -276,9 +275,9 @@ public class CommentsInDealDetailsFragment extends TabFragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "onErrorResponse: CouldNotGETComments");
-                if (pdLoading != null && pdLoading.isShowing()) {
-                    pdLoading.dismiss();
-                }
+//                if (pdLoading != null && pdLoading.isShowing()) {
+//                    pdLoading.dismiss();
+//                }
                 if (error.networkResponse != null && error.networkResponse.statusCode == 404) {
                     ErrorItem errorItem = new ErrorItem();
                     errorItem.message = "No comments found";
@@ -307,9 +306,9 @@ public class CommentsInDealDetailsFragment extends TabFragment {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() addComment: response = [" + response + "]");
-                if (pdLoading != null && pdLoading.isShowing()) {
-                    pdLoading.dismiss();
-                }
+//                if (pdLoading != null && pdLoading.isShowing()) {
+//                    pdLoading.dismiss();
+//                }
                 TinyBus.from(mContext.getApplicationContext()).post(new CommentEventModel());
             }
         }, new Response.ErrorListener() {
@@ -317,9 +316,9 @@ public class CommentsInDealDetailsFragment extends TabFragment {
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddComment");
                 try {
-                    if (pdLoading != null && pdLoading.isShowing()) {
-                        pdLoading.dismiss();
-                    }
+//                    if (pdLoading != null && pdLoading.isShowing()) {
+//                        pdLoading.dismiss();
+//                    }
                     if (error != null) {
                         if (error.networkResponse != null) {
                             Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);

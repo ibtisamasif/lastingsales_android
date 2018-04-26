@@ -46,6 +46,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
         setContentView(R.layout.activity_contact_details_tab);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,22 +62,9 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 selectedContact = LSContact.findById(LSContact.class, contactIDLong);
             }
         }
-        if (selectedContact != null) {
-            if (selectedContact.getContactName() == null || selectedContact.getContactName().equals("")) {
-//                tvName.setVisibility(View.GONE);
-            } else {
-                toolbar.setTitle(selectedContact.getContactName());
-                setSupportActionBar(toolbar);
-//                collapsingToolbarLayout.setTitle(selectedContact.getContactName());
-            }
-            if (selectedContact.getPhoneOne() == null || selectedContact.getPhoneOne().equals("")) {
-//                tvNumberOne.setVisibility(View.GONE);
-            } else {
-//                tvNumberOne.setText(selectedContact.getPhoneOne());
-            }
-        }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+//        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         viewPager.setAdapter(new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId(), selectedContact.getPhoneOne())); //TODO crash getId was null
 
         // Give the TabLayout the ViewPager
@@ -141,21 +129,6 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        if (extras != null) {
-            selectedTab = extras.getString(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB);
-            if (selectedTab != null && !selectedTab.equals("")) {
-                if (selectedTab.equals("3")) {
-                    viewPager.setCurrentItem(3, true);
-                } else if (selectedTab.equals("2")) {
-                    viewPager.setCurrentItem(2, true);
-                } else if (selectedTab.equals("1")) {
-                    viewPager.setCurrentItem(1, true);
-                } else {
-                    viewPager.setCurrentItem(0, true);
-                }
-            }
-        }
     }
 
     public void onBackPressed() {
@@ -259,7 +232,38 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 selectedContact = LSContact.findById(LSContact.class, contactIDLong);
             }
         }
+
         toolbar.setTitle(selectedContact.getContactName());
         setSupportActionBar(toolbar);
+
+        if (extras != null) {
+            selectedTab = extras.getString(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB);
+            if (selectedTab != null && !selectedTab.equals("")) {
+                if (selectedTab.equals("3")) {
+                    viewPager.setCurrentItem(3, true);
+                } else if (selectedTab.equals("2")) {
+                    viewPager.setCurrentItem(2, true);
+                } else if (selectedTab.equals("1")) {
+                    viewPager.setCurrentItem(1, true);
+                } else {
+                    viewPager.setCurrentItem(0, true);
+                }
+            }
+        }
+
+        if (selectedContact != null) {
+            if (selectedContact.getContactName() == null || selectedContact.getContactName().equals("")) {
+//                tvName.setVisibility(View.GONE);
+            } else {
+                toolbar.setTitle(selectedContact.getContactName());
+                setSupportActionBar(toolbar);
+//                collapsingToolbarLayout.setTitle(selectedContact.getContactName());
+            }
+            if (selectedContact.getPhoneOne() == null || selectedContact.getPhoneOne().equals("")) {
+//                tvNumberOne.setVisibility(View.GONE);
+            } else {
+//                tvNumberOne.setText(selectedContact.getPhoneOne());
+            }
+        }
     }
 }

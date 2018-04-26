@@ -170,9 +170,7 @@ public class InitService extends IntentService {
                             if (created_by != 0) {
                                 tempContact.setCreatedBy(created_by);
                             }
-                            if (updated_at != null) {
-                                tempContact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
-                            }
+                            tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                             tempContact.setUserId(user_id);
                             tempContact.setSrc(src);
                             tempContact.save();

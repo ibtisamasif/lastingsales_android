@@ -36,6 +36,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -44,7 +45,7 @@ import de.halfbit.tinybus.TinyBus;
  * www.androidhive.info
  */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-
+    private final static AtomicInteger c = new AtomicInteger(0);
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
     String mMsg;
     SessionManager sessionManager;
@@ -157,9 +158,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                        if(created_at != null){
 //                            tempContact.setContactCreated_at(created_at);
 //                        }
-                        if (updated_at != null) {
-                            tempContact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
-                        }
+                        tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                         if (created_by != 0) {
                             tempContact.setCreatedBy(created_by);
                         }
@@ -178,7 +177,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         if (src.equals("assigned")) {
                             Log.d(TAG, "handleDataMessage: Notification Message: Lead from assigned: " + name);
                             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                            mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name));
+                            mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name, id));
                         }
                     } else {
                         LSContact contact = new LSContact();
@@ -203,9 +202,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             contact.setVersion(version);
                         }
                         contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
-                        if (updated_at != null) {
-                            contact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
-                        }
+                        contact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                         if (created_by != 0) {
                             contact.setCreatedBy(created_by);
                         }
@@ -224,7 +221,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         if (src.equals("assigned")) {
                             Log.d(TAG, "handleDataMessage: Notification Message: Lead from assigned: " + name);
                             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                            mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name));
+                            mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name, id));
                         }
                         Log.e(TAG, "Post From Local DB: " + contact.getContactName());
                         LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
@@ -288,9 +285,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         contact.setVersion(version);
                     }
                     contact.setContactType(lead_type);
-                    if (updated_at != null) {
-                        contact.setUpdatedAt(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(updated_at));
-                    }
+                    contact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                     if (created_by != 0) {
                         contact.setCreatedBy(created_by);
                     }
@@ -312,7 +307,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (src.equals("assigned")) {
                         Log.d(TAG, "handleDataMessage: Notification Message: Lead from assigned: " + name);
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name));
+                        mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name, id));
                     }
                     ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
@@ -753,9 +748,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (tag.equals("Comment")) {
                 if (action.equals("post")) {
                     String id = payload.getString("id");
-                    int lead_id = 0;
+                    String lead_id = "";
                     if (payload.has("lead_id")) {
-                        lead_id = payload.getInt("lead_id");
+                        lead_id = payload.getString("lead_id");
                     }
                     String comment = payload.getString("comment");
                     int user_id = 0;
@@ -769,29 +764,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String created_at = payload.getString("created_at");
                     String updated_at = payload.getString("updated_at");
 
-//                    // ignore if task already exists
-//                    LSDeal lsDeal = LSDeal.getDealFromServerId(id);
-//                    if (lsDeal == null) {
-//                        // check if lead still exists of which the deal is
-//                        LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
-//                        if (lsContact != null) {
-//                            lsDeal = new LSDeal();
-//                            lsDeal.setServerId(id);
-//                            lsDeal.setUserId(Integer.toString(user_id));
-//                            lsDeal.setCompanyId(Integer.toString(company_id));
-//                            lsDeal.setWorkflowId(workflow_id);
-//                            lsDeal.setLeadId(Integer.toString(lead_id));
-//                            lsDeal.setName(name);
-//                            lsDeal.setStatus(status);
-//                            lsDeal.setCreatedBy(Integer.toString(created_by));
-//                            lsDeal.setCreatedAt(created_at);
-//                            Date updated_atDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
-//                            lsDeal.setUpdatedAt(updated_atDate);
-//                            lsDeal.save();
-//
-////                            TaskAddedEventModel mCallEvent = new TaskAddedEventModel();
-////                            TinyBus bus = TinyBus.from(getApplicationContext());
-////                            bus.post(mCallEvent);
+                    JSONObject objectUser = payload.getJSONObject("user");
+                    String firstUsername = objectUser.getString("firstname");
+                    String lastUsername = objectUser.getString("lastname");
+
+                    JSONObject objectLead = payload.getJSONObject("lead");
+                    String lead_name = objectLead.getString("name");
+
+                    Log.d(TAG, "handleDataMessage: firstname: " + firstUsername);
+                    Log.d(TAG, "handleDataMessage: lastname: " + lastUsername);
+
+                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseCommentNotification(getApplicationContext(), firstUsername + " " + lastUsername, comment, FirebaseCustomNotification.NOTIFICATION_TYPE_COMMENT, lead_id, lead_name));
                     TinyBus.from(getApplicationContext()).post(new CommentEventModel());
 //                        }
 //                    }
@@ -856,10 +840,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String id = payload.getString("id");
                     String type = payload.getString("type");
                     String title = payload.getString("title");
-
                     Log.d(TAG, "handleDataMessage: id: " + id);
-                    Log.d(TAG, "handleDataMessage: id: " + type);
-                    Log.d(TAG, "handleDataMessage: id: " + title);
+                    Log.d(TAG, "handleDataMessage: type: " + type);
+                    Log.d(TAG, "handleDataMessage: title: " + title);
 
                     NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseCustomNotification(getApplicationContext(), title, type, id));

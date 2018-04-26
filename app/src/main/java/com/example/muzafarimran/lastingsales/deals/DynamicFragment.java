@@ -53,7 +53,6 @@ public class DynamicFragment extends Fragment implements LoaderManager.LoaderCal
         Log.d(TAG, "onCreateView: ");
         if (getActivity() != null)
             bus = TinyBus.from(getActivity().getApplicationContext());
-
         return inflater.inflate(R.layout.fragment_deal_screen, container, false);
     }
 
