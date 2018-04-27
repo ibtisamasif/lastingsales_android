@@ -17,12 +17,10 @@ import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
     final int TAB_COUNT = 4;
     private Long id;
-    private String number;
 
-    public ContactDetailsFragmentPagerAdapter(FragmentManager fm, Long id, String number) {
+    public ContactDetailsFragmentPagerAdapter(FragmentManager fm, Long id) {
         super(fm);
         this.id = id;
-        this.number = number;
     }
 
     @Override
@@ -39,7 +37,7 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = CallLogsInContactDetailsFragment.newInstance(3, CallLogsInContactDetailsFragment.TAG, id);
                 break;
             case 3:
-                fragment = CommentsInDealDetailsFragment.newInstance(3, CommentsInDealDetailsFragment.TAG, id);
+                fragment = CommentsInDealDetailsFragment.newInstance(4, CommentsInDealDetailsFragment.TAG, id);
                 break;
         }
         return fragment;
@@ -64,5 +62,10 @@ public class ContactDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

@@ -581,7 +581,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
     @Override
     public void onBackPressed() {
-        if (!searchView.isIconified()) {
+        if (searchView != null && !searchView.isIconified()) {
             searchView.setIconified(true);
         } else {
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.llFragmentContainer); //TODO NPE

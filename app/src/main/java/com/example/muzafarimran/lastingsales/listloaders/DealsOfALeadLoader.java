@@ -7,7 +7,6 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.carditems.AddDealItem;
-import com.example.muzafarimran.lastingsales.fragments.IndividualContactDetailsFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 
@@ -29,7 +28,8 @@ public class DealsOfALeadLoader extends AsyncTaskLoader<List<Object>> {
         super(context);
         bundle = args;
         if (bundle != null) {
-            lead_id = bundle.getString(IndividualContactDetailsFragment.DEALS_LEAD_ID);
+            Long leadIdLong = bundle.getLong("someId");
+            lead_id = Long.toString(leadIdLong);
         }
     }
 

@@ -81,6 +81,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
     public static final String TAG = "IndividualContDetailFra";
     public static final java.lang.String DEALS_LEAD_ID = "deals_lead_id";
     public static final int DEALS_OF_A_LEAD = 31;
+    private static Bundle args;
     //    TextView tvName;
     TextView tvNumber;
     TextView tvDefaultText;
@@ -125,14 +126,13 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
     private SessionManager sessionManager;
     private RequestQueue queue;
     private Context mContext;
-    private Bundle args;
 
 
     public static IndividualContactDetailsFragment newInstance(int page, String title, Long id) {
         IndividualContactDetailsFragment fragmentFirst = new IndividualContactDetailsFragment();
         dynamicColumnBuilderVersion1 = new DynamicColumnBuilderVersion1();
         dynamicColumnBuilderVersion2 = new DynamicColumnBuilderVersion2();
-        Bundle args = new Bundle();
+        args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
         args.putLong("someId", id);
@@ -152,8 +152,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate: ");
         setRetainInstance(true);
-        Bundle bundle = this.getArguments();
-        contactIDLong = bundle.getLong("someId");
+        contactIDLong = args.getLong("someId");
         setHasOptionsMenu(true);
     }
 
@@ -381,8 +380,6 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
         });
         addItemsOnSpinnerLeadStatus(view);
         dynamicColumns(view);
-        args = new Bundle();
-        args.putString(DEALS_LEAD_ID, mContact.getId() + "");
         getLoaderManager().initLoader(DEALS_OF_A_LEAD, args, IndividualContactDetailsFragment.this);
         setHasOptionsMenu(true);
         return view;
@@ -406,8 +403,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume: ");
-        Bundle bundle = this.getArguments();
-        contactIDLong = bundle.getLong("someId");
+        contactIDLong = args.getLong("someId");
         mContact = LSContact.findById(LSContact.class, contactIDLong);
 //        if (mContact != null && mContact.getContactName() != null) {
 //            tvName.setText(mContact.getContactName());
@@ -644,8 +640,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
 
         Log.d(TAG, "Populating Lead Data");
 
-        Bundle bundle = this.getArguments();
-        contactIDLong = bundle.getLong("someId");
+        contactIDLong = args.getLong("someId");
         mContact = LSContact.findById(LSContact.class, contactIDLong);
         Log.d(TAG, "contactID: " + mContact.getId());
         Log.d(TAG, "contactName: " + mContact.getContactName());

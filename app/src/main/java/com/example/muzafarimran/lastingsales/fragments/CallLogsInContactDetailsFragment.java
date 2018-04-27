@@ -29,6 +29,7 @@ import de.halfbit.tinybus.TinyBus;
 public class CallLogsInContactDetailsFragment extends TabFragment {
 
     public static final String TAG = "CallLogsInContactDetailsFragment";
+    private static Bundle args;
     private RecyclerView mRecyclerView;
     private MyRecyclerViewAdapter adapter;
     private List<Object> list = new ArrayList<Object>();
@@ -39,7 +40,7 @@ public class CallLogsInContactDetailsFragment extends TabFragment {
 
     public static CallLogsInContactDetailsFragment newInstance(int page, String title, Long id) {
         CallLogsInContactDetailsFragment fragmentFirst = new CallLogsInContactDetailsFragment();
-        Bundle args = new Bundle();
+        args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
         args.putLong("someId", id);
@@ -52,8 +53,7 @@ public class CallLogsInContactDetailsFragment extends TabFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        Bundle bundle = this.getArguments();
-        contactIDLong = bundle.getLong("someId");
+        contactIDLong = args.getLong("someId");
         mContact = LSContact.findById(LSContact.class, contactIDLong);
         number = mContact.getPhoneOne();
         setHasOptionsMenu(true);
@@ -75,8 +75,7 @@ public class CallLogsInContactDetailsFragment extends TabFragment {
     @Override
     public void onResume() {
         super.onResume();
-//        Bundle bundle = this.getArguments();
-//        contactIDLong = bundle.getLong("someId");
+//        contactIDLong = args.getLong("someId");
 //        mContact = LSContact.findById(LSContact.class, contactIDLong);
 //        number = mContact.getPhoneOne();
 //        ArrayList<LSCall> allCalls = (ArrayList<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(this.number)).orderBy("begin_time DESC").list();

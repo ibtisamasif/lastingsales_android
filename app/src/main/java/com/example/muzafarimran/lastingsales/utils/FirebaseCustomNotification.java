@@ -32,6 +32,8 @@ public class FirebaseCustomNotification {
         LSContact lsContact = LSContact.getContactFromServerId(lead_id);
         if (lsContact != null) {
             intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(ContactDetailsTabActivity.KEY_SOURCE, ContactDetailsTabActivity.KEY_SOURCE_NOTIFICATION);
             intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
             intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "0");
             pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -59,9 +61,10 @@ public class FirebaseCustomNotification {
 
     public static Notification createFirebaseFacebookLeadNotification(Context context, String name) {
 
-        Intent homescreenIntent = new Intent(context, NavigationBottomMainActivity.class);
-//        homescreenIntent.putExtra("KEY_SELECTED_TAB", "LEADS_TAB");
-        PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), homescreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent(context, NavigationBottomMainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.putExtra("KEY_SELECTED_TAB", "LEADS_TAB");
+        PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder notificationBuilder = new Notification.Builder(context)
                 .setContentIntent(pContentIntent)
@@ -81,9 +84,10 @@ public class FirebaseCustomNotification {
 
     public static Notification createFirebaseInquiriesNotification(Context context, String message) {
 
-        Intent inquiriesIntent = new Intent(context, NavigationBottomMainActivity.class);
-        inquiriesIntent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
-        PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), inquiriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent(context, NavigationBottomMainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("KEY_SELECTED_TAB", "INQUIRIES_TAB");
+        PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder notificationBuilder = new Notification.Builder(context)
                 .setContentIntent(pContentIntent)
@@ -159,6 +163,8 @@ public class FirebaseCustomNotification {
                 LSContact lsContact = LSContact.getContactFromServerId(lead_id);
                 if (lsContact != null) {
                     intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SOURCE, ContactDetailsTabActivity.KEY_SOURCE_NOTIFICATION);
                     intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
                     intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "3");
                     pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -195,6 +201,8 @@ public class FirebaseCustomNotification {
                 LSContact lsContact = LSContact.getContactFromServerId(lead_id);
                 if (lsContact != null) {
                     intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SOURCE, ContactDetailsTabActivity.KEY_SOURCE_NOTIFICATION);
                     intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
                     intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "3");
                     pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -231,6 +239,8 @@ public class FirebaseCustomNotification {
                 LSContact lsContact = LSContact.getContactFromServerId(id);
                 if (lsContact != null) {
                     intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SOURCE, ContactDetailsTabActivity.KEY_SOURCE_NOTIFICATION);
                     intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
                     intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "1");
                     pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -242,6 +252,8 @@ public class FirebaseCustomNotification {
                 if (lsContact != null) {
                     if (lsContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
                         intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra(ContactDetailsTabActivity.KEY_SOURCE, ContactDetailsTabActivity.KEY_SOURCE_NOTIFICATION);
                         intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
                         pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     }
@@ -258,6 +270,8 @@ public class FirebaseCustomNotification {
                 LSContact lsContact = LSContact.getContactFromServerId(id);
                 if (lsContact != null) {
                     intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SOURCE, ContactDetailsTabActivity.KEY_SOURCE_NOTIFICATION);
                     intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
                     intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "3");
                     pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);

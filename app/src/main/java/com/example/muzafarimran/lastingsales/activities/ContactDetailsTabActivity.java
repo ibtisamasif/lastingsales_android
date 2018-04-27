@@ -30,6 +30,8 @@ import de.halfbit.tinybus.TinyBus;
 
 public class ContactDetailsTabActivity extends AppCompatActivity {
     public static final String TAG = "ContactDetailsTab";
+    public static final String KEY_SOURCE = "key_source";
+    public static final String KEY_SOURCE_NOTIFICATION = "key_source_notification";
     public static final String KEY_CONTACT_ID = "contact_id";
     public static final String KEY_SET_SELECTED_TAB = "key_set_selected_tab";
 
@@ -41,8 +43,8 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     private TinyBus bus;
     Toolbar toolbar;
     ActionBar actionBar;
-//    private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
+    //    private CollapsingToolbarLayout collapsingToolbarLayout = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,20 +54,31 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add_deal);
+        floatingActionButton.hide();
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AddEditNoteActivity.class);
+                intent.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_ADD_NEW_NOTE);
+                intent.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_CONTACT_NUMBER, selectedContact.getPhoneOne());
+                startActivity(intent);
+            }
+        });
 
         Bundle extras = getIntent().getExtras();
-        Long contactIDLong;
         if (extras != null) {
             contactIdString = extras.getString(ContactDetailsTabActivity.KEY_CONTACT_ID);
             if (contactIdString != null) {
-                contactIDLong = Long.parseLong(contactIdString);
+                Long contactIDLong = Long.parseLong(contactIdString);
                 selectedContact = LSContact.findById(LSContact.class, contactIDLong);
             }
         }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-//        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        viewPager.setAdapter(new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId(), selectedContact.getPhoneOne())); //TODO crash getId was null
+        ContactDetailsFragmentPagerAdapter contactDetailsFragmentPagerAdapter = new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId());
+        viewPager.setAdapter(contactDetailsFragmentPagerAdapter); //TODO crash getId was null
+//        viewPager.getAdapter().notifyDataSetChanged();
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -118,21 +131,93 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
             }
         });
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add_deal);
-        floatingActionButton.hide();
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddEditNoteActivity.class);
-                intent.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_ADD_NEW_NOTE);
-                intent.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_CONTACT_NUMBER, selectedContact.getPhoneOne());
-                startActivity(intent);
+        if (extras != null) {
+            selectedTab = extras.getString(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB);
+            if (selectedTab != null && !selectedTab.equals("")) {
+                if (selectedTab.equals("3")) {
+                    viewPager.setCurrentItem(3, true);
+                    contactDetailsFragmentPagerAdapter.getItem(3).setArguments(extras);
+                } else if (selectedTab.equals("2")) {
+                    viewPager.setCurrentItem(2, true);
+                    contactDetailsFragmentPagerAdapter.getItem(2).setArguments(extras);
+                } else if (selectedTab.equals("1")) {
+                    viewPager.setCurrentItem(1, true);
+                    contactDetailsFragmentPagerAdapter.getItem(1).setArguments(extras);
+                } else {
+                    viewPager.setCurrentItem(0, true);
+                    contactDetailsFragmentPagerAdapter.getItem(0).setArguments(extras);
+                }
             }
-        });
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
+        bus = TinyBus.from(this.getApplicationContext());
+        bus.register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String source = extras.getString(ContactDetailsTabActivity.KEY_SOURCE);
+            String newContactId = extras.getString(ContactDetailsTabActivity.KEY_CONTACT_ID);
+            if (source != null) {
+                if (source.equalsIgnoreCase(ContactDetailsTabActivity.KEY_SOURCE_NOTIFICATION)) {
+                    finish();
+                    Intent intent = new Intent(this, ContactDetailsTabActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, newContactId);
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "3");
+                    startActivity(intent);
+                }
+            }
+        }
+
+        if (contactIdString != null) {
+            Long contactIDLong = Long.parseLong(contactIdString);
+            selectedContact = LSContact.findById(LSContact.class, contactIDLong);
+        }
+
+        if (selectedContact != null) {
+            if (selectedContact.getContactName() == null || selectedContact.getContactName().equals("")) {
+                toolbar.setTitle(selectedContact.getPhoneOne());
+                setSupportActionBar(toolbar);
+            } else {
+                toolbar.setTitle(selectedContact.getContactName());
+                setSupportActionBar(toolbar);
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "onPause: ");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop: ");
+        bus.unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d(TAG, "onNewIntent: ");
+        if (intent != null)
+            setIntent(intent);
     }
 
     public void onBackPressed() {
         super.onBackPressed();
+        Log.d(TAG, "onBackPressed: ");
 //        BackPressedEventModel model = new BackPressedEventModel();
 //        TinyBus.from(getApplicationContext()).post(model);
 //        if (!model.backPressHandled) {
@@ -205,65 +290,5 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        bus = TinyBus.from(this.getApplicationContext());
-        bus.register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        bus.unregister(this);
-        super.onStop();
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        Bundle extras = getIntent().getExtras();
-        Long contactIDLong;
-        if (extras != null) {
-            contactIdString = extras.getString(ContactDetailsTabActivity.KEY_CONTACT_ID);
-            if (contactIdString != null) {
-                contactIDLong = Long.parseLong(contactIdString);
-                selectedContact = LSContact.findById(LSContact.class, contactIDLong);
-            }
-        }
-
-        toolbar.setTitle(selectedContact.getContactName());
-        setSupportActionBar(toolbar);
-
-        if (extras != null) {
-            selectedTab = extras.getString(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB);
-            if (selectedTab != null && !selectedTab.equals("")) {
-                if (selectedTab.equals("3")) {
-                    viewPager.setCurrentItem(3, true);
-                } else if (selectedTab.equals("2")) {
-                    viewPager.setCurrentItem(2, true);
-                } else if (selectedTab.equals("1")) {
-                    viewPager.setCurrentItem(1, true);
-                } else {
-                    viewPager.setCurrentItem(0, true);
-                }
-            }
-        }
-
-        if (selectedContact != null) {
-            if (selectedContact.getContactName() == null || selectedContact.getContactName().equals("")) {
-//                tvName.setVisibility(View.GONE);
-            } else {
-                toolbar.setTitle(selectedContact.getContactName());
-                setSupportActionBar(toolbar);
-//                collapsingToolbarLayout.setTitle(selectedContact.getContactName());
-            }
-            if (selectedContact.getPhoneOne() == null || selectedContact.getPhoneOne().equals("")) {
-//                tvNumberOne.setVisibility(View.GONE);
-            } else {
-//                tvNumberOne.setText(selectedContact.getPhoneOne());
-            }
-        }
     }
 }

@@ -34,7 +34,7 @@ public class ContactProfileProvider {
     public ContactProfileProvider(Context context) {
         this.mContext = context;
         sessionManager = new SessionManager(context);
-        queue = Volley.newRequestQueue(mContext);
+        queue = Volley.newRequestQueue(context);
     }
 
     public void getContactProfile(String number, final LSContactProfileCallback callback) {

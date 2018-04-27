@@ -9,9 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.LogInActivity;
 import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 public class FragmentE extends Fragment {
 
@@ -54,10 +52,10 @@ public class FragmentE extends Fragment {
             if (company.length() < 4) {
                 companyVarified = false;
             }
-            if (email.length() < 7 ) {
+            if (email.length() < 7) {
                 emailVarified = false;
             }
-            if(!MyDateTimeStamp.isValidEmail(email)){
+            if (!MyDateTimeStamp.isValidEmail(email)) {
                 emailVarified = false;
             }
             if (!companyVarified) {

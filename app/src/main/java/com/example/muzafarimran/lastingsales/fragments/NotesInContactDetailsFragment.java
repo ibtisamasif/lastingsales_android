@@ -34,6 +34,7 @@ import de.halfbit.tinybus.TinyBus;
 public class NotesInContactDetailsFragment extends TabFragment {
     public static final String TAG = "NotesInContactDetailsFr";
     public static final String CONTACT_ID = "contact_id";
+    private static Bundle args;
     LSContact selectedContact;
     private TinyBus bus;
     private RecyclerView mRecyclerView;
@@ -43,7 +44,7 @@ public class NotesInContactDetailsFragment extends TabFragment {
 
     public static NotesInContactDetailsFragment newInstance(int page, String title, Long id) {
         NotesInContactDetailsFragment fragmentFirst = new NotesInContactDetailsFragment();
-        Bundle args = new Bundle();
+        args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
         args.putLong(NotesInContactDetailsFragment.CONTACT_ID, id);
@@ -103,10 +104,8 @@ public class NotesInContactDetailsFragment extends TabFragment {
 
     private void onResumeFetchFreshData() {
         list.clear();
-
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            contactIDLong = bundle.getLong(NotesInContactDetailsFragment.CONTACT_ID);
+        if (args != null) {
+            contactIDLong = args.getLong(NotesInContactDetailsFragment.CONTACT_ID);
         }
         selectedContact = LSContact.findById(LSContact.class, contactIDLong);
 
