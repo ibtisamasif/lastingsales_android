@@ -67,7 +67,6 @@ import java.util.Calendar;
 import java.util.Collection;
 
 import de.halfbit.tinybus.Subscribe;
-import de.halfbit.tinybus.TinyBus;
 import de.halfbit.tinybus.wires.ShakeEventWire;
 
 /**
@@ -93,7 +92,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     public static String BOTTOMSHEET_TAB = "bottomsheet_tab";
     public static String KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID = "bottomsheet_contact_id";
 
-    private TinyBus bus;
+//    private TinyBus bus;
     //    private List<Object> list = new ArrayList<Object>();
 //    private MyRecyclerViewAdapter adapter;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -322,15 +321,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         Log.d(TAG, "initFirst: density: " + getResources().getDisplayMetrics().density);
         activity = this;
         sessionManager = new SessionManager(getApplicationContext());
-        bus = TinyBus.from(this.getApplicationContext());
-        if (savedInstanceState == null) {
-            // Note: ShakeEventWire stays wired when activity is re-created
-            //       on configuration change. That's why we register is
-            //       only once inside if-statement.
-
-            // wire device shake event provider
-            bus.wire(new ShakeEventWire());
-        }
+//        bus = TinyBus.from(this.getApplicationContext());
+//        if (savedInstanceState == null) {
+//            // Note: ShakeEventWire stays wired when activity is re-created
+//            //       on configuration change. That's why we register is
+//            //       only once inside if-statement.
+//
+//            // wire device shake event provider
+//            bus.wire(new ShakeEventWire());
+//        }
 
         checkForInvalidTime();
         if (!sessionManager.isUserSignedIn()) {
@@ -546,7 +545,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart() called");
-        bus.register(this);
+//        bus.register(this);
     }
 
     @Override
@@ -566,7 +565,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     @Override
     public void onStop() {
         Log.d(TAG, "onStop() called");
-        bus.unregister(this);
+//        bus.unregister(this);
         super.onStop();
     }
 

@@ -52,7 +52,7 @@ public class DataSenderAsync {
     private SessionManager sessionManager;
     private long totalSize = 0;
     private static RequestQueue queue;
-    private final int MY_TIMEOUT_MS = 2500;
+    private final int MY_TIMEOUT_MS = 30000;
     private final int MY_MAX_RETRIES = 0;
     private PostExecuteListener DataSenderOnPostExecuteListener = null;
 
@@ -219,6 +219,7 @@ public class DataSenderAsync {
                                 JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
                                 int responseCode = jObj.getInt("responseCode");
                                 if (responseCode == 409) {
+                                    Log.d(TAG, "onErrorResponse: responseCode == 409");
                                     JSONObject responseObject = jObj.getJSONObject("response");
                                     contact.setServerId(responseObject.getString("id"));
                                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
@@ -257,7 +258,7 @@ public class DataSenderAsync {
             }
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_TIMEOUT_MS,
                 MY_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
@@ -315,7 +316,7 @@ public class DataSenderAsync {
                     contact.save();
                     Log.d(TAG, "onResponse : ServerIDofContact : " + responseObject.getString("id"));
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                    TinyBus bus = TinyBus.from(mContext);
+                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                     bus.post(mCallEvent);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -451,6 +452,7 @@ public class DataSenderAsync {
                                 JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
                                 int responseCode = jObj.getInt("responseCode");
                                 if (responseCode == 409) {
+                                    Log.d(TAG, "onErrorResponse: responseCode == 409");
                                     JSONObject responseObject = jObj.getJSONObject("response");
                                     deal.setServerId(responseObject.getString("id"));
                                     deal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
@@ -483,7 +485,7 @@ public class DataSenderAsync {
             }
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_TIMEOUT_MS,
                 MY_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
@@ -558,8 +560,8 @@ public class DataSenderAsync {
             dealsList = LSDeal.find(LSDeal.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_DEAL_DELETE_NOT_SYNCED);
             Log.d(TAG, "deleteDealsFromServer: count : " + dealsList.size());
             for (LSDeal oneDeal : dealsList) {
-                Log.d(TAG, "Found Deal : " + oneDeal.getName());
-                Log.d(TAG, "Server ID : " + oneDeal.getServerId());
+//                Log.d(TAG, "Found Deal : " + oneDeal.getName());
+//                Log.d(TAG, "Server ID : " + oneDeal.getServerId());
                 deleteDealFromServerSync(oneDeal);
             }
         }
@@ -1156,7 +1158,7 @@ public class DataSenderAsync {
 //                        JSONObject responseObject = jObj.getJSONObject("response");
                     note.delete();
                     NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
-                    TinyBus bus = TinyBus.from(mContext);
+                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                     bus.post(mNoteAdded);
 //                    }
                 } catch (JSONException e) {

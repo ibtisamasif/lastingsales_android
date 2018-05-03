@@ -60,7 +60,6 @@ public class DeleteManager {
     }
 
     public static void deleteDeal(Context context, LSDeal selectedDeal) {
-
         //contact is deleted and will be hard deleted on syncing.
         selectedDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_DELETE_NOT_SYNCED);
         selectedDeal.save();

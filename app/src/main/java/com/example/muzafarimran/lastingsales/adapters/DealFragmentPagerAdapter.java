@@ -1,21 +1,22 @@
-package com.example.muzafarimran.lastingsales.deals;
+package com.example.muzafarimran.lastingsales.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.muzafarimran.lastingsales.deals.DealDynamicFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 
 import java.util.List;
 
-public class FragmentAdapter extends FragmentStatePagerAdapter {
+public class DealFragmentPagerAdapter extends FragmentStatePagerAdapter {
     private Context ctx;
     private List<LSStage> data;
     private Fragment[] fragments;
     private LSStage currentStageVisible;
 
-    public FragmentAdapter(Context ctx, FragmentManager fm, List<LSStage> data) {
+    public DealFragmentPagerAdapter(Context ctx, FragmentManager fm, List<LSStage> data) {
         super(fm);
         this.ctx = ctx;
         this.data = data;
@@ -27,11 +28,11 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = null;
         LSStage stage = (LSStage) data.get(position);
         currentStageVisible = stage;
-        DynamicFragment dynamicFragment = new DynamicFragment();
-        dynamicFragment.setPageTitle(stage.getName());
-        dynamicFragment.setStageId(stage.getServerId());
+        DealDynamicFragment dealDynamicFragment = new DealDynamicFragment();
+        dealDynamicFragment.setPageTitle(stage.getName());
+        dealDynamicFragment.setStageId(stage.getServerId());
 
-        fragment = dynamicFragment;
+        fragment = dealDynamicFragment;
         if (fragments[position] == null) {
             fragments[position] = fragment;
         }

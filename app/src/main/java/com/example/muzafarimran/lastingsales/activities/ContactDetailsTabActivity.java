@@ -167,13 +167,14 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         if (extras != null) {
             String source = extras.getString(ContactDetailsTabActivity.KEY_SOURCE);
             String newContactId = extras.getString(ContactDetailsTabActivity.KEY_CONTACT_ID);
+            String selectedTab = extras.getString(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB);
             if (source != null) {
                 if (source.equalsIgnoreCase(ContactDetailsTabActivity.KEY_SOURCE_NOTIFICATION)) {
                     finish();
                     Intent intent = new Intent(this, ContactDetailsTabActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, newContactId);
-                    intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "3");
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, selectedTab);
                     startActivity(intent);
                 }
             }

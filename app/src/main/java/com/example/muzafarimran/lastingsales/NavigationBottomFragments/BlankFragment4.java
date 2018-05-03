@@ -15,7 +15,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.deals.FragmentAdapter;
+import com.example.muzafarimran.lastingsales.adapters.DealFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 
@@ -36,7 +36,7 @@ public class BlankFragment4 extends Fragment implements ViewPager.OnPageChangeLi
     private LinearLayout[] mDots;
     private ViewPager viewPager;
     private List<LSStage> listItem = new ArrayList<>();
-    private FragmentAdapter fragmentAdapter;
+    private DealFragmentPagerAdapter fragmentAdapter;
     private TabLayout tabLayout;
 
     public BlankFragment4() {
@@ -76,13 +76,44 @@ public class BlankFragment4 extends Fragment implements ViewPager.OnPageChangeLi
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        fragmentAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPause() {
+        Log.d(TAG, "onPause: ");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Log.d(TAG, "onStop: ");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.d(TAG, "onDestroyView: ");
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        super.onDestroy();
+    }
+
     private void setData() {
         LSWorkflow defaultWorkFlow = LSWorkflow.getDefaultWorkflow();
         if (defaultWorkFlow != null) {
             Collection<LSStage> lsSteps = LSStage.getAllStagesInPositionSequenceByWorkflowServerId(defaultWorkFlow.getServerId());
             if (lsSteps != null) {
                 listItem.addAll(lsSteps);
-                fragmentAdapter = new FragmentAdapter(getActivity(), getFragmentManager(), listItem);
+                fragmentAdapter = new DealFragmentPagerAdapter(getActivity(), getFragmentManager(), listItem);
                 viewPager.setAdapter(fragmentAdapter);
                 viewPager.setCurrentItem(0);
                 viewPager.setOnPageChangeListener(this);

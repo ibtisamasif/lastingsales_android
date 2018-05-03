@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.deals;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -25,8 +26,8 @@ import java.util.List;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
-public class DynamicFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Object>> {
-    public static final String TAG = "DynamicFragment";
+public class DealDynamicFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Object>> {
+    public static final String TAG = "DealDynamicFragment";
     public static final String DEALS_WORKFLOW_STAGE_ID = "deals_workflow_stage_id";
     public static final int DEAL_LOADER_ID = 4;
 
@@ -49,7 +50,7 @@ public class DynamicFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
         if (getActivity() != null)
             bus = TinyBus.from(getActivity().getApplicationContext());
@@ -72,7 +73,7 @@ public class DynamicFragment extends Fragment implements LoaderManager.LoaderCal
         Log.d(TAG, "onViewCreated: stageId: " + stepId);
         args = new Bundle();
         args.putString(DEALS_WORKFLOW_STAGE_ID, getStageId());
-        getLoaderManager().initLoader(DEAL_LOADER_ID, args, DynamicFragment.this);
+        getLoaderManager().initLoader(DEAL_LOADER_ID, args, DealDynamicFragment.this);
     }
 
     @Override
@@ -108,7 +109,7 @@ public class DynamicFragment extends Fragment implements LoaderManager.LoaderCal
     @Subscribe
     public void onDealEventModel(DealAddedEventModel event) {
         Log.d(TAG, "onDealEventModel: ");
-        getLoaderManager().restartLoader(DEAL_LOADER_ID, args, DynamicFragment.this);
+        getLoaderManager().restartLoader(DEAL_LOADER_ID, args, DealDynamicFragment.this);
     }
 
     @Override

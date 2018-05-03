@@ -9,7 +9,7 @@ import android.util.Log;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
-import com.example.muzafarimran.lastingsales.deals.DynamicFragment;
+import com.example.muzafarimran.lastingsales.deals.DealDynamicFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 
 
@@ -31,7 +31,7 @@ public class DealsLoader extends AsyncTaskLoader<List<Object>> {
         super(context);
         bundle = args;
         if (bundle != null) {
-            dealsIdToLoad = bundle.getString(DynamicFragment.DEALS_WORKFLOW_STAGE_ID);
+            dealsIdToLoad = bundle.getString(DealDynamicFragment.DEALS_WORKFLOW_STAGE_ID);
         } else {
             dealsIdToLoad = "0";
         }

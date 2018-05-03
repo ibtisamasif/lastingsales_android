@@ -774,11 +774,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Log.d(TAG, "handleDataMessage: firstname: " + firstUsername);
                     Log.d(TAG, "handleDataMessage: lastname: " + lastUsername);
 
-                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseCommentNotification(getApplicationContext(), firstUsername + " " + lastUsername, comment, FirebaseCustomNotification.NOTIFICATION_TYPE_COMMENT, lead_id, lead_name));
-                    TinyBus.from(getApplicationContext()).post(new CommentEventModel());
-//                        }
-//                    }
+                    LSContact lsContact = LSContact.getContactFromServerId(lead_id);
+                    if (lsContact != null) {
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseCommentNotification(getApplicationContext(), firstUsername + " " + lastUsername, comment, FirebaseCustomNotification.NOTIFICATION_TYPE_COMMENT, lead_id, lead_name));
+                        TinyBus.from(getApplicationContext()).post(new CommentEventModel());
+                    }
                 }
             }
 
