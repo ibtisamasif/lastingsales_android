@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.adapters.MyUnlabeledPagerAdapter;
 
 public class BlankFragment2 extends Fragment {
     public static final String TAG = "BlankFragment2";

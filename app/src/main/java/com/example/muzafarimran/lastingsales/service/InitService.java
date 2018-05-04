@@ -720,7 +720,7 @@ public class InitService extends IntentService {
 
                             for (int i = 0; i < jsonarray.length(); i++) {
                                 Log.d(TAG, "INDEX " + i);
-                                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                                JSONObject jsonobject = jsonarray.getJSONObject(i); //TODO JSON Exception typeMismatch
                                 String inquiry_id = jsonobject.getString("id");
                                 String agent_id = jsonobject.getString("agent_id");
                                 String date = jsonobject.getString("date");

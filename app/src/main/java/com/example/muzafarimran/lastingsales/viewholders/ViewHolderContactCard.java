@@ -27,17 +27,20 @@ import com.example.muzafarimran.lastingsales.activities.ColleagueActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.net.URLEncoder;
 
@@ -253,6 +256,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                MixpanelAPI.getInstance(mContext, MixpanelConfig.projectToken).track("Whatsapp Clicked");
             }
         });
 
@@ -271,13 +275,14 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 });
                 break;
             case LSContact.CONTACT_TYPE_BUSINESS:
-                rl_container_buttons.setVisibility(View.VISIBLE);
+                rl_container_buttons.setVisibility(View.GONE);
+                user_profile_group_wrapper.setVisibility(View.GONE);
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
                 this.cl.setOnClickListener(view -> {
-                    if ( mContext instanceof NavigationBottomMainActivity ) {
+                    if (mContext instanceof NavigationBottomMainActivity) {
                         NavigationBottomMainActivity obj = (NavigationBottomMainActivity) mContext;
                         obj.openContactBottomSheetCallback((Long) view.getTag());
-                    }else if (mContext instanceof ColleagueActivity){
+                    } else if (mContext instanceof ColleagueActivity) {
                         ColleagueActivity obj = (ColleagueActivity) mContext;
                         obj.openContactBottomSheetCallback((Long) view.getTag());
                     }
@@ -333,7 +338,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 break;
 
             case LSContact.CONTACT_TYPE_IGNORED:
-                rl_container_buttons.setVisibility(View.GONE);
+                rl_container_buttons.setVisibility(View.VISIBLE);
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Default));
                 this.cl.setOnLongClickListener(view -> {
                     String nameTextOnDialog;
@@ -349,7 +354,11 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             DeleteManager.deleteContact(mContext, contact);
-//                            Snackbar.make(view, "Ignored contact deleted!", Snackbar.LENGTH_SHORT).show();
+                            if (NetworkAccess.isNetworkAvailable(mContext)) {
+                                Toast.makeText(mContext, "Deleting contact from servers", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(mContext, "No internet. Will be deleted once connected.", Toast.LENGTH_SHORT).show();
+                            }
                             ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                             TinyBus bus = TinyBus.from(mContext);
                             bus.post(mCallEvent);

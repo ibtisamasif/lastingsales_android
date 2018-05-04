@@ -28,10 +28,18 @@
             android:orientation="horizontal"
             android:weightSum="10">
 
+            <ImageView
+                android:id="@+id/ivlogo"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="2"
+                android:layout_gravity=""
+                android:background="@drawable/ic_notification" />
+
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="7"
                 android:gravity="left"
                 android:padding="10dp"
                 android:text="Is this your sales lead ?"
@@ -41,9 +49,9 @@
 
             <ImageButton
                 android:id="@+id/bClose"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="36dp"
-                android:layout_weight="9"
+                android:layout_weight="1"
                 android:background="@drawable/close_icon" />
 
         </LinearLayout>

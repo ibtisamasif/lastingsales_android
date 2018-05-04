@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <android.support.design.widget.AppBarLayout
@@ -20,19 +20,19 @@
         <!--app:layout_collapseMode="pin" />-->
 
         <!--<android.support.v7.widget.Toolbar-->
-            <!--android:id="@+id/toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--app:layout_scrollFlags="scroll|enterAlways"-->
-            <!--android:layout_height="?attr/actionBarSize"-->
-            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--app:layout_scrollFlags="scroll|enterAlways"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
 
         <android.support.design.widget.TabLayout
             android:id="@+id/sliding_tabs"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
             android:layout_gravity="center_horizontal|center_vertical"
             app:tabGravity="fill"
-            app:tabMode="scrollable"/>
+            app:tabMode="scrollable" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -41,8 +41,7 @@
         android:id="@+id/viewPager_itemList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/AppBarLayout"
-        ></android.support.v4.view.ViewPager>
+        android:layout_below="@+id/AppBarLayout" />
 
     <RelativeLayout
         android:id="@+id/viewPagerIndicators"
@@ -58,7 +57,6 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:orientation="horizontal">
-        </LinearLayout>
+            android:orientation="horizontal" />
     </RelativeLayout>
 </RelativeLayout>
