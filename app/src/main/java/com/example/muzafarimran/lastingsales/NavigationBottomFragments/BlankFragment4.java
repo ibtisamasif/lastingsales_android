@@ -80,7 +80,7 @@ public class BlankFragment4 extends Fragment implements ViewPager.OnPageChangeLi
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
-        fragmentAdapter.notifyDataSetChanged();
+//        fragmentAdapter.notifyDataSetChanged(); // NPE
     }
 
     @Override
