@@ -135,8 +135,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     LSCall tempCall = new LSCall();
                     tempCall.setCallLogId(callId);
                     tempCall.setContactNumber(internationalNumber);
-                    if (callName != null && !callName.equals("null"))
-                        tempCall.setContactName(callName);
+                    tempCall.setContactName(callName);
                     tempCall.setBeginTime(Long.parseLong(callDate));
                     tempCall.setDuration(Long.parseLong(callDuration));
 
