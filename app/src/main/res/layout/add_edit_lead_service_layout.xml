@@ -28,7 +28,8 @@
             <ImageView
                 android:id="@+id/ivlogo"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="24dp"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_notification" />
@@ -38,13 +39,14 @@
                 android:layout_height="40dp"
                 android:layout_weight="8"
                 android:gravity="left"
-                android:paddingLeft="14dp"
+                android:paddingLeft="10dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="Is this your sales lead ?"
                 android:textColor="@color/md_white"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:paddingStart="10dp" />
 
             <ImageButton
                 android:id="@+id/bClose"

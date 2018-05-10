@@ -139,10 +139,15 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 this.name.setText(contact.getContactName());
             }
         } else {
-            if (lsContactProfile != null) {
-                this.name.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
+            String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, contact.getPhoneOne());
+            if (name != null) {
+                this.name.setText(name);
             } else {
-                this.name.setText(contact.getPhoneOne());
+                if (lsContactProfile != null) {
+                    this.name.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
+                } else {
+                    this.name.setText(contact.getPhoneOne());
+                }
             }
         }
         if (lsContactProfile != null) {

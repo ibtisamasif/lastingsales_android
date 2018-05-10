@@ -215,7 +215,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
+            <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="8479488fff34a832238a45202271cc7f21d371c3"
+                />
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value="com.example.muzafarimran.lastingsales.recycleradapter.ExampleActivity" />

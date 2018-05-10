@@ -121,8 +121,8 @@ public class InitService extends IntentService {
                     Log.d(TAG, "onResponse: TotalLeads: " + totalLeads);
 
                     JSONArray jsonarray = responseObject.getJSONArray("data");
-
-                    for (int i = 0; i < jsonarray.length(); i++) {
+                    Log.d(TAG, "onResponse: data jsonArray length : " + jsonarray.length());
+                    for (int i = jsonarray.length() - 1; i >= 0; i--) {
                         JSONObject jsonobject = jsonarray.getJSONObject(i);
                         String contactId = jsonobject.getString("id");
                         String contactName = jsonobject.getString("name");

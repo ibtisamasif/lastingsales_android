@@ -476,7 +476,7 @@ public class VersionManager {
             } catch (Exception e) {
                 return false;
             }
-        } else if (version == 128) {
+        } else if (version == 132) {
             try {
                 Log.d(TAG, "func: Running Script for Migration");
                 if (sessionManager.getLoginMode().equals(SessionManager.MODE_NORMAL)) {

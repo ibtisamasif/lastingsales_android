@@ -24,7 +24,7 @@ public class LSDeal extends SugarRecord {
     public static final String DEAL_STATUS_CLOSED_LOST = "lost";
 
     @Ignore
-    public static final String DEAL_VISIBILITY_STATUS_PUBLIC = "0";
+    public static final String DEAL_VISIBILITY_STATUS_COMPANY = "0";
     @Ignore
     public static final String DEAL_VISIBILITY_STATUS_PRIVATE = "1";
 

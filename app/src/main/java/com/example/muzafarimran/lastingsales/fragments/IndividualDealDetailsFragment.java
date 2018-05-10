@@ -299,7 +299,7 @@ public class IndividualDealDetailsFragment extends TabFragment {
 //                    break;
 //            }
             switch (mDeal.getIsPrivate()) {
-                case LSDeal.DEAL_VISIBILITY_STATUS_PUBLIC:
+                case LSDeal.DEAL_VISIBILITY_STATUS_COMPANY:
                     isPrivateSpinner.setSelection(0, false);
                     break;
                 case LSDeal.DEAL_VISIBILITY_STATUS_PRIVATE:
@@ -390,7 +390,7 @@ public class IndividualDealDetailsFragment extends TabFragment {
     public void addItemsOnSpinnerDealIsPrivate(View view) {
         isPrivateSpinner = (Spinner) view.findViewById(R.id.isPrivateSpinner);
         List<String> list = new ArrayList<String>();
-        list.add("Public");
+        list.add("Company");
         list.add("Private");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -460,11 +460,11 @@ public class IndividualDealDetailsFragment extends TabFragment {
             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
             switch (pos) {
                 case 0:
-                    mDeal.setIsPrivate(LSDeal.DEAL_VISIBILITY_STATUS_PUBLIC);
+                    mDeal.setIsPrivate(LSDeal.DEAL_VISIBILITY_STATUS_COMPANY);
                     mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
                     mDeal.save();
                     TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
-                    Toast.makeText(parent.getContext(), "Status Changed to Public", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(parent.getContext(), "Status Changed to Company", Toast.LENGTH_SHORT).show();
                     dataSenderAsync.run();
                     break;
                 case 1:

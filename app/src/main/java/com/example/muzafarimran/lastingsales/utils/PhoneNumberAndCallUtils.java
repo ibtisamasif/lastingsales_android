@@ -10,9 +10,9 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ahmad on 09-Nov-16.
@@ -79,12 +78,12 @@ public class PhoneNumberAndCallUtils {
             } catch (NumberParseException e) {
                 Log.e(TAG, "numberToInterNationalNumber: NumberParseException");
 //                e.printStackTrace(); //TODO no static method crash google device google pixel
-                FirebaseCrash.logcat(Log.ERROR, TAG, "NumberParseException caught: " + inputString);
-                FirebaseCrash.report(e);
+                Crashlytics.log(Log.ERROR, TAG, "NumberParseException caught: " + inputString);
+                Crashlytics.logException(e);
             } catch (Exception e){
                 Log.e(TAG, "numberToInterNationalNumber: Exception");
-                FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught: " + inputString);
-                FirebaseCrash.report(e);
+                Crashlytics.log(Log.ERROR, TAG, "Exception caught: " + inputString);
+                Crashlytics.logException(e);
             }
             return s;
         } else {
@@ -97,11 +96,11 @@ public class PhoneNumberAndCallUtils {
 //        return s;
 //    }
 
-    public static long secondsFromStartAndEndDates(Date startDate, Date endDate) {
-        long diffInMs = endDate.getTime() - startDate.getTime();
-        long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
-        return diffInSec;
-    }
+//    public static long secondsFromStartAndEndDates(Date startDate, Date endDate) {
+//        long diffInMs = endDate.getTime() - startDate.getTime();
+//        long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
+//        return diffInSec;
+//    }
 
     public static boolean isNumeric(String str) {
         try {

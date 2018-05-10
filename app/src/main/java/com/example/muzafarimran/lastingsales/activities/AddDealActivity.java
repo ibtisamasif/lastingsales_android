@@ -47,7 +47,7 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
     private LSContact selectedContact;
     private LSDeal mDeal;
     private Spinner isPrivateSpinner;
-    private String dealStatus = LSDeal.DEAL_VISIBILITY_STATUS_PUBLIC;
+    private String dealStatus = LSDeal.DEAL_VISIBILITY_STATUS_COMPANY;
 
     private ContactsCompletionView etLeadAddDeal;
     ArrayAdapter<LSContact> adapter;
@@ -170,7 +170,7 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
     private void addItemsOnSpinnerDealIsPrivate() {
         isPrivateSpinner = (Spinner) findViewById(R.id.isPrivateSpinner);
         List<String> list = new ArrayList<String>();
-        list.add("Public");
+        list.add("Company");
         list.add("Private");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(AddDealActivity.this, R.layout.spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -201,8 +201,8 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             switch (pos) {
                 case 0:
-                    dealStatus = LSDeal.DEAL_VISIBILITY_STATUS_PUBLIC;
-                    Toast.makeText(parent.getContext(), "Status Changed to Public", Toast.LENGTH_SHORT).show();
+                    dealStatus = LSDeal.DEAL_VISIBILITY_STATUS_COMPANY;
+                    Toast.makeText(parent.getContext(), "Status Changed to Company", Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
                     dealStatus = LSDeal.DEAL_VISIBILITY_STATUS_PRIVATE;

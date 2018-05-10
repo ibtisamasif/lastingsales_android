@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.carditems.ConnectionItem;
@@ -26,7 +27,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
-import com.google.firebase.crash.FirebaseCrash;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -180,8 +180,8 @@ public class InquiryCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
                 CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity();
                 closeInquiryBottomSheetEvent.closeInquiryBottomSheetCallback();
                 InquiryManager.removeByNumber(getActivity(), contactNum);
-                FirebaseCrash.logcat(Log.ERROR, TAG, "Exception caught");
-                FirebaseCrash.report(new Exception("Contact of inquiry is null "));
+                Crashlytics.log(Log.ERROR, TAG, "Exception caught");
+                Crashlytics.logException(new Exception("Contact of inquiry is null "));
             } catch (Exception e) {
             }
         }

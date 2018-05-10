@@ -234,10 +234,7 @@ public class DealDetailsTabActivity extends AppCompatActivity {
 ////                tvNumberOne.setText(selectedDeal.getPhoneOne());
 //            }
         }
-
-        toolbar.setTitle(selectedDeal.getName());
         setSupportActionBar(toolbar);
-
         if (extras != null) {
             selectedTab = extras.getString(DealDetailsTabActivity.KEY_SET_SELECTED_TAB);
             if (selectedTab != null && selectedTab != "") {

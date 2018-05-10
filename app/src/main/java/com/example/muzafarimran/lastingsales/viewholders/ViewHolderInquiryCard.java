@@ -33,14 +33,14 @@ import static android.view.View.GONE;
  */
 
 public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
-    public static final String TAG = "InquiriesAdapter";
+    public static final String TAG = "ViewHolderInquiryCard";
 
     private CardView cv_item;
     private SimpleDraweeView user_avatar;
     private TextView name;
     private TextView time;
     private ImageView call_icon;
-    private TextView numberDetailTextView;
+    private TextView number;
     //    private Button bIgnore;
     private Button bTag;
     private TextView inquireyCount;
@@ -55,7 +55,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         this.name = view.findViewById(R.id.tvContactName);
         this.time = view.findViewById(R.id.call_time);
         this.call_icon = view.findViewById(R.id.call_icon);
-        this.numberDetailTextView = view.findViewById(R.id.tvNumber);
+        this.number = view.findViewById(R.id.tvNumber);
 //        this.bIgnore = view.findViewById(R.id.bIgnore);
         this.inquireyCount = view.findViewById(R.id.inquireyCount);
         this.bTag = view.findViewById(R.id.bTag);
@@ -106,12 +106,21 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
                 Log.d(TAG, "getView: not a sale contact: " + number);
                 this.bTag.setVisibility(View.VISIBLE);
             }
-            if (inquiryCall.getContact().getContactName() == null) {
-                Log.d(TAG, "getView: if 2" + number);
-                this.name.setText(inquiryCall.getContactNumber());
-            } else {
-                Log.d(TAG, "getView: else 2" + number);
+            if (inquiryCall.getContact().getContactName() != null) {
+                Log.d(TAG, "getView: inquiryCall.getContact().getContactName() != null " + number);
                 this.name.setText(inquiryCall.getContact().getContactName());
+            } else {
+                Log.d(TAG, "getView: inquiryCall.getContact().getContactName() == null " + number);
+                String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, number);
+                if (name != null) {
+                    this.name.setText(name);
+                } else {
+                    if (lsContactProfile != null) {
+                        this.name.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
+                    } else {
+                        this.name.setText(inquiryCall.getContactNumber());
+                    }
+                }
             }
             if (inquiryCall.getContact().getContactProfile() != null) {
                 Log.d(TAG, "getView: Inquiry Profile Exists");
@@ -130,7 +139,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
 
         this.cv_item.setTag(number);
 //        this.bIgnore.setTag(number);
-        this.numberDetailTextView.setText(number);
+        this.number.setText(number);
 //        this.call_name_time.setTag(position);
 
         long callTimeMillis = inquiryCall.getBeginTime();

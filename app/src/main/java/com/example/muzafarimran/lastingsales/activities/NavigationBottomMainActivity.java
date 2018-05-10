@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment1;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3;
@@ -60,7 +61,6 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngin
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
@@ -68,6 +68,7 @@ import java.util.Collection;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.wires.ShakeEventWire;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by ibtisam on 11/6/2017.
@@ -92,7 +93,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     public static String BOTTOMSHEET_TAB = "bottomsheet_tab";
     public static String KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID = "bottomsheet_contact_id";
 
-//    private TinyBus bus;
+    //    private TinyBus bus;
     //    private List<Object> list = new ArrayList<Object>();
 //    private MyRecyclerViewAdapter adapter;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -313,6 +314,16 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
 
     private void initFirst(Bundle savedInstanceState) {
+
+        Fabric.with(this, new Crashlytics());
+
+//        // Obtain the FirebaseAnalytics instance.
+//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        final Bundle bundle = new Bundle();
+//        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
+//        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+////        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+
 //        progressDialog = new ProgressDialog(NavigationBottomMainActivity.this);
 //        progressDialog.setTitle("Fetching data");
 //        //this method will be running on UI thread
@@ -384,13 +395,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     }
 
     private void initLast() {
-
-        // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        final Bundle bundle = new Bundle();
-        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
-//        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
 
         DemoSyncJob.schedulePeriodic();
 
@@ -860,8 +864,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                         contactCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
                     }
                 } catch (IllegalStateException ignored) {
-                    FirebaseCrash.logcat(Log.ERROR, TAG, "IllegalStateException caught");
-                    FirebaseCrash.report(new Exception("closeContactBottomSheetCallback dismiss() called after onSaveInstanceState"));
+                    Crashlytics.setUserIdentifier(sessionManager.getLoginNumber());
+                    Crashlytics.log(Log.ERROR, TAG, "IllegalStateException caught");
+                    Crashlytics.logException(new Exception("closeContactBottomSheetCallback dismiss() called after onSaveInstanceState"));
                 }
             } else {
                 Log.d(TAG, "closeContactBottomSheetCallback: is NULL");
@@ -888,8 +893,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                         inquiryCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
                     }
                 } catch (IllegalStateException ignored) {
-                    FirebaseCrash.logcat(Log.ERROR, TAG, "IllegalStateException caught");
-                    FirebaseCrash.report(new Exception("closeInquiryBottomSheetCallback dismiss() called after onSaveInstanceState"));
+                    Crashlytics.setUserIdentifier(sessionManager.getLoginNumber());
+                    Crashlytics.log(Log.ERROR, TAG, "IllegalStateException caught");
+                    Crashlytics.logException(new Exception("closeInquiryBottomSheetCallback dismiss() called after onSaveInstanceState"));
                 }
             } else {
                 Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NULL");
