@@ -92,6 +92,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     public static String INQUIRIES_TAB = "inquiries_tab";
     public static String BOTTOMSHEET_TAB = "bottomsheet_tab";
     public static String KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID = "bottomsheet_contact_id";
+    public static String KEY_SELECTED_TAB_NO_TAB = "no_tab";
 
     //    private TinyBus bus;
     //    private List<Object> list = new ArrayList<Object>();
@@ -561,9 +562,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
     @Override
     protected void onPause() {
-        super.onPause();
         Log.d(TAG, "onPause: called");
         unregisterReceiver(receiver);
+        super.onPause();
     }
 
     @Override

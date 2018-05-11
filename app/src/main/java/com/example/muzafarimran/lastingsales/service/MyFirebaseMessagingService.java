@@ -776,9 +776,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 //                    LSContact lsContact = LSContact.getContactFromServerId(lead_id);
 //                    if (lsContact != null) { // Don't show notification is user doesnt have lead.
-                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseCommentNotification(getApplicationContext(), firstUsername + " " + lastUsername, comment, FirebaseCustomNotification.NOTIFICATION_TYPE_COMMENT, lead_id, lead_name));
-                        TinyBus.from(getApplicationContext()).post(new CommentEventModel());
+                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseCommentNotification(getApplicationContext(), firstUsername + " " + lastUsername, comment, FirebaseCustomNotification.NOTIFICATION_TYPE_COMMENT, lead_id, lead_name));
+                    TinyBus.from(getApplicationContext()).post(new CommentEventModel());
 //                    }
                 }
             }

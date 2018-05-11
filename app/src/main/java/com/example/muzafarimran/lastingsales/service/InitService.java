@@ -636,7 +636,7 @@ public class InitService extends IntentService {
                         Log.d(TAG, "onResponse: success_rate: " + success_rate);
                         Log.d(TAG, "onResponse: success_eta: " + success_eta);
 
-                        if (LSDeal.getDealFromId(id) == null) {
+                        if (LSDeal.getDealFromServerId(id) == null) {
                             LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
                             if (lsContact != null) {
                                 LSDeal tempDeal = new LSDeal();
