@@ -865,7 +865,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                         contactCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
                     }
                 } catch (IllegalStateException ignored) {
-                    Crashlytics.setUserIdentifier(sessionManager.getLoginNumber());
+//                    Crashlytics.setUserIdentifier(sessionManager.getLoginNumber());
                     Crashlytics.log(Log.ERROR, TAG, "IllegalStateException caught");
                     Crashlytics.logException(new Exception("closeContactBottomSheetCallback dismiss() called after onSaveInstanceState"));
                 }

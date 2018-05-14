@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.NavigationBottomFragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -63,7 +64,7 @@ public class BlankFragment3_2 extends TabFragment implements LoaderManager.Loade
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getActivity() != null)
             bus = TinyBus.from(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.fragment_blank3_1, container, false);
@@ -93,7 +94,10 @@ public class BlankFragment3_2 extends TabFragment implements LoaderManager.Loade
     @Override
     public void onStop() {
         Log.d(TAG, "onStop() called");
-        bus.unregister(this);
+        try {
+            bus.unregister(this);
+        }catch (Exception e){
+        }
         super.onStop();
     }
 

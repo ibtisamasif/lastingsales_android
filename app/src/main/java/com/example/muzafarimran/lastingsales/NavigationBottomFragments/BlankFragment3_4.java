@@ -94,7 +94,10 @@ public class BlankFragment3_4 extends TabFragment implements LoaderManager.Loade
     @Override
     public void onStop() {
         Log.d(TAG, "onStop() called");
-        bus.unregister(this);
+        try {
+            bus.unregister(this);
+        }catch (Exception e){
+        }
         super.onStop();
     }
 
