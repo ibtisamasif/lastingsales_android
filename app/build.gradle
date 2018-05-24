@@ -23,8 +23,8 @@ android {
         applicationId "com.lastingsales.agent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 134 //115
-        versionName "2.81" //2.62 in production. Change mixpanel key and urls (staging to production)
+        versionCode 136 //115
+        versionName "2.83" //2.62 in production. Change mixpanel key and urls (staging to production) / migration test
 //        jackOptions {
 //            enabled false
 //        }
@@ -81,10 +81,10 @@ dependencies {
 
     // Required -- JUnit 4 framework
     testImplementation 'junit:junit:4.12'
-//    testCompile 'junit:junit:4.12'
+//    testImplementation 'junit:junit:4.12'
     // Optional -- Mockito framework
 //    testImplementation 'org.mockito:mockito-core:1.10.19'
-//    testCompile 'org.mockito:mockito-core:1.10.19'
+//    testImplementation 'org.mockito:mockito-core:1.10.19'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:multidex:1.0.3'

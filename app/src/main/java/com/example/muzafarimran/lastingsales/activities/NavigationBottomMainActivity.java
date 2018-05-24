@@ -55,7 +55,7 @@ import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncLastSeen;
+import com.example.muzafarimran.lastingsales.sync.SyncUser;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.github.clans.fab.FloatingActionButton;
@@ -351,23 +351,13 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         } else {
             Intent intent = new Intent(NavigationBottomMainActivity.this, CallDetectionService.class);
             startService(intent);
-            sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
             if (NetworkAccess.isNetworkAvailable(this)) {
                 long contactCount = LSContact.count(LSContact.class); // If app is crashed here make sure instant run is off. // TODO instead of checking for zero contacts check app init.
                 if (contactCount < 1) {
                     Log.d(TAG, "onCreate: LSContact.count " + contactCount);
-
                     Intent intentInitService = new Intent(this, InitService.class);
                     startService(intentInitService);
-//                    progressDialog.show();
-//                    sessionManager.fetchData();
                 }
-                SyncLastSeen.updateLastSeenToServer(NavigationBottomMainActivity.this);
-//                Log.d("rating", "onCreate: setLastAppVisit");
-//                long milliSecondsIn30Second = 60000; // 30 seconds for now
-//                long now = Calendar.getInstance().getTimeInMillis();
-//                long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
-//                sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
             }
         }
     }
@@ -397,7 +387,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
     private void initLast() {
 
-        DemoSyncJob.schedulePeriodic();
+//        DemoSyncJob.schedulePeriodic();
+        DemoSyncJob.cancelThisJob();
 
         settingsManager = new SettingsManager(this);
         if (settingsManager.getKeyStateHourlyNotification()) {
@@ -551,6 +542,20 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         super.onStart();
         Log.d(TAG, "onStart() called");
 //        bus.register(this);
+        // DO not move lastSync to anywhere else.
+        if (sessionManager.isUserSignedIn()) {
+            sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
+            if (NetworkAccess.isNetworkAvailable(this)) {
+                SyncUser.updateUserLastSeenToServer(this);
+//                Log.d("rating", "onCreate: setLastAppVisit");
+//                long milliSecondsIn30Second = 60000; // 30 seconds for now
+//                long now = Calendar.getInstance().getTimeInMillis();
+//                long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
+//                sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
+
+                SyncUser.getUserDataFromServer(this);
+            }
+        }
     }
 
     @Override
@@ -859,11 +864,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             if (contactCallDetailsBottomSheetFragment != null) {
                 Log.d(TAG, "closeContactBottomSheetCallback: is NOT NULL");
                 try {
-                    if (Build.VERSION.SDK_INT > 21) {
-                        contactCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
-                    } else {
-                        contactCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
-                    }
+//                    if (Build.VERSION.SDK_INT > 21) {
+//                        contactCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+//                    } else {
+                    contactCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
+//                    }
                 } catch (IllegalStateException ignored) {
 //                    Crashlytics.setUserIdentifier(sessionManager.getLoginNumber());
                     Crashlytics.log(Log.ERROR, TAG, "IllegalStateException caught");
@@ -888,13 +893,13 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             if (inquiryCallDetailsBottomSheetFragment != null) {
                 Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NOT NULL");
                 try {
-                    if (Build.VERSION.SDK_INT > 21) {
-                        inquiryCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
-                    } else {
-                        inquiryCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
-                    }
+//                    if (Build.VERSION.SDK_INT > 21) {
+//                        inquiryCallDetailsBottomSheetFragment.dismiss(); //UncaughtException: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+//                    } else {
+                    inquiryCallDetailsBottomSheetFragment.dismissAllowingStateLoss();
+//                    }
                 } catch (IllegalStateException ignored) {
-                    Crashlytics.setUserIdentifier(sessionManager.getLoginNumber());
+//                    Crashlytics.setUserIdentifier(sessionManager.getLoginNumber());
                     Crashlytics.log(Log.ERROR, TAG, "IllegalStateException caught");
                     Crashlytics.logException(new Exception("closeInquiryBottomSheetCallback dismiss() called after onSaveInstanceState"));
                 }

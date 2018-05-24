@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -669,11 +670,7 @@ public class InitService extends IntentService {
                             }
                         }
                     }
-
-                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-                    bus.post(mCallEvent);
-
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e(TAG, "onResponse: JSONException Deals");

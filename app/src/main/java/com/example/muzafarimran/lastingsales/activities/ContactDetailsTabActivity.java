@@ -155,8 +155,11 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: ");
-        bus = TinyBus.from(this.getApplicationContext());
-        bus.register(this);
+        try {
+            bus = TinyBus.from(this.getApplicationContext());
+            bus.register(this);
+        }catch (Exception e){
+        }
     }
 
     @Override

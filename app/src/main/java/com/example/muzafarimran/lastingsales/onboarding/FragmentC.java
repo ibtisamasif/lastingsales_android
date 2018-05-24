@@ -1,13 +1,13 @@
 package com.example.muzafarimran.lastingsales.onboarding;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.google.android.gms.plus.PlusOneButton;
 
 public class FragmentC extends Fragment{
     private static final String ARG_PARAM1 = "param1";
@@ -28,12 +28,11 @@ public class FragmentC extends Fragment{
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_c, container, false);
 
-        return view;
+        return inflater.inflate(R.layout.fragment_c, container, false);
     }
 
     @Override

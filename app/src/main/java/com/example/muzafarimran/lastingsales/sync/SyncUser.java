@@ -23,13 +23,57 @@ import org.json.JSONObject;
  * Created by ibtisam on 10/12/2017.
  */
 
-public class SyncLastSeen {
-    public static final String TAG = "SyncLastSeen";
+public class SyncUser {
+    public static final String TAG = "SyncUser";
     private static SessionManager sessionManager;
     private static RequestQueue queue;
     private static String currentVersionCode;
 
-    public static void updateLastSeenToServer(Activity activity) {
+    public static void getUserDataFromServer(Activity activity) {
+        sessionManager = new SessionManager(activity);
+        queue = Volley.newRequestQueue(activity);
+
+        final int MY_SOCKET_TIMEOUT_MS = 60000;
+        final String BASE_URL = MyURLs.GET_AGENT;
+        Uri builtUri;
+        builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        Log.d(TAG, "getUserDataFromServer: URL: " + myUrl);
+        StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() getUserDataFromServer: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+                    if (responseCode == 200) {
+                        JSONObject responseObject = jObj.getJSONObject("response");
+
+
+                    }
+                } catch (JSONException e) {
+                    Crashlytics.logException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "onErrorResponse:SyncUser CouldNotGetUserDataFromServer");
+            }
+        }) {
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+
+    }
+
+    public static void updateUserLastSeenToServer(Activity activity) {
         sessionManager = new SessionManager(activity);
         queue = Volley.newRequestQueue(activity);
 
@@ -49,11 +93,11 @@ public class SyncLastSeen {
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
-        Log.d(TAG, "updateLastSeenToServer: URL: " + myUrl);
+        Log.d(TAG, "updateUserLastSeenToServer: URL: " + myUrl);
         StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "onResponse() updateLastSeenToServer: response = [" + response + "]");
+                Log.d(TAG, "onResponse() updateUserLastSeenToServer: response = [" + response + "]");
                 try {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
@@ -69,7 +113,7 @@ public class SyncLastSeen {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "onErrorResponse:SyncLastSeen CouldNotUpdateLastSeenToServer");
+                Log.e(TAG, "onErrorResponse:SyncUser CouldNotUpdateLastSeenToServer");
             }
         }) {
         };

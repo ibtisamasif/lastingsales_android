@@ -30,6 +30,7 @@ public class MyURLs {
     public static String UPDATE_DEAL = server + "/api/v1/deal/";
     public static String UPDATE_NOTE = server + "/api/v1/lead/";
     public static String UPDATE_AGENT = server + "/api/v1/user";
+    public static String GET_AGENT = server + "/api/v1/user";
     public static String UPDATE_TASK = server + "/api/v1/lead";
     public static String GET_CONTACTS = server + "/api/v1/lead";
     public static String GET_DEALS = server + "/api/v1/deal";
