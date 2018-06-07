@@ -40,6 +40,7 @@ public class MyURLs {
     public static String GET_WORKFLOW = server + "/api/v1/admin/workflow";
     public static String GET_PROFILE = server + "/api/v1/graph/public/profile";
     public static String GET_CUSTOMER_HISTORY = server + "/api/v1/graph/lead/agent/relation";
+    public static String GET_LATEST_APP_VERSION_CODE = server + "/api/v1/config";
 
     public static final String PRIVACY_POLICY = "https://lastingsales.com/privacy.html";
     public static final String FORGOT_PASSWORD = "https://app.lastingsales.com/#/access/forgotpwd";

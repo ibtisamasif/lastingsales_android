@@ -50,6 +50,18 @@ public class SessionManager {
 
     public static final String FIRST_RUN_AFTER_LOGIN = "firstrun";
 
+    public static final String KEY_IS_TRIAL_VALID = "is_trial_valid";
+
+    public static final String KEY_IS_USER_ACTIVE = "is_user_active";
+
+    public static final String KEY_IS_COMPANY_ACTIVE = "is_company_active";
+
+    public static final String KEY_IS_COMPANY_PAYING = "is_company_paying";
+
+    public static final String KEY_CAN_SYNC = "can_sync";
+
+    public static final String KEY_UPDATE_AVAILABLE_VERSION = "update_available_version";
+
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffs";
     // Shared Preferences
@@ -412,4 +424,57 @@ public class SessionManager {
         editor.commit();
     }
 
+    public boolean getKeyIsTrialValid() {
+        return pref.getBoolean(KEY_IS_TRIAL_VALID, true);
+    }
+
+    public void setKeyIsTrialValid(boolean val) {
+        editor.putBoolean(KEY_IS_TRIAL_VALID, val);
+        editor.commit();
+    }
+
+    public boolean getKeyIsUserActive() {
+        return pref.getBoolean(KEY_IS_USER_ACTIVE, true);
+    }
+
+    public void setKeyIsUserActive(boolean val) {
+        editor.putBoolean(KEY_IS_USER_ACTIVE, val);
+        editor.commit();
+    }
+
+    public boolean getKeyIsCompanyActive() {
+        return pref.getBoolean(KEY_IS_COMPANY_ACTIVE, true);
+    }
+
+    public void setKeyIsCompanyActive(boolean val) {
+        editor.putBoolean(KEY_IS_COMPANY_ACTIVE, val);
+        editor.commit();
+    }
+
+    public boolean getKeyIsCompanyPaying() {
+        return pref.getBoolean(KEY_IS_COMPANY_PAYING, true);
+    }
+
+    public void setKeyIsCompanyPaying(boolean val) {
+        editor.putBoolean(KEY_IS_COMPANY_PAYING, val);
+        editor.commit();
+    }
+
+    public boolean getCanSync() {
+        return pref.getBoolean(KEY_CAN_SYNC, true);
+    }
+
+    public void setCanSync(boolean val) {
+        editor.putBoolean(KEY_CAN_SYNC, val);
+        editor.commit();
+    }
+
+    public int getUpdateAvailableVersion() {
+        return pref.getInt(KEY_UPDATE_AVAILABLE_VERSION, 0);
+    }
+
+    public void setUpdateAvailableVersion(int val) {
+        editor.putInt(KEY_UPDATE_AVAILABLE_VERSION, val);
+        editor.commit();
+    }
 }

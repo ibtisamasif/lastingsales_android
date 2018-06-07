@@ -119,61 +119,63 @@ public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
 //                            Display display = ((WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 //                            int width = display.getWidth();
 
-                            LinearLayout llParentHorizontal = new LinearLayout(mContext);
-                            llParentHorizontal.setFocusable(true);
-                            llParentHorizontal.setFocusableInTouchMode(true);
-                            llParentHorizontal.setOrientation(LinearLayout.HORIZONTAL);
-                            llParentHorizontal.setWeightSum(10);
+                            if (!firstname.equalsIgnoreCase("null") && !lastname.equalsIgnoreCase("null")) {
+                                LinearLayout llParentHorizontal = new LinearLayout(mContext);
+                                llParentHorizontal.setFocusable(true);
+                                llParentHorizontal.setFocusableInTouchMode(true);
+                                llParentHorizontal.setOrientation(LinearLayout.HORIZONTAL);
+                                llParentHorizontal.setWeightSum(10);
 
-                            LinearLayout.LayoutParams layoutParamsRow = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            layoutParamsRow.setMargins(8, 8, 8, 8);
-                            llParentHorizontal.setLayoutParams(layoutParamsRow);
+                                LinearLayout.LayoutParams layoutParamsRow = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                layoutParamsRow.setMargins(8, 8, 8, 8);
+                                llParentHorizontal.setLayoutParams(layoutParamsRow);
 
-                            TextView tvCallerHistoryName = new TextView(mContext);
-                            tvCallerHistoryName.setPadding(0, 0, 0, 0);
-                            tvCallerHistoryName.setMaxLines(3);
-                            tvCallerHistoryName.setGravity(Gravity.LEFT);
-                            tvCallerHistoryName.setTextSize(14);
-                            tvCallerHistoryName.setTypeface(tvCallerHistoryName.getTypeface(), Typeface.BOLD);
-                            if (!user_id.equals(sessionManager.getKeyLoginId())) {
-                                tvCallerHistoryName.setText("Last contacted " + firstname + " " + lastname);
-                            } else {
-                                tvCallerHistoryName.setText("Last contacted with me");
+                                TextView tvCallerHistoryName = new TextView(mContext);
+                                tvCallerHistoryName.setPadding(0, 0, 0, 0);
+                                tvCallerHistoryName.setMaxLines(3);
+                                tvCallerHistoryName.setGravity(Gravity.LEFT);
+                                tvCallerHistoryName.setTextSize(14);
+                                tvCallerHistoryName.setTypeface(tvCallerHistoryName.getTypeface(), Typeface.BOLD);
+                                if (!user_id.equals(sessionManager.getKeyLoginId())) {
+                                    tvCallerHistoryName.setText("Last contacted " + firstname + " " + lastname);
+                                } else {
+                                    tvCallerHistoryName.setText("Last contacted with me");
+                                }
+
+                                TextView tvCallerHistoryLastCallTimeAgo = new TextView(mContext);
+                                tvCallerHistoryLastCallTimeAgo.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), mContext) + ")");
+                                tvCallerHistoryLastCallTimeAgo.setPadding(0, 0, 0, 0);
+                                tvCallerHistoryLastCallTimeAgo.setGravity(Gravity.LEFT);
+                                tvCallerHistoryLastCallTimeAgo.setTextSize(10);
+
+                                TextView tvCallerHistoryLastCallDateTime = new TextView(mContext);
+                                tvCallerHistoryLastCallDateTime.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), "dd-MMM-yyyy"));
+                                tvCallerHistoryLastCallDateTime.setPadding(0, 0, 0, 0);
+                                tvCallerHistoryLastCallDateTime.setGravity(Gravity.RIGHT);
+                                tvCallerHistoryLastCallDateTime.setTextSize(14);
+
+                                LinearLayout l1ChildLeft = new LinearLayout(mContext);
+                                l1ChildLeft.setOrientation(LinearLayout.VERTICAL);
+                                LinearLayout.LayoutParams lpChildLeft = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                lpChildLeft.weight = 7;
+                                l1ChildLeft.setLayoutParams(lpChildLeft);
+                                l1ChildLeft.addView(tvCallerHistoryName);
+                                l1ChildLeft.addView(tvCallerHistoryLastCallTimeAgo);
+
+                                LinearLayout llChildRight = new LinearLayout(mContext);
+                                llChildRight.setOrientation(LinearLayout.HORIZONTAL);
+                                llChildRight.setGravity(Gravity.RIGHT);
+                                LinearLayout.LayoutParams lpChildRight = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                lpChildRight.weight = 3;
+                                lpChildRight.gravity = Gravity.RIGHT;
+                                llChildRight.setLayoutParams(lpChildRight);
+                                llChildRight.addView(tvCallerHistoryLastCallDateTime);
+
+                                llParentHorizontal.addView(l1ChildLeft);
+                                llParentHorizontal.addView(llChildRight);
+
+                                llDynamicConnectionsContainer.addView(llParentHorizontal);
                             }
-
-                            TextView tvCallerHistoryLastCallTimeAgo = new TextView(mContext);
-                            tvCallerHistoryLastCallTimeAgo.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), mContext) + ")");
-                            tvCallerHistoryLastCallTimeAgo.setPadding(0, 0, 0, 0);
-                            tvCallerHistoryLastCallTimeAgo.setGravity(Gravity.LEFT);
-                            tvCallerHistoryLastCallTimeAgo.setTextSize(10);
-
-                            TextView tvCallerHistoryLastCallDateTime = new TextView(mContext);
-                            tvCallerHistoryLastCallDateTime.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), "dd-MMM-yyyy"));
-                            tvCallerHistoryLastCallDateTime.setPadding(0, 0, 0, 0);
-                            tvCallerHistoryLastCallDateTime.setGravity(Gravity.RIGHT);
-                            tvCallerHistoryLastCallDateTime.setTextSize(14);
-
-                            LinearLayout l1ChildLeft = new LinearLayout(mContext);
-                            l1ChildLeft.setOrientation(LinearLayout.VERTICAL);
-                            LinearLayout.LayoutParams lpChildLeft = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            lpChildLeft.weight = 7;
-                            l1ChildLeft.setLayoutParams(lpChildLeft);
-                            l1ChildLeft.addView(tvCallerHistoryName);
-                            l1ChildLeft.addView(tvCallerHistoryLastCallTimeAgo);
-
-                            LinearLayout llChildRight = new LinearLayout(mContext);
-                            llChildRight.setOrientation(LinearLayout.HORIZONTAL);
-                            llChildRight.setGravity(Gravity.RIGHT);
-                            LinearLayout.LayoutParams lpChildRight = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            lpChildRight.weight = 3;
-                            lpChildRight.gravity = Gravity.RIGHT;
-                            llChildRight.setLayoutParams(lpChildRight);
-                            llChildRight.addView(tvCallerHistoryLastCallDateTime);
-
-                            llParentHorizontal.addView(l1ChildLeft);
-                            llParentHorizontal.addView(llChildRight);
-
-                            llDynamicConnectionsContainer.addView(llParentHorizontal);
                         }
                     }
                 } catch (JSONException e) {

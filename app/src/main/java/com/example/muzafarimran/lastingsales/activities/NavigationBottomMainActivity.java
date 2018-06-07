@@ -10,7 +10,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.MatrixCursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -202,6 +205,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: called");
+
 
         initFirst(savedInstanceState);
 
@@ -547,13 +551,59 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             sessionManager.setLastAppVisit("" + Calendar.getInstance().getTimeInMillis());
             if (NetworkAccess.isNetworkAvailable(this)) {
                 SyncUser.updateUserLastSeenToServer(this);
-//                Log.d("rating", "onCreate: setLastAppVisit");
-//                long milliSecondsIn30Second = 60000; // 30 seconds for now
-//                long now = Calendar.getInstance().getTimeInMillis();
-//                long thirtySecondsAgoTimestamp = now - milliSecondsIn30Second;
-//                sessionManager.setLastAppVisit("" + thirtySecondsAgoTimestamp);
-
                 SyncUser.getUserDataFromServer(this);
+                SyncUser.getLastestAppVersionCodeFromServer(this);
+
+                if (!sessionManager.getKeyIsUserActive()) {
+                    Intent i = new Intent(NavigationBottomMainActivity.this, UserInActiveActivity.class);
+                    i.putExtra(TrialExpiryActivity.KEY_MESSAGE, "User is deactivated");
+                    startActivity(i);
+                    finish();
+                }
+
+                if (!sessionManager.getKeyIsCompanyActive()) {
+                    sessionManager.logoutUser();
+                    Intent i = new Intent(NavigationBottomMainActivity.this, CompanyInActiveActivity.class);
+                    i.putExtra(TrialExpiryActivity.KEY_MESSAGE, "Company is deactivated");
+                    startActivity(i);
+                    finish();
+                }
+
+                if (!sessionManager.getKeyIsCompanyPaying()) {
+                    if (!sessionManager.getKeyIsTrialValid()) {
+                    }
+                    Intent i = new Intent(NavigationBottomMainActivity.this, TrialExpiryActivity.class);
+                    i.putExtra("message", "During your free trial period LastingSales created 500 contacts for you, processed 5000 calls");
+                    startActivity(i);
+                }
+            }
+
+            if (!sessionManager.getCanSync()) {
+                Toast.makeText(activity, "Syncing is Paused", Toast.LENGTH_SHORT).show();
+            }
+
+            try {
+                int versionAvailableOnline = sessionManager.getUpdateAvailableVersion();
+                int currentVersionCode = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionCode;
+                if (versionAvailableOnline != currentVersionCode) {
+                    if (versionAvailableOnline > currentVersionCode) {
+                        TextView tvAppUpdate = findViewById(R.id.tvAppUpdate);
+                        tvAppUpdate.setVisibility(View.VISIBLE);
+                        tvAppUpdate.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.lastingsales.agent"));
+                                startActivity(intent);
+                            }
+                        });
+//                        Toast.makeText(activity, "update available", Toast.LENGTH_SHORT).show();
+//                        Intent i = new Intent(NavigationBottomMainActivity.this, UpgradeActivity.class);
+//                        i.putExtra("message", "New version of LastingSales is available in PlayStore. Please Update!");
+//                        startActivity(i);
+                    }
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }

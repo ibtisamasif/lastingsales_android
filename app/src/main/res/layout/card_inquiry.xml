@@ -125,22 +125,22 @@
             app:srcCompat="@drawable/ic_call_green"
             android:layout_marginRight="8dp" />
 
-        <TextView
-            android:id="@+id/inquireyCount"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toLeftOf="@id/call_icon"
-            android:layout_toStartOf="@id/call_icon"
-            android:background="@drawable/inquiry_count_round"
-            android:gravity="center"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/call_icon"
-            app:layout_constraintTop_toTopOf="@+id/call_icon"
-            tools:text="50"
-            android:layout_marginRight="8dp" />
+        <!--<TextView-->
+            <!--android:id="@+id/inquireyCount"-->
+            <!--android:layout_width="24dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:layout_toLeftOf="@id/call_icon"-->
+            <!--android:layout_toStartOf="@id/call_icon"-->
+            <!--android:background="@drawable/inquiry_count_round"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="12sp"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/call_icon"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/call_icon"-->
+            <!--tools:text="50"-->
+            <!--android:layout_marginRight="8dp" />-->
 
         <LinearLayout
             android:layout_width="4dp"

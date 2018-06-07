@@ -43,7 +43,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
     private TextView number;
     //    private Button bIgnore;
     private Button bTag;
-    private TextView inquireyCount;
+//    private TextView inquireyCount;
     private View.OnClickListener callClickListener = null;
     private LSContactProfile lsContactProfile;
 
@@ -57,7 +57,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         this.call_icon = view.findViewById(R.id.call_icon);
         this.number = view.findViewById(R.id.tvNumber);
 //        this.bIgnore = view.findViewById(R.id.bIgnore);
-        this.inquireyCount = view.findViewById(R.id.inquireyCount);
+//        this.inquireyCount = view.findViewById(R.id.inquireyCount);
         this.bTag = view.findViewById(R.id.bTag);
         this.bTag.setVisibility(GONE);
     }
@@ -153,9 +153,9 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         }
         this.time.setText(PhoneNumberAndCallUtils.getTimeAgo(inquiryCall.getBeginTime(), mContext));
 
-        if (inquiryCall.getCountOfInquiries() > 0) {
-            this.inquireyCount.setText(inquiryCall.getCountOfInquiries() + "");
-        }
+//        if (inquiryCall.getCountOfInquiries() > 0) {
+//            this.inquireyCount.setText(inquiryCall.getCountOfInquiries() + "");
+//        }
         this.callClickListener = new CallClickListener(mContext);
         this.call_icon.setOnClickListener(this.callClickListener);
         this.call_icon.setTag(inquiryCall.getContactNumber());

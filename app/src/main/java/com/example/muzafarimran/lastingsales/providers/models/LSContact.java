@@ -76,13 +76,13 @@ public class LSContact extends SugarRecord {
 
     public static List<LSContact> getContactsByTypeInDescOrder(String type) {
         try {
-            return Select.from(LSContact.class).where(Condition.prop("contact_type").eq(type)).orderBy("updated_at DESC").list();
+            return Select.from(LSContact.class).where(Condition.prop("contact_type").eq(type)).orderBy("updated_at DESC").limit("100").list();
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
         }
     }
 
-    public static List<LSContact> getFrequentContactsByTypeInDescOrder(String type) {
+    public static List<LSContact> getFrequentContactsByTypeInDescOrder() {
         try {
             List<LSContact> frequentContacts = new ArrayList<LSContact>();
             List<LSCall> topFrequentArragnedCalls = LSCall.findWithQuery(LSCall.class, "Select * , count (*) AS c from LS_CALL group by contact_number order by c DESC LIMIT 10");

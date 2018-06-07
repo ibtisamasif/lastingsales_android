@@ -320,29 +320,31 @@ public class FlyerBubbleHelper extends AppCompatActivity {
                                 }
                             }
 
-                            if (firstname != null && lastname != null && last_call != null) {
-                                if (i == 0) {
-                                    tvCallerHistoryName0.setVisibility(View.VISIBLE);
-                                    if (!user_id.equals(sessionManager.getKeyLoginId())) {
-                                        tvCallerHistoryName0.setText("Last contacted " + firstname + " " + lastname);
-                                    } else {
-                                        tvCallerHistoryName0.setText("Last contacted with me");
+                            if (!firstname.equalsIgnoreCase("null") && !lastname.equalsIgnoreCase("null")) {
+                                if (firstname != null && lastname != null && last_call != null) {
+                                    if (i == 0) {
+                                        tvCallerHistoryName0.setVisibility(View.VISIBLE);
+                                        if (!user_id.equals(sessionManager.getKeyLoginId())) {
+                                            tvCallerHistoryName0.setText("Last contacted " + firstname + " " + lastname);
+                                        } else {
+                                            tvCallerHistoryName0.setText("Last contacted with me");
+                                        }
+                                        tvCallerHistoryLastCallDateTime0.setVisibility(View.VISIBLE);
+                                        tvCallerHistoryLastCallTimeAgo0.setVisibility(View.VISIBLE);
+                                        tvCallerHistoryLastCallDateTime0.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), "dd-MMM-yyyy"));
+                                        tvCallerHistoryLastCallTimeAgo0.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), context) + ")");
+                                    } else if (i == 1) {
+                                        tvCallerHistoryName1.setVisibility(View.VISIBLE);
+                                        if (!user_id.equals(sessionManager.getKeyLoginId())) {
+                                            tvCallerHistoryName1.setText("Last contacted " + firstname + " " + lastname);
+                                        } else {
+                                            tvCallerHistoryName1.setText("Last contacted with me");
+                                        }
+                                        tvCallerHistoryLastCallDateTime1.setVisibility(View.VISIBLE);
+                                        tvCallerHistoryLastCallTimeAgo1.setVisibility(View.VISIBLE);
+                                        tvCallerHistoryLastCallDateTime1.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), "dd-MMM-yyyy"));
+                                        tvCallerHistoryLastCallTimeAgo1.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), context) + ")");
                                     }
-                                    tvCallerHistoryLastCallDateTime0.setVisibility(View.VISIBLE);
-                                    tvCallerHistoryLastCallTimeAgo0.setVisibility(View.VISIBLE);
-                                    tvCallerHistoryLastCallDateTime0.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), "dd-MMM-yyyy"));
-                                    tvCallerHistoryLastCallTimeAgo0.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), context) + ")");
-                                } else if (i == 1) {
-                                    tvCallerHistoryName1.setVisibility(View.VISIBLE);
-                                    if (!user_id.equals(sessionManager.getKeyLoginId())) {
-                                        tvCallerHistoryName1.setText("Last contacted " + firstname + " " + lastname);
-                                    } else {
-                                        tvCallerHistoryName1.setText("Last contacted with me");
-                                    }
-                                    tvCallerHistoryLastCallDateTime1.setVisibility(View.VISIBLE);
-                                    tvCallerHistoryLastCallTimeAgo1.setVisibility(View.VISIBLE);
-                                    tvCallerHistoryLastCallDateTime1.setText(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), "dd-MMM-yyyy"));
-                                    tvCallerHistoryLastCallTimeAgo1.setText("(" + PhoneNumberAndCallUtils.getDaysAgo(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate(last_call), context) + ")");
                                 }
                             }
                         }

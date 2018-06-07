@@ -108,7 +108,7 @@ public class DataSenderAsync {
                 protected Void doInBackground(Object... params) {
                     try {
                         if (NetworkAccess.isNetworkAvailable(mContext)) {
-                            if (sessionManager.isUserSignedIn()) {
+                            if (sessionManager.isUserSignedIn() && sessionManager.getCanSync()) {
                                 Log.d(TAG, "Syncing");
                                 Log.d(TAG, "Token : " + sessionManager.getLoginToken());
                                 Log.d(TAG, "user_id : " + sessionManager.getKeyLoginId());
@@ -129,6 +129,8 @@ public class DataSenderAsync {
 //                            if (NetworkAccess.isWifiConnected(mContext)) {
 //                                addRecordingToServer();
 //                            }
+                            }else {
+                                Toast.makeText(mContext, ".", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Log.d(TAG, "SyncNoInternet");

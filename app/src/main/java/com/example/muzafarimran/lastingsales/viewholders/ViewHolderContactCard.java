@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -271,7 +273,6 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 rl_container_buttons.setVisibility(View.GONE);
                 user_profile_group_wrapper.setVisibility(View.GONE);
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Success));
-
                 this.cl.setOnClickListener(view -> {
                     Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
                     long contactId = contact.getId();
@@ -382,13 +383,42 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 break;
             default:
         }
-        if (contact.getSrc() != null && contact.getSrc().equalsIgnoreCase("assigned")) {
-            this.numberDetailTextView.setText(number + (" ( assigned )"));
-            llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
-        }
-        if (contact.getSrc() != null && contact.getSrc().equalsIgnoreCase("facebook")) {
-            this.numberDetailTextView.setText(number + (" ( facebook )"));
-            llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
+        if (contact.getSrc() != null) {
+            if (contact.getSrc().equalsIgnoreCase("assigned")) {
+                this.numberDetailTextView.setText(number + (" ( assigned )"));
+                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
+                } else {
+                    this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
+                }
+//        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
+            }else if (contact.getSrc().equalsIgnoreCase("facebook")){
+                this.numberDetailTextView.setText(number + (" ( facebook )"));
+                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
+                } else {
+                    this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
+                }
+//        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
+                } else {
+                    this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
+                }
+//        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
+            } else {
+                this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
+            }
+//        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
         }
     }
 

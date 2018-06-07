@@ -112,6 +112,7 @@ public class DealDynamicFragment extends Fragment implements LoaderManager.Loade
         getLoaderManager().restartLoader(DEAL_LOADER_ID, args, DealDynamicFragment.this);
     }
 
+    @NonNull
     @Override
     public Loader<List<Object>> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader: ");
@@ -130,7 +131,7 @@ public class DealDynamicFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Object>> loader, List<Object> data) {
+    public void onLoadFinished(@NonNull Loader<List<Object>> loader, List<Object> data) {
         Log.d(TAG, "onLoadFinished: ");
         if (data != null) {
             if (!data.isEmpty()) {

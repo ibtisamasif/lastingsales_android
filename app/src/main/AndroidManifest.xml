@@ -56,13 +56,11 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".receivers.AppUpdateReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".receivers.TagAsIgnored">
 
             <!-- <intent-filter> -->
@@ -215,10 +213,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="io.fabric.ApiKey"
-                android:value="8479488fff34a832238a45202271cc7f21d371c3"
-                />
+                android:value="8479488fff34a832238a45202271cc7f21d371c3" />
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value="com.example.muzafarimran.lastingsales.recycleradapter.ExampleActivity" />
@@ -246,15 +244,16 @@
             android:name=".onboarding.OnBoardingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-        <!--<activity-->
-        <!--android:name=".activities.TagNotificationDialogActivity"-->
-        <!--android:launchMode="singleInstance"-->
-        <!--android:screenOrientation="portrait" />-->
+        <!-- <activity -->
+        <!-- android:name=".activities.TagNotificationDialogActivity" -->
+        <!-- android:launchMode="singleInstance" -->
+        <!-- android:screenOrientation="portrait" /> -->
         <activity
             android:name=".activities.FrameActivity"
             android:screenOrientation="portrait" />
@@ -287,8 +286,28 @@
             android:name=".activities.LargeImageActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
-
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".activities.TrialExpiryActivity"
+            android:enabled="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
+            <!--android:theme="@style/Theme.AppCompat.Light.Dialog"-->
+        </activity>
+        <activity
+            android:name=".activities.CompanyInActiveActivity"
+            android:enabled="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
+            <!--android:theme="@style/Theme.AppCompat.Light.Dialog"-->
+        </activity>
+        <activity
+            android:name=".activities.UpgradeActivity"
+            android:enabled="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
+            <!--android:theme="@style/Theme.AppCompat.Light.Dialog"-->
+        </activity>
 
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
@@ -305,17 +324,17 @@
             android:enabled="true"
             android:exported="false" />
 
-        <!--<service-->
-        <!--android:name=".service.AddEditLeadService"-->
-        <!--android:enabled="true"-->
-        <!--android:launchMode="singleInstance"-->
-        <!--android:screenOrientation="portrait"-->
-        <!--android:theme="@style/Theme.AppCompat.Light.Dialog">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="inez.apps.customincomingcallscreen.MyService" />-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
-        <!--</intent-filter>-->
-        <!--</service>-->
+        <!-- <service -->
+        <!-- android:name=".service.AddEditLeadService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:launchMode="singleInstance" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/Theme.AppCompat.Light.Dialog"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="inez.apps.customincomingcallscreen.MyService" /> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
         <service
             android:name=".service.CallDetectionService"
             android:enabled="true"
@@ -328,9 +347,9 @@
             <!-- <action android:name="android.intent.action.MAIN" /> -->
             <!-- </intent-filter> -->
         </service>
-        <service
-            android:name=".service.InitService">
-            <!--android:process=":testing">-->
+        <service android:name=".service.InitService">
+
+            <!-- android:process=":testing"> -->
         </service>
 
         <!-- <service -->
@@ -342,7 +361,6 @@
         <!-- <service -->
         <!-- android:name=".service.CallRecordService" -->
         <!-- android:exported="true"/> -->
-
     </application>
 
 </manifest>
