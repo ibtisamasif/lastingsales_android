@@ -15,10 +15,10 @@
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/navigation_unlabeled" />
 
-    <item
-        android:id="@+id/navigation_leads"
-        android:icon="@drawable/ic_people_black_24dp"
-        android:title="@string/navigation_leads" />
+    <!--<item-->
+        <!--android:id="@+id/navigation_leads"-->
+        <!--android:icon="@drawable/ic_people_black_24dp"-->
+        <!--android:title="@string/navigation_leads" />-->
 
     <item
         android:id="@+id/navigation_deals"

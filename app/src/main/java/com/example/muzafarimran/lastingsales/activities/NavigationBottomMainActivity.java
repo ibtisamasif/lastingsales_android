@@ -34,7 +34,6 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment1;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment4;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment5;
 import com.example.muzafarimran.lastingsales.R;
@@ -145,13 +144,13 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     floatingActionMenuLead.hideMenu(true);
 //                    getSupportLoaderManager().restartLoader(HOME_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
-                case R.id.navigation_leads:
-                    switchToFragment3();
-//                    ACTIVE_LOADER = LEAD_LOADER_ID;
-                    floatingActionButtonDeal.hide();
-                    floatingActionMenuLead.showMenu(true);
-//                    getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-                    return true;
+//                case R.id.navigation_leads:
+//                    switchToFragment3();
+////                    ACTIVE_LOADER = LEAD_LOADER_ID;
+//                    floatingActionButtonDeal.hide();
+//                    floatingActionMenuLead.showMenu(true);
+////                    getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+//                    return true;
                 case R.id.navigation_deals:
                     switchToFragment4();
 //                    ACTIVE_LOADER = LEAD_LOADER_ID;
@@ -183,11 +182,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //        navigation.setSelectedItemId(R.id.navigation_home);
     }
 
-    public void switchToFragment3() {
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment3(), FRAGMENT_TAG_LEADS).commitAllowingStateLoss();
-//        navigation.setSelectedItemId(R.id.navigation_leads);
-    }
+//    public void switchToFragment3() {
+//        FragmentManager manager = getSupportFragmentManager();
+//        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment3(), FRAGMENT_TAG_LEADS).commitAllowingStateLoss();
+////        navigation.setSelectedItemId(R.id.navigation_leads);
+//    }
 
     public void switchToFragment4() {
         FragmentManager manager = getSupportFragmentManager();
@@ -304,16 +303,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 } else if (tab.equals(BOTTOMSHEET_TAB)) {
                     Log.d(TAG, "onCreate: Loading Leads TAB with bottomsheet open");
                     String contactId = bundle1.getString(KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID);
-                    navigation.setSelectedItemId(R.id.navigation_leads);
+                    navigation.setSelectedItemId(R.id.navigation_deals);
                     openContactBottomSheetCallback(Long.parseLong(contactId));
                 }
-            } else {
-                Log.d(TAG, "onCreate: Bundle Not Null TAB unknown Loading Leads TAB");
-                navigation.setSelectedItemId(R.id.navigation_leads);
             }
-        } else {
+            else {
+                Log.d(TAG, "onCreate: Bundle Not Null TAB unknown Loading Leads TAB");
+                navigation.setSelectedItemId(R.id.navigation_deals);
+            }
+        }
+        else {
             Log.d(TAG, "onCreate: Bundle is Null Loading Leads TAB");
-            navigation.setSelectedItemId(R.id.navigation_leads);
+            navigation.setSelectedItemId(R.id.navigation_deals);
         }
     }
 
@@ -644,11 +645,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             searchView.setIconified(true);
         } else {
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.llFragmentContainer); //TODO NPE
-            if (f instanceof BlankFragment3) {
+            if (f instanceof BlankFragment4) {
                 super.onBackPressed();
             } else {
-                navigation.setSelectedItemId(R.id.navigation_leads);
-                floatingActionMenuLead.showMenu(true);
+                navigation.setSelectedItemId(R.id.navigation_deals);
+                floatingActionMenuLead.showMenu(false);
             }
         }
     }

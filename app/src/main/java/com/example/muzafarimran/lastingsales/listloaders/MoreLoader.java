@@ -6,8 +6,6 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.activities.ColleagueActivity;
-import com.example.muzafarimran.lastingsales.activities.IgnoredActivity;
 import com.example.muzafarimran.lastingsales.carditems.MoreItem;
 
 import java.util.ArrayList;
@@ -29,13 +27,7 @@ public class MoreLoader extends AsyncTaskLoader<List<Object>> {
     public List<Object> loadInBackground() {
         List<Object> data = new ArrayList<Object>();
 
-        MoreItem moreItemColleague = new MoreItem("Colleague", ColleagueActivity.class);
-        moreItemColleague.drawable = R.drawable.bg_collegue_cardxxxhdpi;
-        moreItemColleague.description = "Contacts that are not your leads i.e vendors, colleagues and business contacts.";
-
-        MoreItem moreItemIgnored = new MoreItem("Ignored", IgnoredActivity.class);
-        moreItemIgnored.drawable = R.drawable.bg_ignord_cardxxxhdpi;
-        moreItemIgnored.description = "Contacts that you don't want to be tracked i.e friends and family.";
+//
 
         MoreItem moreItemSetting = new MoreItem("Settings");
         moreItemSetting.drawable = R.drawable.bg_setting_cardcopyxxxhdpi;
@@ -45,8 +37,8 @@ public class MoreLoader extends AsyncTaskLoader<List<Object>> {
 //        moreItemCompany.drawable = R.drawable.bg_ignord_cardxxxhdpi;
 //        moreItemCompany.description = "Contacts that you don't want to be tracked i.e friends and family.";
 
-        data.add(moreItemColleague);
-        data.add(moreItemIgnored);
+//        data.add(moreItemColleague);
+//        data.add(moreItemIgnored);
         data.add(moreItemSetting);
 //        data.add(moreItemCompany);
 

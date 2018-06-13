@@ -30,7 +30,7 @@ public class UnlabeledLoader1 extends AsyncTaskLoader<List<Object>> {
     @Override
     public List<Object> loadInBackground() {
         List<Object> data = new ArrayList<Object>();
-        Collection<LSContact> unlabeledContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);
+        Collection<LSContact> unlabeledContacts = LSContact.getContactsInDescOrder();
         if (!unlabeledContacts.isEmpty()) {
 
             HomeItem homeItem = new HomeItem();

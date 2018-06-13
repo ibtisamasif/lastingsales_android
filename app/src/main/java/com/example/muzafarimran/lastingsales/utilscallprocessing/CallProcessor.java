@@ -13,28 +13,39 @@ class CallProcessor {
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
 
-        LSContact personalContactCheck = LSContact.getContactFromNumber(call.getContactNumber());
-        // Check the category of call i.e UnLabeled , Lead or Ignored
-        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-            // Unlabeled
+        if (true) { // COMPANY PHONE
+            LSContact personalContactCheck = LSContact.getContactFromNumber(call.getContactNumber());
+            // Check the category of call i.e UnLabeled , Lead or Ignored
+//        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
+//            // Unlabeled
+//
+//            UnlabeledProcessor.Process(mContext, call, showNotification);
+//
+//        }
+//        else
+            if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+                // Lead
 
-            UnlabeledProcessor.Process(mContext, call, showNotification);
+                LeadProcessor.Process(mContext, call, showNotification);
 
-        } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-            // Lead
+            }
+//        else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+//            // Business Contact
+//            BusinessProcessor.Process(mContext, call);
+//
+//        }
+//        else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+//            // Contact is in Ignored list. Do Nothing
+//            // No ignored processor hence contact updatedAt will not be updated upon call.
+//        }
+            else {
+                // new call
+                UnknownProcessor.Process(mContext, call, showNotification);
+            }
+        }else if (false){ // PERSONAL PHONE
 
-            LeadProcessor.Process(mContext, call, showNotification);
-
-        } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
-            // Business Contact
-            BusinessProcessor.Process(mContext, call);
-
-        } else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
-            // Contact is in Ignored list. Do Nothing
-            // No ignored processor hence contact updatedAt will not be updated upon call.
-        } else {
-            // new call
-            UnknownProcessor.Process(mContext, call, showNotification);
+        }else {
+            // Do nothing
         }
     }
 }

@@ -74,6 +74,14 @@ public class LSContact extends SugarRecord {
         this.contactAddress = contactAddress;
     }
 
+    public static List<LSContact> getContactsInDescOrder() {
+        try {
+            return Select.from(LSContact.class).orderBy("updated_at DESC").limit("100").list();
+        } catch (SQLiteException e) {
+            return new ArrayList<LSContact>();
+        }
+    }
+
     public static List<LSContact> getContactsByTypeInDescOrder(String type) {
         try {
             return Select.from(LSContact.class).where(Condition.prop("contact_type").eq(type)).orderBy("updated_at DESC").limit("100").list();
