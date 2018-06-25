@@ -11,6 +11,7 @@ public class SettingsManager {
     private static final String KEY_STATE_CALL_END_DIALOG = "state_call_end_dialog";
     private static final String KEY_STATE_HOURLY_NOTIFICATION = "state_hourly_notification";
     private static final String KEY_STATE_DEFAULT_LEAD = "state_default_lead";
+    private static final String KEY_STATE_IS_COMPANY_PHONE = "state_is_company_phone";
     private static final String KEY_STATE_PROTECTED_APP = "state_protected_app";
 
     // Sharedpref file name
@@ -74,6 +75,15 @@ public class SettingsManager {
 
     public void setKeyStateProtectedApp(Boolean state) {
         editor.putBoolean(KEY_STATE_PROTECTED_APP, state);
+        editor.commit();
+    }
+
+    public Boolean getKeyStateIsCompanyPhone() {
+        return pref.getBoolean(KEY_STATE_IS_COMPANY_PHONE, true);
+    }
+
+    public void setKeyStateIsCompanyPhone(Boolean state) {
+        editor.putBoolean(KEY_STATE_IS_COMPANY_PHONE, state);
         editor.commit();
     }
 

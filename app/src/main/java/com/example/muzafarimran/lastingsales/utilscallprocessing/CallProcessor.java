@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
 import android.content.Context;
 
+import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -12,40 +13,28 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 class CallProcessor {
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
-
-        if (true) { // COMPANY PHONE
+        SettingsManager settingsManager = new SettingsManager(mContext);
+        if (settingsManager.getKeyStateIsCompanyPhone()) { // COMPANY PHONE
             LSContact personalContactCheck = LSContact.getContactFromNumber(call.getContactNumber());
-            // Check the category of call i.e UnLabeled , Lead or Ignored
-//        if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-//            // Unlabeled
-//
-//            UnlabeledProcessor.Process(mContext, call, showNotification);
-//
-//        }
-//        else
-            if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+            if (personalContactCheck != null) {
                 // Lead
-
-                LeadProcessor.Process(mContext, call, showNotification);
-
+                UnlabeledProcessor.Process(mContext, call, showNotification);
             }
-//        else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
-//            // Business Contact
-//            BusinessProcessor.Process(mContext, call);
-//
-//        }
-//        else if (personalContactCheck != null && personalContactCheck.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
-//            // Contact is in Ignored list. Do Nothing
-//            // No ignored processor hence contact updatedAt will not be updated upon call.
-//        }
             else {
                 // new call
                 UnknownProcessor.Process(mContext, call, showNotification);
             }
-        }else if (false){ // PERSONAL PHONE
+        }else{ // PERSONAL PHONE
 
-        }else {
-            // Do nothing
+            LSContact personalContactCheck = LSContact.getContactFromNumber(call.getContactNumber());
+            if (personalContactCheck != null) {
+                // Lead
+                UnlabeledProcessor.Process(mContext, call, showNotification);
+            }
+            else {
+                // new call
+                UnknownProcessor.Process(mContext, call, showNotification);
+            }
         }
     }
 }
