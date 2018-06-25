@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_slider_screen2">
+
+
+
+
+    <RelativeLayout
+        android:layout_above="@+id/main_screen"
+        android:layout_width="match_parent"
+        android:gravity="center"
+
+        android:layout_height="wrap_content">
+
+
+        <TextView
+
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Is it a Company Phone or Personal Phone?"
+            android:textColor="#fff"
+            android:layout_marginBottom="30dp"
+            />
+
+        <RadioGroup
+            android:layout_marginTop="20dp"
+            android:id="@+id/radio_company_personal_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radio_company_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Company Phone"
+                android:textColor="#fff"
+                android:textSize="12dp"/>
+            <RadioButton
+
+                android:id="@+id/radio_personal_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Personal Phone"
+                android:textColor="#fff"
+                android:textSize="12dp"/>
+
+
+
+        </RadioGroup>
+
+
+
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/main_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tutorial screen 3"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="10dp"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/meditation_tech" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="some text heresome text heresome text heresome text heresome text heresome text heresome text heresome text heresome text heresome text here"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="13dp" />
+
+    </LinearLayout>
+</RelativeLayout>
