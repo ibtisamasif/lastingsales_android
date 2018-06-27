@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.UnlabeledContactAddedEventModel;
@@ -20,20 +19,15 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 3/4/2017.
  */
 
-class UnknownProcessor {
-    public static final String TAG = "UnknownProcessor";
+class UnknownProcessorCompany {
+    public static final String TAG = "UnknownProcessorCompany";
     private static final long MILLIS_10_MINUTES = 600000;
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
         //new untagged contact is created, saved, entered in call entry
         LSContact tempContact = new LSContact();
-        SettingsManager settingManager = new SettingsManager(mContext);
-        if (settingManager.getKeyStateDefaultLead()) {
-            tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
-            tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-        } else {
-            tempContact.setContactType(LSContact.CONTACT_TYPE_UNLABELED);
-        }
+        tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
+        tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
         tempContact.setPhoneOne(call.getContactNumber());
         tempContact.setContactName(call.getContactName());
         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);

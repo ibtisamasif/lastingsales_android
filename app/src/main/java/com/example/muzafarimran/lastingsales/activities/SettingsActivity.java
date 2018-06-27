@@ -34,7 +34,8 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch swFlyer;
     private Switch swTagDialogPopup;
     private Switch swHourlyAlarmNotification;
-    private Switch swDefaultLead;
+//    private Switch swDefaultLead;
+    private Switch swCompanyPhone;
     private TextView tvAddToProtectedApp;
 
     @Override
@@ -52,7 +53,8 @@ public class SettingsActivity extends AppCompatActivity {
         swFlyer = (Switch) findViewById(R.id.swFlyer);
         swTagDialogPopup = (Switch) findViewById(R.id.swTagDialogPopup);
         swHourlyAlarmNotification = (Switch) findViewById(R.id.swHourlyAlarmNotification);
-        swDefaultLead = (Switch) findViewById(R.id.swDefaultLead);
+//        swDefaultLead = (Switch) findViewById(R.id.swDefaultLead);
+        swCompanyPhone = (Switch) findViewById(R.id.swCompanyPhone);
         TextView tvAddToProtectedApp = (TextView) findViewById(R.id.tvAddToProtectedApp);
         tvAddToProtectedApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,24 +148,46 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        if (settingsManager.getKeyStateDefaultLead()) {
-            swDefaultLead.setChecked(true);
+//        if (settingsManager.getKeyStateDefaultLead()) {
+//            swDefaultLead.setChecked(true);
+//        } else {
+//            swDefaultLead.setChecked(false);
+//        }
+//
+//        //attach a listener to check for changes in state
+//        swDefaultLead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//                if (isChecked) {
+//                    settingsManager.setKeyStateDefaultLead(true);
+//                    Toast.makeText(SettingsActivity.this, "Default will be Lead", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    settingsManager.setKeyStateDefaultLead(false);
+//                    Toast.makeText(SettingsActivity.this, "Default will be unlabeled", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
+        if (settingsManager.getKeyStateIsCompanyPhone()) {
+            swCompanyPhone.setChecked(true);
         } else {
-            swDefaultLead.setChecked(false);
+            swCompanyPhone.setChecked(false);
         }
 
         //attach a listener to check for changes in state
-        swDefaultLead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swCompanyPhone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
-                    settingsManager.setKeyStateDefaultLead(true);
-                    Toast.makeText(SettingsActivity.this, "Default will be Lead", Toast.LENGTH_SHORT).show();
+                    settingsManager.setKeyStateIsCompanyPhone(true);
+                    Toast.makeText(SettingsActivity.this, "Set as Company Phone", Toast.LENGTH_SHORT).show();
                 } else {
-                    settingsManager.setKeyStateDefaultLead(false);
-                    Toast.makeText(SettingsActivity.this, "Default will be unlabeled", Toast.LENGTH_SHORT).show();
+                    settingsManager.setKeyStateIsCompanyPhone(false);
+                    Toast.makeText(SettingsActivity.this, "Set as Personal Phone", Toast.LENGTH_SHORT).show();
                 }
             }
         });

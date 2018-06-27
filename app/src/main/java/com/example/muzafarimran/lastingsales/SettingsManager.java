@@ -60,14 +60,14 @@ public class SettingsManager {
     }
 
 
-    public Boolean getKeyStateDefaultLead() {
-        return pref.getBoolean(KEY_STATE_DEFAULT_LEAD, false);
-    }
-
-    public void setKeyStateDefaultLead(Boolean state) {
-        editor.putBoolean(KEY_STATE_DEFAULT_LEAD, state);
-        editor.commit();
-    }
+//    public Boolean getKeyStateDefaultLead() {
+//        return pref.getBoolean(KEY_STATE_DEFAULT_LEAD, false);
+//    }
+//
+//    public void setKeyStateDefaultLead(Boolean state) {
+//        editor.putBoolean(KEY_STATE_DEFAULT_LEAD, state);
+//        editor.commit();
+//    }
 
     public Boolean getKeyStateProtectedApp() {
         return pref.getBoolean(KEY_STATE_PROTECTED_APP, false);

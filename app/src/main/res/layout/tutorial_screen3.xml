@@ -5,31 +5,28 @@
     android:background="@color/bg_slider_screen2">
 
 
-
-
     <RelativeLayout
-        android:layout_above="@+id/main_screen"
         android:layout_width="match_parent"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/main_screen"
 
-        android:layout_height="wrap_content">
+        android:gravity="center">
 
 
         <TextView
 
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:text="Is it a Company Phone or Personal Phone?"
             android:textColor="#fff"
-            android:layout_marginBottom="30dp"
-            />
+            android:textStyle="bold" />
 
         <RadioGroup
-            android:layout_marginTop="20dp"
             android:id="@+id/radio_company_personal_info"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
 
             <RadioButton
                 android:id="@+id/radio_company_phone"
@@ -37,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:text="Company Phone"
                 android:textColor="#fff"
-                android:textSize="12dp"/>
+                android:textSize="12dp" />
+
             <RadioButton
 
                 android:id="@+id/radio_personal_phone"
@@ -45,17 +43,11 @@
                 android:layout_height="wrap_content"
                 android:text="Personal Phone"
                 android:textColor="#fff"
-                android:textSize="12dp"/>
-
-
+                android:textSize="12dp" />
 
         </RadioGroup>
 
-
-
     </RelativeLayout>
-
-
 
     <LinearLayout
         android:id="@+id/main_screen"
@@ -68,9 +60,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:text="Tutorial screen 3"
             android:textColor="@android:color/white"
-            android:layout_marginBottom="10dp"
             android:textSize="30dp"
             android:textStyle="bold" />
 
