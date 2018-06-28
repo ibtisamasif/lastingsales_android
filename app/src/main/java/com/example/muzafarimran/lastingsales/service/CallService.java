@@ -21,18 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
-
-import java.util.List;
 
 public class CallService extends Service {
 
 
     View view;
     WindowManager manager;
-    private String contactPhone;
 
     @Nullable
     @Override
@@ -46,13 +43,6 @@ public class CallService extends Service {
     public CallService() {
     }
 
-    @Override
-    public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
-
-        contactPhone=intent.getStringExtra("no");
-
-    }
 
     @Override
     public void onCreate() {
@@ -75,6 +65,9 @@ public class CallService extends Service {
         manager = (WindowManager) getSystemService(WINDOW_SERVICE);
         manager.addView(view, params);
 
+        SessionManager sessionManager=new SessionManager(CallService.this);
+
+        String num=sessionManager.getTmpUserNO();
 
         ImageButton close=view.findViewById( R.id.ibClose );
 
@@ -82,32 +75,51 @@ public class CallService extends Service {
             @Override
             public void onClick(View v) {
                 Toast.makeText( CallService.this, "You click close button", Toast.LENGTH_SHORT ).show();
+
+
+                LSContact updateContacct = LSContact.getContactFromNumber(num);
+             if(updateContacct!=null) {
+                 updateContacct.setContactSave("false");
+                 updateContacct.save();
+                 Toast.makeText(CallService.this, "set false", Toast.LENGTH_SHORT).show();
+             }else{
+                 Log.d("setcontact save ","null");
+             }
+
+
                 manager.removeView(view);
+                stopSelf();
             }
         } );
 
 
+
         EditText addContactField=view.findViewById(R.id.afterCallAddContactField);
         TextView showNumber=view.findViewById(R.id.afterCallContactNumber);
+        TextView showNumber1=view.findViewById(R.id.tvContactName);
         Button addBtn=view.findViewById(R.id.afterCallAddContactAddBtn);
         CheckBox ignoreCB=view.findViewById(R.id.afterCallAddContactCb);
 
 
 
-        if(contactPhone!=null)
-        showNumber.setText(contactPhone);
-
-        else
-            showNumber.setText(CallProcessor.num);
-
+        if(num!=null) {
+            showNumber.setText(num);
+            showNumber1.setText(num);
+        }
+        else {
+            showNumber.setText(num);
+            showNumber1.setText(num);
+        }
         ignoreCB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(ignoreCB.isChecked()){
                     addBtn.setText("Ignore");
+                    addContactField.setVisibility(View.GONE);
                 }
                 else{
+                    addContactField.setVisibility(View.VISIBLE);
                     addBtn.setText("Save Contact");
                 }
 
@@ -121,10 +133,11 @@ public class CallService extends Service {
                 if(ignoreCB.isChecked()){
 
                     LSIgnoreList ignoreContact = new LSIgnoreList();
-                    ignoreContact.setNumber(CallProcessor.num);
+                    ignoreContact.setNumber(num);
                     if(ignoreContact.save()>0){
                         Log.d("amir","add to ignore list");
                         manager.removeView(view);
+                        stopSelf();
                     }else{
                         Log.d("amir","error add to ignore list");
                     }
@@ -136,18 +149,20 @@ public class CallService extends Service {
                 }else {
 
 
-                    if (addContactField.getText().equals("")) {
+                    if (addContactField.getText().toString().isEmpty()) {
 
                         Toast.makeText(CallService.this, "Please enter valid name....", Toast.LENGTH_SHORT).show();
                         Log.d("amir validation ","please enter name!!!");
                     } else {
 
+                        Toast.makeText(CallService.this, "You enter "+addContactField.getText().toString(), Toast.LENGTH_SHORT).show();
 
 
 
-                            LSContact updateContacct = LSContact.getContactFromNumber(CallProcessor.num);
+
+                            LSContact updateContacct = LSContact.getContactFromNumber(num);
                             updateContacct.setContactName(addContactField.getText().toString());
-                            //updateContacct.setContactsave("true");
+                         updateContacct.setContactSave("true");
                             updateContacct.save();
 
 
@@ -156,6 +171,7 @@ public class CallService extends Service {
                                 Log.d("amir", "update contact");
                                 Toast.makeText(CallService.this, "updated", Toast.LENGTH_SHORT).show();
                                 manager.removeView(view);
+                                stopSelf();
                             } else {
                                 Log.d("amir", "updte contact error");
                                 Toast.makeText(CallService.this, "update contact error", Toast.LENGTH_SHORT).show();

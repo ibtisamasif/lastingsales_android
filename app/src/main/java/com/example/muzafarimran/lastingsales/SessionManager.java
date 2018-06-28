@@ -63,6 +63,7 @@ public class SessionManager {
     public static final String KEY_UPDATE_AVAILABLE_VERSION = "update_available_version";
 
     public static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
+    public static final String TMP_USER_NO = "TMP_USER_NO";
 
 
     // Sharedpref file name
@@ -281,9 +282,16 @@ public class SessionManager {
         editor.putString(KEY_LOGIN_LASTNAME, name);
         editor.commit();
     }
+    public void setTmpUserNo(String name) {
+        editor.putString(TMP_USER_NO, name);
+        editor.commit();
+    }
 
     public String getKeyLoginImagePath() {
         return pref.getString(KEY_LOGIN_IMAGEPATH, "");
+    }
+    public String getTmpUserNO() {
+        return pref.getString(TMP_USER_NO, "");
     }
 
     public void setKeyLoginImagePath(String path) {

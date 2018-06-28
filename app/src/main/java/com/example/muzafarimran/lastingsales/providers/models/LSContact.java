@@ -34,15 +34,15 @@ public class LSContact extends SugarRecord {
     @Ignore
     public static final String CONTACT_TYPE_UNLABELED = "type_untagged";
 
- /*   public String isContactsave() {
-        return isContactsave;
+    public String isContactSave() {
+        return isContactSave;
     }
 
-    public void setContactsave(String contactsave) {
-        isContactsave = contactsave;
+    public void setContactSave(String contactSave) {
+        isContactSave = contactSave;
     }
-*/
-    //String isContactsave;
+
+    String isContactSave;
     private String contactName;
     private String contactEmail;
     private String contactType;
@@ -74,7 +74,7 @@ public class LSContact extends SugarRecord {
 
     public LSContact(String contactName, String contactEmail, String contactType, String phoneOne,
                      String phoneTwo, String contactDescription, String contactCompany,
-                     String contactAddress,String isContactsave) {
+                     String contactAddress,String isContactSave) {
         this.contactName = contactName;
         this.contactEmail = contactEmail;
         this.contactType = contactType;
@@ -83,7 +83,7 @@ public class LSContact extends SugarRecord {
         this.contactDescription = contactDescription;
         this.contactCompany = contactCompany;
         this.contactAddress = contactAddress;
-        //this.isContactsave=isContactsave;
+        this.isContactSave=isContactSave;
     }
 
     public static List<LSContact> getContactsInDescOrder() {

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SyncStats;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -35,12 +37,39 @@ public static   String num;
                 Log.d("amir","contact exist in ignore list");
             } else {
 
+                SessionManager sessionManager=new SessionManager(mContext);
+                sessionManager.setTmpUserNo(call.getContactNumber());
+
                 // check if contact exists
                 LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());
 
                 // if it exists
                 if (contact != null) {
                     //TODO show after call dialog & save call log
+                    Log.d("exist",call.getContactNumber());
+
+
+
+                    LSContact lsContact=LSContact.getContactFromNumber(call.getContactNumber());
+
+                    if(lsContact!=null) {
+                        if (lsContact.isContactSave().equals("true")) {
+                            Log.d("contact already saved" + lsContact.isContactSave(), call.getContactNumber());
+                          //  Toast.makeText(mContext, "Condition true", Toast.LENGTH_SHORT).show();
+             return;
+                        } else {
+//                            Toast.makeText(mContext, "condition false", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(mContext, CallService.class);
+                            intent.putExtra("no", call.getContactNumber());
+
+                            mContext.startService(intent);
+
+
+                        }
+                    }else{
+                        Log.d("result is null","null");
+                    }
 
                 } else {
 
