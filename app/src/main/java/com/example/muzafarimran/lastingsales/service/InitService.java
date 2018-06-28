@@ -104,9 +104,10 @@ public class InitService extends IntentService {
     private void fetchAgentLeadsFunc() {
         Log.d(TAG, "fetchAgentLeadsFunc: Fetching leads...");
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-        final String BASE_URL = MyURLs.GET_CONTACTS;
+        final String BASE_URL = MyURLs.GET_SYNC;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
+                .appendQueryParameter("populate", "true")
                 .appendQueryParameter("per_page", "50000")
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
@@ -118,31 +119,31 @@ public class InitService extends IntentService {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     JSONObject responseObject = jObj.getJSONObject("response");
-                    String totalLeads = responseObject.getString("total");
-                    Log.d(TAG, "onResponse: TotalLeads: " + totalLeads);
+//                    String totalLeads = responseObject.getString("total");
+//                    Log.d(TAG, "onResponse: TotalLeads: " + totalLeads);
 
-                    JSONArray jsonarray = responseObject.getJSONArray("data");
-                    Log.d(TAG, "onResponse: data jsonArray length : " + jsonarray.length());
-                    for (int i = jsonarray.length() - 1; i >= 0; i--) {
-                        JSONObject jsonobject = jsonarray.getJSONObject(i);
-                        String contactId = jsonobject.getString("id");
-                        String contactName = jsonobject.getString("name");
-                        String contactNumber = jsonobject.getString("phone");
-                        String contactStatus = jsonobject.getString("status");
-                        String lead_type = jsonobject.getString("lead_type");
-                        String email = jsonobject.getString("email");
-                        String address = jsonobject.getString("address");
-                        String dynamic_values = jsonobject.getString("dynamic_values");
+                    JSONArray jsonArrayLeads = responseObject.getJSONArray("leads");
+                    Log.d(TAG, "onResponse: data jsonArray length : " + jsonArrayLeads.length());
+                    for (int i = jsonArrayLeads.length() - 1; i >= 0; i--) {
+                        JSONObject jsonObjectOneLead = jsonArrayLeads.getJSONObject(i);
+                        String contactId = jsonObjectOneLead.getString("id");
+                        String contactName = jsonObjectOneLead.getString("name");
+                        String contactNumber = jsonObjectOneLead.getString("phone");
+                        String contactStatus = jsonObjectOneLead.getString("status");
+                        String lead_type = jsonObjectOneLead.getString("lead_type");
+                        String email = jsonObjectOneLead.getString("email");
+                        String address = jsonObjectOneLead.getString("address");
+                        String dynamic_values = jsonObjectOneLead.getString("dynamic_values");
                         int created_by = 0;
-                        if (jsonobject.has("created_by")) {
-                            created_by = jsonobject.getInt("created_by");
+                        if (jsonObjectOneLead.has("created_by")) {
+                            created_by = jsonObjectOneLead.getInt("created_by");
                         }
                         String updated_at = "";
-                        if (jsonobject.has("updated_at")) {
-                            updated_at = jsonobject.getString("updated_at");
+                        if (jsonObjectOneLead.has("updated_at")) {
+                            updated_at = jsonObjectOneLead.getString("updated_at");
                         }
-                        int user_id = jsonobject.getInt("user_id");
-                        String src = jsonobject.getString("src");
+                        int user_id = jsonObjectOneLead.getInt("user_id");
+                        String src = jsonObjectOneLead.getString("src");
 
                         Log.d(TAG, "onResponse: ID: " + contactId);
                         Log.d(TAG, "onResponse: Name: " + contactName);
@@ -176,7 +177,30 @@ public class InitService extends IntentService {
                             tempContact.setSrc(src);
                             tempContact.save();
                             Log.d(TAG, "onResponse: gettingDynamic: " + tempContact.getDynamic());
-                            fetchAgentNotesFunc(tempContact);
+//                            fetchAgentNotesFunc(tempContact);
+
+                            JSONArray jsonArrayNotes = jsonObjectOneLead.getJSONArray("notes");
+                            Log.d(TAG, "onResponse: data jsonArrayNotes length : " + jsonArrayNotes.length());
+                            for (int j = jsonArrayNotes.length() - 1; j >= 0; j--) {
+                                JSONObject jsonObjectOneNote = jsonArrayNotes.getJSONObject(j);
+                                String note_id = jsonObjectOneNote.getString("id");
+                                String note_user_id = jsonObjectOneNote.getString("user_id");
+                                String note_company_id = jsonObjectOneNote.getString("company_id");
+                                String note_notable_id = jsonObjectOneNote.getString("notable_id");
+                                String note_notable_type = jsonObjectOneNote.getString("notable_type");
+                                String note_description = jsonObjectOneNote.getString("description");
+                                String note_created_by = jsonObjectOneNote.getString("created_by");
+                                String note_updated_by = jsonObjectOneNote.getString("updated_by");
+
+
+                                LSNote tempNote = new LSNote();
+                                tempNote.setServerId(note_id);
+                                tempNote.setContactOfNote(LSContact.getContactFromServerId(note_notable_id));
+                                tempNote.setNoteText(note_description);
+                                tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
+                                tempNote.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
+                                tempNote.save();
+                            }
                         }
                     }
 
@@ -185,7 +209,9 @@ public class InitService extends IntentService {
                     bus.post(mCallEvent);
 
                     fetchInquiries();
-                    fetchDeals();
+//                    fetchDeals();
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e(TAG, "onResponse: JSONException Contacts");

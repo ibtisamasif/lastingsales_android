@@ -4,7 +4,9 @@ public class MyURLs {
 
 //    private static final String server = "http://192.168.100.50/lastingsales-api/public";
 //    private static final String server = "https://staging.lastingsales.com";
-    private static final String server = "https://api.lastingsales.com";
+//    private static final String server = "https://api.lastingsales.com";
+
+    private static final String server = "https://lswe-m-i6stage.azurewebsites.net";
 
     //    public static String LOGIN_URL_OLD = "http://api.lastingsales.com/api/auth/login";
     public static String LOGIN_URL = server + "/api/v1/auth/login";
@@ -48,4 +50,8 @@ public class MyURLs {
     public static final String FILE_UPLOAD_URL = "https://api.lastingsales.com/api/v1/resource/recording";
 //    public static final String FILE_UPLOAD_URL = "http://54.91.47.130:3000/api/interviewee/img";
     //	public static final String FILE_UPLOAD_URL = "http://192.168.8.37/AndroidFileUpload/fileUpload.php";
+
+
+
+    public static String GET_SYNC = server + "/api/v1/sync";
 }
