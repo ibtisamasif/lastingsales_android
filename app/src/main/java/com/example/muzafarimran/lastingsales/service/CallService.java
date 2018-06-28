@@ -1,0 +1,239 @@
+package com.example.muzafarimran.lastingsales.service;
+
+
+import android.app.Service;
+import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
+import android.telecom.Call;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
+
+import java.util.List;
+
+public class CallService extends Service {
+
+
+    View view;
+    WindowManager manager;
+    private String contactPhone;
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+
+
+
+        return null;
+    }
+
+    public CallService() {
+    }
+
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+
+        contactPhone=intent.getStringExtra("no");
+
+    }
+
+    @Override
+    public void onCreate() {
+
+        view= LayoutInflater.from( this ).inflate( R.layout.aftercallflyer_layout,null);
+
+        WindowManager.LayoutParams params=new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT
+
+        );
+
+        params.gravity = Gravity.TOP | Gravity.LEFT;        //Initially view will be added to top-left corner
+        params.x = 0;
+        params.y = 100;
+
+        manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        manager.addView(view, params);
+
+
+        ImageButton close=view.findViewById( R.id.ibClose );
+
+        close.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText( CallService.this, "You click close button", Toast.LENGTH_SHORT ).show();
+                manager.removeView(view);
+            }
+        } );
+
+
+        EditText addContactField=view.findViewById(R.id.afterCallAddContactField);
+        TextView showNumber=view.findViewById(R.id.afterCallContactNumber);
+        Button addBtn=view.findViewById(R.id.afterCallAddContactAddBtn);
+        CheckBox ignoreCB=view.findViewById(R.id.afterCallAddContactCb);
+
+
+
+        if(contactPhone!=null)
+        showNumber.setText(contactPhone);
+
+        else
+            showNumber.setText(CallProcessor.num);
+
+        ignoreCB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(ignoreCB.isChecked()){
+                    addBtn.setText("Ignore");
+                }
+                else{
+                    addBtn.setText("Save Contact");
+                }
+
+            }
+        });
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(ignoreCB.isChecked()){
+
+                    LSIgnoreList ignoreContact = new LSIgnoreList();
+                    ignoreContact.setNumber(CallProcessor.num);
+                    if(ignoreContact.save()>0){
+                        Log.d("amir","add to ignore list");
+                        manager.removeView(view);
+                    }else{
+                        Log.d("amir","error add to ignore list");
+                    }
+
+                    //ending....
+
+
+
+                }else {
+
+
+                    if (addContactField.getText().equals("")) {
+
+                        Toast.makeText(CallService.this, "Please enter valid name....", Toast.LENGTH_SHORT).show();
+                        Log.d("amir validation ","please enter name!!!");
+                    } else {
+
+
+
+
+                            LSContact updateContacct = LSContact.getContactFromNumber(CallProcessor.num);
+                            updateContacct.setContactName(addContactField.getText().toString());
+                            //updateContacct.setContactsave("true");
+                            updateContacct.save();
+
+
+
+                            if (updateContacct.save() > 0) {
+                                Log.d("amir", "update contact");
+                                Toast.makeText(CallService.this, "updated", Toast.LENGTH_SHORT).show();
+                                manager.removeView(view);
+                            } else {
+                                Log.d("amir", "updte contact error");
+                                Toast.makeText(CallService.this, "update contact error", Toast.LENGTH_SHORT).show();
+                                //show error
+
+                            }
+
+
+                        //code end here.....
+
+
+                    }
+                }
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+        view.findViewById(R.id.cl).setOnTouchListener(new View.OnTouchListener() {
+            private int initialX;
+            private int initialY;
+            private float initialTouchX;
+            private float initialTouchY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        //remember the initial position.
+                        initialX = params.x;
+                        initialY = params.y;
+
+                        //get the touch location
+                        initialTouchX = event.getRawX();
+                        initialTouchY = event.getRawY();
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        int Xdiff = (int) (event.getRawX() - initialTouchX);
+                        int Ydiff = (int) (event.getRawY() - initialTouchY);
+
+                        //The check for Xdiff <10 && YDiff< 10 because sometime elements moves a little while clicking.
+                        //So that is click event.
+                        if (Xdiff < 10 && Ydiff < 10) {
+
+                        }
+                        return true;
+                    case MotionEvent.ACTION_MOVE:
+                        //Calculate the X and Y coordinates of the view.
+                        params.x = initialX + (int) (event.getRawX() - initialTouchX);
+                        params.y = initialY + (int) (event.getRawY() - initialTouchY);
+
+                        //Update the layout with new X & Y coordinate
+                        manager.updateViewLayout( view, params );
+                        return true;
+                }
+                return false;
+            }
+
+        });
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Toast.makeText(this, "close window", Toast.LENGTH_SHORT).show();
+
+    }
+}

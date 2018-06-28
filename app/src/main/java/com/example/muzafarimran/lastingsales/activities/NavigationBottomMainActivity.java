@@ -569,14 +569,17 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     startActivity(i);
                     finish();
                 }
-
                 if (!sessionManager.getKeyIsCompanyPaying()) {
                     if (!sessionManager.getKeyIsTrialValid()) {
+
+                        Intent i = new Intent(NavigationBottomMainActivity.this, TrialExpiryActivity.class);
+                        i.putExtra("message", "During your free trial period LastingSales created 500 contacts for you, processed 5000 calls");
+                        startActivity(i);
+
+
                     }
-                    Intent i = new Intent(NavigationBottomMainActivity.this, TrialExpiryActivity.class);
-                    i.putExtra("message", "During your free trial period LastingSales created 500 contacts for you, processed 5000 calls");
-                    startActivity(i);
                 }
+
             }
 
             if (!sessionManager.getCanSync()) {

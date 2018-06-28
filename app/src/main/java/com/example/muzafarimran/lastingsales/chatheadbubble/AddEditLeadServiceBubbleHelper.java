@@ -20,14 +20,17 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.IgnoredContact;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
     private static final String TAG = "AddEditLeadServiceBubbl";
@@ -50,6 +53,7 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
     String preSelectedContactType = LSContact.CONTACT_TYPE_SALES;
 
     public AddEditLeadServiceBubbleHelper() {
+
     }
 
     public AddEditLeadServiceBubbleHelper(Context context) {
@@ -181,6 +185,15 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                     } catch (Exception e) {
                         Log.e("mixpanel", "Unable to add properties to JSONObject", e);
                     }
+
+                    //starting
+                    //add to ignore list
+
+
+
+                    //
+
+
                     hide();
 //                    stopThisService();
 //                    System.exit(0);
@@ -201,6 +214,15 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation) {
+
+
+                        // update contact name
+
+
+
+
+
+
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(context, contactPhone);
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);

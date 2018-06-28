@@ -33,14 +33,14 @@ android {
         multiDexEnabled true
 //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs {
+/*    signingConfigs {
         debug {
             storeFile file('C:/work/lastingsales-app_new2/configuration data/lskey.jks')
             storePassword "J7Z/}aB*6'r7q+A~"
             keyAlias "lastingSales"
             keyPassword "J7Z/}aB*6'r7q+A~"
         }
-    }
+    }*/
     buildTypes {
         release {
 //            debuggable false
