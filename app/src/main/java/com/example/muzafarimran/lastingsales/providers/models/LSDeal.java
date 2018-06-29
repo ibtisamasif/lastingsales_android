@@ -46,6 +46,8 @@ public class LSDeal extends SugarRecord {
     private String currency;
     private String successRate;
     private String successEta;
+    private LSOrganization organization;
+    private String src;
 
     public LSDeal() {
     }
@@ -228,5 +230,21 @@ public class LSDeal extends SugarRecord {
 
     public void setSuccessEta(String successEta) {
         this.successEta = successEta;
+    }
+
+    public LSOrganization getOrganizationId() {
+        return organization;
+    }
+
+    public void setOrganizationId(LSOrganization organization) {
+        this.organization = organization;
+    }
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
     }
 }

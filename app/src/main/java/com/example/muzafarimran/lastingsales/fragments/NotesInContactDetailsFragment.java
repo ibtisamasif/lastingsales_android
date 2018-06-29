@@ -115,7 +115,7 @@ public class NotesInContactDetailsFragment extends TabFragment {
             list.add(separatorFollowup);
 
             ArrayList<TempFollowUp> allFollowupsOfThisContact = selectedContact.getAllFollowups();
-//        ArrayList<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getAllFollowupsFromContactId(selectedContact.getId()+"");
+//        ArrayList<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getAllFollowupsFromContactId(selectedDeal.getId()+"");
             Calendar now = Calendar.getInstance();
             TempFollowUp selectedFollowup = null;
             if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {

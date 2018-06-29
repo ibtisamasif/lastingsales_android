@@ -11,11 +11,13 @@ import java.util.List;
 
 public class LSNote extends SugarRecord {
     LSContact contactOfNote;
+    LSDeal dealOfNote;
     //    private int id;
     private String NoteText;
     private String createdAt;
     private String syncStatus;
     private String serverId;
+    private String notableType;
 
     public LSNote() {
     }
@@ -54,6 +56,14 @@ public class LSNote extends SugarRecord {
         this.contactOfNote = contactOfNote;
     }
 
+    public LSDeal getDealOfNote() {
+        return dealOfNote;
+    }
+
+    public void setDealOfNote(LSDeal dealOfNote) {
+        this.dealOfNote = dealOfNote;
+    }
+
     public String getCreatedAt() {
         return createdAt;
     }
@@ -76,5 +86,13 @@ public class LSNote extends SugarRecord {
 
     public void setServerId(String serverId) {
         this.serverId = serverId;
+    }
+
+    public String getNotableType() {
+        return notableType;
+    }
+
+    public void setNotableType(String notableType) {
+        this.notableType = notableType;
     }
 }

@@ -163,7 +163,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                 }
             } while (managedCursor.moveToPrevious());
             if (reRun) {
-                CallLogFunc();
+//                CallLogFunc();
             }
         } catch (Exception e) {
             e.printStackTrace();

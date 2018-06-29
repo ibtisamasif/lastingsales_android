@@ -83,8 +83,8 @@ public class LogInActivity extends AppCompatActivity {
         etPassword.getBackground().clearColorFilter();
 
 //        hardcoding number and password for development speedup purposes
-//        etEmail.setText("ibtilocaladmin@gmail.com");
-//        etPassword.setText("123456");
+        etEmail.setText("ibtialphaadmin@gmail.com");
+        etPassword.setText("123456");
 
         loginButtonLoginScreen.setOnClickListener(new View.OnClickListener() {
             @Override
