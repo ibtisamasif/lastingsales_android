@@ -282,6 +282,7 @@ public class SessionManager {
         editor.putString(KEY_LOGIN_LASTNAME, name);
         editor.commit();
     }
+
     public void setTmpUserNo(String name) {
         editor.putString(TMP_USER_NO, name);
         editor.commit();
@@ -290,6 +291,7 @@ public class SessionManager {
     public String getKeyLoginImagePath() {
         return pref.getString(KEY_LOGIN_IMAGEPATH, "");
     }
+
     public String getTmpUserNO() {
         return pref.getString(TMP_USER_NO, "");
     }

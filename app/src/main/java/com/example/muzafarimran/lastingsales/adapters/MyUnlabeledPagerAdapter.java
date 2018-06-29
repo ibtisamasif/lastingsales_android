@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2_1;
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2_2;
+import com.example.muzafarimran.lastingsales.fragments.OrganizationFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
 /**
@@ -28,10 +29,10 @@ public class MyUnlabeledPagerAdapter extends FragmentPagerAdapter {
         TabFragment fragment = null;
         switch (position) {
             case 0:
-                fragment = BlankFragment2_1.newInstance();
+                fragment = new BlankFragment2_2();
                 break;
             case 1:
-                fragment = BlankFragment2_2.newInstance();
+                fragment = new OrganizationFragment();
                 break;
         }
         return fragment;
@@ -46,9 +47,9 @@ public class MyUnlabeledPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Recent";
+                return "Contacts";
             case 1:
-                return "Frequent";
+                return "Organization";
             default:
                 return null;
         }
