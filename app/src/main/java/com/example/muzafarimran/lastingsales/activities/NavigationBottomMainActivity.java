@@ -44,6 +44,7 @@ import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelper;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.OrganizationFragment;
 import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
@@ -51,6 +52,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
 import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
@@ -67,6 +69,7 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.wires.ShakeEventWire;
@@ -165,14 +168,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     floatingActionMenuLead.hideMenu(true);
 //                    getSupportLoaderManager().restartLoader(MORE_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
+
             }
             return false;
         }
     };
 
+
+
     public void switchToFragment1() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment1(), FRAGMENT_TAG_INQUIRIES).commitAllowingStateLoss();
+        manager.beginTransaction().replace
+                (R.id.llFragmentContainer, new BlankFragment1(), FRAGMENT_TAG_INQUIRIES).commitAllowingStateLoss();
 //        navigation.setSelectedItemId(R.id.navigation_inquiries);
     }
 
@@ -213,6 +220,21 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Lasting Sales");
         ActionBar actionBar = getSupportActionBar();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //        adapter = new MyRecyclerViewAdapter(this, list);
 //        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
 //        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -569,14 +591,17 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     startActivity(i);
                     finish();
                 }
-
                 if (!sessionManager.getKeyIsCompanyPaying()) {
                     if (!sessionManager.getKeyIsTrialValid()) {
+
                         Intent i = new Intent(NavigationBottomMainActivity.this, TrialExpiryActivity.class);
                         i.putExtra("message", "During your free trial period LastingSales created 500 contacts for you, processed 5000 calls");
                         startActivity(i);
+
+
                     }
                 }
+
             }
 
             if (!sessionManager.getCanSync()) {

@@ -293,7 +293,7 @@ public class CallDetectionService extends Service {
     }
 
     public void checkShowCallPopupFlyer(Context ctx, String number) {
-        Log.wtf(TAG, "checkShowCallPopupFlyer: ");
+   /*     Log.wtf(TAG, "checkShowCallPopupFlyer: ");
         if(settingsManager.getKeyStateFlyer()){
             String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(ctx, number);
             LSContact oneContact;
@@ -312,7 +312,7 @@ public class CallDetectionService extends Service {
             } else if (oneContact == null){
                 FlyerBubbleHelper.getInstance(ctx).show(internationalNumber);
             }
-        }
+        }*/
     }
 
     private void endServiceAndCallPopupFlyer(Context ctx) {

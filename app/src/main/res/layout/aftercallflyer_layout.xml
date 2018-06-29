@@ -1,0 +1,170 @@
+<com.example.muzafarimran.lastingsales.chatheadbubble.BubbleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.AppCompat.Light"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/shadow_borders"
+        android:scaleType="centerCrop"
+        android:windowAnimationStyle="@android:style/Animation.Translucent"
+        android:windowBackground="@android:color/transparent"
+        android:windowIsTranslucent="true">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/linearLayout11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_rounded_rectangle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/user_avatar"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@drawable/ic_account_circle_white_img"
+                fresco:placeholderImage="@drawable/ic_account_circle_white_img"
+                fresco:roundAsCircle="true" />
+
+            <TextView
+                android:id="@+id/tvContactName"
+                style="@style/Base.TextAppearance.AppCompat.Title.Inverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:ems="10"
+                android:text="UNKNOWN"
+                android:textColor="@color/md_white"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@+id/user_avatar"
+                app:layout_constraintTop_toTopOf="@+id/user_avatar" />
+
+            <ImageButton
+                android:id="@+id/ibClose"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/close_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvNoteHeading"
+                style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:text="Note:"
+                app:layout_constraintStart_toEndOf="@+id/user_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/tvContactName" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:hint="Enter contact Name here....."
+            android:id="@+id/afterCallContactNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="2.5"
+            android:maxLines="3"
+            android:textColor="@color/md_black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />
+
+        <TextView
+            android:hint="Enter contact Name"
+            android:id="@+id/dispMsgAddContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="2.5"
+            android:maxLines="3"
+            android:textColor="@color/md_black"
+            android:textSize="17sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/afterCallContactNumber" />
+
+        <EditText
+            android:hint="Enter contact Name here....."
+            android:id="@+id/afterCallAddContactField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="2.5"
+
+
+            android:textSize="12sp"
+
+            app:layout_constraintTop_toBottomOf="@+id/dispMsgAddContact" />
+
+        <CheckBox
+            android:hint="Click to ignore"
+            android:id="@+id/afterCallAddContactCb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="2.5"
+            android:maxLines="3"
+            android:textColor="@color/md_black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/afterCallAddContactField" />
+
+        <Button
+            android:hint="Save Contact"
+            android:id="@+id/afterCallAddContactAddBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="2.5"
+            android:maxLines="3"
+            android:textColor="@color/md_black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/afterCallAddContactCb" />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</com.example.muzafarimran.lastingsales.chatheadbubble.BubbleLayout>

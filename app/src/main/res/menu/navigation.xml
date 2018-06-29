@@ -29,5 +29,9 @@
         android:id="@+id/navigation_more"
         android:icon="@drawable/ic_more_horiz_black_24dp"
         android:title="@string/navigation_more" />
+    <item
+        android:id="@+id/navigation_organization"
+        android:icon="@drawable/ic_more_horiz_black_24dp"
+        android:title="Organization" />
 
 </menu>
