@@ -44,7 +44,6 @@ import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelper;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
-import com.example.muzafarimran.lastingsales.fragments.OrganizationFragment;
 import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
@@ -52,7 +51,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
 import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
@@ -69,7 +67,6 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.wires.ShakeEventWire;
@@ -325,18 +322,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 } else if (tab.equals(BOTTOMSHEET_TAB)) {
                     Log.d(TAG, "onCreate: Loading Leads TAB with bottomsheet open");
                     String contactId = bundle1.getString(KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID);
-                    navigation.setSelectedItemId(R.id.navigation_deals);
+                    navigation.setSelectedItemId(R.id.navigation_home);
                     openContactBottomSheetCallback(Long.parseLong(contactId));
                 }
             }
             else {
                 Log.d(TAG, "onCreate: Bundle Not Null TAB unknown Loading Leads TAB");
-                navigation.setSelectedItemId(R.id.navigation_deals);
+                navigation.setSelectedItemId(R.id.navigation_home);
             }
         }
         else {
             Log.d(TAG, "onCreate: Bundle is Null Loading Leads TAB");
-            navigation.setSelectedItemId(R.id.navigation_deals);
+            navigation.setSelectedItemId(R.id.navigation_home);
         }
     }
 
@@ -673,7 +670,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             if (f instanceof BlankFragment4) {
                 super.onBackPressed();
             } else {
-                navigation.setSelectedItemId(R.id.navigation_deals);
+                navigation.setSelectedItemId(R.id.navigation_home);
                 floatingActionMenuLead.showMenu(false);
             }
         }

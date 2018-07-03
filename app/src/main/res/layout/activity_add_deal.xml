@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,8 +85,59 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="20dp">
+
+                        <TextView
+                            android:id="@+id/stage_label"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="Stage" />
+
+                        <Spinner
+                            android:id="@+id/stage_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:spinnerMode="dropdown" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="Value($)" />
+
+                        <EditText
+                            android:id="@+id/etValueAddDeal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:layout_weight="1"
+                            android:hint="20"
+                            android:inputType="number"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="14dp"
                         android:orientation="horizontal">
 
                         <TextView

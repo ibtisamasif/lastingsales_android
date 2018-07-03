@@ -2,80 +2,57 @@ package com.example.muzafarimran.lastingsales.providers.models;
 
 import com.orm.SugarRecord;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class LSOrganization extends SugarRecord {
 
+    private String name;
+    private String email;
+    private String phone;
+    private String address;
+    private String createdAt;
+    private Date updatedAt;
+    private String status;
 
-    String ID;
-    String name;
-    String email;
-    String phone;
-    String address;
-    String createdAt;
-    String updatedAt;
-    String status;
+    private String userId;
+    private String followUpDate;
+    private String followUpDescription;
+    private String dynamicValues;
+    private String companyId;
+    private String image;
+    private String imagePath;
+    private String leadType;
+    private String gender;
+    private String src;
+    private String srcId;
+    private String version;
+    private String serverId;
+    private String syncStatus;
 
-
-    String userId;
-    String followUpDate;
-    String followUpDescription;
-    String dynamicValues;
-    String companyId;
-    String image;
-    String imagePath;
-    String leadType;
-    String gender;
-    String src;
-    String srcId;
-    String version;
-
-
-
-
-
-
-
-
-    public LSOrganization(String ID, String name, String email, String phone, String address, String createdAt, String updatedAt, String status, String userId, String followUpDate, String followUpDescription, String dynamicValues, String companyId, String image, String imagePath, String leadType, String gender, String src, String srcId, String version) {
-        this.ID = ID;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.status = status;
-        this.userId = userId;
-        this.followUpDate = followUpDate;
-        this.followUpDescription = followUpDescription;
-        this.dynamicValues = dynamicValues;
-        this.companyId = companyId;
-        this.image = image;
-        this.imagePath = imagePath;
-        this.leadType = leadType;
-        this.gender = gender;
-        this.src = src;
-        this.srcId = srcId;
-        this.version = version;
+    public LSOrganization() {
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    public String getID() {
-        return ID;
+    public static LSOrganization getOrganizationFromServerId(String id) {
+        ArrayList<LSOrganization> list = null;
+        try {
+            list = (ArrayList<LSOrganization>) LSOrganization.find(LSOrganization.class, "server_id = ? ", id);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public String getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
     }
 
     public String getName() {
@@ -118,11 +95,11 @@ public class LSOrganization extends SugarRecord {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -230,9 +207,11 @@ public class LSOrganization extends SugarRecord {
         this.version = version;
     }
 
-    public LSOrganization() {
+    public String getSyncStatus() {
+        return syncStatus;
     }
 
-
-
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
+    }
 }

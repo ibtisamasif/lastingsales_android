@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.adapters.LSStageSpinAdapter;
 import com.example.muzafarimran.lastingsales.autocompletetext.ContactsCompletionView;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
@@ -29,6 +30,7 @@ import com.tokenautocomplete.TokenCompleteTextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -39,6 +41,7 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     private String TAG = "AddDealActivity";
     private EditText etContactName;
+    private EditText etValueAddDeal;
     private Button bSaveAddDeal;
     private Button bCancelAddDeal;
 
@@ -46,18 +49,20 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
     String selectedDealType = LSDeal.DEAL_STATUS_CLOSED_WON;
     private LSContact selectedContact;
     private LSDeal mDeal;
+    List<LSStage> stageList = new ArrayList<LSStage>();
+    private Spinner stageSpinner;
     private Spinner isPrivateSpinner;
     private String dealStatus = LSDeal.DEAL_VISIBILITY_STATUS_COMPANY;
 
     private ContactsCompletionView etLeadAddDeal;
     ArrayAdapter<LSContact> adapter;
     long contactIdLong = -1;
+    private String selectedStageServerId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_deal);
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String id = bundle.getString(TAG_LAUNCH_MODE_CONTACT_ID);
@@ -111,6 +116,7 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
         }
 
         etContactName = (EditText) findViewById(R.id.etNameAddDeal);
+        etValueAddDeal = (EditText) findViewById(R.id.etValueAddDeal);
         bSaveAddDeal = (Button) findViewById(R.id.bSaveAddDeal);
         bCancelAddDeal = (Button) findViewById(R.id.bCancelAddDeal);
         bCancelAddDeal.setOnClickListener(new View.OnClickListener() {
@@ -124,12 +130,13 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
             public void onClick(View v) {
                 if (selectedContact != null) {
                     String dealName = etContactName.getText().toString();
+                    String dealValue = etValueAddDeal.getText().toString();
                     String dealPhone = selectedContact.getPhoneOne();               //refactor
 //                String dealPhone = etLeadAddDeal.getText().toString();
                     if (isValid(dealName, dealPhone)) {
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddDealActivity.this, dealPhone);
                         LSContact tempContact = LSContact.getContactFromNumber(intlNum);
-                        if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+                        if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) { //TODO
                             mDeal = new LSDeal();
                             mDeal.setName(dealName);
                             mDeal.setContact(tempContact);
@@ -140,6 +147,12 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
                             mDeal.setWorkflowStageId(LSStage.getStageByWorkflowServerIdAndPosition(defaultWorkflowServerId, "100").getServerId()); //TODO add null check
                             mDeal.setIsPrivate(dealStatus);
                             mDeal.setUpdatedAt(Calendar.getInstance().getTime());
+                            if (selectedStageServerId != null) {
+                                mDeal.setWorkflowStageId(selectedStageServerId);
+                            }
+                            if (dealValue != null) {
+                                mDeal.setValue(dealValue);
+                            }
                             mDeal.save();
                             finish();
                             moveToDealDetailScreenIfNeeded(mDeal);
@@ -154,6 +167,17 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
                 }
             }
         });
+//        //populate stage spinner
+//        LSStage lsStage = LSStage.getStageFromServerId(mDeal.getWorkflowStageId());
+//        int index = 0;
+//        for (int i = 0; i < stageList.size(); i++) {
+//            if (lsStage != null && stageList.get(i).getName().equalsIgnoreCase(lsStage.getName())) {
+//                index = i;
+//            }
+//        }
+//        stageSpinner.setSelection(index, false);
+
+        addItemsOnSpinnerDealStage();
         addItemsOnSpinnerDealIsPrivate();
     }
 
@@ -165,6 +189,23 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
     @Override
     public void onTokenRemoved(LSContact token) {
         selectedContact = null;
+    }
+
+    public void addItemsOnSpinnerDealStage() {
+        stageSpinner = (Spinner) findViewById(R.id.stage_spinner);
+        LSWorkflow defaultWorkFlow = LSWorkflow.getDefaultWorkflow();
+        Collection<LSStage> lsStages = LSStage.getAllStagesInPositionSequenceByWorkflowServerId(defaultWorkFlow.getServerId());
+        if (lsStages != null) {
+            stageList.addAll(lsStages);
+        }
+        LSStageSpinAdapter dataAdapter = new LSStageSpinAdapter(AddDealActivity.this, R.layout.spinner_item, stageList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stageSpinner.setAdapter(dataAdapter);
+        stageSpinner.post(new Runnable() {
+            public void run() {
+                stageSpinner.setOnItemSelectedListener(new CustomSpinnerDealStageOnItemSelectedListener());
+            }
+        });
     }
 
     private void addItemsOnSpinnerDealIsPrivate() {
@@ -194,6 +235,25 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
             return false;
         }
         return true;
+    }
+
+    private class CustomSpinnerDealStageOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            LSStage selectedStage = (LSStage) parent.getItemAtPosition(pos);
+//            LSStage lsStage = LSStage.getStageByName(selectedStepName);
+            if (selectedStage != null) {
+                selectedStageServerId = selectedStage.getServerId(); //mDeal is null
+                Toast.makeText(parent.getContext(), "Stage Changed to " + selectedStage.getName(), Toast.LENGTH_SHORT).show();
+//                TinyBus.from(parent.getContext().getApplicationContext()).post(new DealAddedEventModel());
+//                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(parent.getContext().getApplicationContext());
+//                dataSenderAsync.run();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
     }
 
     private class CustomSpinnerDealStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {

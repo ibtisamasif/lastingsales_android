@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2_1;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2_2;
 import com.example.muzafarimran.lastingsales.fragments.OrganizationFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
@@ -29,7 +28,7 @@ public class MyUnlabeledPagerAdapter extends FragmentPagerAdapter {
         TabFragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new BlankFragment2_2();
+                fragment = new BlankFragment2_1();
                 break;
             case 1:
                 fragment = new OrganizationFragment();
@@ -54,6 +53,4 @@ public class MyUnlabeledPagerAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
-
-
 }

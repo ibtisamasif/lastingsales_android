@@ -52,6 +52,14 @@ public class LSDeal extends SugarRecord {
     public LSDeal() {
     }
 
+    public static List<LSDeal> getDealsByContact(String id) {
+        try {
+            return LSDeal.findWithQuery(LSDeal.class, "Select * from LS_DEAL where workflow_stage_id = '" + id + "'" + " ORDER BY updated_at DESC");
+        } catch (SQLiteException e) {
+            return new ArrayList<LSDeal>();
+        }
+    }
+
     public static List<LSDeal> getDealFromWorkflowStageId(String id) {
         try {
             return LSDeal.findWithQuery(LSDeal.class, "Select * from LS_DEAL where workflow_stage_id = '" + id + "'" + " ORDER BY updated_at DESC");

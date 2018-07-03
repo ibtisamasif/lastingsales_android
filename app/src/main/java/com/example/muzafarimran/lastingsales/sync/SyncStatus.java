@@ -4,18 +4,29 @@ package com.example.muzafarimran.lastingsales.sync;
 public class SyncStatus {
 
 
-    //Lead Add
+    //Organization Add
+    public static final String SYNC_STATUS_ORGANIZATION_ADD_NOT_SYNCED = "organization_add_not_synced";
+    public static final String SYNC_STATUS_ORGANIZATION_ADD_SYNCED = "organization_add_synced";
+
+    //Organization Update
+    public static final String SYNC_STATUS_ORGANIZATION_UPDATE_NOT_SYNCED = "organization_update_not_synced";
+    public static final String SYNC_STATUS_ORGANIZATION_UPDATE_SYNCED = "organization_update_synced";
+
+    //Organization Delete
+    public static final String SYNC_STATUS_ORGANIZATION_DELETE_NOT_SYNCED = "organization_delete_not_synced";
+    public static final String SYNC_STATUS_ORGANIZATION_DELETE_SYNCED = "organization_delete_synced";
+
+    //Deal Add
     public static final String SYNC_STATUS_DEAL_ADD_NOT_SYNCED = "deal_add_not_synced";
     public static final String SYNC_STATUS_DEAL_ADD_SYNCED = "deal_add_synced";
 
-    //Lead Update
+    //Deal Update
     public static final String SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED = "deal_update_not_synced";
     public static final String SYNC_STATUS_DEAL_UPDATE_SYNCED = "deal_update_synced";
 
-    //Lead Delete
+    //Deal Delete
     public static final String SYNC_STATUS_DEAL_DELETE_NOT_SYNCED = "deal_delete_not_synced";
     public static final String SYNC_STATUS_DEAL_DELETE_SYNCED = "deal_delete_synced";
-
 
 
     //Lead Add
