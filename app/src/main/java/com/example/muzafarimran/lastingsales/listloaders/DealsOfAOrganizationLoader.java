@@ -7,8 +7,8 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.carditems.AddDealItem;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,28 +18,29 @@ import java.util.List;
  * Created by ibtisam on 11/7/2017.
  */
 
-public class DealsOfALeadLoader extends AsyncTaskLoader<List<Object>> {
+public class DealsOfAOrganizationLoader extends AsyncTaskLoader<List<Object>> {
     public static final String TAG = "DealsLoader";
-    private Long leadIdLong;
-    private String lead_id;
+    private Long organizationIdLong;
+    private String organization_id;
     private List<Object> mData;
     Bundle bundle;
 
-    public DealsOfALeadLoader(Context context, Bundle args) {
+    public DealsOfAOrganizationLoader(Context context, Bundle args) {
         super(context);
         bundle = args;
         if (bundle != null) {
-            leadIdLong = bundle.getLong("someId");
+            organizationIdLong = bundle.getLong("someId");
+            organization_id = Long.toString(organizationIdLong);
         }
     }
 
     @Override
     public List<Object> loadInBackground() {
-        LSContact lsContact = LSContact.findById(LSContact.class, leadIdLong);
+        LSOrganization lsOrganization  = LSOrganization.findById(LSOrganization.class, organizationIdLong);
 
-        if (lsContact != null) {
+        if (lsOrganization != null) {
             List<Object> data = new ArrayList<Object>();
-            Collection<LSDeal> deals = lsContact.getAllDeals();
+            Collection<LSDeal> deals = lsOrganization.getAllDeals();
             if (deals != null && deals.size() > 0) {
 
 //                SeparatorItem separatorDeals = new SeparatorItem();
@@ -49,7 +50,7 @@ public class DealsOfALeadLoader extends AsyncTaskLoader<List<Object>> {
                 data.addAll(deals);
 
                 AddDealItem addDealItem = new AddDealItem();
-                addDealItem.leadLocalId = lead_id;
+                addDealItem.leadLocalId = organization_id;
                 data.add(addDealItem);
 
 //                SeparatorItem separatorSpace = new SeparatorItem();
@@ -67,7 +68,7 @@ public class DealsOfALeadLoader extends AsyncTaskLoader<List<Object>> {
 //                data.addAll(listError);
 
                 AddDealItem addDealItem = new AddDealItem();
-                addDealItem.leadLocalId = lead_id;
+                addDealItem.leadLocalId = organization_id;
                 data.add(addDealItem);
             }
             return data;

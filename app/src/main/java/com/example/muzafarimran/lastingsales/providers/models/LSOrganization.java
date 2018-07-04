@@ -47,6 +47,18 @@ public class LSOrganization extends SugarRecord {
         }
     }
 
+    public ArrayList<LSDeal> getAllDeals() {
+        ArrayList<LSDeal> allDealsOfThisContact = null;
+        allDealsOfThisContact = (ArrayList<LSDeal>) LSDeal.findWithQuery(LSDeal.class, "Select * from LS_DEAL where organization = '" + getId() + "'" + " ORDER BY updated_at DESC");
+        return allDealsOfThisContact;
+    }
+
+    public ArrayList<LSNote> getAllNotes() {
+        ArrayList<LSNote> allNotesOfThisContact = null;
+        allNotesOfThisContact = (ArrayList<LSNote>) LSNote.find(LSNote.class, "organization_of_note = ? ", getId() + "");
+        return allNotesOfThisContact;
+    }
+
     public String getServerId() {
         return serverId;
     }
