@@ -11,6 +11,7 @@ import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.service.CallService;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
@@ -27,9 +28,6 @@ public class CallProcessor {
 
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
-
-
-
 
 
         SettingsManager settingsManager = new SettingsManager(mContext);
@@ -77,13 +75,16 @@ public class CallProcessor {
 //                            Toast.makeText(mContext, "condition false", Toast.LENGTH_SHORT).show();
                                 Log.d("No. from Processor", call.getContactNumber());
 
-                                    showDialog(mContext,call);
-                                    saveCallLogs(call);
+                                showDialog(mContext, call);
+                                saveCallLogs(call);
+                                case3(call);
 
                             }
                         } else {
-                            Log.d("iscontact save is ", "NULL");
-                            showDialog(mContext,call);
+                            Log.d("iscontactSave is ", "NULL");
+                            showDialog(mContext, call);
+                            saveCallLogs(call);
+                            case3(call);
                         }
                     } else {
                         Log.d("result is null", "null");
@@ -105,14 +106,14 @@ public class CallProcessor {
                         Log.d("amir", "save contact no");
 
 
-                        showDialog(mContext,call);
+                        showDialog(mContext, call);
 
 
                         //save call logs
 
                         saveCallLogs(call);
 
-
+                        case3(call);
 
                         // successfully add num to db
 
@@ -144,11 +145,11 @@ public class CallProcessor {
 
                 } else {
 
-                    showDialog(mContext,call);
+                    showDialog(mContext, call);
 
                     saveCallLogs(call);
 
-
+                    case3(call);
 
 
                 }
@@ -157,7 +158,82 @@ public class CallProcessor {
         }
     }
 
-    private static   void showDialog(Context mContext, LSCall call) {
+    private static void case3(LSCall call) {
+
+        CallTypeManager callTypeManager = new CallTypeManager();
+
+        // incoming/ outgoing calls
+        Log.d("case3", "calling");
+        if (callTypeManager != null) {
+            if (callTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_INCOMING) || callTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_OUTGOING)) {
+
+                List<LSInquiry> checkInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
+
+                if (checkInquiry.size() > 0) {
+                    LSInquiry removeInquiry = LSInquiry.findById(LSInquiry.class, checkInquiry.get(0).getId());
+                    try {
+                        if (removeInquiry.delete()) {
+                            Log.d("remove", "inquire");
+                        } else {
+                            Log.d("error ", "remove inquiry");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.d("inquiry", "not exists");
+                }
+
+
+            } else if (callTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_MISSED)) {
+
+
+                List<LSInquiry> missInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
+                if (missInquiry.size() > 0) {
+
+                    //if exists
+
+                    LSInquiry incInquiry = LSInquiry.findById(LSInquiry.class, missInquiry.get(0).getId());
+                    int getCount = incInquiry.getCountOfInquiries();
+
+                    incInquiry.setCountOfInquiries(++getCount);
+                    if (incInquiry.save() > 0) {
+
+                        Log.d("inquiry", "updated/increment");
+
+                    } else {
+                        Log.d("inquiryy", "not updated/incremented something went wrong");
+                    }
+
+
+                } else {
+
+                    //if not exists
+
+                    LSInquiry lsInquiry = new LSInquiry();
+                    lsInquiry.setContactNumber(call.getContactName());
+                    lsInquiry.setContactNumber(call.getContactNumber());
+
+                    try {
+                        if (lsInquiry.save() > 0) {
+                            Log.d("inquiry", "saved");
+                        } else {
+                            Log.d("inquiry", "not save something went wrong");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+        } else {
+            Log.d("calltypemanager is ", "NULL");
+        }
+
+    }
+
+    private static void showDialog(Context mContext, LSCall call) {
 
         Intent intent = new Intent(mContext, CallService.class);
         intent.putExtra("no", call.getContactNumber());
@@ -167,9 +243,9 @@ public class CallProcessor {
 
     }
 
-    private static void saveCallLogs(LSCall call){
+    private static void saveCallLogs(LSCall call) {
 
-        LSCall lsCall=new LSCall();
+        LSCall lsCall = new LSCall();
         lsCall.setContact(call.getContact());
         lsCall.setBeginTime(call.getBeginTime());
         lsCall.setCallLogId(call.getCallLogId());
@@ -181,8 +257,8 @@ public class CallProcessor {
         lsCall.setDuration(call.getDuration());
         lsCall.setServerId(call.getServerId());
 
-        if(lsCall.save()>0){
-            Log.d("personal calllog","save");
+        if (lsCall.save() > 0) {
+            Log.d("calllog", "save");
         }
 
     }

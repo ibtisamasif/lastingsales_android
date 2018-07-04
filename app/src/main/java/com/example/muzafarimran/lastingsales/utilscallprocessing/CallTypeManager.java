@@ -17,7 +17,7 @@ public class CallTypeManager {
             return LSCall.CALL_TYPE_REJECTED;
         } else if (callType.equals("1") && callDurationLong == 0L) { //TODO fix it and convert it into 1 check later.
             return LSCall.CALL_TYPE_REJECTED;
-        }else {
+        } else {
             return null;
         }
     }

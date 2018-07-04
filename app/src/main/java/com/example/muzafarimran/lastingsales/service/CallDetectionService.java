@@ -28,6 +28,7 @@ import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
+
 import java.util.Date;
 
 import de.halfbit.tinybus.TinyBus;
@@ -218,8 +219,8 @@ public class CallDetectionService extends Service {
     /*    final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
         theCallLogEngine.execute();*/
 
-    // start calllogengine service
-    startService(new Intent(this,CallLogIngineService.class));
+        // start calllogengine service
+        startService(new Intent(this, CallLogIngineService.class));
 
         IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
         TinyBus inBus = TinyBus.from(ctx.getApplicationContext());
@@ -254,7 +255,7 @@ public class CallDetectionService extends Service {
         theCallLogEngine.execute();
         */
 
-      startService(new Intent(this, CallLogIngineService.class));
+        startService(new Intent(this, CallLogIngineService.class));
 
         OutgoingCallEventModel outCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
         TinyBus outBus = TinyBus.from(ctx.getApplicationContext());
@@ -270,7 +271,8 @@ public class CallDetectionService extends Service {
                 }
             }
         });
-        */Log.d(TAG, "onOutgoingCallEnded:");
+        */
+        Log.d(TAG, "onOutgoingCallEnded:");
     }
 
     protected void onMissedCall(Context ctx, String number, Date start, final Intent intent) {
@@ -286,7 +288,7 @@ public class CallDetectionService extends Service {
         theCallLogEngine.execute();
        */
 
-      startService(new Intent(this,CallLogIngineService.class));
+        startService(new Intent(this, CallLogIngineService.class));
 
 
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);

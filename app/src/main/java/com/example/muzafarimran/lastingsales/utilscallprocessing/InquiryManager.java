@@ -164,7 +164,7 @@ public class InquiryManager {
         bus.post(mCallEvent);
     }
 
-    public static void createOrUpdate(Context context,String inquiry_server_id , String status_of_inquiry, long beginTimeFromServer, String contactNumber) {
+    public static void createOrUpdate(Context context, String inquiry_server_id, String status_of_inquiry, long beginTimeFromServer, String contactNumber) {
         if (status_of_inquiry.equals("pending")) {
             inquiry = LSInquiry.getPendingInquiryByBeginDateTimeIfExists(Long.toString(beginTimeFromServer));
             if (inquiry != null) {

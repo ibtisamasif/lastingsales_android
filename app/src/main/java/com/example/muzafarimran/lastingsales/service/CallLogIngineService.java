@@ -16,7 +16,7 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
 import java.sql.Date;
 import java.util.Arrays;
 
-public class CallLogIngineService extends Service{
+public class CallLogIngineService extends Service {
 
     public static final String TAG = "TheCallLogEngine";
 //    private static final String TAG = "AppInitializationTest";
@@ -35,7 +35,7 @@ public class CallLogIngineService extends Service{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        mContext=getApplicationContext();
+        mContext = getApplicationContext();
         Log.e(TAG, "TheCallLogEngine doInBackground:");
         try {
             Thread.sleep(1000); // Delay is important as android might not have saved new call in call logs yet.
