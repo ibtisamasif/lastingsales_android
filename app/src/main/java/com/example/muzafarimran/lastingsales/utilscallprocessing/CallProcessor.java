@@ -75,17 +75,15 @@ public class CallProcessor {
                                 return;
                             } else {
 //                            Toast.makeText(mContext, "condition false", Toast.LENGTH_SHORT).show();
-                                Log.d("No from Processor", call.getContactNumber());
+                                Log.d("No. from Processor", call.getContactNumber());
 
-                                Intent intent = new Intent(mContext, CallService.class);
-                                intent.putExtra("no", call.getContactNumber());
-
-                                mContext.startService(intent);
-
+                                    showDialog(mContext,call);
+                                    saveCallLogs(call);
 
                             }
                         } else {
                             Log.d("iscontact save is ", "NULL");
+                            showDialog(mContext,call);
                         }
                     } else {
                         Log.d("result is null", "null");
@@ -106,11 +104,15 @@ public class CallProcessor {
 
                         Log.d("amir", "save contact no");
 
-                        Intent intent = new Intent(mContext, CallService.class);
-                        intent.putExtra("no", call.getContactNumber());
 
-                        Log.d("save no is ", call.getContactNumber());
-                        mContext.startService(intent);
+                        showDialog(mContext,call);
+
+
+                        //save call logs
+
+                        saveCallLogs(call);
+
+
 
                         // successfully add num to db
 
@@ -138,14 +140,51 @@ public class CallProcessor {
                 // check if contact exists
                 LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());
                 if (contact != null) {
-                    //TODO show after call dialog & save call log
+
 
                 } else {
-                    // new call
+
+                    showDialog(mContext,call);
+
+                    saveCallLogs(call);
+
+
+
+
                 }
             }
 
         }
+    }
+
+    private static   void showDialog(Context mContext, LSCall call) {
+
+        Intent intent = new Intent(mContext, CallService.class);
+        intent.putExtra("no", call.getContactNumber());
+
+        Log.d("save no is ", call.getContactNumber());
+        mContext.startService(intent);
+
+    }
+
+    private static void saveCallLogs(LSCall call){
+
+        LSCall lsCall=new LSCall();
+        lsCall.setContact(call.getContact());
+        lsCall.setBeginTime(call.getBeginTime());
+        lsCall.setCallLogId(call.getCallLogId());
+        lsCall.setContactName(call.getContactName());
+        lsCall.setContactNumber(call.getContactNumber());
+        lsCall.setCountOfInquiries(call.getCountOfInquiries());
+        lsCall.setType(call.getType());
+        lsCall.setSyncStatus(call.getSyncStatus());
+        lsCall.setDuration(call.getDuration());
+        lsCall.setServerId(call.getServerId());
+
+        if(lsCall.save()>0){
+            Log.d("personal calllog","save");
+        }
+
     }
 
 

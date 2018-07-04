@@ -29,6 +29,7 @@
             android:layout_marginTop="20dp">
 
             <RadioButton
+                android:checked="true"
                 android:id="@+id/radio_company_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

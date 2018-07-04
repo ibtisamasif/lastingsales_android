@@ -10,19 +10,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.SessionManager;
 
 public class TutorialScreenActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     int[] layout;
-    Button skip, next;
+    Button next;
+    RadioGroup radioGroup;
+    RadioButton isCompanyORPersonalRadio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial_screen);
+
 
         viewPager = findViewById(R.id.tutorial_view_pager);
         layout = new int[]{
@@ -36,15 +42,10 @@ public class TutorialScreenActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
 
-        skip = findViewById(R.id.btn_skip);
         next = findViewById(R.id.btn_next);
 
-        skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchHomeScreen();
-            }
-        });
+        radioGroup = findViewById(R.id.radio_company_personal_info);
+
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,10 +53,27 @@ public class TutorialScreenActivity extends AppCompatActivity {
                 // checking for last page
                 // if last page home screen will be launched
                 int current = getItem(+1);
+
+
                 if (current < layout.length) {
                     // move to next screen
+
                     viewPager.setCurrentItem(current);
+
+
                 } else {
+
+
+                    int checkId = radioGroup.getCheckedRadioButtonId();
+
+                    isCompanyORPersonalRadio = findViewById(checkId);
+
+                    SessionManager sessionManager = new SessionManager(getApplicationContext());
+                    sessionManager.setFirstTimeLaunch(true);
+
+                    sessionManager.setKeyStateIsCompanyPhone(true);
+
+
                     launchHomeScreen();
                 }
             }

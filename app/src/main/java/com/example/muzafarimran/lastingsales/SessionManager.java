@@ -63,7 +63,9 @@ public class SessionManager {
     public static final String KEY_UPDATE_AVAILABLE_VERSION = "update_available_version";
 
     public static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
-    public static final String TMP_USER_NO = "TMP_USER_NO";
+    public static final String KEY_STATE_IS_COMPANY_PHONE = "state_is_company_phone";
+
+
 
 
     // Sharedpref file name
@@ -83,6 +85,18 @@ public class SessionManager {
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
+
+
+    public void setKeyStateIsCompanyPhone(boolean val){
+        editor.putBoolean(KEY_STATE_IS_COMPANY_PHONE,val);
+        editor.apply();
+
+    }
+
+    public boolean getKeyStateIsCompanyPhone(){
+        return pref.getBoolean(KEY_STATE_IS_COMPANY_PHONE,false);
+    }
+
 
     public void storeVersionCodeNow() {
 
@@ -283,18 +297,12 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void setTmpUserNo(String name) {
-        editor.putString(TMP_USER_NO, name);
-        editor.commit();
-    }
+
 
     public String getKeyLoginImagePath() {
         return pref.getString(KEY_LOGIN_IMAGEPATH, "");
     }
 
-    public String getTmpUserNO() {
-        return pref.getString(TMP_USER_NO, "");
-    }
 
     public void setKeyLoginImagePath(String path) {
         editor.putString(KEY_LOGIN_IMAGEPATH, path);

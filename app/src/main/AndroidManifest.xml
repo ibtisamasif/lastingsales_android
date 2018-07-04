@@ -384,6 +384,10 @@
             <!-- android:process=":testing"> -->
         </service>
 
+
+        //calllogengine service
+        <service android:name=".service.CallLogIngineService"></service>
+
         <!-- <service -->
         <!-- android:name=".service.ProfileFetchService" -->
         <!-- android:permission="android.permission.BIND_JOB_SERVICE" -->
