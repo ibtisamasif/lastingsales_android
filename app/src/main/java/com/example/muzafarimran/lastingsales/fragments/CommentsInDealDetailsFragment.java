@@ -183,7 +183,7 @@ public class CommentsInDealDetailsFragment extends TabFragment {
             fetchAgentCommentsFunc(selectedContact);
 
 
-//            Collection<LSNote> allCommentsOfThisContact = Select.from(LSNote.class).where(Condition.prop("contact_of_note").eq(selectedContact.getId())).orderBy("id DESC").list();
+//            Collection<LSNote> allCommentsOfThisContact = Select.from(LSNote.class).where(Condition.prop("contact_of_note").eq(selectedDeal.getId())).orderBy("id DESC").list();
 
 
 //            if (!allCommentsOfThisContact.isEmpty()) {

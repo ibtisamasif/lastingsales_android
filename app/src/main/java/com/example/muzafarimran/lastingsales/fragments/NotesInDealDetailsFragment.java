@@ -12,15 +12,13 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,20 +31,20 @@ import de.halfbit.tinybus.TinyBus;
 
 public class NotesInDealDetailsFragment extends TabFragment {
     public static final String TAG = "NotesInContactDetailsFr";
-    public static final String CONTACT_ID = "contact_id";
-    LSContact selectedContact;
+    public static final String DEAL_ID = "deal_id";
+    LSDeal selectedDeal;
     private TinyBus bus;
     private RecyclerView mRecyclerView;
     private MyRecyclerViewAdapter adapter;
     private List<Object> list = new ArrayList<Object>();
-    private Long contactIDLong;
+    private Long dealIDLong;
 
     public static NotesInDealDetailsFragment newInstance(int page, String title, Long id) {
         NotesInDealDetailsFragment fragmentFirst = new NotesInDealDetailsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
-        args.putLong(NotesInDealDetailsFragment.CONTACT_ID, id);
+        args.putLong(NotesInDealDetailsFragment.DEAL_ID, id);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -89,42 +87,16 @@ public class NotesInDealDetailsFragment extends TabFragment {
         list.clear();
 
         Bundle bundle = this.getArguments();
-        contactIDLong = bundle.getLong(NotesInDealDetailsFragment.CONTACT_ID);
-        selectedContact = LSContact.findById(LSContact.class, contactIDLong);
-
-        SeparatorItem separatorFollowup = new SeparatorItem();
-        separatorFollowup.text = "Follow Up";
-        list.add(separatorFollowup);
-
-        ArrayList<TempFollowUp> allFollowupsOfThisContact = selectedContact.getAllFollowups();
-//        ArrayList<TempFollowUp> allFollowupsOfThisContact = TempFollowUp.getAllFollowupsFromContactId(selectedContact.getId()+"");
-        Calendar now = Calendar.getInstance();
-        TempFollowUp selectedFollowup = null;
-        if (allFollowupsOfThisContact != null && allFollowupsOfThisContact.size() > 0) {
-            for (TempFollowUp oneFollowup : allFollowupsOfThisContact) {
-                if (oneFollowup.getDateTimeForFollowup() - 30000 > now.getTimeInMillis()) {
-                    Log.d(TAG, "updateUi time difference: " + (oneFollowup.getDateTimeForFollowup() - now.getTimeInMillis()));
-                    selectedFollowup = oneFollowup;
-                    break;
-                }
-            }
-        }
-        if (selectedFollowup != null) {
-            list.add(selectedFollowup);
-        } else {
-            TempFollowUp tempFollowUp = new TempFollowUp();
-            tempFollowUp.setTitle("#-1");
-            tempFollowUp.setContact(selectedContact);
-            list.add(tempFollowUp);
-        }
+        dealIDLong = bundle.getLong(NotesInDealDetailsFragment.DEAL_ID);
+        selectedDeal = LSDeal.findById(LSDeal.class, dealIDLong);
 
         SeparatorItem separatorNotes = new SeparatorItem();
         separatorNotes.text = "Notes";
         list.add(separatorNotes);
 
-        Collection<LSNote> allNotesOfThisContact = Select.from(LSNote.class).where(Condition.prop("contact_of_note").eq(selectedContact.getId())).orderBy("id DESC").list();
-        if (!allNotesOfThisContact.isEmpty()) {
-            list.addAll(allNotesOfThisContact);
+        Collection<LSNote> allNotesOfThisDeal = Select.from(LSNote.class).where(Condition.prop("deal_of_note").eq(selectedDeal.getId())).orderBy("id DESC").list();
+        if (!allNotesOfThisDeal.isEmpty()) {
+            list.addAll(allNotesOfThisDeal);
             adapter.notifyDataSetChanged();
         } else {
             ErrorItem errorItem = new ErrorItem();

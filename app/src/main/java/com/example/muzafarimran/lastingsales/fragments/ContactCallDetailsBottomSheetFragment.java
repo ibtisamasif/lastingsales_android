@@ -73,7 +73,7 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
         }
         Long contactId = getArguments().getLong(CONTACT_ID);
         selectedContact = LSContact.findById(LSContact.class, contactId);
-//        list.add(selectedContact);
+//        list.add(selectedDeal);
 
         ContactHeaderBottomsheetItem contactHeaderBottomsheetItem = new ContactHeaderBottomsheetItem();
         contactHeaderBottomsheetItem.lsContact = selectedContact;
@@ -130,7 +130,7 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
 
     private void loadFetchedProfile(View view) {
         list.clear();
-//        list.add(selectedContact);
+//        list.add(selectedDeal);
 
         ContactHeaderBottomsheetItem contactHeaderBottomsheetItem = new ContactHeaderBottomsheetItem();
         contactHeaderBottomsheetItem.lsContact = selectedContact;

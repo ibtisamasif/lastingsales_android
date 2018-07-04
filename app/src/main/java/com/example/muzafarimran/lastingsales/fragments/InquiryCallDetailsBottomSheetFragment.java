@@ -175,7 +175,7 @@ public class InquiryCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
         super.onResume();
         Log.d(TAG, "onResume: ");
         if (selectedContact == null) {
-            Log.d(TAG, "selectedContact == null");
+            Log.d(TAG, "selectedDeal == null");
             try {
                 CloseInquiryBottomSheetEvent closeInquiryBottomSheetEvent = new NavigationBottomMainActivity();
                 closeInquiryBottomSheetEvent.closeInquiryBottomSheetCallback();

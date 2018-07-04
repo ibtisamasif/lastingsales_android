@@ -83,7 +83,7 @@ public class InitService extends IntentService {
 
         if (sessionManager.isUserSignedIn()) {
             fetchAgentLeadsFunc();
-            fetchDynamicColumns();
+//            fetchDynamicColumns();
             fetchWorkflow();
         }
 
@@ -112,6 +112,7 @@ public class InitService extends IntentService {
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();
+        Log.d(TAG, "fetchAgentLeadsFunc: MYURL: " + myUrl);
         StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -179,10 +180,10 @@ public class InitService extends IntentService {
                             Log.d(TAG, "onResponse: gettingDynamic: " + tempContact.getDynamic());
 //                            fetchAgentNotesFunc(tempContact);
 
-                            JSONArray jsonArrayNotes = jsonObjectOneLead.getJSONArray("notes");
-                            Log.d(TAG, "onResponse: data jsonArrayNotes length : " + jsonArrayNotes.length());
-                            for (int j = jsonArrayNotes.length() - 1; j >= 0; j--) {
-                                JSONObject jsonObjectOneNote = jsonArrayNotes.getJSONObject(j);
+                            JSONArray jsonArrayLeadNotes = jsonObjectOneLead.getJSONArray("notes");
+                            Log.d(TAG, "onResponse: data jsonArrayLeadNotes length : " + jsonArrayLeadNotes.length());
+                            for (int j = jsonArrayLeadNotes.length() - 1; j >= 0; j--) {
+                                JSONObject jsonObjectOneNote = jsonArrayLeadNotes.getJSONObject(j);
                                 String note_id = jsonObjectOneNote.getString("id");
                                 String note_user_id = jsonObjectOneNote.getString("user_id");
                                 String note_company_id = jsonObjectOneNote.getString("company_id");
@@ -192,14 +193,128 @@ public class InitService extends IntentService {
                                 String note_created_by = jsonObjectOneNote.getString("created_by");
                                 String note_updated_by = jsonObjectOneNote.getString("updated_by");
 
-
                                 LSNote tempNote = new LSNote();
                                 tempNote.setServerId(note_id);
                                 tempNote.setContactOfNote(LSContact.getContactFromServerId(note_notable_id));
+                                tempNote.setNotableType(note_notable_type);
                                 tempNote.setNoteText(note_description);
                                 tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
                                 tempNote.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                                 tempNote.save();
+                            }
+
+
+                            JSONArray jsonArrayDeals = responseObject.getJSONArray("deals");
+                            Log.d(TAG, "onResponse: data jsonArrayNotes length : " + jsonArrayDeals.length());
+                            for (int k = 0; k < jsonArrayDeals.length(); k++) {
+                                JSONObject jsonObjectOneDeal = jsonArrayDeals.getJSONObject(k);
+                                String deal_id = jsonObjectOneDeal.getString("id");
+                                String deal_name = jsonObjectOneDeal.getString("name");
+                                int deal_created_by = 0;
+                                if (jsonObjectOneDeal.has("created_by")) {
+                                    deal_created_by = jsonObjectOneDeal.getInt("created_by");
+                                }
+//                        int deal_updated_by = 0;
+//                        if (jsonObjectOneDeal.has("updated_by")) {
+//                            deal_updated_by = jsonObjectOneDeal.getInt("updated_by");
+//                        }
+                                String deal_created_at = jsonObjectOneDeal.getString("created_at");
+                                String deal_updated_at = jsonObjectOneDeal.getString("updated_at");
+                                int deal_user_id = jsonObjectOneDeal.getInt("user_id");
+                                int deal_lead_id = jsonObjectOneDeal.getInt("lead_id");
+                                int deal_workflow_id = jsonObjectOneDeal.getInt("workflow_id");
+                                int deal_workflow_stage_id = jsonObjectOneDeal.getInt("workflow_stage_id");
+                                String deal_Status = jsonObjectOneDeal.getString("status");
+//                        String deal_follow_up_date = jsonObjectOneDeal.getgetStringInt("follow_up_date");
+//                        String deal_follow_up_description = jsonObjectOneDeal.getString("follow_up_description");
+                                String deal_dynamic_values = jsonObjectOneDeal.getString("dynamic_values");
+                                int deal_company_id = jsonObjectOneDeal.getInt("company_id");
+                                String deal_src = jsonObjectOneDeal.getString("src");
+                                String deal_src_id = jsonObjectOneDeal.getString("src_id");
+                                String deal_is_private = jsonObjectOneDeal.getString("is_private");
+                                String deal_version = jsonObjectOneDeal.getString("version");
+
+                                String deal_value = jsonObjectOneDeal.getString("value");
+                                String deal_currency = jsonObjectOneDeal.getString("currency");
+                                String deal_success_rate = jsonObjectOneDeal.getString("success_rate");
+                                String deal_success_eta = jsonObjectOneDeal.getString("success_eta");
+
+                                Log.d(TAG, "onResponse: ID: " + deal_id);
+                                Log.d(TAG, "onResponse: Name: " + deal_name);
+                                Log.d(TAG, "onResponse: Status: " + deal_Status);
+                                Log.d(TAG, "onResponse: dynamic_values: " + deal_dynamic_values);
+                                Log.d(TAG, "onResponse: created_by: " + deal_created_by);
+                                Log.d(TAG, "onResponse: created_at: " + deal_created_at);
+                                Log.d(TAG, "onResponse: updated_at: " + deal_updated_at);
+                                Log.d(TAG, "onResponse: user_id: " + deal_user_id);
+                                Log.d(TAG, "onResponse: company_id: " + deal_company_id);
+                                Log.d(TAG, "onResponse: src_id: " + deal_src_id);
+                                Log.d(TAG, "onResponse: lead_id: " + deal_lead_id);
+                                Log.d(TAG, "onResponse: workflow_id: " + deal_workflow_id);
+                                Log.d(TAG, "onResponse: workflow_stage_id: " + deal_workflow_stage_id);
+                                Log.d(TAG, "onResponse: src: " + deal_src);
+                                Log.d(TAG, "onResponse: is_private: " + deal_is_private);
+                                Log.d(TAG, "onResponse: version: " + deal_version);
+                                Log.d(TAG, "onResponse: value: " + deal_value);
+                                Log.d(TAG, "onResponse: currency: " + deal_currency);
+                                Log.d(TAG, "onResponse: success_rate: " + deal_success_rate);
+                                Log.d(TAG, "onResponse: success_eta: " + deal_success_eta);
+
+                                if (LSDeal.getDealFromServerId(deal_id) == null) {
+                                    LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(deal_lead_id));
+                                    if (lsContact != null) {
+                                        LSDeal tempDeal = new LSDeal();
+                                        tempDeal.setServerId(deal_id);
+                                        tempDeal.setName(deal_name);
+                                        tempDeal.setStatus(deal_Status);
+//                            tempDeal.setEmail(email);
+                                        tempDeal.setDynamic(deal_dynamic_values);
+                                        if (created_by != 0) {
+                                            tempDeal.setCreatedBy(Integer.toString(deal_created_by));
+                                        }
+                                        tempDeal.setCreatedAt(deal_created_at);
+                                        tempDeal.setUpdatedAt(Calendar.getInstance().getTime());
+                                        tempDeal.setUserId(Integer.toString(user_id));
+                                        tempDeal.setCompanyId(Integer.toString(deal_company_id));
+//                            tempDeal.setSrcId(Integer.toString(src_id));
+//                                tempDeal.setLeadId(Integer.toString(lead_id));
+                                        tempDeal.setWorkflowId(Integer.toString(deal_workflow_id));
+                                        tempDeal.setWorkflowStageId(Integer.toString(deal_workflow_stage_id));
+//                            tempDeal.setSrc(src);
+                                        tempDeal.setIsPrivate(deal_is_private);
+//                            tempDeal.setVersion(version);
+                                        tempDeal.setContact(lsContact);
+                                        tempDeal.setValue(deal_value);
+                                        tempDeal.setCurrency(deal_currency);
+                                        tempDeal.setSuccessRate(deal_success_rate);
+                                        tempDeal.setSuccessEta(deal_success_eta);
+                                        tempDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
+                                        tempDeal.save();
+
+                                        JSONArray jsonArrayDealNotes = jsonObjectOneDeal.getJSONArray("notes");
+                                        Log.d(TAG, "onResponse: data jsonArrayDealNotes length : " + jsonArrayDealNotes.length());
+                                        for (int j = jsonArrayDealNotes.length() - 1; j >= 0; j--) {
+                                            JSONObject jsonObjectOneNote = jsonArrayDealNotes.getJSONObject(j);
+                                            String note_id = jsonObjectOneNote.getString("id");
+                                            String note_user_id = jsonObjectOneNote.getString("user_id");
+                                            String note_company_id = jsonObjectOneNote.getString("company_id");
+                                            String note_notable_id = jsonObjectOneNote.getString("notable_id");
+                                            String note_notable_type = jsonObjectOneNote.getString("notable_type");
+                                            String note_description = jsonObjectOneNote.getString("description");
+                                            String note_created_by = jsonObjectOneNote.getString("created_by");
+                                            String note_updated_by = jsonObjectOneNote.getString("updated_by");
+
+                                            LSNote tempNote = new LSNote();
+                                            tempNote.setServerId(note_id);
+                                            tempNote.setDealOfNote(LSDeal.getDealFromServerId(note_notable_id));
+                                            tempNote.setNotableType(note_notable_type);
+                                            tempNote.setNoteText(note_description);
+                                            tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
+                                            tempNote.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
+                                            tempNote.save();
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -729,7 +844,7 @@ public class InitService extends IntentService {
         StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "onResponse() getContact: response = " + response);
+                Log.d(TAG, "onResponse() getInquiries: response = " + response);
                 try {
                     JSONObject jObj = new JSONObject(response);
                     if (!jObj.isNull("response")) {

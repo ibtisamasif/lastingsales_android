@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.fragments.IndividualDealDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.NotesInDealDetailsFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 
 /**
@@ -33,13 +32,13 @@ public class DealDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 LSDeal lsDeal = LSDeal.getDealFromId(id + "");
                 if (lsDeal != null) {
-                    LSContact lsContact = lsDeal.getContact();
-                    long contactIdlong;
-                    if (lsContact != null) {
-                        contactIdlong = lsContact.getId();
+//                    LSContact lsContact = lsDeal.getContact();
+//                    long contactIdlong;
+//                    if (lsContact != null) {
+//                        contactIdlong = lsContact.getId();
                         //                fragment = IndividualDealDetailsFragment.newInstance(0, IndividualDealDetailsFragment.TAG, id);
-                        fragment = NotesInDealDetailsFragment.newInstance(1, NotesInDealDetailsFragment.TAG, contactIdlong);
-                    }
+                        fragment = NotesInDealDetailsFragment.newInstance(1, NotesInDealDetailsFragment.TAG, lsDeal.getId());
+//                    }
                 }
                 break;
         }
