@@ -97,7 +97,6 @@ public class IndividualDealDetailsFragment extends TabFragment {
 //    private EditText success_ETAEditText;
     private TextView created_agoTextView;
 
-
     public static IndividualDealDetailsFragment newInstance(int page, String title, Long id) {
         IndividualDealDetailsFragment fragmentFirst = new IndividualDealDetailsFragment();
         Bundle args = new Bundle();

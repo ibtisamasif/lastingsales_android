@@ -1,0 +1,11 @@
+diff a/app/src/main/java/com/example/muzafarimran/lastingsales/SessionManager.java b/app/src/main/java/com/example/muzafarimran/lastingsales/SessionManager.java	(rejected hunks)
+@@ -184,9 +184,6 @@
+ 
+     public void deleteAllUserData() {
+         Log.d(TAG, "Different Agent: deleting data...");
+-        if (LSInquiry.count(LSInquiry.class) > 0) {
+-            LSInquiry.deleteAll(LSInquiry.class);
+-        }
+         if (LSCall.count(LSCall.class) > 0) {
+             LSCall.deleteAll(LSCall.class);
+         }

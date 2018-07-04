@@ -11,6 +11,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSTask;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
@@ -235,6 +236,9 @@ public class SessionManager {
         }
         if (LSTask.count(LSTask.class) > 0) {
             LSTask.deleteAll(LSTask.class);
+        }
+        if (LSOrganization.count(LSOrganization.class) > 0) {
+            LSOrganization.deleteAll(LSOrganization.class);
         }
     }
 

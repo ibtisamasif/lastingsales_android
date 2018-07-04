@@ -1,7 +1,6 @@
 package com.example.muzafarimran.lastingsales.viewholders;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -9,9 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -24,27 +21,25 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.AddDealActivity;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
-import com.example.muzafarimran.lastingsales.activities.ColleagueActivity;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
-import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
-import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
+import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utils.TypeManager;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.net.URLEncoder;
+import java.util.Collection;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -58,16 +53,17 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
     //    private final CardView cv_item;
     private final ConstraintLayout cl;
     private final LinearLayout llTypeRibbon;
-    SimpleDraweeView user_avatar;
-    TextView name;
-    TextView time;
-    ImageView call_icon;
+    private final SimpleDraweeView user_avatar;
+    private final TextView time;
+    private final TextView name;
+    private final ImageView call_icon;
+    private final ImageView add_deal_icon;
     private final ImageView whatsapp_icon;
-    ImageView imSmartBadge;
-    RelativeLayout rl_container_buttons;
-    TextView numberDetailTextView;
-    Button bIgnore;
-    Button bSales;
+    private final ImageView imSmartBadge;
+    private final RelativeLayout rl_container_buttons;
+    private final TextView numberDetailTextView;
+    private final Button bIgnore;
+    private final Button bSales;
 
     private TextView tvNameFromProfile;
     private TextView tvCityFromProfile;
@@ -92,6 +88,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
         this.time = v.findViewById(R.id.call_time);
         this.whatsapp_icon = v.findViewById(R.id.whatsapp_icon);
         this.call_icon = v.findViewById(R.id.call_icon);
+        this.add_deal_icon = v.findViewById(R.id.add_deal_icon);
         this.numberDetailTextView = v.findViewById(R.id.tvNumber);
         this.rl_container_buttons = v.findViewById(R.id.rl_container_buttons);
         this.bSales = v.findViewById(R.id.bSalesUtaggedItem);
@@ -113,7 +110,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
     public void bind(Object item, int position, Context mContext) {
         final LSContact contact = (LSContact) item;
         final String number = contact.getPhoneOne();
-        final String contactType = contact.getContactType();
+//        final String contactType = contact.getContactType();
         lsContactProfile = contact.getContactProfile();
         if (lsContactProfile == null) {
             imSmartBadge.setVisibility(View.GONE);
@@ -210,6 +207,14 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
         this.callClickListener = new CallClickListener(mContext);
         this.call_icon.setOnClickListener(this.callClickListener);
         this.call_icon.setTag(contact.getPhoneOne());
+
+        Collection<LSDeal> deals = contact.getAllDeals();
+        if (deals != null && deals.size() > 0) {
+            this.add_deal_icon.setVisibility(View.INVISIBLE);
+        }else {
+            this.add_deal_icon.setVisibility(View.VISIBLE);
+        }
+
         this.bSales.setOnClickListener(view -> {
             Intent myIntent = new Intent(mContext, AddEditLeadActivity.class);
             myIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
@@ -267,9 +272,20 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
             }
         });
 
+        this.add_deal_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, AddDealActivity.class);
+                intent.putExtra(AddDealActivity.TAG_LAUNCH_MODE_CONTACT_ID, contact.getId());
+                mContext.startActivity(intent);
+            }
+        });
 
-        switch (contactType) {
-            case LSContact.CONTACT_TYPE_SALES:
+
+
+
+//        switch (contactType) {
+//            case LSContact.CONTACT_TYPE_SALES:
                 rl_container_buttons.setVisibility(View.GONE);
                 user_profile_group_wrapper.setVisibility(View.GONE);
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Success));
@@ -279,110 +295,110 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                     detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                     mContext.startActivity(detailsActivityIntent);
                 });
-                break;
-            case LSContact.CONTACT_TYPE_BUSINESS:
-                rl_container_buttons.setVisibility(View.GONE);
-                user_profile_group_wrapper.setVisibility(View.GONE);
-                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
-                this.cl.setOnClickListener(view -> {
-                    if (mContext instanceof NavigationBottomMainActivity) {
-                        NavigationBottomMainActivity obj = (NavigationBottomMainActivity) mContext;
-                        obj.openContactBottomSheetCallback((Long) view.getTag());
-                    } else if (mContext instanceof ColleagueActivity) {
-                        ColleagueActivity obj = (ColleagueActivity) mContext;
-                        obj.openContactBottomSheetCallback((Long) view.getTag());
-                    }
-                });
-
-                this.cl.setOnLongClickListener(view -> {
-                    String nameTextOnDialog;
-                    if (contact.getContactName() != null) {
-                        nameTextOnDialog = contact.getContactName();
-                    } else {
-                        nameTextOnDialog = contact.getPhoneOne();
-                    }
-                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-                    alert.setTitle("Delete");
-                    alert.setMessage("Are you sure to delete " + nameTextOnDialog);
-                    alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            DeleteManager.deleteContact(mContext, contact);
-                            Snackbar.make(view, "Colleague contact deleted!", Snackbar.LENGTH_SHORT).show();
-                            ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
-                            TinyBus bus = TinyBus.from(mContext);
-                            bus.post(mCallEvent);
-                            dialog.dismiss();
-                        }
-                    });
-                    alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    alert.show();
-                    return true;
-                });
-                break;
-
-            case LSContact.CONTACT_TYPE_UNLABELED:
-                rl_container_buttons.setVisibility(View.GONE);
-                user_profile_group_wrapper.setVisibility(View.GONE);
-                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Warning));
-
-                this.cl.setOnClickListener(view -> {
-                    NavigationBottomMainActivity obj = (NavigationBottomMainActivity) mContext;
-                    obj.openContactBottomSheetCallback((Long) view.getTag());
-                });
-
-                this.cl.setOnLongClickListener(view -> {
-//                    Snackbar.make(view, "Can not delete unlabeled contact", Snackbar.LENGTH_SHORT).show();
-                    return true;
-                });
-
-                break;
-
-            case LSContact.CONTACT_TYPE_IGNORED:
-                rl_container_buttons.setVisibility(View.VISIBLE);
-                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Default));
-                this.cl.setOnLongClickListener(view -> {
-                    String nameTextOnDialog;
-                    if (contact.getContactName() != null) {
-                        nameTextOnDialog = contact.getContactName();
-                    } else {
-                        nameTextOnDialog = contact.getPhoneOne();
-                    }
-                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-                    alert.setTitle("Delete");
-                    alert.setMessage("Are you sure to delete " + nameTextOnDialog);
-                    alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            DeleteManager.deleteContact(mContext, contact);
-                            if (NetworkAccess.isNetworkAvailable(mContext)) {
-                                Toast.makeText(mContext, "Deleting contact from servers", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(mContext, "No internet. Will be deleted once connected.", Toast.LENGTH_SHORT).show();
-                            }
-                            ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
-                            TinyBus bus = TinyBus.from(mContext);
-                            bus.post(mCallEvent);
-                            dialog.dismiss();
-                        }
-                    });
-                    alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    alert.show();
-                    return true;
-                });
-                break;
-            default:
-        }
+//                break;
+//            case LSContact.CONTACT_TYPE_BUSINESS:
+//                rl_container_buttons.setVisibility(View.GONE);
+//                user_profile_group_wrapper.setVisibility(View.GONE);
+//                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
+//                this.cl.setOnClickListener(view -> {
+//                    if (mContext instanceof NavigationBottomMainActivity) {
+//                        NavigationBottomMainActivity obj = (NavigationBottomMainActivity) mContext;
+//                        obj.openContactBottomSheetCallback((Long) view.getTag());
+//                    } else if (mContext instanceof ColleagueActivity) {
+//                        ColleagueActivity obj = (ColleagueActivity) mContext;
+//                        obj.openContactBottomSheetCallback((Long) view.getTag());
+//                    }
+//                });
+//
+//                this.cl.setOnLongClickListener(view -> {
+//                    String nameTextOnDialog;
+//                    if (contact.getContactName() != null) {
+//                        nameTextOnDialog = contact.getContactName();
+//                    } else {
+//                        nameTextOnDialog = contact.getPhoneOne();
+//                    }
+//                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+//                    alert.setTitle("Delete");
+//                    alert.setMessage("Are you sure to delete " + nameTextOnDialog);
+//                    alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            DeleteManager.deleteContact(mContext, contact);
+//                            Snackbar.make(view, "Colleague contact deleted!", Snackbar.LENGTH_SHORT).show();
+//                            ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+//                            TinyBus bus = TinyBus.from(mContext);
+//                            bus.post(mCallEvent);
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    alert.show();
+//                    return true;
+//                });
+//                break;
+//
+//            case LSContact.CONTACT_TYPE_UNLABELED:
+//                rl_container_buttons.setVisibility(View.GONE);
+//                user_profile_group_wrapper.setVisibility(View.GONE);
+//                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Warning));
+//
+//                this.cl.setOnClickListener(view -> {
+//                    NavigationBottomMainActivity obj = (NavigationBottomMainActivity) mContext;
+//                    obj.openContactBottomSheetCallback((Long) view.getTag());
+//                });
+//
+//                this.cl.setOnLongClickListener(view -> {
+////                    Snackbar.make(view, "Can not delete unlabeled contact", Snackbar.LENGTH_SHORT).show();
+//                    return true;
+//                });
+//
+//                break;
+//
+//            case LSContact.CONTACT_TYPE_IGNORED:
+//                rl_container_buttons.setVisibility(View.VISIBLE);
+//                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Default));
+//                this.cl.setOnLongClickListener(view -> {
+//                    String nameTextOnDialog;
+//                    if (contact.getContactName() != null) {
+//                        nameTextOnDialog = contact.getContactName();
+//                    } else {
+//                        nameTextOnDialog = contact.getPhoneOne();
+//                    }
+//                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+//                    alert.setTitle("Delete");
+//                    alert.setMessage("Are you sure to delete " + nameTextOnDialog);
+//                    alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            DeleteManager.deleteContact(mContext, contact);
+//                            if (NetworkAccess.isNetworkAvailable(mContext)) {
+//                                Toast.makeText(mContext, "Deleting contact from servers", Toast.LENGTH_SHORT).show();
+//                            } else {
+//                                Toast.makeText(mContext, "No internet. Will be deleted once connected.", Toast.LENGTH_SHORT).show();
+//                            }
+//                            ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+//                            TinyBus bus = TinyBus.from(mContext);
+//                            bus.post(mCallEvent);
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    alert.show();
+//                    return true;
+//                });
+//                break;
+//            default:
+//        }
         if (contact.getSrc() != null) {
             if (contact.getSrc().equalsIgnoreCase("assigned")) {
                 this.numberDetailTextView.setText(number + (" ( assigned )"));

@@ -43,7 +43,7 @@
             android:value="sugar_example.db" />
         <meta-data
             android:name="VERSION"
-            android:value="16" />
+            android:value="19" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -178,6 +178,9 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.ContactDetailsTabActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.OrganizationDetailsTabActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.DealDetailsTabActivity"

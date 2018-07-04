@@ -24,6 +24,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
@@ -314,6 +315,73 @@ public class InitService extends IntentService {
                                             tempNote.save();
                                         }
                                     }
+                                }
+                            }
+
+
+                            JSONArray jsonArrayOrganizations = responseObject.getJSONArray("organizations");
+                            Log.d(TAG, "onResponse: data jsonArrayOrganizations length : " + jsonArrayOrganizations.length());
+                            for (int k = 0; k < jsonArrayOrganizations.length(); k++) {
+                                JSONObject jsonObjectOneOrganization = jsonArrayOrganizations.getJSONObject(k);
+                                String organization_id = jsonObjectOneOrganization.getString("id");
+                                String organization_name = jsonObjectOneOrganization.getString("name");
+                                int organization_created_by = 0;
+                                if (jsonObjectOneOrganization.has("created_by")) {
+                                    organization_created_by = jsonObjectOneOrganization.getInt("created_by");
+                                }
+//                        int organization_updated_by = 0;
+//                        if (jsonObjectOneOrganization.has("updated_by")) {
+//                            organization_updated_by = jsonObjectOneOrganization.getInt("updated_by");
+//                        }
+//                                String organization_created_at = jsonObjectOneOrganization.getString("created_at");
+//                                String organization_updated_at = jsonObjectOneOrganization.getString("updated_at");
+                                int organization_user_id = jsonObjectOneOrganization.getInt("user_id");
+                                String organization_Status = jsonObjectOneOrganization.getString("status");
+                                String organization_dynamic_values = jsonObjectOneOrganization.getString("dynamic_values");
+                                int organization_company_id = jsonObjectOneOrganization.getInt("company_id");
+                                String organization_src = jsonObjectOneOrganization.getString("src");
+                                String organization_src_id = jsonObjectOneOrganization.getString("src_id");
+                                String organization_version = jsonObjectOneOrganization.getString("version");
+
+                                String organization_email = jsonObjectOneOrganization.getString("email");
+                                String organization_phone = jsonObjectOneOrganization.getString("phone");
+
+                                Log.d(TAG, "onResponse: ID: " + organization_id);
+                                Log.d(TAG, "onResponse: Name: " + organization_name);
+                                Log.d(TAG, "onResponse: Status: " + organization_Status);
+                                Log.d(TAG, "onResponse: dynamic_values: " + organization_dynamic_values);
+                                Log.d(TAG, "onResponse: created_by: " + organization_created_by);
+//                                Log.d(TAG, "onResponse: created_at: " + organization_created_at);
+//                                Log.d(TAG, "onResponse: updated_at: " + organization_updated_at);
+                                Log.d(TAG, "onResponse: user_id: " + organization_user_id);
+                                Log.d(TAG, "onResponse: company_id: " + organization_company_id);
+                                Log.d(TAG, "onResponse: src_id: " + organization_src_id);
+                                Log.d(TAG, "onResponse: src: " + organization_src);
+                                Log.d(TAG, "onResponse: version: " + organization_version);
+                                Log.d(TAG, "onResponse: email: " + organization_email);
+                                Log.d(TAG, "onResponse: version: " + organization_phone);
+
+                                if (LSOrganization.getOrganizationFromServerId(organization_id) == null) {
+                                    LSOrganization tempOrganization = new LSOrganization();
+                                    tempOrganization.setServerId(organization_id);
+                                    tempOrganization.setName(organization_name);
+                                    tempOrganization.setPhone(organization_phone);
+                                    tempOrganization.setEmail(organization_email);
+                                    tempOrganization.setStatus(organization_Status);
+//                            tempOrganization.setEmail(email);
+                                    tempOrganization.setDynamicValues(organization_dynamic_values);
+//                                    if (created_by != 0) {
+//                                        tempOrganization.setCreatedBy(Integer.toString(organization_created_by));
+//                                    }
+//                                    tempOrganization.setCreatedAt(organization_created_at);
+                                    tempOrganization.setUpdatedAt(Calendar.getInstance().getTime());
+                                    tempOrganization.setUserId(Integer.toString(user_id));
+                                    tempOrganization.setCompanyId(Integer.toString(organization_company_id));
+                                    tempOrganization.setSrcId(organization_src_id);
+                                    tempOrganization.setSrc(organization_src);
+                                    tempOrganization.setVersion(organization_version);
+                                    tempOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED);
+                                    tempOrganization.save();
                                 }
                             }
                         }
