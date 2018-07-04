@@ -1,8 +1,9 @@
-package com.example.muzafarimran.lastingsales.fragments;
+package com.example.muzafarimran.lastingsales.NavigationBottomFragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.recycleradapter.OrganizationRecyclerAdapter;
 
@@ -20,16 +22,14 @@ import java.util.List;
 
 public class OrganizationFragment extends TabFragment {
 
-
     View view;
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     private List<LSOrganization> list;
+    FloatingActionButton addOrganizationFab;
 
     public OrganizationFragment() {
     }
-
-    android.support.design.widget.FloatingActionButton addOrganizationBtn;
 
     @Override
     public void onStart() {
@@ -43,9 +43,9 @@ public class OrganizationFragment extends TabFragment {
 
         view = inflater.inflate(R.layout.organization_fragment, container, false);
 
-        addOrganizationBtn = view.findViewById(R.id.addOrganization);
+        addOrganizationFab = view.findViewById(R.id.addOrganization);
 
-        addOrganizationBtn.setOnClickListener(new View.OnClickListener() {
+        addOrganizationFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addOrganization();
@@ -58,7 +58,7 @@ public class OrganizationFragment extends TabFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        initOrgationRow();
+        list = LSOrganization.listAll(LSOrganization.class);
 
         adapter = new OrganizationRecyclerAdapter(list, getActivity());
 
@@ -86,31 +86,34 @@ public class OrganizationFragment extends TabFragment {
         insertOrg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText getOrgName = addOrgDialog.findViewById(R.id.etNameAddOrg);
+                EditText nameAddOrg = addOrgDialog.findViewById(R.id.etNameAddOrg);
+                EditText emailAddOrg = addOrgDialog.findViewById(R.id.etEmailAddOrg);
+                EditText phoneAddOrg = addOrgDialog.findViewById(R.id.etPhoneAddOrg);
 
-                if (getOrgName.getText().toString().isEmpty()) {
-                    Toast.makeText(getActivity(), "Please enter Organization Name!!!!", Toast.LENGTH_SHORT).show();
+                if (nameAddOrg.getText().toString().isEmpty()) {
+                    nameAddOrg.setError("Please enter  Name!");
+//                    Toast.makeText(getActivity(), "Please enter  Name!", Toast.LENGTH_SHORT).show();
+                } else if (emailAddOrg.getText().toString().isEmpty()) {
+                    nameAddOrg.setError("Please enter  Email!");
+//                    Toast.makeText(getActivity(), "Please enter  Email!", Toast.LENGTH_SHORT).show();
+                } else if (phoneAddOrg.getText().toString().isEmpty()) {
+                    nameAddOrg.setError("Please enter  Phone!");
+//                    Toast.makeText(getActivity(), "Please enter Phone!", Toast.LENGTH_SHORT).show();
                 } else {
                     LSOrganization lsOrganization = new LSOrganization();
-                    lsOrganization.setName(getOrgName.getText().toString());
+                    lsOrganization.setName(nameAddOrg.getText().toString());
+                    lsOrganization.setEmail(emailAddOrg.getText().toString());
+                    lsOrganization.setPhone(phoneAddOrg.getText().toString());
 
                     if (lsOrganization.save() > 0) {
                         adapter.notifyDataSetChanged();
-                        Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Organization saved", Toast.LENGTH_SHORT).show();
+                        addOrgDialog.dismiss();
                     } else {
                         Toast.makeText(getActivity(), "Error not saved something went wrong", Toast.LENGTH_SHORT).show();
                     }
-
                 }
-
             }
         });
     }
-
-
-    private void initOrgationRow() {
-        //list.clear();
-        list = LSOrganization.listAll(LSOrganization.class);
-    }
-
 }

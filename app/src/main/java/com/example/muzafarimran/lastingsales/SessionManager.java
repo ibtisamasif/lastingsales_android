@@ -9,6 +9,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
@@ -184,6 +185,9 @@ public class SessionManager {
 
     public void deleteAllUserData() {
         Log.d(TAG, "Different Agent: deleting data...");
+        if (LSInquiry.count(LSInquiry.class) > 0) {
+            LSInquiry.deleteAll(LSInquiry.class);
+        }
         if (LSCall.count(LSCall.class) > 0) {
             LSCall.deleteAll(LSCall.class);
         }

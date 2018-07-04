@@ -4,11 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3_1;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3_2;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3_3;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3_4;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment3_5;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
@@ -34,19 +29,19 @@ public class MyLeadPagerAdapter extends FragmentPagerAdapter {
         TabFragment fragment = null;
         switch (position) {
             case 0:
-                fragment = BlankFragment3_1.newInstance();
+//                fragment = BlankFragment3_1.newInstance();
                 break;
             case 1:
-                fragment = BlankFragment3_2.newInstance();
+//                fragment = BlankFragment3_2.newInstance();
                 break;
             case 2:
-                fragment = BlankFragment3_3.newInstance();
+//                fragment = BlankFragment3_3.newInstance();
                 break;
             case 3:
-                fragment = BlankFragment3_4.newInstance();
+//                fragment = BlankFragment3_4.newInstance();
                 break;
             case 4:
-                fragment = BlankFragment3_5.newInstance();
+//                fragment = BlankFragment3_5.newInstance();
                 break;
         }
         return fragment;

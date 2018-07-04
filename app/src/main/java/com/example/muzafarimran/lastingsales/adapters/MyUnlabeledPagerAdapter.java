@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2_1;
-import com.example.muzafarimran.lastingsales.fragments.OrganizationFragment;
+import com.example.muzafarimran.lastingsales.NavigationBottomFragments.OrganizationFragment;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
 /**

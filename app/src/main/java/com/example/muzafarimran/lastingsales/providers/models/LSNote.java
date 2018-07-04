@@ -10,8 +10,9 @@ import java.util.List;
  */
 
 public class LSNote extends SugarRecord {
-    LSContact contactOfNote;
-    LSDeal dealOfNote;
+    private LSContact contactOfNote;
+    private LSDeal dealOfNote;
+    private LSOrganization organizationOfNote;
     //    private int id;
     private String NoteText;
     private String createdAt;
@@ -40,6 +41,10 @@ public class LSNote extends SugarRecord {
         return LSNote.find(LSNote.class, "contact_of_note = ? ", id + "");
     }
 
+    public static List<LSNote> getNotesByOrganizationId(Long id) {
+        return LSNote.find(LSNote.class, "organization_of_note = ? ", id + "");
+    }
+
     public String getNoteText() {
         return NoteText;
     }
@@ -62,6 +67,14 @@ public class LSNote extends SugarRecord {
 
     public void setDealOfNote(LSDeal dealOfNote) {
         this.dealOfNote = dealOfNote;
+    }
+
+    public LSOrganization getOrganizationOfNote() {
+        return organizationOfNote;
+    }
+
+    public void setOrganizationOfNote(LSOrganization organizationOfNote) {
+        this.organizationOfNote = organizationOfNote;
     }
 
     public String getCreatedAt() {
