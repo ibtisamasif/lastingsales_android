@@ -12,13 +12,14 @@ import com.example.muzafarimran.lastingsales.chatheadbubble.FlyerBubbleHelper;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
-import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
+
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
-import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.service.CallLogIngineService;
+
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -282,12 +283,19 @@ public class CallsStatesReceiver extends CallReceiver{
 //        TinyBus bus = TinyBus.from(context.getApplicationContext());
 //        bus.post(mCallEvent);
 
-        final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+        /*final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
         theCallLogEngine.execute();
+
+        */
+
+
+        ctx.startService(new Intent(ctx,CallLogIngineService.class));
+
+
         IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
         TinyBus inBus = TinyBus.from(ctx.getApplicationContext());
         inBus.post(InCallEvent);
-        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+   /*     DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
         dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
             @Override
             public void onPostExecuteListener() {
@@ -297,7 +305,7 @@ public class CallsStatesReceiver extends CallReceiver{
                     CallReceiver.completeWakefulIntent(intent);
                 }
             }
-        });
+        });*/
         Log.d("testlog", "onIncomingCallEnded:");
     }
 
@@ -396,12 +404,16 @@ public class CallsStatesReceiver extends CallReceiver{
 //        OutgoingCallEventModel mCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
 //        TinyBus bus = TinyBus.from(context.getApplicationContext());
 //        bus.post(mCallEvent);
-        final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
-        theCallLogEngine.execute();
+     /*   final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+        theCallLogEngine.execute();*/
+
+        ctx.startService(new Intent(ctx,CallLogIngineService.class));
+
+
         OutgoingCallEventModel outCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
         TinyBus outBus = TinyBus.from(ctx.getApplicationContext());
         outBus.post(outCallEvent);
-        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+      /*  DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
         dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
             @Override
             public void onPostExecuteListener() {
@@ -411,7 +423,7 @@ public class CallsStatesReceiver extends CallReceiver{
                     CallReceiver.completeWakefulIntent(intent);
                 }
             }
-        });
+        });*/
         Log.d("testlog", "onOutgoingCallEnded:");
     }
 
@@ -500,12 +512,17 @@ public class CallsStatesReceiver extends CallReceiver{
 //        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
 //        TinyBus bus = TinyBus.from(context.getApplicationContext());
 //        bus.post(mCallEvent);
-        final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
-        theCallLogEngine.execute();
+       /* final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
+        theCallLogEngine.execute();*/
+
+
+        ctx.startService(new Intent(ctx,CallLogIngineService.class));
+
+
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
         TinyBus mBus = TinyBus.from(ctx.getApplicationContext());
         mBus.post(mCallEvent);
-        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
+      /*  DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
         dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
             @Override
             public void onPostExecuteListener() {
@@ -515,7 +532,7 @@ public class CallsStatesReceiver extends CallReceiver{
                     CallReceiver.completeWakefulIntent(intent);
                 }
             }
-        });
+        });*/
         Log.d("testlog", "onMissedCall: End Line");
     }
 

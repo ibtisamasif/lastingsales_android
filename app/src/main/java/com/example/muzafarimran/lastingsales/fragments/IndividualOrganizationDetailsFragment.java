@@ -8,12 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -30,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -42,24 +39,17 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
-import com.example.muzafarimran.lastingsales.listloaders.DealsOfALeadLoader;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
+import com.example.muzafarimran.lastingsales.listloaders.DealsOfAOrganizationLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
-import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
-import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,51 +66,29 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 1/9/2017.
  */
 
-public class IndividualOrganizationDetailsFragment extends TabFragment  implements LoaderManager.LoaderCallbacks<List<Object>> {
+public class IndividualOrganizationDetailsFragment extends TabFragment implements LoaderManager.LoaderCallbacks<List<Object>> {
 
-    public static final String TAG = "IndividualContDetailFra";
-    public static final String DEALS_LEAD_ID = "deals_lead_id";
-    public static final int DEALS_OF_A_LEAD = 31;
+    public static final String TAG = "IndividualOrgDetailFra";
+    public static final String DEALS_ORGANIZATION_ID = "deals_organization_id";
+    public static final int DEALS_OF_A_ORGANIZATION = 32;
     private static Bundle args;
-    //    TextView tvName;
+    TextView tvName;
+    TextView tvEmail;
     TextView tvNumber;
+    TextView tvAddress;
     TextView tvDefaultText;
 
-    //    TextView tvEmail;
-    TextView tvAddress;
     RecyclerView mRecyclerView = null;
     private List<Object> listLoader = new ArrayList<Object>();
     private MyRecyclerViewAdapter adapter;
 
-    private Long contactIDLong;
+    private Long organizationIDLong;
     private Spinner leadStatusSpinner;
     private Button bSave;
-    private LSContact mContact;
+    private LSOrganization mOrganization;
     private LinearLayout ll;
     static DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1;
     static DynamicColumnBuilderVersion2 dynamicColumnBuilderVersion2;
-
-    private CardView cv_social_item;
-    private TextView tvNameFromProfile;
-    private TextView tvCityFromProfile;
-    private TextView tvCountryFromProfile;
-    private TextView tvWorkFromProfile;
-    private TextView tvCompanyFromProfile;
-    private TextView tvWhatsappFromProfile;
-    private TextView tvTweeterFromProfile;
-    private TextView tvLinkdnFromProfile;
-    private TextView tvFbFromProfile;
-    private TextView tvNameFromProfileTitle;
-    private TextView tvCityFromProfileTitle;
-    private TextView tvCountryFromProfileTitle;
-    private TextView tvWorkFromProfileTitle;
-    private TextView tvCompanyFromProfileTitle;
-    private TextView tvWhatsappFromProfileTitle;
-    private TextView tvTweeterFromProfileTitle;
-    private TextView tvLinkdnFromProfileTitle;
-
-    private TextView tvFbFromProfileTitle;
-    private LinearLayout llDynamicConnectionsContainer;
 
     private TextView tvError;
     private SessionManager sessionManager;
@@ -152,7 +120,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment  implemen
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate: ");
         setRetainInstance(true);
-        contactIDLong = args.getLong("someId");
+        organizationIDLong = args.getLong("someId");
         setHasOptionsMenu(true);
     }
 
@@ -160,7 +128,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment  implemen
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.contact_profile_details_fragment, container, false);
+        View view = inflater.inflate(R.layout.organization_profile_details_fragment, container, false);
 //        tvName = (TextView) view.findViewById(R.id.tvName);
         tvNumber = (TextView) view.findViewById(R.id.tvNumber);
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
@@ -172,215 +140,191 @@ public class IndividualOrganizationDetailsFragment extends TabFragment  implemen
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setNestedScrollingEnabled(false);
 
-
-//      social Profile views
-        cv_social_item = view.findViewById(R.id.cv_social_item);
-        tvNameFromProfile = view.findViewById(R.id.tvNameFromProfile);
-        tvNameFromProfileTitle = view.findViewById(R.id.tvNameFromProfileTitle);
-        tvCityFromProfile = view.findViewById(R.id.tvCityFromProfile);
-        tvCityFromProfileTitle = view.findViewById(R.id.tvCityFromProfileTitle);
-        tvCountryFromProfile = view.findViewById(R.id.tvCountryFromProfile);
-        tvCountryFromProfileTitle = view.findViewById(R.id.tvCountryFromProfileTitle);
-        tvWorkFromProfile = view.findViewById(R.id.tvWorkFromProfile);
-        tvWorkFromProfileTitle = view.findViewById(R.id.tvWorkFromProfileTitle);
-        tvCompanyFromProfile = view.findViewById(R.id.tvCompanyFromProfile);
-        tvCompanyFromProfileTitle = view.findViewById(R.id.tvCompanyFromProfileTitle);
-        tvWhatsappFromProfile = view.findViewById(R.id.tvWhatsappFromProfile);
-        tvWhatsappFromProfileTitle = view.findViewById(R.id.tvWhatsappFromProfileTitle);
-        tvTweeterFromProfile = view.findViewById(R.id.tvTweeterFromProfile);
-        tvTweeterFromProfileTitle = view.findViewById(R.id.tvTweeterFromProfileTitle);
-        tvLinkdnFromProfile = view.findViewById(R.id.tvLinkdnFromProfile);
-        tvLinkdnFromProfileTitle = view.findViewById(R.id.tvLinkdnFromProfileTitle);
-        tvFbFromProfile = view.findViewById(R.id.tvFbFromProfile);
-        tvFbFromProfileTitle = view.findViewById(R.id.tvFbFromProfileTitle);
-
-        llDynamicConnectionsContainer = (LinearLayout) view.findViewById(R.id.llDynamicConnectionsContainer);
-
         tvDefaultText = (TextView) view.findViewById(R.id.tvDefaultText);
         bSave = (Button) view.findViewById(R.id.contactDetailsSaveButton);
         tvDefaultText.setVisibility(View.GONE);
 //        bSave.setVisibility(View.GONE);
         bSave.setOnClickListener(v -> {
 
-            if (mContact.getVersion() != 0 && mContact.getVersion() == 2) {
-                // save according to version2 parsing
-                List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
-                for (LSDynamicColumns dynamicColumns : allColumns) {
-                    if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
-                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
-                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
-                        String currentValue = et.getText().toString();
-                        // if not exists already
-                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-                            //pass
-                        } else if (column == null) {
-                            //add new column
-                            DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
-                            column2.id = dynamicColumns.getServerId();
-                            column2.name = dynamicColumns.getName();
-                            column2.column_type = dynamicColumns.getColumnType();
-                            column2.value = currentValue;
-                            dynamicColumnBuilderVersion2.addColumn(column2);
-
-                        } else if (column != null) {
-                            //update column
-                            dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-
-                        }
-                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
-                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
-                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
-                        String currentValue = et.getText().toString();
-                        //if current value is default no need to add a columns
-                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-                            //pass
-                        } else if (column != null) {
-                            //update column
-                            dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-
-                        } else if (column == null) {
-                            //add new column
-                            DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
-//                                column2.id = dynamicColumns.getServerId();
-                            column2.name = dynamicColumns.getName();
-//                                column2.column_type = dynamicColumns.getColumnType();
-                            column2.value = currentValue;
-                            dynamicColumnBuilderVersion2.addColumn(column2);
-
-                        }
-                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
-                        Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
-
-                        String currentValue = s.getSelectedItem().toString();
-                        //if current value is default no need to add a columns
-                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-                            //pass
-                        } else if (column != null) {
-                            //update column
-                            dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-
-                        } else if (column == null) {
-                            //add new column
-                            DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
-//                                column2.id = dynamicColumns.getServerId();
-                            column2.name = dynamicColumns.getName();
-//                                column2.column_type = dynamicColumns.getColumnType();
-                            column2.value = currentValue;
-                            dynamicColumnBuilderVersion2.addColumn(column2);
-
-                        }
-                    }
-                }
-                mContact.setDynamic(dynamicColumnBuilderVersion2.buildJSONversion2()); // Parsing LIKE IN VERSION 2 now
-                if (mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                }
-                mContact.save();
-                Toast.makeText(mContext, "Updated Successfully", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "JSON Prepared to save for version2 onClick: mContact.getDynamic(): " + mContact.getDynamic());
-                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
-                dataSenderAsync.run();
-                Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-                String projectToken = MixpanelConfig.projectToken;
-                MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
-                mixpanel.track("Dynamic Column Updated");
-
-
-            } else {
-                // save according to version1 parsing
-                List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
-                for (LSDynamicColumns dynamicColumns : allColumns) {
-                    if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
-                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
-                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
-                        String currentValue = et.getText().toString();
-                        // if not exists already
-                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-                            //pass
-                        } else if (column == null) {
-                            //add new column
-                            DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
-                            column1.id = dynamicColumns.getServerId();
-                            column1.name = dynamicColumns.getName();
-                            column1.column_type = dynamicColumns.getColumnType();
-                            column1.value = currentValue;
-                            dynamicColumnBuilderVersion1.addColumn(column1);
-
-                        } else if (column != null) {
-                            //update column
-                            dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-
-                        }
-                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
-                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
-                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
-                        String currentValue = et.getText().toString();
-                        //if current value is default no need to add a columns
-                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-                            //pass
-                        } else if (column != null) {
-                            //update column
-                            dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-
-                        } else if (column == null) {
-                            //add new column
-                            DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
-                            column1.id = dynamicColumns.getServerId();
-                            column1.name = dynamicColumns.getName();
-                            column1.column_type = dynamicColumns.getColumnType();
-                            column1.value = currentValue;
-                            dynamicColumnBuilderVersion1.addColumn(column1);
-
-                        }
-                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
-                        Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
-
-                        String currentValue = s.getSelectedItem().toString();
-                        //if current value is default no need to add a columns
-                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-                            //pass
-                        } else if (column != null) {
-                            //update column
-                            dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-
-                        } else if (column == null) {
-                            //add new column
-                            DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
-                            column1.id = dynamicColumns.getServerId();
-                            column1.name = dynamicColumns.getName();
-                            column1.column_type = dynamicColumns.getColumnType();
-                            column1.value = currentValue;
-                            dynamicColumnBuilderVersion1.addColumn(column1);
-
-                        }
-                    }
-                }
-                mContact.setDynamic(dynamicColumnBuilderVersion1.buildJSON());
-                if (mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                }
-                mContact.save();
-                Toast.makeText(mContext, "Updated Successfully", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "JSON Prepared to save for version1 onClick: mContact.getDynamic(): " + mContact.getDynamic());
-                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
-                dataSenderAsync.run();
-                Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-                String projectToken = MixpanelConfig.projectToken;
-                MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
-                mixpanel.track("Dynamic Column Updated");
-            }
+//            if (mOrganization.getVersion() != 0 && mOrganization.getVersion() == 2) {
+//                // save according to version2 parsing
+//                List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
+//                for (LSDynamicColumns dynamicColumns : allColumns) {
+//                    if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
+//                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
+//                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
+//                        String currentValue = et.getText().toString();
+//                        // if not exists already
+//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+//                            //pass
+//                        } else if (column == null) {
+//                            //add new column
+//                            DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
+//                            column2.id = dynamicColumns.getServerId();
+//                            column2.name = dynamicColumns.getName();
+//                            column2.column_type = dynamicColumns.getColumnType();
+//                            column2.value = currentValue;
+//                            dynamicColumnBuilderVersion2.addColumn(column2);
+//
+//                        } else if (column != null) {
+//                            //update column
+//                            dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+//
+//                        }
+//                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+//                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
+//                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
+//                        String currentValue = et.getText().toString();
+//                        //if current value is default no need to add a columns
+//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+//                            //pass
+//                        } else if (column != null) {
+//                            //update column
+//                            dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+//
+//                        } else if (column == null) {
+//                            //add new column
+//                            DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
+////                                column2.id = dynamicColumns.getServerId();
+//                            column2.name = dynamicColumns.getName();
+////                                column2.column_type = dynamicColumns.getColumnType();
+//                            column2.value = currentValue;
+//                            dynamicColumnBuilderVersion2.addColumn(column2);
+//
+//                        }
+//                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+//                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
+//                        Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
+//
+//                        String currentValue = s.getSelectedItem().toString();
+//                        //if current value is default no need to add a columns
+//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+//                            //pass
+//                        } else if (column != null) {
+//                            //update column
+//                            dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+//
+//                        } else if (column == null) {
+//                            //add new column
+//                            DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
+////                                column2.id = dynamicColumns.getServerId();
+//                            column2.name = dynamicColumns.getName();
+////                                column2.column_type = dynamicColumns.getColumnType();
+//                            column2.value = currentValue;
+//                            dynamicColumnBuilderVersion2.addColumn(column2);
+//
+//                        }
+//                    }
+//                }
+//                mOrganization.setDynamic(dynamicColumnBuilderVersion2.buildJSONversion2()); // Parsing LIKE IN VERSION 2 now
+//                if (mOrganization.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mOrganization.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                    mOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                }
+//                mOrganization.save();
+//                Toast.makeText(mContext, "Updated Successfully", Toast.LENGTH_SHORT).show();
+//                Log.d(TAG, "JSON Prepared to save for version2 onClick: mOrganization.getDynamicValues(): " + mOrganization.getDynamicValues());
+//                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
+//                dataSenderAsync.run();
+//                Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
+//                if (getActivity() != null) {
+//                    getActivity().finish();
+//                }
+//                String projectToken = MixpanelConfig.projectToken;
+//                MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
+//                mixpanel.track("Dynamic Column Updated");
+//
+//
+//            } else {
+//                // save according to version1 parsing
+//                List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
+//                for (LSDynamicColumns dynamicColumns : allColumns) {
+//                    if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
+//                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
+//                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
+//                        String currentValue = et.getText().toString();
+//                        // if not exists already
+//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+//                            //pass
+//                        } else if (column == null) {
+//                            //add new column
+//                            DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
+//                            column1.id = dynamicColumns.getServerId();
+//                            column1.name = dynamicColumns.getName();
+//                            column1.column_type = dynamicColumns.getColumnType();
+//                            column1.value = currentValue;
+//                            dynamicColumnBuilderVersion1.addColumn(column1);
+//
+//                        } else if (column != null) {
+//                            //update column
+//                            dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+//
+//                        }
+//                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+//                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
+//                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
+//                        String currentValue = et.getText().toString();
+//                        //if current value is default no need to add a columns
+//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+//                            //pass
+//                        } else if (column != null) {
+//                            //update column
+//                            dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+//
+//                        } else if (column == null) {
+//                            //add new column
+//                            DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
+//                            column1.id = dynamicColumns.getServerId();
+//                            column1.name = dynamicColumns.getName();
+//                            column1.column_type = dynamicColumns.getColumnType();
+//                            column1.value = currentValue;
+//                            dynamicColumnBuilderVersion1.addColumn(column1);
+//
+//                        }
+//                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+//                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
+//                        Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
+//
+//                        String currentValue = s.getSelectedItem().toString();
+//                        //if current value is default no need to add a columns
+//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
+//                            //pass
+//                        } else if (column != null) {
+//                            //update column
+//                            dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
+//
+//                        } else if (column == null) {
+//                            //add new column
+//                            DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
+//                            column1.id = dynamicColumns.getServerId();
+//                            column1.name = dynamicColumns.getName();
+//                            column1.column_type = dynamicColumns.getColumnType();
+//                            column1.value = currentValue;
+//                            dynamicColumnBuilderVersion1.addColumn(column1);
+//
+//                        }
+//                    }
+//                }
+//                mOrganization.setDynamic(dynamicColumnBuilderVersion1.buildJSON());
+//                if (mOrganization.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mOrganization.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                    mOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                }
+//                mOrganization.save();
+//                Toast.makeText(mContext, "Updated Successfully", Toast.LENGTH_SHORT).show();
+//                Log.d(TAG, "JSON Prepared to save for version1 onClick: mOrganization.getDynamicValues(): " + mOrganization.getDynamicValues());
+//                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
+//                dataSenderAsync.run();
+//                Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
+//                if (getActivity() != null) {
+//                    getActivity().finish();
+//                }
+//                String projectToken = MixpanelConfig.projectToken;
+//                MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
+//                mixpanel.track("Dynamic Column Updated");
+//            }
         });
         addItemsOnSpinnerLeadStatus(view);
         dynamicColumns(view);
-        getLoaderManager().initLoader(DEALS_OF_A_LEAD, args, IndividualOrganizationDetailsFragment.this);
+        getLoaderManager().initLoader(DEALS_OF_A_ORGANIZATION, args, IndividualOrganizationDetailsFragment.this);
         setHasOptionsMenu(true);
         return view;
     }
@@ -389,7 +333,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment  implemen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "onActivityCreated: ");
-        loadSocialProfileData();
+//        loadSocialProfileData();
         loadConnectionsData();
     }
 
@@ -403,43 +347,43 @@ public class IndividualOrganizationDetailsFragment extends TabFragment  implemen
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume: ");
-        contactIDLong = args.getLong("someId");
-        mContact = LSContact.findById(LSContact.class, contactIDLong);
-//        if (mContact != null && mContact.getContactName() != null) {
-//            tvName.setText(mContact.getContactName());
+        organizationIDLong = args.getLong("someId");
+        mOrganization = LSOrganization.findById(LSOrganization.class, organizationIDLong);
+        if (mOrganization != null && mOrganization.getName() != null) {
+            tvName.setText(mOrganization.getName());
+        }
+        if (mOrganization != null && mOrganization.getPhone() != null) {
+            tvNumber.setText(mOrganization.getPhone());
+        }
+        if (mOrganization != null && mOrganization.getEmail() != null) {
+            tvEmail.setText(mOrganization.getEmail());
+        }
+        if (mOrganization != null && mOrganization.getAddress() != null) {
+            tvAddress.setText(mOrganization.getAddress());
+        }
+//        if (mOrganization != null && mOrganization.getContactType() != null) {
+//            if (mOrganization.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+//                if (mOrganization.getContactSalesStatus() != null && !mOrganization.getContactSalesStatus().equals("")) {
+//                    switch (mOrganization.getContactSalesStatus()) {
+//                        case LSContact.SALES_STATUS_INPROGRESS:
+//                            leadStatusSpinner.setSelection(0, false);
+//                            break;
+//                        case LSContact.SALES_STATUS_CLOSED_WON:
+//                            leadStatusSpinner.setSelection(1, false);
+//                            break;
+//                        case LSContact.SALES_STATUS_CLOSED_LOST:
+//                            leadStatusSpinner.setSelection(2, false);
+//                            break;
+//                    }
+//                }
+//            }
 //        }
-        if (mContact != null && mContact.getPhoneOne() != null) {
-            tvNumber.setText(mContact.getPhoneOne());
-        }
-//        if (mContact != null && mContact.getContactEmail() != null) {
-//            tvEmail.setText(mContact.getContactEmail());
-//        }
-        if (mContact != null && mContact.getContactAddress() != null) {
-            tvAddress.setText(mContact.getContactAddress());
-        }
-        if (mContact != null && mContact.getContactType() != null) {
-            if (mContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                if (mContact.getContactSalesStatus() != null && !mContact.getContactSalesStatus().equals("")) {
-                    switch (mContact.getContactSalesStatus()) {
-                        case LSContact.SALES_STATUS_INPROGRESS:
-                            leadStatusSpinner.setSelection(0, false);
-                            break;
-                        case LSContact.SALES_STATUS_CLOSED_WON:
-                            leadStatusSpinner.setSelection(1, false);
-                            break;
-                        case LSContact.SALES_STATUS_CLOSED_LOST:
-                            leadStatusSpinner.setSelection(2, false);
-                            break;
-                    }
-                }
-            }
-        }
-        leadStatusSpinner.post(new Runnable() {
-            public void run() {
-                leadStatusSpinner.setOnItemSelectedListener(new CustomSpinnerLeadStatusOnItemSelectedListener());
-            }
-        });
-        getLoaderManager().restartLoader(DEALS_OF_A_LEAD, args, IndividualOrganizationDetailsFragment.this);
+//        leadStatusSpinner.post(new Runnable() {
+//            public void run() {
+//                leadStatusSpinner.setOnItemSelectedListener(new CustomSpinnerLeadStatusOnItemSelectedListener());
+//            }
+//        });
+        getLoaderManager().restartLoader(DEALS_OF_A_ORGANIZATION, args, IndividualOrganizationDetailsFragment.this);
     }
 
     @Override
@@ -640,127 +584,127 @@ public class IndividualOrganizationDetailsFragment extends TabFragment  implemen
 
         Log.d(TAG, "Populating Lead Data");
 
-        contactIDLong = args.getLong("someId");
-        mContact = LSContact.findById(LSContact.class, contactIDLong);
-        Log.d(TAG, "contactID: " + mContact.getId());
-        Log.d(TAG, "contactName: " + mContact.getContactName());
-        Log.d(TAG, "contactServerID: " + mContact.getServerId());
-        Log.d(TAG, "dynamicColumnOfLead: " + mContact.getDynamic());
-        Log.d(TAG, "contactVersion: " + mContact.getVersion());
+        organizationIDLong = args.getLong("someId");
+        mOrganization = LSOrganization.findById(LSOrganization.class, organizationIDLong);
+        Log.d(TAG, "contactID: " + mOrganization.getId());
+        Log.d(TAG, "contactName: " + mOrganization.getName());
+        Log.d(TAG, "contactServerID: " + mOrganization.getServerId());
+        Log.d(TAG, "dynamicColumnOfLead: " + mOrganization.getDynamicValues());
+        Log.d(TAG, "contactVersion: " + mOrganization.getVersion());
 
-        try {
-            if (mContact.getDynamic() != null) {
-                if (mContact.getVersion() != 0 && mContact.getVersion() == 2) {
-                    Log.d(TAG, "dynamicColumns: getVersion = 2");
-                    dynamicColumnBuilderVersion2.parseJson(mContact.getDynamic());
-                    ArrayList<DynamicColumnBuilderVersion2.Column> dynColumns = dynamicColumnBuilderVersion2.getColumns();
-                    for (DynamicColumnBuilderVersion2.Column oneDynamicColumns : dynColumns) {
-                        if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
-
-                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
-                            if (et != null) {
-                                et.setText(oneDynamicColumns.value);
-                            } else {
-                                Log.d(TAG, "this text dynamic column was set filled for lead but column is no more");
-                            }
-
-                        } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
-
-                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
-                            if (et != null) {
-                                et.setText(oneDynamicColumns.value);
-                            } else {
-                                Log.d(TAG, "this number dynamic column was filled for lead but column is no more");
-                            }
-
-                        } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-
-                            final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
-                            if (s != null) {
-                                List<String> list = (List<String>) s.getTag();
-                                Log.d(TAG, "dynamicColumns: List: " + list);
-                                int index = -1;
-                                for (int i = 0; i < list.size(); i++) {
-                                    if (oneDynamicColumns.value.equals(list.get(i))) {
-                                        index = i;
-                                    }
-                                }
-                                if (mContact.getDynamic() != null && !mContact.getDynamic().equals("")) {
-
-                                    Log.d(TAG, "dynamicColumns: " + index);
-                                    s.setSelection(index, false);
-                                }
-                                s.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
-                                    }
-                                });
-                            } else {
-                                Log.d(TAG, "this spinner dynamic column was filled for lead but column is no more");
-                            }
-
-                        }
-                    }
-
-
-                } else {
-                    Log.d(TAG, "dynamicColumns: getVersion = 0");
-                    dynamicColumnBuilderVersion1.parseJson(mContact.getDynamic());
-//                    Log.d(TAG, "dynamicColumnsJSONN: " + mContact.getDynamic());
-                    ArrayList<DynamicColumnBuilderVersion1.Column> dynColumns = dynamicColumnBuilderVersion1.getColumns();
-                    for (DynamicColumnBuilderVersion1.Column oneDynamicColumns : dynColumns) {
-                        //find column_type from LSDynamic column using the name of column from leads dynamic column.
-                        if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
-
-                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
-                            if (et != null) {
-                                et.setText(oneDynamicColumns.value);
-                            } else {
-                                Log.d(TAG, "this text dynamic column was set filled for lead but column is no more");
-                            }
-
-                        } else if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
-
-                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
-                            if (et != null) {
-                                et.setText(oneDynamicColumns.value);
-                            } else {
-                                Log.d(TAG, "this number dynamic column was set filled for lead but column is no more");
-                            }
-
-                        } else if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-
-                            final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
-                            if (s != null) {
-                                List<String> list = (List<String>) s.getTag();
-                                int index = -1;
-                                for (int i = 0; i < list.size(); i++) {
-                                    if (oneDynamicColumns.value.equals(list.get(i))) {
-                                        index = i;
-                                    }
-                                }
-                                if (mContact.getDynamic() != null && !mContact.getDynamic().equals("")) {
-
-                                    Log.d(TAG, "dynamicColumns: " + index);
-                                    s.setSelection(index, false);
-                                }
-                                s.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
-                                    }
-                                });
-                            } else {
-                                Log.d(TAG, "this spinner dynamic column was set filled for lead but column is no more");
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if (mOrganization.getDynamicValues() != null) {
+//                if (mOrganization.getVersion() != 0 && mOrganization.getVersion() == 2) {
+//                    Log.d(TAG, "dynamicColumns: getVersion = 2");
+//                    dynamicColumnBuilderVersion2.parseJson(mOrganization.getDynamicValues());
+//                    ArrayList<DynamicColumnBuilderVersion2.Column> dynColumns = dynamicColumnBuilderVersion2.getColumns();
+//                    for (DynamicColumnBuilderVersion2.Column oneDynamicColumns : dynColumns) {
+//                        if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
+//
+//                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+//                            if (et != null) {
+//                                et.setText(oneDynamicColumns.value);
+//                            } else {
+//                                Log.d(TAG, "this text dynamic column was set filled for lead but column is no more");
+//                            }
+//
+//                        } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+//
+//                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+//                            if (et != null) {
+//                                et.setText(oneDynamicColumns.value);
+//                            } else {
+//                                Log.d(TAG, "this number dynamic column was filled for lead but column is no more");
+//                            }
+//
+//                        } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+//
+//                            final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
+//                            if (s != null) {
+//                                List<String> list = (List<String>) s.getTag();
+//                                Log.d(TAG, "dynamicColumns: List: " + list);
+//                                int index = -1;
+//                                for (int i = 0; i < list.size(); i++) {
+//                                    if (oneDynamicColumns.value.equals(list.get(i))) {
+//                                        index = i;
+//                                    }
+//                                }
+//                                if (mOrganization.getDynamicValues() != null && !mOrganization.getDynamicValues().equals("")) {
+//
+//                                    Log.d(TAG, "dynamicColumns: " + index);
+//                                    s.setSelection(index, false);
+//                                }
+//                                s.post(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
+//                                    }
+//                                });
+//                            } else {
+//                                Log.d(TAG, "this spinner dynamic column was filled for lead but column is no more");
+//                            }
+//
+//                        }
+//                    }
+//
+//
+//                } else {
+//                    Log.d(TAG, "dynamicColumns: getVersion = 0");
+//                    dynamicColumnBuilderVersion1.parseJson(mOrganization.getDynamicValues());
+////                    Log.d(TAG, "dynamicColumnsJSONN: " + mOrganization.getDynamicValues());
+//                    ArrayList<DynamicColumnBuilderVersion1.Column> dynColumns = dynamicColumnBuilderVersion1.getColumns();
+//                    for (DynamicColumnBuilderVersion1.Column oneDynamicColumns : dynColumns) {
+//                        //find column_type from LSDynamic column using the name of column from leads dynamic column.
+//                        if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
+//
+//                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+//                            if (et != null) {
+//                                et.setText(oneDynamicColumns.value);
+//                            } else {
+//                                Log.d(TAG, "this text dynamic column was set filled for lead but column is no more");
+//                            }
+//
+//                        } else if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+//
+//                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+//                            if (et != null) {
+//                                et.setText(oneDynamicColumns.value);
+//                            } else {
+//                                Log.d(TAG, "this number dynamic column was set filled for lead but column is no more");
+//                            }
+//
+//                        } else if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+//
+//                            final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
+//                            if (s != null) {
+//                                List<String> list = (List<String>) s.getTag();
+//                                int index = -1;
+//                                for (int i = 0; i < list.size(); i++) {
+//                                    if (oneDynamicColumns.value.equals(list.get(i))) {
+//                                        index = i;
+//                                    }
+//                                }
+//                                if (mOrganization.getDynamicValues() != null && !mOrganization.getDynamicValues().equals("")) {
+//
+//                                    Log.d(TAG, "dynamicColumns: " + index);
+//                                    s.setSelection(index, false);
+//                                }
+//                                s.post(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        s.setOnItemSelectedListener(new DynamicSpinnerOnItemSelectedListener());
+//                                    }
+//                                });
+//                            } else {
+//                                Log.d(TAG, "this spinner dynamic column was set filled for lead but column is no more");
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
     }
@@ -788,42 +732,42 @@ public class IndividualOrganizationDetailsFragment extends TabFragment  implemen
         return super.onOptionsItemSelected(item);
     }
 
-    private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
-            switch (pos) {
-                case 0:
-                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                    mContact.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-                    Toast.makeText(parent.getContext(), "Status Changed to InProgress", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-                case 1:
-                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                    mContact.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-                case 2:
-                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                    mContact.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-    }
+//    private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+//
+//        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
+//            switch (pos) {
+//                case 0:
+//                    mOrganization.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+//                    mOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                    mOrganization.save();
+//                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
+//                    Toast.makeText(parent.getContext(), "Status Changed to InProgress", Toast.LENGTH_SHORT).show();
+//                    dataSenderAsync.run();
+//                    break;
+//                case 1:
+//                    mOrganization.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+//                    mOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                    mOrganization.save();
+//                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
+//                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
+//                    dataSenderAsync.run();
+//                    break;
+//                case 2:
+//                    mOrganization.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+//                    mOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                    mOrganization.save();
+//                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
+//                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
+//                    dataSenderAsync.run();
+//                    break;
+//            }
+//        }
+//
+//        @Override
+//        public void onNothingSelected(AdapterView<?> parent) {
+//        }
+//    }
 
     private class DynamicSpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
         @Override
@@ -836,156 +780,155 @@ public class IndividualOrganizationDetailsFragment extends TabFragment  implemen
         }
     }
 
-    private void loadSocialProfileData() {
-        LSContactProfile lsContactProfile = mContact.getContactProfile();
-
-        tvTweeterFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
-        tvLinkdnFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
-        tvFbFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
-
-        if (lsContactProfile != null) {
-//            if (lsContactProfile.getSocial_image() != null) {
-//                MyDateTimeStamp.setFrescoImage(user_avatar_ind, lsContactProfile.getSocial_image());
+//    private void loadSocialProfileData() {
+//        LSContactProfile lsContactProfile = mOrganization.getContactProfile();
+//
+//        tvTweeterFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
+//        tvLinkdnFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
+//        tvFbFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
+//
+//        if (lsContactProfile != null) {
+////            if (lsContactProfile.getSocial_image() != null) {
+////                MyDateTimeStamp.setFrescoImage(user_avatar_ind, lsContactProfile.getSocial_image());
+////            }
+//            if (lsContactProfile.getFirstName() != null && !lsContactProfile.getFirstName().equals("")) {
+//                tvNameFromProfile.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
+//            } else {
+//                tvNameFromProfile.setVisibility(View.GONE);
+//                tvNameFromProfileTitle.setVisibility(View.GONE);
 //            }
-            if (lsContactProfile.getFirstName() != null && !lsContactProfile.getFirstName().equals("")) {
-                tvNameFromProfile.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
-            } else {
-                tvNameFromProfile.setVisibility(View.GONE);
-                tvNameFromProfileTitle.setVisibility(View.GONE);
-            }
-            if (lsContactProfile.getCity() != null && !lsContactProfile.getCity().equals("")) {
-                tvCityFromProfile.setText(lsContactProfile.getCity());
-            } else {
-                tvCityFromProfile.setVisibility(View.GONE);
-                tvCityFromProfileTitle.setVisibility(View.GONE);
-            }
-            if (lsContactProfile.getCountry() != null && !lsContactProfile.getCountry().equals("")) {
-                tvCountryFromProfile.setText(lsContactProfile.getCountry());
-            } else {
-                tvCountryFromProfile.setVisibility(View.GONE);
-                tvCountryFromProfileTitle.setVisibility(View.GONE);
-            }
-            if (lsContactProfile.getWork() != null && !lsContactProfile.getWork().equals("")) {
-                tvWorkFromProfile.setText(lsContactProfile.getWork());
-            } else {
-                tvWorkFromProfile.setVisibility(View.GONE);
-                tvWorkFromProfileTitle.setVisibility(View.GONE);
-            }
-            if (lsContactProfile.getCompany() != null && !lsContactProfile.getCompany().equals("")) {
-                tvCompanyFromProfile.setText(lsContactProfile.getCompany());
-            } else {
-                tvCompanyFromProfile.setVisibility(View.GONE);
-                tvCompanyFromProfileTitle.setVisibility(View.GONE);
-            }
-            if (lsContactProfile.getWhatsapp() != null && !lsContactProfile.getWhatsapp().equals("")) {
-                tvWhatsappFromProfile.setText(lsContactProfile.getWhatsapp());
-            } else {
-                tvWhatsappFromProfile.setVisibility(View.GONE);
-                tvWhatsappFromProfileTitle.setVisibility(View.GONE);
-            }
-            if (lsContactProfile.getTweet() != null && !lsContactProfile.getTweet().equals("")) {
-                tvTweeterFromProfile.setText(lsContactProfile.getTweet());
-            } else {
-                tvTweeterFromProfile.setVisibility(View.GONE);
-                tvTweeterFromProfileTitle.setVisibility(View.GONE);
-            }
-            if (lsContactProfile.getLinkd() != null && !lsContactProfile.getLinkd().equals("")) {
-                tvLinkdnFromProfile.setText(lsContactProfile.getLinkd());
-            } else {
-                tvLinkdnFromProfile.setVisibility(View.GONE);
-                tvLinkdnFromProfileTitle.setVisibility(View.GONE);
-            }
-            if (lsContactProfile.getFb() != null && !lsContactProfile.getFb().equals("")) {
-                tvFbFromProfile.setText(lsContactProfile.getFb());
-            } else {
-                tvFbFromProfile.setVisibility(View.GONE);
-                tvFbFromProfileTitle.setVisibility(View.GONE);
-            }
-        } else {
-            cv_social_item.setVisibility(View.GONE);
-            Log.d(TAG, "loadSocialProfileData: lsContactProfile == NULL " + mContact.getPhoneOne());
-            ContactProfileProvider contactProfileProvider = new ContactProfileProvider(getActivity());
-            contactProfileProvider.getContactProfile(mContact.getPhoneOne(), new LSContactProfileCallback() {
-                @Override
-                public void onSuccess(LSContactProfile result) {
-                    Log.d(TAG, "onSuccess: lsContactProfile: " + result);
-                    if (result != null) {
-                        cv_social_item.setVisibility(View.VISIBLE);
-                        Log.d(TAG, "onSuccess: Updating Data");
-                        //            if (lsContactProfile.getSocial_image() != null) {
-//                MyDateTimeStamp.setFrescoImage(user_avatar_ind, lsContactProfile.getSocial_image());
+//            if (lsContactProfile.getCity() != null && !lsContactProfile.getCity().equals("")) {
+//                tvCityFromProfile.setText(lsContactProfile.getCity());
+//            } else {
+//                tvCityFromProfile.setVisibility(View.GONE);
+//                tvCityFromProfileTitle.setVisibility(View.GONE);
 //            }
-                        if (result.getFirstName() != null && !result.getFirstName().equals("")) {
-                            tvNameFromProfile.setText(result.getFirstName() + " " + result.getLastName());
-                        } else {
-                            tvNameFromProfile.setVisibility(View.GONE);
-                            tvNameFromProfileTitle.setVisibility(View.GONE);
-                        }
-                        if (result.getCity() != null && !result.getCity().equals("")) {
-                            tvCityFromProfile.setText(result.getCity());
-                        } else {
-                            tvCityFromProfile.setVisibility(View.GONE);
-                            tvCityFromProfileTitle.setVisibility(View.GONE);
-                        }
-                        if (result.getCountry() != null && !result.getCountry().equals("")) {
-                            tvCountryFromProfile.setText(result.getCountry());
-                        } else {
-                            tvCountryFromProfile.setVisibility(View.GONE);
-                            tvCountryFromProfileTitle.setVisibility(View.GONE);
-                        }
-                        if (result.getWork() != null && !result.getWork().equals("")) {
-                            tvWorkFromProfile.setText(result.getWork());
-                        } else {
-                            tvWorkFromProfile.setVisibility(View.GONE);
-                            tvWorkFromProfileTitle.setVisibility(View.GONE);
-                        }
-                        if (result.getCompany() != null && !result.getCompany().equals("")) {
-                            tvCompanyFromProfile.setText(result.getCompany());
-                        } else {
-                            tvCompanyFromProfile.setVisibility(View.GONE);
-                            tvCompanyFromProfileTitle.setVisibility(View.GONE);
-                        }
-                        if (result.getWhatsapp() != null && !result.getWhatsapp().equals("")) {
-                            tvWhatsappFromProfile.setText(result.getWhatsapp());
-                        } else {
-                            tvWhatsappFromProfile.setVisibility(View.GONE);
-                            tvWhatsappFromProfileTitle.setVisibility(View.GONE);
-                        }
-                        if (result.getTweet() != null && !result.getTweet().equals("")) {
-                            tvTweeterFromProfile.setText(result.getTweet());
-                        } else {
-                            tvTweeterFromProfile.setVisibility(View.GONE);
-                            tvTweeterFromProfileTitle.setVisibility(View.GONE);
-                        }
-                        if (result.getLinkd() != null && !result.getLinkd().equals("")) {
-                            tvLinkdnFromProfile.setText(result.getLinkd());
-                        } else {
-                            tvLinkdnFromProfile.setVisibility(View.GONE);
-                            tvLinkdnFromProfileTitle.setVisibility(View.GONE);
-                        }
-                        if (result.getFb() != null && !result.getFb().equals("")) {
-                            tvFbFromProfile.setText(result.getFb());
-                        } else {
-                            tvFbFromProfile.setVisibility(View.GONE);
-                            tvFbFromProfileTitle.setVisibility(View.GONE);
-                        }
-                    }
-                }
-            });
-        }
-    }
+//            if (lsContactProfile.getCountry() != null && !lsContactProfile.getCountry().equals("")) {
+//                tvCountryFromProfile.setText(lsContactProfile.getCountry());
+//            } else {
+//                tvCountryFromProfile.setVisibility(View.GONE);
+//                tvCountryFromProfileTitle.setVisibility(View.GONE);
+//            }
+//            if (lsContactProfile.getWork() != null && !lsContactProfile.getWork().equals("")) {
+//                tvWorkFromProfile.setText(lsContactProfile.getWork());
+//            } else {
+//                tvWorkFromProfile.setVisibility(View.GONE);
+//                tvWorkFromProfileTitle.setVisibility(View.GONE);
+//            }
+//            if (lsContactProfile.getCompany() != null && !lsContactProfile.getCompany().equals("")) {
+//                tvCompanyFromProfile.setText(lsContactProfile.getCompany());
+//            } else {
+//                tvCompanyFromProfile.setVisibility(View.GONE);
+//                tvCompanyFromProfileTitle.setVisibility(View.GONE);
+//            }
+//            if (lsContactProfile.getWhatsapp() != null && !lsContactProfile.getWhatsapp().equals("")) {
+//                tvWhatsappFromProfile.setText(lsContactProfile.getWhatsapp());
+//            } else {
+//                tvWhatsappFromProfile.setVisibility(View.GONE);
+//                tvWhatsappFromProfileTitle.setVisibility(View.GONE);
+//            }
+//            if (lsContactProfile.getTweet() != null && !lsContactProfile.getTweet().equals("")) {
+//                tvTweeterFromProfile.setText(lsContactProfile.getTweet());
+//            } else {
+//                tvTweeterFromProfile.setVisibility(View.GONE);
+//                tvTweeterFromProfileTitle.setVisibility(View.GONE);
+//            }
+//            if (lsContactProfile.getLinkd() != null && !lsContactProfile.getLinkd().equals("")) {
+//                tvLinkdnFromProfile.setText(lsContactProfile.getLinkd());
+//            } else {
+//                tvLinkdnFromProfile.setVisibility(View.GONE);
+//                tvLinkdnFromProfileTitle.setVisibility(View.GONE);
+//            }
+//            if (lsContactProfile.getFb() != null && !lsContactProfile.getFb().equals("")) {
+//                tvFbFromProfile.setText(lsContactProfile.getFb());
+//            } else {
+//                tvFbFromProfile.setVisibility(View.GONE);
+//                tvFbFromProfileTitle.setVisibility(View.GONE);
+//            }
+//        } else {
+//            cv_social_item.setVisibility(View.GONE);
+//            Log.d(TAG, "loadSocialProfileData: lsContactProfile == NULL " + mOrganization.getPhone());
+//            ContactProfileProvider contactProfileProvider = new ContactProfileProvider(getActivity());
+//            contactProfileProvider.getContactProfile(mOrganization.getPhone(), new LSContactProfileCallback() {
+//                @Override
+//                public void onSuccess(LSContactProfile result) {
+//                    Log.d(TAG, "onSuccess: lsContactProfile: " + result);
+//                    if (result != null) {
+//                        cv_social_item.setVisibility(View.VISIBLE);
+//                        Log.d(TAG, "onSuccess: Updating Data");
+//                        //            if (lsContactProfile.getSocial_image() != null) {
+////                MyDateTimeStamp.setFrescoImage(user_avatar_ind, lsContactProfile.getSocial_image());
+////            }
+//                        if (result.getFirstName() != null && !result.getFirstName().equals("")) {
+//                            tvNameFromProfile.setText(result.getFirstName() + " " + result.getLastName());
+//                        } else {
+//                            tvNameFromProfile.setVisibility(View.GONE);
+//                            tvNameFromProfileTitle.setVisibility(View.GONE);
+//                        }
+//                        if (result.getCity() != null && !result.getCity().equals("")) {
+//                            tvCityFromProfile.setText(result.getCity());
+//                        } else {
+//                            tvCityFromProfile.setVisibility(View.GONE);
+//                            tvCityFromProfileTitle.setVisibility(View.GONE);
+//                        }
+//                        if (result.getCountry() != null && !result.getCountry().equals("")) {
+//                            tvCountryFromProfile.setText(result.getCountry());
+//                        } else {
+//                            tvCountryFromProfile.setVisibility(View.GONE);
+//                            tvCountryFromProfileTitle.setVisibility(View.GONE);
+//                        }
+//                        if (result.getWork() != null && !result.getWork().equals("")) {
+//                            tvWorkFromProfile.setText(result.getWork());
+//                        } else {
+//                            tvWorkFromProfile.setVisibility(View.GONE);
+//                            tvWorkFromProfileTitle.setVisibility(View.GONE);
+//                        }
+//                        if (result.getCompany() != null && !result.getCompany().equals("")) {
+//                            tvCompanyFromProfile.setText(result.getCompany());
+//                        } else {
+//                            tvCompanyFromProfile.setVisibility(View.GONE);
+//                            tvCompanyFromProfileTitle.setVisibility(View.GONE);
+//                        }
+//                        if (result.getWhatsapp() != null && !result.getWhatsapp().equals("")) {
+//                            tvWhatsappFromProfile.setText(result.getWhatsapp());
+//                        } else {
+//                            tvWhatsappFromProfile.setVisibility(View.GONE);
+//                            tvWhatsappFromProfileTitle.setVisibility(View.GONE);
+//                        }
+//                        if (result.getTweet() != null && !result.getTweet().equals("")) {
+//                            tvTweeterFromProfile.setText(result.getTweet());
+//                        } else {
+//                            tvTweeterFromProfile.setVisibility(View.GONE);
+//                            tvTweeterFromProfileTitle.setVisibility(View.GONE);
+//                        }
+//                        if (result.getLinkd() != null && !result.getLinkd().equals("")) {
+//                            tvLinkdnFromProfile.setText(result.getLinkd());
+//                        } else {
+//                            tvLinkdnFromProfile.setVisibility(View.GONE);
+//                            tvLinkdnFromProfileTitle.setVisibility(View.GONE);
+//                        }
+//                        if (result.getFb() != null && !result.getFb().equals("")) {
+//                            tvFbFromProfile.setText(result.getFb());
+//                        } else {
+//                            tvFbFromProfile.setVisibility(View.GONE);
+//                            tvFbFromProfileTitle.setVisibility(View.GONE);
+//                        }
+//                    }
+//                }
+//            });
+//        }
+//    }
 
     private void loadConnectionsData() {
 
         tvError = new TextView(mContext);
         tvError.setText("Loading...");
         tvError.setGravity(Gravity.CENTER);
-        llDynamicConnectionsContainer.addView(tvError);
         tvError.setVisibility(View.VISIBLE);
 
         sessionManager = new SessionManager(mContext);
         queue = Volley.newRequestQueue(mContext);
-        fetchCustomerHistory(mContact.getPhoneOne());
+        fetchCustomerHistory(mOrganization.getPhone());
 
     }
 
@@ -1093,7 +1036,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment  implemen
                                 llParentHorizontal.addView(l1ChildLeft);
                                 llParentHorizontal.addView(llChildRight);
 
-                                llDynamicConnectionsContainer.addView(llParentHorizontal);
                             }
                         }
                     }
@@ -1159,8 +1101,8 @@ public class IndividualOrganizationDetailsFragment extends TabFragment  implemen
         adapter.notifyDataSetChanged();
 
         switch (id) {
-            case DEALS_OF_A_LEAD:
-                return new DealsOfALeadLoader(getActivity(), args);
+            case DEALS_OF_A_ORGANIZATION:
+                return new DealsOfAOrganizationLoader(getActivity(), args);
             default:
                 return null;
         }

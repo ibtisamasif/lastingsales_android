@@ -39,7 +39,6 @@ public class CallService extends Service {
     public IBinder onBind(Intent intent) {
 
 
-
         return null;
     }
 
@@ -47,33 +46,31 @@ public class CallService extends Service {
     }
 
 
+    boolean callingMethod = false;
 
-
-    boolean callingMethod=false;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
 
-        num=intent.getStringExtra("no");
+        num = intent.getStringExtra("no");
 
 
-        if(!callingMethod) {
+        if (!callingMethod) {
             dialogBox();
         }
-        callingMethod=true;
+        callingMethod = true;
 
-        Log.d("CallService","OnstartCommand is call");
+        Log.d("CallService", "OnstartCommand is call");
         return START_STICKY;
     }
 
 
+    public void dialogBox() {
+        Toast.makeText(this, "Number get from intent" + num, Toast.LENGTH_SHORT).show();
 
-    public void dialogBox(){
-        Toast.makeText(this, "Number get from intent"+num, Toast.LENGTH_SHORT).show();
+        view = LayoutInflater.from(this).inflate(R.layout.aftercallflyer_layout, null);
 
-        view= LayoutInflater.from( this ).inflate( R.layout.aftercallflyer_layout,null);
-
-        params=new WindowManager.LayoutParams(
+        params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_PHONE,
@@ -94,19 +91,19 @@ public class CallService extends Service {
 
         String num=sessionManager.getTmpUserNO();*/
 
-        ImageButton close=view.findViewById( R.id.ibClose );
+        ImageButton close = view.findViewById(R.id.ibClose);
 
         close.setOnClickListener(v -> {
-            Toast.makeText( CallService.this, "You click close button", Toast.LENGTH_SHORT ).show();
+            Toast.makeText(CallService.this, "You click close button", Toast.LENGTH_SHORT).show();
 
 
             LSContact updateContacct = LSContact.getContactFromNumber(num);
-            if(updateContacct!=null) {
+            if (updateContacct != null) {
                 updateContacct.setContactSave("false");
                 updateContacct.save();
                 Toast.makeText(CallService.this, "set false", Toast.LENGTH_SHORT).show();
-            }else{
-                Log.d("setcontact save ","null");
+            } else {
+                Log.d("setcontact save ", "null");
             }
 
 
@@ -115,20 +112,17 @@ public class CallService extends Service {
         });
 
 
-
-        EditText addContactField=view.findViewById(R.id.afterCallAddContactField);
-        TextView showNumber=view.findViewById(R.id.afterCallContactNumber);
-        TextView showNumber1=view.findViewById(R.id.tvContactName);
-        Button addBtn=view.findViewById(R.id.afterCallAddContactAddBtn);
-        CheckBox ignoreCB=view.findViewById(R.id.afterCallAddContactCb);
-
+        EditText addContactField = view.findViewById(R.id.afterCallAddContactField);
+        TextView showNumber = view.findViewById(R.id.afterCallContactNumber);
+        TextView showNumber1 = view.findViewById(R.id.tvContactName);
+        Button addBtn = view.findViewById(R.id.afterCallAddContactAddBtn);
+        CheckBox ignoreCB = view.findViewById(R.id.afterCallAddContactCb);
 
 
-        if(num!=null) {
+        if (num != null) {
             showNumber.setText(num);
             showNumber1.setText(num);
-        }
-        else {
+        } else {
             showNumber.setText(num);
             showNumber1.setText(num);
         }
@@ -136,11 +130,10 @@ public class CallService extends Service {
             @Override
             public void onClick(View v) {
 
-                if(ignoreCB.isChecked()){
+                if (ignoreCB.isChecked()) {
                     addBtn.setText("Ignore");
                     addContactField.setVisibility(View.GONE);
-                }
-                else{
+                } else {
                     addContactField.setVisibility(View.VISIBLE);
                     addBtn.setText("Save Contact");
                 }
@@ -152,41 +145,37 @@ public class CallService extends Service {
             @Override
             public void onClick(View v) {
 
-                if(ignoreCB.isChecked()){
+                if (ignoreCB.isChecked()) {
 
                     LSIgnoreList ignoreContact = new LSIgnoreList();
                     ignoreContact.setNumber(num);
-                    if(ignoreContact.save()>0){
-                        Log.d("amir","add to ignore list");
+                    if (ignoreContact.save() > 0) {
+                        Log.d("amir", "add to ignore list");
                         manager.removeView(view);
                         stopSelf();
-                    }else{
-                        Log.d("amir","error add to ignore list");
+                    } else {
+                        Log.d("amir", "error add to ignore list");
                     }
 
                     //ending....
 
 
-
-                }else {
+                } else {
 
 
                     if (addContactField.getText().toString().isEmpty()) {
 
                         Toast.makeText(CallService.this, "Please enter valid name....", Toast.LENGTH_SHORT).show();
-                        Log.d("amir validation ","please enter name!!!");
+                        Log.d("amir validation ", "please enter name!!!");
                     } else {
 
-                        Toast.makeText(CallService.this, "You enter "+addContactField.getText().toString(), Toast.LENGTH_SHORT).show();
-
-
+                        Toast.makeText(CallService.this, "You enter " + addContactField.getText().toString(), Toast.LENGTH_SHORT).show();
 
 
                         LSContact updateContacct = LSContact.getContactFromNumber(num);
                         updateContacct.setContactName(addContactField.getText().toString());
                         updateContacct.setContactSave("true");
                         updateContacct.save();
-
 
 
                         if (updateContacct.save() > 0) {
@@ -210,16 +199,6 @@ public class CallService extends Service {
 
             }
         });
-
-
-
-
-
-
-
-
-
-
 
 
         view.findViewById(R.id.cl).setOnTouchListener(new View.OnTouchListener() {
@@ -257,7 +236,7 @@ public class CallService extends Service {
                         params.y = initialY + (int) (event.getRawY() - initialTouchY);
 
                         //Update the layout with new X & Y coordinate
-                        manager.updateViewLayout( view, params );
+                        manager.updateViewLayout(view, params);
                         return true;
                 }
                 return false;
@@ -270,7 +249,7 @@ public class CallService extends Service {
     @Override
     public void onCreate() {
 
-        Log.d("CallService","OnCreate is call");
+        Log.d("CallService", "OnCreate is call");
 
 
        /* Toast.makeText(this, "Number get from intent"+num, Toast.LENGTH_SHORT).show();
