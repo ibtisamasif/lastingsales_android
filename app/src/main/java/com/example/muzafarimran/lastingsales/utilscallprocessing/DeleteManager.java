@@ -44,7 +44,7 @@ public class DeleteManager {
             }
         }
         //contact is deleted and will be hard deleted on syncing.
-        selectedOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_DELETE_NOT_SYNCED);
+        selectedOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_DELETE_NOT_SYNCED);
         selectedOrganization.save();
         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
         dataSenderAsync.run();

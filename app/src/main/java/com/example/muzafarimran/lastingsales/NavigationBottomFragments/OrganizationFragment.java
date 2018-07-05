@@ -48,7 +48,7 @@ public class OrganizationFragment extends TabFragment {
         addOrganizationFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addOrganization();
+                addOrganizationDialogBox();
             }
         });
 
@@ -67,9 +67,9 @@ public class OrganizationFragment extends TabFragment {
         return view;
     }
 
-    private void addOrganization() {
+    private void addOrganizationDialogBox() {
         Dialog addOrgDialog = new Dialog(getActivity());
-        addOrgDialog.setContentView(R.layout.add_organization);
+        addOrgDialog.setContentView(R.layout.edit_organization);
         addOrgDialog.setCancelable(true);
         addOrgDialog.show();
 
@@ -94,10 +94,10 @@ public class OrganizationFragment extends TabFragment {
                     nameAddOrg.setError("Please enter  Name!");
 //                    Toast.makeText(getActivity(), "Please enter  Name!", Toast.LENGTH_SHORT).show();
                 } else if (emailAddOrg.getText().toString().isEmpty()) {
-                    nameAddOrg.setError("Please enter  Email!");
+                    emailAddOrg.setError("Please enter  Email!");
 //                    Toast.makeText(getActivity(), "Please enter  Email!", Toast.LENGTH_SHORT).show();
                 } else if (phoneAddOrg.getText().toString().isEmpty()) {
-                    nameAddOrg.setError("Please enter  Phone!");
+                    phoneAddOrg.setError("Please enter  Phone!");
 //                    Toast.makeText(getActivity(), "Please enter Phone!", Toast.LENGTH_SHORT).show();
                 } else {
                     LSOrganization lsOrganization = new LSOrganization();

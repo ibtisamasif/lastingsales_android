@@ -3,10 +3,8 @@ package com.example.muzafarimran.lastingsales.viewholders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -404,37 +402,37 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
                 this.numberDetailTextView.setText(number + (" ( assigned )"));
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
-                } else {
-                    this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
+//                } else {
+//                    this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
+//                }
 //        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
             }else if (contact.getSrc().equalsIgnoreCase("facebook")){
                 this.numberDetailTextView.setText(number + (" ( facebook )"));
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
-                } else {
-                    this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
+//                } else {
+//                    this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
+//                }
 //        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
-                } else {
-                    this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
-                }
-//        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
+//                } else {
+//                    this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
+//                }
+////        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
             }
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
-            } else {
-                this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
-            }
-//        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                this.cl.setForeground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
+//            } else {
+//                this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_white)));
+//            }
+////        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
         }
     }
 

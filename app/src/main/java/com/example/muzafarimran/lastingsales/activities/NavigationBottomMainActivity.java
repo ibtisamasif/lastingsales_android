@@ -171,8 +171,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         }
     };
 
-
-
     public void switchToFragment1() {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace
@@ -209,7 +207,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: called");
 
-
         initFirst(savedInstanceState);
 
         setContentView(R.layout.activity_bottom_navigation);
@@ -217,20 +214,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Lasting Sales");
         ActionBar actionBar = getSupportActionBar();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //        adapter = new MyRecyclerViewAdapter(this, list);
 //        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
@@ -667,7 +650,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             searchView.setIconified(true);
         } else {
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.llFragmentContainer); //TODO NPE
-            if (f instanceof BlankFragment4) {
+            if (f instanceof BlankFragment2) {
                 super.onBackPressed();
             } else {
                 navigation.setSelectedItemId(R.id.navigation_home);
