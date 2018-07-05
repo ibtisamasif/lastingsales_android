@@ -48,7 +48,7 @@ public class OrganizationFragment extends TabFragment {
         addOrganizationFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addOrganization();
+                addOrganizationDialogBox();
             }
         });
 
@@ -67,9 +67,9 @@ public class OrganizationFragment extends TabFragment {
         return view;
     }
 
-    private void addOrganization() {
+    private void addOrganizationDialogBox() {
         Dialog addOrgDialog = new Dialog(getActivity());
-        addOrgDialog.setContentView(R.layout.add_organization);
+        addOrgDialog.setContentView(R.layout.edit_organization);
         addOrgDialog.setCancelable(true);
         addOrgDialog.show();
 

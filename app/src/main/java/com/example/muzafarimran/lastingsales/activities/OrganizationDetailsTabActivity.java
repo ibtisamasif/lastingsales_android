@@ -1,5 +1,6 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.OrganizationDetailsFragmentPagerAdapter;
@@ -157,7 +161,7 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
         try {
             bus = TinyBus.from(this.getApplicationContext());
             bus.register(this);
-        }catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
@@ -281,11 +285,7 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                 break;
 
             case R.id.ic_action_edit:
-                Log.d("duplicate", "onOptionsItemSelected: ");
-//                Intent addContactScreenIntent = new Intent(getApplicationContext(), AddEditLeadActivity.class);
-//                addContactScreenIntent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_EDIT_EXISTING_CONTACT);
-//                addContactScreenIntent.putExtra(AddEditLeadActivity.TAG_LAUNCH_MODE_CONTACT_ID, organizationIdString);
-//                startActivity(addContactScreenIntent);
+                editOrganizationDialogBox(selectedOrganization);
                 break;
 
             case android.R.id.home:
@@ -293,5 +293,59 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void editOrganizationDialogBox(LSOrganization tempOrganization) {
+        if (tempOrganization != null) {
+
+            Dialog addOrgDialog = new Dialog(OrganizationDetailsTabActivity.this);
+            addOrgDialog.setContentView(R.layout.edit_organization);
+            addOrgDialog.setCancelable(true);
+            addOrgDialog.show();
+
+            Button bSave = (Button) addOrgDialog.findViewById(R.id.bSaveAddOrg);
+            Button bCancel = (Button) addOrgDialog.findViewById(R.id.bCancelAddOrg);
+            EditText nameAddOrg = addOrgDialog.findViewById(R.id.etNameAddOrg);
+            EditText emailAddOrg = addOrgDialog.findViewById(R.id.etEmailAddOrg);
+            EditText phoneAddOrg = addOrgDialog.findViewById(R.id.etPhoneAddOrg);
+
+            nameAddOrg.setText(tempOrganization.getName());
+            emailAddOrg.setText(tempOrganization.getEmail());
+            phoneAddOrg.setText(tempOrganization.getPhone());
+            bCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addOrgDialog.dismiss();
+                }
+            });
+
+            bSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (nameAddOrg.getText().toString().isEmpty()) {
+                        nameAddOrg.setError("Please enter  Name!");
+//                    Toast.makeText(getActivity(), "Please enter  Name!", Toast.LENGTH_SHORT).show();
+                    } else if (emailAddOrg.getText().toString().isEmpty()) {
+                        emailAddOrg.setError("Please enter  Email!");
+//                    Toast.makeText(getActivity(), "Please enter  Email!", Toast.LENGTH_SHORT).show();
+                    } else if (phoneAddOrg.getText().toString().isEmpty()) {
+                        phoneAddOrg.setError("Please enter  Phone!");
+//                    Toast.makeText(getActivity(), "Please enter Phone!", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        tempOrganization.setName(nameAddOrg.getText().toString());
+                        tempOrganization.setEmail(emailAddOrg.getText().toString());
+                        tempOrganization.setPhone(phoneAddOrg.getText().toString());
+
+                        if (tempOrganization.save() > 0) {
+                            Toast.makeText(OrganizationDetailsTabActivity.this, "Organization Modified", Toast.LENGTH_SHORT).show();
+                            addOrgDialog.dismiss();
+                        } else {
+                            Toast.makeText(OrganizationDetailsTabActivity.this, "Error could not modify something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            });
+        }
     }
 }

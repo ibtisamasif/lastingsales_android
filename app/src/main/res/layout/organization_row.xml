@@ -76,7 +76,11 @@
             android:id="@+id/org_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="description"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="description"
+            app:layout_constraintStart_toStartOf="@+id/org_name"
+            app:layout_constraintTop_toBottomOf="@+id/org_name" />
 
         <LinearLayout
             android:id="@+id/linearLayout10"

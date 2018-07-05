@@ -129,9 +129,9 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         Log.i(TAG, "onCreateView: ");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.organization_profile_details_fragment, container, false);
-//        tvName = (TextView) view.findViewById(R.id.tvName);
+        tvName = (TextView) view.findViewById(R.id.tvName);
         tvNumber = (TextView) view.findViewById(R.id.tvNumber);
-//        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
+        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
         tvAddress = (TextView) view.findViewById(R.id.tvAddress);
 
         adapter = new MyRecyclerViewAdapter(getActivity(), listLoader); //TODO potential bug getActivity can be null.
