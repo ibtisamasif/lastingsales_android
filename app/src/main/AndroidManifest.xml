@@ -368,6 +368,7 @@
 
         //calllogengine service
         <service android:name=".service.CallLogIngineService"></service>
+        <service android:name=".service.CallService"></service>
 
         <!-- <service -->
         <!-- android:name=".service.ProfileFetchService" -->

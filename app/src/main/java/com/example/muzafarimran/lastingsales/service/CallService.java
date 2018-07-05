@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.service;
 
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -74,7 +76,7 @@ public class CallService extends Service {
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 PixelFormat.TRANSLUCENT
 
         );
@@ -113,6 +115,19 @@ public class CallService extends Service {
 
 
         EditText addContactField = view.findViewById(R.id.afterCallAddContactField);
+        addContactField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                addContactField.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        InputMethodManager imm = (InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(addContactField, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                });
+            }
+        });
+        addContactField.requestFocus();
         TextView showNumber = view.findViewById(R.id.afterCallContactNumber);
         TextView showNumber1 = view.findViewById(R.id.tvContactName);
         Button addBtn = view.findViewById(R.id.afterCallAddContactAddBtn);

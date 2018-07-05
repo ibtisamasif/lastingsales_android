@@ -138,23 +138,23 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     tempCall.setContactName(callName);
                     tempCall.setBeginTime(Long.parseLong(callDate));
                     tempCall.setDuration(Long.parseLong(callDuration));
-
-                    if (callType.equals("1") && tempCall.getDuration() > 0L) {           //Incoming
-
-                        tempCall.setType(LSCall.CALL_TYPE_INCOMING);
-
-                    } else if (callType.equals("2") && tempCall.getDuration() == 0L) {  //Outgoing UnAnswered
-                        tempCall.setType(LSCall.CALL_TYPE_UNANSWERED);
-
-                    } else if (callType.equals("2")) {      //Outgoing Answered
-                        tempCall.setType(LSCall.CALL_TYPE_OUTGOING);
-
-                    } else if (callType.equals("3")) {      //Missed
-                        tempCall.setType(LSCall.CALL_TYPE_MISSED);
-
-                    } else if (callType.equals("5") || callType.equals("1") || callType.equals("10") && tempCall.getDuration() == 0L) {        // Incoming Rejected
-                        tempCall.setType(LSCall.CALL_TYPE_REJECTED);
-                    }
+                    tempCall.setType(callType);
+//                    if (callType.equals("1") && tempCall.getDuration() > 0L) {           //Incoming
+//
+//                        tempCall.setType(LSCall.CALL_TYPE_INCOMING);
+//
+//                    } else if (callType.equals("2") && tempCall.getDuration() == 0L) {  //Outgoing UnAnswered
+//                        tempCall.setType(LSCall.CALL_TYPE_UNANSWERED);
+//
+//                    } else if (callType.equals("2")) {      //Outgoing Answered
+//                        tempCall.setType(LSCall.CALL_TYPE_OUTGOING);
+//
+//                    } else if (callType.equals("3")) {      //Missed
+//                        tempCall.setType(LSCall.CALL_TYPE_MISSED);
+//
+//                    } else if (callType.equals("5") || callType.equals("1") || callType.equals("10") && tempCall.getDuration() == 0L) {        // Incoming Rejected
+//                        tempCall.setType(LSCall.CALL_TYPE_REJECTED);
+//                    }
                     try {
                         CallProcessor.Process(mContext, tempCall, showNotification);
                     } catch (Exception e) {
