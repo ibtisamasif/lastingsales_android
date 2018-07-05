@@ -94,10 +94,10 @@ public class OrganizationFragment extends TabFragment {
                     nameAddOrg.setError("Please enter  Name!");
 //                    Toast.makeText(getActivity(), "Please enter  Name!", Toast.LENGTH_SHORT).show();
                 } else if (emailAddOrg.getText().toString().isEmpty()) {
-                    nameAddOrg.setError("Please enter  Email!");
+                    emailAddOrg.setError("Please enter  Email!");
 //                    Toast.makeText(getActivity(), "Please enter  Email!", Toast.LENGTH_SHORT).show();
                 } else if (phoneAddOrg.getText().toString().isEmpty()) {
-                    nameAddOrg.setError("Please enter  Phone!");
+                    phoneAddOrg.setError("Please enter  Phone!");
 //                    Toast.makeText(getActivity(), "Please enter Phone!", Toast.LENGTH_SHORT).show();
                 } else {
                     LSOrganization lsOrganization = new LSOrganization();
