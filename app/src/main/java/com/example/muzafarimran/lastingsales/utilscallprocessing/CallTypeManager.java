@@ -3,7 +3,7 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 
 public class CallTypeManager {
-    public String getCallType(String callType, String callDuration) {
+    public static String getCallType(String callType, String callDuration) {
         Long callDurationLong = Long.parseLong(callDuration);
         if (callType.equals("1") && callDurationLong > 0L) {           //Incoming
             return LSCall.CALL_TYPE_INCOMING;

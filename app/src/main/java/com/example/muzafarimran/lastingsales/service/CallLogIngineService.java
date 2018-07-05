@@ -135,7 +135,9 @@ public class CallLogIngineService extends Service {
                     tempCall.setBeginTime(Long.parseLong(callDate));
                     tempCall.setDuration(Long.parseLong(callDuration));
 
-                    if (callType.equals("1") && tempCall.getDuration() > 0L) {           //Incoming
+                    tempCall.setType(callType);
+
+                  /*  if (callType.equals("1") && tempCall.getDuration() > 0L) {           //Incoming
 
                         tempCall.setType(LSCall.CALL_TYPE_INCOMING);
 
@@ -150,7 +152,7 @@ public class CallLogIngineService extends Service {
 
                     } else if (callType.equals("5") || callType.equals("1") || callType.equals("10") && tempCall.getDuration() == 0L) {        // Incoming Rejected
                         tempCall.setType(LSCall.CALL_TYPE_REJECTED);
-                    }
+                    }*/
                     try {
                         CallProcessor.Process(mContext, tempCall, showNotification);
                     } catch (Exception e) {
