@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.OrganizationDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 
 import de.halfbit.tinybus.TinyBus;
@@ -336,10 +338,13 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                         tempOrganization.setName(nameAddOrg.getText().toString());
                         tempOrganization.setEmail(emailAddOrg.getText().toString());
                         tempOrganization.setPhone(phoneAddOrg.getText().toString());
+                        tempOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_UPDATE_NOT_SYNCED);
 
                         if (tempOrganization.save() > 0) {
                             Toast.makeText(OrganizationDetailsTabActivity.this, "Organization Modified", Toast.LENGTH_SHORT).show();
                             addOrgDialog.dismiss();
+                            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(OrganizationDetailsTabActivity.this);
+                            dataSenderAsync.run();
                         } else {
                             Toast.makeText(OrganizationDetailsTabActivity.this, "Error could not modify something went wrong", Toast.LENGTH_SHORT).show();
                         }

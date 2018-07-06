@@ -17,12 +17,13 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.recycleradapter.OrganizationRecyclerAdapter;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import java.util.List;
 
 public class OrganizationFragment extends TabFragment {
 
-    View view;
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     private List<LSOrganization> list;
@@ -41,7 +42,7 @@ public class OrganizationFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.organization_fragment, container, false);
+        View view = inflater.inflate(R.layout.organization_fragment, container, false);
 
         addOrganizationFab = view.findViewById(R.id.addOrganization);
 
@@ -69,7 +70,7 @@ public class OrganizationFragment extends TabFragment {
 
     private void addOrganizationDialogBox() {
         Dialog addOrgDialog = new Dialog(getActivity());
-        addOrgDialog.setContentView(R.layout.edit_organization);
+        addOrgDialog.setContentView(R.layout.add_organization);
         addOrgDialog.setCancelable(true);
         addOrgDialog.show();
 
@@ -104,11 +105,14 @@ public class OrganizationFragment extends TabFragment {
                     lsOrganization.setName(nameAddOrg.getText().toString());
                     lsOrganization.setEmail(emailAddOrg.getText().toString());
                     lsOrganization.setPhone(phoneAddOrg.getText().toString());
+                    lsOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_NOT_SYNCED);
 
                     if (lsOrganization.save() > 0) {
                         adapter.notifyDataSetChanged();
                         Toast.makeText(getActivity(), "Organization saved", Toast.LENGTH_SHORT).show();
                         addOrgDialog.dismiss();
+                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(addOrgDialog.getContext());
+                        dataSenderAsync.run();
                     } else {
                         Toast.makeText(getActivity(), "Error not saved something went wrong", Toast.LENGTH_SHORT).show();
                     }

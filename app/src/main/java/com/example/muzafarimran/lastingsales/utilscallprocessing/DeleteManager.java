@@ -2,7 +2,6 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
 import android.content.Context;
 
-import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -10,7 +9,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.List;
 
@@ -90,13 +88,13 @@ public class DeleteManager {
         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
         dataSenderAsync.run();
 
-        if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-            MixpanelAPI.getInstance(context, MixpanelConfig.projectToken).track("Lead deleted");
-        } else if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
-            MixpanelAPI.getInstance(context, MixpanelConfig.projectToken).track("Colleague deleted");
-        } else if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
-            MixpanelAPI.getInstance(context, MixpanelConfig.projectToken).track("Ignored deleted");
-        }
+//        if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+//            MixpanelAPI.getInstance(context, MixpanelConfig.projectToken).track("Lead deleted");
+//        } else if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+//            MixpanelAPI.getInstance(context, MixpanelConfig.projectToken).track("Colleague deleted");
+//        } else if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+//            MixpanelAPI.getInstance(context, MixpanelConfig.projectToken).track("Ignored deleted");
+//        }
     }
 
     public static void deleteDeal(Context context, LSDeal selectedDeal) {

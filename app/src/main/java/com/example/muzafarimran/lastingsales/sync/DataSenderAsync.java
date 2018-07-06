@@ -26,6 +26,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -115,6 +116,9 @@ public class DataSenderAsync {
                                 addContactsToServer();
                                 updateContactsToServer();
                                 deleteContactsFromServer();
+                                addOrganizationsToServer();
+                                updateOrganizationsToServer();
+                                deleteOrganizationsFromServer();
                                 addDealToServer();
                                 updateDealsToServer();
                                 deleteDealsFromServer();
@@ -396,6 +400,234 @@ public class DataSenderAsync {
                                 ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
                                 TinyBus bus = TinyBus.from(mContext.getApplicationContext());
                                 bus.post(mCallEvent);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }) {
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void addOrganizationsToServer() {
+        List<LSOrganization> organizationsList = null;
+        if (LSOrganization.count(LSOrganization.class) > 0) {
+            organizationsList = LSOrganization.find(LSOrganization.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_NOT_SYNCED);
+            Log.d(TAG, "addOrganizationToServer: count : " + organizationsList.size());
+            for (LSOrganization oneOrganization : organizationsList) {
+                Log.d(TAG, "Found Organizations " + oneOrganization.getName());
+                addOrganizationToServerSync(oneOrganization);
+            }
+        }
+    }
+
+    private void addOrganizationToServerSync(final LSOrganization organization) {
+        currentState = PENDING;
+        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_ORGANIZATION, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() addOrganization: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    organization.setServerId(responseObject.getString("id"));
+                    Log.d(TAG, "onResponse: OrganizationServerID : " + responseObject.getString("id"));
+                    organization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED);
+                    organization.save();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: CouldNotSyncAddOrganization");
+                try {
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
+                            if (error.networkResponse.statusCode == 409) {
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                if (responseCode == 409) {
+                                    Log.d(TAG, "onErrorResponse: responseCode == 409");
+                                    JSONObject responseObject = jObj.getJSONObject("response");
+                                    organization.setServerId(responseObject.getString("id"));
+                                    organization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                                    organization.save();
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("name", "" + organization.getName());
+
+                if (organization.getEmail() != null) {
+                    params.put("email", "" + organization.getEmail());
+                }
+                if (organization.getAddress() != null) {
+                    params.put("address", "" + organization.getAddress());
+                }
+                if (organization.getDynamicValues() != null) {
+                    params.put("dynamic_values", "" + organization.getDynamicValues());
+                }
+                params.put("phone", "" + organization.getPhone());
+                params.put("api_token", "" + sessionManager.getLoginToken());
+                Log.d(TAG, "getParams: addOrganizationToServerSync " + params);
+                return params;
+            }
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void updateOrganizationsToServer() {
+        List<LSOrganization> organizationsList = null;
+        if (LSOrganization.count(LSOrganization.class) > 0) {
+            organizationsList = LSOrganization.find(LSOrganization.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_ORGANIZATION_UPDATE_NOT_SYNCED);
+            Log.d(TAG, "updateOrganizationsToServer: count : " + organizationsList.size());
+            for (LSOrganization oneOrganization : organizationsList) {
+                Log.d(TAG, "Found Organization : " + oneOrganization.getName());
+                Log.d(TAG, "Server ID : " + oneOrganization.getServerId());
+                updateOrganizationToServerSync(oneOrganization);
+            }
+        }
+    }
+
+    private void updateOrganizationToServerSync(final LSOrganization contact) {
+        currentState = PENDING;
+        String email = "";
+        String address = "";
+        if (contact.getEmail() != null) {
+            email = contact.getEmail();
+        }
+        if (contact.getAddress() != null) {
+            address = contact.getAddress();
+        }
+        final String BASE_URL = MyURLs.UPDATE_ORGANIZATION;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath("" + contact.getServerId())
+                .appendQueryParameter("name", "" + contact.getName())
+                .appendQueryParameter("email", "" + email)
+                .appendQueryParameter("phone", "" + contact.getPhone())
+                .appendQueryParameter("address", "" + address)
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .appendQueryParameter("dynamic_values", "" + contact.getDynamicValues())
+                .build();
+        final String myUrl = builtUri.toString();
+        Log.d(TAG, "updateOrganizationToServerSync: myUrl: " + myUrl);
+        StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() updateOrganization: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+//                    int responseCode = jObj.getInt("responseCode");
+//                    if (responseCode == 200) {
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    contact.setServerId(responseObject.getString("id"));
+                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_UPDATE_SYNCED);
+                    contact.save();
+                    Log.d(TAG, "onResponse : ServerIDofOrganization : " + responseObject.getString("id"));
+//                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+//                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+//                    bus.post(mCallEvent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateOrganization");
+            }
+        }) {
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void deleteOrganizationsFromServer() {
+        List<LSOrganization> organizationsList = null;
+        if (LSOrganization.count(LSOrganization.class) > 0) {
+            organizationsList  = LSOrganization.find(LSOrganization.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_ORGANIZATION_DELETE_NOT_SYNCED);
+            Log.d(TAG, "deleteOrganizationsFromServer: count : " + organizationsList  .size());
+            for (LSOrganization oneOrganization : organizationsList) {
+                Log.d(TAG, "Found Organization : " + oneOrganization.getName());
+                Log.d(TAG, "Server ID : " + oneOrganization.getServerId());
+                deleteOrganizationFromServerSync(oneOrganization);
+            }
+        }
+    }
+
+    private void deleteOrganizationFromServerSync(final LSOrganization organization) {
+        currentState = PENDING;
+//        Log.d(TAG, "deleteOrganizationFromServerSync: DELETE ORGANIZATION SERVER ID : "+organization.getServerId());
+        final String BASE_URL = MyURLs.DELETE_ORGANIZATION;
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath("" + organization.getServerId())
+                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
+                .build();
+        final String myUrl = builtUri.toString();
+        StringRequest sr = new StringRequest(Request.Method.DELETE, myUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() called with: response (deleteOrganization) = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int responseCode = jObj.getInt("responseCode");
+//                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
+
+//                    if (responseCode == 200) {
+//                        JSONObject responseObject = jObj.getJSONObject("response");
+                    organization.delete();
+//                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+//                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+//                    bus.post(mCallEvent);
+//                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: CouldNotSyncDeleteOrganization");
+                try {
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                            int responseCode = jObj.getInt("responseCode");
+                            if (responseCode == 259) {
+                                Log.d(TAG, "onErrorResponse: responseCode == 259 deleted");
+                                organization.delete();
+//                                ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+//                                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
+//                                bus.post(mCallEvent);
                             }
                         }
                     }
