@@ -15,6 +15,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.service.CallService;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.CallEndTagBoxService;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -91,6 +92,7 @@ public class CallProcessor {
                                 }
                                 saveCallLogs(call);
                                 case3(call);
+                                case5(mContext);
 
                             }
                         } else {
@@ -104,6 +106,7 @@ public class CallProcessor {
                             }
                             saveCallLogs(call);
                             case3(call);
+                            case5(mContext);
                         }
                     } else {
                         Log.d("result is null", "null");
@@ -136,6 +139,7 @@ public class CallProcessor {
                         saveCallLogs(call);
 
                         case3(call);
+                        case5(mContext);
 
                         // successfully add num to db
 
@@ -179,6 +183,7 @@ public class CallProcessor {
                     saveCallLogs(call);
 
                     case3(call);
+                    case5(mContext);
 
 
                 }
@@ -302,10 +307,17 @@ public class CallProcessor {
         lsCall.setDuration(call.getDuration());
         lsCall.setServerId(call.getServerId());
 
+        lsCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
         if (lsCall.save() > 0) {
             Log.d("calllog", "save");
         }
 
+    }
+
+
+    private static void case5(Context context){
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
+        dataSenderAsync.run();
     }
 
 

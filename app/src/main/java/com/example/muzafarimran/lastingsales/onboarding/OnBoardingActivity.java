@@ -237,11 +237,17 @@ public class OnBoardingActivity extends AppCompatActivity {
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.SIGNUP_URL, response -> {
             Log.d(TAG, "onResponse() called with: response = [" + response + "]");
 //                pdLoading.dismiss();
-            try {
+                try {
                 JSONObject jObj = new JSONObject(response);
                 int responseCode = jObj.getInt("responseCode");
                 if (responseCode == 200) {
                     Log.d(TAG, "SignupActivityonResponse200: ");
+
+
+
+
+
+
                     JSONObject responseObject = jObj.getJSONObject("response");
 //                    String user_id = responseObject.getString("id");
 //                    String firstname1 = responseObject.getString("firstname");
