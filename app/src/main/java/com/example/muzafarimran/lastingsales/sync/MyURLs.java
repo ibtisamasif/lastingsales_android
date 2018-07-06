@@ -14,6 +14,7 @@ public class MyURLs {
     public static String ADD_COMPANY_URL = server + "/api/v1/company";
     public static String IMAGE_URL = server + "/";
     public static String ADD_CONTACT = server + "/api/v1/lead";
+    public static String ADD_ORGANIZATION= server + "/api/v1/organization";
     public static String ADD_DEAL = server + "/api/v1/deal";
     public static String ADD_FOLLOWUP = server + "/api/v1/lead/"; //SampleFormatComplete ADD_FOLLOWUP = "http://staging/api/v1/lead/85/followup";
     public static String ADD_NOTE = server + "/api/v1/lead/"; //SampleFormatComplete ADD_NOTE = "http://staging/api/v1/lead/145/notes";
@@ -27,8 +28,10 @@ public class MyURLs {
     public static String GET_INQUIRY = server + "/api/v1/inquiries/";
     public static String GET_TASK = server + "/api/v1/task";
     public static String DELETE_CONTACT = server + "/api/v1/lead/";
+    public static String DELETE_ORGANIZATION = server + "/api/v1/organization/";
     public static String DELETE_DEAL = server + "/api/v1/deal/";
     public static String UPDATE_CONTACT = server + "/api/v1/lead/";
+    public static String UPDATE_ORGANIZATION = server + "/api/v1/organization/";
     public static String UPDATE_DEAL = server + "/api/v1/deal/";
     public static String UPDATE_NOTE = server + "/api/v1/lead/";
     public static String UPDATE_AGENT = server + "/api/v1/user";
