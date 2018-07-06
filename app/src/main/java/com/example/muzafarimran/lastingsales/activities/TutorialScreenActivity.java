@@ -71,7 +71,11 @@ public class TutorialScreenActivity extends AppCompatActivity {
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     sessionManager.setFirstTimeLaunch(true);
 
-                    sessionManager.setKeyStateIsCompanyPhone(true);
+                    if(isCompanyORPersonalRadio.getText().equals("Company Phone")) {
+                        sessionManager.setKeyStateIsCompanyPhone(true);
+                    }else{
+                        sessionManager.setKeyStateIsCompanyPhone(false);
+                    }
 
 
                     launchHomeScreen();

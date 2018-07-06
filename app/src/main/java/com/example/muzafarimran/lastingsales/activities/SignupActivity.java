@@ -286,7 +286,7 @@ public class SignupActivity extends AppCompatActivity {
                         sessionManager.setKeyInitCompanyCreated("yes");
                         sessionManager.setKeyInitAccountTypeSelected("individual");
                         Toast.makeText(activity, "Successfully Created Company", Toast.LENGTH_SHORT).show();
-                        activity.startActivity(new Intent(activity, LogInActivity.class));
+                        activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
                         activity.finish();
                     }
                 } catch (JSONException e) {
