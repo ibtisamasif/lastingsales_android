@@ -460,7 +460,7 @@ public class DataSenderAsync {
                                     Log.d(TAG, "onErrorResponse: responseCode == 409");
                                     JSONObject responseObject = jObj.getJSONObject("response");
                                     organization.setServerId(responseObject.getString("id"));
-                                    organization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                                    organization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED);
                                     organization.save();
                                 }
                             }
@@ -513,26 +513,26 @@ public class DataSenderAsync {
         }
     }
 
-    private void updateOrganizationToServerSync(final LSOrganization contact) {
+    private void updateOrganizationToServerSync(final LSOrganization organization) {
         currentState = PENDING;
         String email = "";
         String address = "";
-        if (contact.getEmail() != null) {
-            email = contact.getEmail();
+        if (organization.getEmail() != null) {
+            email = organization.getEmail();
         }
-        if (contact.getAddress() != null) {
-            address = contact.getAddress();
+        if (organization.getAddress() != null) {
+            address = organization.getAddress();
         }
         final String BASE_URL = MyURLs.UPDATE_ORGANIZATION;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
-                .appendPath("" + contact.getServerId())
-                .appendQueryParameter("name", "" + contact.getName())
+                .appendPath("" + organization.getServerId())
+                .appendQueryParameter("name", "" + organization.getName())
                 .appendQueryParameter("email", "" + email)
-                .appendQueryParameter("phone", "" + contact.getPhone())
-                .appendQueryParameter("address", "" + address)
+                .appendQueryParameter("phone", "" + organization.getPhone())
+//                .appendQueryParameter("address", "" + address)
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
-                .appendQueryParameter("dynamic_values", "" + contact.getDynamicValues())
+//                .appendQueryParameter("dynamic_values", "" + organization.getDynamicValues())
                 .build();
         final String myUrl = builtUri.toString();
         Log.d(TAG, "updateOrganizationToServerSync: myUrl: " + myUrl);
@@ -545,9 +545,9 @@ public class DataSenderAsync {
 //                    int responseCode = jObj.getInt("responseCode");
 //                    if (responseCode == 200) {
                     JSONObject responseObject = jObj.getJSONObject("response");
-                    contact.setServerId(responseObject.getString("id"));
-                    contact.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_UPDATE_SYNCED);
-                    contact.save();
+                    organization.setServerId(responseObject.getString("id"));
+                    organization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_UPDATE_SYNCED);
+                    organization.save();
                     Log.d(TAG, "onResponse : ServerIDofOrganization : " + responseObject.getString("id"));
 //                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
 //                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());

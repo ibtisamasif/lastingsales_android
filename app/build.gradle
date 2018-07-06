@@ -20,7 +20,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId "com.lastingsales.agent"
+        applicationId "com.lastingsales.crm"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 139 //136

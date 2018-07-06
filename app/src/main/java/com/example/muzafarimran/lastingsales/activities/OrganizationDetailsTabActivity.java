@@ -338,7 +338,10 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                         tempOrganization.setName(nameAddOrg.getText().toString());
                         tempOrganization.setEmail(emailAddOrg.getText().toString());
                         tempOrganization.setPhone(phoneAddOrg.getText().toString());
-                        tempOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_UPDATE_NOT_SYNCED);
+
+                        if (tempOrganization.getSyncStatus().equals(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED) || tempOrganization.getSyncStatus().equals(SyncStatus.SYNC_STATUS_ORGANIZATION_UPDATE_SYNCED)) {
+                            tempOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_UPDATE_NOT_SYNCED);
+                        }
 
                         if (tempOrganization.save() > 0) {
                             Toast.makeText(OrganizationDetailsTabActivity.this, "Organization Modified", Toast.LENGTH_SHORT).show();
