@@ -25,6 +25,7 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.CreateCompanyActivity;
 import com.example.muzafarimran.lastingsales.activities.LogInActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
+import com.example.muzafarimran.lastingsales.activities.TutorialScreenActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.customview.CustomViewPager;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
@@ -333,7 +334,7 @@ public class OnBoardingActivity extends AppCompatActivity {
                 params.put("password", password);
                 params.put("confirm_password", confirmpassword);
                 params.put("phone", phone);
-                params.put("cell_number", phone);
+              //  params.put("cell_number", phone);
                 return params;
             }
         };
@@ -588,6 +589,8 @@ public class OnBoardingActivity extends AppCompatActivity {
                     Toast.makeText(OnBoardingActivity.this, "Successfully Created Company", Toast.LENGTH_SHORT).show();
 //                        startActivity(new Intent(OnBoardingActivity.this, LogInActivity.class));
 //                        finish();
+
+                    startActivity(new Intent(getApplicationContext(), TutorialScreenActivity.class));
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     for (Fragment fragment : fragmentManager.getFragments()) {
                         if (fragment != null && fragment.isVisible() && fragment instanceof FragmentG) {

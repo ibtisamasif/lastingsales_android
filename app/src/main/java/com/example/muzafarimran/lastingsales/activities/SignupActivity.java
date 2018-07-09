@@ -179,6 +179,9 @@ public class SignupActivity extends AppCompatActivity {
                 if (firstnameVarified && lastnameVarified && emailVarified && passwordVarified && confirmpasswordVarified && passwordMatchingVerified && companyVarified && mobileVarified) {
                     pdLoading.show();
                     makeSignupRequest(SignupActivity.this, firstname, lastname, email, password, confirmpassword, company, mobile);
+
+                    //show tutorial screen
+
                 }
             }
         });
@@ -286,7 +289,9 @@ public class SignupActivity extends AppCompatActivity {
                         sessionManager.setKeyInitCompanyCreated("yes");
                         sessionManager.setKeyInitAccountTypeSelected("individual");
                         Toast.makeText(activity, "Successfully Created Company", Toast.LENGTH_SHORT).show();
-                        activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
+                        startActivity(new Intent(getApplicationContext(),TutorialScreenActivity.class));
+
+//                        activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
                         activity.finish();
                     }
                 } catch (JSONException e) {

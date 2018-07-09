@@ -64,6 +64,7 @@ public class CallLogIngineService extends Service {
             latestCallQuery = "_id >= " + LSCall.getCallHavingLatestCallLogId().getCallLogId();
             managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, latestCallQuery, null, "date DESC");
         } else {
+            Log.d(TAG, "getLatestCallLogId: is NULL");
             latestCallQuery = null;
             managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, latestCallQuery, null, "date DESC limit 10");
         }
@@ -161,7 +162,7 @@ public class CallLogIngineService extends Service {
                 }
             } while (managedCursor.moveToPrevious());
             if (reRun) {
-                //CallLogFunc();
+                CallLogFunc();
             }
         } catch (Exception e) {
             e.printStackTrace();

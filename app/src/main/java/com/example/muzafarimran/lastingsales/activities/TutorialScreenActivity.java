@@ -44,8 +44,6 @@ public class TutorialScreenActivity extends AppCompatActivity {
 
         next = findViewById(R.id.btn_next);
 
-        radioGroup = findViewById(R.id.radio_company_personal_info);
-
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +84,8 @@ public class TutorialScreenActivity extends AppCompatActivity {
 
     private int getItem(int i) {
 
+
+
         return viewPager.getCurrentItem() + i;
     }
 
@@ -101,6 +101,9 @@ public class TutorialScreenActivity extends AppCompatActivity {
 
             LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
             ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(layout[position], container, false);
+
+            radioGroup = viewGroup.findViewById(R.id.radio_company_personal_info);
+
             container.addView(viewGroup);
             return viewGroup;
         }

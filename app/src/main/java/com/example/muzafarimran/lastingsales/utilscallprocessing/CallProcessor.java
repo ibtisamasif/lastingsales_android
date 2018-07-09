@@ -32,6 +32,7 @@ public class CallProcessor {
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
 
+        Log.d("processor","call");
 
         SettingsManager settingsManager = new SettingsManager(mContext);
         if (settingsManager.getKeyStateIsCompanyPhone()) { // COMPANY PHONE
@@ -40,9 +41,13 @@ public class CallProcessor {
             if (ignoredContactCheck != null) {
                 // DO NOTHING
 
+                Log.d("processor","nothing");
+
+
                 Log.d("amir", "contact exist in ignore list");
             } else {
 
+                Log.d("processor","call");
 
 
                 /* return;*/
@@ -90,6 +95,7 @@ public class CallProcessor {
 
 
                                 }
+
                                 saveCallLogs(call);
                                 case3(call);
                                 case5(mContext);
@@ -228,7 +234,7 @@ public class CallProcessor {
             }
 
 
-        } else if (CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_MISSED) || CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_UNANSWERED) || CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_REJECTED)) {
+        } else if (CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_REJECTED)) {
 
 
             List<LSInquiry> missInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
@@ -286,7 +292,7 @@ public class CallProcessor {
     private static void showDialog(Context mContext, LSCall call) {
 
         Intent intent = new Intent(mContext, CallService.class);
-        intent.putExtra("no", call.getContactNumber());
+        intent.putExtra("no", call.getContactName());
 
         Log.d("start dialog service", "function call");
         mContext.startService(intent);
@@ -296,16 +302,13 @@ public class CallProcessor {
     private static void saveCallLogs(LSCall call) {
 
         LSCall lsCall = new LSCall();
-        lsCall.setContact(call.getContact());
+
         lsCall.setBeginTime(call.getBeginTime());
-        lsCall.setCallLogId(call.getCallLogId());
         lsCall.setContactName(call.getContactName());
         lsCall.setContactNumber(call.getContactNumber());
-        lsCall.setCountOfInquiries(call.getCountOfInquiries());
         lsCall.setType(CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())));
-        lsCall.setSyncStatus(call.getSyncStatus());
         lsCall.setDuration(call.getDuration());
-        lsCall.setServerId(call.getServerId());
+
 
         lsCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
         if (lsCall.save() > 0) {
@@ -315,7 +318,7 @@ public class CallProcessor {
     }
 
 
-    private static void case5(Context context){
+    private static void case5(Context context) {
         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
         dataSenderAsync.run();
     }
