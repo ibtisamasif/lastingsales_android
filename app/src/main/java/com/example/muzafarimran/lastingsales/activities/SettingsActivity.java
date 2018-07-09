@@ -1,14 +1,9 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -18,10 +13,7 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SettingsManager;
-import com.example.muzafarimran.lastingsales.receivers.HourlyAlarmReceiver;
 import com.example.muzafarimran.lastingsales.utils.HuaweiProtectedAppsModule;
-
-import java.util.Calendar;
 
 /**
  * Created by ibtisam on 7/23/2017.
@@ -33,7 +25,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Switch swFlyer;
     private Switch swTagDialogPopup;
-    private Switch swHourlyAlarmNotification;
+//    private Switch swHourlyAlarmNotification;
 //    private Switch swDefaultLead;
     private Switch swCompanyPhone;
     private TextView tvAddToProtectedApp;
@@ -52,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
         settingsManager = new SettingsManager(this);
         swFlyer = (Switch) findViewById(R.id.swFlyer);
         swTagDialogPopup = (Switch) findViewById(R.id.swTagDialogPopup);
-        swHourlyAlarmNotification = (Switch) findViewById(R.id.swHourlyAlarmNotification);
+//        swHourlyAlarmNotification = (Switch) findViewById(R.id.swHourlyAlarmNotification);
 //        swDefaultLead = (Switch) findViewById(R.id.swDefaultLead);
         swCompanyPhone = (Switch) findViewById(R.id.swCompanyPhone);
         TextView tvAddToProtectedApp = (TextView) findViewById(R.id.tvAddToProtectedApp);
@@ -107,46 +99,46 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        if (settingsManager.getKeyStateHourlyNotification()) {
-            swHourlyAlarmNotification.setChecked(true);
-        } else {
-            swHourlyAlarmNotification.setChecked(false);
-        }
-
-        //attach a listener to check for changes in state
-        swHourlyAlarmNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (isChecked) {
-                    settingsManager.setKeyStateHourlyNotification(true);
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(Calendar.HOUR_OF_DAY, 10); // For 10am
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 0);
-                    PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SettingsActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
-                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                    if (alarmManager != null) {
-                        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * 2, pi);
-                    }
-                    Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Enabled Start App for changes to take effect", Toast.LENGTH_SHORT).show();
-                } else {
-                    settingsManager.setKeyStateHourlyNotification(false);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SettingsActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE);
-                    if (pendingIntent != null) {
-                        Log.d("myAlarmLog", "Hourly inquiry notification Disabled");
-                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//                        Intent myIntent = new Intent(SettingsActivity.this, HourlyAlarmReceiver.class);
-//                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0 , myIntent, 0);
-                        if (alarmManager != null) {
-                            alarmManager.cancel(pendingIntent);
-                        }
-                    }
-                    Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Disabled", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        if (settingsManager.getKeyStateHourlyNotification()) {
+//            swHourlyAlarmNotification.setChecked(true);
+//        } else {
+//            swHourlyAlarmNotification.setChecked(false);
+//        }
+//
+////        //attach a listener to check for changes in state
+//        swHourlyAlarmNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//                if (isChecked) {
+//                    settingsManager.setKeyStateHourlyNotification(true);
+//                    Calendar calendar = Calendar.getInstance();
+//                    calendar.set(Calendar.HOUR_OF_DAY, 10); // For 10am
+//                    calendar.set(Calendar.MINUTE, 0);
+//                    calendar.set(Calendar.SECOND, 0);
+//                    PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SettingsActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+//                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+//                    if (alarmManager != null) {
+//                        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * 2, pi);
+//                    }
+//                    Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Enabled Start App for changes to take effect", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    settingsManager.setKeyStateHourlyNotification(false);
+//                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SettingsActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE);
+//                    if (pendingIntent != null) {
+//                        Log.d("myAlarmLog", "Hourly inquiry notification Disabled");
+//                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+////                        Intent myIntent = new Intent(SettingsActivity.this, HourlyAlarmReceiver.class);
+////                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0 , myIntent, 0);
+//                        if (alarmManager != null) {
+//                            alarmManager.cancel(pendingIntent);
+//                        }
+//                    }
+//                    Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Disabled", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 //        if (settingsManager.getKeyStateDefaultLead()) {
 //            swDefaultLead.setChecked(true);

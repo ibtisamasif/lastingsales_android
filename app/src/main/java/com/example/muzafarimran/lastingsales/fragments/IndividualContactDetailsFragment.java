@@ -93,7 +93,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
     private MyRecyclerViewAdapter adapter;
 
     private Long contactIDLong;
-    private Spinner leadStatusSpinner;
+//    private Spinner leadStatusSpinner;
     private Button bSave;
     private LSContact mContact;
     private LinearLayout ll;
@@ -378,7 +378,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
                 mixpanel.track("Dynamic Column Updated");
             }
         });
-        addItemsOnSpinnerLeadStatus(view);
+//        addItemsOnSpinnerLeadStatus(view);
         dynamicColumns(view);
         getLoaderManager().initLoader(DEALS_OF_A_LEAD, args, IndividualContactDetailsFragment.this);
         setHasOptionsMenu(true);
@@ -417,28 +417,28 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
         if (mContact != null && mContact.getContactAddress() != null) {
             tvAddress.setText(mContact.getContactAddress());
         }
-        if (mContact != null && mContact.getContactType() != null) {
-            if (mContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                if (mContact.getContactSalesStatus() != null && !mContact.getContactSalesStatus().equals("")) {
-                    switch (mContact.getContactSalesStatus()) {
-                        case LSContact.SALES_STATUS_INPROGRESS:
-                            leadStatusSpinner.setSelection(0, false);
-                            break;
-                        case LSContact.SALES_STATUS_CLOSED_WON:
-                            leadStatusSpinner.setSelection(1, false);
-                            break;
-                        case LSContact.SALES_STATUS_CLOSED_LOST:
-                            leadStatusSpinner.setSelection(2, false);
-                            break;
-                    }
-                }
-            }
-        }
-        leadStatusSpinner.post(new Runnable() {
-            public void run() {
-                leadStatusSpinner.setOnItemSelectedListener(new CustomSpinnerLeadStatusOnItemSelectedListener());
-            }
-        });
+//        if (mContact != null && mContact.getContactType() != null) {
+//            if (mContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+//                if (mContact.getContactSalesStatus() != null && !mContact.getContactSalesStatus().equals("")) {
+//                    switch (mContact.getContactSalesStatus()) {
+//                        case LSContact.SALES_STATUS_INPROGRESS:
+//                            leadStatusSpinner.setSelection(0, false);
+//                            break;
+//                        case LSContact.SALES_STATUS_CLOSED_WON:
+//                            leadStatusSpinner.setSelection(1, false);
+//                            break;
+//                        case LSContact.SALES_STATUS_CLOSED_LOST:
+//                            leadStatusSpinner.setSelection(2, false);
+//                            break;
+//                    }
+//                }
+//            }
+//        }
+//        leadStatusSpinner.post(new Runnable() {
+//            public void run() {
+//                leadStatusSpinner.setOnItemSelectedListener(new CustomSpinnerLeadStatusOnItemSelectedListener());
+//            }
+//        });
         getLoaderManager().restartLoader(DEALS_OF_A_LEAD, args, IndividualContactDetailsFragment.this);
     }
 
@@ -765,16 +765,16 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
 //////////////////////////////////////////////////////////////
     }
 
-    public void addItemsOnSpinnerLeadStatus(View view) {
-        leadStatusSpinner = (Spinner) view.findViewById(R.id.lead_status_spinner);
-        List<String> list = new ArrayList<String>();
-        list.add("InProgress");
-        list.add("Close Won");
-        list.add("Closed Lost");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        leadStatusSpinner.setAdapter(dataAdapter);
-    }
+//    public void addItemsOnSpinnerLeadStatus(View view) {
+//        leadStatusSpinner = (Spinner) view.findViewById(R.id.lead_status_spinner);
+//        List<String> list = new ArrayList<String>();
+//        list.add("InProgress");
+//        list.add("Close Won");
+//        list.add("Closed Lost");
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, list);
+//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        leadStatusSpinner.setAdapter(dataAdapter);
+//    }
 
 
     @Override

@@ -97,47 +97,47 @@
             android:layout_marginRight="8dp" />
 
 
-        <ImageView
-            android:id="@+id/status_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:tint="@color/colorPrimary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/address_icon"
-            app:srcCompat="@drawable/ic_filter_list_24dp"
-            tools:layout_conversion_absoluteHeight="30dp"
-            tools:layout_conversion_absoluteWidth="30dp"
-            android:layout_marginLeft="16dp" />
+        <!--<ImageView-->
+            <!--android:id="@+id/status_icon"-->
+            <!--android:layout_width="24dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:tint="@color/colorPrimary"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/address_icon"-->
+            <!--app:srcCompat="@drawable/ic_filter_list_24dp"-->
+            <!--tools:layout_conversion_absoluteHeight="30dp"-->
+            <!--tools:layout_conversion_absoluteWidth="30dp"-->
+            <!--android:layout_marginLeft="16dp" />-->
 
 
-        <TextView
-            android:id="@+id/status_label"
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Status"
-            app:layout_constraintStart_toEndOf="@+id/status_icon"
-            app:layout_constraintTop_toTopOf="@+id/status_icon"
-            tools:layout_conversion_absoluteHeight="16dp"
-            tools:layout_conversion_absoluteWidth="37dp"
-            android:layout_marginLeft="8dp" />
+        <!--<TextView-->
+            <!--android:id="@+id/status_label"-->
+            <!--style="@style/Base.TextAppearance.AppCompat.Subhead"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:text="Status"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/status_icon"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/status_icon"-->
+            <!--tools:layout_conversion_absoluteHeight="16dp"-->
+            <!--tools:layout_conversion_absoluteWidth="37dp"-->
+            <!--android:layout_marginLeft="8dp" />-->
 
 
-        <Spinner
-            android:id="@+id/lead_status_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:gravity="center"
-            android:spinnerMode="dropdown"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/status_label"
-            tools:layout_conversion_absoluteHeight="24dp"
-            tools:layout_conversion_absoluteWidth="131dp"
-            android:layout_marginRight="8dp" />
+        <!--<Spinner-->
+            <!--android:id="@+id/lead_status_spinner"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:gravity="center"-->
+            <!--android:spinnerMode="dropdown"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/status_label"-->
+            <!--tools:layout_conversion_absoluteHeight="24dp"-->
+            <!--tools:layout_conversion_absoluteWidth="131dp"-->
+            <!--android:layout_marginRight="8dp" />-->
 
 
         <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -157,7 +157,7 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/status_icon"
+            app:layout_constraintTop_toBottomOf="@+id/address_icon"
             card_view:cardCornerRadius="3dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">

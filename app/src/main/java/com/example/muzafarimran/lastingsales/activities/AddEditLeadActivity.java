@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -70,11 +69,11 @@ public class AddEditLeadActivity extends AppCompatActivity {
     EditText etContactAddress;
     LinearLayout llEmailAddress;
     LinearLayout llAddress;
-    LinearLayout llContactType;
+//    LinearLayout llContactType;
     Button bCancel;
     Button bSave;
-    private Button bColleagueRadio;
-    private Button bSalesRadio;
+//    private Button bColleagueRadio;
+//    private Button bSalesRadio;
     private Uri uriContact;
     private LSContact selectedContact = null;
     private String contactPhone;
@@ -95,11 +94,11 @@ public class AddEditLeadActivity extends AppCompatActivity {
         llAddress = (LinearLayout) findViewById(R.id.llAddress);
         etContactEmail = (EditText) findViewById(R.id.etContactEmail);
         etContactAddress = (EditText) findViewById(R.id.etContactAddress);
-        llContactType = (LinearLayout) findViewById(R.id.llContactType);
+//        llContactType = (LinearLayout) findViewById(R.id.llContactType);
         bSave = (Button) findViewById(R.id.bSaveAddLead);
         bCancel = (Button) findViewById(R.id.bCancelAddLead);
-        bSalesRadio = (Button) findViewById(R.id.bSalesRadio);
-        bColleagueRadio = (Button) findViewById(R.id.bCollegueRadio);
+//        bSalesRadio = (Button) findViewById(R.id.bSalesRadio);
+//        bColleagueRadio = (Button) findViewById(R.id.bCollegueRadio);
         int notificationId = getIntent().getIntExtra("notificationId", 1);
         if (notificationId != 0) {
             NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -118,7 +117,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
             // Redirected Import Contact to LAUNCH_MODE_ADD_NEW_CONTACT
             launchMode = AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT;
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
-            selectRadioButton(LSContact.CONTACT_TYPE_SALES);
+//            selectRadioButton(LSContact.CONTACT_TYPE_SALES);
         }
         if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
             Log.d(TAG, "onCreate: LAUNCH_MODE_ADD_NEW_CONTACT ");
@@ -131,17 +130,17 @@ public class AddEditLeadActivity extends AppCompatActivity {
                     etContactName.setText(name);
                 }
             }
-            selectRadioButton(LSContact.CONTACT_TYPE_SALES);
+//            selectRadioButton(LSContact.CONTACT_TYPE_SALES);
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
         } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
             Log.d(TAG, "onCreate: LAUNCH_MODE_EDIT_EXISTING_CONTACT ");
             populateUpdateContactView(bundle);
             mixpanelSource = bundle.getString(MIXPANEL_SOURCE);
-            if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
-                selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
-            } else {
-                selectRadioButton(LSContact.CONTACT_TYPE_SALES);
-            }
+//            if (selectedContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+//                selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
+//            } else {
+//                selectRadioButton(LSContact.CONTACT_TYPE_SALES);
+//            }
         }
         if (mixpanelSource != null && mixpanelSource.equals(MIXPANEL_SOURCE_NOTIFICATION)) {
             String projectToken = MixpanelConfig.projectToken;
@@ -194,105 +193,105 @@ public class AddEditLeadActivity extends AppCompatActivity {
                             MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
                             mixpanel.track("Create lead dialog - created lead");
                         } else { // contact already exists
-                            if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-                                tempContact.setContactName(contactName);
-                                tempContact.setPhoneOne(intlNum);
-                                tempContact.setContactType(selectedContactType);
-                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                                if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                                    tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                                }
-                                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
-                                tempContact.save();
-                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {//sales selected
-                                    moveToContactDetailScreenIfNeeded(tempContact);
-                                } else {    //colleague selected
-                                    tempContact.setContactName(contactName);
-                                    tempContact.setPhoneOne(intlNum);
-                                    tempContact.setContactType(selectedContactType);
-                                    tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                                    if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                                    }
-                                    tempContact.save();
-                                    //update inquiry as well if exists
-                                    LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
-                                    if (tempInquiry != null) {
-                                        tempInquiry.setContact(tempContact);
-                                        tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
-                                        tempInquiry.save();
-                                    }
-                                }
-                                Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
-                                tempContact.setContactName(contactName);
-                                tempContact.setPhoneOne(intlNum);
-                                tempContact.setContactType(selectedContactType);
-                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                                if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                                    tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                                }
-                                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
-                                tempContact.save();
-
-                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {//sales selected
-                                    moveToContactDetailScreenIfNeeded(tempContact);
-                                } else {    //colleague selected
-                                    tempContact.setContactName(contactName);
-                                    tempContact.setPhoneOne(intlNum);
-                                    tempContact.setContactType(selectedContactType);
-                                    tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                                    if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                                    }
-                                    tempContact.save();
-                                    //update inquiry as well if exists
-                                    LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
-                                    if (tempInquiry != null) {
-                                        tempInquiry.setContact(tempContact);
-                                        tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
-                                        tempInquiry.save();
-                                    }
-                                    Toast.makeText(AddEditLeadActivity.this, "Already Exists in colleagues", Toast.LENGTH_SHORT).show();
-                                }
-                                finish();
-                            } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
-                                tempContact.setContactName(contactName);
-                                tempContact.setPhoneOne(intlNum);
-                                tempContact.setContactType(selectedContactType);
-                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                                if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                                    tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                                }
-                                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
-                                tempContact.save();
-
-                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {//sales selected
-                                    moveToContactDetailScreenIfNeeded(tempContact);
-                                } else {
-                                    tempContact.setContactName(contactName);
-                                    tempContact.setPhoneOne(intlNum);
-                                    tempContact.setContactType(selectedContactType);
-                                    tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                                    if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-                                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                                    }
-                                    tempContact.save();
-                                    //update inquiry as well if exists
-                                    LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
-                                    if (tempInquiry != null) {
-                                        tempInquiry.setContact(tempContact);
-                                        tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
-                                        tempInquiry.save();
-                                    }
-                                    Toast.makeText(AddEditLeadActivity.this, "Already Exists in colleagues, moving..", Toast.LENGTH_SHORT).show();
-                                }
-                                finish();
-                            } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) { //sales selected
-                                    moveToContactDetailScreenIfNeeded(tempContact);
-                                } else {    //colleague selected
+//                            if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) { //TODO marked for removal
+//                                tempContact.setContactName(contactName);
+//                                tempContact.setPhoneOne(intlNum);
+//                                tempContact.setContactType(selectedContactType);
+//                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+//                                if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                                    tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                                }
+//                                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+//                                tempContact.save();
+//                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {//sales selected
+//                                    moveToContactDetailScreenIfNeeded(tempContact);
+//                                } else {    //colleague selected
+//                                    tempContact.setContactName(contactName);
+//                                    tempContact.setPhoneOne(intlNum);
+//                                    tempContact.setContactType(selectedContactType);
+//                                    tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+//                                    if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                                    }
+//                                    tempContact.save();
+//                                    //update inquiry as well if exists
+//                                    LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
+//                                    if (tempInquiry != null) {
+//                                        tempInquiry.setContact(tempContact);
+//                                        tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+//                                        tempInquiry.save();
+//                                    }
+//                                }
+//                                Toast.makeText(AddEditLeadActivity.this, "Contact Saved", Toast.LENGTH_SHORT).show();
+//                                finish();
+//                            } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+//                                tempContact.setContactName(contactName);
+//                                tempContact.setPhoneOne(intlNum);
+//                                tempContact.setContactType(selectedContactType);
+//                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+//                                if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                                    tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                                }
+//                                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+//                                tempContact.save();
+//
+//                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {//sales selected
+//                                    moveToContactDetailScreenIfNeeded(tempContact);
+//                                } else {    //colleague selected
+//                                    tempContact.setContactName(contactName);
+//                                    tempContact.setPhoneOne(intlNum);
+//                                    tempContact.setContactType(selectedContactType);
+//                                    tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+//                                    if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                                    }
+//                                    tempContact.save();
+//                                    //update inquiry as well if exists
+//                                    LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
+//                                    if (tempInquiry != null) {
+//                                        tempInquiry.setContact(tempContact);
+//                                        tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+//                                        tempInquiry.save();
+//                                    }
+//                                    Toast.makeText(AddEditLeadActivity.this, "Already Exists in colleagues", Toast.LENGTH_SHORT).show();
+//                                }
+//                                finish();
+//                            } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+//                                tempContact.setContactName(contactName);
+//                                tempContact.setPhoneOne(intlNum);
+//                                tempContact.setContactType(selectedContactType);
+//                                tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+//                                if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                                    tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                                }
+//                                tempContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+//                                tempContact.save();
+//
+//                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) {//sales selected
+//                                    moveToContactDetailScreenIfNeeded(tempContact);
+//                                } else {
+//                                    tempContact.setContactName(contactName);
+//                                    tempContact.setPhoneOne(intlNum);
+//                                    tempContact.setContactType(selectedContactType);
+//                                    tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+//                                    if (tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || tempContact.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
+//                                        tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+//                                    }
+//                                    tempContact.save();
+//                                    //update inquiry as well if exists
+//                                    LSInquiry tempInquiry = LSInquiry.getInquiryByNumberIfExists(intlNum);
+//                                    if (tempInquiry != null) {
+//                                        tempInquiry.setContact(tempContact);
+//                                        tempInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
+//                                        tempInquiry.save();
+//                                    }
+//                                    Toast.makeText(AddEditLeadActivity.this, "Already Exists in colleagues, moving..", Toast.LENGTH_SHORT).show();
+//                                }
+//                                finish();
+//                            } else if (tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+//                                if (!selectedContactType.equals(LSContact.CONTACT_TYPE_BUSINESS)) { //sales selected
+//                                    moveToContactDetailScreenIfNeeded(tempContact);
+//                                } else {    //colleague selected
                                     tempContact.setContactName(contactName);
                                     tempContact.setPhoneOne(intlNum);
                                     tempContact.setContactType(selectedContactType);
@@ -313,11 +312,11 @@ public class AddEditLeadActivity extends AppCompatActivity {
                                 }
                                 Toast.makeText(AddEditLeadActivity.this, "Already a lead", Toast.LENGTH_SHORT).show();
                                 finish();
-                            } else {
-                                Toast.makeText(AddEditLeadActivity.this, "Contact Already Exists", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        }
+//                            } else {
+//                                Toast.makeText(AddEditLeadActivity.this, "Contact Already Exists", Toast.LENGTH_SHORT).show();
+//                                finish();
+//                            }
+//                        }
 
                     } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
 
@@ -375,18 +374,18 @@ public class AddEditLeadActivity extends AppCompatActivity {
             }
         });
 
-        bSalesRadio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectRadioButton(LSContact.CONTACT_TYPE_SALES);
-            }
-        });
-        bColleagueRadio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
-            }
-        });
+//        bSalesRadio.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                selectRadioButton(LSContact.CONTACT_TYPE_SALES);
+//            }
+//        });
+//        bColleagueRadio.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
+//            }
+//        });
     }
 
 
@@ -395,7 +394,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
         llAddress.setVisibility(View.GONE);
 //        tvTitleAddContact.setText(TITLE_ADD_NEW_CONTACT);
         editingMode = false;
-        selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
+//        selectRadioButton(LSContact.CONTACT_TYPE_BUSINESS);
     }
 
     private void populateUpdateContactView(Bundle bundle) {
@@ -422,7 +421,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                     etContactName.setText(selectedContact.getContactName());
                 }
             }
-            selectRadioButton(selectedContact.getContactType());
+//            selectRadioButton(selectedContact.getContactType());
         } else {
             etContactName.setText("");
         }
@@ -584,23 +583,23 @@ public class AddEditLeadActivity extends AppCompatActivity {
         return contactNumber;
     }
 
-    private void selectRadioButton(String button) {
-        if (button.equals(LSContact.CONTACT_TYPE_SALES)) {
-            selectedContactType = LSContact.CONTACT_TYPE_SALES;
-            bSalesRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            bColleagueRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-            bSalesRadio.setTextColor(Color.WHITE);
-            bColleagueRadio.setTextColor(Color.BLACK);
-        } else if (button.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
-            selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
-            bSalesRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            bColleagueRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-            bSalesRadio.setTextColor(Color.BLACK);
-            bColleagueRadio.setTextColor(Color.WHITE);
-        }
-    }
+//    private void selectRadioButton(String button) {
+//        if (button.equals(LSContact.CONTACT_TYPE_SALES)) {
+//            selectedContactType = LSContact.CONTACT_TYPE_SALES;
+//            bSalesRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+//            bColleagueRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+//            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+//            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
+//            bSalesRadio.setTextColor(Color.WHITE);
+//            bColleagueRadio.setTextColor(Color.BLACK);
+//        } else if (button.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+//            selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
+//            bSalesRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+//            bColleagueRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+//            bSalesRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
+//            bColleagueRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
+//            bSalesRadio.setTextColor(Color.BLACK);
+//            bColleagueRadio.setTextColor(Color.WHITE);
+//        }
+//    }
 }

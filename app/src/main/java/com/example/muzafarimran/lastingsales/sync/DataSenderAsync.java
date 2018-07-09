@@ -244,8 +244,9 @@ public class DataSenderAsync {
 
                 Map<String, String> params = new HashMap<String, String>();
 
-                params.put("name", "" + contact.getContactName());
-
+                if(contact.getContactName() != null){
+                    params.put("name", "" + contact.getContactName());
+                }
                 if (contact.getContactEmail() != null) {
                     params.put("email", "" + contact.getContactEmail());
                 }
@@ -285,8 +286,12 @@ public class DataSenderAsync {
 
     private void updateContactToServerSync(final LSContact contact) {
         currentState = PENDING;
+        String name = "";
         String email = "";
         String address = "";
+        if (contact.getContactName() != null) {
+            name = contact.getContactName();
+        }
         if (contact.getContactEmail() != null) {
             email = contact.getContactEmail();
         }
@@ -297,7 +302,7 @@ public class DataSenderAsync {
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendPath("" + contact.getServerId())
-                .appendQueryParameter("name", "" + contact.getContactName())
+                .appendQueryParameter("name", "" + name)
                 .appendQueryParameter("email", "" + email)
                 .appendQueryParameter("phone", "" + contact.getPhoneOne())
                 .appendQueryParameter("address", "" + address)

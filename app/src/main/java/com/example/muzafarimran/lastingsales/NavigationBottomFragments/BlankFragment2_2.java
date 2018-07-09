@@ -26,6 +26,7 @@ import java.util.List;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
+@Deprecated
 public class BlankFragment2_2 extends TabFragment implements LoaderManager.LoaderCallbacks<List<Object>> {
     public static final String TAG = "BlankFragment2_2";
     private static final String ARG_PARAM1 = "param1";
