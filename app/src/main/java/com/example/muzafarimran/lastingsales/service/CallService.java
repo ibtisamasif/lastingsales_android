@@ -103,7 +103,7 @@ public class CallService extends Service {
             if (updateContacct != null) {
                 updateContacct.setContactSave("false");
                 updateContacct.save();
-                Toast.makeText(CallService.this, "set false", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CallService.this, "set false", Toast.LENGTH_SHORT).show();
             } else {
                 Log.d("setcontact save ", "null");
             }
@@ -133,6 +133,7 @@ public class CallService extends Service {
         Button addBtn = view.findViewById(R.id.afterCallAddContactAddBtn);
         CheckBox ignoreCB = view.findViewById(R.id.afterCallAddContactCb);
 
+        addContactField.setText(num);
 
         if (num != null) {
             showNumber.setText(num);
@@ -146,7 +147,7 @@ public class CallService extends Service {
             public void onClick(View v) {
 
                 if (ignoreCB.isChecked()) {
-                    addBtn.setText("Ignore");
+                    addBtn.setText("OK");
                     addContactField.setVisibility(View.GONE);
                 } else {
                     addContactField.setVisibility(View.VISIBLE);
@@ -184,7 +185,7 @@ public class CallService extends Service {
                         Log.d("amir validation ", "please enter name!!!");
                     } else {
 
-                        Toast.makeText(CallService.this, "You enter " + addContactField.getText().toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(CallService.this, "You enter " + addContactField.getText().toString(), Toast.LENGTH_SHORT).show();
 
 
                         LSContact updateContacct = LSContact.getContactFromNumber(num);
@@ -195,12 +196,12 @@ public class CallService extends Service {
 
                         if (updateContacct.save() > 0) {
                             Log.d("amir", "update contact");
-                            Toast.makeText(CallService.this, "updated", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(CallService.this, "updated", Toast.LENGTH_SHORT).show();
                             manager.removeView(view);
                             stopSelf();
                         } else {
                             Log.d("amir", "updte contact error");
-                            Toast.makeText(CallService.this, "update contact error", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(CallService.this, "update contact error", Toast.LENGTH_SHORT).show();
                             //show error
 
                         }
@@ -471,7 +472,7 @@ public class CallService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
-        Toast.makeText(this, "close window", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "close window", Toast.LENGTH_SHORT).show();
 
     }
 }
