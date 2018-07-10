@@ -17,7 +17,6 @@ import android.view.View;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.DealDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 
@@ -99,20 +98,16 @@ public class DealDetailsTabActivity extends AppCompatActivity {
             }
         });
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add_deal);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add);
         floatingActionButton.hide();
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(DealDetailsTabActivity.this, "Add Comments", Toast.LENGTH_SHORT).show();
                 if (selectedDeal != null) {
-                    LSContact lsContact = selectedDeal.getContact();
-                    if (lsContact != null) {
                         Intent intent = new Intent(getApplicationContext(), AddEditNoteActivity.class);
                         intent.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_ADD_NEW_NOTE);
-                        intent.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_CONTACT_NUMBER, lsContact.getPhoneOne());
+                        intent.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_DEAL_ID, selectedDeal.getId());
                         startActivity(intent);
-                    }
                 }
             }
         });

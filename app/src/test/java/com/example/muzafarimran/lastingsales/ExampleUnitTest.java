@@ -1,7 +1,5 @@
 package com.example.muzafarimran.lastingsales;
 
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -12,6 +10,8 @@ import static junit.framework.Assert.assertEquals;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        assertEquals(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate("2017-01-02"), PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate("2017-01-02 01:00:00"));
+        assertEquals("App\\Deal", "App" + "\\" + "Deal");
+
+//        assertEquals(PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate("2017-01-02"), PhoneNumberAndCallUtils.getMillisFromSqlFormattedDate("2017-01-02 01:00:00"));
     }
 }

@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,12 @@ import java.util.List;
  */
 
 public class LSNote extends SugarRecord {
+
+    @Ignore
+    public static final String NOTEABLE_TYPE_APP_LEAD = "App\\Lead";
+    public static final String NOTEABLE_TYPE_APP_DEAL = "App\\Deal";
+    public static final String NOTEABLE_TYPE_APP_ORGANIZATION = "App\\Organization";
+
     private LSContact contactOfNote;
     private LSDeal dealOfNote;
     private LSOrganization organizationOfNote;

@@ -54,14 +54,14 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add_deal);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add);
         floatingActionButton.hide();
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AddEditNoteActivity.class);
                 intent.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_ADD_NEW_NOTE);
-                intent.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_CONTACT_NUMBER, selectedContact.getPhoneOne());
+                intent.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_CONTACT_ID, selectedContact.getId());
                 startActivity(intent);
             }
         });

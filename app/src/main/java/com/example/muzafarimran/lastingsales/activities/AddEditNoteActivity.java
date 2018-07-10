@@ -12,7 +12,9 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -35,21 +37,20 @@ public class AddEditNoteActivity extends AppCompatActivity {
     public static final String LAUNCH_MODE_EDIT_EXISTING_NOTE = "launch_mode_edit_existing_note";
 
     public static final String TAG_LAUNCH_MODE_NOTE_ID = "launch_mode_note_id";
-    public static final String TAG_LAUNCH_MODE_CONTACT_NUMBER = "launch_mode_contact_number";
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "launch_mode_contact_id";
-
-    public static final String ADD_NOTE_CONTACT_NUMBER = "add_note_contact_number";
+    public static final String TAG_LAUNCH_MODE_DEAL_ID = "launch_mode_deal_id";
+    public static final String TAG_LAUNCH_MODE_ORGANIZATION_ID = "launch_mode_organization_id";
 
     String launchMode = LAUNCH_MODE_ADD_NEW_NOTE;
 
-    TextView tvContactName;
-    EditText etContactNote;
+    TextView etName;
+    EditText etNote;
     Button bSave, bCancel;
     View view;
     LSNote selectedNote;
     LSContact selectedContact;
-    String number;
-    Long contactIdLong;
+    LSDeal selectedDeal;
+    LSOrganization selectedOrganization;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +61,10 @@ public class AddEditNoteActivity extends AppCompatActivity {
 //        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
 //        android.support.v7.app.ActionBar bar = getSupportActionBar();
 //        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-        tvContactName = (TextView) findViewById(R.id.contact_name_add_note);
-        etContactNote = (EditText) findViewById(R.id.contact_note_add_note);
+        etName = (TextView) findViewById(R.id.etName);
+        etNote = (EditText) findViewById(R.id.etNote);
         bSave = (Button) findViewById(R.id.bSave);
-        bCancel = (Button) findViewById(R.id.cancel_add_note);
+        bCancel = (Button) findViewById(R.id.bCancel);
 
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
@@ -79,24 +80,39 @@ public class AddEditNoteActivity extends AppCompatActivity {
             // for edit note
             noteIdLong = Long.parseLong(bundle.getString(TAG_LAUNCH_MODE_NOTE_ID));
             selectedNote = LSNote.findById(LSNote.class, noteIdLong);
-            etContactNote.setText(selectedNote.getNoteText());
-            selectedContact = selectedNote.getContactOfNote();
-            tvContactName.setText(selectedContact.getContactName());
+            etNote.setText(selectedNote.getNoteText());
+            if (selectedNote.getContactOfNote() != null) {
+                selectedContact = selectedNote.getContactOfNote();
+            }
+            if (selectedNote.getDealOfNote() != null) {
+                selectedDeal = selectedNote.getDealOfNote();
+            }
+            if (selectedNote.getOrganizationOfNote() != null) {
+                selectedOrganization = selectedNote.getOrganizationOfNote();
+            }
+            etName.setText(selectedContact.getContactName());
 
         } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_NOTE)) {
             //for add new note
-            number = bundle.getString(TAG_LAUNCH_MODE_CONTACT_NUMBER);
-            Long id = bundle.getLong(TAG_LAUNCH_MODE_CONTACT_ID);
-            if (number != null) {
-                selectedContact = LSContact.getContactFromNumber(number);
-                if (selectedContact != null) {
-                    tvContactName.setText(selectedContact.getContactName());
-                }
-            } else if (id != null && !id.equals("")) {
-                contactIdLong = id;
-                selectedContact = LSContact.findById(LSContact.class, contactIdLong);
-                if (selectedContact != null) {
-                    tvContactName.setText(selectedContact.getContactName());
+            if (bundle != null) {
+                Long contact_id = bundle.getLong(TAG_LAUNCH_MODE_CONTACT_ID);
+                Long deal_id = bundle.getLong(TAG_LAUNCH_MODE_DEAL_ID);
+                Long organization_id = bundle.getLong(TAG_LAUNCH_MODE_ORGANIZATION_ID);
+                if (contact_id != 0) {
+                    selectedContact = LSContact.findById(LSContact.class, contact_id);
+                    if (selectedContact != null) {
+                        etName.setText(selectedContact.getContactName());
+                    }
+                } else if (deal_id != 0) {
+                    selectedDeal = LSDeal.findById(LSDeal.class, deal_id);
+                    if (selectedDeal != null) {
+                        etName.setText(selectedDeal.getName());
+                    }
+                } else if (organization_id != 0) {
+                    selectedOrganization = LSOrganization.findById(LSOrganization.class, organization_id);
+                    if (selectedOrganization != null) {
+                        etName.setText(selectedOrganization.getName());
+                    }
                 }
             }
         }
@@ -104,9 +120,9 @@ public class AddEditNoteActivity extends AppCompatActivity {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (etContactNote.getText().toString() != null) {
+                if (etNote.getText().toString() != null) {
                     if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_NOTE)) {
-                        selectedNote.setNoteText(etContactNote.getText().toString());
+                        selectedNote.setNoteText(etNote.getText().toString());
                         if (selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED) || selectedNote.getSyncStatus().equals(SyncStatus.SYNC_STATUS_NOTE_EDIT_SYNCED)) {
                             selectedNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_EDIT_NOT_SYNCED);
                         }
@@ -115,13 +131,22 @@ public class AddEditNoteActivity extends AppCompatActivity {
                         Toast.makeText(AddEditNoteActivity.this, "Note Edited", Toast.LENGTH_SHORT).show();
                         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                         dataSenderAsync.run();
-
                     } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_NOTE)) {
                         LSNote note = new LSNote();
-                        note.setContactOfNote(selectedContact);
-                        note.setNoteText(etContactNote.getText().toString());
+                        if (selectedContact != null) {
+                            note.setContactOfNote(selectedContact);
+                            note.setNotableType(LSNote.NOTEABLE_TYPE_APP_LEAD);
+                        }
+                        if (selectedDeal != null) {
+                            note.setDealOfNote(selectedDeal);
+                            note.setNotableType(LSNote.NOTEABLE_TYPE_APP_DEAL);
+                        }
+                        if (selectedOrganization != null) {
+                            note.setOrganizationOfNote(selectedOrganization);
+                            note.setNotableType(LSNote.NOTEABLE_TYPE_APP_ORGANIZATION);
+                        }
+                        note.setNoteText(etNote.getText().toString());
                         note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_NOT_SYNCED);
-                        note.setContactOfNote(selectedContact);
                         note.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                         note.save();
                         NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();

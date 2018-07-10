@@ -26,10 +26,6 @@ public class EditDealActivity extends AppCompatActivity {
     private EditText etLeadAddDeal;
     private Button bSaveAddDeal;
     private Button bCancelAddDeal;
-//    private Button bPendingRadio;
-//    private Button bWonRadio;
-//    private Button bLostRadio;
-//    private LinearLayout llDealType;
 
     String selectedDealType = LSDeal.DEAL_STATUS_CLOSED_WON;
     private long dealIdLong;
@@ -42,40 +38,12 @@ public class EditDealActivity extends AppCompatActivity {
 
         etNameAddDeal = (EditText) findViewById(R.id.etNameAddDeal);
         etLeadAddDeal = (EditText) findViewById(R.id.etLeadAddDeal);
-//        llDealType = (LinearLayout) findViewById(R.id.llDealType);
         bSaveAddDeal = (Button) findViewById(R.id.bSaveAddDeal);
         bCancelAddDeal = (Button) findViewById(R.id.bCancelAddDeal);
-//        bPendingRadio = (Button) findViewById(R.id.bPendingRadio);
-//        bWonRadio = (Button) findViewById(R.id.bWonRadio);
-//        bLostRadio = (Button) findViewById(R.id.bLostRadio);
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             populateUpdateContactView(bundle);
         }
-
-
-//        bPendingRadio.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(EditDealActivity.this, "Pending", Toast.LENGTH_SHORT).show();
-//                selectRadioButton(LSDeal.DEAL_STATUS_PENDING);
-//            }
-//        });
-//        bWonRadio.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(EditDealActivity.this, "Won", Toast.LENGTH_SHORT).show();
-//                selectRadioButton(LSDeal.DEAL_STATUS_CLOSED_WON);
-//            }
-//        });
-//        bLostRadio.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(EditDealActivity.this, "Lost", Toast.LENGTH_SHORT).show();
-//                selectRadioButton(LSDeal.DEAL_STATUS_CLOSED_LOST);
-//            }
-//        });
         bCancelAddDeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +76,6 @@ public class EditDealActivity extends AppCompatActivity {
     }
 
     private void populateUpdateContactView(Bundle bundle) {
-//        tvTitleAddContact.setText(TITLE_EDIT_CONTACT);
         String id = bundle.getString(TAG_LAUNCH_MODE_DEAL_ID);
         if (id != null && !id.equals("")) {
             dealIdLong = Long.parseLong(id);
@@ -116,7 +83,6 @@ public class EditDealActivity extends AppCompatActivity {
         }
         if (selectedDeal.getName() != null) {
             etNameAddDeal.setText(selectedDeal.getName());
-//            selectRadioButton(selectedDeal.getStatus());
         } else {
             etNameAddDeal.setText("");
         }
@@ -136,57 +102,4 @@ public class EditDealActivity extends AppCompatActivity {
         }
         return true;
     }
-
-//    private void selectRadioButton(String button) {
-//        if (button.equals(LSDeal.DEAL_STATUS_PENDING)) {
-//
-//            selectedDealType = LSDeal.DEAL_STATUS_PENDING;
-//
-//            bPendingRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-//            bWonRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//            bLostRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//
-//            bPendingRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-//            bWonRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-//            bLostRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-//
-//            bPendingRadio.setTextColor(Color.WHITE);
-//            bWonRadio.setTextColor(Color.BLACK);
-//            bLostRadio.setTextColor(Color.BLACK);
-//
-//        } else if (button.equals(LSDeal.DEAL_STATUS_CLOSED_WON)) {
-//
-//            selectedDealType = LSDeal.DEAL_STATUS_CLOSED_WON;
-//
-//            bWonRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-//            bPendingRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//            bLostRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//
-//            bWonRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-//            bPendingRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-//            bLostRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-//
-//            bWonRadio.setTextColor(Color.WHITE);
-//            bPendingRadio.setTextColor(Color.BLACK);
-//            bLostRadio.setTextColor(Color.BLACK);
-//
-//        } else if (button.equals(LSDeal.DEAL_STATUS_CLOSED_LOST)) {
-//
-//            selectedDealType = LSDeal.DEAL_STATUS_CLOSED_LOST;
-//
-//            bLostRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-//            bPendingRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//            bWonRadio.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//
-//            bLostRadio.setBackground(getResources().getDrawable(R.drawable.btn_primary));
-//            bPendingRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-//            bWonRadio.setBackground(getResources().getDrawable(R.drawable.btn_transparent_black_border));
-//
-//            bLostRadio.setTextColor(Color.WHITE);
-//            bPendingRadio.setTextColor(Color.BLACK);
-//            bWonRadio.setTextColor(Color.BLACK);
-//
-//        }
-//    }
-
 }
