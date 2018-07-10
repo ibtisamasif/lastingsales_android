@@ -73,7 +73,12 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
         }
 //        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,latestCallQuery , null, "date DESC limit 10");
 //        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, "_id >= 1" , null, "date DESC limit 100");
-//        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, "_id = " + LSCall.getCallHavingLatestCallLogId().getCallLogId() , null, "date DESC limit 10");
+//        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,
+//
+//
+//
+//
+// " + LSCall.getCallHavingLatestCallLogId().getCallLogId() , null, "date DESC limit 10");
 
         try {
 

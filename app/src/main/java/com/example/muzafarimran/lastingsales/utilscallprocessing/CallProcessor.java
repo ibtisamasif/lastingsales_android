@@ -174,6 +174,7 @@ public class CallProcessor {
                 LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());
                 if (contact != null) {
 
+                    Log.d("personal","contact exist");
 
                 } else {
 
@@ -292,7 +293,8 @@ public class CallProcessor {
     private static void showDialog(Context mContext, LSCall call) {
 
         Intent intent = new Intent(mContext, CallService.class);
-        intent.putExtra("no", call.getContactName());
+        intent.putExtra("no", call.getContactNumber());
+        intent.putExtra("name", call.getContactName());
 
         Log.d("start dialog service", "function call");
         mContext.startService(intent);

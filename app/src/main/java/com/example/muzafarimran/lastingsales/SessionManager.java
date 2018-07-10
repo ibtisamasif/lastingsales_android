@@ -64,7 +64,7 @@ public class SessionManager {
     public static final String KEY_UPDATE_AVAILABLE_VERSION = "update_available_version";
 
     public static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
-    public static final String KEY_STATE_IS_COMPANY_PHONE = "state_is_company_phone";
+
 
 
 
@@ -88,14 +88,11 @@ public class SessionManager {
     }
 
 
-    public void setKeyStateIsCompanyPhone(boolean val){
-        editor.putBoolean(KEY_STATE_IS_COMPANY_PHONE,val);
-        editor.apply();
 
-    }
+    public  boolean getIsFirstTimeLaunch() {
+        return pref.getBoolean(IS_FIRST_TIME_LAUNCH,false);
 
-    public boolean getKeyStateIsCompanyPhone(){
-        return pref.getBoolean(KEY_STATE_IS_COMPANY_PHONE,false);
+
     }
 
 
@@ -509,7 +506,7 @@ public class SessionManager {
     }
 
     public boolean isFirstTimeLaunch() {
-        return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
+        return pref.getBoolean(IS_FIRST_TIME_LAUNCH, false);
     }
 
 

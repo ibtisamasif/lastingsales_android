@@ -220,6 +220,8 @@ public class CallDetectionService extends Service {
         theCallLogEngine.execute();*/
 
         // start calllogengine service
+
+
         startService(new Intent(this, CallLogIngineService.class));
 
         IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);

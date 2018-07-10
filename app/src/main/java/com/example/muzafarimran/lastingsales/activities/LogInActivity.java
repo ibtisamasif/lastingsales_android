@@ -243,8 +243,17 @@ public class LogInActivity extends AppCompatActivity {
                         if (company_id == null) {
                             activity.startActivity(new Intent(activity, CreateCompanyActivity.class));
                             activity.finish();
-                        } else {
-                            activity.startActivity(new Intent(activity, NavigationBottomMainActivity.class));
+                        } else {/*
+                            activity.startActivity(new Intent(activity, NavigationBottomMainActivity.class));*/
+
+                            if(!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
+
+                                activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
+                            }
+                            else
+                                activity.startActivity(new Intent(activity,NavigationBottomMainActivity.class));
+
+
                             activity.finish();
                         }
                         Log.d(TAG, "onResponse: " + response);

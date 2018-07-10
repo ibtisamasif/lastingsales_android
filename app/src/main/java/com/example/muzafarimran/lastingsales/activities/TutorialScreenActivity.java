@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.RadioGroup;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.SettingsManager;
 
 public class TutorialScreenActivity extends AppCompatActivity {
 
@@ -50,6 +52,7 @@ public class TutorialScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // checking for last page
                 // if last page home screen will be launched
+                Log.d("tutorial","click next");
                 int current = getItem(+1);
 
 
@@ -61,7 +64,7 @@ public class TutorialScreenActivity extends AppCompatActivity {
 
                 } else {
 
-
+                    Log.d("tutorial","jump to nav screen");
                     int checkId = radioGroup.getCheckedRadioButtonId();
 
                     isCompanyORPersonalRadio = findViewById(checkId);
@@ -69,14 +72,21 @@ public class TutorialScreenActivity extends AppCompatActivity {
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     sessionManager.setFirstTimeLaunch(true);
 
+
+                    SettingsManager settingsManager=new SettingsManager(getApplicationContext());
+
                     if(isCompanyORPersonalRadio.getText().equals("Company Phone")) {
-                        sessionManager.setKeyStateIsCompanyPhone(true);
+                        settingsManager.setKeyStateIsCompanyPhone(true);
+                        Log.d("tutorial","set to company phone");
                     }else{
-                        sessionManager.setKeyStateIsCompanyPhone(false);
+                        settingsManager.setKeyStateIsCompanyPhone(false);
+                        Log.d("tutorial","set to personal phone");
                     }
 
 
-                    launchHomeScreen();
+                    finish();
+
+                   launchHomeScreen();
                 }
             }
         });

@@ -32,7 +32,7 @@ public class CallService extends Service {
 
     View view;
     WindowManager manager;
-    private String num;
+    private String num,name;
     WindowManager.LayoutParams params;
 
 
@@ -55,6 +55,8 @@ public class CallService extends Service {
 
 
         num = intent.getStringExtra("no");
+        name = intent.getStringExtra("name");
+
 
 
         if (!callingMethod) {
@@ -68,7 +70,8 @@ public class CallService extends Service {
 
 
     public void dialogBox() {
-        Toast.makeText(this, "Number get from intent" + num, Toast.LENGTH_SHORT).show();
+        new SessionManager(getApplicationContext()).setShowDialogOrNot(false);
+        //Toast.makeText(this, "Number get from intent" + num, Toast.LENGTH_SHORT).show();
 
         view = LayoutInflater.from(this).inflate(R.layout.aftercallflyer_layout, null);
 
@@ -82,8 +85,8 @@ public class CallService extends Service {
         );
 
         params.gravity = Gravity.TOP | Gravity.LEFT;        //Initially view will be added to top-left corner
-        params.x = 0;
-        params.y = 100;
+        params.x = Gravity.CENTER;
+        params.y = Gravity.CENTER;
 
         manager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
@@ -96,7 +99,7 @@ public class CallService extends Service {
         ImageButton close = view.findViewById(R.id.ibClose);
 
         close.setOnClickListener(v -> {
-            Toast.makeText(CallService.this, "You click close button", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(CallService.this, "You click close button", Toast.LENGTH_SHORT).show();
 
 
             LSContact updateContacct = LSContact.getContactFromNumber(num);
@@ -133,7 +136,7 @@ public class CallService extends Service {
         Button addBtn = view.findViewById(R.id.afterCallAddContactAddBtn);
         CheckBox ignoreCB = view.findViewById(R.id.afterCallAddContactCb);
 
-        addContactField.setText(num);
+        addContactField.setText(name);
 
         if (num != null) {
             showNumber.setText(num);

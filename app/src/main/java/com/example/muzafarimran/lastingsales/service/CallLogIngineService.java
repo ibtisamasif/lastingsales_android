@@ -12,6 +12,7 @@ import android.util.Log;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -42,7 +43,11 @@ public class CallLogIngineService extends Service {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        CallLogFunc();
+       CallLogFunc();
+
+//        TheCallLogEngine theCallLogEngine=new TheCallLogEngine(getApplicationContext());
+//        theCallLogEngine.execute();
+
 
 
         return super.onStartCommand(intent, flags, startId);
@@ -60,7 +65,7 @@ public class CallLogIngineService extends Service {
         Cursor managedCursor;
 
         if (LSCall.getCallHavingLatestCallLogId() != null) {
-            Log.d(TAG, "getLatestCallLogId: " + LSCall.getCallHavingLatestCallLogId().getCallLogId());
+           Log.d(TAG, "getLatestCallLogId: " + LSCall.getCallHavingLatestCallLogId().getCallLogId());
             latestCallQuery = "_id >= " + LSCall.getCallHavingLatestCallLogId().getCallLogId();
             managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, latestCallQuery, null, "date DESC");
         } else {
@@ -94,6 +99,7 @@ public class CallLogIngineService extends Service {
                 }
                 Log.d(TAG, "CallLogFunc: Index: " + managedCursor.getPosition());
                 if (managedCursor.getPosition() == -1) {
+
                     return;
                 }
                 String callId = managedCursor.getString(id);
@@ -162,7 +168,7 @@ public class CallLogIngineService extends Service {
                 }
             } while (managedCursor.moveToPrevious());
             if (reRun) {
-                CallLogFunc();
+               // CallLogFunc();
             }
         } catch (Exception e) {
             e.printStackTrace();

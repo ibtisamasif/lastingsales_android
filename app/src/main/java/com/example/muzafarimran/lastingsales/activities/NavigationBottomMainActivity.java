@@ -51,6 +51,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
+import com.example.muzafarimran.lastingsales.service.CallLogIngineService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -661,8 +662,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         // device has been shaken
         Log.d(TAG, "onShakeEvent: Shake Event: " + event);
 //        sessionManager.fetchData();
-        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-        theCallLogEngine.execute();
+
+        startService(new Intent(getApplicationContext(), CallLogIngineService.class));
+
+
+        /* TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+        theCallLogEngine.execute();*/
         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
         dataSenderAsync.run();
         Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
@@ -687,8 +692,13 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 } else {
                     Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_SHORT).show();
                 }
-                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
+               /* TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
                 theCallLogEngine.execute();
+
+               */
+
+                startService(new Intent(getApplicationContext(), CallLogIngineService.class));
+
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
                 String projectToken = MixpanelConfig.projectToken;
@@ -861,8 +871,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
                 if (sessionManager.isFirstRunAfterLogin()) {
                     Log.d(TAG, "initFirst: isFirstRun TRUE");
-                    TheCallLogEngine theCallLogEngine = new TheCallLogEngine(NavigationBottomMainActivity.this);
-                    theCallLogEngine.execute();
+                 /*   TheCallLogEngine theCallLogEngine = new TheCallLogEngine(NavigationBottomMainActivity.this);
+                    theCallLogEngine.execute();*/
+                    startService(new Intent(getApplicationContext(), CallLogIngineService.class));
+
                 }
 
 //                Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();
