@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -25,6 +26,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,12 +52,14 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.CallLogIngineService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.sync.SyncUser;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
@@ -139,7 +144,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     switchToFragment2();
 //                    ACTIVE_LOADER = HOME_LOADER_ID;
                     floatingActionButtonDeal.hide();
-                    floatingActionMenuLead.hideMenu(true);
+                    floatingActionMenuLead.showMenu(true);
 //                    getSupportLoaderManager().restartLoader(HOME_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
 //                case R.id.navigation_leads:
@@ -152,8 +157,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 case R.id.navigation_deals:
                     switchToFragment4();
 //                    ACTIVE_LOADER = LEAD_LOADER_ID;
-                    floatingActionMenuLead.hideMenu(true);
                     floatingActionButtonDeal.show();
+                    floatingActionMenuLead.hideMenu(true);
 //                    getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
                     return true;
                 case R.id.navigation_more:
@@ -235,10 +240,67 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //        });
 
         floatingActionMenuLead = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
+        FloatingActionButton floatingActionButtonAddOrg = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add_org);
         FloatingActionButton floatingActionButtonAdd = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add);
         FloatingActionButton floatingActionButtonImport = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_import);
         floatingActionMenuLead.setClosedOnTouchOutside(true);
 
+        floatingActionButtonAddOrg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                floatingActionMenuLead.close(true);
+                Dialog addOrgDialog = new Dialog(NavigationBottomMainActivity.this);
+                addOrgDialog.setContentView(R.layout.add_organization);
+                addOrgDialog.setCancelable(true);
+                addOrgDialog.show();
+
+                Button insertOrg = (Button) addOrgDialog.findViewById(R.id.bSaveAddOrg);
+                Button cancel = (Button) addOrgDialog.findViewById(R.id.bCancelAddOrg);
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addOrgDialog.dismiss();
+                    }
+                });
+
+                insertOrg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EditText nameAddOrg = addOrgDialog.findViewById(R.id.etNameAddOrg);
+                        EditText emailAddOrg = addOrgDialog.findViewById(R.id.etEmailAddOrg);
+                        EditText phoneAddOrg = addOrgDialog.findViewById(R.id.etPhoneAddOrg);
+
+                        if (nameAddOrg.getText().toString().isEmpty()) {
+                            nameAddOrg.setError("Please enter  Name!");
+//                    Toast.makeText(NavigationBottomMainActivity.this, "Please enter  Name!", Toast.LENGTH_SHORT).show();
+                        } else if (emailAddOrg.getText().toString().isEmpty()) {
+                            emailAddOrg.setError("Please enter  Email!");
+//                    Toast.makeText(NavigationBottomMainActivity.this, "Please enter  Email!", Toast.LENGTH_SHORT).show();
+                        } else if (phoneAddOrg.getText().toString().isEmpty()) {
+                            phoneAddOrg.setError("Please enter  Phone!");
+//                    Toast.makeText(getActivity(), "Please enter Phone!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            LSOrganization lsOrganization = new LSOrganization();
+                            lsOrganization.setName(nameAddOrg.getText().toString());
+                            lsOrganization.setEmail(emailAddOrg.getText().toString());
+                            lsOrganization.setPhone(phoneAddOrg.getText().toString());
+                            lsOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_NOT_SYNCED);
+
+                            if (lsOrganization.save() > 0) {
+                                Toast.makeText(NavigationBottomMainActivity.this, "Organization saved", Toast.LENGTH_SHORT).show();
+                                addOrgDialog.dismiss();
+                                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(addOrgDialog.getContext());
+                                dataSenderAsync.run();
+                            } else {
+                                Toast.makeText(NavigationBottomMainActivity.this, "Error not saved something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+
+            }
+        });
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -278,7 +340,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             }
         });
 
-        floatingActionButtonDeal = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab_add_deal);
+        floatingActionButtonDeal = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab_add);
         floatingActionButtonDeal.hide();
         floatingActionButtonDeal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -306,13 +368,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     navigation.setSelectedItemId(R.id.navigation_home);
                     openContactBottomSheetCallback(Long.parseLong(contactId));
                 }
-            }
-            else {
+            } else {
                 Log.d(TAG, "onCreate: Bundle Not Null TAB unknown Loading Leads TAB");
                 navigation.setSelectedItemId(R.id.navigation_home);
             }
-        }
-        else {
+        } else {
             Log.d(TAG, "onCreate: Bundle is Null Loading Leads TAB");
             navigation.setSelectedItemId(R.id.navigation_home);
         }
@@ -652,7 +712,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 super.onBackPressed();
             } else {
                 navigation.setSelectedItemId(R.id.navigation_home);
-                floatingActionMenuLead.showMenu(false);
+                floatingActionMenuLead.showMenu(true);
             }
         }
     }

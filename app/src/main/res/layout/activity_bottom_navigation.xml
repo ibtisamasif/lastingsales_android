@@ -95,13 +95,23 @@
         android:layout_marginRight="8dp">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_add_org"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_input_add"
+            app:fab_colorNormal="@color/Ls.Color.Info"
+            app:fab_colorPressed="@color/Ls.Color.Success"
+            fab:fab_label="Add Organization"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/material_design_floating_action_menu_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_input_add"
             app:fab_colorNormal="@color/Ls.Color.Info"
             app:fab_colorPressed="@color/Ls.Color.Success"
-            fab:fab_label="Add Lead"
+            fab:fab_label="Add Contact"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -111,13 +121,13 @@
             android:src="@drawable/ic_action_action_search"
             app:fab_colorNormal="@color/Ls.Color.Info"
             app:fab_colorPressed="@color/Ls.Color.Success"
-            fab:fab_label="Import from Phonebook"
+            fab:fab_label="Import contact"
             fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_deal"
+        android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

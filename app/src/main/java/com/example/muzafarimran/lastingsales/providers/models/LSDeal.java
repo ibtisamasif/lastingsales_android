@@ -240,11 +240,11 @@ public class LSDeal extends SugarRecord {
         this.successEta = successEta;
     }
 
-    public LSOrganization getOrganizationId() {
+    public LSOrganization getOrganization() {
         return organization;
     }
 
-    public void setOrganizationId(LSOrganization organization) {
+    public void setOrganization(LSOrganization organization) {
         this.organization = organization;
     }
 

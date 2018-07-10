@@ -133,7 +133,7 @@ public class DataSenderAsync {
 //                            if (NetworkAccess.isWifiConnected(mContext)) {
 //                                addRecordingToServer();
 //                            }
-                            }else {
+                            } else {
                                 Toast.makeText(mContext, ".", Toast.LENGTH_SHORT).show();
                             }
                         } else {
@@ -244,7 +244,7 @@ public class DataSenderAsync {
 
                 Map<String, String> params = new HashMap<String, String>();
 
-                if(contact.getContactName() != null){
+                if (contact.getContactName() != null) {
                     params.put("name", "" + contact.getContactName());
                 }
                 if (contact.getContactEmail() != null) {
@@ -578,8 +578,8 @@ public class DataSenderAsync {
     private void deleteOrganizationsFromServer() {
         List<LSOrganization> organizationsList = null;
         if (LSOrganization.count(LSOrganization.class) > 0) {
-            organizationsList  = LSOrganization.find(LSOrganization.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_ORGANIZATION_DELETE_NOT_SYNCED);
-            Log.d(TAG, "deleteOrganizationsFromServer: count : " + organizationsList  .size());
+            organizationsList = LSOrganization.find(LSOrganization.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_ORGANIZATION_DELETE_NOT_SYNCED);
+            Log.d(TAG, "deleteOrganizationsFromServer: count : " + organizationsList.size());
             for (LSOrganization oneOrganization : organizationsList) {
                 Log.d(TAG, "Found Organization : " + oneOrganization.getName());
                 Log.d(TAG, "Server ID : " + oneOrganization.getServerId());
@@ -1223,10 +1223,10 @@ public class DataSenderAsync {
             Log.d(TAG, "addNoteToServer: count : " + notesList.size());
             for (LSNote oneNote : notesList) {
                 Log.d(TAG, "Found Notes");
-                if (oneNote.getContactOfNote() != null) {
+                if (oneNote.getContactOfNote() != null || oneNote.getDealOfNote() != null || oneNote.getOrganizationOfNote() != null) {
                     addNoteToServerSync(oneNote);
                 } else {
-                    Log.d(TAG, "addNotesToServer: Contact of note is NULL, Deleting.. " + oneNote.getNoteText());
+                    Log.d(TAG, "addNotesToServer: Contact or Deal or Organization of note is NULL, Deleting.. " + oneNote.getNoteText());
                     oneNote.delete();
                 }
             }
@@ -1235,7 +1235,7 @@ public class DataSenderAsync {
 
     private void addNoteToServerSync(final LSNote note) {
         currentState = PENDING;
-        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_NOTE + note.getContactOfNote().getServerId() + "/notes", new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_NOTE, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse() called with addNoteToServerSync: response = [" + response + "]");
@@ -1263,17 +1263,17 @@ public class DataSenderAsync {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncAddNote");
                 try {
                     if (error.networkResponse != null) {
-                        JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                        int responseCode = jObj.getInt("responseCode");
-//                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
-//                    if (responseCode == 200) {
-                        JSONObject responseObject = jObj.getJSONObject("response");
-                        String description = responseObject.getString("description");
-                        String id = responseObject.getString("id");
-                        note.setServerId(id);
-                        note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
-                        note.save();
-                        Log.d(TAG, "onResponse addNoteReSynced: " + description + " ServerNoteID : " + note.getServerId());
+//                        JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+//                        int responseCode = jObj.getInt("responseCode");
+////                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
+////                    if (responseCode == 200) {
+//                        JSONObject responseObject = jObj.getJSONObject("response");
+//                        String description = responseObject.getString("description");
+//                        String id = responseObject.getString("id");
+//                        note.setServerId(id);
+//                        note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
+//                        note.save();
+//                        Log.d(TAG, "onResponse addNoteReSynced: " + description + " ServerNoteID : " + note.getServerId());
                     } else {
                         Log.d(TAG, "onErrorResponse: no response may be poor internet");
                     }
@@ -1285,8 +1285,23 @@ public class DataSenderAsync {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
+                if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_LEAD)) {
+//                    params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_LEAD);
+                    params.put("id", "" + note.getContactOfNote().getId());
+                }
+
+                if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_DEAL)) {
+//                    params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_DEAL);
+                    params.put("id", "" + note.getDealOfNote().getId());
+                }
+
+                if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_ORGANIZATION)) {
+//                    params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_ORGANIZATION);
+                    params.put("id", "" + note.getOrganizationOfNote().getId());
+                }
                 params.put("description", "" + note.getNoteText());
                 params.put("api_token", "" + sessionManager.getLoginToken());
+                Log.d(TAG, "getParams: addNoteToServerSync " + params.toString());
                 return params;
             }
         };
