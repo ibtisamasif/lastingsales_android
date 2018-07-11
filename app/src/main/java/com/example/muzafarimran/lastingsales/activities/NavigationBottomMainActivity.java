@@ -62,7 +62,6 @@ import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.sync.SyncUser;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -83,25 +82,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     public static final String TAG = "NavigationBottomMain";
     private static final String FRAGMENT_TAG_INQUIRIES = "fragment_tag_inquiries";
     private static final String FRAGMENT_TAG_UNLABELED = "fragment_tag_unlabeled";
-    private static final String FRAGMENT_TAG_LEADS = "fragment_tag_leads";
     private static final String FRAGMENT_TAG_DEALS = "fragment_tag_deals";
     private static final String FRAGMENT_TAG_MORE = "fragment_tag_more";
 
-    //    public static final String KEY_ACTIVE_LOADER = "active_loader";
-//    public static int ACTIVE_LOADER = -1;
-//    public static final int INQU_LOADER_ID = 1;
-//    public static final int HOME_LOADER_ID = 2;
-//    public static final int LEAD_LOADER_ID = 3;
-//    public static final int MORE_LOADER_ID = 4;
     public static String KEY_SELECTED_TAB = "key_selected_tab";
     public static String INQUIRIES_TAB = "inquiries_tab";
     public static String BOTTOMSHEET_TAB = "bottomsheet_tab";
     public static String KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID = "bottomsheet_contact_id";
     public static String KEY_SELECTED_TAB_NO_TAB = "no_tab";
 
-    //    private TinyBus bus;
-    //    private List<Object> list = new ArrayList<Object>();
-//    private MyRecyclerViewAdapter adapter;
     private FirebaseAnalytics mFirebaseAnalytics;
     private SessionManager sessionManager;
     private SettingsManager settingsManager;
@@ -614,14 +603,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 SyncUser.updateUserLastSeenToServer(this);
                 SyncUser.getUserDataFromServer(this);
                 SyncUser.getLastestAppVersionCodeFromServer(this);
-
                 if (!sessionManager.getKeyIsUserActive()) {
                     Intent i = new Intent(NavigationBottomMainActivity.this, UserInActiveActivity.class);
                     i.putExtra(TrialExpiryActivity.KEY_MESSAGE, "User is deactivated");
                     startActivity(i);
                     finish();
                 }
-
                 if (!sessionManager.getKeyIsCompanyActive()) {
                     sessionManager.logoutUser();
                     Intent i = new Intent(NavigationBottomMainActivity.this, CompanyInActiveActivity.class);
@@ -630,16 +617,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     finish();
                 }
                 if (!sessionManager.getKeyIsCompanyPaying()) {
-//                  /*  if (!sessionManager.getKeyIsTrialValid()) {
-//
-//                        Intent i = new Intent(NavigationBottomMainActivity.this, TrialExpiryActivity.class);
-//                        i.putExtra("message", "During your free trial period LastingSales created 500 contacts for you, processed 5000 calls");
-//                        startActivity(i);
-//
-//
-//                    }*/
+                    if (!sessionManager.getKeyIsTrialValid()) {
+                        Intent i = new Intent(NavigationBottomMainActivity.this, TrialExpiryActivity.class);
+                        i.putExtra("message", "During your free trial period LastingSales created 500 contacts for you, processed 5000 calls");
+                        startActivity(i);
+                    }
                 }
-
             }
 
             if (!sessionManager.getCanSync()) {
