@@ -20,12 +20,11 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId "com.lastingsales.agent"
+        applicationId "com.lastingsales.crm"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0.0"
-        //2.83 in production. Change mixpanel key and urls (staging to production) / migration test
+        versionName "1.0.0" //1.0.0 in production. Change mixpanel key and urls (staging to production) / migration test
 //        jackOptions {
 //            enabled false
 //        }
