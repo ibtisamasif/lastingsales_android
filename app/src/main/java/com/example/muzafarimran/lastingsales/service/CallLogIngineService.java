@@ -12,10 +12,13 @@ import android.util.Log;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.CallTypeManager;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
 
-import java.sql.Date;
+import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 public class CallLogIngineService extends Service {
 
@@ -43,11 +46,10 @@ public class CallLogIngineService extends Service {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-       CallLogFunc();
+        CallLogFunc();
 
 //        TheCallLogEngine theCallLogEngine=new TheCallLogEngine(getApplicationContext());
 //        theCallLogEngine.execute();
-
 
 
         return super.onStartCommand(intent, flags, startId);
@@ -59,14 +61,22 @@ public class CallLogIngineService extends Service {
     }
 
     private void CallLogFunc() {
-        boolean showNotification = false;
+
+        List<LSCall> ls = LSCall.listAll(LSCall.class);
+
+
+        boolean showNotification = false, showDialog = false;
 
         String latestCallQuery;
         Cursor managedCursor;
 
-        if (LSCall.getCallHavingLatestCallLogId() != null) {
-           Log.d(TAG, "getLatestCallLogId: " + LSCall.getCallHavingLatestCallLogId().getCallLogId());
-            latestCallQuery = "_id >= " + LSCall.getCallHavingLatestCallLogId().getCallLogId();
+        List<LSCall> list = LSCall.listAll(LSCall.class);
+
+
+        LSCall myCall = LSCall.getCallHavingLatestCallLogId();
+        if (myCall != null) {
+            Log.d(TAG, "getLatestCallLogId: " + myCall.getCallLogId());
+            latestCallQuery = "_id >= " + myCall.getCallLogId();
             managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, latestCallQuery, null, "date DESC");
         } else {
             Log.d(TAG, "getLatestCallLogId: is NULL");
@@ -107,7 +117,32 @@ public class CallLogIngineService extends Service {
                 String callName = managedCursor.getString(name);
                 String callType = managedCursor.getString(type);
                 String callDate = managedCursor.getString(date);
+
+                Log.d("date", callDate);
+
                 Date callDayTime = new Date(Long.valueOf(callDate));
+
+
+                Date curDate = java.util.Calendar.getInstance().getTime();
+
+
+                Log.d("get call minutes", String.valueOf(callDayTime.getMinutes()));
+                Log.d("get cur minutes", String.valueOf(curDate.getMinutes()));
+
+                long sub = curDate.getMinutes() - callDayTime.getMinutes();
+
+                if (curDate.getDay() - callDayTime.getDay() == 0) {
+                    if (sub > 10) {
+                        Log.d("greater than 10", "dateobj");
+                        showDialog = false;
+                    } else {
+                        Log.d("not greater than 10", "dateobj");
+                        showDialog = true;
+
+                    }
+                }
+
+
                 String callDuration = managedCursor.getString(duration);
 
 //                String callAccountId = managedCursor.getString(accountId);
@@ -142,7 +177,7 @@ public class CallLogIngineService extends Service {
                     tempCall.setBeginTime(Long.parseLong(callDate));
                     tempCall.setDuration(Long.parseLong(callDuration));
 
-                    tempCall.setType(callType);
+                    tempCall.setType(CallTypeManager.getCallType(callType, callDuration));
 
                   /*  if (callType.equals("1") && tempCall.getDuration() > 0L) {           //Incoming
 
@@ -161,14 +196,14 @@ public class CallLogIngineService extends Service {
                         tempCall.setType(LSCall.CALL_TYPE_REJECTED);
                     }*/
                     try {
-                        CallProcessor.Process(mContext, tempCall, showNotification);
+                        CallProcessor.Process(mContext, tempCall, showDialog);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             } while (managedCursor.moveToPrevious());
             if (reRun) {
-               // CallLogFunc();
+                // CallLogFunc();
             }
         } catch (Exception e) {
             e.printStackTrace();

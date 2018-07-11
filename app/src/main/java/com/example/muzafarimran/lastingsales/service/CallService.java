@@ -70,8 +70,6 @@ public class CallService extends Service {
 
 
     public void dialogBox() {
-        new SessionManager(getApplicationContext()).setShowDialogOrNot(false);
-        //Toast.makeText(this, "Number get from intent" + num, Toast.LENGTH_SHORT).show();
 
         view = LayoutInflater.from(this).inflate(R.layout.aftercallflyer_layout, null);
 

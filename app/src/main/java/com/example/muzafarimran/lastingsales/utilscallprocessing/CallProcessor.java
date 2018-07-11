@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SyncStats;
-import android.icu.util.Calendar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,6 +19,7 @@ import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.CallEndTagBoxService;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class CallProcessor {
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
 
-        Log.d("processor","call");
+        Log.d("processor", "call");
 
         SettingsManager settingsManager = new SettingsManager(mContext);
         if (settingsManager.getKeyStateIsCompanyPhone()) { // COMPANY PHONE
@@ -41,13 +41,13 @@ public class CallProcessor {
             if (ignoredContactCheck != null) {
                 // DO NOTHING
 
-                Log.d("processor","nothing");
+                Log.d("processor", "nothing");
 
 
                 Log.d("amir", "contact exist in ignore list");
             } else {
 
-                Log.d("processor","call");
+                Log.d("processor", "call");
 
 
                 /* return;*/
@@ -83,19 +83,20 @@ public class CallProcessor {
                                 Log.d("contact already saved" + lsContact.isContactSave(), call.getContactNumber());
                                 //  Toast.makeText(mContext, "Condition true", Toast.LENGTH_SHORT).show();
                                 Log.d("No from Processor", call.getContactNumber());
-
+                                saveCallLogs(call);
+                                case3(call);
+                                case5(mContext);
                                 return;
                             } else {
 //                            Toast.makeText(mContext, "condition false", Toast.LENGTH_SHORT).show();
                                 Log.d("No. from Processor", call.getContactNumber());
 
-                                if (CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_OUTGOING) || CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_INCOMING)) {
+                                if (showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
 
                                     showDialog(mContext, call);
 
 
                                 }
-
                                 saveCallLogs(call);
                                 case3(call);
                                 case5(mContext);
@@ -104,7 +105,7 @@ public class CallProcessor {
                         } else {
                             Log.d("iscontactSave is ", "NULL");
 
-                            if (CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_OUTGOING) || CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_INCOMING)) {
+                            if (showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
 
                                 showDialog(mContext, call);
 
@@ -128,12 +129,14 @@ public class CallProcessor {
                     LSContact saveContact = new LSContact();
                     saveContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(call.getContactNumber()));
                     saveContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+                    saveContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+                    saveContact.setContactName(call.getContactName());
                     if (saveContact.save() > 0) {
 
 
                         Log.d("amir", "save contact no");
 
-                        if (CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_OUTGOING) || CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_INCOMING)) {
+                        if (showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
 
                             showDialog(mContext, call);
 
@@ -174,30 +177,30 @@ public class CallProcessor {
                 LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());
                 if (contact != null) {
 
-                    Log.d("personal","contact exist");
+                    Log.d("personal", "contact exist");
 
                 } else {
 
-                    if (CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_OUTGOING) || CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_INCOMING)) {
-
+                    if (showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
 
                         showDialog(mContext, call);
 
 
                     }
-
-
-                    saveCallLogs(call);
-
-                    case3(call);
-                    case5(mContext);
-
-
                 }
-            }
 
+
+                saveCallLogs(call);
+
+                case3(call);
+                case5(mContext);
+
+
+            }
         }
+
     }
+
 
     private static void case3(LSCall call) {
 
@@ -206,15 +209,16 @@ public class CallProcessor {
         // incoming/ outgoing calls
         Log.d("case3", "calling");
 //        if (CallTypeManager != null) {
-        if (CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())) == null) {
+        if (call.getType() == null) {
 
             Log.d("null", "null");
             return;
 
         }
 
-        Log.d("return type", CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())));
-        if (CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_INCOMING) || CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_OUTGOING)) {
+        /* Log.d("return type", CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())));
+         */
+        if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) || call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
 
             List<LSInquiry> checkInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
 
@@ -235,7 +239,7 @@ public class CallProcessor {
             }
 
 
-        } else if (CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())).equals(LSCall.CALL_TYPE_REJECTED)) {
+        } else if (call.getType().equals(LSCall.CALL_TYPE_REJECTED)) {
 
 
             List<LSInquiry> missInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
@@ -303,17 +307,13 @@ public class CallProcessor {
 
     private static void saveCallLogs(LSCall call) {
 
-        LSCall lsCall = new LSCall();
+        LSContact lsContact = LSContact.getContactFromNumber(call.getContactNumber());
+        lsContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+        if (lsContact.save() > 0) {
+            Log.d("contact updateat", "cur time");
+        }
 
-        lsCall.setBeginTime(call.getBeginTime());
-        lsCall.setContactName(call.getContactName());
-        lsCall.setContactNumber(call.getContactNumber());
-        lsCall.setType(CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())));
-        lsCall.setDuration(call.getDuration());
-
-
-        lsCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
-        if (lsCall.save() > 0) {
+        if (call.save() > 0) {
             Log.d("calllog", "save");
         }
 
