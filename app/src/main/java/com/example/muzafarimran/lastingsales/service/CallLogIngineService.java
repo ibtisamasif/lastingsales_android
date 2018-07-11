@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.CallTypeManager;
@@ -176,6 +177,7 @@ public class CallLogIngineService extends Service {
                     tempCall.setContactName(callName);
                     tempCall.setBeginTime(Long.parseLong(callDate));
                     tempCall.setDuration(Long.parseLong(callDuration));
+                    tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
 
                     tempCall.setType(CallTypeManager.getCallType(callType, callDuration));
 
