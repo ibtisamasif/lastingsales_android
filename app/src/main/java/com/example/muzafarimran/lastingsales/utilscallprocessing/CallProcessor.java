@@ -224,8 +224,9 @@ public class CallProcessor {
 
             if (checkInquiry.size() > 0) {
                 LSInquiry removeInquiry = LSInquiry.findById(LSInquiry.class, checkInquiry.get(0).getId());
+                removeInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
                 try {
-                    if (removeInquiry.delete()) {
+                    if (removeInquiry.save()>0) {
                         Log.d("remove", "inquire");
                     } else {
                         Log.d("error ", "remove inquiry");
@@ -240,6 +241,52 @@ public class CallProcessor {
 
 
         } else if (call.getType().equals(LSCall.CALL_TYPE_REJECTED)) {
+
+
+            List<LSInquiry> missInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
+            if (missInquiry.size() > 0) {
+
+                //if exists
+
+                LSInquiry incInquiry = LSInquiry.findById(LSInquiry.class, missInquiry.get(0).getId());
+                int getCount = incInquiry.getCountOfInquiries();
+
+                incInquiry.setCountOfInquiries(++getCount);
+                if (incInquiry.save() > 0) {
+
+                    Log.d("inquiry", "updated/increment");
+
+                } else {
+                    Log.d("inquiryy", "not updated/incremented something went wrong");
+                }
+
+
+            } else {
+
+                //if not exists
+
+                LSInquiry lsInquiry = new LSInquiry();
+                lsInquiry.setContactName(call.getContactName());
+                lsInquiry.setContactNumber(call.getContactNumber());
+                lsInquiry.setStatus(LSInquiry.INQUIRY_STATUS_PENDING);
+                lsInquiry.setDuration(call.getDuration());
+                lsInquiry.setCountOfInquiries(call.getCountOfInquiries());
+                lsInquiry.setBeginTime(call.getBeginTime());
+
+
+                try {
+                    if (lsInquiry.save() > 0) {
+                        Log.d("inquiry", "saved");
+                    } else {
+                        Log.d("inquiry", "not save something went wrong");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        } else if (call.getType().equals(LSCall.CALL_TYPE_MISSED)) {
 
 
             List<LSInquiry> missInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
