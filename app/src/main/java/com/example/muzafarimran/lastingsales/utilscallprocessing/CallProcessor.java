@@ -30,10 +30,26 @@ import java.util.List;
 public class CallProcessor {
 
 
-    public static void Process(Context mContext, LSCall call, boolean showNotification) {
+    public static void Process(Context mContext, LSCall call, boolean showNotification,boolean showDialog) {
 
         Log.d("processor", "call");
 
+        if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+
+
+            Log.d("personal call type",call.getType());
+            Log.d("personal show dialog",String.valueOf(showNotification));
+            Log.d("personal show dialog",String.valueOf(showDialog));
+
+
+        }
+        else{
+            Log.d("not match any condition"," else part");
+
+        }
+
+
+         Toast.makeText(mContext, "type "+call.getType(), Toast.LENGTH_SHORT).show();
         SettingsManager settingsManager = new SettingsManager(mContext);
         if (settingsManager.getKeyStateIsCompanyPhone()) { // COMPANY PHONE
 
@@ -91,7 +107,7 @@ public class CallProcessor {
 //                            Toast.makeText(mContext, "condition false", Toast.LENGTH_SHORT).show();
                                 Log.d("No. from Processor", call.getContactNumber());
 
-                                if (showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+                                if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
 
                                     showDialog(mContext, call);
 
@@ -105,7 +121,7 @@ public class CallProcessor {
                         } else {
                             Log.d("iscontactSave is ", "NULL");
 
-                            if (showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+                            if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
 
                                 showDialog(mContext, call);
 
@@ -131,12 +147,14 @@ public class CallProcessor {
                     saveContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                     saveContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                     saveContact.setContactName(call.getContactName());
+
+
                     if (saveContact.save() > 0) {
 
 
                         Log.d("amir", "save contact no");
 
-                        if (showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+                        if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
 
                             showDialog(mContext, call);
 
@@ -179,21 +197,31 @@ public class CallProcessor {
 
                     Log.d("personal", "contact exist");
 
+
+
+                    saveCallLogs(call);
+
+                    case3(call);
+                    case5(mContext);
+
                 } else {
 
-                    if (showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+                    if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+
+
 
                         showDialog(mContext, call);
 
 
                     }
+
+
+
                 }
 
+                Log.d("personal call type",call.getType());
+                Log.d("personal show dialog",String.valueOf(showNotification));
 
-                saveCallLogs(call);
-
-                case3(call);
-                case5(mContext);
 
 
             }
@@ -208,13 +236,6 @@ public class CallProcessor {
 
         // incoming/ outgoing calls
         Log.d("case3", "calling");
-//        if (CallTypeManager != null) {
-        if (call.getType() == null) {
-
-            Log.d("null", "null");
-            return;
-
-        }
 
         /* Log.d("return type", CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())));
          */
@@ -346,6 +367,8 @@ public class CallProcessor {
         Intent intent = new Intent(mContext, CallService.class);
         intent.putExtra("no", call.getContactNumber());
         intent.putExtra("name", call.getContactName());
+
+
 
         Log.d("start dialog service", "function call");
         mContext.startService(intent);

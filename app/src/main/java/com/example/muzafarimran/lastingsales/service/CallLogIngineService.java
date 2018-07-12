@@ -10,11 +10,12 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.CallTypeManager;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
+
 
 import java.util.Date;
 import java.time.LocalDateTime;
@@ -64,6 +65,8 @@ public class CallLogIngineService extends Service {
     private void CallLogFunc() {
 
         List<LSCall> ls = LSCall.listAll(LSCall.class);
+        List<LSInquiry> lsInquiries = LSInquiry.listAll(LSInquiry.class);
+
 
 
         boolean showNotification = false, showDialog = false;
@@ -198,14 +201,14 @@ public class CallLogIngineService extends Service {
                         tempCall.setType(LSCall.CALL_TYPE_REJECTED);
                     }*/
                     try {
-                        CallProcessor.Process(mContext, tempCall, showDialog);
+                        CallProcessor.Process(mContext, tempCall, showNotification,showDialog);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             } while (managedCursor.moveToPrevious());
             if (reRun) {
-                // CallLogFunc();
+                 //CallLogFunc();
             }
         } catch (Exception e) {
             e.printStackTrace();

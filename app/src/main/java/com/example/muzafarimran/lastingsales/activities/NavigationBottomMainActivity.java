@@ -62,7 +62,7 @@ import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.sync.SyncUser;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.TheCallLogEngine;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -723,8 +723,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         Log.d(TAG, "onShakeEvent: Shake Event: " + event);
 //        sessionManager.fetchData();
 
-        startService(new Intent(getApplicationContext(), CallLogIngineService.class));
-
+       /* startService(new Intent(getApplicationContext(), CallLogIngineService.class));
+*/
 
         /* TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
         theCallLogEngine.execute();*/
@@ -757,8 +757,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
                */
 
-                startService(new Intent(getApplicationContext(), CallLogIngineService.class));
-
+                /*startService(new Intent(getApplicationContext(), CallLogIngineService.class));
+*/
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
                 String projectToken = MixpanelConfig.projectToken;
@@ -933,8 +933,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     Log.d(TAG, "initFirst: isFirstRun TRUE");
                  /*   TheCallLogEngine theCallLogEngine = new TheCallLogEngine(NavigationBottomMainActivity.this);
                     theCallLogEngine.execute();*/
-                    startService(new Intent(getApplicationContext(), CallLogIngineService.class));
-
+                  /*  startService(new Intent(getApplicationContext(), CallLogIngineService.class));
+*/
                 }
 
 //                Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();

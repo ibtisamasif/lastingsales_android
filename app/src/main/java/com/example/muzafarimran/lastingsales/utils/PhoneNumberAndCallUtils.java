@@ -347,6 +347,7 @@ public class PhoneNumberAndCallUtils {
         if (allCalls != null) {
             for (LSCall oneCall : allCalls) {
                 if (oneCall.getContact() == null) {
+
                     oneCall.setContact(contact);
                 }
                 oneCall.setContactName(null);

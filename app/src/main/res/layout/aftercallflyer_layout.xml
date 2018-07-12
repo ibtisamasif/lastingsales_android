@@ -10,9 +10,10 @@
     android:clipToPadding="false">
 
     <android.support.constraint.ConstraintLayout
+        android:layout_marginBottom="20dp"
         android:id="@+id/cl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:animateLayoutChanges="true"
         android:background="@drawable/shadow_borders"
@@ -39,9 +40,9 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:background="@drawable/ic_account_circle_white_img"
                 fresco:placeholderImage="@drawable/ic_account_circle_white_img"
-                fresco:roundAsCircle="true" />
+                fresco:roundAsCircle="true"
+                tools:background="@drawable/ic_account_circle_white_img" />
 
             <TextView
                 android:id="@+id/tvContactName"
@@ -70,22 +71,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvNoteHeading"
-                style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:text="Note:"
-                app:layout_constraintStart_toEndOf="@+id/user_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/tvContactName" />
 
         </android.support.constraint.ConstraintLayout>
 
         <TextView
-            android:visibility="gone"
-            android:hint="Enter contact Name here....."
             android:id="@+id/afterCallContactNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,15 +83,15 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_weight="2.5"
+            android:hint="Enter contact Name here....."
             android:maxLines="3"
             android:textColor="@color/md_black"
             android:textSize="12sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />
 
         <TextView
-            android:visibility="gone"
-            android:hint="Enter contact Name"
             android:id="@+id/dispMsgAddContact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -111,59 +100,75 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_weight="2.5"
+            android:hint="Enter contact Name"
             android:maxLines="3"
             android:textColor="@color/md_black"
             android:textSize="17sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/afterCallContactNumber" />
 
-        <EditText
-            android:hint="Enter contact Name here....."
-            android:id="@+id/afterCallAddContactField"
+        <RelativeLayout
+
+            android:id="@+id/relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="2.5"
+
+            app:layout_constraintTop_toBottomOf="@+id/dispMsgAddContact"
+            fresco:layout_goneMarginRight="20dp">
+
+            <EditText
+
+                android:id="@+id/afterCallAddContactField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="2.5"
 
 
-            android:textSize="12sp"
+                android:hint="Enter contact Name here....."
 
-            app:layout_constraintTop_toBottomOf="@+id/dispMsgAddContact" />
+                android:textSize="15sp" />
+        </RelativeLayout>
 
         <CheckBox
-            android:hint="Don't ask me again"
             android:id="@+id/afterCallAddContactCb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="2.5"
+            android:hint="Don't ask me again"
             android:maxLines="3"
             android:textColor="@color/md_black"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/afterCallAddContactField" />
+            app:layout_constraintTop_toBottomOf="@+id/relative" />
 
         <Button
-            android:hint="Save Contact"
             android:id="@+id/afterCallAddContactAddBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="105dp"
+            android:layout_height="48dp"
+            android:layout_gravity="right"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="30dp"
+
+
+
+            style="@style/Base.Widget.AppCompat.Button.Colored"
             android:layout_weight="2.5"
-            android:maxLines="3"
-            android:textColor="@color/md_black"
+
+            android:hint="Save Contact"
+
+            android:textColorHint="@color/cpb_white"
+
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/afterCallAddContactCb" />
+            app:layout_constraintTop_toBottomOf="@+id/afterCallAddContactCb"
+            fresco:layout_constraintEnd_toEndOf="parent"
+             />
 
 
 
