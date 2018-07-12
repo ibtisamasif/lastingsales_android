@@ -24,8 +24,13 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+
+import java.util.Calendar;
 
 public class CallService extends Service {
 
@@ -54,7 +59,12 @@ public class CallService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
 
-        num = intent.getStringExtra("no");
+        try {
+            num = intent.getStringExtra("no");
+            Log.d("personal num is ",num);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         name = intent.getStringExtra("name");
 
 
@@ -116,19 +126,8 @@ public class CallService extends Service {
 
 
         EditText addContactField = view.findViewById(R.id.afterCallAddContactField);
-        addContactField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                addContactField.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        InputMethodManager imm = (InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.showSoftInput(addContactField, InputMethodManager.SHOW_IMPLICIT);
-                    }
-                });
-            }
-        });
-        addContactField.requestFocus();
+
+
         TextView showNumber = view.findViewById(R.id.afterCallContactNumber);
         TextView showNumber1 = view.findViewById(R.id.tvContactName);
         Button addBtn = view.findViewById(R.id.afterCallAddContactAddBtn);
@@ -189,22 +188,46 @@ public class CallService extends Service {
                        // Toast.makeText(CallService.this, "You enter " + addContactField.getText().toString(), Toast.LENGTH_SHORT).show();
 
 
-                        LSContact updateContacct = LSContact.getContactFromNumber(num);
-                        updateContacct.setContactName(addContactField.getText().toString());
-                        updateContacct.setContactSave("true");
-                        updateContacct.save();
+                        if(new SettingsManager(getApplicationContext()).getKeyStateIsCompanyPhone()) {
+                            LSContact updateContacct = LSContact.getContactFromNumber(num);
+                            updateContacct.setContactName(addContactField.getText().toString());
+                            updateContacct.setContactSave("true");
+                            updateContacct.save();
+
+                            //save contact in phonebook
+                            PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), addContactField.getText().toString(),num);
 
 
-                        if (updateContacct.save() > 0) {
-                            Log.d("amir", "update contact");
-                          //  Toast.makeText(CallService.this, "updated", Toast.LENGTH_SHORT).show();
-                            manager.removeView(view);
-                            stopSelf();
-                        } else {
-                            Log.d("amir", "updte contact error");
-                            //Toast.makeText(CallService.this, "update contact error", Toast.LENGTH_SHORT).show();
-                            //show error
 
+                            if (updateContacct.save() > 0) {
+                                Log.d("amir", "update contact");
+                                //  Toast.makeText(CallService.this, "updated", Toast.LENGTH_SHORT).show();
+                                manager.removeView(view);
+                                stopSelf();
+                            } else {
+                                Log.d("amir", "updte contact error");
+                                //Toast.makeText(CallService.this, "update contact error", Toast.LENGTH_SHORT).show();
+                                //show error
+
+                            }
+                        }else{
+                            LSContact lsContact=new LSContact();
+                            lsContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+                            lsContact.setContactName(addContactField.getText().toString());
+                            lsContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
+                            lsContact.setPhoneOne(num);
+                            PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), addContactField.getText().toString(),num);
+
+
+
+                            if(lsContact.save()>0){
+                                Log.d("personal contact","created");
+                                manager.removeView(view);
+                                stopSelf();
+
+                            }else{
+                                Log.d("personal contact ","not created something went wrong");
+                            }
                         }
 
 

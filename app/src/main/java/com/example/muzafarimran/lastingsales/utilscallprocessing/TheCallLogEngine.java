@@ -1,3 +1,4 @@
+/*
 package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
 import android.content.Context;
@@ -13,9 +14,11 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import java.sql.Date;
 import java.util.Arrays;
 
+*/
 /**
  * Created by ibtisam on 3/3/2017.
- */
+ *//*
+
 
 public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
     public static final String TAG = "TheCallLogEngine";
@@ -161,7 +164,7 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
 //                        tempCall.setType(LSCall.CALL_TYPE_REJECTED);
 //                    }
                     try {
-                        CallProcessor.Process(mContext, tempCall, showNotification);
+                        //CallProcessor.Process(mContext, tempCall, showNotification);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -178,4 +181,4 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
             }
         }
     }
-}
+}*/
