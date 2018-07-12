@@ -12,7 +12,10 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.DealDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
+import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 /**
  * Created by ibtisam on 2/1/2018.
@@ -22,8 +25,12 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
     private static final String TAG = "ViewHolderTaskCard";
 
     private final ConstraintLayout cl;
+    private final SimpleDraweeView user_avatar;
     private final TextView tvContactName;
     private final TextView tvContactNumber;
+    private final SimpleDraweeView organization_avatar;
+    private final TextView tvOrganizationName;
+    private final TextView tvOrganizationNumber;
     private final TextView tvDealName;
     private final TextView tvDealDescription;
 //    private final ImageView ivTick;
@@ -32,8 +39,12 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
         super(v);
 
         cl = v.findViewById(R.id.cl);
+        user_avatar = v.findViewById(R.id.user_avatar);
         tvContactName = v.findViewById(R.id.tvContactName);
         tvContactNumber = v.findViewById(R.id.tvNumber);
+        organization_avatar = v.findViewById(R.id.organization_avatar);
+        tvOrganizationName = v.findViewById(R.id.tvOrganizationName);
+        tvOrganizationNumber = v.findViewById(R.id.tvOrganizationNumber);
         tvDealName = v.findViewById(R.id.tvDealName);
         tvDealDescription = v.findViewById(R.id.tvDealDescription);
 //        ivTick = v.findViewById(R.id.ivTick);
@@ -42,28 +53,43 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
 
     public void bind(Object item, int position, Context mContext) {
         LSDeal lsDeal = (LSDeal) item;
-
         LSContact contact = lsDeal.getContact();
-
-
         if (contact != null) {
-//            Log.i(TAG, "bind: lscontact: " + contact.toString());
+            Log.i(TAG, "bind: lscontact: " + contact.toString());
             if (contact.getContactName() != null)
                 tvContactName.setText(contact.getContactName());
             if (contact.getPhoneOne() != null) {
                 tvContactNumber.setText(contact.getPhoneOne());
             }
+            if(contact.getContactProfile()!=null){
+                MyDateTimeStamp.setFrescoImage(user_avatar, contact.getContactProfile().getSocial_image());
+            }
+        }else {
+            Log.i(TAG, "bind: lscontact: is NULL");
+            tvContactName.setText("UNKNOWN");
+            tvContactNumber.setText("number");
+        }
+        LSOrganization organization = lsDeal.getOrganization();
+        if (organization != null) {
+            Log.i(TAG, "bind: lscontact: " + organization.toString());
+            if (organization.getName() != null)
+                tvOrganizationName.setText(organization.getName());
+            if (organization.getPhone() != null) {
+                tvOrganizationNumber.setText(organization.getPhone());
+            }
+//            if(organization.getContactProfile()!=null){
+//                MyDateTimeStamp.setFrescoImage(user_avatar, organization.getContactProfile().getSocial_image());
+//            }
         } else {
             Log.i(TAG, "bind: lscontact: is NULL");
             tvContactName.setText("UNKNOWN");
             tvContactNumber.setText("number");
         }
-
         if (lsDeal.getName() != null) {
             tvDealName.setText(lsDeal.getName());
-            if (lsDeal.getIsPrivate() != null && lsDeal.getIsPrivate().equalsIgnoreCase("1")){
+            if (lsDeal.getIsPrivate() != null && lsDeal.getIsPrivate().equalsIgnoreCase("1")) {
                 tvDealName.setText(lsDeal.getName() + " (Private)");
-            }else if (lsDeal.getIsPrivate() != null && lsDeal.getIsPrivate().equalsIgnoreCase("0")){
+            } else if (lsDeal.getIsPrivate() != null && lsDeal.getIsPrivate().equalsIgnoreCase("0")) {
                 tvDealName.setText(lsDeal.getName() + " (Public)");
             }
         }
@@ -71,12 +97,11 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
         cl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (contact != null && lsDeal != null){
+                if (lsDeal != null) {
                     Intent detailsActivityIntent = new Intent(mContext, DealDetailsTabActivity.class);
-                    long contactId = lsDeal.getId();
-                    detailsActivityIntent.putExtra(DealDetailsTabActivity.KEY_DEAL_ID, contactId + "");
+                    detailsActivityIntent.putExtra(DealDetailsTabActivity.KEY_DEAL_ID, lsDeal.getId() + "");
                     mContext.startActivity(detailsActivityIntent);
-                }else {
+                } else {
                     DeleteManager.deleteDeal(mContext, lsDeal);
 //                    lsDeal.delete();
                 }

@@ -59,7 +59,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_monetization_on_24dp" />
+            app:srcCompat="@drawable/ic_building_24dp" />
 
         <TextView
             android:id="@+id/org_name"
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:text="deal name"
+            android:text="organization name"
             app:layout_constraintStart_toEndOf="@+id/imSmartBadge"
             app:layout_constraintTop_toTopOf="@+id/imSmartBadge" />
 

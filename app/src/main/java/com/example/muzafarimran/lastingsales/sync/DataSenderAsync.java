@@ -714,7 +714,12 @@ public class DataSenderAsync {
                     params.put("dynamic_values", "" + deal.getDynamic());
                 }
                 params.put("status", "" + deal.getStatus());
-                params.put("lead_id", "" + deal.getContact().getServerId()); // TODO can crash here
+                if (deal.getContact() != null) {
+                    params.put("lead_id", "" + deal.getContact().getServerId());
+                }
+                if (deal.getOrganization() != null) {
+                    params.put("organization_id", "" + deal.getOrganization().getServerId());
+                }
                 params.put("workflow_id", "" + deal.getWorkflowId());
                 params.put("workflow_stage_id", "" + deal.getWorkflowStageId());
                 params.put("is_private", "" + deal.getIsPrivate());
@@ -1286,17 +1291,15 @@ public class DataSenderAsync {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_LEAD)) {
-//                    params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_LEAD);
+                    params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_LEAD);
                     params.put("id", "" + note.getContactOfNote().getId());
                 }
-
                 if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_DEAL)) {
-//                    params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_DEAL);
+                    params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_DEAL);
                     params.put("id", "" + note.getDealOfNote().getId());
                 }
-
                 if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_ORGANIZATION)) {
-//                    params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_ORGANIZATION);
+                    params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_ORGANIZATION);
                     params.put("id", "" + note.getOrganizationOfNote().getId());
                 }
                 params.put("description", "" + note.getNoteText());
@@ -1313,7 +1316,6 @@ public class DataSenderAsync {
     }
 
     private void updateNotesToServer() {
-
         List<LSNote> notesList = null;
         if (LSNote.count(LSNote.class) > 0) {
             notesList = LSNote.find(LSNote.class, "sync_status = ?", SyncStatus.SYNC_STATUS_NOTE_EDIT_NOT_SYNCED);
@@ -1327,15 +1329,10 @@ public class DataSenderAsync {
 
     private void updateNoteToServerSync(final LSNote note) {
         currentState = PENDING;
-        Log.d(TAG, "LeadLocalIdOfNote: " + note.getContactOfNote().getId());
-        Log.d(TAG, "LeadServerIdOfNote: " + note.getContactOfNote().getServerId());
         final String BASE_URL = MyURLs.UPDATE_NOTE;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
-                .appendPath("" + note.getContactOfNote().getServerId())
-                .appendPath("notes")
                 .appendPath("" + note.getServerId())
-//                .appendPath(""+note.getId())
                 .appendQueryParameter("description", "" + note.getNoteText())
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
@@ -1348,7 +1345,6 @@ public class DataSenderAsync {
                     JSONObject jObj = new JSONObject(response);
                     int responseCode = jObj.getInt("responseCode");
 //                    Toast.makeText(getApplicationContext(), "response: "+response.toString(), Toast.LENGTH_LONG).show();
-
 //                    if (responseCode == 200) {
                     JSONObject responseObject = jObj.getJSONObject("response");
                     note.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_EDIT_SYNCED);
@@ -1374,7 +1370,6 @@ public class DataSenderAsync {
     }
 
     private void deleteNotesFromServer() {
-
         List<LSNote> notesList = null;
         if (LSNote.count(LSNote.class) > 0) {
             notesList = LSNote.find(LSNote.class, "sync_status = ?", SyncStatus.SYNC_STATUS_NOTE_DELETE_NOT_SYNCED);
@@ -1386,15 +1381,12 @@ public class DataSenderAsync {
         }
     }
 
-
     private void deleteNoteFromServerSync(final LSNote note) {
         Log.d(TAG, "deleteNoteFromServerSync: ServerIdOfNote: " + note.getServerId());
         currentState = PENDING;
         final String BASE_URL = MyURLs.DELETE_NOTE;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
-                .appendPath("" + note.getContactOfNote().getServerId())
-                .appendPath("notes")
                 .appendPath("" + note.getServerId())
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();

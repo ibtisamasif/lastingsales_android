@@ -2,25 +2,19 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SyncStats;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.service.CallService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utils.CallEndTagBoxService;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -140,7 +134,6 @@ public class CallProcessor {
 
                             showDialog(mContext, call);
 
-
                         }
 
                         //save call logs
@@ -159,7 +152,6 @@ public class CallProcessor {
                     } else {
                         //error
                     }
-
 
                 }
             }
@@ -189,12 +181,9 @@ public class CallProcessor {
                     }
                 }
 
-
                 saveCallLogs(call);
-
                 case3(call);
                 case5(mContext);
-
 
             }
         }
@@ -268,11 +257,10 @@ public class CallProcessor {
                 LSInquiry lsInquiry = new LSInquiry();
                 lsInquiry.setContactName(call.getContactName());
                 lsInquiry.setContactNumber(call.getContactNumber());
-                lsInquiry.setStatus(LSInquiry.INQUIRY_STATUS_PENDING);
                 lsInquiry.setDuration(call.getDuration());
                 lsInquiry.setCountOfInquiries(call.getCountOfInquiries());
                 lsInquiry.setBeginTime(call.getBeginTime());
-
+                lsInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
 
                 try {
                     if (lsInquiry.save() > 0) {
@@ -314,11 +302,10 @@ public class CallProcessor {
                 LSInquiry lsInquiry = new LSInquiry();
                 lsInquiry.setContactName(call.getContactName());
                 lsInquiry.setContactNumber(call.getContactNumber());
-                lsInquiry.setStatus(LSInquiry.INQUIRY_STATUS_PENDING);
                 lsInquiry.setDuration(call.getDuration());
                 lsInquiry.setCountOfInquiries(call.getCountOfInquiries());
                 lsInquiry.setBeginTime(call.getBeginTime());
-
+                lsInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_PENDING_NOT_SYNCED);
 
                 try {
                     if (lsInquiry.save() > 0) {

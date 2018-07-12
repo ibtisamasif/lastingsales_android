@@ -33,6 +33,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/imSmartBadge"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_monetization_on_24dp" />
+
+        <TextView
+            android:id="@+id/tvDealName"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="deal name"
+            app:layout_constraintStart_toEndOf="@+id/imSmartBadge"
+            app:layout_constraintTop_toTopOf="@+id/imSmartBadge" />
+
+        <TextView
+            android:id="@+id/tvDealDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="description"
+            app:layout_constraintStart_toStartOf="@+id/tvDealName"
+            app:layout_constraintTop_toBottomOf="@+id/tvDealName" />
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_avatar"
             android:layout_width="24dp"
@@ -71,6 +101,29 @@
             app:layout_constraintStart_toStartOf="@+id/tvContactName"
             app:layout_constraintTop_toBottomOf="@+id/tvContactName" />
 
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/organization_avatar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            fresco:layout_constraintEnd_toStartOf="@+id/tvOrganizationName"
+            fresco:layout_constraintTop_toTopOf="@+id/tvOrganizationName"
+            fresco:placeholderImage="@drawable/ic_building_24dp"
+            fresco:roundAsCircle="true" />
+
+        <TextView
+            android:id="@+id/tvOrganizationName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="9"
+            android:text="@string/unknown_capital"
+            fresco:layout_constraintStart_toStartOf="@+id/tvNumber"
+            fresco:layout_constraintTop_toBottomOf="@+id/tvNumber" />
+
         <!--<ImageView-->
         <!--android:id="@+id/ivTick"-->
         <!--android:layout_width="wrap_content"-->
@@ -87,35 +140,17 @@
         <!--app:srcCompat="@drawable/ic_check_24dp" />-->
 
 
-        <ImageView
-            android:id="@+id/imSmartBadge"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_monetization_on_24dp" />
-
         <TextView
-            android:id="@+id/tvDealName"
-            style="@style/TextAppearance.AppCompat.Subhead"
+            android:id="@+id/tvOrganizationNumber"
+            style="@style/Base.TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="deal name"
-            app:layout_constraintStart_toEndOf="@+id/imSmartBadge"
-            app:layout_constraintTop_toTopOf="@+id/imSmartBadge" />
-
-        <TextView
-            android:id="@+id/tvDealDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="description"
-            app:layout_constraintStart_toStartOf="@+id/tvDealName"
-            app:layout_constraintTop_toBottomOf="@+id/tvDealName" />
+            android:layout_below="@id/tvContactName"
+            android:layout_toEndOf="@id/missed_call_icon"
+            android:layout_toRightOf="@id/missed_call_icon"
+            android:text="number"
+            fresco:layout_constraintStart_toStartOf="@+id/tvOrganizationName"
+            fresco:layout_constraintTop_toBottomOf="@+id/tvOrganizationName" />
 
         <LinearLayout
             android:id="@+id/linearLayout10"
@@ -128,7 +163,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumber" />
+            app:layout_constraintTop_toBottomOf="@+id/tvOrganizationNumber" />
 
     </android.support.constraint.ConstraintLayout>
 
