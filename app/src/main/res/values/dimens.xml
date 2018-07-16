@@ -32,7 +32,7 @@
     <dimen name="list_text_margin_left">15dp</dimen>
     <dimen name="normalMargin">10dp</dimen>
     <!--UIOCALL popup stuff-->
-    <dimen name="corners_radius_size">4dp</dimen>
+    <dimen name="corners_radius_size">6dp</dimen>
     <dimen name="corners_radius_size_textview_bg">2dp</dimen>
     <dimen name="corners_radius_size_edittext_bg">0dp</dimen>
     <dimen name="corners_radius_size_promo_button">3dp</dimen>

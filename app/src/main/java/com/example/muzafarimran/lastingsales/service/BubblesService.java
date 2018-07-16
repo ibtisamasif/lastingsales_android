@@ -59,7 +59,7 @@ public class BubblesService extends Service {
     }
 
     private void recycleBubble(final BubbleLayout bubble) {
-   /*     new Handler(Looper.getMainLooper()).post(new Runnable() {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
                 if (bubble != null) {
@@ -72,7 +72,7 @@ public class BubblesService extends Service {
                     }
                 }
             }
-        });*/
+        });
     }
 
     private WindowManager getWindowManager() {

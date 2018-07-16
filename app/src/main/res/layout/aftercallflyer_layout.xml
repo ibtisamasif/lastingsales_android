@@ -10,6 +10,7 @@
     android:clipToPadding="false">
 
     <android.support.constraint.ConstraintLayout
+        style="@style/ThemeOverlay.AppCompat"
         android:layout_marginBottom="20dp"
         android:id="@+id/cl"
         android:layout_width="match_parent"

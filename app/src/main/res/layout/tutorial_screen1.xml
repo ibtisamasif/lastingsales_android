@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_slider_screen1">
+    android:background="@drawable/first_tutorial_screen_pic">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -15,15 +15,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tutorial screen 1"
-            android:textColor="@android:color/white"
+
             android:layout_marginBottom="10dp"
             android:textSize="30dp"
             android:textStyle="bold" />
+<!--
 
-        <ImageView
+       &lt;!&ndash;&ndash;&gt; <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/daily_exercise" />
+            android:src="@drawable/first_tutorial_screen_pic" />
+-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,8 +35,7 @@
             android:paddingRight="5dp"
             android:text="some text heresome text heresome text heresome text heresome text heresome text heresome text heresome text heresome text heresome text here"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="13dp" />
+           android:textSize="13dp" />
 
     </LinearLayout>
 </RelativeLayout>

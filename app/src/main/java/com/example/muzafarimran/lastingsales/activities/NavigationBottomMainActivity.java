@@ -48,6 +48,7 @@ import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomS
 import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
+import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -55,13 +56,14 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
-import com.example.muzafarimran.lastingsales.service.CallLogIngineService;
+import com.example.muzafarimran.lastingsales.service.CallLogEngineService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.sync.SyncUser;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -69,6 +71,7 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.wires.ShakeEventWire;
@@ -198,6 +201,21 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: called");
+
+/*
+        for(int i=0;i<100;i++){
+            Log.d("running","loop amir");
+            List<LSContact> lsContacts=LSContact.find(LSContact.class,"contact_name=? and contact_type=? "
+                    ,new String[]{"amir12601","unanswered"});
+
+            if(lsContacts.size()>0) {
+                Log.d("query name", lsContacts.get(0).getContactType());
+            }else{
+                Log.d("NULL","NULLLLLL");
+
+            }
+
+        }*/
 
         initFirst(savedInstanceState);
 
@@ -706,7 +724,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         Log.d(TAG, "onShakeEvent: Shake Event: " + event);
 //        sessionManager.fetchData();
 
-        startService(new Intent(getApplicationContext(), CallLogIngineService.class));
+     //   startService(new Intent(getApplicationContext(), CallLogEngineService.class));
 
 
         /* TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
@@ -740,7 +758,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
                */
 
-                startService(new Intent(getApplicationContext(), CallLogIngineService.class));
+             //   startService(new Intent(getApplicationContext(), CallLogEngineService.class));
 
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
@@ -916,7 +934,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     Log.d(TAG, "initFirst: isFirstRun TRUE");
                  /*   TheCallLogEngine theCallLogEngine = new TheCallLogEngine(NavigationBottomMainActivity.this);
                     theCallLogEngine.execute();*/
-                    startService(new Intent(getApplicationContext(), CallLogIngineService.class));
+                //    startService(new Intent(getApplicationContext(), CallLogEngineService.class));
 
                 }
 

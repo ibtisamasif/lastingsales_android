@@ -27,7 +27,7 @@ public class CallProcessor {
 
     public static void Process(Context mContext, LSCall call, boolean showNotification,boolean showDialog) {
 
-        Log.d("processor", "call");
+        Log.d("processor", "call amir");
 
         if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
 
@@ -44,7 +44,7 @@ public class CallProcessor {
         }
 
 
-        Toast.makeText(mContext, "type "+call.getType(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(mContext, "type "+call.getType(), Toast.LENGTH_SHORT).show();
         SettingsManager settingsManager = new SettingsManager(mContext);
         if (settingsManager.getKeyStateIsCompanyPhone()) { // COMPANY PHONE
 
@@ -142,6 +142,7 @@ public class CallProcessor {
                     saveContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                     saveContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                     saveContact.setContactName(call.getContactName());
+                    saveContact.setContactType(call.getType());
 
 
                     if (saveContact.save() > 0) {

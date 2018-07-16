@@ -12,8 +12,8 @@
     <corners
         android:topLeftRadius="@dimen/corners_radius_size"
         android:topRightRadius="@dimen/corners_radius_size"
-        android:bottomRightRadius="0dp"
-        android:bottomLeftRadius="0dp" />
+        android:bottomRightRadius="4dp"
+        android:bottomLeftRadius="6dp" />
 
     <!-- Specify the margins that all content inside the drawable must adhere to -->
 

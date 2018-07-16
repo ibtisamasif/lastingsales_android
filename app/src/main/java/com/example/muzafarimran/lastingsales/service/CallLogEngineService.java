@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-public class CallLogIngineService extends Service {
+public class CallLogEngineService extends Service {
 
     public static final String TAG = "TheCallLogEngine";
 //    private static final String TAG = "AppInitializationTest";

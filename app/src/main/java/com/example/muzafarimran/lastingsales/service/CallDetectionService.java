@@ -10,10 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.provider.CallLog;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -28,7 +26,12 @@ import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.CallTypeManager;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import de.halfbit.tinybus.TinyBus;
@@ -222,7 +225,7 @@ public class CallDetectionService extends Service {
         // start calllogengine service
 
 
-        startService(new Intent(this, CallLogIngineService.class));
+        startService(new Intent(this, CallLogEngineService.class));
 
         IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
         TinyBus inBus = TinyBus.from(ctx.getApplicationContext());
@@ -257,7 +260,7 @@ public class CallDetectionService extends Service {
         theCallLogEngine.execute();
         */
 
-        startService(new Intent(this, CallLogIngineService.class));
+        startService(new Intent(this, CallLogEngineService.class));
 
         OutgoingCallEventModel outCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
         TinyBus outBus = TinyBus.from(ctx.getApplicationContext());
@@ -290,7 +293,7 @@ public class CallDetectionService extends Service {
         theCallLogEngine.execute();
        */
 
-        startService(new Intent(this, CallLogIngineService.class));
+        startService(new Intent(this, CallLogEngineService.class));
 
 
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
@@ -311,13 +314,13 @@ public class CallDetectionService extends Service {
     }
 
     public void checkShowCallPopupFlyer(Context ctx, String number) {
-   /*     Log.wtf(TAG, "checkShowCallPopupFlyer: ");
+        Log.wtf(TAG, "checkShowCallPopupFlyer: ");
         if(settingsManager.getKeyStateFlyer()){
             String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(ctx, number);
             LSContact oneContact;
             oneContact = LSContact.getContactFromNumber(internationalNumber);
             ArrayList<LSNote> notesForContact = null;
-            if (oneContact != null && !oneContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+            if (oneContact != null && ! oneContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
                 notesForContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(oneContact.getId());
                 if (notesForContact != null && notesForContact.size() > 0) {
                     notesForContact.size();
@@ -330,7 +333,7 @@ public class CallDetectionService extends Service {
             } else if (oneContact == null){
                 FlyerBubbleHelper.getInstance(ctx).show(internationalNumber);
             }
-        }*/
+        }
     }
 
     private void endServiceAndCallPopupFlyer(Context ctx) {
