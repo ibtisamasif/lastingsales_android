@@ -20,6 +20,7 @@ import com.example.muzafarimran.lastingsales.adapters.LSStageSpinAdapter;
 import com.example.muzafarimran.lastingsales.autocompletetext.ContactsCompletionView;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -37,27 +38,33 @@ import java.util.List;
  * Created by ibtisam on 3/28/2018.
  */
 
-public class AddDealActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener<LSContact> {
+public class AddDealActivity extends AppCompatActivity implements  TokenCompleteTextView.TokenListener<LSContact> {
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
+    public static final String TAG_LAUNCH_MODE_ORGANIZATION_ID = "organization_id";
     private String TAG = "AddDealActivity";
-    private EditText etContactName;
+    private EditText etDealName;
     private EditText etValueAddDeal;
     private Button bSaveAddDeal;
     private Button bCancelAddDeal;
+    private Spinner stageSpinner;
+    private Spinner isPrivateSpinner;
 
     //    private LinearLayout llDealType;
     String selectedDealType = LSDeal.DEAL_STATUS_CLOSED_WON;
     private LSContact selectedContact;
+    private LSOrganization selectedOrganization;
     private LSDeal mDeal;
     List<LSStage> stageList = new ArrayList<LSStage>();
-    private Spinner stageSpinner;
-    private Spinner isPrivateSpinner;
     private String dealStatus = LSDeal.DEAL_VISIBILITY_STATUS_COMPANY;
 
     private ContactsCompletionView acLeadAddDeal;
     private EditText etLeadAddDeal;
-    ArrayAdapter<LSContact> adapter;
+    ArrayAdapter<LSContact> adapterContacts;
     long contactIdLong = -1;
+    //    ArrayAdapter<LSOrganization> adapterOrganizations;
+    //    private OrganizationsCompletionView acOrganizationAddDeal;
+    //    private EditText etOrganizationAddDeal;
+//    long organizationIdLong = -1;
     private String selectedStageServerId;
 
     @Override
@@ -66,14 +73,21 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
         setContentView(R.layout.activity_add_deal);
         etLeadAddDeal = (EditText) findViewById(R.id.etLeadAddDeal);
         acLeadAddDeal = (ContactsCompletionView) findViewById(R.id.acLeadAddDeal);
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            String id = Long.toString(bundle.getLong(TAG_LAUNCH_MODE_CONTACT_ID));
-            if (id != null && !id.equals("")) {
-                contactIdLong = Long.parseLong(id);
-                selectedContact = LSContact.findById(LSContact.class, contactIdLong);
-            }
-        }
+//        etOrganizationAddDeal = (EditText) findViewById(R.id.etOrganizationAddDeal);
+//        acOrganizationAddDeal = (OrganizationsCompletionView) findViewById(R.id.acOrganizationAddDeal);
+//        Bundle bundle = getIntent().getExtras();
+//        if (bundle != null) {
+//            String id = Long.toString(bundle.getLong(TAG_LAUNCH_MODE_CONTACT_ID));
+//            if (id != null && !id.equals("")) {
+//                contactIdLong = Long.parseLong(id);
+//                selectedContact = LSContact.findById(LSContact.class, contactIdLong);
+//            }
+//            String id2 = Long.toString(bundle.getLong(TAG_LAUNCH_MODE_ORGANIZATION_ID));
+//            if (id2 != null && !id2.equals("")) {
+//                organizationIdLong = Long.parseLong(id2);
+//                selectedOrganization = LSOrganization.findById(LSOrganization.class, organizationIdLong);
+//            }
+//        }
         if (selectedContact != null) {
             etLeadAddDeal.setVisibility(View.VISIBLE);
             acLeadAddDeal.setVisibility(View.GONE);
@@ -89,10 +103,23 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
             acLeadAddDeal.setVisibility(View.VISIBLE);
         }
 
-        List<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
-        adapter = new FilteredArrayAdapter<LSContact>(this, R.layout.person_layout, contacts)
+//        if (selectedOrganization != null) {
+//            etOrganizationAddDeal.setVisibility(View.VISIBLE);
+//            acOrganizationAddDeal.setVisibility(View.GONE);
+//            if (selectedOrganization.getName() != null) {
+//                etOrganizationAddDeal.setText(selectedOrganization.getName());
+//            } else if (selectedOrganization.getPhone() != null) {
+//                etOrganizationAddDeal.setText(selectedOrganization.getPhone());
+//            } else {
+//                etOrganizationAddDeal.setText("");
+//            }
+//        } else {
+//            etOrganizationAddDeal.setVisibility(View.GONE);
+//            acOrganizationAddDeal.setVisibility(View.VISIBLE);
+//        }
 
-        {
+        List<LSContact> contacts = LSContact.getDateArrangedSalesContacts();
+        adapterContacts = new FilteredArrayAdapter<LSContact>(this, R.layout.person_layout, contacts) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
@@ -118,26 +145,64 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
                     }
                 } else return false;
             }
-        }
+        };
 
-        ;
+//        List<LSOrganization> organizations = LSOrganization.listAll(LSOrganization.class);
+//        adapterOrganizations = new FilteredArrayAdapter<LSOrganization>(this, R.layout.person_layout, organizations) {
+//            @Override
+//            public View getView(int position, View convertView, ViewGroup parent) {
+//                if (convertView == null) {
+//
+//                    LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+//                    convertView = l.inflate(R.layout.person_layout, parent, false);
+//                }
+//                LSOrganization lsOrganization = getItem(position);
+//                ((TextView) convertView.findViewById(R.id.name)).setText(lsOrganization.getName());
+//                ((TextView) convertView.findViewById(R.id.number)).setText(lsOrganization.getPhone());
+//
+//                return convertView;
+//            }
+//
+//            @Override
+//            protected boolean keepObject(LSOrganization lsOrganization, String mask) {
+//                mask = mask.toLowerCase();
+//                if (lsOrganization.getName() != null) {
+//                    if (lsOrganization.getName().toLowerCase().contains(mask) || lsOrganization.getPhone().toLowerCase().contains(mask)) {
+//                        return true;
+//                    } else {
+//                        return false;
+//                    }
+//                } else return false;
+//            }
+//        };
 
-        acLeadAddDeal.setAdapter(adapter);
+        acLeadAddDeal.setAdapter(adapterContacts);
         acLeadAddDeal.setTokenListener(this);
         acLeadAddDeal.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
 //        acLeadAddDeal.performBestGuess(true);
         acLeadAddDeal.setThreshold(1);
         acLeadAddDeal.setTokenLimit(1);
-        if (selectedContact != null)
-
-        {
+        if (selectedContact != null) {
             if (selectedContact.getContactName() != null) {
                 acLeadAddDeal.setText(selectedContact.getContactName());
                 acLeadAddDeal.setEnabled(false);
             }
         }
 
-        etContactName = (EditText)
+//        acOrganizationAddDeal.setAdapter(adapterOrganizations);
+//        acOrganizationAddDeal.setTokenListener(this);
+//        acOrganizationAddDeal.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
+////        acOrganizationAddDeal.performBestGuess(true);
+//        acOrganizationAddDeal.setThreshold(1);
+//        acOrganizationAddDeal.setTokenLimit(1);
+//        if (selectedOrganization != null) {
+//            if (selectedOrganization.getName() != null) {
+//                acOrganizationAddDeal.setText(selectedOrganization.getName());
+//                acOrganizationAddDeal.setEnabled(false);
+//            }
+//        }
+
+        etDealName = (EditText)
 
                 findViewById(R.id.etNameAddDeal);
 
@@ -165,8 +230,8 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
         {
             @Override
             public void onClick(View v) {
-                if (selectedContact != null) {
-                    String dealName = etContactName.getText().toString();
+                if (selectedContact != null || selectedOrganization != null) {
+                    String dealName = etDealName.getText().toString();
                     String dealValue = etValueAddDeal.getText().toString();
                     String dealPhone = selectedContact.getPhoneOne();               //refactor
                     if (isValid(dealName, dealPhone)) {
@@ -228,6 +293,16 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
         selectedContact = null;
     }
 
+//    @Override
+//    public void onTokenAdded(LSOrganization token) {
+//        selectedOrganization = token;
+//    }
+//
+//    @Override
+//    public void onTokenRemoved(LSOrganization token) {
+//        selectedOrganization = null;
+//    }
+
     public void addItemsOnSpinnerDealStage() {
         stageSpinner = (Spinner) findViewById(R.id.stage_spinner);
         LSWorkflow defaultWorkFlow = LSWorkflow.getDefaultWorkflow();
@@ -261,10 +336,10 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
     }
 
     private boolean isValid(String dealName, String dealLead) {
-        etContactName.setError(null);
+        etDealName.setError(null);
         acLeadAddDeal.setError(null);
         if (dealName.equals("") || dealName.length() < 3) {
-            etContactName.setError("Invalid Name!");
+            etDealName.setError("Invalid Deal Name!");
             return false;
         }
         if (dealLead.equals("") || dealLead.length() < 1) {

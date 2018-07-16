@@ -208,9 +208,9 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
 
         Collection<LSDeal> deals = contact.getAllDeals();
         if (deals != null && deals.size() > 0) {
-            this.add_deal_icon.setVisibility(View.INVISIBLE);
+            this.add_deal_icon.setImageResource(R.drawable.ic_monetization_on_black_24dp);
         }else {
-            this.add_deal_icon.setVisibility(View.VISIBLE);
+            this.add_deal_icon.setImageResource(R.drawable.ic_monetization_on_24dp);
         }
 
         this.bSales.setOnClickListener(view -> {
