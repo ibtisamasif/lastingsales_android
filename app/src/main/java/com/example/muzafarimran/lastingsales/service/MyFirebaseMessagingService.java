@@ -19,6 +19,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
@@ -323,6 +324,221 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
                         TinyBus bus = TinyBus.from(getApplicationContext());
                         bus.post(mCallEvent);
+                    }
+                }
+            }
+
+            if (tag.equals("Organization")) {
+                if (action.equals("post")) {
+
+                    String id = payload.getString("id");
+                    String name = payload.getString("name");
+                    String email = null;
+                    if (payload.has("email") && !payload.isNull("email")) {
+                        email = payload.getString("email");
+                    }
+                    String phone = null;
+                    if (payload.has("phone") && !payload.isNull("phone")) {
+                        phone = payload.getString("phone");
+                    }
+                    String address = null;
+                    if (payload.has("address")) {
+                        address = payload.getString("address");
+                    }
+                    String status = payload.getString("status");
+                    String dynamic_values = null;
+                    if (payload.has("dynamic_values")) {
+                        dynamic_values = payload.getString("dynamic_values");
+                    }
+                    int created_by = 0;
+                    if (payload.has("created_by")) {
+                        created_by = payload.getInt("created_by");
+                    }
+
+                    int user_id = 0;
+                    if (payload.has("user_id")) {
+                        user_id = payload.getInt("user_id");
+                    }
+                    String src = null;
+                    if (payload.has("src")) {
+                        src = payload.getString("src");
+                    }
+
+                    mMsg = name;
+                    Log.e(TAG, "handleDataMessageName: " + name);
+
+                    LSOrganization tempOrganization = LSOrganization.getOrganizationFromServerId(id);
+                    if (tempOrganization != null) {
+                        tempOrganization.setServerId(id);
+                        tempOrganization.setName(name);
+                        if (email != null) {
+                            tempOrganization.setEmail(email);
+                        }
+                        if (address != null) {
+                            tempOrganization.setAddress(address);
+                        }
+                        if (phone != null) {
+                            tempOrganization.setPhone(phone);
+                        }
+                        tempOrganization.setUpdatedAt(Calendar.getInstance().getTime());
+                        if (dynamic_values != null) {
+                            tempOrganization.setDynamicValues(dynamic_values);
+                        }
+                        tempOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED);
+                        tempOrganization.setUpdatedAt(Calendar.getInstance().getTime());
+//                        if (created_by != 0) {
+//                            tempOrganization.setCreatedBy(created_by);
+//                        }
+                        if (user_id != 0) {
+                            tempOrganization.setUserId(user_id + "");
+                        }
+                        if (src != null) {
+                            tempOrganization.setSrc(src);
+                        }
+                        tempOrganization.save();
+//                        if (src.equals("facebook")) {
+//                            Log.d(TAG, "handleDataMessage: Notification Message: Lead from FB: " + name);
+//                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                            mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseFacebookLeadNotification(getApplicationContext(), name));
+//                        }
+//                        if (src.equals("assigned")) {
+//                            Log.d(TAG, "handleDataMessage: Notification Message: Lead from assigned: " + name);
+//                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                            mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name, id));
+//                        }
+                    } else {
+                        LSOrganization organization = new LSOrganization();
+                        organization.setServerId(id);
+                        organization.setName(name);
+                        if (email != null) {
+                            organization.setEmail(email);
+                        }
+                        if (phone != null) {
+                            organization.setPhone(phone);
+                        }
+                        if (address != null) {
+                            organization.setAddress(address);
+                        }
+                        if (dynamic_values != null) {
+                            organization.setDynamicValues(dynamic_values);
+                        }
+                        organization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED);
+                        organization.setUpdatedAt(Calendar.getInstance().getTime());
+//                        if (created_by != 0) {
+//                            organization.setCreatedBy(created_by);
+//                        }
+                        if (user_id != 0) {
+                            organization.setUserId(user_id + "");
+                        }
+                        if (src != null) {
+                            organization.setSrc(src);
+                        }
+                        organization.save();
+//                        if (src.equals("facebook")) {
+//                            Log.d(TAG, "handleDataMessage: Notification Message: Lead from FB: " + name);
+//                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                            mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseFacebookLeadNotification(getApplicationContext(), name));
+//                        }
+//                        if (src.equals("assigned")) {
+//                            Log.d(TAG, "handleDataMessage: Notification Message: Lead from assigned: " + name);
+//                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                            mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name, id));
+//                        }
+                        LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+                        TinyBus bus = TinyBus.from(getApplicationContext());
+                        bus.post(mCallEvent);
+                    }
+                } else if (action.equals("put")) {
+                    String id = payload.getString("id");
+                    String name = payload.getString("name");
+                    String email = null;
+                    if (payload.has("email")) {
+                        email = payload.getString("email");
+                    }
+                    String phone = null;
+                    if (payload.has("phone")) {
+                        phone = payload.getString("phone");
+                    }
+//                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
+                    String address = null;
+                    if (payload.has("address")) {
+                        address = payload.getString("address");
+                    }
+//                    String status = payload.getString("status");
+//                    String lead_type = payload.getString("lead_type");
+//                    String created_at = null;
+//                    if(payload.has("created_at")){
+//                        created_at = payload.getString("created_at");
+//                    }
+//                    String updated_at = null;
+//                    if (payload.has("updated_at")) {
+//                        updated_at = payload.getString("updated_at");
+//                    }
+                    int created_by = 0;
+                    if (payload.has("created_by")) {
+                        created_by = payload.getInt("created_by");
+                    }
+
+                    int user_id = 0;
+                    if (payload.has("user_id")) {
+                        user_id = payload.getInt("user_id");
+                    }
+                    String src = null;
+                    if (payload.has("src")) {
+                        src = payload.getString("src");
+                    }
+                    String dynamic_values = null;
+                    if (payload.has("dynamic_values")) {
+                        dynamic_values = payload.getString("dynamic_values");
+                    }
+                    mMsg = name;
+                    Log.e(TAG, "handleDataMessageName: " + name);
+                    LSOrganization organization = LSOrganization.getOrganizationFromServerId(id);
+                    organization.setName(name);
+                    organization.setEmail(email);
+                    if (phone != null) {
+                        organization.setPhone(phone);
+                    }
+                    organization.setAddress(address);
+                    if (dynamic_values != null) {
+                        organization.setDynamicValues(dynamic_values);
+                    }
+                    organization.setUpdatedAt(Calendar.getInstance().getTime());
+//                    if (created_by != 0) {
+//                        organization.setCreatedBy(created_by);
+//                    }
+                    if (user_id != 0) {
+                        organization.setUserId(user_id + "");
+                    }
+                    if (src != null) {
+                        organization.setSrc(src);
+                    }
+                    organization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
+                    organization.save();
+//                    if (src.equals("facebook")) {
+//                        Log.d(TAG, "handleDataMessage: Notification Message: Lead from FB: " + name);
+//                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                        mNotificationManager.notify(FirebaseCustomNotification.NOTIFICATION_ID, FirebaseCustomNotification.createFirebaseFacebookLeadNotification(getApplicationContext(), name));
+//                    }
+//                    if (src.equals("assigned")) {
+//                        Log.d(TAG, "handleDataMessage: Notification Message: Lead from assigned: " + name);
+//                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                        mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name, id));
+//                    }
+//                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
+//                    TinyBus bus = TinyBus.from(getApplicationContext());
+//                    bus.post(mCallEvent);
+
+                } else if (action.equals("delete")) {
+                    String id = payload.getString("id");
+                    LSOrganization organization = LSOrganization.getOrganizationFromServerId(id);
+                    if (organization != null) {
+                        Log.e(TAG, "handleDataMessage: organization: " + organization.toString());
+                        DeleteManager.deleteOrganization(getApplicationContext(), organization);
+//                        contact.delete();
+//                        LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+//                        TinyBus bus = TinyBus.from(getApplicationContext());
+//                        bus.post(mCallEvent);
                     }
                 }
             }
@@ -632,14 +848,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (payload.has("lead_id")) {
                         lead_id = payload.getInt("lead_id");
                     }
+                    int organization_id = 0;
+                    if (payload.has("organization_id")) {
+                        organization_id = payload.getInt("organization_id");
+                    }
                     String name = payload.getString("name");
-                    String status = payload.getString("status");
+//                    String status = payload.getString("status");
                     int created_by = 0;
                     if (payload.has("created_by")) {
                         created_by = payload.getInt("created_by");
                     }
-                    String created_at = payload.getString("created_at");
-                    String updated_at = payload.getString("updated_at");
+//                    String created_at = payload.getString("created_at");
                     String dynamic_values = "";
                     if (payload.has("dynamic_values")) {
                         dynamic_values = payload.getString("dynamic_values");
@@ -651,9 +870,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     // ignore if task already exists
                     LSDeal lsDeal = LSDeal.getDealFromServerId(id);
                     if (lsDeal == null) {
-                        // check if lead still exists of which the deal is
+                        // check if lead or organization still exists of which the deal is
+                        LSOrganization lsOrganization = LSOrganization.getOrganizationFromServerId(Integer.toString(organization_id));
                         LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
-                        if (lsContact != null) {
+                        if (lsContact != null || lsOrganization != null) {
                             lsDeal = new LSDeal();
                             lsDeal.setServerId(id);
                             lsDeal.setUserId(Integer.toString(user_id));
@@ -661,13 +881,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             lsDeal.setWorkflowId(workflow_id);
                             lsDeal.setWorkflowStageId(workflow_stage_id);
                             lsDeal.setName(name);
-                            lsDeal.setStatus(status);
+//                            lsDeal.setStatus(status);
                             lsDeal.setCreatedBy(Integer.toString(created_by));
-                            lsDeal.setCreatedAt(created_at);
+//                            lsDeal.setCreatedAt(created_at);
                             lsDeal.setUpdatedAt(Calendar.getInstance().getTime());
                             lsDeal.setDynamic(dynamic_values);
                             lsDeal.setIsPrivate(is_private);
-                            lsDeal.setContact(lsContact);
+                            if (lsContact != null) {
+                                lsDeal.setContact(lsContact);
+                            }
+                            if (lsOrganization != null) {
+                                lsDeal.setOrganization(lsOrganization);
+                            }
                             lsDeal.setStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
                             lsDeal.save();
                             TinyBus.from(getApplicationContext()).post(new DealAddedEventModel());
@@ -691,6 +916,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (payload.has("lead_id")) {
                         lead_id = payload.getInt("lead_id");
                     }
+                    int organization_id = 0;
+                    if (payload.has("organization_id")) {
+                        organization_id = payload.getInt("organization_id");
+                    }
                     String name = payload.getString("name");
                     String status = payload.getString("status");
                     int created_by = 0;
@@ -708,9 +937,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     // ignore if task already exists
                     LSDeal lsDeal = LSDeal.getDealFromServerId(id);
                     if (lsDeal != null) {
-                        // check if lead still exists of which the deal is
+                        // check if lead or organization still exists of which the deal is
+                        LSOrganization lsOrganization = LSOrganization.getOrganizationFromServerId(Integer.toString(organization_id));
                         LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
-                        if (lsContact != null) {
+                        if (lsContact != null || lsOrganization != null) {
                             lsDeal.setServerId(id);
                             lsDeal.setUserId(Integer.toString(user_id));
                             lsDeal.setCompanyId(Integer.toString(company_id));
@@ -723,7 +953,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             lsDeal.setUpdatedAt(Calendar.getInstance().getTime());
                             lsDeal.setDynamic(dynamic_values);
                             lsDeal.setIsPrivate(is_private);
-                            lsDeal.setContact(lsContact);
+                            if (lsContact != null) {
+                                lsDeal.setContact(lsContact);
+                            }
+                            if (lsOrganization != null) {
+                                lsDeal.setOrganization(lsOrganization);
+                            }
                             lsDeal.setStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_SYNCED);
                             lsDeal.save();
                             TinyBus.from(getApplicationContext()).post(new DealAddedEventModel());
