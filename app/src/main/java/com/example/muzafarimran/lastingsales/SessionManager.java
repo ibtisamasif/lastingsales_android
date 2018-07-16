@@ -9,6 +9,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
+import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
@@ -236,6 +237,9 @@ public class SessionManager {
         }
         if (LSOrganization.count(LSOrganization.class) > 0) {
             LSOrganization.deleteAll(LSOrganization.class);
+        }
+        if (LSIgnoreList.count(LSIgnoreList.class) > 0) {
+            LSIgnoreList.deleteAll(LSIgnoreList.class);
         }
     }
 

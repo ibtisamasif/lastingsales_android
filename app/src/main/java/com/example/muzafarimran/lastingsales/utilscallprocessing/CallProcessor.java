@@ -2,25 +2,20 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SyncStats;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
-import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.service.CallService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utils.CallEndTagBoxService;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,7 +44,7 @@ public class CallProcessor {
         }
 
 
-         Toast.makeText(mContext, "type "+call.getType(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "type "+call.getType(), Toast.LENGTH_SHORT).show();
         SettingsManager settingsManager = new SettingsManager(mContext);
         if (settingsManager.getKeyStateIsCompanyPhone()) { // COMPANY PHONE
 

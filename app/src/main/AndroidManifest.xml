@@ -40,10 +40,10 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="DATABASE"
-            android:value="sugar_example.db" />
+            android:value="sugar_lastingsales.db" />
         <meta-data
             android:name="VERSION"
-            android:value="19" />
+            android:value="1" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -89,14 +89,14 @@
             <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
             <!-- </intent-filter> -->
         </receiver>
-        <receiver
-            android:name=".receivers.HourlyAlarmReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver-->
+            <!--android:name=".receivers.HourlyAlarmReceiver"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
         <!-- <receiver -->
         <!-- android:name=".receivers.DayStartHighlightAlarmReceiver" -->
         <!-- android:enabled="true" -->

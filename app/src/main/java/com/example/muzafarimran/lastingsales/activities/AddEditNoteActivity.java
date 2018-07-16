@@ -83,15 +83,14 @@ public class AddEditNoteActivity extends AppCompatActivity {
             etNote.setText(selectedNote.getNoteText());
             if (selectedNote.getContactOfNote() != null) {
                 selectedContact = selectedNote.getContactOfNote();
-            }
-            if (selectedNote.getDealOfNote() != null) {
+                etName.setText(selectedContact.getContactName());
+            } else if (selectedNote.getDealOfNote() != null) {
                 selectedDeal = selectedNote.getDealOfNote();
-            }
-            if (selectedNote.getOrganizationOfNote() != null) {
+                etName.setText(selectedDeal.getName());
+            } else if (selectedNote.getOrganizationOfNote() != null) {
                 selectedOrganization = selectedNote.getOrganizationOfNote();
+                etName.setText(selectedOrganization.getName());
             }
-            etName.setText(selectedContact.getContactName());
-
         } else if (launchMode.equals(LAUNCH_MODE_ADD_NEW_NOTE)) {
             //for add new note
             if (bundle != null) {

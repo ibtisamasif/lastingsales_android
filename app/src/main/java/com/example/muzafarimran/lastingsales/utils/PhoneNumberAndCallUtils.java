@@ -80,7 +80,7 @@ public class PhoneNumberAndCallUtils {
 //                e.printStackTrace(); //TODO no static method crash google device google pixel
                 Crashlytics.log(Log.ERROR, TAG, "NumberParseException caught: " + inputString);
                 Crashlytics.logException(e);
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.e(TAG, "numberToInterNationalNumber: Exception");
                 Crashlytics.log(Log.ERROR, TAG, "Exception caught: " + inputString);
                 Crashlytics.logException(e);
