@@ -252,8 +252,14 @@ public class SessionManager {
         setLoginToken("");
         setKeyLoginFirstName("");
         setKeyLoginLastName("");
+
+        setFirstTimeLaunch(false);
         setKeyLoginImagePath("");
         setReadyForFirstRun(true);
+
+        //
+        new SettingsManager(_context).trashData();
+
         editor.commit();
     }
 

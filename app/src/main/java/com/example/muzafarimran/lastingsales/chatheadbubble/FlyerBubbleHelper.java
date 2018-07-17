@@ -112,6 +112,7 @@ public class FlyerBubbleHelper extends AppCompatActivity {
         ibClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 hide();
             }
         });

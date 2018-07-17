@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.receivers;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRecorder;
-import android.os.AsyncTask;
 import android.os.PowerManager;
 import android.util.Log;
 
@@ -16,7 +15,7 @@ import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
-import com.example.muzafarimran.lastingsales.service.CallLogIngineService;
+import com.example.muzafarimran.lastingsales.service.CallLogEngineService;
 
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -289,7 +288,7 @@ public class CallsStatesReceiver extends CallReceiver{
         */
 
 
-        ctx.startService(new Intent(ctx,CallLogIngineService.class));
+        ctx.startService(new Intent(ctx,CallLogEngineService.class));
 
 
         IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
@@ -407,7 +406,7 @@ public class CallsStatesReceiver extends CallReceiver{
      /*   final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
         theCallLogEngine.execute();*/
 
-        ctx.startService(new Intent(ctx,CallLogIngineService.class));
+        ctx.startService(new Intent(ctx,CallLogEngineService.class));
 
 
         OutgoingCallEventModel outCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
@@ -516,7 +515,7 @@ public class CallsStatesReceiver extends CallReceiver{
         theCallLogEngine.execute();*/
 
 
-        ctx.startService(new Intent(ctx,CallLogIngineService.class));
+        ctx.startService(new Intent(ctx,CallLogEngineService.class));
 
 
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
