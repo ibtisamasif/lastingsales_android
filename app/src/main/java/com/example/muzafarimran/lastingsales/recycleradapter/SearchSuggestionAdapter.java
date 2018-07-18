@@ -17,6 +17,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.activities.DealDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
+import com.example.muzafarimran.lastingsales.activities.OrganizationDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.app.ClassManager;
 
 /**
@@ -86,6 +87,15 @@ public class SearchSuggestionAdapter extends CursorAdapter {
                             long dealId = INTENT_PUT_ID;
                             i.putExtra(DealDetailsTabActivity.KEY_DEAL_ID, dealId + "");
                             context.startActivity(i);
+                        }
+                    }else if(INTENT_CLASSNAME.equals(ClassManager.ORG_DETAILS_BOTTOM_SHEET_FRAGMENT)){
+                        if (INTENT_TYPE.equals("type_org")){
+                            //Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
+                            //                            long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
+                            Intent detailsActivityIntent = new Intent(context, OrganizationDetailsTabActivity.class);
+                            long organizationId = INTENT_PUT_ID;
+                            detailsActivityIntent.putExtra(OrganizationDetailsTabActivity.KEY_ORGANIZATION_ID, organizationId + "");
+                            context.startActivity(detailsActivityIntent);
                         }
                     }else if (INTENT_CLASSNAME.equals(ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
                         long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));

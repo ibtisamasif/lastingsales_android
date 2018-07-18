@@ -208,7 +208,7 @@ public class CallLogEngineService extends Service {
                 }
             } while (managedCursor.moveToPrevious());
             if (reRun) {
-                 //CallLogFunc();
+                 CallLogFunc();
             }
         } catch (Exception e) {
             e.printStackTrace();

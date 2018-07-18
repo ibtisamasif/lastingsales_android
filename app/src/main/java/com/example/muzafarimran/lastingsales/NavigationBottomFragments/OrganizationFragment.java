@@ -2,9 +2,14 @@ package com.example.muzafarimran.lastingsales.NavigationBottomFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,9 +18,12 @@ import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.recycleradapter.OrganizationRecyclerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class OrganizationFragment extends TabFragment {
+import static android.support.v4.view.MenuItemCompat.getActionView;
+
+public class OrganizationFragment extends TabFragment  {
 
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
@@ -34,6 +42,9 @@ public class OrganizationFragment extends TabFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+
+        setHasOptionsMenu(true);
 
         View view = inflater.inflate(R.layout.organization_fragment, container, false);
 
@@ -61,56 +72,5 @@ public class OrganizationFragment extends TabFragment {
         return view;
     }
 
-//    private void addOrganizationDialogBox() {
-//        Dialog addOrgDialog = new Dialog(getActivity());
-//        addOrgDialog.setContentView(R.layout.add_organization);
-//        addOrgDialog.setCancelable(true);
-//        addOrgDialog.show();
-//
-//        Button insertOrg = (Button) addOrgDialog.findViewById(R.id.bSaveAddOrg);
-//        Button cancel = (Button) addOrgDialog.findViewById(R.id.bCancelAddOrg);
-//
-//        cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                addOrgDialog.dismiss();
-//            }
-//        });
-//
-//        insertOrg.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EditText nameAddOrg = addOrgDialog.findViewById(R.id.etNameAddOrg);
-//                EditText emailAddOrg = addOrgDialog.findViewById(R.id.etEmailAddOrg);
-//                EditText phoneAddOrg = addOrgDialog.findViewById(R.id.etPhoneAddOrg);
-//
-//                if (nameAddOrg.getText().toString().isEmpty()) {
-//                    nameAddOrg.setError("Please enter  Name!");
-////                    Toast.makeText(getActivity(), "Please enter  Name!", Toast.LENGTH_SHORT).show();
-//                } else if (emailAddOrg.getText().toString().isEmpty()) {
-//                    emailAddOrg.setError("Please enter  Email!");
-////                    Toast.makeText(getActivity(), "Please enter  Email!", Toast.LENGTH_SHORT).show();
-//                } else if (phoneAddOrg.getText().toString().isEmpty()) {
-//                    phoneAddOrg.setError("Please enter  Phone!");
-////                    Toast.makeText(getActivity(), "Please enter Phone!", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    LSOrganization lsOrganization = new LSOrganization();
-//                    lsOrganization.setName(nameAddOrg.getText().toString());
-//                    lsOrganization.setEmail(emailAddOrg.getText().toString());
-//                    lsOrganization.setPhone(phoneAddOrg.getText().toString());
-//                    lsOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_NOT_SYNCED);
-//
-//                    if (lsOrganization.save() > 0) {
-//                        adapter.notifyDataSetChanged();
-//                        Toast.makeText(getActivity(), "Organization saved", Toast.LENGTH_SHORT).show();
-//                        addOrgDialog.dismiss();
-//                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(addOrgDialog.getContext());
-//                        dataSenderAsync.run();
-//                    } else {
-//                        Toast.makeText(getActivity(), "Error not saved something went wrong", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
-//        });
-//    }
 }
+

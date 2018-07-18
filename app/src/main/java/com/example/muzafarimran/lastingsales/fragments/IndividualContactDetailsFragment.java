@@ -50,6 +50,7 @@ import com.example.muzafarimran.lastingsales.listloaders.DealsOfALeadLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
+import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -637,6 +638,8 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
 //////////////////////////////////////////////////////////////
 // Populating LEAD data
 //////////////////////////////////////////////////////////////
+
+        List<LSProperty> lsProperties=LSProperty.listAll(LSProperty.class);
 
         Log.d(TAG, "Populating Lead Data");
 

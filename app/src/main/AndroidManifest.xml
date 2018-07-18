@@ -51,6 +51,7 @@
         <!-- android:name="DOMAIN_PACKAGE_NAME" -->
         <!-- android:value="com.example.muzafarimran.lastingsales" /> -->
 
+
         <receiver android:name=".receivers.NetworkStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -147,6 +148,10 @@
             android:name=".activities.AddEditNewFollowupActivity"
             android:screenOrientation="nosensor"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".settings.Settings"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait" />

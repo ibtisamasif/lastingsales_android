@@ -14,6 +14,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.OrganizationDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrganizationRecyclerAdapter extends RecyclerView.Adapter<OrganizationRecyclerAdapter.OrganizationViewHolder> {
@@ -71,6 +72,7 @@ public class OrganizationRecyclerAdapter extends RecyclerView.Adapter<Organizati
             org_phone = itemView.findViewById(R.id.org_phone);
         }
     }
+
 
 
 }

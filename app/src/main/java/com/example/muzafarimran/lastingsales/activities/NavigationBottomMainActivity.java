@@ -3,6 +3,7 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.SearchManager;
+import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -30,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -415,7 +417,17 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //            bus.wire(new ShakeEventWire());
 //        }
 
-        checkForInvalidTime();
+
+    /*    TimePickerDialog dialog=new TimePickerDialog(getApplicationContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+            }
+        });
+
+*/
+
+    checkForInvalidTime();
         if (!sessionManager.isUserSignedIn()) {
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
             finish();
@@ -918,6 +930,21 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             cursor.addRow(temp);
             count++;
         }
+
+            myQuery = "SELECT * FROM  LS_ORGANIZATION where name like '%" + query + "%' limit 5";
+        Collection<LSOrganization> orgByName = LSOrganization.findWithQuery(LSOrganization.class, myQuery);
+        for (LSOrganization oneDeal : orgByName) {
+            temp[0] = count;
+            temp[1] = oneDeal.getName();
+            temp[2] = R.drawable.ic_building_24dp;
+            temp[3] = ClassManager.ORG_DETAILS_BOTTOM_SHEET_FRAGMENT;
+            temp[4] = oneDeal.getId();
+            temp[6] = "type_org";
+            cursor.addRow(temp);
+            count++;
+        }
+
+       // Toast.makeText(activity, "searching"+query, Toast.LENGTH_SHORT).show();
         searchView.setSuggestionsAdapter(new SearchSuggestionAdapter(this, cursor));
     }
 
