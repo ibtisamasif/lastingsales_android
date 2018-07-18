@@ -22,7 +22,7 @@
 
     <item
         android:id="@+id/navigation_deals"
-        android:icon="@drawable/ic_monetization_on_black_24dp"
+        android:icon="@drawable/ic_monetization_on_grey_24dp"
         android:title="@string/navigation_deals" />
 
     <item

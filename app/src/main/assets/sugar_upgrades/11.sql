@@ -1,1 +1,0 @@
---alter table LS_CONTACT add VERSION INTEGER;

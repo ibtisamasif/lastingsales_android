@@ -1,1 +1,0 @@
-alter table LS_CONTACT add IS_LEAD_DELETED bool;

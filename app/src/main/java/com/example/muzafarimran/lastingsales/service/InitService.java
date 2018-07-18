@@ -25,6 +25,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
+import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
@@ -180,6 +181,34 @@ public class InitService extends IntentService {
                             Log.d(TAG, "onResponse: gettingDynamic: " + tempContact.getDynamic());
 //                            fetchAgentNotesFunc(tempContact);
 
+                            JSONArray jsonArrayLeadProperties = jsonObjectOneLead.getJSONArray("properties");
+                            Log.d(TAG, "onResponse: data jsonArrayLeadProperties length : " + jsonArrayLeadProperties.length());
+                            for (int j = jsonArrayLeadProperties.length() - 1; j >= 0; j--) {
+                                JSONObject jsonObjectOneProperty = jsonArrayLeadProperties.getJSONObject(j);
+                                String property_id = jsonObjectOneProperty.getString("id");
+                                String property_user_id = jsonObjectOneProperty.getString("user_id");
+                                String property_company_id = jsonObjectOneProperty.getString("company_id");
+                                String property_column_id = jsonObjectOneProperty.getString("column_id");
+                                String property_storable_id = jsonObjectOneProperty.getString("storable_id");
+                                String property_storable_type = jsonObjectOneProperty.getString("storable_type");
+                                String property_value = jsonObjectOneProperty.getString("value");
+                                String property_created_by = jsonObjectOneProperty.getString("created_by");
+                                String property_updated_by = jsonObjectOneProperty.getString("updated_by");
+
+                                LSProperty tempProperty = new LSProperty();
+                                tempProperty.setServerId(property_id);
+                                tempProperty.setUserId(property_user_id);
+                                tempProperty.setCompanyId(property_company_id);
+                                tempProperty.setColumnId(property_column_id);
+                                tempProperty.setStorableId(property_storable_id);
+                                tempProperty.setStorableType(property_storable_type);
+                                tempProperty.setValue(property_value);
+                                tempProperty.setContactOfProperty(LSContact.getContactFromServerId(property_storable_id));
+                                tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
+                                tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
+                                tempProperty.save();
+                            }
+
                             JSONArray jsonArrayLeadNotes = jsonObjectOneLead.getJSONArray("notes");
                             Log.d(TAG, "onResponse: data jsonArrayLeadNotes length : " + jsonArrayLeadNotes.length());
                             for (int j = jsonArrayLeadNotes.length() - 1; j >= 0; j--) {
@@ -202,6 +231,7 @@ public class InitService extends IntentService {
                                 tempNote.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                                 tempNote.save();
                             }
+                        }
 
                             JSONArray jsonArrayOrganizations = responseObject.getJSONArray("organizations");
                             Log.d(TAG, "onResponse: data jsonArrayOrganizations length : " + jsonArrayOrganizations.length());
@@ -266,6 +296,34 @@ public class InitService extends IntentService {
                                     tempOrganization.setVersion(organization_version);
                                     tempOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED);
                                     tempOrganization.save();
+
+                                    JSONArray jsonArrayOrganizationProperties = jsonObjectOneOrganization.getJSONArray("properties");
+                                    Log.d(TAG, "onResponse: data jsonArrayOrganizationProperties length : " + jsonArrayOrganizationProperties.length());
+                                    for (int j = jsonArrayOrganizationProperties.length() - 1; j >= 0; j--) {
+                                        JSONObject jsonObjectOneProperty = jsonArrayOrganizationProperties.getJSONObject(j);
+                                        String property_id = jsonObjectOneProperty.getString("id");
+                                        String property_user_id = jsonObjectOneProperty.getString("user_id");
+                                        String property_company_id = jsonObjectOneProperty.getString("company_id");
+                                        String property_column_id = jsonObjectOneProperty.getString("column_id");
+                                        String property_storable_id = jsonObjectOneProperty.getString("storable_id");
+                                        String property_storable_type = jsonObjectOneProperty.getString("storable_type");
+                                        String property_value = jsonObjectOneProperty.getString("value");
+                                        String property_created_by = jsonObjectOneProperty.getString("created_by");
+                                        String property_updated_by = jsonObjectOneProperty.getString("updated_by");
+
+                                        LSProperty tempProperty = new LSProperty();
+                                        tempProperty.setServerId(property_id);
+                                        tempProperty.setUserId(property_user_id);
+                                        tempProperty.setCompanyId(property_company_id);
+                                        tempProperty.setColumnId(property_column_id);
+                                        tempProperty.setStorableId(property_storable_id);
+                                        tempProperty.setStorableType(property_storable_type);
+                                        tempProperty.setValue(property_value);
+                                        tempProperty.setOrganizationOfProperty(LSOrganization.getOrganizationFromServerId(property_storable_id));
+                                        tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
+                                        tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
+                                        tempProperty.save();
+                                    }
 
                                     JSONArray jsonArrayDealNotes = jsonObjectOneOrganization.getJSONArray("notes");
                                     Log.d(TAG, "onResponse: data jsonArrayOrganizationNotes length : " + jsonArrayDealNotes.length());
@@ -386,6 +444,34 @@ public class InitService extends IntentService {
                                         tempDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
                                         tempDeal.save();
 
+                                        JSONArray jsonArrayDealProperties = jsonObjectOneDeal.getJSONArray("properties");
+                                        Log.d(TAG, "onResponse: data jsonArrayDealProperties length : " + jsonArrayDealProperties.length());
+                                        for (int j = jsonArrayDealProperties.length() - 1; j >= 0; j--) {
+                                            JSONObject jsonObjectOneNote = jsonArrayDealProperties.getJSONObject(j);
+                                            String property_id = jsonObjectOneNote.getString("id");
+                                            String property_user_id = jsonObjectOneNote.getString("user_id");
+                                            String property_company_id = jsonObjectOneNote.getString("company_id");
+                                            String property_column_id = jsonObjectOneNote.getString("column_id");
+                                            String property_storable_id = jsonObjectOneNote.getString("storable_id");
+                                            String property_storable_type = jsonObjectOneNote.getString("storable_type");
+                                            String property_value = jsonObjectOneNote.getString("value");
+                                            String property_created_by = jsonObjectOneNote.getString("created_by");
+                                            String property_updated_by = jsonObjectOneNote.getString("updated_by");
+
+                                            LSProperty tempProperty = new LSProperty();
+                                            tempProperty.setServerId(property_id);
+                                            tempProperty.setUserId(property_user_id);
+                                            tempProperty.setCompanyId(property_company_id);
+                                            tempProperty.setColumnId(property_column_id);
+                                            tempProperty.setStorableId(property_storable_id);
+                                            tempProperty.setStorableType(property_storable_type);
+                                            tempProperty.setValue(property_value);
+                                            tempProperty.setDealOfProperty(LSDeal.getDealFromServerId(property_storable_id));
+                                            tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
+                                            tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
+                                            tempProperty.save();
+                                        }
+
                                         JSONArray jsonArrayDealNotes = jsonObjectOneDeal.getJSONArray("notes");
                                         Log.d(TAG, "onResponse: data jsonArrayDealNotes length : " + jsonArrayDealNotes.length());
                                         for (int j = jsonArrayDealNotes.length() - 1; j >= 0; j--) {
@@ -411,7 +497,6 @@ public class InitService extends IntentService {
                                     }
                                 }
                             }
-                        }
                     }
 
                     LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();

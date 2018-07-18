@@ -4,6 +4,18 @@ package com.example.muzafarimran.lastingsales.sync;
 public class SyncStatus {
 
 
+    //Property Add
+    public static final String SYNC_STATUS_PROPERTY_ADD_NOT_SYNCED = "property_add_not_synced";
+    public static final String SYNC_STATUS_PROPERTY_ADD_SYNCED = "property_add_synced";
+
+    //Property Update
+    public static final String SYNC_STATUS_PROPERTY_UPDATE_NOT_SYNCED = "property_update_not_synced";
+    public static final String SYNC_STATUS_PROPERTY_UPDATE_SYNCED = "property_update_synced";
+
+    //Property Delete
+    public static final String SYNC_STATUS_PROPERTY_DELETE_NOT_SYNCED = "property_delete_not_synced";
+    public static final String SYNC_STATUS_PROPERTY_DELETE_SYNCED = "property_delete_synced";
+
     //Organization Add
     public static final String SYNC_STATUS_ORGANIZATION_ADD_NOT_SYNCED = "organization_add_not_synced";
     public static final String SYNC_STATUS_ORGANIZATION_ADD_SYNCED = "organization_add_synced";

@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.25.1'
+        classpath 'io.fabric.tools:gradle:1.25.4'
     }
 }
 apply plugin: 'com.android.application'
@@ -91,13 +91,12 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support:support-core-utils:27.1.1'
     implementation 'com.android.support:customtabs:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     //1.1.0 causes bug in flyer layout
+    implementation 'com.google.android.gms:play-services-gcm:11.8.0'
     implementation 'com.google.android.gms:play-services-plus:11.8.0'
     implementation 'com.google.firebase:firebase-core:11.8.0'
     implementation 'com.google.firebase:firebase-messaging:11.8.0'
-//    implementation 'com.google.firebase:firebase-crash:11.8.0'
-    implementation 'com.google.android.gms:play-services-gcm:11.8.0'
     implementation 'com.google.android.gms:play-services-ads:11.8.0'
     implementation('com.google.android.gms:play-services-auth:11.8.0') {
         exclude group: 'org.apache.httpcomponents'
@@ -133,7 +132,7 @@ dependencies {
     //    implementation files('libs/httpmime-4.3.6.jar')
     implementation 'org.apache.commons:commons-lang3:3.5'
     implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'com.mixpanel.android:mixpanel-android:5.2.1'
+    implementation 'com.mixpanel.android:mixpanel-android:5.4.1'
     implementation project(':volley-master')
     implementation 'com.github.amlcurran.showcaseview:library:5.4.3'
     implementation 'com.github.deano2390:MaterialShowcaseView:1.1.0'

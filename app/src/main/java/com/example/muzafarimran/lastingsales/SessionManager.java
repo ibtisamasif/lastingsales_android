@@ -13,6 +13,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
+import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSTask;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
@@ -240,6 +241,9 @@ public class SessionManager {
         }
         if (LSIgnoreList.count(LSIgnoreList.class) > 0) {
             LSIgnoreList.deleteAll(LSIgnoreList.class);
+        }
+        if (LSProperty.count(LSProperty.class) > 0) {
+            LSProperty.deleteAll(LSProperty.class);
         }
     }
 

@@ -107,10 +107,6 @@ public class NotesInOrganizationDetailsFragment extends TabFragment {
         selectedOrganization = LSOrganization.findById(LSOrganization.class, organizationIDLong);
 
         if (selectedOrganization != null) {
-            SeparatorItem separatorFollowup = new SeparatorItem();
-            separatorFollowup.text = "Follow Up";
-            list.add(separatorFollowup);
-
             SeparatorItem separatorNotes = new SeparatorItem();
             separatorNotes.text = "Notes";
             list.add(separatorNotes);

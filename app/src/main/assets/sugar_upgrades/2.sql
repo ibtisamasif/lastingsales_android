@@ -1,1 +1,0 @@
-alter table LS_INQUIRY add SERVER_ID TEXT;

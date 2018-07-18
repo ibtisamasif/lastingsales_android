@@ -93,7 +93,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (payload.has("email") && !payload.isNull("email")) {
                         email = payload.getString("email");
                     }
-                    String phone = payload.getString("phone");
+                    String phone = null;
+                    if (payload.has("phone")) {
+                        phone = payload.getString("phone");
+                    }
                     String address = null;
                     if (payload.has("address")) {
                         address = payload.getString("address");
@@ -134,8 +137,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
 
-                    String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
-                    LSContact tempContact = LSContact.getContactFromNumber(phone);
+                    LSContact tempContact = LSContact.getContactFromServerId(id);
                     if (tempContact != null) {
                         tempContact.setServerId(id);
                         tempContact.setContactName(name);
@@ -145,7 +147,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         if (address != null) {
                             tempContact.setContactAddress(address);
                         }
-                        tempContact.setPhoneOne(intlNum);
+                        if (phone != null) {
+                            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
+                            tempContact.setPhoneOne(intlNum);
+                        }
                         tempContact.setContactType(LSContact.CONTACT_TYPE_SALES);
                         tempContact.setContactSalesStatus(status);
 //                        tempContact.setContactUpdated_at(Calendar.getInstance().getTimeInMillis()+"");
@@ -187,7 +192,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         if (email != null) {
                             contact.setContactEmail(email);
                         }
-                        contact.setPhoneOne(phone);
+                        if (phone != null) {
+                            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(getApplicationContext(), phone);
+                            contact.setPhoneOne(intlNum);
+                        }
                         if (address != null) {
                             contact.setContactAddress(address);
                         }
@@ -444,9 +452,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 //                            mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name, id));
 //                        }
-                        LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                        TinyBus bus = TinyBus.from(getApplicationContext());
-                        bus.post(mCallEvent);
+//                        LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
+//                        TinyBus bus = TinyBus.from(getApplicationContext());
+//                        bus.post(mCallEvent);
                     }
                 } else if (action.equals("put")) {
                     String id = payload.getString("id");
@@ -546,13 +554,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (tag.equals("Note")) {
                 if (action.equals("post")) {
                     String id = payload.getString("id");
-                    String lead_id = payload.getString("lead_id");
+//                    String lead_id = payload.getString("lead_id"); // depricated... remove it later
                     String description = payload.getString("description");
+                    String notable_id = payload.getString("notable_id");
+                    String notable_type = payload.getString("notable_type");
                     mMsg = description;
                     LSNote tempNote = new LSNote();
                     tempNote.setServerId(id);
                     tempNote.setNoteText(description);
-                    tempNote.setContactOfNote(LSContact.getContactFromServerId(lead_id));
+                    tempNote.setNotableType(notable_type);
+                    if (notable_type.equals(LSNote.NOTEABLE_TYPE_APP_LEAD)) {
+                        tempNote.setContactOfNote(LSContact.getContactFromServerId(notable_id));
+                    } else if (notable_type.equals(LSNote.NOTEABLE_TYPE_APP_ORGANIZATION)) {
+                        tempNote.setOrganizationOfNote(LSOrganization.getOrganizationFromServerId(notable_id));
+                    } else if (notable_type.equals(LSNote.NOTEABLE_TYPE_APP_DEAL)) {
+                        tempNote.setDealOfNote(LSDeal.getDealFromServerId(notable_id));
+                    }
                     tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
                     tempNote.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                     tempNote.save();
@@ -571,7 +588,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     NoteAddedEventModel mNoteAdded = new NoteAddedEventModel();
                     TinyBus bus = TinyBus.from(getApplicationContext());
                     bus.post(mNoteAdded);
-
                 } else if (action.equals("delete")) {
                     Log.d(TAG, "handleDataMessage: NOTE delete");
                     String id = payload.getString("id");

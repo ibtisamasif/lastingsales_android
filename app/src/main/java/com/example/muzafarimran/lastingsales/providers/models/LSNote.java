@@ -20,7 +20,6 @@ public class LSNote extends SugarRecord {
     private LSContact contactOfNote;
     private LSDeal dealOfNote;
     private LSOrganization organizationOfNote;
-    //    private int id;
     private String NoteText;
     private String createdAt;
     private String syncStatus;
