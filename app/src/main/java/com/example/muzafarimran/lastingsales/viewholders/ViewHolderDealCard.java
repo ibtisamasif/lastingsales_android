@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -55,35 +54,54 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
         LSDeal lsDeal = (LSDeal) item;
         LSContact contact = lsDeal.getContact();
         if (contact != null) {
-            Log.i(TAG, "bind: lscontact: " + contact.toString());
-            if (contact.getContactName() != null)
+            user_avatar.setVisibility(View.VISIBLE);
+            tvContactName.setVisibility(View.VISIBLE);
+            tvContactNumber.setVisibility(View.VISIBLE);
+            if (contact.getContactName() != null) {
                 tvContactName.setText(contact.getContactName());
+            }else {
+                tvContactName.setText("");
+            }
             if (contact.getPhoneOne() != null) {
                 tvContactNumber.setText(contact.getPhoneOne());
+            }else {
+                tvContactNumber.setText("");
             }
-            if(contact.getContactProfile()!=null){
+            if (contact.getContactProfile() != null) {
                 MyDateTimeStamp.setFrescoImage(user_avatar, contact.getContactProfile().getSocial_image());
             }
-        }else {
-            Log.i(TAG, "bind: lscontact: is NULL");
-            tvContactName.setText("UNKNOWN");
-            tvContactNumber.setText("number");
+        } else {
+            user_avatar.setVisibility(View.GONE);
+            tvContactName.setVisibility(View.GONE);
+            tvContactName.setVisibility(View.GONE);
+//            Log.i(TAG, "bind: lscontact: is NULL");
+//            tvContactName.setText("UNKNOWN");
+//            tvContactNumber.setText("number");
         }
         LSOrganization organization = lsDeal.getOrganization();
         if (organization != null) {
-            Log.i(TAG, "bind: lscontact: " + organization.toString());
-            if (organization.getName() != null)
+            organization_avatar.setVisibility(View.VISIBLE);
+            tvOrganizationName.setVisibility(View.VISIBLE);
+            tvOrganizationNumber.setVisibility(View.VISIBLE);
+            if (organization.getName() != null) {
                 tvOrganizationName.setText(organization.getName());
+            }else {
+                tvOrganizationName.setText("");
+            }
             if (organization.getPhone() != null) {
                 tvOrganizationNumber.setText(organization.getPhone());
+            }else {
+                tvOrganizationNumber.setText("");
             }
 //            if(organization.getContactProfile()!=null){
 //                MyDateTimeStamp.setFrescoImage(user_avatar, organization.getContactProfile().getSocial_image());
 //            }
         } else {
-            Log.i(TAG, "bind: lscontact: is NULL");
-            tvContactName.setText("UNKNOWN");
-            tvContactNumber.setText("number");
+            organization_avatar.setVisibility(View.GONE);
+            tvOrganizationName.setVisibility(View.GONE);
+            tvOrganizationNumber.setVisibility(View.GONE);
+//            tvContactName.setText("UNKNOWN");
+//            tvContactNumber.setText("number");
         }
         if (lsDeal.getName() != null) {
             tvDealName.setText(lsDeal.getName());

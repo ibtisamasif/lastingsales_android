@@ -18,10 +18,17 @@ public class LSDynamicColumns extends SugarRecord {
     public static final String COLUMN_TYPE_NUMBER = "number";
     @Ignore
     public static final String COLUMN_TYPE_SINGLE = "single";
+    @Ignore
+    public static final String COLUMN_TYPE_MULTI = "multi";
+    @Ignore
+    public static final String COLUMN_TYPE_DATE = "date";
 
     private String serverId;
     private String columnType;
+    private String relatedTo;
+    private String formVisibility;
     private String name;
+    private String displayName;
     private String defaultValueOption;
     private String range;
     private String created_by;
@@ -135,6 +142,30 @@ public class LSDynamicColumns extends SugarRecord {
 
     public void setCompanyId(String companyId) {
         this.companyId = companyId;
+    }
+
+    public String getRelatedTo() {
+        return relatedTo;
+    }
+
+    public void setRelatedTo(String relatedTo) {
+        this.relatedTo = relatedTo;
+    }
+
+    public String getFormVisibility() {
+        return formVisibility;
+    }
+
+    public void setFormVisibility(String formVisibility) {
+        this.formVisibility = formVisibility;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @Override

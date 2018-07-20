@@ -8,13 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.activities.AddDealActivity;
 import com.example.muzafarimran.lastingsales.activities.OrganizationDetailsTabActivity;
+import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class OrganizationRecyclerAdapter extends RecyclerView.Adapter<OrganizationRecyclerAdapter.OrganizationViewHolder> {
@@ -49,6 +52,21 @@ public class OrganizationRecyclerAdapter extends RecyclerView.Adapter<Organizati
         });
         holder.org_phone.setText(organization.getPhone());
         holder.org_name.setText(organization.getName());
+
+        Collection<LSDeal> deals = organization.getAllDeals();
+        if (deals != null && deals.size() > 0) {
+            holder.add_deal_icon.setImageResource(R.drawable.ic_monetization_on_grey_24dp);
+        }else {
+            holder.add_deal_icon.setImageResource(R.drawable.ic_monetization_on_24dp);
+        }
+        holder.add_deal_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, AddDealActivity.class);
+                intent.putExtra(AddDealActivity.TAG_LAUNCH_MODE_ORGANIZATION_ID, organization.getId());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -63,16 +81,17 @@ public class OrganizationRecyclerAdapter extends RecyclerView.Adapter<Organizati
 
     class OrganizationViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout cl;
-        TextView org_name, org_phone;
+        private final TextView org_name, org_phone;
+        private final ImageView add_deal_icon;
 
         OrganizationViewHolder(View itemView) {
             super(itemView);
             cl = itemView.findViewById(R.id.cl);
             org_name = itemView.findViewById(R.id.org_name);
             org_phone = itemView.findViewById(R.id.org_phone);
+            add_deal_icon = itemView.findViewById(R.id.add_deal_icon);
         }
     }
-
 
 
 }
