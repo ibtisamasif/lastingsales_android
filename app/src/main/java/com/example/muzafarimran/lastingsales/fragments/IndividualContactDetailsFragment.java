@@ -501,14 +501,16 @@ DynamicColums dynamicColums;
 
                 if(type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)){
 
-                    gridLayout.addView(dynamicColums.editText("Dummy","dummyTag", InputType.TYPE_CLASS_TEXT));
                     gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+                    gridLayout.addView(dynamicColums.editText("Dummy","dummyTag", InputType.TYPE_CLASS_TEXT));
+
 
                 }
                 else if(type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)){
+                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+
                     gridLayout.addView(dynamicColums.editText("Dummy","dummyTag", InputType.TYPE_CLASS_NUMBER));
 
-                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
 
                 }
 
@@ -537,6 +539,7 @@ DynamicColums dynamicColums;
 
                     ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
 
+                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
                     gridLayout.addView(dynamicColums.spinner(dataAdapter,"Tag"));
 
 

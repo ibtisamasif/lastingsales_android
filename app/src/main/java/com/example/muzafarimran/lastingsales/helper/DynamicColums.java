@@ -55,6 +55,8 @@ public class DynamicColums {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         Spinner spinner=new Spinner(this.context);
         spinner.setAdapter(values);
+
+        spinner.setMinimumWidth(400);
         spinner.setTag(tag);
         return spinner;
     }
