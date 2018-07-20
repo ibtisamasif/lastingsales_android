@@ -59,7 +59,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
     String launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
-    String selectedContactType = LSContact.CONTACT_TYPE_BUSINESS;
+    String selectedContactType = LSContact.CONTACT_TYPE_SALES;
     boolean editingMode = false;
     long contactIdLong = -1;
     EditText etContactName;

@@ -39,7 +39,7 @@ public class OrganizationsCompletionView extends TokenCompleteTextView<LSOrganiz
     @Override
     protected View getViewForObject(LSOrganization lsOrganization) {
         LayoutInflater l = (LayoutInflater)getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        TokenTextView token = (TokenTextView) l.inflate(R.layout.contact_token, (ViewGroup) getParent(), false);
+        TokenTextView token = (TokenTextView) l.inflate(R.layout.organization_token, (ViewGroup) getParent(), false);
         token.setText(lsOrganization.getName());
         return token;
     }

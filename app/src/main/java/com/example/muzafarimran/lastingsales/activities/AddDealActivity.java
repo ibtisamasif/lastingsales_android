@@ -38,7 +38,7 @@ import java.util.List;
  * Created by ibtisam on 3/28/2018.
  */
 
-public class AddDealActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener<LSContact> {
+public class AddDealActivity extends AppCompatActivity {
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     public static final String TAG_LAUNCH_MODE_ORGANIZATION_ID = "organization_id";
     private String TAG = "AddDealActivity";
@@ -61,7 +61,7 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
     private EditText etLeadAddDeal;
     ArrayAdapter<LSContact> adapterContacts;
     long contactIdLong = -1;
-    //    ArrayAdapter<LSOrganization> adapterOrganizations;
+    ArrayAdapter<LSOrganization> adapterOrganizations;
     private OrganizationsCompletionView acOrganizationAddDeal;
     private EditText etOrganizationAddDeal;
     long organizationIdLong = -1;
@@ -146,38 +146,18 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
                 } else return false;
             }
         };
-
-//        List<LSOrganization> organizations = LSOrganization.listAll(LSOrganization.class);
-//        adapterOrganizations = new FilteredArrayAdapter<LSOrganization>(this, R.layout.person_layout, organizations) {
-//            @Override
-//            public View getView(int position, View convertView, ViewGroup parent) {
-//                if (convertView == null) {
-//
-//                    LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-//                    convertView = l.inflate(R.layout.person_layout, parent, false);
-//                }
-//                LSOrganization lsOrganization = getItem(position);
-//                ((TextView) convertView.findViewById(R.id.name)).setText(lsOrganization.getName());
-//                ((TextView) convertView.findViewById(R.id.number)).setText(lsOrganization.getPhone());
-//
-//                return convertView;
-//            }
-//
-//            @Override
-//            protected boolean keepObject(LSOrganization lsOrganization, String mask) {
-//                mask = mask.toLowerCase();
-//                if (lsOrganization.getName() != null) {
-//                    if (lsOrganization.getName().toLowerCase().contains(mask) || lsOrganization.getPhone().toLowerCase().contains(mask)) {
-//                        return true;
-//                    } else {
-//                        return false;
-//                    }
-//                } else return false;
-//            }
-//        };
-
         acLeadAddDeal.setAdapter(adapterContacts);
-        acLeadAddDeal.setTokenListener(this);
+        acLeadAddDeal.setTokenListener(new TokenCompleteTextView.TokenListener<LSContact>() {
+            @Override
+            public void onTokenAdded(LSContact token) {
+                selectedContact = token;
+            }
+
+            @Override
+            public void onTokenRemoved(LSContact token) {
+                selectedContact = null;
+            }
+        });
         acLeadAddDeal.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
 //        acLeadAddDeal.performBestGuess(true);
         acLeadAddDeal.setThreshold(1);
@@ -189,18 +169,56 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
             }
         }
 
-//        acOrganizationAddDeal.setAdapter(adapterOrganizations);
-//        acOrganizationAddDeal.setTokenListener(this);
-//        acOrganizationAddDeal.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
-////        acOrganizationAddDeal.performBestGuess(true);
-//        acOrganizationAddDeal.setThreshold(1);
-//        acOrganizationAddDeal.setTokenLimit(1);
-//        if (selectedOrganization != null) {
-//            if (selectedOrganization.getName() != null) {
-//                acOrganizationAddDeal.setText(selectedOrganization.getName());
-//                acOrganizationAddDeal.setEnabled(false);
-//            }
-//        }
+        List<LSOrganization> organizations = LSOrganization.listAll(LSOrganization.class);
+        adapterOrganizations = new FilteredArrayAdapter<LSOrganization>(this, R.layout.person_layout, organizations) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+
+                    LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+                    convertView = l.inflate(R.layout.person_layout, parent, false);
+                }
+                LSOrganization lsOrganization = getItem(position);
+                ((TextView) convertView.findViewById(R.id.name)).setText(lsOrganization.getName());
+                ((TextView) convertView.findViewById(R.id.number)).setText(lsOrganization.getPhone());
+
+                return convertView;
+            }
+
+            @Override
+            protected boolean keepObject(LSOrganization lsOrganization, String mask) {
+                mask = mask.toLowerCase();
+                if (lsOrganization.getName() != null) {
+                    if (lsOrganization.getName().toLowerCase().contains(mask) || lsOrganization.getPhone().toLowerCase().contains(mask)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else return false;
+            }
+        };
+        acOrganizationAddDeal.setAdapter(adapterOrganizations);
+        acOrganizationAddDeal.setTokenListener(new TokenCompleteTextView.TokenListener<LSOrganization>() {
+            @Override
+            public void onTokenAdded(LSOrganization token) {
+                selectedOrganization = token;
+            }
+
+            @Override
+            public void onTokenRemoved(LSOrganization token) {
+                selectedOrganization = null;
+            }
+        });
+        acOrganizationAddDeal.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
+//        acOrganizationAddDeal.performBestGuess(true);
+        acOrganizationAddDeal.setThreshold(1);
+        acOrganizationAddDeal.setTokenLimit(1);
+        if (selectedOrganization != null) {
+            if (selectedOrganization.getName() != null) {
+                acOrganizationAddDeal.setText(selectedOrganization.getName());
+                acOrganizationAddDeal.setEnabled(false);
+            }
+        }
 
         etDealName = (EditText) findViewById(R.id.etNameAddDeal);
         if (selectedContact != null) {
@@ -278,26 +296,6 @@ public class AddDealActivity extends AppCompatActivity implements TokenCompleteT
 
         addItemsOnSpinnerDealIsPrivate();
     }
-
-    @Override
-    public void onTokenAdded(LSContact token) {
-        selectedContact = token;
-    }
-
-    @Override
-    public void onTokenRemoved(LSContact token) {
-        selectedContact = null;
-    }
-
-//    @Override
-//    public void onTokenAdded(LSOrganization token) {
-//        selectedOrganization = token;
-//    }
-//
-//    @Override
-//    public void onTokenRemoved(LSOrganization token) {
-//        selectedOrganization = null;
-//    }
 
     public void addItemsOnSpinnerDealStage() {
         stageSpinner = (Spinner) findViewById(R.id.stage_spinner);

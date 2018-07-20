@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.activities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.SearchManager;
-import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -27,11 +26,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -50,7 +50,6 @@ import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomS
 import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
-import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
@@ -58,14 +57,12 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
-import com.example.muzafarimran.lastingsales.service.CallLogEngineService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.sync.SyncUser;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -73,7 +70,6 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.List;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.wires.ShakeEventWire;
@@ -121,103 +117,95 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-//                case R.id.navigation_tasks:
-//                    ACTIVE_LOADER = 1;
-//                    floatingActionMenuLead.hideMenu(true);
-//                    getSupportLoaderManager().restartLoader(1, bundle, NavigationBottomMainActivity.this).forceLoad();
-////                    getSupportLoaderManager().initLoader(1, null, NavigationBottomMainActivity.this);
-//                    return true;
                 case R.id.navigation_inquiries:
                     switchToFragment1();
-//                    ACTIVE_LOADER = INQU_LOADER_ID;
                     floatingActionButtonDeal.hide();
                     floatingActionMenuLead.hideMenu(true);
-//                    getSupportLoaderManager().restartLoader(INQU_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+                    changeColorOfStatusAndActionBar(FRAGMENT_TAG_INQUIRIES);
                     return true;
                 case R.id.navigation_home:
                     switchToFragment2();
-//                    ACTIVE_LOADER = HOME_LOADER_ID;
                     floatingActionButtonDeal.hide();
                     floatingActionMenuLead.showMenu(true);
-//                    getSupportLoaderManager().restartLoader(HOME_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+                    changeColorOfStatusAndActionBar(FRAGMENT_TAG_UNLABELED);
                     return true;
-//                case R.id.navigation_leads:
-//                    switchToFragment3();
-////                    ACTIVE_LOADER = LEAD_LOADER_ID;
-//                    floatingActionButtonDeal.hide();
-//                    floatingActionMenuLead.showMenu(true);
-////                    getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
-//                    return true;
                 case R.id.navigation_deals:
                     switchToFragment4();
-//                    ACTIVE_LOADER = LEAD_LOADER_ID;
                     floatingActionButtonDeal.show();
                     floatingActionMenuLead.hideMenu(true);
-//                    getSupportLoaderManager().restartLoader(LEAD_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+                    changeColorOfStatusAndActionBar(FRAGMENT_TAG_DEALS);
                     return true;
                 case R.id.navigation_more:
                     switchToFragment5();
-//                    ACTIVE_LOADER = MORE_LOADER_ID;
                     floatingActionButtonDeal.hide();
                     floatingActionMenuLead.hideMenu(true);
-//                    getSupportLoaderManager().restartLoader(MORE_LOADER_ID, bundle, NavigationBottomMainActivity.this).forceLoad();
+                    changeColorOfStatusAndActionBar(FRAGMENT_TAG_MORE);
                     return true;
-
             }
             return false;
         }
     };
 
+    private void changeColorOfStatusAndActionBar(String selectedFragment) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            View myLayout = findViewById(R.id.include);
+            Toolbar toolbar = myLayout.findViewById(R.id.toolbar);
+            switch (selectedFragment) {
+                case FRAGMENT_TAG_INQUIRIES:
+                    toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+                    break;
+                case FRAGMENT_TAG_UNLABELED:
+                    toolbar.setBackgroundColor(getResources().getColor(R.color.Ls_Color_Primary));
+                    window.setStatusBarColor(getResources().getColor(R.color.Ls_Color_PrimaryDark));
+                    break;
+                case FRAGMENT_TAG_DEALS:
+                    toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+                    break;
+                case FRAGMENT_TAG_MORE:
+                    toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+                    break;
+                default:
+                    toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+                    break;
+            }
+        }
+    }
+
     public void switchToFragment1() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace
-                (R.id.llFragmentContainer, new BlankFragment1(), FRAGMENT_TAG_INQUIRIES).commitAllowingStateLoss();
-//        navigation.setSelectedItemId(R.id.navigation_inquiries);
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment1(), FRAGMENT_TAG_INQUIRIES).commitAllowingStateLoss();
     }
 
     public void switchToFragment2() {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment2(), FRAGMENT_TAG_UNLABELED).commitAllowingStateLoss();
-//        navigation.setSelectedItemId(R.id.navigation_home);
     }
 
 //    public void switchToFragment3() {
 //        FragmentManager manager = getSupportFragmentManager();
 //        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment3(), FRAGMENT_TAG_LEADS).commitAllowingStateLoss();
-////        navigation.setSelectedItemId(R.id.navigation_leads);
 //    }
 
     public void switchToFragment4() {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment4(), FRAGMENT_TAG_DEALS).commitAllowingStateLoss();
-//        navigation.setSelectedItemId(R.id.navigation_deals);
     }
 
     public void switchToFragment5() {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment5(), FRAGMENT_TAG_MORE).commitAllowingStateLoss();
-//        navigation.setSelectedItemId(R.id.navigation_more);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: called");
-
-/*
-        for(int i=0;i<100;i++){
-            Log.d("running","loop amir");
-            List<LSContact> lsContacts=LSContact.find(LSContact.class,"contact_name=? and contact_type=? "
-                    ,new String[]{"amir12601","unanswered"});
-
-            if(lsContacts.size()>0) {
-                Log.d("query name", lsContacts.get(0).getContactType());
-            }else{
-                Log.d("NULL","NULLLLLL");
-
-            }
-
-        }*/
 
         initFirst(savedInstanceState);
 
@@ -226,27 +214,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Lasting Sales");
         ActionBar actionBar = getSupportActionBar();
-
-//        adapter = new MyRecyclerViewAdapter(this, list);
-//        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-//        mRecyclerView.setAdapter(adapter);
 
         initLast();
-
-//        SwipeController swipeController = new SwipeController();
-//        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
-//        itemTouchhelper.attachToRecyclerView(mRecyclerView);
-//
-//        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-//            @Override
-//            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-//                super.onDraw(c, parent, state);
-//            }
-//        });
 
         floatingActionMenuLead = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         FloatingActionButton floatingActionButtonAddOrg = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add_org);
@@ -282,13 +254,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
                         if (nameAddOrg.getText().toString().isEmpty()) {
                             nameAddOrg.setError("Please enter  Name!");
-//                    Toast.makeText(NavigationBottomMainActivity.this, "Please enter  Name!", Toast.LENGTH_SHORT).show();
                         } else if (emailAddOrg.getText().toString().isEmpty()) {
                             emailAddOrg.setError("Please enter  Email!");
-//                    Toast.makeText(NavigationBottomMainActivity.this, "Please enter  Email!", Toast.LENGTH_SHORT).show();
                         } else if (phoneAddOrg.getText().toString().isEmpty()) {
                             phoneAddOrg.setError("Please enter  Phone!");
-//                    Toast.makeText(getActivity(), "Please enter Phone!", Toast.LENGTH_SHORT).show();
                         } else {
                             LSOrganization lsOrganization = new LSOrganization();
                             lsOrganization.setName(nameAddOrg.getText().toString());
@@ -307,7 +276,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                         }
                     }
                 });
-
             }
         });
         floatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
@@ -322,11 +290,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationBottomMainActivity.this, projectToken);
                 mixpanel.track("Create lead dialog - opened");
-
-//                Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
-//                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_ADD_NEW_CONTACT);
-//                intent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_FAB);
-//                startActivity(intent);
             }
         });
         floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
@@ -341,11 +304,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 String projectToken = MixpanelConfig.projectToken;
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationBottomMainActivity.this, projectToken);
                 mixpanel.track("Create lead dialog - opened");
-
-//                Intent intent = new Intent(getContext(), AddEditLeadActivity.class);
-//                intent.putExtra(AddEditLeadActivity.ACTIVITY_LAUNCH_MODE, AddEditLeadActivity.LAUNCH_MODE_IMPORT_CONTACT);
-//                intent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_FAB);
-//                startActivity(intent);
             }
         });
 
@@ -358,9 +316,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 startActivity(intent);
             }
         });
-
         onBackToActivity();
-
     }
 
     private void onBackToActivity() {
@@ -392,13 +348,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
         Fabric.with(this, new Crashlytics());
 
-//        // Obtain the FirebaseAnalytics instance.
-//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-//        final Bundle bundle = new Bundle();
-//        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
-//        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
-////        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
-
 //        progressDialog = new ProgressDialog(NavigationBottomMainActivity.this);
 //        progressDialog.setTitle("Fetching data");
 //        //this method will be running on UI thread
@@ -417,17 +366,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //            bus.wire(new ShakeEventWire());
 //        }
 
-
-    /*    TimePickerDialog dialog=new TimePickerDialog(getApplicationContext(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-            }
-        });
-
-*/
-
-    checkForInvalidTime();
+        checkForInvalidTime();
         if (!sessionManager.isUserSignedIn()) {
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
             finish();
@@ -461,7 +400,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-//                    finish();
                     }
                 });
                 alert.show();
@@ -475,26 +413,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         DemoSyncJob.cancelThisJob();
 
         settingsManager = new SettingsManager(this);
-//        if (settingsManager.getKeyStateHourlyNotification()) {
-//            boolean hourlyAlarmUp = (PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(NavigationBottomMainActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
-//            if (hourlyAlarmUp) {
-//                Log.d("myAlarmLog", "Hourly Alarm is already active");
-//            } else {
-//                Log.d("myAlarmLog", "Hourly Alarm is activated now");
-//                Calendar calendar = Calendar.getInstance();
-//                calendar.set(Calendar.HOUR_OF_DAY, 10); // For 10am
-//                calendar.set(Calendar.MINUTE, 0);
-//                calendar.set(Calendar.SECOND, 0);
-//                PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(NavigationBottomMainActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
-//                AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-//                am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * 2, pi);
-//            }
-//        }
+
         Log.d(TAG, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER);
         Log.d(TAG, "onCreate: Build.BRAND: " + Build.BRAND);
-
-//        Toast.makeText(this, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, "onCreate: Build.BRAND: " + Build.BRAND, Toast.LENGTH_SHORT).show();
 
         if (Build.MANUFACTURER.equalsIgnoreCase("xiaomi") && !"google".equalsIgnoreCase(Build.BRAND) && !settingsManager.getKeyStateProtectedApp()) {
             Log.d(TAG, "onCreate: xiaomi");
@@ -673,10 +594,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                                 startActivity(intent);
                             }
                         });
-//                        Toast.makeText(activity, "update available", Toast.LENGTH_SHORT).show();
-//                        Intent i = new Intent(NavigationBottomMainActivity.this, UpgradeActivity.class);
-//                        i.putExtra("message", "New version of LastingSales is available in PlayStore. Please Update!");
-//                        startActivity(i);
                     }
                 }
             } catch (PackageManager.NameNotFoundException e) {
@@ -736,8 +653,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         Log.d(TAG, "onShakeEvent: Shake Event: " + event);
 //        sessionManager.fetchData();
 
-     //   startService(new Intent(getApplicationContext(), CallLogEngineService.class));
-
+        //   startService(new Intent(getApplicationContext(), CallLogEngineService.class));
 
         /* TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
         theCallLogEngine.execute();*/
@@ -770,7 +686,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
                */
 
-             //   startService(new Intent(getApplicationContext(), CallLogEngineService.class));
+                //   startService(new Intent(getApplicationContext(), CallLogEngineService.class));
 
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
@@ -931,12 +847,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             count++;
         }
 
-            myQuery = "SELECT * FROM  LS_ORGANIZATION where name like '%" + query + "%' limit 5";
+        myQuery = "SELECT * FROM  LS_ORGANIZATION where name like '%" + query + "%' limit 5";
         Collection<LSOrganization> orgByName = LSOrganization.findWithQuery(LSOrganization.class, myQuery);
         for (LSOrganization oneDeal : orgByName) {
             temp[0] = count;
             temp[1] = oneDeal.getName();
-            temp[2] = R.drawable.ic_building_24dp;
+            temp[2] = R.drawable.ic_building_48dp;
             temp[3] = ClassManager.ORG_DETAILS_BOTTOM_SHEET_FRAGMENT;
             temp[4] = oneDeal.getId();
             temp[6] = "type_org";
@@ -944,7 +860,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             count++;
         }
 
-       // Toast.makeText(activity, "searching"+query, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(activity, "searching"+query, Toast.LENGTH_SHORT).show();
         searchView.setSuggestionsAdapter(new SearchSuggestionAdapter(this, cursor));
     }
 
@@ -961,7 +877,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     Log.d(TAG, "initFirst: isFirstRun TRUE");
                  /*   TheCallLogEngine theCallLogEngine = new TheCallLogEngine(NavigationBottomMainActivity.this);
                     theCallLogEngine.execute();*/
-                //    startService(new Intent(getApplicationContext(), CallLogEngineService.class));
+                    //    startService(new Intent(getApplicationContext(), CallLogEngineService.class));
 
                 }
 
