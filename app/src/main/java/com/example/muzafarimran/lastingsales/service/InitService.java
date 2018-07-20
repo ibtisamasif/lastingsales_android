@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,9 +16,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
@@ -41,8 +39,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import de.halfbit.tinybus.TinyBus;
@@ -57,8 +53,6 @@ public class InitService extends IntentService {
     private Context mContext;
     private static RequestQueue queue;
     AtomicInteger requestsCounter;
-
-//    boolean initError = false;
 
     public InitService() {
         super("InitService");
@@ -84,7 +78,7 @@ public class InitService extends IntentService {
         }
 
         if (sessionManager.isUserSignedIn()) {
-            fetchAgentLeadsFunc();
+            fetchAgentDataFunc();
 //            fetchDynamicColumns();
             fetchWorkflow();
         }
@@ -102,8 +96,8 @@ public class InitService extends IntentService {
         });
     }
 
-    private void fetchAgentLeadsFunc() {
-        Log.d(TAG, "fetchAgentLeadsFunc: Fetching leads...");
+    private void fetchAgentDataFunc() {
+        Log.d(TAG, "fetchAgentDataFunc: Fetching Data...");
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         final String BASE_URL = MyURLs.GET_SYNC;
         Uri builtUri = Uri.parse(BASE_URL)
@@ -121,8 +115,6 @@ public class InitService extends IntentService {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     JSONObject responseObject = jObj.getJSONObject("response");
-//                    String totalLeads = responseObject.getString("total");
-//                    Log.d(TAG, "onResponse: TotalLeads: " + totalLeads);
 
                     JSONArray jsonArrayLeads = responseObject.getJSONArray("leads");
                     Log.d(TAG, "onResponse: data jsonArray length : " + jsonArrayLeads.length());
@@ -243,12 +235,7 @@ public class InitService extends IntentService {
                                 if (jsonObjectOneOrganization.has("created_by")) {
                                     organization_created_by = jsonObjectOneOrganization.getInt("created_by");
                                 }
-//                        int organization_updated_by = 0;
-//                        if (jsonObjectOneOrganization.has("updated_by")) {
-//                            organization_updated_by = jsonObjectOneOrganization.getInt("updated_by");
-//                        }
-//                                String organization_created_at = jsonObjectOneOrganization.getString("created_at");
-//                                String organization_updated_at = jsonObjectOneOrganization.getString("updated_at");
+
                                 int organization_user_id = jsonObjectOneOrganization.getInt("user_id");
                                 String organization_Status = jsonObjectOneOrganization.getString("status");
                                 String organization_dynamic_values = jsonObjectOneOrganization.getString("dynamic_values");
@@ -282,12 +269,7 @@ public class InitService extends IntentService {
                                     tempOrganization.setPhone(organization_phone);
                                     tempOrganization.setEmail(organization_email);
                                     tempOrganization.setStatus(organization_Status);
-//                            tempOrganization.setEmail(email);
                                     tempOrganization.setDynamicValues(organization_dynamic_values);
-//                                    if (created_by != 0) {
-//                                        tempOrganization.setCreatedBy(Integer.toString(organization_created_by));
-//                                    }
-//                                    tempOrganization.setCreatedAt(organization_created_at);
                                     tempOrganization.setUpdatedAt(Calendar.getInstance().getTime());
                                     tempOrganization.setUserId(Integer.toString(user_id));
                                     tempOrganization.setCompanyId(Integer.toString(organization_company_id));
@@ -360,10 +342,6 @@ public class InitService extends IntentService {
                                 if (jsonObjectOneDeal.has("created_by")) {
                                     deal_created_by = jsonObjectOneDeal.getInt("created_by");
                                 }
-//                        int deal_updated_by = 0;
-//                        if (jsonObjectOneDeal.has("updated_by")) {
-//                            deal_updated_by = jsonObjectOneDeal.getInt("updated_by");
-//                        }
                                 String deal_created_at = jsonObjectOneDeal.getString("created_at");
                                 String deal_updated_at = jsonObjectOneDeal.getString("updated_at");
                                 int deal_user_id = jsonObjectOneDeal.getInt("user_id");
@@ -372,8 +350,6 @@ public class InitService extends IntentService {
                                 int deal_workflow_id = jsonObjectOneDeal.getInt("workflow_id");
                                 int deal_workflow_stage_id = jsonObjectOneDeal.getInt("workflow_stage_id");
                                 String deal_Status = jsonObjectOneDeal.getString("status");
-//                        String deal_follow_up_date = jsonObjectOneDeal.getgetStringInt("follow_up_date");
-//                        String deal_follow_up_description = jsonObjectOneDeal.getString("follow_up_description");
                                 String deal_dynamic_values = jsonObjectOneDeal.getString("dynamic_values");
                                 int deal_company_id = jsonObjectOneDeal.getInt("company_id");
                                 String deal_src = jsonObjectOneDeal.getString("src");
@@ -424,13 +400,9 @@ public class InitService extends IntentService {
                                         tempDeal.setUpdatedAt(Calendar.getInstance().getTime());
                                         tempDeal.setUserId(Integer.toString(user_id));
                                         tempDeal.setCompanyId(Integer.toString(deal_company_id));
-//                            tempDeal.setSrcId(Integer.toString(src_id));
-//                                tempDeal.setLeadId(Integer.toString(lead_id));
                                         tempDeal.setWorkflowId(Integer.toString(deal_workflow_id));
                                         tempDeal.setWorkflowStageId(Integer.toString(deal_workflow_stage_id));
-//                            tempDeal.setSrc(src);
                                         tempDeal.setIsPrivate(deal_is_private);
-//                            tempDeal.setVersion(version);
                                         if (lsContact != null) {
                                             tempDeal.setContact(lsContact);
                                         }
@@ -498,15 +470,9 @@ public class InitService extends IntentService {
                                 }
                             }
                     }
-
-                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-                    bus.post(mCallEvent);
-
+                    TinyBus.from(mContext.getApplicationContext()).post(new OrganizationEventModel());
+                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
                     fetchInquiries();
-//                    fetchDeals();
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e(TAG, "onResponse: JSONException Contacts");
@@ -516,101 +482,8 @@ public class InitService extends IntentService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "onErrorResponse: CouldNotGETContacts"); //404 no lead
-//                initError = true;
-//                fetchDynamicColumns();
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-//                sessionManager.setLoginToken("gVLqb2w8XEpdaQOK8wU7MpNXL9ZpZtBhiN1sbxImCuIOIiFQbMN3AHN098Ua");
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("api_token", "" + sessionManager.getLoginToken());
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-        };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(sr);
-        requestsCounter.incrementAndGet();
-    }
-
-    private void fetchAgentNotesFunc(LSContact contact) {
-        Log.d(TAG, "fetchAgentNotesFunc: Fetching notes...");
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        final String BASE_URL = MyURLs.GET_NOTES;
-        Uri builtUri = Uri.parse(BASE_URL)
-                .buildUpon()
-                .appendPath("" + contact.getServerId())
-                .appendPath("notes")
-                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
-                .build();
-        final String myUrl = builtUri.toString();
-        StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "onResponse() getNote: response = [" + response + "]");
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    JSONArray jsonarray = jObj.getJSONArray("response");
-
-                    for (int i = 0; i < jsonarray.length(); i++) {
-                        JSONObject jsonobject = jsonarray.getJSONObject(i);
-                        String id = jsonobject.getString("id");
-                        String lead_id = jsonobject.getString("lead_id");
-                        String description = jsonobject.getString("description");
-
-                        Log.d(TAG, "onResponse: id: " + id);
-                        Log.d(TAG, "onResponse: lead_id: " + lead_id);
-                        Log.d(TAG, "onResponse: description: " + description);
-
-                        LSNote tempNote = new LSNote();
-                        tempNote.setServerId(id);
-                        tempNote.setContactOfNote(LSContact.getContactFromServerId(lead_id));
-                        tempNote.setNoteText(description);
-                        tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
-                        tempNote.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
-                        tempNote.save();
-                    }
-
-                    NoteAddedEventModel mCallEvent = new NoteAddedEventModel();
-                    TinyBus bus = TinyBus.from(mContext);
-                    bus.post(mCallEvent);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "onResponse: JSONException Notes");
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "onErrorResponse: CouldNotGETNotes");
-//                initError = true;
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-//                sessionManager.setLoginToken("gVLqb2w8XEpdaQOK8wU7MpNXL9ZpZtBhiN1sbxImCuIOIiFQbMN3AHN098Ua");
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("api_token", "" + sessionManager.getLoginToken());
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-        };
+        });
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -706,39 +579,21 @@ public class InitService extends IntentService {
                     Log.e(TAG, "onResponse: JSONException DynamicColumns");
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "onErrorResponse: CouldNotGETDynamicColumns");
-                // for no dynamic columns i am getting 412 instead of 404
-                if (error != null) {
-                    if (error.networkResponse != null) {
-                        if (error.networkResponse.statusCode == 404) {
-                            // No dynamic columns
-                        } else {
-//                            initError = true;
-                        }
+        }, error -> {
+            Log.e(TAG, "onErrorResponse: CouldNotGETDynamicColumns");
+            // for no dynamic columns i am getting 412 instead of 404
+            if (error != null) {
+                if (error.networkResponse != null) {
+                    if (error.networkResponse.statusCode == 404) {
+                        // No dynamic columns
                     } else {
-//                        initError = true;
+//                            initError = true;
                     }
+                } else {
+//                        initError = true;
                 }
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-//                sessionManager.setLoginToken("gVLqb2w8XEpdaQOK8wU7MpNXL9ZpZtBhiN1sbxImCuIOIiFQbMN3AHN098Ua");
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("api_token", "" + sessionManager.getLoginToken());
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-        };
+        });
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -848,10 +703,6 @@ public class InitService extends IntentService {
                             }
                         }
                     }
-//                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-//                    TinyBus bus = TinyBus.from(mContext);
-//                    bus.post(mCallEvent);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e(TAG, "onResponse: JSONException fetchWorkflow");
@@ -860,147 +711,15 @@ public class InitService extends IntentService {
                     Log.e(TAG, "onResponse: ParseException fetchWorkflow");
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "onErrorResponse: CouldNotGETWorkflow");
-                if (error != null) {
-                    if (error.networkResponse != null) {
-                        if (error.networkResponse.statusCode == 404) {
-                        } else {
-                        }
+        }, error -> {
+            Log.e(TAG, "onErrorResponse: CouldNotGETWorkflow");
+            if (error != null) {
+                if (error.networkResponse != null) {
+                    if (error.networkResponse.statusCode == 404) {
                     } else {
                     }
+                } else {
                 }
-            }
-        });
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(sr);
-        requestsCounter.incrementAndGet();
-    }
-
-    private void fetchDeals() {
-        Log.d(TAG, "fetchAgentLeadsFunc: Fetching Deals...");
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        final String BASE_URL = MyURLs.GET_DEALS;
-        Uri builtUri = Uri.parse(BASE_URL)
-                .buildUpon()
-                .appendQueryParameter("per_page", "50000")
-                .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
-                .build();
-        final String myUrl = builtUri.toString();
-        StringRequest sr = new StringRequest(Request.Method.GET, myUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "onResponse() getDeals: response = [" + response + "]");
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    JSONObject responseObject = jObj.getJSONObject("response");
-                    String totalDeals = responseObject.getString("total");
-                    Log.d(TAG, "onResponse: TotalDeals: " + totalDeals);
-
-                    JSONArray jsonarray = responseObject.getJSONArray("data");
-
-                    for (int i = 0; i < jsonarray.length(); i++) {
-                        JSONObject jsonobject = jsonarray.getJSONObject(i);
-                        String id = jsonobject.getString("id");
-                        String name = jsonobject.getString("name");
-                        int created_by = 0;
-                        if (jsonobject.has("created_by")) {
-                            created_by = jsonobject.getInt("created_by");
-                        }
-//                        int updated_by = 0;
-//                        if (jsonobject.has("updated_by")) {
-//                            updated_by = jsonobject.getInt("updated_by");
-//                        }
-                        String created_at = jsonobject.getString("created_at");
-                        String updated_at = jsonobject.getString("updated_at");
-                        int user_id = jsonobject.getInt("user_id");
-                        int lead_id = jsonobject.getInt("lead_id");
-                        int workflow_id = jsonobject.getInt("workflow_id");
-                        int workflow_stage_id = jsonobject.getInt("workflow_stage_id");
-                        String Status = jsonobject.getString("status");
-//                        String follow_up_date = jsonobject.getgetStringInt("follow_up_date");
-//                        String follow_up_description = jsonobject.getString("follow_up_description");
-                        String dynamic_values = jsonobject.getString("dynamic_values");
-                        int company_id = jsonobject.getInt("company_id");
-                        String src = jsonobject.getString("src");
-                        String src_id = jsonobject.getString("src_id");
-                        String is_private = jsonobject.getString("is_private");
-                        String version = jsonobject.getString("version");
-
-                        String value = jsonobject.getString("value");
-                        String currency = jsonobject.getString("currency");
-                        String success_rate = jsonobject.getString("success_rate");
-                        String success_eta = jsonobject.getString("success_eta");
-
-                        Log.d(TAG, "onResponse: ID: " + id);
-                        Log.d(TAG, "onResponse: Name: " + name);
-                        Log.d(TAG, "onResponse: Status: " + Status);
-                        Log.d(TAG, "onResponse: dynamic_values: " + dynamic_values);
-                        Log.d(TAG, "onResponse: created_by: " + created_by);
-                        Log.d(TAG, "onResponse: created_at: " + created_at);
-                        Log.d(TAG, "onResponse: updated_at: " + updated_at);
-                        Log.d(TAG, "onResponse: user_id: " + user_id);
-                        Log.d(TAG, "onResponse: company_id: " + company_id);
-                        Log.d(TAG, "onResponse: src_id: " + src_id);
-                        Log.d(TAG, "onResponse: lead_id: " + lead_id);
-                        Log.d(TAG, "onResponse: workflow_id: " + workflow_id);
-                        Log.d(TAG, "onResponse: workflow_stage_id: " + workflow_stage_id);
-                        Log.d(TAG, "onResponse: src: " + src);
-                        Log.d(TAG, "onResponse: is_private: " + is_private);
-                        Log.d(TAG, "onResponse: version: " + version);
-                        Log.d(TAG, "onResponse: value: " + value);
-                        Log.d(TAG, "onResponse: currency: " + currency);
-                        Log.d(TAG, "onResponse: success_rate: " + success_rate);
-                        Log.d(TAG, "onResponse: success_eta: " + success_eta);
-
-                        if (LSDeal.getDealFromServerId(id) == null) {
-                            LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
-                            if (lsContact != null) {
-                                LSDeal tempDeal = new LSDeal();
-                                tempDeal.setServerId(id);
-                                tempDeal.setName(name);
-                                tempDeal.setStatus(Status);
-//                            tempDeal.setEmail(email);
-                                tempDeal.setDynamic(dynamic_values);
-                                if (created_by != 0) {
-                                    tempDeal.setCreatedBy(Integer.toString(created_by));
-                                }
-                                tempDeal.setCreatedAt(created_at);
-                                tempDeal.setUpdatedAt(Calendar.getInstance().getTime());
-                                tempDeal.setUserId(Integer.toString(user_id));
-                                tempDeal.setCompanyId(Integer.toString(company_id));
-//                            tempDeal.setSrcId(Integer.toString(src_id));
-//                                tempDeal.setLeadId(Integer.toString(lead_id));
-                                tempDeal.setWorkflowId(Integer.toString(workflow_id));
-                                tempDeal.setWorkflowStageId(Integer.toString(workflow_stage_id));
-//                            tempDeal.setSrc(src);
-                                tempDeal.setIsPrivate(is_private);
-//                            tempDeal.setVersion(version);
-                                tempDeal.setContact(lsContact);
-                                tempDeal.setValue(value);
-                                tempDeal.setCurrency(currency);
-                                tempDeal.setSuccessRate(success_rate);
-                                tempDeal.setSuccessEta(success_eta);
-                                tempDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
-                                tempDeal.save();
-                            }
-                        }
-                    }
-                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "onResponse: JSONException Deals");
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "onErrorResponse: CouldNotGETDeals");
             }
         });
         sr.setRetryPolicy(new DefaultRetryPolicy(
@@ -1124,35 +843,7 @@ public class InitService extends IntentService {
                     Log.e(TAG, "onResponse: JSONException Inquiries");
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "onErrorResponse: CouldNotGETInquiries");
-
-//                initError = true;
-
-//                if (sessionManager.isFirstRunAfterLogin()) {
-//                    Log.d(TAG, "initFirst: isFirstRun TRUE");
-//                    TheCallLogEngine theCallLogEngine = new TheCallLogEngine(mContext);
-//                    theCallLogEngine.execute();
-//                }
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-//                sessionManager.setLoginToken("gVLqb2w8XEpdaQOK8wU7MpNXL9ZpZtBhiN1sbxImCuIOIiFQbMN3AHN098Ua");
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("api_token", "" + sessionManager.getLoginToken());
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-        };
+        }, error -> Log.e(TAG, "onErrorResponse: CouldNotGETInquiries"));
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
