@@ -85,7 +85,7 @@ public class InitService extends IntentService {
 
         if (sessionManager.isUserSignedIn()) {
             fetchAgentLeadsFunc();
-//            fetchDynamicColumns();
+          fetchDynamicColumns();
             fetchWorkflow();
         }
 

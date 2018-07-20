@@ -12,6 +12,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -26,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -45,6 +47,7 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.helper.DynamicColums;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.listloaders.DealsOfALeadLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -60,6 +63,7 @@ import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+import com.google.gson.JsonArray;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
@@ -77,7 +81,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 1/9/2017.
  */
 
-public class IndividualContactDetailsFragment extends TabFragment  implements LoaderManager.LoaderCallbacks<List<Object>> {
+public class IndividualContactDetailsFragment extends TabFragment implements LoaderManager.LoaderCallbacks<List<Object>> {
 
     public static final String TAG = "IndividualContDetailFra";
     public static final java.lang.String DEALS_LEAD_ID = "deals_lead_id";
@@ -94,7 +98,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
     private MyRecyclerViewAdapter adapter;
 
     private Long contactIDLong;
-//    private Spinner leadStatusSpinner;
+    //    private Spinner leadStatusSpinner;
     private Button bSave;
     private LSContact mContact;
     private LinearLayout ll;
@@ -157,6 +161,9 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
         setHasOptionsMenu(true);
     }
 
+    GridLayout gridLayout;
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
@@ -166,6 +173,8 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
         tvNumber = (TextView) view.findViewById(R.id.tvNumber);
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
         tvAddress = (TextView) view.findViewById(R.id.tvAddress);
+
+        gridLayout=view.findViewById(R.id.grid);
 
         adapter = new MyRecyclerViewAdapter(getActivity(), listLoader); //TODO potential bug getActivity can be null.
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
@@ -201,7 +210,7 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
         bSave = (Button) view.findViewById(R.id.contactDetailsSaveButton);
         tvDefaultText.setVisibility(View.GONE);
 //        bSave.setVisibility(View.GONE);
-        bSave.setOnClickListener(v -> {
+      /*  bSave.setOnClickListener(v -> {
 
             if (mContact.getVersion() != 0 && mContact.getVersion() == 2) {
                 // save according to version2 parsing
@@ -378,8 +387,9 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
                 mixpanel.track("Dynamic Column Updated");
             }
-        });
+        });*/
 //        addItemsOnSpinnerLeadStatus(view);
+        dynamicColumnByAmir();
         dynamicColumns(view);
         getLoaderManager().initLoader(DEALS_OF_A_LEAD, args, IndividualContactDetailsFragment.this);
         setHasOptionsMenu(true);
@@ -474,18 +484,95 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
         Log.i(TAG, "onDetach: ");
     }
 
+DynamicColums dynamicColums;
+    public void dynamicColumnByAmir() {
+
+        dynamicColums=new DynamicColums(getContext());
+
+        List<LSDynamicColumns> list = LSDynamicColumns.listAll(LSDynamicColumns.class);
+
+
+        if (list.size() > 0) {
+
+
+            for (int i = 0; i < list.size(); i++) {
+
+                String type=list.get(i).getColumnType();
+
+                if(type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)){
+
+                    gridLayout.addView(dynamicColums.editText("Dummy","dummyTag", InputType.TYPE_CLASS_TEXT));
+                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+
+                }
+                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)){
+                    gridLayout.addView(dynamicColums.editText("Dummy","dummyTag", InputType.TYPE_CLASS_NUMBER));
+
+                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+
+                }
+
+                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)){
+
+
+                    List<String> option=new ArrayList<>();
+
+
+
+                    String spinnerDefaultVal = list.get(i).getDefaultValueOption();
+
+                    try {
+                        JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
+                        option.add("Select");
+
+                        for (int j = 0; j < jsonarray.length(); j++) {
+                            String jsonobject = jsonarray.getString(j);
+                            option.add(jsonobject);
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
+
+                    gridLayout.addView(dynamicColums.spinner(dataAdapter,"Tag"));
+
+
+                }
+
+
+
+
+
+
+            }
+
+
+        }
+
+
+    }
+
 
     private void dynamicColumns(View view) {
-        ll = (LinearLayout) view.findViewById(R.id.contactDetailsDropDownLayoutinner);
+
+   /*     ll = (LinearLayout) view.findViewById(R.id.contactDetailsDropDownLayoutinner);
         Display display = ((WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int width = display.getWidth() / 2;
         Log.d(TAG, "Display SIZE: " + display);
         List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
         Log.d(TAG, "onCreateView: Size: " + allColumns.size());
-        if (allColumns == null || allColumns.size() == 0) {
+        if (allColumns != null || allColumns.size() != 0) {
             tvDefaultText.setVisibility(View.VISIBLE);
             bSave.setVisibility(View.GONE);
+            return;
         }
+        if(allColumns.size()>0){
+            return;
+        }
+
         for (int i = 0; i < allColumns.size(); i++) {
             LinearLayout l = new LinearLayout(getContext());
             l.setFocusable(true);
@@ -633,13 +720,15 @@ public class IndividualContactDetailsFragment extends TabFragment  implements Lo
 
                 ll.addView(l);
             }
-        }
+        }*/
         Log.d(TAG, "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 //////////////////////////////////////////////////////////////
 // Populating LEAD data
 //////////////////////////////////////////////////////////////
 
-        List<LSProperty> lsProperties=LSProperty.listAll(LSProperty.class);
+        List<LSProperty> lsProperties = LSProperty.listAll(LSProperty.class);
+
+        List<LSDynamicColumns> lsDynamicColumns = LSDynamicColumns.listAll(LSDynamicColumns.class);
 
         Log.d(TAG, "Populating Lead Data");
 
