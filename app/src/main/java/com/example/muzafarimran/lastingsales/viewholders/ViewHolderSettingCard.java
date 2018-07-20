@@ -17,6 +17,7 @@ import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActi
 import com.example.muzafarimran.lastingsales.activities.SettingsActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.SettingItem;
+import com.example.muzafarimran.lastingsales.settings.Settings;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 

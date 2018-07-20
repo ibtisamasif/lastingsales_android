@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+<SwitchPreference android:id="@+id/enableFlyer"
+
+    android:key="enableFlyer"
+
+    android:defaultValue="true"
+    android:title="Enable Flyer on every call"
+    ></SwitchPreference>
+
+<SwitchPreference android:id="@+id/enableAfterCallPopup"
+
+    android:key="enableAfterCallPopup"
+    android:defaultValue="true"
+    android:title="Enable Popup After call"
+    ></SwitchPreference>
+
+<SwitchPreference android:id="@+id/personalCompany"
+
+    android:key="personalCompany"
+    android:defaultValue="true"
+    android:title="Turn on if this is company Phone/ Off if Personal"
+    ></SwitchPreference>
+
+
+
+</PreferenceScreen>

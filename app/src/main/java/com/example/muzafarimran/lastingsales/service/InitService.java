@@ -79,7 +79,7 @@ public class InitService extends IntentService {
 
         if (sessionManager.isUserSignedIn()) {
             fetchAgentDataFunc();
-//            fetchDynamicColumns();
+            fetchDynamicColumns();
             fetchWorkflow();
         }
 
@@ -519,7 +519,10 @@ public class InitService extends IntentService {
                         JSONObject jsonobject = jsonarray.getJSONObject(i);
                         String id = jsonobject.getString("id");
                         String column_type = jsonobject.getString("column_type");
+                        String related_to = jsonobject.getString("related_to");
+                        String form_visibility = jsonobject.getString("form_visibility");
                         String name = jsonobject.getString("name");
+                        String display_name = jsonobject.getString("display_name");
                         String default_value_options = jsonobject.getString("default_value_options");
                         String range = jsonobject.getString("range");
                         String created_by = jsonobject.getString("created_by");
@@ -530,7 +533,10 @@ public class InitService extends IntentService {
 
                         Log.d(TAG, "onResponse: ID: " + id);
                         Log.d(TAG, "onResponse: column_type: " + column_type);
+                        Log.d(TAG, "onResponse: related_to: " + related_to);
+                        Log.d(TAG, "onResponse: form_visibility: " + form_visibility);
                         Log.d(TAG, "onResponse: name: " + name);
+                        Log.d(TAG, "onResponse: display_name: " + display_name);
                         Log.d(TAG, "onResponse: default_value_options: " + default_value_options);
                         Log.d(TAG, "onResponse: range: " + range);
                         Log.d(TAG, "onResponse: created_by: " + created_by);
@@ -556,7 +562,10 @@ public class InitService extends IntentService {
                             LSDynamicColumns newColumn = new LSDynamicColumns();
                             newColumn.setServerId(id);
                             newColumn.setColumnType(column_type);
+                            newColumn.setRelatedTo(related_to);
+                            newColumn.setFormVisibility(form_visibility);
                             newColumn.setName(name);
+                            newColumn.setDisplayName(display_name);
                             newColumn.setDefaultValueOption(default_value_options);
                             newColumn.setRange(range);
                             newColumn.setCreated_by(created_by);

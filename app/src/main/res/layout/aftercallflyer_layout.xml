@@ -10,6 +10,7 @@
     android:clipToPadding="false">
 
     <android.support.constraint.ConstraintLayout
+        android:layout_marginTop="20dp"
         style="@style/ThemeOverlay.AppCompat"
         android:layout_marginBottom="20dp"
         android:id="@+id/cl"
@@ -24,6 +25,7 @@
         android:windowIsTranslucent="true">
 
         <android.support.constraint.ConstraintLayout
+
             android:id="@+id/linearLayout11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -116,15 +118,16 @@
             android:layout_height="wrap_content"
 
             app:layout_constraintTop_toBottomOf="@+id/dispMsgAddContact"
-            fresco:layout_goneMarginRight="20dp">
+           >
 
             <EditText
 
+                android:layout_centerHorizontal="true"
                 android:id="@+id/afterCallAddContactField"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="2.5"
 
@@ -132,22 +135,26 @@
                 android:hint="Enter contact Name here....."
 
                 android:textSize="15sp" />
+
+
+            <CheckBox
+                android:id="@+id/afterCallAddContactCb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="2.5"
+                android:hint="Don't ask me again"
+                android:maxLines="3"
+                android:textColor="@color/md_black"
+                android:textSize="12sp"
+
+
+                android:layout_below="@id/afterCallAddContactField"></CheckBox>
+
         </RelativeLayout>
 
-        <CheckBox
-            android:id="@+id/afterCallAddContactCb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="2.5"
-            android:hint="Don't ask me again"
-            android:maxLines="3"
-            android:textColor="@color/md_black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relative" />
 
         <Button
             android:id="@+id/afterCallAddContactAddBtn"
@@ -167,7 +174,7 @@
             android:textColorHint="@color/cpb_white"
 
             android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@+id/afterCallAddContactCb"
+            app:layout_constraintTop_toBottomOf="@+id/relative"
             fresco:layout_constraintEnd_toEndOf="parent"
              />
 

@@ -43,13 +43,14 @@
             android:value="sugar_lastingsales.db" />
         <meta-data
             android:name="VERSION"
-            android:value="1" />
+            android:value="2" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
         <!-- <meta-data -->
         <!-- android:name="DOMAIN_PACKAGE_NAME" -->
         <!-- android:value="com.example.muzafarimran.lastingsales" /> -->
+
 
         <receiver android:name=".receivers.NetworkStateReceiver">
             <intent-filter>
@@ -147,6 +148,10 @@
             android:name=".activities.AddEditNewFollowupActivity"
             android:screenOrientation="nosensor"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".settings.Settings"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait" />
