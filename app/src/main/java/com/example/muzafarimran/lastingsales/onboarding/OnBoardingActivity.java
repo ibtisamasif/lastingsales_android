@@ -48,7 +48,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     private TutorialsFragmentPagerAdapter tutorialsFragmentPagerAdapter;
     private static RequestQueue queue;
     private SessionManager sessionManager;
-    private String companyName;
+    private String companyname;
     private String email;
     private String password;
     private String firstname;
@@ -125,7 +125,7 @@ public class OnBoardingActivity extends AppCompatActivity {
 
     public class TutorialsFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        final int TAB_COUNT = 7;
+        final int TAB_COUNT = 6;
 
         TutorialsFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -144,16 +144,16 @@ public class OnBoardingActivity extends AppCompatActivity {
                 case 2:
                     fragment = FragmentD.newInstance("title", "page");
                     break;
+//                case 3:
+//                    fragment = FragmentE.newInstance("title", "page");
+//                    break;
                 case 3:
-                    fragment = FragmentE.newInstance("title", "page");
-                    break;
-                case 4:
                     fragment = FragmentF.newInstance("title", "page");
                     break;
-                case 5:
+                case 4:
                     fragment = FragmentG.newInstance("title", "page");
                     break;
-                case 6:
+                case 5:
                     fragment = FragmentH.newInstance("title", "page");
                     break;
             }
@@ -174,13 +174,13 @@ public class OnBoardingActivity extends AppCompatActivity {
                     return "C";
                 case 2:
                     return "D";
+//                case 3:
+//                    return "E";
                 case 3:
-                    return "E";
-                case 4:
                     return "F";
-                case 5:
+                case 4:
                     return "G";
-                case 6:
+                case 5:
                     return "H";
                 default:
                     return null;
@@ -210,30 +210,32 @@ public class OnBoardingActivity extends AppCompatActivity {
         viewPager.setCurrentItem(i);
     }
 
-    public void dataFromFragmentE(String companyName, String email) {
+//    public void dataFromFragmentE(String companyName, String email) {
+//
+//        this.companyName = companyName;
+//        this.email = email;
+//        moveToFragment(4);
+//
+//    }
 
-        this.companyName = companyName;
-        this.email = email;
-        moveToFragment(4);
-
-    }
-
-    public void dataFromFragmentF(String firstname, String lastname, String phone, String password, String confirmpassword) {
+    public void dataFromFragmentF(String firstname, String lastname, String phone, String password, String confirmpassword, String email, String companyname) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.phone = phone;
         this.password = password;
         this.confirmpassword = confirmpassword;
         this.password = password;
-        moveToFragment(5);
-        registerUserRequest();
+        this.email = email;
+        this.companyname = companyname;
+        moveToFragment(4);
+        registerUserWithCompanyRequest();
     }
 
     public void dataFromFragmentG() {
-        registerUserRequest();
+        registerUserWithCompanyRequest();
     }
 
-    private void registerUserRequest() {
+    private void registerUserWithCompanyRequest() {
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.SIGNUP_URL, response -> {
             Log.d(TAG, "onResponse() called with: response = [" + response + "]");
@@ -242,12 +244,7 @@ public class OnBoardingActivity extends AppCompatActivity {
                 JSONObject jObj = new JSONObject(response);
                 int responseCode = jObj.getInt("responseCode");
                 if (responseCode == 200) {
-                    Log.d(TAG, "SignupActivityonResponse200: ");
-
-
-
-
-
+                    Log.d(TAG, "registerUserWithCompanyOnResponse200: ");
 
                     JSONObject responseObject = jObj.getJSONObject("response");
 //                    String user_id = responseObject.getString("id");
@@ -262,9 +259,6 @@ public class OnBoardingActivity extends AppCompatActivity {
 //                    String completeImagePath = MyURLs.IMAGE_URL + image_path;
                     sessionManager.setLoginToken(api_token);
                     Toast.makeText(OnBoardingActivity.this, "Successfully Signup", Toast.LENGTH_SHORT).show();
-                    registerCompanyRequest(companyName);
-//                        activity.startActivity(new Intent(activity, CreateCompanyActivity.class));
-//                        activity.finish();
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     for (Fragment fragment : fragmentManager.getFragments()) {
                         if (fragment != null && fragment.isVisible() && fragment instanceof FragmentG) {
@@ -287,36 +281,36 @@ public class OnBoardingActivity extends AppCompatActivity {
             if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
                 Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
                 if (fg != null) {
-                    fg.onUserError("No Internet");
+                    fg.onUserAndCompanyError("No Internet");
                 }
             } else {
                 try {
                     if (error.networkResponse != null) {
-                        if (error.networkResponse.statusCode == 412) { // Invalid email responseCode:222 OR Pass must be greater than 4 char ResponseCode:220 // should move to email correction screen FragE
+                        if (error.networkResponse.statusCode == 412) { // Invalid email responseCode:222 OR Pass must be greater than 4 char ResponseCode:220 // should move to email correction screen FragF
                             JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
                             int responseCode = jObj.getInt("responseCode");
                             String response = jObj.getString("response");
                             Toast.makeText(OnBoardingActivity.this, "" + response, Toast.LENGTH_LONG).show();
                             if (fg != null) {
-                                fg.onUserError(response, responseCode);
+                                fg.onUserAndCompanyError(response, responseCode);
                             }
-                        } else if (error.networkResponse.statusCode == 409) { // Email is already registered with us ResponseCode:190 //should move to email correction screen FragE
+                        } else if (error.networkResponse.statusCode == 409) { // Email is already registered with us ResponseCode:190 //should move to email correction screen FragF
                             JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
                             int responseCode = jObj.getInt("responseCode");
                             String response = jObj.getString("response");
                             Toast.makeText(OnBoardingActivity.this, "" + response, Toast.LENGTH_LONG).show();
                             if (fg != null) {
-                                fg.onUserError(response, responseCode);
+                                fg.onUserAndCompanyError(response, responseCode);
                             }
                         } else { // find error and do accordingly
                             if (fg != null) {
-                                fg.onUserError("Server Error");
+                                fg.onUserAndCompanyError("Server Error");
                             }
                             Toast.makeText(OnBoardingActivity.this, "Server Error.", Toast.LENGTH_SHORT).show();
                         }
                     } else { // try again
                         if (fg != null) {
-                            fg.onUserError("Poor Internet");
+                            fg.onUserAndCompanyError("Poor Internet");
                         }
                         Toast.makeText(getApplicationContext(), "Poor Internet Connectivity", Toast.LENGTH_LONG).show();
                     }
@@ -334,7 +328,7 @@ public class OnBoardingActivity extends AppCompatActivity {
                 params.put("password", password);
                 params.put("confirm_password", confirmpassword);
                 params.put("phone", phone);
-              //  params.put("cell_number", phone);
+                params.put("company_name", companyname);
                 return params;
             }
         };
@@ -575,87 +569,87 @@ public class OnBoardingActivity extends AppCompatActivity {
         queue.add(sr);
     }
 
-    private void registerCompanyRequest(String companyName) {
-        final int MY_SOCKET_TIMEOUT_MS = 60000;
-        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_COMPANY_URL, response -> {
-            Log.d(TAG, "onResponse() called with: response = [" + response + "]");
-            try {
-                JSONObject jObj = new JSONObject(response);
-                int responseCode = jObj.getInt("responseCode");
-
-                if (responseCode == 200) {
-                    sessionManager.setKeyInitCompanyCreated("yes");
-                    sessionManager.setKeyInitAccountTypeSelected("individual");
-                    Toast.makeText(OnBoardingActivity.this, "Successfully Created Company", Toast.LENGTH_SHORT).show();
-//                        startActivity(new Intent(OnBoardingActivity.this, LogInActivity.class));
-//                        finish();
-
-                    startActivity(new Intent(getApplicationContext(), TutorialScreenActivity.class));
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    for (Fragment fragment : fragmentManager.getFragments()) {
-                        if (fragment != null && fragment.isVisible() && fragment instanceof FragmentG) {
-                            ((FragmentG) fragment).onCompanySuccess();
-                        }
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }, error -> {
-            FragmentG fg = null;
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            for (Fragment fragment : fragmentManager.getFragments()) {
-                if (fragment != null && fragment.isVisible() && fragment instanceof FragmentG) {
-                    fg = (FragmentG) fragment;
-                }
-            }
-            Log.d(TAG, "onErrorResponse() called with: error = [" + error + "]");
-            if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
-                Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
-                if (fg != null) {
-                    fg.onCompanyError("No Internet");
-                }
-            } else {
-                try {
-                    if (error.networkResponse != null) {
-                        if (error.networkResponse.statusCode == 412) {
-                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-//                                int responseCode = jObj.getInt("responseCode");
-                            String response = jObj.getString("response");
-                            if (fg != null) {
-                                fg.onCompanyError(response);
-                            }
-                            Toast.makeText(OnBoardingActivity.this, "" + response, Toast.LENGTH_SHORT).show();
-                        } else {
-                            if (fg != null) {
-                                fg.onCompanyError("Server Error");
-                            }
-                            Toast.makeText(OnBoardingActivity.this, "Server Error.", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        if (fg != null) {
-                            fg.onCompanyError("Poor Internet");
-                        }
-                        Toast.makeText(getApplicationContext(), "Poor Internet Connectivity", Toast.LENGTH_LONG).show();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("name", companyName);
-                params.put("api_token", sessionManager.getLoginToken());
-                return params;
-            }
-        };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(sr);
-    }
+//    private void registerCompanyRequest(String companyName) {
+//        final int MY_SOCKET_TIMEOUT_MS = 60000;
+//        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_COMPANY_URL, response -> {
+//            Log.d(TAG, "onResponse() called with: response = [" + response + "]");
+//            try {
+//                JSONObject jObj = new JSONObject(response);
+//                int responseCode = jObj.getInt("responseCode");
+//
+//                if (responseCode == 200) {
+//                    sessionManager.setKeyInitCompanyCreated("yes");
+//                    sessionManager.setKeyInitAccountTypeSelected("individual");
+//                    Toast.makeText(OnBoardingActivity.this, "Successfully Created Company", Toast.LENGTH_SHORT).show();
+////                        startActivity(new Intent(OnBoardingActivity.this, LogInActivity.class));
+////                        finish();
+//
+//                    startActivity(new Intent(getApplicationContext(), TutorialScreenActivity.class));
+//                    FragmentManager fragmentManager = getSupportFragmentManager();
+//                    for (Fragment fragment : fragmentManager.getFragments()) {
+//                        if (fragment != null && fragment.isVisible() && fragment instanceof FragmentG) {
+//                            ((FragmentG) fragment).onCompanySuccess();
+//                        }
+//                    }
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }, error -> {
+//            FragmentG fg = null;
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            for (Fragment fragment : fragmentManager.getFragments()) {
+//                if (fragment != null && fragment.isVisible() && fragment instanceof FragmentG) {
+//                    fg = (FragmentG) fragment;
+//                }
+//            }
+//            Log.d(TAG, "onErrorResponse() called with: error = [" + error + "]");
+//            if (!NetworkAccess.isNetworkAvailable(getApplicationContext())) {
+//                Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_LONG).show();
+//                if (fg != null) {
+//                    fg.onCompanyError("No Internet");
+//                }
+//            } else {
+//                try {
+//                    if (error.networkResponse != null) {
+//                        if (error.networkResponse.statusCode == 412) {
+//                            JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+////                                int responseCode = jObj.getInt("responseCode");
+//                            String response = jObj.getString("response");
+//                            if (fg != null) {
+//                                fg.onCompanyError(response);
+//                            }
+//                            Toast.makeText(OnBoardingActivity.this, "" + response, Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            if (fg != null) {
+//                                fg.onCompanyError("Server Error");
+//                            }
+//                            Toast.makeText(OnBoardingActivity.this, "Server Error.", Toast.LENGTH_SHORT).show();
+//                        }
+//                    } else {
+//                        if (fg != null) {
+//                            fg.onCompanyError("Poor Internet");
+//                        }
+//                        Toast.makeText(getApplicationContext(), "Poor Internet Connectivity", Toast.LENGTH_LONG).show();
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }) {
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("name", companyName);
+//                params.put("api_token", sessionManager.getLoginToken());
+//                return params;
+//            }
+//        };
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                MY_SOCKET_TIMEOUT_MS,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        queue.add(sr);
+//    }
 
 }

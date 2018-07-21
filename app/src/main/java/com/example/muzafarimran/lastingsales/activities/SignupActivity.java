@@ -37,6 +37,7 @@ import java.util.Map;
  * Created by ibtisam on 5/18/2017.
  */
 
+@Deprecated
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
     ProgressDialog pdLoading;

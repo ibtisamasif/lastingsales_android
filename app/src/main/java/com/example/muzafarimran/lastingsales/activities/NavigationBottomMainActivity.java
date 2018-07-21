@@ -382,6 +382,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     startService(intentInitService);
                 }
             }
+            if (!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
+                activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
+            }
         }
     }
 

@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
 
 public class FragmentF extends Fragment {
 
@@ -20,6 +22,8 @@ public class FragmentF extends Fragment {
     private EditText etPhoneNumber;
     private EditText etPassword;
     private EditText etConfirmPassword;
+    private EditText etEmail;
+    private EditText etCompanyName;
     private Button bNext;
 
     public FragmentF() {
@@ -45,6 +49,8 @@ public class FragmentF extends Fragment {
         etPhoneNumber = view.findViewById(R.id.etPhoneNumber);
         etPassword = view.findViewById(R.id.etPassword);
         etConfirmPassword = view.findViewById(R.id.etConfirmPassword);
+        etEmail = view.findViewById(R.id.etEmail);
+        etCompanyName = view.findViewById(R.id.etCompanyName);
         bNext = view.findViewById(R.id.bNext);
         bNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,16 +59,21 @@ public class FragmentF extends Fragment {
 
                 etFirstName.setError(null);
                 etLastName.setError(null);
-
+                etPhoneNumber.setError(null);
                 etPassword.setError(null);
                 etConfirmPassword.setError(null);
-                etPhoneNumber.setError(null);
-                Boolean firstnameVarified = true, lastnameVarified = true, passwordVarified = true, confirmpasswordVarified = true, passwordMatchingVerified = true, mobileVarified = true;
+                etEmail.setError(null);
+                etCompanyName.setError(null);
+
+                Boolean firstnameVarified = true, lastnameVarified = true, passwordVarified = true, confirmpasswordVarified = true, passwordMatchingVerified = true, mobileVarified = true, emailVerified = true, companyVerified = true;
+
                 String firstname = etFirstName.getText().toString();
                 String lastname = etLastName.getText().toString();
                 String password = etPassword.getText().toString();
                 String confirmpassword = etConfirmPassword.getText().toString();
                 String mobile = etPhoneNumber.getText().toString();
+                String company = etCompanyName.getText().toString();
+                String email = etEmail.getText().toString();
 
                 if (firstname.length() < 3) {
                     firstnameVarified = false;
@@ -79,9 +90,19 @@ public class FragmentF extends Fragment {
                 if (confirmpassword.length() < 4) {
                     confirmpasswordVarified = false;
                 }
-                if (mobile.length() < 11) {
+                if (mobile.length() < 10) {
                     mobileVarified = false;
                 }
+                if (company.length() < 4) {
+                    companyVerified = false;
+                }
+                if (email.length() < 7) {
+                    emailVerified = false;
+                }
+                if (!MyDateTimeStamp.isValidEmail(email)) {
+                    emailVerified = false;
+                }
+
 //                if (!PhoneNumberAndCallUtils.isValidPassword(password)) {
 //                    passwordVarified = false;
 //                }
@@ -102,17 +123,25 @@ public class FragmentF extends Fragment {
                     etConfirmPassword.setError("Mismatched!");
                 }
                 if (!mobileVarified) {
-                    etPhoneNumber.setError("Invalid Mobile Number!");
+                    etPhoneNumber.setError("Invalid phone Number!");
                 }
-                if (firstnameVarified && lastnameVarified && passwordVarified && confirmpasswordVarified && passwordMatchingVerified && mobileVarified) {
+                if (!companyVerified) {
+                    etCompanyName.setError("Invalid Company minimum 4 characters expected!");
+                }
+                if (!emailVerified) {
+                    etEmail.setError("Invalid Email!");
+                }
+                if (firstnameVarified && lastnameVarified && passwordVarified && confirmpasswordVarified && passwordMatchingVerified && mobileVarified && emailVerified && companyVerified) {
                     ((OnBoardingActivity) getActivity()).dataFromFragmentF(
                             etFirstName.getText().toString(),
                             etLastName.getText().toString(),
                             etPhoneNumber.getText().toString(),
                             etPassword.getText().toString(),
-                            etConfirmPassword.getText().toString());
-                }else {
-
+                            etConfirmPassword.getText().toString(),
+                            etEmail.getText().toString(),
+                            etCompanyName.getText().toString());
+                } else {
+                    Toast.makeText(getActivity(), "Something goes wrong. Please recheck entered data!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -18,8 +18,7 @@ public class FragmentG extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private boolean isUserSuccess = false;
-    private boolean isCompanySuccess = false;
+    private boolean isUserAndCompanySuccess = false;
     private ProgressBar mProgress;
     private Button bTryAgain;
     private TextView tvErrorMsg;
@@ -64,57 +63,43 @@ public class FragmentG extends Fragment {
 
     public void onUserSuccess() {
         mProgress.setProgress(50);
-        isUserSuccess = true;
+        isUserAndCompanySuccess = true;
         validateAndNext();
-        tvErrorMsg.setText("User registered successfully Registering company now");
+        tvErrorMsg.setText("User registered successfully");
     }
 
-    public void onUserError(String error, int responseCode) {
+    public void onUserAndCompanyError(String error, int responseCode) {
 
-        if (responseCode == 222) { // Invalid email responseCode:222  move to email correction screen FragE
+        if (responseCode == 222) { // Invalid email responseCode:222  move to email correction screen FragF
 
             ((OnBoardingActivity) getActivity()).moveToFragment(3);
 
-        } else if (responseCode == 190) { // Email is already registered with us ResponseCode:190  move to email changing screen FragE
+        } else if (responseCode == 190) { // Email is already registered with us ResponseCode:190  move to email changing screen FragF
 
             ((OnBoardingActivity) getActivity()).moveToFragment(3);
 
         } else if (responseCode == 220) {  //Pass must be greater than 4 char ResponseCode:220 move to fragF
 
-            ((OnBoardingActivity) getActivity()).moveToFragment(4);
+            ((OnBoardingActivity) getActivity()).moveToFragment(3);
 
         }
 
         Log.d(TAG, "onUserError: " + error);
         bTryAgain.setVisibility(View.VISIBLE);
-        tvErrorMsg.setText(error + " while registering user");
+        tvErrorMsg.setText(error + " while registering");
 //        Toast.makeText(getActivity(), error + " error occurred while registering user", Toast.LENGTH_SHORT).show();
     }
 
-    public void onUserError(String error) {
+    public void onUserAndCompanyError(String error) {
         Log.d(TAG, "onUserError: " + error);
         bTryAgain.setVisibility(View.VISIBLE);
-        tvErrorMsg.setText(error + " while registering user");
+        tvErrorMsg.setText(error + " while registering");
 //        Toast.makeText(getActivity(), error + " error occurred while registering user", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onCompanySuccess() {
-        mProgress.setProgress(100);
-        isCompanySuccess = true;
-        validateAndNext();
-        tvErrorMsg.setText("Company registered successfully");
-//        Toast.makeText(getActivity(), "Company registered successfully", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onCompanyError(String error) {
-        Log.d(TAG, "onCompanyError: " + error);
-        bTryAgain.setVisibility(View.VISIBLE);
-        tvErrorMsg.setText(error + " while registering company");
     }
 
     private void validateAndNext() {
-        if (isUserSuccess && isCompanySuccess) {
-            ((OnBoardingActivity) getActivity()).moveToFragment(6);
+        if (isUserAndCompanySuccess) {
+            ((OnBoardingActivity) getActivity()).moveToFragment(5);
         }
     }
 }
