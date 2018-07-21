@@ -165,6 +165,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
 
     Button save;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
@@ -175,7 +176,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
         tvAddress = (TextView) view.findViewById(R.id.tvAddress);
 
-        gridLayout=view.findViewById(R.id.grid);
+        gridLayout = view.findViewById(R.id.grid);
 
         adapter = new MyRecyclerViewAdapter(getActivity(), listLoader); //TODO potential bug getActivity can be null.
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
@@ -183,7 +184,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setNestedScrollingEnabled(false);
 
-        save=view.findViewById(R.id.csave);
+        save = view.findViewById(R.id.csave);
 
         save.setOnClickListener(this);
 
@@ -401,19 +402,6 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -506,36 +494,34 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
     public void onClick(View v) {
 
 
-        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class,"related_to=?", LSProperty.STORABLE_TYPE_APP_LEAD);
+        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class, "related_to=?", LSProperty.STORABLE_TYPE_APP_LEAD);
 
-        if(list.size()>0){
+        if (list.size() > 0) {
 
-            for(int i=0;i<list.size();i++){
-                String type=list.get(i).getColumnType();
-
-
-                if(type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)){
+            for (int i = 0; i < list.size(); i++) {
+                String type = list.get(i).getColumnType();
 
 
-                    EditText editText=(EditText)gridLayout.findViewWithTag("lead"+list.get(i).getServerId());
-
-                    String val=editText.getText().toString();
+                if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
 
+                    EditText editText = (EditText) gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
+
+                    String val = editText.getText().toString();
 
 
-                    Log.d("textfield",val);
+                    Log.d("textfield", val);
                     //Toast.makeText(mContext, "TextField"+val, Toast.LENGTH_SHORT).show();
 
 
-                    List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    if(lsProperty.size()>0){
+                    if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
                         lsProperty.get(0).save();
-                        Log.d("saved","value saved");
-                    }else{
-                        LSProperty lsProperty1=new LSProperty();
+                        Log.d("saved", "value saved");
+                    } else {
+                        LSProperty lsProperty1 = new LSProperty();
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
@@ -543,30 +529,29 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                         lsProperty1.save();
 
-                        Log.d("created","created property");
+                        Log.d("created", "created property");
                     }
 
 
-
                 }
-                if(type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)){
+                if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
 
-                    EditText editText=(EditText)gridLayout.findViewWithTag("lead"+list.get(i).getServerId());
+                    EditText editText = (EditText) gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
 
-                    String val=editText.getText().toString();
+                    String val = editText.getText().toString();
 
-                    Log.d("numberfield",val);
+                    Log.d("numberfield", val);
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
 
-                    List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    if(lsProperty.size()>0){
+                    if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
                         lsProperty.get(0).save();
-                        Log.d("saved","value saved");
-                    }else{
-                        LSProperty lsProperty1=new LSProperty();
+                        Log.d("saved", "value saved");
+                    } else {
+                        LSProperty lsProperty1 = new LSProperty();
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
@@ -574,30 +559,27 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                         lsProperty1.save();
 
-                        Log.d("created","created property");
+                        Log.d("created", "created property");
                     }
 
 
-
-                }
-
-                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)){
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
 
-                    Spinner spinner=(Spinner) gridLayout.findViewWithTag("lead"+list.get(i).getServerId());
+                    Spinner spinner = (Spinner) gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
 
-                    String val=spinner.getSelectedItem().toString();
+                    String val = spinner.getSelectedItem().toString();
 
-                    Toast.makeText(mContext, "Spinner "+val, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Spinner " + val, Toast.LENGTH_SHORT).show();
 
-                    List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    if(lsProperty.size()>0){
+                    if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
                         lsProperty.get(0).save();
-                        Log.d("saved","value saved");
-                    }else{
-                        LSProperty lsProperty1=new LSProperty();
+                        Log.d("saved", "value saved");
+                    } else {
+                        LSProperty lsProperty1 = new LSProperty();
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
@@ -605,19 +587,14 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                         lsProperty1.save();
 
-                        Log.d("created","created property");
+                        Log.d("created", "created property");
                     }
 
 
-
                 }
-
-
-
 
 
             }
-
 
 
         }
@@ -629,16 +606,13 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
     // FIXME: 7/20/2018
 
 
-
-
-
-
     DynamicColums dynamicColums;
+
     public void dynamicColumnByAmir() {
 
-        dynamicColums=new DynamicColums(getContext());
+        dynamicColums = new DynamicColums(getContext());
 
-        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class,"related_to=?",LSProperty.STORABLE_TYPE_APP_LEAD);
+        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class, "related_to=?", LSProperty.STORABLE_TYPE_APP_LEAD);
 
 
         if (list.size() > 0) {
@@ -646,91 +620,87 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
             for (int i = 0; i < list.size(); i++) {
 
-                String type=list.get(i).getColumnType();
+                String type = list.get(i).getColumnType();
 
-                if(type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)){
+                if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
-                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    if(lsProperties.size()>0) {
+                    if (lsProperties.size() > 0) {
 
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "lead"+list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
-                    }else{
+                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "lead" + list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
+                    } else {
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-                        gridLayout.addView(dynamicColums.editText("", "lead"+list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
+                        gridLayout.addView(dynamicColums.editText("", "lead" + list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
 
                         //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)){
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
-                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    if(lsProperties.size()>0) {
+                    if (lsProperties.size() > 0) {
 
 
-                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
 
-                    gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(),"lead"+list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
-                    }else{
-                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "lead" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
+                    } else {
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
 
-                        gridLayout.addView(dynamicColums.editText("","lead"+list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
+                        gridLayout.addView(dynamicColums.editText("", "lead" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
 
                         // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
 
-                }
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
-                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)){
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    if (lsProperties.size() > 0) {
 
-                    if(lsProperties.size()>0) {
-
-int position=0;
-                        List<String> option=new ArrayList<>();
+                        int position = 0;
+                        List<String> option = new ArrayList<>();
 
 
+                        String spinnerDefaultVal = list.get(i).getDefaultValueOption();
 
-                    String spinnerDefaultVal = list.get(i).getDefaultValueOption();
+                        try {
+                            JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
+                            option.add("Select");
 
-                    try {
-                        JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
-                        option.add("Select");
+                            for (int j = 0; j < jsonarray.length(); j++) {
+                                if (lsProperties.get(0).getValue().equals(jsonarray.getString(j))) {
 
-                        for (int j = 0; j < jsonarray.length(); j++) {
-                            if(lsProperties.get(0).getValue().equals(jsonarray.getString(j))){
+                                    position = j;
+                                    position++;
+                                }
+                                String jsonobject = jsonarray.getString(j);
+                                option.add(jsonobject);
 
-                                position=j;
-                                position++;
                             }
-                            String jsonobject = jsonarray.getString(j);
-                            option.add(jsonobject);
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+
+                        // Toast.makeText(mContext, "Out position"+position, Toast.LENGTH_SHORT).show();
+
+                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                        gridLayout.addView(dynamicColums.spinner(dataAdapter, "lead" + list.get(i).getServerId(), position));
+
+
                     }
 
 
-                       // Toast.makeText(mContext, "Out position"+position, Toast.LENGTH_SHORT).show();
+                } else {
+                    List<String> option = new ArrayList<>();
 
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
-
-                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
-                    gridLayout.addView(dynamicColums.spinner(dataAdapter,"lead"+list.get(i).getServerId(),position));
-
-
-                }
-
-
-                }else{
-                    List<String> option=new ArrayList<>();
-
-int position=0;
+                    int position = 0;
 
                     String spinnerDefaultVal = list.get(i).getDefaultValueOption();
 
@@ -750,14 +720,12 @@ int position=0;
 
                     ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
 
-                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
-                    gridLayout.addView(dynamicColums.spinner(dataAdapter,"lead"+list.get(i).getServerId(),++position));
+                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                    gridLayout.addView(dynamicColums.spinner(dataAdapter, "lead" + list.get(i).getServerId(), ++position));
 
 
                     //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                 }
-
-
 
 
             }

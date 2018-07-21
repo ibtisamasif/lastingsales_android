@@ -102,7 +102,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
     private View.OnClickListener callClickListener = null;
     private EditText valueEditText;
     private TextView currencyTextView;
-//    private EditText success_rateEditText;
+    //    private EditText success_rateEditText;
 //    private EditText success_ETAEditText;
     private TextView created_agoTextView;
 
@@ -131,7 +131,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         Log.i(TAG, "onCreate: ");
         setRetainInstance(true);
         Bundle bundle = this.getArguments();
-        args=this.getArguments();
+        args = this.getArguments();
         dealIDLong = bundle.getLong("someId");
         setHasOptionsMenu(true);
     }
@@ -139,6 +139,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
     GridLayout gridLayout;
     DynamicColums dynamicColums;
     Button save;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
@@ -172,7 +173,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 //
 //        llDynamicConnectionsContainer = (LinearLayout) view.findViewById(R.id.llDynamicConnectionsContainer);
 
-        save=view.findViewById(R.id.dealsave);
+        save = view.findViewById(R.id.dealsave);
 
         tvDefaultText = (TextView) view.findViewById(R.id.tvDefaultText);
 //        bSave = (Button) view.findViewById(R.id.bSave);
@@ -184,7 +185,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 //        addItemsOnSpinnerDealStatus(view);
 
 
-        gridLayout=view.findViewById(R.id.griddeal);
+        gridLayout = view.findViewById(R.id.griddeal);
 
 
         dynamicColumnByAmir();
@@ -198,11 +199,12 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         setHasOptionsMenu(true);
         return view;
     }
+
     public void dynamicColumnByAmir() {
 
-        dynamicColums=new DynamicColums(getContext());
+        dynamicColums = new DynamicColums(getContext());
 
-        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class,"related_to=?", LSProperty.STORABLE_TYPE_APP_DEAL);
+        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class, "related_to=?", LSProperty.STORABLE_TYPE_APP_DEAL);
 
 
         if (list.size() > 0) {
@@ -210,54 +212,50 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
             for (int i = 0; i < list.size(); i++) {
 
-                String type=list.get(i).getColumnType();
+                String type = list.get(i).getColumnType();
 
-                if(type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)){
+                if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
-                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    if(lsProperties.size()>0) {
+                    if (lsProperties.size() > 0) {
 
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "deal"+list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
-                    }else{
+                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "deal" + list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
+                    } else {
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-                        gridLayout.addView(dynamicColums.editText("", "deal"+list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
+                        gridLayout.addView(dynamicColums.editText("", "deal" + list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
 
                         //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)){
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
-                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    if(lsProperties.size()>0) {
+                    if (lsProperties.size() > 0) {
 
 
-                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
 
-                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(),"deal"+list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
-                    }else{
-                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "deal" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
+                    } else {
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
 
-                        gridLayout.addView(dynamicColums.editText("","deal"+list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
+                        gridLayout.addView(dynamicColums.editText("", "deal" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
 
                         // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
 
-                }
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
-                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)){
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
-
-                    if(lsProperties.size()>0) {
+                    if (lsProperties.size() > 0) {
 
 
-                        int position=0;
-                        List<String> option=new ArrayList<>();
-
+                        int position = 0;
+                        List<String> option = new ArrayList<>();
 
 
                         String spinnerDefaultVal = list.get(i).getDefaultValueOption();
@@ -267,8 +265,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                             option.add("Select");
 
                             for (int j = 0; j < jsonarray.length(); j++) {
-                                if(lsProperties.get(0).getValue().equals(jsonarray.getString(j))){
-                                    position=j;
+                                if (lsProperties.get(0).getValue().equals(jsonarray.getString(j))) {
+                                    position = j;
                                     position++;
                                 }
 
@@ -283,18 +281,18 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
 
-                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
-                        gridLayout.addView(dynamicColums.spinner(dataAdapter,"deal"+list.get(i).getServerId(),position));
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                        gridLayout.addView(dynamicColums.spinner(dataAdapter, "deal" + list.get(i).getServerId(), position));
 
 
                     }
 
 
-                }else{
-                    List<String> option=new ArrayList<>();
+                } else {
+                    List<String> option = new ArrayList<>();
 
 
-                    int position=0;
+                    int position = 0;
 
                     String spinnerDefaultVal = list.get(i).getDefaultValueOption();
 
@@ -314,14 +312,12 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                     ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
 
-                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
-                    gridLayout.addView(dynamicColums.spinner(dataAdapter,"deal"+list.get(i).getServerId(),position));
+                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                    gridLayout.addView(dynamicColums.spinner(dataAdapter, "deal" + list.get(i).getServerId(), position));
 
 
                     //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                 }
-
-
 
 
             }
@@ -336,36 +332,34 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
     public void onClick(View v) {
 
 
-        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class,"related_to=?", LSProperty.STORABLE_TYPE_APP_DEAL);
+        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class, "related_to=?", LSProperty.STORABLE_TYPE_APP_DEAL);
 
-        if(list.size()>0){
+        if (list.size() > 0) {
 
-            for(int i=0;i<list.size();i++){
-                String type=list.get(i).getColumnType();
-
-
-                if(type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)){
+            for (int i = 0; i < list.size(); i++) {
+                String type = list.get(i).getColumnType();
 
 
-                    EditText editText=(EditText)gridLayout.findViewWithTag("deal"+list.get(i).getServerId());
-
-                    String val=editText.getText().toString();
+                if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
 
+                    EditText editText = (EditText) gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
+
+                    String val = editText.getText().toString();
 
 
-                    Log.d("textfield",val);
+                    Log.d("textfield", val);
                     //Toast.makeText(mContext, "TextField"+val, Toast.LENGTH_SHORT).show();
 
 
-                    List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    if(lsProperty.size()>0){
+                    if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
                         lsProperty.get(0).save();
-                        Log.d("saved","value saved");
-                    }else{
-                        LSProperty lsProperty1=new LSProperty();
+                        Log.d("saved", "value saved");
+                    } else {
+                        LSProperty lsProperty1 = new LSProperty();
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
@@ -373,30 +367,29 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                         lsProperty1.save();
 
-                        Log.d("created","created property");
+                        Log.d("created", "created property");
                     }
 
 
-
                 }
-                if(type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)){
+                if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
 
-                    EditText editText=(EditText)gridLayout.findViewWithTag("deal"+list.get(i).getServerId());
+                    EditText editText = (EditText) gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
 
-                    String val=editText.getText().toString();
+                    String val = editText.getText().toString();
 
-                    Log.d("numberfield",val);
+                    Log.d("numberfield", val);
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
 
-                    List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    if(lsProperty.size()>0){
+                    if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
                         lsProperty.get(0).save();
-                        Log.d("saved","value saved");
-                    }else{
-                        LSProperty lsProperty1=new LSProperty();
+                        Log.d("saved", "value saved");
+                    } else {
+                        LSProperty lsProperty1 = new LSProperty();
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
@@ -404,30 +397,27 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                         lsProperty1.save();
 
-                        Log.d("created","created property");
+                        Log.d("created", "created property");
                     }
 
 
-
-                }
-
-                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)){
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
 
-                    Spinner spinner=(Spinner) gridLayout.findViewWithTag("deal"+list.get(i).getServerId());
+                    Spinner spinner = (Spinner) gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
 
-                    String val=spinner.getSelectedItem().toString();
+                    String val = spinner.getSelectedItem().toString();
 
                     //Toast.makeText(mContext, "Spinner "+val, Toast.LENGTH_SHORT).show();
 
-                    List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
 
-                    if(lsProperty.size()>0){
+                    if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
                         lsProperty.get(0).save();
-                        Log.d("saved","value saved");
-                    }else{
-                        LSProperty lsProperty1=new LSProperty();
+                        Log.d("saved", "value saved");
+                    } else {
+                        LSProperty lsProperty1 = new LSProperty();
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
@@ -435,19 +425,14 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                         lsProperty1.save();
 
-                        Log.d("created","created property");
+                        Log.d("created", "created property");
                     }
-
 
 
                 }
 
 
-
-
-
             }
-
 
 
         }
@@ -553,21 +538,21 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     }
                 });
             }
-        if (mDeal.getValue() != null) {
-            valueEditText.setText(mDeal.getValue());
-        }
-        if (mDeal.getCurrency() != null) {
-            currencyTextView.setText(mDeal.getCurrency());
-        }
+            if (mDeal.getValue() != null) {
+                valueEditText.setText(mDeal.getValue());
+            }
+            if (mDeal.getCurrency() != null) {
+                currencyTextView.setText(mDeal.getCurrency());
+            }
 //        if (mDeal.getSuccessRate() != null) {
 //            success_rateEditText.setText(mDeal.getSuccessRate());
 //        }
 //        if (mDeal.getSuccessEta() != null) {
 //            success_ETAEditText.setText(mDeal.getSuccessEta());
 //        }
-        if (mDeal.getCreatedAt() != null) {
-            created_agoTextView.setText(mDeal.getCreatedAt());
-        }
+            if (mDeal.getCreatedAt() != null) {
+                created_agoTextView.setText(mDeal.getCreatedAt());
+            }
 
 //            // populate status spinner
 //            switch (mDeal.getStatus()) {
