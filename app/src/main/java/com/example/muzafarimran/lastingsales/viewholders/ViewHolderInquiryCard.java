@@ -85,7 +85,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         if (inquiryCall.getContact() == null) {
             Log.d(TAG, "getView: inquiryCall.getContact() == null: " + number);
             // TAG button visibility
-            this.bTag.setVisibility(View.VISIBLE);
+//            this.bTag.setVisibility(View.VISIBLE);
             if (inquiryCall.getContactName() != null) {
                 this.name.setText(inquiryCall.getContactName());      //Name from App
             } else {
@@ -102,10 +102,10 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
             }
         } else {
             // TAG button visibility
-            if (!inquiryCall.getContact().getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                Log.d(TAG, "getView: not a sale contact: " + number);
-                this.bTag.setVisibility(View.VISIBLE);
-            }
+//            if (!inquiryCall.getContact().getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
+//                Log.d(TAG, "getView: not a sale contact: " + number);
+//                this.bTag.setVisibility(View.VISIBLE);
+//            }
             if (inquiryCall.getContact().getContactName() != null) {
                 Log.d(TAG, "getView: inquiryCall.getContact().getContactName() != null " + number);
                 this.name.setText(inquiryCall.getContact().getContactName());

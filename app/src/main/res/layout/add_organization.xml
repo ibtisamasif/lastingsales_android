@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/activity_add_deal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -60,8 +61,7 @@
                             android:layout_weight="1"
                             android:hint="Organization"
                             android:inputType="textPersonName"
-                            android:padding="8dp"
-                            android:text="Organization" />
+                            android:padding="8dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -85,7 +85,7 @@
                             android:layout_weight="1"
                             android:inputType="textEmailAddress"
                             android:padding="8dp"
-                            android:text="example@myorg.com" />
+                            android:hint="example@myorg.com" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -109,7 +109,7 @@
                             android:layout_weight="1"
                             android:inputType="phone"
                             android:padding="8dp"
-                            android:text="03004455667" />
+                            android:hint="03004455667" />
                     </LinearLayout>
 
                 </LinearLayout>

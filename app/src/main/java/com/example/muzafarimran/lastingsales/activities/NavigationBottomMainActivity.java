@@ -57,6 +57,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
+import com.example.muzafarimran.lastingsales.service.CallLogEngineService;
 import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
@@ -684,13 +685,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 } else {
                     Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_SHORT).show();
                 }
-               /* TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-                theCallLogEngine.execute();
-
-               */
-
-                //   startService(new Intent(getApplicationContext(), CallLogEngineService.class));
-
+                startService(new Intent(getApplicationContext(), CallLogEngineService.class));
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
                 String projectToken = MixpanelConfig.projectToken;
