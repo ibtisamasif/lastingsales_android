@@ -697,10 +697,8 @@
             style="@style/Base.TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/deal_details"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/isPrivateSpinner"
             tools:layout_conversion_absoluteHeight="21dp"
@@ -708,6 +706,7 @@
 
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tvDefaultText"
             style="@style/Base.TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
@@ -722,17 +721,6 @@
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="153dp" />
 
-        <LinearLayout
-            android:id="@+id/contactDetailsDropDownLayoutinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6"></LinearLayout>
 
         <!--<Button-->
         <!--android:id="@+id/bSave"-->
@@ -751,6 +739,48 @@
         <!--app:layout_constraintTop_toBottomOf="@+id/contactDetailsDropDownLayoutinner"-->
         <!--tools:layout_conversion_absoluteHeight="40dp"-->
         <!--tools:layout_conversion_absoluteWidth="160dp" />-->
+
+
+
+
+        <GridLayout
+            android:focusable="false"
+            android:columnCount="2"
+
+            android:id="@+id/griddeal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+
+
+        </GridLayout>
+        <Button
+
+            android:id="@+id/dealsave"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:tag="personal_radio"
+            android:text="Save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/griddeal"
+            tools:layout_conversion_absoluteHeight="40dp"
+            tools:layout_conversion_absoluteWidth="160dp" />
+
+
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

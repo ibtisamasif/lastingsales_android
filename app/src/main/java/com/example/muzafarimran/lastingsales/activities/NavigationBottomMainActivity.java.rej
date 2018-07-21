@@ -1,0 +1,10 @@
+diff a/app/src/main/java/com/example/muzafarimran/lastingsales/activities/NavigationBottomMainActivity.java b/app/src/main/java/com/example/muzafarimran/lastingsales/activities/NavigationBottomMainActivity.java	(rejected hunks)
+@@ -442,7 +442,7 @@
+                     Intent intentInitService = new Intent(this, InitService.class);
+                     startService(intentInitService);
+                 }
+-            }
++            }*/
+         }
+     }
+ 

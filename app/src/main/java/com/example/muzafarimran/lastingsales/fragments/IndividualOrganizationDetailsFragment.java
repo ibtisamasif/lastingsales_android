@@ -11,6 +11,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -24,10 +25,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -41,9 +44,11 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.helper.DynamicColums;
 import com.example.muzafarimran.lastingsales.listloaders.DealsOfAOrganizationLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
+import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
@@ -66,7 +71,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 1/9/2017.
  */
 
-public class IndividualOrganizationDetailsFragment extends TabFragment implements LoaderManager.LoaderCallbacks<List<Object>> {
+public class IndividualOrganizationDetailsFragment extends TabFragment implements LoaderManager.LoaderCallbacks<List<Object>>, View.OnClickListener {
 
     public static final String TAG = "IndividualOrgDetailFra";
     public static final String DEALS_ORGANIZATION_ID = "deals_organization_id";
@@ -124,6 +129,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         setHasOptionsMenu(true);
     }
 
+    Button save;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
@@ -140,188 +146,24 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setNestedScrollingEnabled(false);
 
+        save=view.findViewById(R.id.orgsave);
+
+        save.setOnClickListener(this);
+
         tvDefaultText = (TextView) view.findViewById(R.id.tvDefaultText);
-        bSave = (Button) view.findViewById(R.id.contactDetailsSaveButton);
+
+
         tvDefaultText.setVisibility(View.GONE);
 //        bSave.setVisibility(View.GONE);
-        bSave.setOnClickListener(v -> {
 
-//            if (mOrganization.getVersion() != 0 && mOrganization.getVersion() == 2) {
-//                // save according to version2 parsing
-//                List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
-//                for (LSDynamicColumns dynamicColumns : allColumns) {
-//                    if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
-//                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
-//                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
-//                        String currentValue = et.getText().toString();
-//                        // if not exists already
-//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-//                            //pass
-//                        } else if (column == null) {
-//                            //add new column
-//                            DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
-//                            column2.id = dynamicColumns.getServerId();
-//                            column2.name = dynamicColumns.getName();
-//                            column2.column_type = dynamicColumns.getColumnType();
-//                            column2.value = currentValue;
-//                            dynamicColumnBuilderVersion2.addColumn(column2);
-//
-//                        } else if (column != null) {
-//                            //update column
-//                            dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-//
-//                        }
-//                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
-//                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
-//                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
-//                        String currentValue = et.getText().toString();
-//                        //if current value is default no need to add a columns
-//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-//                            //pass
-//                        } else if (column != null) {
-//                            //update column
-//                            dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-//
-//                        } else if (column == null) {
-//                            //add new column
-//                            DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
-////                                column2.id = dynamicColumns.getServerId();
-//                            column2.name = dynamicColumns.getName();
-////                                column2.column_type = dynamicColumns.getColumnType();
-//                            column2.value = currentValue;
-//                            dynamicColumnBuilderVersion2.addColumn(column2);
-//
-//                        }
-//                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-//                        DynamicColumnBuilderVersion2.Column column = dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId()));
-//                        Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
-//
-//                        String currentValue = s.getSelectedItem().toString();
-//                        //if current value is default no need to add a columns
-//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-//                            //pass
-//                        } else if (column != null) {
-//                            //update column
-//                            dynamicColumnBuilderVersion2.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-//
-//                        } else if (column == null) {
-//                            //add new column
-//                            DynamicColumnBuilderVersion2.Column column2 = new DynamicColumnBuilderVersion2.Column();
-////                                column2.id = dynamicColumns.getServerId();
-//                            column2.name = dynamicColumns.getName();
-////                                column2.column_type = dynamicColumns.getColumnType();
-//                            column2.value = currentValue;
-//                            dynamicColumnBuilderVersion2.addColumn(column2);
-//
-//                        }
-//                    }
-//                }
-//                mOrganization.setDynamic(dynamicColumnBuilderVersion2.buildJSONversion2()); // Parsing LIKE IN VERSION 2 now
-//                if (mOrganization.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mOrganization.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-//                    mOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-//                }
-//                mOrganization.save();
-//                Toast.makeText(mContext, "Updated Successfully", Toast.LENGTH_SHORT).show();
-//                Log.d(TAG, "JSON Prepared to save for version2 onClick: mOrganization.getDynamicValues(): " + mOrganization.getDynamicValues());
-//                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
-//                dataSenderAsync.run();
-//                Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
-//                if (getActivity() != null) {
-//                    getActivity().finish();
-//                }
-//                String projectToken = MixpanelConfig.projectToken;
-//                MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
-//                mixpanel.track("Dynamic Column Updated");
-//
-//
-//            } else {
-//                // save according to version1 parsing
-//                List<LSDynamicColumns> allColumns = LSDynamicColumns.getAllColumns();
-//                for (LSDynamicColumns dynamicColumns : allColumns) {
-//                    if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
-//                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
-//                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
-//                        String currentValue = et.getText().toString();
-//                        // if not exists already
-//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-//                            //pass
-//                        } else if (column == null) {
-//                            //add new column
-//                            DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
-//                            column1.id = dynamicColumns.getServerId();
-//                            column1.name = dynamicColumns.getName();
-//                            column1.column_type = dynamicColumns.getColumnType();
-//                            column1.value = currentValue;
-//                            dynamicColumnBuilderVersion1.addColumn(column1);
-//
-//                        } else if (column != null) {
-//                            //update column
-//                            dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-//
-//                        }
-//                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
-//                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
-//                        EditText et = (EditText) ll.findViewWithTag(dynamicColumns.getServerId());
-//                        String currentValue = et.getText().toString();
-//                        //if current value is default no need to add a columns
-//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-//                            //pass
-//                        } else if (column != null) {
-//                            //update column
-//                            dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-//
-//                        } else if (column == null) {
-//                            //add new column
-//                            DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
-//                            column1.id = dynamicColumns.getServerId();
-//                            column1.name = dynamicColumns.getName();
-//                            column1.column_type = dynamicColumns.getColumnType();
-//                            column1.value = currentValue;
-//                            dynamicColumnBuilderVersion1.addColumn(column1);
-//
-//                        }
-//                    } else if (dynamicColumns.getColumnType().equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-//                        DynamicColumnBuilderVersion1.Column column = dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId()));
-//                        Spinner s = (Spinner) ll.findViewById(Integer.parseInt((dynamicColumns.getServerId())));
-//
-//                        String currentValue = s.getSelectedItem().toString();
-//                        //if current value is default no need to add a columns
-//                        if (dynamicColumns.getDefaultValueOption().equals(currentValue)) {
-//                            //pass
-//                        } else if (column != null) {
-//                            //update column
-//                            dynamicColumnBuilderVersion1.getById(Integer.parseInt(dynamicColumns.getServerId())).value = currentValue;
-//
-//                        } else if (column == null) {
-//                            //add new column
-//                            DynamicColumnBuilderVersion1.Column column1 = new DynamicColumnBuilderVersion1.Column();
-//                            column1.id = dynamicColumns.getServerId();
-//                            column1.name = dynamicColumns.getName();
-//                            column1.column_type = dynamicColumns.getColumnType();
-//                            column1.value = currentValue;
-//                            dynamicColumnBuilderVersion1.addColumn(column1);
-//
-//                        }
-//                    }
-//                }
-//                mOrganization.setDynamic(dynamicColumnBuilderVersion1.buildJSON());
-//                if (mOrganization.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED) || mOrganization.getSyncStatus().equals(SyncStatus.SYNC_STATUS_LEAD_UPDATE_SYNCED)) {
-//                    mOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-//                }
-//                mOrganization.save();
-//                Toast.makeText(mContext, "Updated Successfully", Toast.LENGTH_SHORT).show();
-//                Log.d(TAG, "JSON Prepared to save for version1 onClick: mOrganization.getDynamicValues(): " + mOrganization.getDynamicValues());
-//                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext);
-//                dataSenderAsync.run();
-//                Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
-//                if (getActivity() != null) {
-//                    getActivity().finish();
-//                }
-//                String projectToken = MixpanelConfig.projectToken;
-//                MixpanelAPI mixpanel = MixpanelAPI.getInstance(mContext, projectToken);
-//                mixpanel.track("Dynamic Column Updated");
-//            }
-        });
+
+        gridLayout=view.findViewById(R.id.gridorg);
+
+
+        dynamicColumnByAmir();
+
+
+
         addItemsOnSpinnerLeadStatus(view);
         dynamicColumns(view);
         getLoaderManager().initLoader(DEALS_OF_A_ORGANIZATION, args, IndividualOrganizationDetailsFragment.this);
@@ -419,7 +261,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 
 
     private void dynamicColumns(View view) {
-        ll = (LinearLayout) view.findViewById(R.id.contactDetailsDropDownLayoutinner);
+     /*   ll = (LinearLayout) view.findViewById(R.id.contactDetailsDropDownLayoutinner);
         Display display = ((WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int width = display.getWidth() / 2;
         Log.d(TAG, "Display SIZE: " + display);
@@ -576,7 +418,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 
                 ll.addView(l);
             }
-        }
+        }*/
         Log.d(TAG, "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 //////////////////////////////////////////////////////////////
 // Populating LEAD data
@@ -708,6 +550,268 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
     }
+    @Override
+    public void onClick(View v) {
+
+
+        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class,"related_to=?", LSProperty.STORABLE_TYPE_APP_ORGANIZATION);
+
+        if(list.size()>0){
+
+            for(int i=0;i<list.size();i++){
+                String type=list.get(i).getColumnType();
+
+
+                if(type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)){
+
+
+                    EditText editText=(EditText)gridLayout.findViewWithTag("org"+list.get(i).getServerId());
+
+                    String val=editText.getText().toString();
+
+
+
+
+                    Log.d("textfield",val);
+                    //Toast.makeText(mContext, "TextField"+val, Toast.LENGTH_SHORT).show();
+
+
+                    List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                    if(lsProperty.size()>0){
+                        lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).save();
+                        Log.d("saved","value saved");
+                    }else{
+                        LSProperty lsProperty1=new LSProperty();
+                        lsProperty1.setValue(val);
+                        lsProperty1.setStorableType(list.get(i).getRelatedTo());
+                        lsProperty1.setColumnId(list.get(i).getServerId());
+                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+
+                        lsProperty1.save();
+
+                        Log.d("created","created property");
+                    }
+
+
+
+                }
+                 if(type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)){
+
+
+                    EditText editText=(EditText)gridLayout.findViewWithTag("org"+list.get(i).getServerId());
+
+                    String val=editText.getText().toString();
+
+                    Log.d("numberfield",val);
+                   // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
+
+                     List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                     if(lsProperty.size()>0){
+                         lsProperty.get(0).setValue(val);
+                         lsProperty.get(0).save();
+                         Log.d("saved","value saved");
+                     }else{
+                         LSProperty lsProperty1=new LSProperty();
+                         lsProperty1.setValue(val);
+                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
+                         lsProperty1.setColumnId(list.get(i).getServerId());
+                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+
+                         lsProperty1.save();
+
+                         Log.d("created","created property");
+                     }
+
+
+
+                 }
+
+                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)){
+
+
+                        Spinner spinner=(Spinner) gridLayout.findViewWithTag("org"+list.get(i).getServerId());
+
+                        String val=spinner.getSelectedItem().toString();
+
+                        Toast.makeText(mContext, "Spinner "+val, Toast.LENGTH_SHORT).show();
+
+                     List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                     if(lsProperty.size()>0){
+                         lsProperty.get(0).setValue(val);
+                         lsProperty.get(0).save();
+                         Log.d("saved","value saved");
+                     }else{
+                         LSProperty lsProperty1=new LSProperty();
+                         lsProperty1.setValue(val);
+                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
+                         lsProperty1.setColumnId(list.get(i).getServerId());
+                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+
+                         lsProperty1.save();
+
+                         Log.d("created","created property");
+                     }
+
+
+
+                 }
+
+
+
+
+
+            }
+
+
+
+        }
+
+        Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+    GridLayout gridLayout;
+    DynamicColums dynamicColums;
+    public void dynamicColumnByAmir() {
+
+        dynamicColums=new DynamicColums(getContext());
+
+        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class,"related_to=?", LSProperty.STORABLE_TYPE_APP_ORGANIZATION);
+
+
+        if (list.size() > 0) {
+
+
+            for (int i = 0; i < list.size(); i++) {
+
+                String type=list.get(i).getColumnType();
+
+                if(type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)){
+
+                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                    if(lsProperties.size()>0) {
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "org"+list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
+                    }else{
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                        gridLayout.addView(dynamicColums.editText("", "org"+list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
+
+                        //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)){
+
+                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                    if(lsProperties.size()>0) {
+
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+
+                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(),"org"+list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
+                    }else{
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+
+                        gridLayout.addView(dynamicColums.editText("","org"+list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
+
+                        // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)){
+
+                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                    if(lsProperties.size()>0) {
+
+                        int position=0;
+
+                        List<String> option=new ArrayList<>();
+
+
+
+                        String spinnerDefaultVal = list.get(i).getDefaultValueOption();
+
+                        try {
+                            JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
+                            option.add("Select");
+
+                            for (int j = 0; j < jsonarray.length(); j++) {
+                                if(lsProperties.get(0).getValue().equals(jsonarray.getString(j))){
+                                    position=j;
+                                    position++;
+                                }
+                                String jsonobject = jsonarray.getString(j);
+                                option.add(jsonobject);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+                        gridLayout.addView(dynamicColums.spinner(dataAdapter,"org"+list.get(i).getServerId(),position));
+
+
+                    }
+
+
+                }else{
+                    List<String> option=new ArrayList<>();
+
+                    int position=0;
+
+
+                    String spinnerDefaultVal = list.get(i).getDefaultValueOption();
+
+                    try {
+                        JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
+                        option.add("Select");
+
+                        for (int j = 0; j < jsonarray.length(); j++) {
+
+
+                            String jsonobject = jsonarray.getString(j);
+                            option.add(jsonobject);
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
+
+                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+                    gridLayout.addView(dynamicColums.spinner(dataAdapter,"org"+list.get(i).getServerId(),position));
+
+
+                    //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
+            }
+
+
+        }
+
+
+    }
+
 
     public void addItemsOnSpinnerLeadStatus(View view) {
         leadStatusSpinner = (Spinner) view.findViewById(R.id.lead_status_spinner);
@@ -731,6 +835,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 //    private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 //
@@ -1099,6 +1204,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         loadingItem.text = "Loading items...";
         listLoader.add(loadingItem);
         adapter.notifyDataSetChanged();
+
 
         switch (id) {
             case DEALS_OF_A_ORGANIZATION:

@@ -260,6 +260,7 @@
 
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tvDefaultText"
             style="@style/Base.TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
@@ -273,21 +274,25 @@
             app:layout_constraintTop_toBottomOf="@+id/textView6"
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="153dp" />
+        <GridLayout
+            android:columnCount="2"
 
-        <LinearLayout
-            android:id="@+id/contactDetailsDropDownLayoutinner"
+            android:id="@+id/gridorg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:orientation="vertical"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6"></LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/textView6">
 
+
+
+        </GridLayout>
         <Button
-            android:id="@+id/contactDetailsSaveButton"
+            android:id="@+id/orgsave"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -300,7 +305,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contactDetailsDropDownLayoutinner"
+            app:layout_constraintTop_toBottomOf="@+id/gridorg"
             tools:layout_conversion_absoluteHeight="40dp"
             tools:layout_conversion_absoluteWidth="160dp" />
 
