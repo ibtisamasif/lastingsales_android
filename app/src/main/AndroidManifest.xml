@@ -182,13 +182,16 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:windowSoftInputMode="stateHidden"
             android:name=".activities.ContactDetailsTabActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:windowSoftInputMode="stateHidden"
             android:name=".activities.OrganizationDetailsTabActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.DealDetailsTabActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AccountActivity"

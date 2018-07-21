@@ -6,6 +6,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.muzafarimran.lastingsales.R;
 
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class DynamicColums {
         textView.setLayoutParams(layoutParams);
         textView.setText(" "+value+" ");
         textView.setTextSize(13);
+        textView.setMinWidth(200);
         textView.setTag(tag);
         textView.setPadding(20,20,20,20);
 
@@ -41,22 +45,31 @@ public class DynamicColums {
         ViewGroup.LayoutParams layoutParams=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         EditText editText=new EditText(this.context);
-        editText.setMinimumWidth(400);
+        editText.setMinimumWidth(300);
         editText.setTag(tag);
         editText.setText(val);
         editText.setTextSize(15);
+        editText.setFocusable(false);
+        editText.setFocusableInTouchMode(true);
         editText.setInputType(type);
+
         editText.setPadding(20,20,20,20);
         return editText;
     }
 
-    public Spinner spinner(ArrayAdapter<String> values, String tag){
+    public Spinner spinner(ArrayAdapter<String> values, String tag,int position){
         ViewGroup.LayoutParams layoutParams=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         Spinner spinner=new Spinner(this.context);
         spinner.setAdapter(values);
 
-        spinner.setMinimumWidth(400);
+
+
+        spinner.setSelection(position);
+
+
+        spinner.setBackgroundResource(R.drawable.spinner_back);
+        spinner.setMinimumWidth(300);
         spinner.setTag(tag);
         return spinner;
     }

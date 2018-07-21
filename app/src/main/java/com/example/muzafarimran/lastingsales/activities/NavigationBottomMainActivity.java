@@ -433,7 +433,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             finish();
             return;
         } else {
-           /* Intent intent = new Intent(NavigationBottomMainActivity.this, CallDetectionService.class);
+            Intent intent = new Intent(NavigationBottomMainActivity.this, CallDetectionService.class);
             startService(intent);
             if (NetworkAccess.isNetworkAvailable(this)) {
                 long contactCount = LSContact.count(LSContact.class); // If app is crashed here make sure instant run is off. // TODO instead of checking for zero contacts check app init.
@@ -442,7 +442,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     Intent intentInitService = new Intent(this, InitService.class);
                     startService(intentInitService);
                 }
-            }*/
+            }
         }
     }
 
@@ -758,8 +758,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             case R.id.action_refresh:
                 Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
                 if (NetworkAccess.isNetworkAvailable(getApplicationContext())) {
-                    /*Intent intentInitService = new Intent(this, InitService.class);
-                    startService(intentInitService);*/
+                    Intent intentInitService = new Intent(this, InitService.class);
+                    startService(intentInitService);
 //                    progressDialog.show();
 //                    sessionManager.fetchData();
                 } else {
@@ -828,7 +828,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         Collection<LSContact> contactsByNumber = LSContact.findWithQuery(LSContact.class, myQuery);
 
         for (LSContact contact : contactsByNumber) {
-
             temp[0] = count;
             temp[1] = contact.getPhoneOne();
             temp[2] = R.drawable.ic_account_circle;

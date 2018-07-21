@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -28,14 +31,20 @@ import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivit
 import com.example.muzafarimran.lastingsales.adapters.LSStageSpinAdapter;
 import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.helper.DynamicColums;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
+import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
+import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -48,7 +57,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ibtisam on 1/9/2017.
  */
 
-public class IndividualDealDetailsFragment extends TabFragment {
+public class IndividualDealDetailsFragment extends TabFragment implements View.OnClickListener {
 
     public static final String TAG = "IndividualDealDetailFra";
     //    TextView tvName;
@@ -114,22 +123,28 @@ public class IndividualDealDetailsFragment extends TabFragment {
         mContext = context;
     }
 
+    Bundle args;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate: ");
         setRetainInstance(true);
         Bundle bundle = this.getArguments();
+        args=this.getArguments();
         dealIDLong = bundle.getLong("someId");
         setHasOptionsMenu(true);
     }
 
+    GridLayout gridLayout;
+    DynamicColums dynamicColums;
+    Button save;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.deal_profile_details_fragment, container, false);
-//        tvName = (TextView) view.findViewById(R.id.tvName);
+//        tvName = (TextView) view.findViewfById(R.id.tvName);
 //        tvNumber = (TextView) view.findViewById(R.id.tvNumber);
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
 //        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
@@ -157,6 +172,8 @@ public class IndividualDealDetailsFragment extends TabFragment {
 //
 //        llDynamicConnectionsContainer = (LinearLayout) view.findViewById(R.id.llDynamicConnectionsContainer);
 
+        save=view.findViewById(R.id.dealsave);
+
         tvDefaultText = (TextView) view.findViewById(R.id.tvDefaultText);
 //        bSave = (Button) view.findViewById(R.id.bSave);
         tvDefaultText.setVisibility(View.GONE);
@@ -165,11 +182,278 @@ public class IndividualDealDetailsFragment extends TabFragment {
 //            Toast.makeText(mContext, "Saving..", Toast.LENGTH_SHORT).show();
 //        });
 //        addItemsOnSpinnerDealStatus(view);
+
+
+        gridLayout=view.findViewById(R.id.griddeal);
+
+
+        dynamicColumnByAmir();
+
+
+        save.setOnClickListener(this);
+
         addItemsOnSpinnerDealStage(view);
         addViews(view);
         addItemsOnSpinnerDealIsPrivate(view);
         setHasOptionsMenu(true);
         return view;
+    }
+    public void dynamicColumnByAmir() {
+
+        dynamicColums=new DynamicColums(getContext());
+
+        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class,"related_to=?", LSProperty.STORABLE_TYPE_APP_DEAL);
+
+
+        if (list.size() > 0) {
+
+
+            for (int i = 0; i < list.size(); i++) {
+
+                String type=list.get(i).getColumnType();
+
+                if(type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)){
+
+                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                    if(lsProperties.size()>0) {
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "deal"+list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
+                    }else{
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                        gridLayout.addView(dynamicColums.editText("", "deal"+list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
+
+                        //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)){
+
+                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                    if(lsProperties.size()>0) {
+
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+
+                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(),"deal"+list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
+                    }else{
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+
+                        gridLayout.addView(dynamicColums.editText("","deal"+list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
+
+                        // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)){
+
+                    List<LSProperty> lsProperties=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                    if(lsProperties.size()>0) {
+
+
+                        int position=0;
+                        List<String> option=new ArrayList<>();
+
+
+
+                        String spinnerDefaultVal = list.get(i).getDefaultValueOption();
+
+                        try {
+                            JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
+                            option.add("Select");
+
+                            for (int j = 0; j < jsonarray.length(); j++) {
+                                if(lsProperties.get(0).getValue().equals(jsonarray.getString(j))){
+                                    position=j;
+                                    position++;
+                                }
+
+                                String jsonobject = jsonarray.getString(j);
+                                option.add(jsonobject);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+                        gridLayout.addView(dynamicColums.spinner(dataAdapter,"deal"+list.get(i).getServerId(),position));
+
+
+                    }
+
+
+                }else{
+                    List<String> option=new ArrayList<>();
+
+
+                    int position=0;
+
+                    String spinnerDefaultVal = list.get(i).getDefaultValueOption();
+
+                    try {
+                        JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
+                        option.add("Select");
+
+                        for (int j = 0; j < jsonarray.length(); j++) {
+                            String jsonobject = jsonarray.getString(j);
+                            option.add(jsonobject);
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
+
+                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(),"tag"));
+                    gridLayout.addView(dynamicColums.spinner(dataAdapter,"deal"+list.get(i).getServerId(),position));
+
+
+                    //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
+            }
+
+
+        }
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+
+        List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class,"related_to=?", LSProperty.STORABLE_TYPE_APP_DEAL);
+
+        if(list.size()>0){
+
+            for(int i=0;i<list.size();i++){
+                String type=list.get(i).getColumnType();
+
+
+                if(type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)){
+
+
+                    EditText editText=(EditText)gridLayout.findViewWithTag("deal"+list.get(i).getServerId());
+
+                    String val=editText.getText().toString();
+
+
+
+
+                    Log.d("textfield",val);
+                    //Toast.makeText(mContext, "TextField"+val, Toast.LENGTH_SHORT).show();
+
+
+                    List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                    if(lsProperty.size()>0){
+                        lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).save();
+                        Log.d("saved","value saved");
+                    }else{
+                        LSProperty lsProperty1=new LSProperty();
+                        lsProperty1.setValue(val);
+                        lsProperty1.setStorableType(list.get(i).getRelatedTo());
+                        lsProperty1.setColumnId(list.get(i).getServerId());
+                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+
+                        lsProperty1.save();
+
+                        Log.d("created","created property");
+                    }
+
+
+
+                }
+                if(type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)){
+
+
+                    EditText editText=(EditText)gridLayout.findViewWithTag("deal"+list.get(i).getServerId());
+
+                    String val=editText.getText().toString();
+
+                    Log.d("numberfield",val);
+                    // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
+
+                    List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                    if(lsProperty.size()>0){
+                        lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).save();
+                        Log.d("saved","value saved");
+                    }else{
+                        LSProperty lsProperty1=new LSProperty();
+                        lsProperty1.setValue(val);
+                        lsProperty1.setStorableType(list.get(i).getRelatedTo());
+                        lsProperty1.setColumnId(list.get(i).getServerId());
+                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+
+                        lsProperty1.save();
+
+                        Log.d("created","created property");
+                    }
+
+
+
+                }
+
+                else if(type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)){
+
+
+                    Spinner spinner=(Spinner) gridLayout.findViewWithTag("deal"+list.get(i).getServerId());
+
+                    String val=spinner.getSelectedItem().toString();
+
+                    //Toast.makeText(mContext, "Spinner "+val, Toast.LENGTH_SHORT).show();
+
+                    List<LSProperty> lsProperty=LSProperty.find(LSProperty.class,"column_id=?",list.get(i).getServerId());
+
+                    if(lsProperty.size()>0){
+                        lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).save();
+                        Log.d("saved","value saved");
+                    }else{
+                        LSProperty lsProperty1=new LSProperty();
+                        lsProperty1.setValue(val);
+                        lsProperty1.setStorableType(list.get(i).getRelatedTo());
+                        lsProperty1.setColumnId(list.get(i).getServerId());
+                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+
+                        lsProperty1.save();
+
+                        Log.d("created","created property");
+                    }
+
+
+
+                }
+
+
+
+
+
+            }
+
+
+
+        }
+        Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
+
+
     }
 
     @Override
