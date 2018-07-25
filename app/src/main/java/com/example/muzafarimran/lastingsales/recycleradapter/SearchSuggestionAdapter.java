@@ -47,12 +47,8 @@ public class SearchSuggestionAdapter extends CursorAdapter {
 
         String INTENT_TYPE = cursor.getString(cursor.getColumnIndex("type"));
 
-        long INTENT_PUT_ID = 0;
-        try {
-            INTENT_PUT_ID = cursor.getLong(cursor.getColumnIndex("intentPutId"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        long INTENT_PUT_ID = cursor.getLong(cursor.getColumnIndex("intentPutId"));
+
         String INTENT_PUT_NUMBER = cursor.getString(cursor.getColumnIndex("intentPutNumber"));
 
         Log.d(TAG, "bindView: INTENT_PUT_ID: " + INTENT_PUT_ID);
@@ -61,7 +57,6 @@ public class SearchSuggestionAdapter extends CursorAdapter {
 
         ivAvatar.setImageResource(cursor.getInt(cursor.getColumnIndex("drawable")));
 
-        long finalINTENT_PUT_ID = INTENT_PUT_ID;
         cl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +68,7 @@ public class SearchSuggestionAdapter extends CursorAdapter {
                         if (INTENT_TYPE.equals("type_note")) {
 //                            long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
                             Intent i = new Intent(context, ClassManager.getClass(INTENT_CLASSNAME));
-                            long contactId = finalINTENT_PUT_ID;
+                            long contactId = INTENT_PUT_ID;
                             i.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                             i.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "1");
                             context.startActivity(i);
@@ -81,7 +76,7 @@ public class SearchSuggestionAdapter extends CursorAdapter {
                         } else {
 //                            long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
                             Intent i = new Intent(context, ClassManager.getClass(INTENT_CLASSNAME));
-                            long contactId = finalINTENT_PUT_ID;
+                            long contactId = INTENT_PUT_ID;
                             i.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                             context.startActivity(i);
                         }
@@ -89,7 +84,7 @@ public class SearchSuggestionAdapter extends CursorAdapter {
                         if (INTENT_TYPE.equals("type_deal")) {
                             //                            long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
                             Intent i = new Intent(context, ClassManager.getClass(INTENT_CLASSNAME));
-                            long dealId = finalINTENT_PUT_ID;
+                            long dealId = INTENT_PUT_ID;
                             i.putExtra(DealDetailsTabActivity.KEY_DEAL_ID, dealId + "");
                             context.startActivity(i);
                         }
@@ -98,7 +93,7 @@ public class SearchSuggestionAdapter extends CursorAdapter {
                             //Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
                             //                            long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
                             Intent detailsActivityIntent = new Intent(context, OrganizationDetailsTabActivity.class);
-                            long organizationId = finalINTENT_PUT_ID;
+                            long organizationId = INTENT_PUT_ID;
                             detailsActivityIntent.putExtra(OrganizationDetailsTabActivity.KEY_ORGANIZATION_ID, organizationId + "");
                             context.startActivity(detailsActivityIntent);
                         }
