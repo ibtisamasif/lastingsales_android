@@ -1,9 +1,13 @@
 package com.example.muzafarimran.lastingsales.providers.models;
 
+import android.database.sqlite.SQLiteException;
+
 import com.orm.SugarRecord;
+import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class LSOrganization extends SugarRecord {
 
@@ -31,6 +35,14 @@ public class LSOrganization extends SugarRecord {
     private String syncStatus;
 
     public LSOrganization() {
+    }
+
+    public static List<LSOrganization> getOrganizationsInDescOrder() {
+        try {
+            return Select.from(LSOrganization.class).orderBy("updated_at DESC").list();
+        } catch (SQLiteException e) {
+            return new ArrayList<LSOrganization>();
+        }
     }
 
     public static LSOrganization getOrganizationFromServerId(String id) {

@@ -49,8 +49,8 @@ public class SearchSuggestionAdapter extends CursorAdapter {
 
         long INTENT_PUT_ID = 0;
         try {
-             INTENT_PUT_ID = cursor.getLong(cursor.getColumnIndex("intentPutId"));
-        }catch (Exception e){
+            INTENT_PUT_ID = cursor.getLong(cursor.getColumnIndex("intentPutId"));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String INTENT_PUT_NUMBER = cursor.getString(cursor.getColumnIndex("intentPutNumber"));
@@ -85,16 +85,16 @@ public class SearchSuggestionAdapter extends CursorAdapter {
                             i.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
                             context.startActivity(i);
                         }
-                    }else if(INTENT_CLASSNAME.equals(ClassManager.DEAL_DETAILS_TAB_ACTIVITY)){
-                        if (INTENT_TYPE.equals("type_deal")){
+                    } else if (INTENT_CLASSNAME.equals(ClassManager.DEAL_DETAILS_TAB_ACTIVITY)) {
+                        if (INTENT_TYPE.equals("type_deal")) {
                             //                            long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
                             Intent i = new Intent(context, ClassManager.getClass(INTENT_CLASSNAME));
                             long dealId = finalINTENT_PUT_ID;
                             i.putExtra(DealDetailsTabActivity.KEY_DEAL_ID, dealId + "");
                             context.startActivity(i);
                         }
-                    }else if(INTENT_CLASSNAME.equals(ClassManager.ORG_DETAILS_BOTTOM_SHEET_FRAGMENT)){
-                        if (INTENT_TYPE.equals("type_org")){
+                    } else if (INTENT_CLASSNAME.equals(ClassManager.ORG_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
+                        if (INTENT_TYPE.equals("type_org")) {
                             //Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
                             //                            long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
                             Intent detailsActivityIntent = new Intent(context, OrganizationDetailsTabActivity.class);
@@ -102,12 +102,7 @@ public class SearchSuggestionAdapter extends CursorAdapter {
                             detailsActivityIntent.putExtra(OrganizationDetailsTabActivity.KEY_ORGANIZATION_ID, organizationId + "");
                             context.startActivity(detailsActivityIntent);
                         }
-                    }/*else if (INTENT_CLASSNAME.equals(ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
-                        long intentPutId = cursor.getLong(cursor.getColumnIndex("intentPutId"));
-                        NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
-                        navigationBottomMainActivity.openContactBottomSheetCallback(finalINTENT_PUT_ID);
-
-                    }*/ else if (INTENT_CLASSNAME.equals(ClassManager.INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
+                    } else if (INTENT_CLASSNAME.equals(ClassManager.INQUIRY_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT)) {
                         String intentPutNumber = cursor.getString(cursor.getColumnIndex("intentPutNumber"));
                         NavigationBottomMainActivity navigationBottomMainActivity = (NavigationBottomMainActivity) context;
                         navigationBottomMainActivity.openInquiryBottomSheetCallback(INTENT_PUT_NUMBER);

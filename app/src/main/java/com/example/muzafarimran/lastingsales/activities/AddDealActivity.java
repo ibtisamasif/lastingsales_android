@@ -128,22 +128,41 @@ public class AddDealActivity extends AppCompatActivity {
                     convertView = l.inflate(R.layout.person_layout, parent, false);
                 }
                 LSContact lsContact = getItem(position);
-                ((TextView) convertView.findViewById(R.id.name)).setText(lsContact.getContactName());
-                ((TextView) convertView.findViewById(R.id.number)).setText(lsContact.getPhoneOne());
-
-                return convertView;
+                if (lsContact != null) {
+                    if (lsContact.getContactName() != null) {
+                        ((TextView) convertView.findViewById(R.id.name)).setText(lsContact.getContactName());
+                    } else {
+                        ((TextView) convertView.findViewById(R.id.name)).setText("");
+                    }
+                    if (lsContact.getPhoneOne() != null) {
+                        ((TextView) convertView.findViewById(R.id.number)).setText(lsContact.getPhoneOne());
+                    } else {
+                        ((TextView) convertView.findViewById(R.id.number)).setText("");
+                    }
+                    return convertView;
+                } else {
+                    return null;
+                }
             }
 
             @Override
             protected boolean keepObject(LSContact lsContact, String mask) {
                 mask = mask.toLowerCase();
                 if (lsContact.getContactName() != null) {
-                    if (lsContact.getContactName().toLowerCase().contains(mask) || lsContact.getPhoneOne().toLowerCase().contains(mask)) {
+                    if (lsContact.getContactName().toLowerCase().contains(mask)) {
                         return true;
                     } else {
                         return false;
                     }
-                } else return false;
+                } else if (lsContact.getPhoneOne() != null) {
+                    if (lsContact.getPhoneOne().toLowerCase().contains(mask)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             }
         };
         acLeadAddDeal.setAdapter(adapterContacts);
@@ -181,7 +200,6 @@ public class AddDealActivity extends AppCompatActivity {
                 LSOrganization lsOrganization = getItem(position);
                 ((TextView) convertView.findViewById(R.id.name)).setText(lsOrganization.getName());
                 ((TextView) convertView.findViewById(R.id.number)).setText(lsOrganization.getPhone());
-
                 return convertView;
             }
 

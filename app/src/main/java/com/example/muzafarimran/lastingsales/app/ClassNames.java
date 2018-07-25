@@ -95,4 +95,8 @@ public class ClassNames {
     public static final String TRYAGAIN_CLASS_NAME = "com.example.muzafarimran.lastingsales.carditems.TryAgainItem";
     public static final int TRYAGAIN_CLASS_TYPE = 22;
     public static final int TRYAGAIN_CLASS_RESOURCE = R.layout.card_tryagain;
+
+    public static final String LSORGANIZATION_CLASS_NAME = "com.example.muzafarimran.lastingsales.providers.models.LSOrganization";
+    public static final int LSORGANIZATION_CLASS_TYPE = 23;
+    public static final int LSORGANIZATION_CLASS_RESOURCE = R.layout.card_organization;
 }

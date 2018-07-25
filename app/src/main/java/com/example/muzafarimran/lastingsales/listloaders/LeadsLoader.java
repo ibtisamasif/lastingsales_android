@@ -19,6 +19,7 @@ import java.util.List;
  * Created by ibtisam on 11/7/2017.
  */
 
+@Deprecated
 public class LeadsLoader extends AsyncTaskLoader<List<Object>> {
     public static final String TAG = "LeadsLoader";
     public static final String KEY_LEADS_TO_LOAD = "key_leads_to_load";

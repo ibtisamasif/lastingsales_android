@@ -34,7 +34,7 @@ public class OrganizationRecyclerAdapter extends RecyclerView.Adapter<Organizati
     @Override
     public OrganizationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.organization_row, parent, false);
+                .inflate(R.layout.card_organization, parent, false);
         return new OrganizationViewHolder(view);
     }
 

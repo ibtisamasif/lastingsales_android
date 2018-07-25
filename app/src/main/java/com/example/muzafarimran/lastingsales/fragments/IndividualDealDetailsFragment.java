@@ -463,7 +463,6 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         if (mDeal != null) {
             mContact = mDeal.getContact();
             if (mContact != null) {
-                CardView cv_item = getView().findViewById(R.id.cv_item);
                 View myLayout = getView().findViewById(R.id.include);
                 RelativeLayout user_profile_group_wrapper = myLayout.findViewById(R.id.user_profile_group_wrapper);
                 user_profile_group_wrapper.setVisibility(View.GONE);
@@ -528,6 +527,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 callClickListener = new CallClickListener(mContext);
                 call_icon.setOnClickListener(this.callClickListener);
                 call_icon.setTag(mContact.getPhoneOne());
+                CardView cv_item = getView().findViewById(R.id.cv_item);
                 cv_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -537,6 +537,9 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         mContext.startActivity(detailsActivityIntent);
                     }
                 });
+            }else {
+                View myLayout = getView().findViewById(R.id.include);
+                myLayout.setVisibility(View.GONE);
             }
             if (mDeal.getValue() != null) {
                 valueEditText.setText(mDeal.getValue());

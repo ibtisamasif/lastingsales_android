@@ -14,8 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
-import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
-import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 import com.example.muzafarimran.lastingsales.listloaders.UnlabeledLoader2;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
@@ -26,7 +25,6 @@ import java.util.List;
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 
-@Deprecated
 public class BlankFragment2_2 extends TabFragment implements LoaderManager.LoaderCallbacks<List<Object>> {
     public static final String TAG = "BlankFragment2_2";
     private static final String ARG_PARAM1 = "param1";
@@ -99,14 +97,8 @@ public class BlankFragment2_2 extends TabFragment implements LoaderManager.Loade
     }
 
     @Subscribe
-    public void onSaleContactAddedEventModel(LeadContactAddedEventModel event) {
-        Log.d(TAG, "onSaleContactAddedEventModel: ");
-        getLoaderManager().restartLoader(HOME_LOADER2_ID, null, BlankFragment2_2.this);
-    }
-
-    @Subscribe
-    public void onLeadContactDeletedEventModel(ContactDeletedEventModel event) {
-        Log.d(TAG, "onLeadContactDeletedEventModel: ");
+    public void onOrganizationEventModel(OrganizationEventModel event) {
+        Log.d(TAG, "onOrganizationEventModel: ");
         getLoaderManager().restartLoader(HOME_LOADER2_ID, null, BlankFragment2_2.this);
     }
 
