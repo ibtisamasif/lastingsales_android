@@ -216,7 +216,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
-                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
 
                     if (lsProperties.size() > 0) {
 
@@ -231,7 +232,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
-                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
 
                     if (lsProperties.size() > 0) {
 
@@ -249,7 +251,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
-                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
 
                     if (lsProperties.size() > 0) {
 
@@ -285,40 +288,37 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         gridLayout.addView(dynamicColums.spinner(dataAdapter, "deal" + list.get(i).getServerId(), position));
 
 
-                    }
+                    } else {
+                        List<String> option = new ArrayList<>();
 
 
-                } else {
-                    List<String> option = new ArrayList<>();
+                        int position = 0;
 
+                        String spinnerDefaultVal = list.get(i).getDefaultValueOption();
 
-                    int position = 0;
+                        try {
+                            JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
+                            option.add("Select");
 
-                    String spinnerDefaultVal = list.get(i).getDefaultValueOption();
+                            for (int j = 0; j < jsonarray.length(); j++) {
+                                String jsonobject = jsonarray.getString(j);
+                                option.add(jsonobject);
 
-                    try {
-                        JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
-                        option.add("Select");
-
-                        for (int j = 0; j < jsonarray.length(); j++) {
-                            String jsonobject = jsonarray.getString(j);
-                            option.add(jsonobject);
-
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+
+                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                        gridLayout.addView(dynamicColums.spinner(dataAdapter, "deal" + list.get(i).getServerId(), position));
+
+
+                        //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
-
-
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
-
-                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-                    gridLayout.addView(dynamicColums.spinner(dataAdapter, "deal" + list.get(i).getServerId(), position));
-
-
-                    //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                 }
-
 
             }
 
@@ -352,7 +352,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     //Toast.makeText(mContext, "TextField"+val, Toast.LENGTH_SHORT).show();
 
 
-                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -364,6 +365,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+                        LSDeal lsDeal=LSDeal.findById(LSDeal.class,args.getLong("someId"));
+                        lsProperty1.setDealOfProperty(lsDeal);
 
                         lsProperty1.save();
 
@@ -382,7 +385,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     Log.d("numberfield", val);
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
 
-                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -394,7 +398,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-
+                        LSDeal lsDeal=LSDeal.findById(LSDeal.class,args.getLong("someId"));
+                        lsProperty1.setDealOfProperty(lsDeal);
                         lsProperty1.save();
 
                         Log.d("created", "created property");
@@ -410,7 +415,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                     //Toast.makeText(mContext, "Spinner "+val, Toast.LENGTH_SHORT).show();
 
-                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -422,7 +428,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-
+                        LSDeal lsDeal=LSDeal.findById(LSDeal.class,args.getLong("someId"));
+                        lsProperty1.setDealOfProperty(lsDeal);
                         lsProperty1.save();
 
                         Log.d("created", "created property");
