@@ -29,7 +29,6 @@ import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.CallTypeManager;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -315,22 +314,19 @@ public class CallDetectionService extends Service {
 
     public void checkShowCallPopupFlyer(Context ctx, String number) {
         Log.wtf(TAG, "checkShowCallPopupFlyer: ");
-        if(settingsManager.getKeyStateFlyer()){
+        if (settingsManager.getKeyStateFlyer()) {
             String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(ctx, number);
             LSContact oneContact;
             oneContact = LSContact.getContactFromNumber(internationalNumber);
             ArrayList<LSNote> notesForContact = null;
-            if (oneContact != null && ! oneContact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
+            if (oneContact != null) {
                 notesForContact = (ArrayList<LSNote>) LSNote.getNotesByContactId(oneContact.getId());
                 if (notesForContact != null && notesForContact.size() > 0) {
-                    notesForContact.size();
-
                     FlyerBubbleHelper.getInstance(ctx).show(notesForContact.get(notesForContact.size() - 1).getId(), internationalNumber, oneContact);
-
                 } else {
                     FlyerBubbleHelper.getInstance(ctx).show(internationalNumber);
                 }
-            } else if (oneContact == null){
+            } else {
                 FlyerBubbleHelper.getInstance(ctx).show(internationalNumber);
             }
         }
@@ -344,18 +340,6 @@ public class CallDetectionService extends Service {
 //        Intent intent = new Intent(ctx, AddEditLeadService.class);
 //        ctx.stopService(intent);
     }
-
-//    public void checkShowCallPopupOld(Context ctx, String name, String number) {
-//        Log.wtf(TAG, "checkShowCallPopupNew: ");
-//        String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(number);
-////        String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(ctx, internationalNumber);
-//        Intent intent = new Intent(ctx, AddEditLeadService.class);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_TYPE, LSContact.CONTACT_TYPE_BUSINESS);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_PHONE_NUMBER, internationalNumber);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_NAME, name);
-//        intent.putExtra(TagNotificationDialogActivity.TAG_LAUNCH_MODE_CONTACT_ID, ""); //backward compatibility
-//        ctx.startService(intent);
-//    }
 
     private void showForegroundNotification(String contentText) {
         // Create intent that will bring our app to the front, as if it was tapped in the app

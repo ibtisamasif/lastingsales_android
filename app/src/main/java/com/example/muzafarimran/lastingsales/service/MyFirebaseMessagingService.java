@@ -26,7 +26,6 @@ import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
 import com.example.muzafarimran.lastingsales.utils.FirebaseCustomNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -281,7 +280,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     mMsg = name;
                     Log.e(TAG, "handleDataMessageName: " + name);
                     LSContact contact = LSContact.getContactFromServerId(id);
-                    String oldType = contact.getContactType();
+//                    String oldType = contact.getContactType();
                     contact.setContactName(name);
                     contact.setContactEmail(email);
                     contact.setPhoneOne(intlNum);
@@ -306,8 +305,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
                     contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_SYNCED);
                     contact.save();
-                    String newType = contact.getContactType();
-                    TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType);
+//                    String newType = contact.getContactType();
+//                    TypeManager.ConvertTo(getApplicationContext(), contact, oldType, newType);
                     if (src.equals("facebook")) {
                         Log.d(TAG, "handleDataMessage: Notification Message: Lead from FB: " + name);
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

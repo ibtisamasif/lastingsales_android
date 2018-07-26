@@ -24,7 +24,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONObject;
@@ -163,7 +162,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                         finish();
                     } else if (launchMode.equals(LAUNCH_MODE_EDIT_EXISTING_CONTACT)) {
                         LSContact tempContact = selectedContact;
-                        String oldType = selectedContact.getContactType();
+//                        String oldType = selectedContact.getContactType();
                         tempContact.setContactName(contactName);
                         tempContact.setPhoneOne(contactPhone);
                         tempContact.setContactType(selectedContactType);
@@ -177,9 +176,9 @@ public class AddEditLeadActivity extends AppCompatActivity {
                             tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
                         }
                         tempContact.save();
-                        String newType = selectedContact.getContactType();
+//                        String newType = selectedContact.getContactType();
                         // The contact will never be saved again in the flow.
-                        TypeManager.ConvertTo(getApplicationContext(), selectedContact, oldType, newType);
+//                        TypeManager.ConvertTo(getApplicationContext(), selectedContact, oldType, newType);
                         if (contactPhone != null) {
                             String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
                             String checkContactInLocalPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), intlNum);

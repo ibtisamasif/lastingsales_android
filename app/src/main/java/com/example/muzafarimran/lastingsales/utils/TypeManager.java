@@ -10,6 +10,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
  * Created by ibtisam on 3/21/2017.
  */
 
+@Deprecated
 public class TypeManager {
     public static void ConvertTo(Context context, LSContact tempContact, String oldType, String newtype ) {
 

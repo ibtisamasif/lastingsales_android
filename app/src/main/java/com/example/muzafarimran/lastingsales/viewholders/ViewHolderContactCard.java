@@ -31,7 +31,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -227,7 +226,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
             contact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
             contact.save();
             String newType = LSContact.CONTACT_TYPE_IGNORED;
-            TypeManager.ConvertTo(mContext, contact, oldType, newType);
+//            TypeManager.ConvertTo(mContext, contact, oldType, newType);
             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
             dataSenderAsync.run();
 //            Collection<LSContact> allUntaggedContacts = LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED);

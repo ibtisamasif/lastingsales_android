@@ -29,7 +29,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.utils.TypeManager;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -189,12 +188,12 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
             }
         });
         this.bIgnore.setOnClickListener(view -> {
-            String oldType = contact.getContactType();
+//            String oldType = contact.getContactType();
             contact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
             contact.setContactType(LSContact.CONTACT_TYPE_IGNORED);
             contact.save();
-            String newType = LSContact.CONTACT_TYPE_IGNORED;
-            TypeManager.ConvertTo(mContext, contact, oldType, newType);
+//            String newType = LSContact.CONTACT_TYPE_IGNORED;
+//            TypeManager.ConvertTo(mContext, contact, oldType, newType);
             DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
             dataSenderAsync.run();
 
