@@ -113,7 +113,9 @@ public class CallProcessor {
                                 case5(mContext);
 
                             }
-                        } else {
+                        }
+                        //fixme i think else part should not be required
+                        else {
                             Log.d("iscontactSave is ", "NULL");
 
                             if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {

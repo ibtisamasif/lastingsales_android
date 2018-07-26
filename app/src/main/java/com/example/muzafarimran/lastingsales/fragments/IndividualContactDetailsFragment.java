@@ -11,25 +11,20 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,10 +39,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.helper.DynamicColums;
+import com.example.muzafarimran.lastingsales.utils.DynamicColums;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.listloaders.DealsOfALeadLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -63,8 +57,6 @@ import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.google.gson.JsonArray;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -514,7 +506,8 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                     //Toast.makeText(mContext, "TextField"+val, Toast.LENGTH_SHORT).show();
 
 
-                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
+                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -527,6 +520,9 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
 
+                        LSContact lsContact=LSContact.findById(LSContact.class,args.getLong("someId"));
+
+                        lsProperty1.setContactOfProperty(lsContact);
                         lsProperty1.save();
 
                         Log.d("created", "created property");
@@ -544,7 +540,8 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                     Log.d("numberfield", val);
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
 
-                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
+                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -556,6 +553,9 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+                        LSContact lsContact=LSContact.findById(LSContact.class,args.getLong("someId"));
+
+                        lsProperty1.setContactOfProperty(lsContact);
 
                         lsProperty1.save();
 
@@ -570,9 +570,10 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                     String val = spinner.getSelectedItem().toString();
 
-                    Toast.makeText(mContext, "Spinner " + val, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "Spinner " + val, Toast.LENGTH_SHORT).show();
 
-                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
+                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -584,6 +585,10 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+
+                        LSContact lsContact=LSContact.findById(LSContact.class,args.getLong("someId"));
+
+                        lsProperty1.setContactOfProperty(lsContact);
 
                         lsProperty1.save();
 
@@ -610,6 +615,8 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
     public void dynamicColumnByAmir() {
 
+       // Toast.makeText(mContext, "ID"+args.getLong("someId"), Toast.LENGTH_SHORT).show();
+
         dynamicColums = new DynamicColums(getContext());
 
         List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class, "related_to=?", LSProperty.STORABLE_TYPE_APP_LEAD);
@@ -624,7 +631,8 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
-                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
+                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
 
                     if (lsProperties.size() > 0) {
 
@@ -639,7 +647,8 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
-                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
+                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
 
                     if (lsProperties.size() > 0) {
 
@@ -657,7 +666,10 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
-                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=?", list.get(i).getServerId());
+                    // Log.d("someId","tige tiger tiger"+args.getString("someId"));
+
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=? ",
+                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
 
                     if (lsProperties.size() > 0) {
 
@@ -694,37 +706,35 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         gridLayout.addView(dynamicColums.spinner(dataAdapter, "lead" + list.get(i).getServerId(), position));
 
 
-                    }
+                    } else {
+                        List<String> option = new ArrayList<>();
 
+                        int position = 0;
 
-                } else {
-                    List<String> option = new ArrayList<>();
+                        String spinnerDefaultVal = list.get(i).getDefaultValueOption();
 
-                    int position = 0;
+                        try {
+                            JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
+                            option.add("Select");
 
-                    String spinnerDefaultVal = list.get(i).getDefaultValueOption();
+                            for (int j = 0; j < jsonarray.length(); j++) {
+                                String jsonobject = jsonarray.getString(j);
+                                option.add(jsonobject);
 
-                    try {
-                        JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
-                        option.add("Select");
-
-                        for (int j = 0; j < jsonarray.length(); j++) {
-                            String jsonobject = jsonarray.getString(j);
-                            option.add(jsonobject);
-
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+
+                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                        gridLayout.addView(dynamicColums.spinner(dataAdapter, "lead" + list.get(i).getServerId(), ++position));
+
+
+                        //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
-
-
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
-
-                    gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-                    gridLayout.addView(dynamicColums.spinner(dataAdapter, "lead" + list.get(i).getServerId(), ++position));
-
-
-                    //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                 }
 
 

@@ -182,6 +182,7 @@ public class CallDetectionService extends Service {
 //        AddEditLeadServiceBubbleHelper.getInstance(ctx.getApplicationContext()).hide(); // remove old bubble
         sessionManager = new SessionManager(ctx);
         if (!sessionManager.isUserSignedIn()) {
+
             return;
         }
         if (!isBubbleShown) {

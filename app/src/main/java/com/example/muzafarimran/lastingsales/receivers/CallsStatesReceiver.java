@@ -54,7 +54,7 @@ public class CallsStatesReceiver extends CallReceiver{
 //        Toast.makeText(context, "Incoming call started", Toast.LENGTH_SHORT).show();
 //        if (wakeLock == null) {
 //            powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
-//            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+//            wakeLock = powerManagr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
 //            wakeLock.acquire();
 //            Log.d(TAG, "onIncomingCallStarted: Wakelock Aquired");
 //        }

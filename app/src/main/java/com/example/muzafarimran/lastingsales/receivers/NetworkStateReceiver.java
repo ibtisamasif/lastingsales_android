@@ -46,6 +46,7 @@ public class NetworkStateReceiver extends BroadcastReceiver {
             }
         }
 
+        //question mark?
         TinyBus.from(context.getApplicationContext()).post(new CommentEventModel());
 
 //        Toast.makeText(context, "Connectivity changed", Toast.LENGTH_SHORT).show();
