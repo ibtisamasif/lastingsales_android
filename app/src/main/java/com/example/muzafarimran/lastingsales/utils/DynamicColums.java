@@ -1,4 +1,4 @@
-package com.example.muzafarimran.lastingsales.helper;
+package com.example.muzafarimran.lastingsales.utils;
 
 import android.content.Context;
 import android.view.ViewGroup;

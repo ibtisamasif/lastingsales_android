@@ -31,7 +31,7 @@ import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivit
 import com.example.muzafarimran.lastingsales.adapters.LSStageSpinAdapter;
 import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.helper.DynamicColums;
+import com.example.muzafarimran.lastingsales.utils.DynamicColums;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;

@@ -63,9 +63,11 @@ public class CallLogEngineService extends Service {
     }
 
     private void CallLogFunc() {
+/*
 
         List<LSCall> ls = LSCall.listAll(LSCall.class);
         List<LSInquiry> lsInquiries = LSInquiry.listAll(LSInquiry.class);
+*/
 
 
 
@@ -80,6 +82,8 @@ public class CallLogEngineService extends Service {
         LSCall myCall = LSCall.getCallHavingLatestCallLogId();
         if (myCall != null) {
             Log.d(TAG, "getLatestCallLogId: " + myCall.getCallLogId());
+
+            //fixme id> !>= and get limiting contacts
             latestCallQuery = "_id >= " + myCall.getCallLogId();
             managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, latestCallQuery, null, "date DESC");
         } else {
@@ -114,6 +118,7 @@ public class CallLogEngineService extends Service {
                 Log.d(TAG, "CallLogFunc: Index: " + managedCursor.getPosition());
                 if (managedCursor.getPosition() == -1) {
 
+                    // FIXME: 07/23/2018 break
                     return;
                 }
                 String callId = managedCursor.getString(id);
@@ -135,6 +140,7 @@ public class CallLogEngineService extends Service {
 
                 long sub = curDate.getMinutes() - callDayTime.getMinutes();
 
+                // FIXME: 07/23/2018
                 if (curDate.getDay() - callDayTime.getDay() == 0) {
                     if (sub > 10) {
                         Log.d("greater than 10", "dateobj");
