@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.MyUnlabeledPagerAdapter;
+import com.example.muzafarimran.lastingsales.adapters.MyHomePagerAdapter;
 
 public class BlankFragment2 extends Fragment {
     public static final String TAG = "BlankFragment2";
@@ -48,7 +48,7 @@ public class BlankFragment2 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_blank2, container, false);
 
         ViewPager mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        mViewPager.setAdapter(new MyUnlabeledPagerAdapter(getChildFragmentManager()));
+        mViewPager.setAdapter(new MyHomePagerAdapter(getChildFragmentManager()));
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);

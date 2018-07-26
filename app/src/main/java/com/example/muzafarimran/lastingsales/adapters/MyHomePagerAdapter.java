@@ -5,19 +5,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2_1;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.OrganizationFragment;
+import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2_2;
 import com.example.muzafarimran.lastingsales.fragments.TabFragment;
 
 /**
  * Created by ibtisam on 12/29/2016.
  */
 
-public class MyUnlabeledPagerAdapter extends FragmentPagerAdapter {
+public class MyHomePagerAdapter extends FragmentPagerAdapter {
     private final int TAB_COUNT = 2;
 //    private Long id;
 //    private String number;
 
-    public MyUnlabeledPagerAdapter(FragmentManager fm) {
+    public MyHomePagerAdapter(FragmentManager fm) {
         super(fm);
 //        this.id = id;
 //        this.number = number;
@@ -31,7 +31,7 @@ public class MyUnlabeledPagerAdapter extends FragmentPagerAdapter {
                 fragment = new BlankFragment2_1();
                 break;
             case 1:
-                fragment = new OrganizationFragment();
+                fragment = new BlankFragment2_2();
                 break;
         }
         return fragment;

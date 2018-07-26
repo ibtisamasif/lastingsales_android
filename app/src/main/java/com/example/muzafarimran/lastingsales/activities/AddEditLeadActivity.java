@@ -146,12 +146,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                     if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
                         LSContact tempContact = new LSContact();
                         tempContact.setContactName(contactName);
-                        if (contactPhone != null) {
-                            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
-                            if (intlNum != null) {
-                                tempContact.setPhoneOne(intlNum);
-                            }
-                        }
+                        tempContact.setPhoneOne(contactPhone);
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
@@ -170,12 +165,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
                         LSContact tempContact = selectedContact;
                         String oldType = selectedContact.getContactType();
                         tempContact.setContactName(contactName);
-                        if (contactPhone != null) {
-                            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
-                            if (intlNum != null) {
-                                tempContact.setPhoneOne(intlNum);
-                            }
-                        }
+                        tempContact.setPhoneOne(contactPhone);
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactEmail(contactEmail);
                         tempContact.setContactAddress(contactAddress);

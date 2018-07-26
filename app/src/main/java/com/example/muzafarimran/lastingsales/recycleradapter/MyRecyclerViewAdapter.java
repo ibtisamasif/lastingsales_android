@@ -22,6 +22,7 @@ import com.example.muzafarimran.lastingsales.viewholders.ViewHolderInquiryCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderLoadingCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderMoreCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderNoteCard;
+import com.example.muzafarimran.lastingsales.viewholders.ViewHolderOrganizationCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderReminderCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSeparatorCard;
 import com.example.muzafarimran.lastingsales.viewholders.ViewHolderSettingCard;
@@ -114,8 +115,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.COMMENT_CLASS_NAME:
                 return ClassNames.COMMENT_CLASS_TYPE;
 
-                case ClassNames.TRYAGAIN_CLASS_NAME:
+            case ClassNames.TRYAGAIN_CLASS_NAME:
                 return ClassNames.TRYAGAIN_CLASS_TYPE;
+
+            case ClassNames.LSORGANIZATION_CLASS_NAME:
+                return ClassNames.LSORGANIZATION_CLASS_TYPE;
 
             default:
                 Log.e(TAG, "getItemViewType: VIEW TYPE UNHANDLED");
@@ -192,6 +196,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             case ClassNames.TRYAGAIN_CLASS_TYPE:
                 return new ViewHolderTryAgainCard(LayoutInflater.from(mContext).inflate(ClassNames.TRYAGAIN_CLASS_RESOURCE, viewGroup, false));
+
+            case ClassNames.LSORGANIZATION_CLASS_TYPE:
+                return new ViewHolderOrganizationCard(LayoutInflater.from(mContext).inflate(ClassNames.LSORGANIZATION_CLASS_RESOURCE, viewGroup, false));
         }
         return null;
     }
@@ -290,6 +297,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ClassNames.TRYAGAIN_CLASS_TYPE:
                 ViewHolderTryAgainCard viewHolderTryAgainCard = (ViewHolderTryAgainCard) holder;
                 viewHolderTryAgainCard.bind(item, position, mContext);
+                break;
+            case ClassNames.LSORGANIZATION_CLASS_TYPE:
+                ViewHolderOrganizationCard viewHolderOrganizationCard = (ViewHolderOrganizationCard) holder;
+                viewHolderOrganizationCard.bind(item, position, mContext);
                 break;
         }
     }

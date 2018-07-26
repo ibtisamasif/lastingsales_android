@@ -255,15 +255,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
                         if (nameAddOrg.getText().toString().isEmpty()) {
                             nameAddOrg.setError("Please enter  Name!");
-                        } else if (emailAddOrg.getText().toString().isEmpty()) {
-                            emailAddOrg.setError("Please enter  Email!");
-                        } else if (phoneAddOrg.getText().toString().isEmpty()) {
-                            phoneAddOrg.setError("Please enter  Phone!");
                         } else {
                             LSOrganization lsOrganization = new LSOrganization();
                             lsOrganization.setName(nameAddOrg.getText().toString());
-                            lsOrganization.setEmail(emailAddOrg.getText().toString());
-                            lsOrganization.setPhone(phoneAddOrg.getText().toString());
+                            if (emailAddOrg != null) {
+                                lsOrganization.setEmail(emailAddOrg.getText().toString());
+                            }
+                            if (phoneAddOrg != null) {
+                                lsOrganization.setPhone(phoneAddOrg.getText().toString());
+                            }
                             lsOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_NOT_SYNCED);
 
                             if (lsOrganization.save() > 0) {
@@ -740,29 +740,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         // From LSContacts where number = query
         String myQuery = "SELECT * FROM LS_CONTACT where phone_one like '%" + query + "%' limit 5";
         Collection<LSContact> contactsByNumber = LSContact.findWithQuery(LSContact.class, myQuery);
-
         for (LSContact contact : contactsByNumber) {
             temp[0] = count;
             temp[1] = contact.getPhoneOne();
             temp[2] = R.drawable.ic_account_circle;
-            if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
-                temp[4] = contact.getId();
-            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
-                // Dont navigate anywhere on clicking colleagues as discussed
-                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
-                temp[4] = contact.getId();
-                temp[5] = contact.getPhoneOne();
-            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
-                // Dont navigate anywhere on clicking colleagues as discussed
-                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
-                temp[4] = contact.getId();
-                temp[5] = contact.getPhoneOne();
-            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
-                temp[4] = contact.getId();
-                temp[5] = contact.getPhoneOne();
-            }
+            temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
+            temp[4] = contact.getId();
             temp[6] = "type_contact";
             cursor.addRow(temp);
             count++;
@@ -771,29 +754,12 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         // From LSContacts where name = query
         myQuery = "SELECT * FROM LS_CONTACT where contact_name like '%" + query + "%' limit 5";
         Collection<LSContact> contactsByName = LSContact.findWithQuery(LSContact.class, myQuery);
-
         for (LSContact contact : contactsByName) {
             temp[0] = count;
             temp[1] = contact.getContactName();
             temp[2] = R.drawable.ic_account_circle;
-            if (contact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-                temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
-                temp[4] = contact.getId();
-            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_BUSINESS)) {
-                // Dont navigate anywhere on clicking colleagues as discussed
-                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
-                temp[4] = contact.getId();
-                temp[5] = contact.getPhoneOne();
-            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_IGNORED)) {
-                // Dont navigate anywhere on clicking colleagues as discussed
-                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
-                temp[4] = contact.getId();
-                temp[5] = contact.getPhoneOne();
-            } else if (contact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
-                temp[3] = ClassManager.CONTACT_CALL_DETAILS_BOTTOM_SHEET_FRAGMENT;
-                temp[4] = contact.getId();
-                temp[5] = contact.getPhoneOne();
-            }
+            temp[3] = ClassManager.CONTACT_DETAILS_TAB_ACTIVITY;
+            temp[4] = contact.getId();
             temp[6] = "type_contact";
             cursor.addRow(temp);
             count++;
@@ -801,7 +767,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         // From LSNotes where description = query
         myQuery = "SELECT * FROM LS_NOTE where note_text like '%" + query + "%' limit 5";
         Collection<LSNote> notesByDescription = LSNote.findWithQuery(LSNote.class, myQuery);
-
         for (LSNote note : notesByDescription) {
             if (note.getContactOfNote() != null) {
                 temp[0] = count;
@@ -819,7 +784,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         // From LSInquiry where number = query
         myQuery = "SELECT * FROM LS_INQUIRY where contact_number like '%" + query + "%' limit 5";
         Collection<LSInquiry> inquiriesByNumber = LSInquiry.findWithQuery(LSInquiry.class, myQuery);
-
         for (LSInquiry inquiry : inquiriesByNumber) {
             temp[0] = count;
             temp[1] = inquiry.getContactNumber();

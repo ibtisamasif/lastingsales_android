@@ -105,11 +105,11 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
         }
         if (lsDeal.getName() != null) {
             tvDealName.setText(lsDeal.getName());
-            if (lsDeal.getIsPrivate() != null && lsDeal.getIsPrivate().equalsIgnoreCase("1")) {
-                tvDealName.setText(lsDeal.getName() + " (Private)");
-            } else if (lsDeal.getIsPrivate() != null && lsDeal.getIsPrivate().equalsIgnoreCase("0")) {
-                tvDealName.setText(lsDeal.getName() + " (Public)");
-            }
+//            if (lsDeal.getIsPrivate() != null && lsDeal.getIsPrivate().equalsIgnoreCase("1")) {
+//                tvDealName.setText(lsDeal.getName() + " (Private)");
+//            } else if (lsDeal.getIsPrivate() != null && lsDeal.getIsPrivate().equalsIgnoreCase("0")) {
+//                tvDealName.setText(lsDeal.getName() + " (Public)");
+//            }
         }
 
         cl.setOnClickListener(new View.OnClickListener() {

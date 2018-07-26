@@ -9,7 +9,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,9 +19,8 @@ import java.util.List;
  * Created by ibtisam on 11/7/2017.
  */
 
-@Deprecated
 public class UnlabeledLoader2 extends AsyncTaskLoader<List<Object>> {
-    public static final String TAG = "HomeLoader";
+    public static final String TAG = "HomeLoader2";
     private List<Object> mData;
 
     public UnlabeledLoader2(Context context) {
@@ -31,13 +30,13 @@ public class UnlabeledLoader2 extends AsyncTaskLoader<List<Object>> {
     @Override
     public List<Object> loadInBackground() {
         List<Object> data = new ArrayList<Object>();
-        Collection<LSContact> unlabeledContacts = LSContact.getFrequentContactsByTypeInDescOrder();
-        if (!unlabeledContacts.isEmpty()) {
+        Collection<LSOrganization> organizationsList = LSOrganization.getOrganizationsInDescOrder();
+        if (!organizationsList.isEmpty()) {
 
             HomeItem homeItem = new HomeItem();
-            homeItem.text = "Frequent";
-            homeItem.value = "" + unlabeledContacts.size();
-            homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
+            homeItem.text = "Organizations";
+            homeItem.value = "" + organizationsList.size();
+            homeItem.drawable = R.drawable.bg_collegue_cardxxxhdpi;
 
 //            StatisticsItem statisticsItem = new StatisticsItem();
 //            statisticsItem.artValue = 0;
@@ -46,12 +45,12 @@ public class UnlabeledLoader2 extends AsyncTaskLoader<List<Object>> {
 //            statisticsItem.callsValue = 0;
 
             SeparatorItem separatorItem = new SeparatorItem();
-            separatorItem.text = "Frequent 10 calls";
+            separatorItem.text = "All Organizations";
 
             data.add(homeItem);
 //            data.add(statisticsItem);
             data.add(separatorItem);
-            data.addAll(unlabeledContacts);
+            data.addAll(organizationsList);
 
             SeparatorItem separatorSpace = new SeparatorItem();
             separatorSpace.text = "";
@@ -61,7 +60,7 @@ public class UnlabeledLoader2 extends AsyncTaskLoader<List<Object>> {
 
         } else {
             ErrorItem erItem = new ErrorItem();
-            erItem.message = "Nothing in Frequent calls";
+            erItem.message = "Nothing in Organizations calls";
             erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
             data.add(erItem);
         }
