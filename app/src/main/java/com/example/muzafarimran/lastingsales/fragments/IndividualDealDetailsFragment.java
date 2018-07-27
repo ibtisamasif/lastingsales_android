@@ -249,6 +249,25 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
 
+                }else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
+
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+
+                    if (lsProperties.size() > 0) {
+
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+
+                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "deal" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
+                    } else {
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+
+                        gridLayout.addView(dynamicColums.editText("", "deal" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE));
+
+                        // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
@@ -376,6 +395,37 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                 }
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+
+
+                    EditText editText = (EditText) gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
+
+                    String val = editText.getText().toString();
+
+                    Log.d("numberfield", val);
+                    // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
+
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
+
+                    if (lsProperty.size() > 0) {
+                        lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).save();
+                        Log.d("saved", "value saved");
+                    } else {
+                        LSProperty lsProperty1 = new LSProperty();
+                        lsProperty1.setValue(val);
+                        lsProperty1.setStorableType(list.get(i).getRelatedTo());
+                        lsProperty1.setColumnId(list.get(i).getServerId());
+                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+                        LSDeal lsDeal=LSDeal.findById(LSDeal.class,args.getLong("someId"));
+                        lsProperty1.setDealOfProperty(lsDeal);
+                        lsProperty1.save();
+
+                        Log.d("created", "created property");
+                    }
+
+
+                }  if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
 
 
                     EditText editText = (EditText) gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
