@@ -6,13 +6,13 @@ import de.halfbit.tinybus.Produce;
  * Created by ibtisam on 2/5/2018.
  */
 
-public class DealAddedEventModel {
+public class DealEventModel {
 
-    public DealAddedEventModel() {
+    public DealEventModel() {
     }
 
     @Produce
-    public DealAddedEventModel geLastCallReceivedEvent(){
+    public DealEventModel geLastCallReceivedEvent(){
         return this;
     }
 

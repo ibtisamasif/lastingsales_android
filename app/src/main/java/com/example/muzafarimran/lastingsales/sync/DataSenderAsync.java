@@ -15,11 +15,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -446,6 +447,7 @@ public class DataSenderAsync {
                     Log.d(TAG, "onResponse: OrganizationServerID : " + responseObject.getString("id"));
                     organization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED);
                     organization.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new OrganizationEventModel());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -467,6 +469,7 @@ public class DataSenderAsync {
                                     organization.setServerId(responseObject.getString("id"));
                                     organization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED);
                                     organization.save();
+                                    TinyBus.from(mContext.getApplicationContext()).post(new OrganizationEventModel());
                                 }
                             }
                         }
@@ -554,9 +557,7 @@ public class DataSenderAsync {
                     organization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_UPDATE_SYNCED);
                     organization.save();
                     Log.d(TAG, "onResponse : ServerIDofOrganization : " + responseObject.getString("id"));
-//                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-//                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-//                    bus.post(mCallEvent);
+                    TinyBus.from(mContext.getApplicationContext()).post(new OrganizationEventModel());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -610,10 +611,7 @@ public class DataSenderAsync {
 //                    if (responseCode == 200) {
 //                        JSONObject responseObject = jObj.getJSONObject("response");
                     organization.delete();
-//                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
-//                    TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-//                    bus.post(mCallEvent);
-//                    }
+                    TinyBus.from(mContext.getApplicationContext()).post(new OrganizationEventModel());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -630,9 +628,7 @@ public class DataSenderAsync {
                             if (responseCode == 259) {
                                 Log.d(TAG, "onErrorResponse: responseCode == 259 deleted");
                                 organization.delete();
-//                                ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
-//                                TinyBus bus = TinyBus.from(mContext.getApplicationContext());
-//                                bus.post(mCallEvent);
+                                TinyBus.from(mContext.getApplicationContext()).post(new OrganizationEventModel());
                             }
                         }
                     }
@@ -674,7 +670,7 @@ public class DataSenderAsync {
                     Log.d(TAG, "onResponse: addDealServerID : " + responseObject.getString("id"));
                     deal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
                     deal.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealEventModel());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -696,7 +692,7 @@ public class DataSenderAsync {
                                     deal.setServerId(responseObject.getString("id"));
                                     deal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
                                     deal.save();
-                                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
+                                    TinyBus.from(mContext.getApplicationContext()).post(new DealEventModel());
                                 }
                             }
                         }
@@ -716,6 +712,8 @@ public class DataSenderAsync {
                 params.put("status", "" + deal.getStatus());
                 if (deal.getContact() != null) {
                     params.put("lead_id", "" + deal.getContact().getServerId());
+                }else {
+                    deal.delete();
                 }
                 if (deal.getOrganization() != null) {
                     params.put("organization_id", "" + deal.getOrganization().getServerId());
@@ -778,7 +776,7 @@ public class DataSenderAsync {
                     deal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_SYNCED);
                     deal.save();
                     Log.d(TAG, "onResponse : updateDealServerId : " + responseObject.getString("id"));
-                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealEventModel());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -787,7 +785,7 @@ public class DataSenderAsync {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: CouldNotSyncUpdateDeal");
-                TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
+                TinyBus.from(mContext.getApplicationContext()).post(new DealEventModel());
             }
         }) {
         };
@@ -832,7 +830,7 @@ public class DataSenderAsync {
 //                        JSONObject responseObject = jObj.getJSONObject("response");
 //                }
                     deal.delete();
-                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealEventModel());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -850,7 +848,7 @@ public class DataSenderAsync {
                                 if (responseCode == 450001) {
                                     Log.d(TAG, "onErrorResponse: responseCode == 450001 deal deleted");
                                     deal.delete();
-                                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
+                                    TinyBus.from(mContext.getApplicationContext()).post(new DealEventModel());
                                 }
                             }
                         }

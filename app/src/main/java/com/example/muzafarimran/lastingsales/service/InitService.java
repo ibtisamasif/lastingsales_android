@@ -16,8 +16,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
@@ -40,8 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import de.halfbit.tinybus.TinyBus;
 
 public class InitService extends IntentService {
     public static final String TAG = "InitService";
@@ -89,7 +85,8 @@ public class InitService extends IntentService {
                 Log.d(TAG, "onRequestFinished: " + requestsCounter.get());
                 requestsCounter.decrementAndGet();
                 if (requestsCounter.get() == 0) {
-                    Log.d(TAG, "onRequestFinished: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    Log.d(TAG, "onRequestFinished: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    Log.d(TAG, "onRequestFinished: RESULT: " + result);
                     publishResults(result);
                 }
             }
@@ -225,73 +222,210 @@ public class InitService extends IntentService {
                             }
                         }
 
-                            JSONArray jsonArrayOrganizations = responseObject.getJSONArray("organizations");
-                            Log.d(TAG, "onResponse: data jsonArrayOrganizations length : " + jsonArrayOrganizations.length());
-                            for (int k = 0; k < jsonArrayOrganizations.length(); k++) {
-                                JSONObject jsonObjectOneOrganization = jsonArrayOrganizations.getJSONObject(k);
-                                String organization_id = jsonObjectOneOrganization.getString("id");
-                                String organization_name = jsonObjectOneOrganization.getString("name");
-                                int organization_created_by = 0;
-                                if (jsonObjectOneOrganization.has("created_by")) {
-                                    organization_created_by = jsonObjectOneOrganization.getInt("created_by");
-                                }
+                        JSONArray jsonArrayOrganizations = responseObject.getJSONArray("organizations");
+                        Log.d(TAG, "onResponse: data jsonArrayOrganizations length : " + jsonArrayOrganizations.length());
+                        for (int k = 0; k < jsonArrayOrganizations.length(); k++) {
+                            JSONObject jsonObjectOneOrganization = jsonArrayOrganizations.getJSONObject(k);
+                            String organization_id = jsonObjectOneOrganization.getString("id");
+                            String organization_name = jsonObjectOneOrganization.getString("name");
+                            int organization_created_by = 0;
+                            if (jsonObjectOneOrganization.has("created_by")) {
+                                organization_created_by = jsonObjectOneOrganization.getInt("created_by");
+                            }
 
-                                int organization_user_id = jsonObjectOneOrganization.getInt("user_id");
-                                String organization_Status = jsonObjectOneOrganization.getString("status");
-                                String organization_dynamic_values = jsonObjectOneOrganization.getString("dynamic_values");
-                                int organization_company_id = jsonObjectOneOrganization.getInt("company_id");
-                                String organization_src = jsonObjectOneOrganization.getString("src");
-                                String organization_src_id = jsonObjectOneOrganization.getString("src_id");
-                                String organization_version = jsonObjectOneOrganization.getString("version");
+                            int organization_user_id = jsonObjectOneOrganization.getInt("user_id");
+                            String organization_Status = jsonObjectOneOrganization.getString("status");
+                            String organization_dynamic_values = jsonObjectOneOrganization.getString("dynamic_values");
+                            int organization_company_id = jsonObjectOneOrganization.getInt("company_id");
+                            String organization_src = jsonObjectOneOrganization.getString("src");
+                            String organization_src_id = jsonObjectOneOrganization.getString("src_id");
+                            String organization_version = jsonObjectOneOrganization.getString("version");
 
-                                String organization_email = jsonObjectOneOrganization.getString("email");
-                                String organization_phone = jsonObjectOneOrganization.getString("phone");
+                            String organization_email = jsonObjectOneOrganization.getString("email");
+                            String organization_phone = jsonObjectOneOrganization.getString("phone");
 
-                                Log.d(TAG, "onResponse: ID: " + organization_id);
-                                Log.d(TAG, "onResponse: Name: " + organization_name);
-                                Log.d(TAG, "onResponse: Status: " + organization_Status);
-                                Log.d(TAG, "onResponse: dynamic_values: " + organization_dynamic_values);
-                                Log.d(TAG, "onResponse: created_by: " + organization_created_by);
+                            Log.d(TAG, "onResponse: ID: " + organization_id);
+                            Log.d(TAG, "onResponse: Name: " + organization_name);
+                            Log.d(TAG, "onResponse: Status: " + organization_Status);
+                            Log.d(TAG, "onResponse: dynamic_values: " + organization_dynamic_values);
+                            Log.d(TAG, "onResponse: created_by: " + organization_created_by);
 //                                Log.d(TAG, "onResponse: created_at: " + organization_created_at);
 //                                Log.d(TAG, "onResponse: updated_at: " + organization_updated_at);
-                                Log.d(TAG, "onResponse: user_id: " + organization_user_id);
-                                Log.d(TAG, "onResponse: company_id: " + organization_company_id);
-                                Log.d(TAG, "onResponse: src_id: " + organization_src_id);
-                                Log.d(TAG, "onResponse: src: " + organization_src);
-                                Log.d(TAG, "onResponse: version: " + organization_version);
-                                Log.d(TAG, "onResponse: email: " + organization_email);
-                                Log.d(TAG, "onResponse: version: " + organization_phone);
+                            Log.d(TAG, "onResponse: user_id: " + organization_user_id);
+                            Log.d(TAG, "onResponse: company_id: " + organization_company_id);
+                            Log.d(TAG, "onResponse: src_id: " + organization_src_id);
+                            Log.d(TAG, "onResponse: src: " + organization_src);
+                            Log.d(TAG, "onResponse: version: " + organization_version);
+                            Log.d(TAG, "onResponse: email: " + organization_email);
+                            Log.d(TAG, "onResponse: version: " + organization_phone);
 
-                                if (LSOrganization.getOrganizationFromServerId(organization_id) == null) {
-                                    LSOrganization tempOrganization = new LSOrganization();
-                                    tempOrganization.setServerId(organization_id);
-                                    tempOrganization.setName(organization_name);
-                                    tempOrganization.setPhone(organization_phone);
-                                    tempOrganization.setEmail(organization_email);
-                                    tempOrganization.setStatus(organization_Status);
-                                    tempOrganization.setDynamicValues(organization_dynamic_values);
-                                    tempOrganization.setUpdatedAt(Calendar.getInstance().getTime());
-                                    tempOrganization.setUserId(Integer.toString(user_id));
-                                    tempOrganization.setCompanyId(Integer.toString(organization_company_id));
-                                    tempOrganization.setSrcId(organization_src_id);
-                                    tempOrganization.setSrc(organization_src);
-                                    tempOrganization.setVersion(organization_version);
-                                    tempOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED);
-                                    tempOrganization.save();
+                            if (LSOrganization.getOrganizationFromServerId(organization_id) == null) {
+                                LSOrganization tempOrganization = new LSOrganization();
+                                tempOrganization.setServerId(organization_id);
+                                tempOrganization.setName(organization_name);
+                                tempOrganization.setPhone(organization_phone);
+                                tempOrganization.setEmail(organization_email);
+                                tempOrganization.setStatus(organization_Status);
+                                tempOrganization.setDynamicValues(organization_dynamic_values);
+                                tempOrganization.setUpdatedAt(Calendar.getInstance().getTime());
+                                tempOrganization.setUserId(Integer.toString(user_id));
+                                tempOrganization.setCompanyId(Integer.toString(organization_company_id));
+                                tempOrganization.setSrcId(organization_src_id);
+                                tempOrganization.setSrc(organization_src);
+                                tempOrganization.setVersion(organization_version);
+                                tempOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_ORGANIZATION_ADD_SYNCED);
+                                tempOrganization.save();
 
-                                    JSONArray jsonArrayOrganizationProperties = jsonObjectOneOrganization.getJSONArray("properties");
-                                    Log.d(TAG, "onResponse: data jsonArrayOrganizationProperties length : " + jsonArrayOrganizationProperties.length());
-                                    for (int j = jsonArrayOrganizationProperties.length() - 1; j >= 0; j--) {
-                                        JSONObject jsonObjectOneProperty = jsonArrayOrganizationProperties.getJSONObject(j);
-                                        String property_id = jsonObjectOneProperty.getString("id");
-                                        String property_user_id = jsonObjectOneProperty.getString("user_id");
-                                        String property_company_id = jsonObjectOneProperty.getString("company_id");
-                                        String property_column_id = jsonObjectOneProperty.getString("column_id");
-                                        String property_storable_id = jsonObjectOneProperty.getString("storable_id");
-                                        String property_storable_type = jsonObjectOneProperty.getString("storable_type");
-                                        String property_value = jsonObjectOneProperty.getString("value");
-                                        String property_created_by = jsonObjectOneProperty.getString("created_by");
-                                        String property_updated_by = jsonObjectOneProperty.getString("updated_by");
+                                JSONArray jsonArrayOrganizationProperties = jsonObjectOneOrganization.getJSONArray("properties");
+                                Log.d(TAG, "onResponse: data jsonArrayOrganizationProperties length : " + jsonArrayOrganizationProperties.length());
+                                for (int j = jsonArrayOrganizationProperties.length() - 1; j >= 0; j--) {
+                                    JSONObject jsonObjectOneProperty = jsonArrayOrganizationProperties.getJSONObject(j);
+                                    String property_id = jsonObjectOneProperty.getString("id");
+                                    String property_user_id = jsonObjectOneProperty.getString("user_id");
+                                    String property_company_id = jsonObjectOneProperty.getString("company_id");
+                                    String property_column_id = jsonObjectOneProperty.getString("column_id");
+                                    String property_storable_id = jsonObjectOneProperty.getString("storable_id");
+                                    String property_storable_type = jsonObjectOneProperty.getString("storable_type");
+                                    String property_value = jsonObjectOneProperty.getString("value");
+                                    String property_created_by = jsonObjectOneProperty.getString("created_by");
+                                    String property_updated_by = jsonObjectOneProperty.getString("updated_by");
+
+                                    LSProperty tempProperty = new LSProperty();
+                                    tempProperty.setServerId(property_id);
+                                    tempProperty.setUserId(property_user_id);
+                                    tempProperty.setCompanyId(property_company_id);
+                                    tempProperty.setColumnId(property_column_id);
+                                    tempProperty.setStorableId(property_storable_id);
+                                    tempProperty.setStorableType(property_storable_type);
+                                    tempProperty.setValue(property_value);
+                                    tempProperty.setOrganizationOfProperty(LSOrganization.getOrganizationFromServerId(property_storable_id));
+                                    tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
+                                    tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
+                                    tempProperty.save();
+                                }
+
+                                JSONArray jsonArrayDealNotes = jsonObjectOneOrganization.getJSONArray("notes");
+                                Log.d(TAG, "onResponse: data jsonArrayOrganizationNotes length : " + jsonArrayDealNotes.length());
+                                for (int j = jsonArrayDealNotes.length() - 1; j >= 0; j--) {
+                                    JSONObject jsonObjectOneNote = jsonArrayDealNotes.getJSONObject(j);
+                                    String note_id = jsonObjectOneNote.getString("id");
+                                    String note_user_id = jsonObjectOneNote.getString("user_id");
+                                    String note_company_id = jsonObjectOneNote.getString("company_id");
+                                    String note_notable_id = jsonObjectOneNote.getString("notable_id");
+                                    String note_notable_type = jsonObjectOneNote.getString("notable_type");
+                                    String note_description = jsonObjectOneNote.getString("description");
+                                    String note_created_by = jsonObjectOneNote.getString("created_by");
+                                    String note_updated_by = jsonObjectOneNote.getString("updated_by");
+
+                                    LSNote tempNote = new LSNote();
+                                    tempNote.setServerId(note_id);
+                                    tempNote.setOrganizationOfNote(LSOrganization.getOrganizationFromServerId(note_notable_id));
+                                    tempNote.setNotableType(note_notable_type);
+                                    tempNote.setNoteText(note_description);
+                                    tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
+                                    tempNote.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
+                                    tempNote.save();
+                                }
+                            }
+                        }
+
+                        JSONArray jsonArrayDeals = responseObject.getJSONArray("deals");
+                        Log.d(TAG, "onResponse: data jsonArrayNotes length : " + jsonArrayDeals.length());
+                        for (int k = 0; k < jsonArrayDeals.length(); k++) {
+                            JSONObject jsonObjectOneDeal = jsonArrayDeals.getJSONObject(k);
+                            String deal_id = jsonObjectOneDeal.getString("id");
+                            String deal_name = jsonObjectOneDeal.getString("name");
+                            int deal_created_by = 0;
+                            if (jsonObjectOneDeal.has("created_by")) {
+                                deal_created_by = jsonObjectOneDeal.getInt("created_by");
+                            }
+                            String deal_created_at = jsonObjectOneDeal.getString("created_at");
+                            String deal_updated_at = jsonObjectOneDeal.getString("updated_at");
+                            int deal_user_id = jsonObjectOneDeal.getInt("user_id");
+                            int deal_lead_id = jsonObjectOneDeal.getInt("lead_id");
+                            int deal_organization_id = jsonObjectOneDeal.getInt("organization_id");
+                            int deal_workflow_id = jsonObjectOneDeal.getInt("workflow_id");
+                            int deal_workflow_stage_id = jsonObjectOneDeal.getInt("workflow_stage_id");
+                            String deal_Status = jsonObjectOneDeal.getString("status");
+                            String deal_dynamic_values = jsonObjectOneDeal.getString("dynamic_values");
+                            int deal_company_id = jsonObjectOneDeal.getInt("company_id");
+                            String deal_src = jsonObjectOneDeal.getString("src");
+                            String deal_src_id = jsonObjectOneDeal.getString("src_id");
+                            String deal_is_private = jsonObjectOneDeal.getString("is_private");
+                            String deal_version = jsonObjectOneDeal.getString("version");
+                            String deal_value = jsonObjectOneDeal.getString("value");
+                            String deal_currency = jsonObjectOneDeal.getString("currency");
+                            String deal_success_rate = jsonObjectOneDeal.getString("success_rate");
+                            String deal_success_eta = jsonObjectOneDeal.getString("success_eta");
+
+                            Log.d(TAG, "onResponse: ID: " + deal_id);
+                            Log.d(TAG, "onResponse: Name: " + deal_name);
+                            Log.d(TAG, "onResponse: Status: " + deal_Status);
+                            Log.d(TAG, "onResponse: dynamic_values: " + deal_dynamic_values);
+                            Log.d(TAG, "onResponse: created_by: " + deal_created_by);
+                            Log.d(TAG, "onResponse: created_at: " + deal_created_at);
+                            Log.d(TAG, "onResponse: updated_at: " + deal_updated_at);
+                            Log.d(TAG, "onResponse: user_id: " + deal_user_id);
+                            Log.d(TAG, "onResponse: company_id: " + deal_company_id);
+                            Log.d(TAG, "onResponse: src_id: " + deal_src_id);
+                            Log.d(TAG, "onResponse: lead_id: " + deal_lead_id);
+                            Log.d(TAG, "onResponse: organization_id: " + deal_organization_id);
+                            Log.d(TAG, "onResponse: workflow_id: " + deal_workflow_id);
+                            Log.d(TAG, "onResponse: workflow_stage_id: " + deal_workflow_stage_id);
+                            Log.d(TAG, "onResponse: src: " + deal_src);
+                            Log.d(TAG, "onResponse: is_private: " + deal_is_private);
+                            Log.d(TAG, "onResponse: version: " + deal_version);
+                            Log.d(TAG, "onResponse: value: " + deal_value);
+                            Log.d(TAG, "onResponse: currency: " + deal_currency);
+                            Log.d(TAG, "onResponse: success_rate: " + deal_success_rate);
+                            Log.d(TAG, "onResponse: success_eta: " + deal_success_eta);
+
+                            if (LSDeal.getDealFromServerId(deal_id) == null) {
+                                LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(deal_lead_id));
+                                LSOrganization lsOrganization = LSOrganization.getOrganizationFromServerId(Integer.toString(deal_organization_id));
+                                if (lsContact != null || lsOrganization != null) {
+                                    LSDeal tempDeal = new LSDeal();
+                                    tempDeal.setServerId(deal_id);
+                                    tempDeal.setName(deal_name);
+                                    tempDeal.setStatus(deal_Status);
+//                            tempDeal.setEmail(email);
+                                    tempDeal.setDynamic(deal_dynamic_values);
+                                    if (created_by != 0) {
+                                        tempDeal.setCreatedBy(Integer.toString(deal_created_by));
+                                    }
+                                    tempDeal.setCreatedAt(deal_created_at);
+                                    tempDeal.setUpdatedAt(Calendar.getInstance().getTime());
+                                    tempDeal.setUserId(Integer.toString(user_id));
+                                    tempDeal.setCompanyId(Integer.toString(deal_company_id));
+                                    tempDeal.setWorkflowId(Integer.toString(deal_workflow_id));
+                                    tempDeal.setWorkflowStageId(Integer.toString(deal_workflow_stage_id));
+                                    tempDeal.setIsPrivate(deal_is_private);
+                                    if (lsContact != null) {
+                                        tempDeal.setContact(lsContact);
+                                    }
+                                    if (lsOrganization != null) {
+                                        tempDeal.setOrganization(lsOrganization);
+                                    }
+                                    tempDeal.setValue(deal_value);
+                                    tempDeal.setCurrency(deal_currency);
+                                    tempDeal.setSuccessRate(deal_success_rate);
+                                    tempDeal.setSuccessEta(deal_success_eta);
+                                    tempDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
+                                    tempDeal.save();
+
+                                    JSONArray jsonArrayDealProperties = jsonObjectOneDeal.getJSONArray("properties");
+                                    Log.d(TAG, "onResponse: data jsonArrayDealProperties length : " + jsonArrayDealProperties.length());
+                                    for (int j = jsonArrayDealProperties.length() - 1; j >= 0; j--) {
+                                        JSONObject jsonObjectOneNote = jsonArrayDealProperties.getJSONObject(j);
+                                        String property_id = jsonObjectOneNote.getString("id");
+                                        String property_user_id = jsonObjectOneNote.getString("user_id");
+                                        String property_company_id = jsonObjectOneNote.getString("company_id");
+                                        String property_column_id = jsonObjectOneNote.getString("column_id");
+                                        String property_storable_id = jsonObjectOneNote.getString("storable_id");
+                                        String property_storable_type = jsonObjectOneNote.getString("storable_type");
+                                        String property_value = jsonObjectOneNote.getString("value");
+                                        String property_created_by = jsonObjectOneNote.getString("created_by");
+                                        String property_updated_by = jsonObjectOneNote.getString("updated_by");
 
                                         LSProperty tempProperty = new LSProperty();
                                         tempProperty.setServerId(property_id);
@@ -301,14 +435,14 @@ public class InitService extends IntentService {
                                         tempProperty.setStorableId(property_storable_id);
                                         tempProperty.setStorableType(property_storable_type);
                                         tempProperty.setValue(property_value);
-                                        tempProperty.setOrganizationOfProperty(LSOrganization.getOrganizationFromServerId(property_storable_id));
+                                        tempProperty.setDealOfProperty(LSDeal.getDealFromServerId(property_storable_id));
                                         tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
                                         tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                                         tempProperty.save();
                                     }
 
-                                    JSONArray jsonArrayDealNotes = jsonObjectOneOrganization.getJSONArray("notes");
-                                    Log.d(TAG, "onResponse: data jsonArrayOrganizationNotes length : " + jsonArrayDealNotes.length());
+                                    JSONArray jsonArrayDealNotes = jsonObjectOneDeal.getJSONArray("notes");
+                                    Log.d(TAG, "onResponse: data jsonArrayDealNotes length : " + jsonArrayDealNotes.length());
                                     for (int j = jsonArrayDealNotes.length() - 1; j >= 0; j--) {
                                         JSONObject jsonObjectOneNote = jsonArrayDealNotes.getJSONObject(j);
                                         String note_id = jsonObjectOneNote.getString("id");
@@ -322,7 +456,7 @@ public class InitService extends IntentService {
 
                                         LSNote tempNote = new LSNote();
                                         tempNote.setServerId(note_id);
-                                        tempNote.setOrganizationOfNote(LSOrganization.getOrganizationFromServerId(note_notable_id));
+                                        tempNote.setDealOfNote(LSDeal.getDealFromServerId(note_notable_id));
                                         tempNote.setNotableType(note_notable_type);
                                         tempNote.setNoteText(note_description);
                                         tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
@@ -331,147 +465,8 @@ public class InitService extends IntentService {
                                     }
                                 }
                             }
-
-                            JSONArray jsonArrayDeals = responseObject.getJSONArray("deals");
-                            Log.d(TAG, "onResponse: data jsonArrayNotes length : " + jsonArrayDeals.length());
-                            for (int k = 0; k < jsonArrayDeals.length(); k++) {
-                                JSONObject jsonObjectOneDeal = jsonArrayDeals.getJSONObject(k);
-                                String deal_id = jsonObjectOneDeal.getString("id");
-                                String deal_name = jsonObjectOneDeal.getString("name");
-                                int deal_created_by = 0;
-                                if (jsonObjectOneDeal.has("created_by")) {
-                                    deal_created_by = jsonObjectOneDeal.getInt("created_by");
-                                }
-                                String deal_created_at = jsonObjectOneDeal.getString("created_at");
-                                String deal_updated_at = jsonObjectOneDeal.getString("updated_at");
-                                int deal_user_id = jsonObjectOneDeal.getInt("user_id");
-                                int deal_lead_id = jsonObjectOneDeal.getInt("lead_id");
-                                int deal_organization_id = jsonObjectOneDeal.getInt("organization_id");
-                                int deal_workflow_id = jsonObjectOneDeal.getInt("workflow_id");
-                                int deal_workflow_stage_id = jsonObjectOneDeal.getInt("workflow_stage_id");
-                                String deal_Status = jsonObjectOneDeal.getString("status");
-                                String deal_dynamic_values = jsonObjectOneDeal.getString("dynamic_values");
-                                int deal_company_id = jsonObjectOneDeal.getInt("company_id");
-                                String deal_src = jsonObjectOneDeal.getString("src");
-                                String deal_src_id = jsonObjectOneDeal.getString("src_id");
-                                String deal_is_private = jsonObjectOneDeal.getString("is_private");
-                                String deal_version = jsonObjectOneDeal.getString("version");
-                                String deal_value = jsonObjectOneDeal.getString("value");
-                                String deal_currency = jsonObjectOneDeal.getString("currency");
-                                String deal_success_rate = jsonObjectOneDeal.getString("success_rate");
-                                String deal_success_eta = jsonObjectOneDeal.getString("success_eta");
-
-                                Log.d(TAG, "onResponse: ID: " + deal_id);
-                                Log.d(TAG, "onResponse: Name: " + deal_name);
-                                Log.d(TAG, "onResponse: Status: " + deal_Status);
-                                Log.d(TAG, "onResponse: dynamic_values: " + deal_dynamic_values);
-                                Log.d(TAG, "onResponse: created_by: " + deal_created_by);
-                                Log.d(TAG, "onResponse: created_at: " + deal_created_at);
-                                Log.d(TAG, "onResponse: updated_at: " + deal_updated_at);
-                                Log.d(TAG, "onResponse: user_id: " + deal_user_id);
-                                Log.d(TAG, "onResponse: company_id: " + deal_company_id);
-                                Log.d(TAG, "onResponse: src_id: " + deal_src_id);
-                                Log.d(TAG, "onResponse: lead_id: " + deal_lead_id);
-                                Log.d(TAG, "onResponse: organization_id: " + deal_organization_id);
-                                Log.d(TAG, "onResponse: workflow_id: " + deal_workflow_id);
-                                Log.d(TAG, "onResponse: workflow_stage_id: " + deal_workflow_stage_id);
-                                Log.d(TAG, "onResponse: src: " + deal_src);
-                                Log.d(TAG, "onResponse: is_private: " + deal_is_private);
-                                Log.d(TAG, "onResponse: version: " + deal_version);
-                                Log.d(TAG, "onResponse: value: " + deal_value);
-                                Log.d(TAG, "onResponse: currency: " + deal_currency);
-                                Log.d(TAG, "onResponse: success_rate: " + deal_success_rate);
-                                Log.d(TAG, "onResponse: success_eta: " + deal_success_eta);
-
-                                if (LSDeal.getDealFromServerId(deal_id) == null) {
-                                    LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(deal_lead_id));
-                                    LSOrganization lsOrganization = LSOrganization.getOrganizationFromServerId(Integer.toString(deal_organization_id));
-                                    if (lsContact != null || lsOrganization != null) {
-                                        LSDeal tempDeal = new LSDeal();
-                                        tempDeal.setServerId(deal_id);
-                                        tempDeal.setName(deal_name);
-                                        tempDeal.setStatus(deal_Status);
-//                            tempDeal.setEmail(email);
-                                        tempDeal.setDynamic(deal_dynamic_values);
-                                        if (created_by != 0) {
-                                            tempDeal.setCreatedBy(Integer.toString(deal_created_by));
-                                        }
-                                        tempDeal.setCreatedAt(deal_created_at);
-                                        tempDeal.setUpdatedAt(Calendar.getInstance().getTime());
-                                        tempDeal.setUserId(Integer.toString(user_id));
-                                        tempDeal.setCompanyId(Integer.toString(deal_company_id));
-                                        tempDeal.setWorkflowId(Integer.toString(deal_workflow_id));
-                                        tempDeal.setWorkflowStageId(Integer.toString(deal_workflow_stage_id));
-                                        tempDeal.setIsPrivate(deal_is_private);
-                                        if (lsContact != null) {
-                                            tempDeal.setContact(lsContact);
-                                        }
-                                        if (lsOrganization != null) {
-                                            tempDeal.setOrganization(lsOrganization);
-                                        }
-                                        tempDeal.setValue(deal_value);
-                                        tempDeal.setCurrency(deal_currency);
-                                        tempDeal.setSuccessRate(deal_success_rate);
-                                        tempDeal.setSuccessEta(deal_success_eta);
-                                        tempDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
-                                        tempDeal.save();
-
-                                        JSONArray jsonArrayDealProperties = jsonObjectOneDeal.getJSONArray("properties");
-                                        Log.d(TAG, "onResponse: data jsonArrayDealProperties length : " + jsonArrayDealProperties.length());
-                                        for (int j = jsonArrayDealProperties.length() - 1; j >= 0; j--) {
-                                            JSONObject jsonObjectOneNote = jsonArrayDealProperties.getJSONObject(j);
-                                            String property_id = jsonObjectOneNote.getString("id");
-                                            String property_user_id = jsonObjectOneNote.getString("user_id");
-                                            String property_company_id = jsonObjectOneNote.getString("company_id");
-                                            String property_column_id = jsonObjectOneNote.getString("column_id");
-                                            String property_storable_id = jsonObjectOneNote.getString("storable_id");
-                                            String property_storable_type = jsonObjectOneNote.getString("storable_type");
-                                            String property_value = jsonObjectOneNote.getString("value");
-                                            String property_created_by = jsonObjectOneNote.getString("created_by");
-                                            String property_updated_by = jsonObjectOneNote.getString("updated_by");
-
-                                            LSProperty tempProperty = new LSProperty();
-                                            tempProperty.setServerId(property_id);
-                                            tempProperty.setUserId(property_user_id);
-                                            tempProperty.setCompanyId(property_company_id);
-                                            tempProperty.setColumnId(property_column_id);
-                                            tempProperty.setStorableId(property_storable_id);
-                                            tempProperty.setStorableType(property_storable_type);
-                                            tempProperty.setValue(property_value);
-                                            tempProperty.setDealOfProperty(LSDeal.getDealFromServerId(property_storable_id));
-                                            tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
-                                            tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
-                                            tempProperty.save();
-                                        }
-
-                                        JSONArray jsonArrayDealNotes = jsonObjectOneDeal.getJSONArray("notes");
-                                        Log.d(TAG, "onResponse: data jsonArrayDealNotes length : " + jsonArrayDealNotes.length());
-                                        for (int j = jsonArrayDealNotes.length() - 1; j >= 0; j--) {
-                                            JSONObject jsonObjectOneNote = jsonArrayDealNotes.getJSONObject(j);
-                                            String note_id = jsonObjectOneNote.getString("id");
-                                            String note_user_id = jsonObjectOneNote.getString("user_id");
-                                            String note_company_id = jsonObjectOneNote.getString("company_id");
-                                            String note_notable_id = jsonObjectOneNote.getString("notable_id");
-                                            String note_notable_type = jsonObjectOneNote.getString("notable_type");
-                                            String note_description = jsonObjectOneNote.getString("description");
-                                            String note_created_by = jsonObjectOneNote.getString("created_by");
-                                            String note_updated_by = jsonObjectOneNote.getString("updated_by");
-
-                                            LSNote tempNote = new LSNote();
-                                            tempNote.setServerId(note_id);
-                                            tempNote.setDealOfNote(LSDeal.getDealFromServerId(note_notable_id));
-                                            tempNote.setNotableType(note_notable_type);
-                                            tempNote.setNoteText(note_description);
-                                            tempNote.setSyncStatus(SyncStatus.SYNC_STATUS_NOTE_ADDED_SYNCED);
-                                            tempNote.setCreatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
-                                            tempNote.save();
-                                        }
-                                    }
-                                }
-                            }
+                        }
                     }
-                    TinyBus.from(mContext.getApplicationContext()).post(new OrganizationEventModel());
-                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
                     fetchInquiries();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -574,15 +569,9 @@ public class InitService extends IntentService {
                             newColumn.setUpdated_at(updated_at);
                             newColumn.setCompanyId(company_id);
                             newColumn.save();
-
                         }
                     }
-//                    LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-//                    TinyBus bus = TinyBus.from(mContext);
-//                    bus.post(mCallEvent);
-
                     fetchInquiries();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e(TAG, "onResponse: JSONException DynamicColumns");
@@ -831,11 +820,6 @@ public class InitService extends IntentService {
                                 InquiryManager.createOrUpdate(mContext, inquiry_id, status_of_inquiry, beginTimeFromServer, contactNumber);
 
                             }
-
-                            LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                            TinyBus bus = TinyBus.from(mContext);
-                            bus.post(mCallEvent);
-
 
 //                    if (sessionManager.isFirstRunAfterLogin()) {
 //                        Log.d(TAG, "initFirst: isFirstRun TRUE");

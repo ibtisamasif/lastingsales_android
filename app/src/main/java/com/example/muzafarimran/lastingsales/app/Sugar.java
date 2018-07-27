@@ -5,8 +5,6 @@ import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
-import com.evernote.android.job.JobManager;
-import com.example.muzafarimran.lastingsales.service.DemoJobCreator;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
 import com.orm.SugarApp;
@@ -38,9 +36,9 @@ public class Sugar extends SugarApp {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Fresco.initialize(this);
 
-        //Android Job Library
-        JobManager.create(this).addJobCreator(new DemoJobCreator());
-//        JobManager.instance().getConfig().setAllowSmallerIntervalsForMarshmallow(true); //Don't use this in production
+//        //Android Job Library
+//        JobManager.create(this).addJobCreator(new DemoJobCreator());
+////        JobManager.instance().getConfig().setAllowSmallerIntervalsForMarshmallow(true); //Don't use this in production
 
 //        // SQUARE memory leakage library
 //        Log.d(TAG, "onCreate: SquareLeakLibrary");

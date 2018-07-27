@@ -80,77 +80,78 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
             }
         }
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        OrganizationDetailsFragmentPagerAdapter organizationDetailsFragmentPagerAdapter = new OrganizationDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedOrganization.getId());
-        viewPager.setAdapter(organizationDetailsFragmentPagerAdapter);
+        if (selectedOrganization != null) {
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            OrganizationDetailsFragmentPagerAdapter organizationDetailsFragmentPagerAdapter = new OrganizationDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedOrganization.getId());
+            viewPager.setAdapter(organizationDetailsFragmentPagerAdapter);
 //        viewPager.getAdapter().notifyDataSetChanged();
 
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setupWithViewPager(viewPager);
+            // Give the TabLayout the ViewPager
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+            tabLayout.setupWithViewPager(viewPager);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        floatingActionButton.hide();
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    switch (tab.getPosition()) {
+                        case 0:
+                            floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.menu_icon_details_selected);
-                        break;
-                    case 1:
-                        floatingActionButton.show();
+                            break;
+                        case 1:
+                            floatingActionButton.show();
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        break;
-                    case 2:
-                        floatingActionButton.hide();
+                            break;
+                        case 2:
+                            floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.menu_icon_contact_selected);
-                        break;
-                    case 3:
-                        floatingActionButton.hide();
+                            break;
+                        case 3:
+                            floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.add_contact_notes_field_icon);
-                        break;
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    switch (tab.getPosition()) {
+                        case 0:
 //                        tab.setIcon(R.drawable.menu_icon_details);
-                        break;
-                    case 1:
+                            break;
+                        case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone);
-                        break;
-                    case 2:
+                            break;
+                        case 2:
 //                        tab.setIcon(R.drawable.menu_icon_contact);
-                        break;
-                    case 3:
+                            break;
+                        case 3:
 //                        tab.setIcon(R.drawable.add_contact_notes_field_icon_unselected);
-                        break;
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-
-        if (extras != null) {
-            selectedTab = extras.getString(OrganizationDetailsTabActivity.KEY_SET_SELECTED_TAB);
-            if (selectedTab != null && !selectedTab.equals("")) {
-                if (selectedTab.equals("3")) {
-                    viewPager.setCurrentItem(3, true);
-                    organizationDetailsFragmentPagerAdapter.getItem(3).setArguments(extras);
-                } else if (selectedTab.equals("2")) {
-                    viewPager.setCurrentItem(2, true);
-                    organizationDetailsFragmentPagerAdapter.getItem(2).setArguments(extras);
-                } else if (selectedTab.equals("1")) {
-                    viewPager.setCurrentItem(1, true);
-                    organizationDetailsFragmentPagerAdapter.getItem(1).setArguments(extras);
-                } else {
-                    viewPager.setCurrentItem(0, true);
-                    organizationDetailsFragmentPagerAdapter.getItem(0).setArguments(extras);
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                }
+            });
+            if (extras != null) {
+                selectedTab = extras.getString(OrganizationDetailsTabActivity.KEY_SET_SELECTED_TAB);
+                if (selectedTab != null && !selectedTab.equals("")) {
+                    if (selectedTab.equals("3")) {
+                        viewPager.setCurrentItem(3, true);
+                        organizationDetailsFragmentPagerAdapter.getItem(3).setArguments(extras);
+                    } else if (selectedTab.equals("2")) {
+                        viewPager.setCurrentItem(2, true);
+                        organizationDetailsFragmentPagerAdapter.getItem(2).setArguments(extras);
+                    } else if (selectedTab.equals("1")) {
+                        viewPager.setCurrentItem(1, true);
+                        organizationDetailsFragmentPagerAdapter.getItem(1).setArguments(extras);
+                    } else {
+                        viewPager.setCurrentItem(0, true);
+                        organizationDetailsFragmentPagerAdapter.getItem(0).setArguments(extras);
+                    }
                 }
             }
         }
@@ -327,12 +328,6 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                     if (nameAddOrg.getText().toString().isEmpty()) {
                         nameAddOrg.setError("Please enter  Name!");
 //                    Toast.makeText(getActivity(), "Please enter  Name!", Toast.LENGTH_SHORT).show();
-                    } else if (emailAddOrg.getText().toString().isEmpty()) {
-                        emailAddOrg.setError("Please enter  Email!");
-//                    Toast.makeText(getActivity(), "Please enter  Email!", Toast.LENGTH_SHORT).show();
-                    } else if (phoneAddOrg.getText().toString().isEmpty()) {
-                        phoneAddOrg.setError("Please enter  Phone!");
-//                    Toast.makeText(getActivity(), "Please enter Phone!", Toast.LENGTH_SHORT).show();
                     } else {
 
                         tempOrganization.setName(nameAddOrg.getText().toString());

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
-import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.listloaders.DealsLoader;
 import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 
@@ -107,7 +107,7 @@ public class DealDynamicFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Subscribe
-    public void onDealEventModel(DealAddedEventModel event) {
+    public void onDealEventModel(DealEventModel event) {
         Log.d(TAG, "onDealEventModel: ");
         getLoaderManager().restartLoader(DEAL_LOADER_ID, args, DealDynamicFragment.this);
     }

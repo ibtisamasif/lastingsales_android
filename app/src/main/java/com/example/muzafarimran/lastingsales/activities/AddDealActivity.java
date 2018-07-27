@@ -365,7 +365,7 @@ public class AddDealActivity extends AppCompatActivity {
             if (selectedStage != null) {
                 selectedStageServerId = selectedStage.getServerId(); //mDeal is null
                 Toast.makeText(parent.getContext(), "Stage Changed to " + selectedStage.getName(), Toast.LENGTH_SHORT).show();
-//                TinyBus.from(parent.getContext().getApplicationContext()).post(new DealAddedEventModel());
+//                TinyBus.from(parent.getContext().getApplicationContext()).post(new DealEventModel());
 //                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(parent.getContext().getApplicationContext());
 //                dataSenderAsync.run();
             }

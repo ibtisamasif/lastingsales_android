@@ -20,13 +20,13 @@ public class DeleteManager {
 
     public static void deleteOrganization(Context context, LSOrganization selectedOrganization) {
 
-//        //Flushing Deals Of Organization
-//        List<LSDeal> allDealsOfThisContact = selectedOrganization.getAllDeals();
-//        if (allDealsOfThisContact != null && allDealsOfThisContact.size() > 0) {
-//            for (LSDeal oneDeal : allDealsOfThisContact) {
-//                oneDeal.delete();
-//            }
-//        }
+        //Flushing Deals Of Organization
+        List<LSDeal> allDealsOfThisContact = selectedOrganization.getAllDeals();
+        if (allDealsOfThisContact != null && allDealsOfThisContact.size() > 0) {
+            for (LSDeal oneDeal : allDealsOfThisContact) {
+                oneDeal.delete();
+            }
+        }
         //Flushing Notes Of Organization
         List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedOrganization.getId());
         if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {

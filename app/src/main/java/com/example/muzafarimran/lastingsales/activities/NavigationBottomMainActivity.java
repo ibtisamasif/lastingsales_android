@@ -1,7 +1,9 @@
 package com.example.muzafarimran.lastingsales.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -45,6 +47,9 @@ import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.app.ClassManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelper;
+import com.example.muzafarimran.lastingsales.events.DealEventModel;
+import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
@@ -58,7 +63,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.CallLogEngineService;
-import com.example.muzafarimran.lastingsales.service.DemoSyncJob;
 import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
@@ -73,6 +77,7 @@ import java.util.Calendar;
 import java.util.Collection;
 
 import de.halfbit.tinybus.Subscribe;
+import de.halfbit.tinybus.TinyBus;
 import de.halfbit.tinybus.wires.ShakeEventWire;
 import io.fabric.sdk.android.Fabric;
 
@@ -414,10 +419,14 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     private void initLast() {
 
 //        DemoSyncJob.schedulePeriodic();
-        DemoSyncJob.cancelThisJob();
+//        DemoSyncJob.cancelThisJob();
 
         settingsManager = new SettingsManager(this);
 
+
+        //////////////////////////////////////////////////
+        ////////////  This code is important for custom OEMs it will add app to protected apps list. DO NOT remove the code below infact work on its growth to cover more OEMs.
+        //////////////////////////////////////////////////
         Log.d(TAG, "onCreate: Build.MANUFACTURER: " + Build.MANUFACTURER);
         Log.d(TAG, "onCreate: Build.BRAND: " + Build.BRAND);
 
@@ -495,7 +504,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //                    }).create().show(); // pistis phone crashed window leaked  android.view.WindowLeaked: Activity com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView{13adf36b V.E..... R.....ID 0,0-683,378} that was originally added here
 //        }
 
-
+        //////////////////////
+        ///////  Optimize app for less killing by adding in ignoring optimize app list for this app (Pure Android)
+        ///////////////////
 //        Intent intentTest = new Intent();
 //        String packageName = NavigationBottomMainActivity.this.getPackageName();
 //        PowerManager pm = (PowerManager) NavigationBottomMainActivity.this.getSystemService(Context.POWER_SERVICE);
@@ -509,18 +520,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //            NavigationBottomMainActivity.this.startActivity(intentTest);
 //        }
 
-//        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-//            public void uncaughtException(Thread thread, Throwable ex) {
-//                Log.d(TAG, "uncaughtException: ");
-//                Intent launchIntent = new Intent(getIntent());
-//                PendingIntent pending = PendingIntent.getActivity(NavigationBottomMainActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pending);
-//                defaultHandler.uncaughtException(thread, ex);
-//                System.exit(2);
-//            }
-//        });
+        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread thread, Throwable ex) {
+                Log.d(TAG, "uncaughtException: ");
+                Intent launchIntent = new Intent(getIntent());
+                PendingIntent pending = PendingIntent.getActivity(NavigationBottomMainActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pending);
+                defaultHandler.uncaughtException(thread, ex);
+                System.exit(2);
+            }
+        });
 
         String projectToken = MixpanelConfig.projectToken;
         MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
@@ -827,9 +838,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     }
 
     private void handleResult(Bundle bundle) {
+        Log.d(TAG, "handleResult: ");
         if (bundle != null) {
             int resultCode = bundle.getInt(InitService.RESULT);
             if (resultCode == RESULT_OK) {
+                Log.d(TAG, "handleResult: OK");
 
 //                if (progressDialog != null && progressDialog.isShowing()) {
 //                    progressDialog.dismiss();
@@ -845,7 +858,11 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
 //                Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();
 
+                TinyBus.from(this.getApplicationContext()).post(new LeadContactAddedEventModel());
+                TinyBus.from(this.getApplicationContext()).post(new OrganizationEventModel());
+                TinyBus.from(this.getApplicationContext()).post(new DealEventModel());
             } else if (resultCode == RESULT_CANCELED) {
+                Log.d(TAG, "handleResult: CANCELED");
 //                if (progressDialog != null && progressDialog.isShowing()) {
 //                    progressDialog.dismiss();
 //                }

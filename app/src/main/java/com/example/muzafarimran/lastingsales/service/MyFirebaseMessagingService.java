@@ -10,10 +10,11 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.events.CommentEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
-import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
@@ -328,9 +329,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         Log.e(TAG, "handleDataMessage: contact: " + contact.toString());
                         DeleteManager.deleteContact(getApplicationContext(), contact);
 //                        contact.delete();
-                        LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-                        TinyBus bus = TinyBus.from(getApplicationContext());
-                        bus.post(mCallEvent);
+                        TinyBus.from(getApplicationContext()).post(new LeadContactAddedEventModel());
                     }
                 }
             }
@@ -451,10 +450,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 //                            mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name, id));
 //                        }
-//                        LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-//                        TinyBus bus = TinyBus.from(getApplicationContext());
-//                        bus.post(mCallEvent);
                     }
+                    TinyBus.from(getApplicationContext()).post(new OrganizationEventModel());
+
                 } else if (action.equals("put")) {
                     String id = payload.getString("id");
                     String name = payload.getString("name");
@@ -532,20 +530,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 //                        mNotificationManager.notify(c.incrementAndGet(), FirebaseCustomNotification.createFirebaseAssignedLeadNotification(getApplicationContext(), name, id));
 //                    }
-//                    ContactDeletedEventModel mCallEvent = new ContactDeletedEventModel();
-//                    TinyBus bus = TinyBus.from(getApplicationContext());
-//                    bus.post(mCallEvent);
-
+                    TinyBus.from(getApplicationContext()).post(new OrganizationEventModel());
                 } else if (action.equals("delete")) {
                     String id = payload.getString("id");
                     LSOrganization organization = LSOrganization.getOrganizationFromServerId(id);
                     if (organization != null) {
                         Log.e(TAG, "handleDataMessage: organization: " + organization.toString());
-                        DeleteManager.deleteOrganization(getApplicationContext(), organization);
-//                        contact.delete();
-//                        LeadContactAddedEventModel mCallEvent = new LeadContactAddedEventModel();
-//                        TinyBus bus = TinyBus.from(getApplicationContext());
-//                        bus.post(mCallEvent);
+                        organization.delete();
+                        TinyBus.from(getApplicationContext()).post(new OrganizationEventModel());
                     }
                 }
             }
@@ -886,9 +878,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     LSDeal lsDeal = LSDeal.getDealFromServerId(id);
                     if (lsDeal == null) {
                         // check if lead or organization still exists of which the deal is
-                        LSOrganization lsOrganization = LSOrganization.getOrganizationFromServerId(Integer.toString(organization_id));
                         LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
-                        if (lsContact != null || lsOrganization != null) {
+                        if (lsContact != null) {
                             lsDeal = new LSDeal();
                             lsDeal.setServerId(id);
                             lsDeal.setUserId(Integer.toString(user_id));
@@ -905,12 +896,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             if (lsContact != null) {
                                 lsDeal.setContact(lsContact);
                             }
+                            LSOrganization lsOrganization = LSOrganization.getOrganizationFromServerId(Integer.toString(organization_id));
                             if (lsOrganization != null) {
                                 lsDeal.setOrganization(lsOrganization);
                             }
                             lsDeal.setStatus(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED);
                             lsDeal.save();
-                            TinyBus.from(getApplicationContext()).post(new DealAddedEventModel());
+                            TinyBus.from(getApplicationContext()).post(new DealEventModel());
                         }
                     }
                 }
@@ -949,13 +941,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         is_private = payload.getString("is_private");
                     }
 
-                    // ignore if task already exists
                     LSDeal lsDeal = LSDeal.getDealFromServerId(id);
                     if (lsDeal != null) {
-                        // check if lead or organization still exists of which the deal is
-                        LSOrganization lsOrganization = LSOrganization.getOrganizationFromServerId(Integer.toString(organization_id));
                         LSContact lsContact = LSContact.getContactFromServerId(Integer.toString(lead_id));
-                        if (lsContact != null || lsOrganization != null) {
+                        if (lsContact != null) {
                             lsDeal.setServerId(id);
                             lsDeal.setUserId(Integer.toString(user_id));
                             lsDeal.setCompanyId(Integer.toString(company_id));
@@ -971,26 +960,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             if (lsContact != null) {
                                 lsDeal.setContact(lsContact);
                             }
+                            LSOrganization lsOrganization = LSOrganization.getOrganizationFromServerId(Integer.toString(organization_id));
                             if (lsOrganization != null) {
                                 lsDeal.setOrganization(lsOrganization);
                             }
                             lsDeal.setStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_SYNCED);
                             lsDeal.save();
-                            TinyBus.from(getApplicationContext()).post(new DealAddedEventModel());
                         } else {
                             // may be to aggressive to delete contact
                             lsDeal.delete();
                         }
+                        TinyBus.from(getApplicationContext()).post(new DealEventModel());
                     }
                 }
 
                 if (action.equals("delete")) {
                     String id = payload.getString("id");
-                    // ignore if task already exists
                     LSDeal lsDeal = LSDeal.getDealFromServerId(id);
                     if (lsDeal != null) {
                         lsDeal.delete();
-                        TinyBus.from(getApplicationContext()).post(new DealAddedEventModel());
+                        TinyBus.from(getApplicationContext()).post(new DealEventModel());
                     }
                 }
             }

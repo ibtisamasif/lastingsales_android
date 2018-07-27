@@ -16,7 +16,7 @@ import android.view.View;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.DealDetailsFragmentPagerAdapter;
-import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 
@@ -159,7 +159,7 @@ public class DealDetailsTabActivity extends AppCompatActivity {
 //                        Snackbar.make(toolbar, "Lead deleted!", Snackbar.LENGTH_SHORT).show();
                         dialog.dismiss();
                         finish();
-                        TinyBus.from(DealDetailsTabActivity.this.getApplicationContext()).post(new DealAddedEventModel());
+                        TinyBus.from(DealDetailsTabActivity.this.getApplicationContext()).post(new DealEventModel());
                     }
                 });
                 alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {

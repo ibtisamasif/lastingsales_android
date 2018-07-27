@@ -128,7 +128,7 @@
                                     android:layout_marginEnd="16dp"
                                     android:layout_marginRight="16dp"
                                     android:focusableInTouchMode="true"
-                                    android:hint="Type organization name"
+                                    android:hint="Type organiz name"
                                     android:imeOptions="actionDone"
                                     android:inputType="text|textNoSuggestions|textMultiLine"
                                     android:lineSpacingExtra="1dp"

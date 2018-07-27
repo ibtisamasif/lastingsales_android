@@ -29,7 +29,7 @@ import com.example.muzafarimran.lastingsales.CallClickListener;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivity;
 import com.example.muzafarimran.lastingsales.adapters.LSStageSpinAdapter;
-import com.example.muzafarimran.lastingsales.events.DealAddedEventModel;
+import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.utils.DynamicColums;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -741,7 +741,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     mDeal.setIsPrivate(LSDeal.DEAL_VISIBILITY_STATUS_COMPANY);
                     mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
                     mDeal.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealEventModel());
                     Toast.makeText(parent.getContext(), "Status Changed to Company", Toast.LENGTH_SHORT).show();
                     dataSenderAsync.run();
                     break;
@@ -749,7 +749,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     mDeal.setIsPrivate(LSDeal.DEAL_VISIBILITY_STATUS_PRIVATE);
                     mDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
                     mDeal.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
+                    TinyBus.from(mContext.getApplicationContext()).post(new DealEventModel());
                     Toast.makeText(parent.getContext(), "Status Changed to Private", Toast.LENGTH_SHORT).show();
                     dataSenderAsync.run();
                     break;
@@ -772,7 +772,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 mDeal.save();
                 Toast.makeText(mContext, "Stage Changed to " + selectedStage.getName(), Toast.LENGTH_SHORT).show();
 //                Toast.makeText(parent.getContext(), "Stage Changed to " + mDeal.getWorkflowStageId(), Toast.LENGTH_SHORT).show();
-                TinyBus.from(mContext.getApplicationContext()).post(new DealAddedEventModel());
+                TinyBus.from(mContext.getApplicationContext()).post(new DealEventModel());
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
                 dataSenderAsync.run();
             }

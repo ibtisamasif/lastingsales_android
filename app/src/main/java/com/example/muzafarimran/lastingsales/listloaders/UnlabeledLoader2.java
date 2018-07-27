@@ -60,7 +60,7 @@ public class UnlabeledLoader2 extends AsyncTaskLoader<List<Object>> {
 
         } else {
             ErrorItem erItem = new ErrorItem();
-            erItem.message = "Nothing in Organizations calls";
+            erItem.message = "Nothing in Organizations";
             erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
             data.add(erItem);
         }

@@ -34,7 +34,7 @@ public class UnlabeledLoader1 extends AsyncTaskLoader<List<Object>> {
         if (!unlabeledContacts.isEmpty()) {
 
             HomeItem homeItem = new HomeItem();
-            homeItem.text = "Recent";
+            homeItem.text = "Contacts";
             homeItem.value = "" + unlabeledContacts.size();
             homeItem.drawable = R.drawable.bg_unlabeled_cardxxxhdpi;
 
@@ -45,7 +45,7 @@ public class UnlabeledLoader1 extends AsyncTaskLoader<List<Object>> {
 //            statisticsItem.callsValue = 0;
 
             SeparatorItem separatorItem = new SeparatorItem();
-            separatorItem.text = "All recent calls";
+            separatorItem.text = "All Contacts";
 
             data.add(homeItem);
 //            data.add(statisticsItem);
@@ -60,7 +60,7 @@ public class UnlabeledLoader1 extends AsyncTaskLoader<List<Object>> {
 
         } else {
             ErrorItem erItem = new ErrorItem();
-            erItem.message = "Nothing in Recent calls";
+            erItem.message = "Nothing in Contacts";
             erItem.drawable = R.drawable.ic_unlableled_empty_xxxhdpi;
             data.add(erItem);
         }

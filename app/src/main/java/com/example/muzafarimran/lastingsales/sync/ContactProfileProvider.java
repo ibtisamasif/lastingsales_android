@@ -38,17 +38,21 @@ public class ContactProfileProvider {
     }
 
     public void getContactProfile(String number, final LSContactProfileCallback callback) {
-        if (number != null) {
-            LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(number);
-            if (lsContactProfile != null) {
-                Log.d(TAG, "getContactProfile: from LsContactProfileTable");
-                // Search in LsContactProfile table and return
-                callback.onSuccess(lsContactProfile);
-            } else {
-                Log.d(TAG, "getContactProfile: from Server");
-                // Try to fetch from server and return
-                fetchProfileFromServer(number, callback);
+        if (number != null && !number.equalsIgnoreCase("")) {
+            try {
+                LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(number);
+                if (lsContactProfile != null) {
+                    Log.d(TAG, "getContactProfile: from LsContactProfileTable");
+                    // Search in LsContactProfile table and return
+                    callback.onSuccess(lsContactProfile);
+                } else {
+                    Log.d(TAG, "getContactProfile: from Server");
+                    // Try to fetch from server and return
+                    fetchProfileFromServer(number, callback);
 //                fetchProfileFromServer(number);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }

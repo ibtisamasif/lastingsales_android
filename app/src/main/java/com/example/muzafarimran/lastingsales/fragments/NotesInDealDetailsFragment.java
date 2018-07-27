@@ -94,16 +94,18 @@ public class NotesInDealDetailsFragment extends TabFragment {
         separatorNotes.text = "Notes";
         list.add(separatorNotes);
 
-        Collection<LSNote> allNotesOfThisDeal = Select.from(LSNote.class).where(Condition.prop("deal_of_note").eq(selectedDeal.getId())).orderBy("id DESC").list();
-        if (!allNotesOfThisDeal.isEmpty()) {
-            list.addAll(allNotesOfThisDeal);
-            adapter.notifyDataSetChanged();
-        } else {
-            ErrorItem errorItem = new ErrorItem();
-            errorItem.message = "Nothing in notes";
-            errorItem.drawable = R.drawable.ic_notes_empty_xxxhdpi;
-            list.add(errorItem);
-            adapter.notifyDataSetChanged();
+        if (selectedDeal != null) {
+            Collection<LSNote> allNotesOfThisDeal = Select.from(LSNote.class).where(Condition.prop("deal_of_note").eq(selectedDeal.getId())).orderBy("id DESC").list();
+            if (!allNotesOfThisDeal.isEmpty()) {
+                list.addAll(allNotesOfThisDeal);
+                adapter.notifyDataSetChanged();
+            } else {
+                ErrorItem errorItem = new ErrorItem();
+                errorItem.message = "Nothing in notes";
+                errorItem.drawable = R.drawable.ic_notes_empty_xxxhdpi;
+                list.add(errorItem);
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 

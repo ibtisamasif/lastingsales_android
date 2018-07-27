@@ -74,78 +74,79 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 selectedContact = LSContact.findById(LSContact.class, contactIDLong);
             }
         }
-
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        ContactDetailsFragmentPagerAdapter contactDetailsFragmentPagerAdapter = new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId());
-        viewPager.setAdapter(contactDetailsFragmentPagerAdapter); //TODO crash getId was null
+        if (selectedContact != null) {
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            ContactDetailsFragmentPagerAdapter contactDetailsFragmentPagerAdapter = new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId());
+            viewPager.setAdapter(contactDetailsFragmentPagerAdapter); //TODO crash getId was null
 //        viewPager.getAdapter().notifyDataSetChanged();
 
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setupWithViewPager(viewPager);
+            // Give the TabLayout the ViewPager
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+            tabLayout.setupWithViewPager(viewPager);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        floatingActionButton.hide();
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    switch (tab.getPosition()) {
+                        case 0:
+                            floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.menu_icon_details_selected);
-                        break;
-                    case 1:
-                        floatingActionButton.show();
+                            break;
+                        case 1:
+                            floatingActionButton.show();
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        break;
-                    case 2:
-                        floatingActionButton.hide();
+                            break;
+                        case 2:
+                            floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.menu_icon_contact_selected);
-                        break;
-                    case 3:
-                        floatingActionButton.hide();
+                            break;
+                        case 3:
+                            floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.add_contact_notes_field_icon);
-                        break;
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    switch (tab.getPosition()) {
+                        case 0:
 //                        tab.setIcon(R.drawable.menu_icon_details);
-                        break;
-                    case 1:
+                            break;
+                        case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone);
-                        break;
-                    case 2:
+                            break;
+                        case 2:
 //                        tab.setIcon(R.drawable.menu_icon_contact);
-                        break;
-                    case 3:
+                            break;
+                        case 3:
 //                        tab.setIcon(R.drawable.add_contact_notes_field_icon_unselected);
-                        break;
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                }
+            });
 
-        if (extras != null) {
-            selectedTab = extras.getString(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB);
-            if (selectedTab != null && !selectedTab.equals("")) {
-                if (selectedTab.equals("3")) {
-                    viewPager.setCurrentItem(3, true);
-                    contactDetailsFragmentPagerAdapter.getItem(3).setArguments(extras);
-                } else if (selectedTab.equals("2")) {
-                    viewPager.setCurrentItem(2, true);
-                    contactDetailsFragmentPagerAdapter.getItem(2).setArguments(extras);
-                } else if (selectedTab.equals("1")) {
-                    viewPager.setCurrentItem(1, true);
-                    contactDetailsFragmentPagerAdapter.getItem(1).setArguments(extras);
-                } else {
-                    viewPager.setCurrentItem(0, true);
-                    contactDetailsFragmentPagerAdapter.getItem(0).setArguments(extras);
+            if (extras != null) {
+                selectedTab = extras.getString(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB);
+                if (selectedTab != null && !selectedTab.equals("")) {
+                    if (selectedTab.equals("3")) {
+                        viewPager.setCurrentItem(3, true);
+                        contactDetailsFragmentPagerAdapter.getItem(3).setArguments(extras);
+                    } else if (selectedTab.equals("2")) {
+                        viewPager.setCurrentItem(2, true);
+                        contactDetailsFragmentPagerAdapter.getItem(2).setArguments(extras);
+                    } else if (selectedTab.equals("1")) {
+                        viewPager.setCurrentItem(1, true);
+                        contactDetailsFragmentPagerAdapter.getItem(1).setArguments(extras);
+                    } else {
+                        viewPager.setCurrentItem(0, true);
+                        contactDetailsFragmentPagerAdapter.getItem(0).setArguments(extras);
+                    }
                 }
             }
         }
@@ -158,7 +159,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         try {
             bus = TinyBus.from(this.getApplicationContext());
             bus.register(this);
-        }catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
