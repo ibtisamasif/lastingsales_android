@@ -24,15 +24,7 @@ public class CallProcessor {
     public static final String TAG = "CallProcessor";
     private static final long MILLIS_10_MINUTES = 600000;
 
-    public static void Process(Context mContext, LSCall call, boolean showNotification, boolean showDialog) {
-        Log.d(TAG, "call amir");
-        if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-            Log.d(TAG, "personal call type: " + call.getType());
-            Log.d(TAG, "personal show dialog: " + String.valueOf(showNotification));
-            Log.d(TAG, "personal show dialog: " + String.valueOf(showDialog));
-        } else {
-            Log.d(TAG, "not match any condition: else part");
-        }
+    public static void Process(Context mContext, LSCall call, boolean showNotification) {
 
         SettingsManager settingsManager = new SettingsManager(mContext);
         if (settingsManager.getKeyStateIsCompanyPhone()) { // COMPANY PHONE
@@ -46,7 +38,6 @@ public class CallProcessor {
                 LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());
                 // if it exists
                 if (contact != null) {
-                    //TODO show after call dialog & save call log
                     Log.d(TAG, call.getContactNumber());
                     if (contact.isContactSave() != null) {
                         if (contact.isContactSave().equals("true")) {
@@ -57,16 +48,16 @@ public class CallProcessor {
                             return;
                         } else {
                             Log.d(TAG, call.getContactNumber());
-                            if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-                                showDialog(mContext, call);
+                            if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+                                showDialog(mContext, call, showNotification);
                             }
                             saveCallLogs(call);
                             case3(call);
                         }
                     } else {
                         Log.d(TAG, "iscontactSave is NULL");
-                        if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-                            showDialog(mContext, call);
+                        if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+                            showDialog(mContext, call, showNotification);
                         }
                         saveCallLogs(call);
                         case3(call);
@@ -82,8 +73,8 @@ public class CallProcessor {
 
                     if (saveContact.save() > 0) {
                         Log.d(TAG, "save contact no");
-                        if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-                            showDialog(mContext, call);
+                        if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+                            showDialog(mContext, call, showNotification);
                         }
                         saveCallLogs(call);
                         case3(call);
@@ -102,8 +93,8 @@ public class CallProcessor {
                     saveCallLogs(call);
                     case3(call);
                 } else {
-                    if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-                        showDialog(mContext, call);
+                    if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+                        showDialog(mContext, call, showNotification);
                     }
                 }
                 Log.d(TAG, "personal call type" + call.getType());
@@ -192,24 +183,26 @@ public class CallProcessor {
                     e.printStackTrace();
                 }
             }
-        }else if (call.getType().equals(LSCall.CALL_TYPE_UNANSWERED)) {
+        } else if (call.getType().equals(LSCall.CALL_TYPE_UNANSWERED)) {
             //Outgoing Unanswered
             // Nothing to do for now.
-        }else {
+        } else {
             Log.d(TAG, " CALL TYPE UNKNOWN & UNHANDELED");
         }
     }
 
-    private static void showDialog(Context mContext, LSCall call) {
+    private static void showDialog(Context mContext, LSCall call, boolean showNotification) {
 //        if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
 //            CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
 //        }
         //TODO replace below code with above one in future. To use single service for flyer and for after call dialog.
-        Intent intent = new Intent(mContext, CallService.class);
-        intent.putExtra("no", call.getContactNumber());
-        intent.putExtra("name", call.getContactName());
-        Log.d("start dialog service", "function call");
-        mContext.startService(intent);
+        if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
+            Intent intent = new Intent(mContext, CallService.class);
+            intent.putExtra("no", call.getContactNumber());
+            intent.putExtra("name", call.getContactName());
+            Log.d("start dialog service", "function call");
+            mContext.startService(intent);
+        }
     }
 
     private static void saveCallLogs(LSCall call) {

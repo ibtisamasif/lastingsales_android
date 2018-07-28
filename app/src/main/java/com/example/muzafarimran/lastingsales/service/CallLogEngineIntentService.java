@@ -1,36 +1,40 @@
 package com.example.muzafarimran.lastingsales.service;
 
-import android.app.Service;
+import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.IBinder;
 import android.provider.CallLog;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
-import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.CallTypeManager;
 
-
-import java.util.Date;
-import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
-public class CallLogEngineService extends Service {
+public class CallLogEngineIntentService extends IntentService {
 
-    public static final String TAG = "TheCallLogEngine";
-//    private static final String TAG = "AppInitializationTest";
+    public static final String TAG = "CallLogEngineIntentServ";
 
     public static final String SUB_ID = "subscription";
 
     private Context mContext;
     private boolean reRun = true;
+
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param //name Used to name the worker thread, important only for debugging.
+     */
+    public CallLogEngineIntentService() {
+        super("CallLogEngineIntentService");
+    }
 
 
     @Override
@@ -39,22 +43,14 @@ public class CallLogEngineService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        mContext = getApplicationContext();
-        Log.e(TAG, "TheCallLogEngine doInBackground:");
+    protected void onHandleIntent(@Nullable Intent intent) {
         try {
             Thread.sleep(1000); // Delay is important as android might not have saved new call in call logs yet.
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        mContext = getApplicationContext();
         CallLogFunc();
-
-//        TheCallLogEngine theCallLogEngine=new TheCallLogEngine(getApplicationContext());
-//        theCallLogEngine.execute();
-
-
-        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -69,15 +65,12 @@ public class CallLogEngineService extends Service {
         List<LSInquiry> lsInquiries = LSInquiry.listAll(LSInquiry.class);
 */
 
-
-
-        boolean showNotification = false, showDialog = false;
+        boolean showNotification = false;
 
         String latestCallQuery;
         Cursor managedCursor;
 
         List<LSCall> list = LSCall.listAll(LSCall.class);
-
 
         LSCall myCall = LSCall.getCallHavingLatestCallLogId();
         if (myCall != null) {
@@ -126,33 +119,7 @@ public class CallLogEngineService extends Service {
                 String callName = managedCursor.getString(name);
                 String callType = managedCursor.getString(type);
                 String callDate = managedCursor.getString(date);
-
-                Log.d("date", callDate);
-
                 Date callDayTime = new Date(Long.valueOf(callDate));
-
-
-                Date curDate = java.util.Calendar.getInstance().getTime();
-
-
-                Log.d("get call minutes", String.valueOf(callDayTime.getMinutes()));
-                Log.d("get cur minutes", String.valueOf(curDate.getMinutes()));
-
-                long sub = curDate.getMinutes() - callDayTime.getMinutes();
-
-                // FIXME: 07/23/2018
-                if (curDate.getDay() - callDayTime.getDay() == 0) {
-                    if (sub > 10) {
-                        Log.d("greater than 10", "dateobj");
-                        showDialog = false;
-                    } else {
-                        Log.d("not greater than 10", "dateobj");
-                        showDialog = true;
-
-                    }
-                }
-
-
                 String callDuration = managedCursor.getString(duration);
 
 //                String callAccountId = managedCursor.getString(accountId);
@@ -187,7 +154,6 @@ public class CallLogEngineService extends Service {
                     tempCall.setBeginTime(Long.parseLong(callDate));
                     tempCall.setDuration(Long.parseLong(callDuration));
                     tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
-
                     tempCall.setType(CallTypeManager.getCallType(callType, callDuration));
 
                   /*  if (callType.equals("1") && tempCall.getDuration() > 0L) {           //Incoming
@@ -207,14 +173,14 @@ public class CallLogEngineService extends Service {
                         tempCall.setType(LSCall.CALL_TYPE_REJECTED);
                     }*/
                     try {
-                        CallProcessor.Process(mContext, tempCall, showNotification,showDialog);
+                        CallProcessor.Process(mContext, tempCall, showNotification);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             } while (managedCursor.moveToPrevious());
             if (reRun) {
-                 CallLogFunc();
+                CallLogFunc();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -223,12 +189,5 @@ public class CallLogEngineService extends Service {
                 managedCursor.close();
             }
         }
-    }
-
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 }

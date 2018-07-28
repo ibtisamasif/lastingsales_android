@@ -375,7 +375,7 @@
 
 
         //calllogengine service
-        <service android:name=".service.CallLogEngineService"></service>
+        <service android:name=".service.CallLogEngineIntentService"></service>
         <service android:name=".service.CallService"></service>
 
         <!-- <service -->

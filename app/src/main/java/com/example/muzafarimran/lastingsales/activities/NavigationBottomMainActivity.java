@@ -62,7 +62,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
-import com.example.muzafarimran.lastingsales.service.CallLogEngineService;
+import com.example.muzafarimran.lastingsales.service.CallLogEngineIntentService;
 import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
@@ -668,7 +668,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         Log.d(TAG, "onShakeEvent: Shake Event: " + event);
 //        sessionManager.fetchData();
 
-        //   startService(new Intent(getApplicationContext(), CallLogEngineService.class));
+        //   startService(new Intent(getApplicationContext(), CallLogEngineIntentService.class));
 
         /* TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
         theCallLogEngine.execute();*/
@@ -696,7 +696,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 } else {
                     Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_SHORT).show();
                 }
-                startService(new Intent(getApplicationContext(), CallLogEngineService.class));
+                startService(new Intent(getApplicationContext(), CallLogEngineIntentService.class));
                 DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
                 dataSenderAsync.run();
                 String projectToken = MixpanelConfig.projectToken;
@@ -852,7 +852,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     Log.d(TAG, "initFirst: isFirstRun TRUE");
                  /*   TheCallLogEngine theCallLogEngine = new TheCallLogEngine(NavigationBottomMainActivity.this);
                     theCallLogEngine.execute();*/
-                    //    startService(new Intent(getApplicationContext(), CallLogEngineService.class));
+                    //    startService(new Intent(getApplicationContext(), CallLogEngineIntentService.class));
 
                 }
 

@@ -5,7 +5,6 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -54,16 +53,7 @@ public class InitService extends IntentService {
         super("InitService");
     }
 
-    @Override
-    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        mContext = getApplicationContext();
-        sessionManager = new SessionManager(mContext);
-        queue = Volley.newRequestQueue(mContext);
-        requestsCounter = new AtomicInteger(0);
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    // called asynchronously be Android
+    // called asynchronously by Android
     @Override
     protected void onHandleIntent(Intent intent) {
 
@@ -72,6 +62,11 @@ public class InitService extends IntentService {
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
+
+        mContext = getApplicationContext();
+        sessionManager = new SessionManager(mContext);
+        queue = Volley.newRequestQueue(mContext);
+        requestsCounter = new AtomicInteger(0);
 
         if (sessionManager.isUserSignedIn()) {
             fetchAgentDataFunc();

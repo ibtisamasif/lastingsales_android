@@ -22,9 +22,6 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.chatheadbubble.FlyerBubbleHelper;
-import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
-import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
-import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
@@ -32,8 +29,6 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
-
-import de.halfbit.tinybus.TinyBus;
 
 /**
  * Created by ibtisam on 7/12/2017.
@@ -179,10 +174,8 @@ public class CallDetectionService extends Service {
     }
 
     protected void onIncomingCallStarted(Context ctx, String number, Date start) {
-//        AddEditLeadServiceBubbleHelper.getInstance(ctx.getApplicationContext()).hide(); // remove old bubble
         sessionManager = new SessionManager(ctx);
         if (!sessionManager.isUserSignedIn()) {
-
             return;
         }
         if (!isBubbleShown) {
@@ -193,7 +186,6 @@ public class CallDetectionService extends Service {
     }
 
     protected void onOutgoingCallStarted(Context ctx, String number, Date start) {
-//        AddEditLeadServiceBubbleHelper.getInstance(ctx.getApplicationContext()).hide(); // remove old bubble
         sessionManager = new SessionManager(ctx);
         if (!sessionManager.isUserSignedIn()) {
             return;
@@ -215,33 +207,7 @@ public class CallDetectionService extends Service {
             isBubbleShown = false;
         }
         Log.d(TAG, "onIncomingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
-
-
-
-
-    /*    final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
-        theCallLogEngine.execute();*/
-
-        // start calllogengine service
-
-
-        startService(new Intent(this, CallLogEngineService.class));
-
-        IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
-        TinyBus inBus = TinyBus.from(ctx.getApplicationContext());
-        inBus.post(InCallEvent);/*
-        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
-        dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
-            @Override
-            public void onPostExecuteListener() {
-                Log.d(TAG, "onPostExecuteListener: I AM Listened");
-                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED) {
-                    Log.d(TAG, "TheCallLogEngine Completed: completeWakefulIntent");
-                    CallReceiver.completeWakefulIntent(intent);
-                }
-            }
-        });
-        Log.d(TAG, "onIncomingCallEnded:");*/
+        startService(new Intent(this, CallLogEngineIntentService.class));
     }
 
     protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end, final Intent intent) {
@@ -254,30 +220,7 @@ public class CallDetectionService extends Service {
             isBubbleShown = false;
         }
         Log.d(TAG, "onOutgoingCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
-
-
-      /*  final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
-        theCallLogEngine.execute();
-        */
-
-        startService(new Intent(this, CallLogEngineService.class));
-
-        OutgoingCallEventModel outCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
-        TinyBus outBus = TinyBus.from(ctx.getApplicationContext());
-        outBus.post(outCallEvent);
-        /*DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
-        dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
-            @Override
-            public void onPostExecuteListener() {
-                Log.d(TAG, "onPostExecuteListener: I AM Listened");
-                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED) {
-                    Log.d(TAG, "TheCallLogEngine Completed: completeWakefulIntent");
-                    CallReceiver.completeWakefulIntent(intent);
-                }
-            }
-        });
-        */
-        Log.d(TAG, "onOutgoingCallEnded:");
+        startService(new Intent(this, CallLogEngineIntentService.class));
     }
 
     protected void onMissedCall(Context ctx, String number, Date start, final Intent intent) {
@@ -286,35 +229,11 @@ public class CallDetectionService extends Service {
             isBubbleShown = false;
         }
         Log.d("MissedCallReceiver", "onMissedCall() called with: ctx = [" + ctx + "], number = [" + number + "], setAlarm = [" + start + "]");
-
-
-      /*
-        final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
-        theCallLogEngine.execute();
-       */
-
-        startService(new Intent(this, CallLogEngineService.class));
-
-
-        MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);
-        TinyBus mBus = TinyBus.from(ctx.getApplicationContext());
-        mBus.post(mCallEvent);
-  /*      DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(ctx);
-        dataSenderAsync.setDataSenderOnPostExecuteListener(new PostExecuteListener() {
-            @Override
-            public void onPostExecuteListener() {
-                Log.d(TAG, "onPostExecuteListener: I AM Listened");
-                if (theCallLogEngine.getStatus() == AsyncTask.Status.FINISHED) {
-                    Log.d(TAG, "TheCallLogEngine Completed: completeWakefulIntent");
-                    CallReceiver.completeWakefulIntent(intent);
-                }
-            }
-        });*/
+        startService(new Intent(this, CallLogEngineIntentService.class));
         Log.d(TAG, "onMissedCall: End Line");
     }
 
     public void checkShowCallPopupFlyer(Context ctx, String number) {
-        Log.wtf(TAG, "checkShowCallPopupFlyer: ");
         if (settingsManager.getKeyStateFlyer()) {
             String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(ctx, number);
             LSContact oneContact;
@@ -334,12 +253,7 @@ public class CallDetectionService extends Service {
     }
 
     private void endServiceAndCallPopupFlyer(Context ctx) {
-
         FlyerBubbleHelper.getInstance(ctx).hide();
-
-//        Log.wtf(TAG, "endServiceAndCallPopupFlyer: ");
-//        Intent intent = new Intent(ctx, AddEditLeadService.class);
-//        ctx.stopService(intent);
     }
 
     private void showForegroundNotification(String contentText) {
