@@ -26,9 +26,7 @@ public class CallProcessor {
     private static final long MILLIS_10_MINUTES = 600000;
 
     public static void Process(Context mContext, LSCall call, boolean showNotification, boolean showDialog) {
-
         Log.d(TAG, "call amir");
-
         if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
             Log.d(TAG, "personal call type: " + call.getType());
             Log.d(TAG, "personal show dialog: " + String.valueOf(showNotification));
@@ -79,7 +77,7 @@ public class CallProcessor {
                         }
                         //fixme i think else part should not be required
                         else {
-                            Log.d("iscontactSave is ", "NULL");
+                            Log.d(TAG, "iscontactSave is NULL");
                             if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
                                 showDialog(mContext, call);
                             }
@@ -88,7 +86,7 @@ public class CallProcessor {
                             case5(mContext);
                         }
                     } else {
-                        Log.d("result is null", "null");
+                        Log.d(TAG, "contact is null");
                     }
                 } else {
                     //if not exists
@@ -139,7 +137,7 @@ public class CallProcessor {
 
     private static void case3(LSCall call) {
         // incoming/ outgoing calls
-        Log.d(TAG, "case3" + "calling");
+        Log.d(TAG, TAG + "calling");
 //        Log.d("return type", CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())));
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) || call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
             List<LSInquiry> checkInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
@@ -154,7 +152,7 @@ public class CallProcessor {
                     e.printStackTrace();
                 }
             } else {
-                Log.d("inquiry", "not exists");
+                Log.d(TAG, "not exists");
             }
         } else if (call.getType().equals(LSCall.CALL_TYPE_REJECTED)) {
             List<LSInquiry> missInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
