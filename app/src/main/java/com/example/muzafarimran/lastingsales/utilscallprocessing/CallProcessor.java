@@ -192,8 +192,11 @@ public class CallProcessor {
                     e.printStackTrace();
                 }
             }
-        } else {
-            Log.d(TAG, " false");
+        }else if (call.getType().equals(LSCall.CALL_TYPE_UNANSWERED)) {
+            //Outgoing Unanswered
+            // Nothing to do for now.
+        }else {
+            Log.d(TAG, " CALL TYPE UNKNOWN & UNHANDELED");
         }
     }
 
