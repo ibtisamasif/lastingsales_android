@@ -195,7 +195,6 @@ public class CallsStatesReceiver extends CallReceiver{
         if (!sessionManager.isUserSignedIn()) {
             return;
         }
-//        showTagNumberPopupIfNeeded(context, number);
         if (isBubbleShown) {
             endServiceAndCallPopupFlyer(ctx);
             isBubbleShown = false;
@@ -315,7 +314,6 @@ public class CallsStatesReceiver extends CallReceiver{
             return;
         }
 //        Toast.makeText(context, "Outgoing call Ended", Toast.LENGTH_SHORT).show();
-//        showTagNumberPopupIfNeeded(context, number);
         if (isBubbleShown) {
             endServiceAndCallPopupFlyer(ctx);
             isBubbleShown = false;
@@ -429,7 +427,6 @@ public class CallsStatesReceiver extends CallReceiver{
     @Override
     protected void onMissedCall(Context ctx, String number, Date start, final Intent intent) {
 //        Toast.makeText(context, "Missed Call Detected", Toast.LENGTH_SHORT).show();
-//        showTagNumberPopupIfNeeded(context, number);
         if (isBubbleShown) {
             endServiceAndCallPopupFlyer(ctx);
             isBubbleShown = false;

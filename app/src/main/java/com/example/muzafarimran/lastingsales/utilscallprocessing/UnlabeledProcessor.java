@@ -33,7 +33,6 @@ public class UnlabeledProcessor {
             //Incoming
             if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
-//                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
             InquiryManager.removeByCall(mContext, call);
@@ -48,7 +47,6 @@ public class UnlabeledProcessor {
             if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
                 Log.d(TAG, "Process: CALL IS NOT OLD ENOUGH: " + call.getContactNumber());
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
-//                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             } else {
                 Log.d(TAG, "Process: CALL IS VERY OLD: " + call.getContactNumber());
             }

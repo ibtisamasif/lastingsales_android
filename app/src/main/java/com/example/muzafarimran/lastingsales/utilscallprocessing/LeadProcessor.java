@@ -33,7 +33,6 @@ public class LeadProcessor {
             //Incoming
             if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
-//                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
             InquiryManager.removeByCall(mContext, call);
@@ -47,7 +46,6 @@ public class LeadProcessor {
             //Outgoing
             if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
-//                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
             InquiryManager.removeByCall(mContext, call);

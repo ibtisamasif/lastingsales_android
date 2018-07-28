@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.UnlabeledContactAddedEventModel;
@@ -38,7 +37,6 @@ class UnknownProcessorPersonal {
             //Incoming with whome Agent have talked
             if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
-//                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             }
             InquiryManager.removeByCall(mContext, call);
             // Call Saved
@@ -55,7 +53,6 @@ class UnknownProcessorPersonal {
             if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
                 Log.d(TAG, "Process: CALL IS NOT OLD ENOUGH: " + call.getContactNumber());
                 CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
-//                NotificationBuilder.showTagNumberPopup(mContext, call.getContactName(), call.getContactNumber());
             } else {
                 Log.d(TAG, "Process: CALL IS VERY OLD: " + call.getContactNumber());
             }

@@ -22,18 +22,19 @@ import java.util.List;
  */
 
 public class CallProcessor {
+    public static final String TAG = "CallProcessor";
+    private static final long MILLIS_10_MINUTES = 600000;
 
     public static void Process(Context mContext, LSCall call, boolean showNotification, boolean showDialog) {
 
-        Log.d("processor", "call amir");
+        Log.d(TAG, "call amir");
 
         if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-            Log.d("personal call type", call.getType());
-            Log.d("personal show dialog", String.valueOf(showNotification));
-            Log.d("personal show dialog", String.valueOf(showDialog));
+            Log.d(TAG, "personal call type: " + call.getType());
+            Log.d(TAG, "personal show dialog: " + String.valueOf(showNotification));
+            Log.d(TAG, "personal show dialog: " + String.valueOf(showDialog));
         } else {
-            Log.d("not match any condition", " else part");
-
+            Log.d(TAG, "not match any condition: else part");
         }
 
         // Toast.makeText(mContext, "type "+call.getType(), Toast.LENGTH_SHORT).show();
@@ -42,18 +43,15 @@ public class CallProcessor {
             LSIgnoreList ignoredContactCheck = LSIgnoreList.getContactFromNumber(call.getContactNumber());
             if (ignoredContactCheck != null) {
                 // DO NOTHING
-                Log.d("processor", "nothing");
-                Log.d("amir", "contact exist in ignore list");
+                Log.d(TAG, "contact exist in ignore list");
             } else {
-                Log.d("processor", "call");
-                Log.d("No from Processor", call.getContactNumber());
+                Log.d(TAG, call.getContactNumber());
                 // check if contact exists
                 LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());
                 // if it exists
                 if (contact != null) {
                     //TODO show after call dialog & save call log
-                    Log.d("exist", call.getContactNumber());
-                    Log.d("No from Processor", call.getContactNumber());
+                    Log.d(TAG, call.getContactNumber());
                   /*  Intent d = new Intent(mContext, CallService.class);
                     d.putExtra("no", call.getContactNumber());
                     mContext.startService(d);*/
@@ -61,16 +59,16 @@ public class CallProcessor {
                     if (lsContact != null) {
                         if (lsContact.isContactSave() != null) {
                             if (lsContact.isContactSave().equals("true")) {
-                                Log.d("contact already saved" + lsContact.isContactSave(), call.getContactNumber());
+                                Log.d(TAG + lsContact.isContactSave(), call.getContactNumber());
                                 //  Toast.makeText(mContext, "Condition true", Toast.LENGTH_SHORT).show();
-                                Log.d("No from Processor", call.getContactNumber());
+                                Log.d(TAG, call.getContactNumber());
                                 saveCallLogs(call);
                                 case3(call);
                                 case5(mContext);
                                 return;
                             } else {
 //                            Toast.makeText(mContext, "condition false", Toast.LENGTH_SHORT).show();
-                                Log.d("No. from Processor", call.getContactNumber());
+                                Log.d(TAG, call.getContactNumber());
                                 if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
                                     showDialog(mContext, call);
                                 }
@@ -102,7 +100,7 @@ public class CallProcessor {
                     saveContact.setContactType(call.getType());
 
                     if (saveContact.save() > 0) {
-                        Log.d("amir", "save contact no");
+                        Log.d(TAG, "save contact no");
                         if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
                             showDialog(mContext, call);
                         }
@@ -113,8 +111,6 @@ public class CallProcessor {
                         // successfully add num to db
                         //show dialog function
 //                        CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
-                    } else {
-                        //error
                     }
                 }
             }
@@ -126,7 +122,7 @@ public class CallProcessor {
                 // check if contact exists
                 LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());
                 if (contact != null) {
-                    Log.d("personal", "contact exist");
+                    Log.d(TAG, "contact exist");
                     saveCallLogs(call);
                     case3(call);
                     case5(mContext);
@@ -135,16 +131,15 @@ public class CallProcessor {
                         showDialog(mContext, call);
                     }
                 }
-                Log.d("personal call type", call.getType());
-                Log.d("personal show dialog", String.valueOf(showNotification));
+                Log.d(TAG, "personal call type" + call.getType());
+                Log.d(TAG, "personal show dialog" + String.valueOf(showNotification));
             }
         }
     }
 
     private static void case3(LSCall call) {
-//        CallTypeManager CallTypeManager = new CallTypeManager();
         // incoming/ outgoing calls
-        Log.d("case3", "calling");
+        Log.d(TAG, "case3" + "calling");
 //        Log.d("return type", CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())));
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) || call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
             List<LSInquiry> checkInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
@@ -153,9 +148,7 @@ public class CallProcessor {
                 removeInquiry.setSyncStatus(SyncStatus.SYNC_STATUS_INQUIRY_DELETE_NOT_SYNCED);
                 try {
                     if (removeInquiry.save() > 0) {
-                        Log.d("remove", "inquire");
-                    } else {
-                        Log.d("error ", "remove inquiry");
+                        Log.d(TAG, "inquire");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -171,9 +164,9 @@ public class CallProcessor {
                 int getCount = incInquiry.getCountOfInquiries();
                 incInquiry.setCountOfInquiries(++getCount);
                 if (incInquiry.save() > 0) {
-                    Log.d("inquiry", "updated/increment");
+                    Log.d(TAG, "updated/increment");
                 } else {
-                    Log.d("inquiryy", "not updated/incremented something went wrong");
+                    Log.d(TAG, "not updated/incremented something went wrong");
                 }
             } else {
                 //if not exists
@@ -186,9 +179,9 @@ public class CallProcessor {
                 lsInquiry.setBeginTime(call.getBeginTime());
                 try {
                     if (lsInquiry.save() > 0) {
-                        Log.d("inquiry", "saved");
+                        Log.d(TAG, "saved");
                     } else {
-                        Log.d("inquiry", "not save something went wrong");
+                        Log.d(TAG, "not save something went wrong");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -202,9 +195,9 @@ public class CallProcessor {
                 int getCount = incInquiry.getCountOfInquiries();
                 incInquiry.setCountOfInquiries(++getCount);
                 if (incInquiry.save() > 0) {
-                    Log.d("inquiry", "updated/increment");
+                    Log.d(TAG, "updated/increment");
                 } else {
-                    Log.d("inquiryy", "not updated/incremented something went wrong");
+                    Log.d(TAG, "not updated/incremented something went wrong");
                 }
             } else {
                 //if not exists
@@ -217,24 +210,24 @@ public class CallProcessor {
                 lsInquiry.setBeginTime(call.getBeginTime());
                 try {
                     if (lsInquiry.save() > 0) {
-                        Log.d("inquiry", "saved");
+                        Log.d(TAG, "saved");
                     } else {
-                        Log.d("inquiry", "not save something went wrong");
+                        Log.d(TAG, "not save something went wrong");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         } else {
-            Log.d("allcondition ", "false");
+            Log.d(TAG, " false");
         }
-//            } else {
-//                Log.d("calltypemanager is ", "NULL");Z
-//        }
-
     }
 
     private static void showDialog(Context mContext, LSCall call) {
+//        if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
+//            CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
+//        }
+        //TODO replace below code with above one in future. To use single service for flyer and for after call dialog.
         Intent intent = new Intent(mContext, CallService.class);
         intent.putExtra("no", call.getContactNumber());
         intent.putExtra("name", call.getContactName());
@@ -244,13 +237,14 @@ public class CallProcessor {
 
     private static void saveCallLogs(LSCall call) {
         LSContact lsContact = LSContact.getContactFromNumber(call.getContactNumber());
-        lsContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
-        if (lsContact.save() > 0) {
-            Log.d("contact updateat", "cur time");
+        if (lsContact != null) {
+            lsContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+            if (lsContact.save() > 0) {
+                Log.d(TAG, "lsContact SAVED");
+            }
         }
-
         if (call.save() > 0) {
-            Log.d("calllog", "save");
+            Log.d(TAG, "lsCall Saved");
         }
     }
 

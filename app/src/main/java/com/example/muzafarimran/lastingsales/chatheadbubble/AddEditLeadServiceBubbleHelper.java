@@ -20,17 +20,14 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.IgnoredContact;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.List;
 
 public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
     private static final String TAG = "AddEditLeadServiceBubbl";
@@ -81,7 +78,6 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
 
         initializeAllViewsFromThisParentView(bubbleView);
 
-
         // this method call when user removes notification layout
         bubbleView.setOnBubbleRemoveListener(new BubbleLayout.OnBubbleRemoveListener() {
             @Override
@@ -89,12 +85,11 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
 //                Toast.makeText(context, "Removed !", Toast.LENGTH_SHORT).show();
             }
         });
-        // this methoid call when cursor clicks on the notification layout( bubble layout)
+        // this method is call when cursor clicks on the notification layout( bubble layout)
         bubbleView.setOnBubbleClickListener(new BubbleLayout.OnBubbleClickListener() {
 
             @Override
             public void onBubbleClick(BubbleLayout bubble) {
-//                Toast.makeText(context, "Clicked !", Toast.LENGTH_SHORT).show();
             }
         });
         // add bubble view into bubble manager
@@ -103,24 +98,12 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
 
     public void hide() {
         bubblesManager.removeBubble(bubbleView);
-//        if (bubblesManager == null){
-//            Log.d(TAG, "hide: bubblesManager == null");
-//        }else {
-//            Log.d(TAG, "hide: bubblesManager != null");
-//        }
-//        if (bubbleView == null){
-//            Log.d(TAG, "hide: bubbleView == null");
-//        }else {
-//            Log.d(TAG, "hide: bubbleView != null");
-//        }
     }
 
     private void initializeAllViewsFromThisParentView(View bubbleView) {
-
         etPersonName = (EditText) bubbleView.findViewById(R.id.etPersonName);
         etPersonName.getBackground().setColorFilter(context.getResources().getColor(R.color.md_white), PorterDuff.Mode.SRC_IN);
         etPersonName.getBackground().clearColorFilter();
-
         etContactPhone = (TextView) bubbleView.findViewById(R.id.etContactPhone);
         bSave = (Button) bubbleView.findViewById(R.id.bSave);
         bClose = (ImageView) bubbleView.findViewById(R.id.bClose);
@@ -185,18 +168,7 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                     } catch (Exception e) {
                         Log.e("mixpanel", "Unable to add properties to JSONObject", e);
                     }
-
-                    //starting
-                    //add to ignore list
-
-
-
-                    //
-
-
                     hide();
-//                    stopThisService();
-//                    System.exit(0);
                     Toast.makeText(context, "Added to ignored contacts", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "onClick: Not Checked");
@@ -214,15 +186,6 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                         etContactPhone.setError("Invalid Number!");
                     }
                     if (validation) {
-
-
-                        // update contact name
-
-
-
-
-
-
                         String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(context, contactPhone);
                         LSContact checkContact;
                         checkContact = LSContact.getContactFromNumber(intlNum);
@@ -254,8 +217,6 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                                     Log.e("mixpanel", "Unable to add properties to JSONObject", e);
                                 }
                                 hide();
-//                                stopThisService();
-//                                System.exit(0);
                             }
                             hide();
                             Toast.makeText(context, "Added to lead from unlabeled contacts", Toast.LENGTH_SHORT).show();
@@ -284,8 +245,6 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                                 Log.e("mixpanel", "Unable to add properties to JSONObject", e);
                             }
                             hide();
-//                            stopThisService();
-//                            System.exit(0);
                             Toast.makeText(context, "Added to leads", Toast.LENGTH_SHORT).show();
                         }
                     }
