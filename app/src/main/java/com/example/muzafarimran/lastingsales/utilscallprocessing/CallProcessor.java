@@ -10,7 +10,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.service.CallService;
-import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -35,7 +34,6 @@ public class CallProcessor {
             Log.d(TAG, "not match any condition: else part");
         }
 
-        // Toast.makeText(mContext, "type "+call.getType(), Toast.LENGTH_SHORT).show();
         SettingsManager settingsManager = new SettingsManager(mContext);
         if (settingsManager.getKeyStateIsCompanyPhone()) { // COMPANY PHONE
             LSIgnoreList ignoredContactCheck = LSIgnoreList.getContactFromNumber(call.getContactNumber());
@@ -50,48 +48,33 @@ public class CallProcessor {
                 if (contact != null) {
                     //TODO show after call dialog & save call log
                     Log.d(TAG, call.getContactNumber());
-                  /*  Intent d = new Intent(mContext, CallService.class);
-                    d.putExtra("no", call.getContactNumber());
-                    mContext.startService(d);*/
-                    LSContact lsContact = LSContact.getContactFromNumber(call.getContactNumber());
-                    if (lsContact != null) {
-                        if (lsContact.isContactSave() != null) {
-                            if (lsContact.isContactSave().equals("true")) {
-                                Log.d(TAG + lsContact.isContactSave(), call.getContactNumber());
-                                //  Toast.makeText(mContext, "Condition true", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, call.getContactNumber());
-                                saveCallLogs(call);
-                                case3(call);
-                                case5(mContext);
-                                return;
-                            } else {
-//                            Toast.makeText(mContext, "condition false", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, call.getContactNumber());
-                                if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-                                    showDialog(mContext, call);
-                                }
-                                saveCallLogs(call);
-                                case3(call);
-                                case5(mContext);
-                            }
-                        }
-                        //fixme i think else part should not be required
-                        else {
-                            Log.d(TAG, "iscontactSave is NULL");
+                    if (contact.isContactSave() != null) {
+                        if (contact.isContactSave().equals("true")) {
+                            Log.d(TAG + contact.isContactSave(), call.getContactNumber());
+                            Log.d(TAG, call.getContactNumber());
+                            saveCallLogs(call);
+                            case3(call);
+                            return;
+                        } else {
+                            Log.d(TAG, call.getContactNumber());
                             if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
                                 showDialog(mContext, call);
                             }
                             saveCallLogs(call);
                             case3(call);
-                            case5(mContext);
                         }
                     } else {
-                        Log.d(TAG, "contact is null");
+                        Log.d(TAG, "iscontactSave is NULL");
+                        if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
+                            showDialog(mContext, call);
+                        }
+                        saveCallLogs(call);
+                        case3(call);
                     }
                 } else {
                     //if not exists
                     LSContact saveContact = new LSContact();
-                    saveContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(call.getContactNumber()));
+                    saveContact.setPhoneOne(PhoneNumberAndCallUtils.numberToInterNationalNumber(mContext, call.getContactNumber()));
                     saveContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
                     saveContact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                     saveContact.setContactName(call.getContactName());
@@ -102,13 +85,8 @@ public class CallProcessor {
                         if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
                             showDialog(mContext, call);
                         }
-                        //save call logs
                         saveCallLogs(call);
                         case3(call);
-                        case5(mContext);
-                        // successfully add num to db
-                        //show dialog function
-//                        CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
                     }
                 }
             }
@@ -123,7 +101,6 @@ public class CallProcessor {
                     Log.d(TAG, "contact exist");
                     saveCallLogs(call);
                     case3(call);
-                    case5(mContext);
                 } else {
                     if (showDialog && showNotification && call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
                         showDialog(mContext, call);
@@ -138,7 +115,6 @@ public class CallProcessor {
     private static void case3(LSCall call) {
         // incoming/ outgoing calls
         Log.d(TAG, TAG + "calling");
-//        Log.d("return type", CallTypeManager.getCallType(call.getType(), String.valueOf(call.getDuration())));
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) || call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
             List<LSInquiry> checkInquiry = LSInquiry.find(LSInquiry.class, "contact_number=?", call.getContactNumber());
             if (checkInquiry.size() > 0) {
@@ -244,11 +220,6 @@ public class CallProcessor {
         if (call.save() > 0) {
             Log.d(TAG, "lsCall Saved");
         }
-    }
-
-    private static void case5(Context context) {
-        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(context);
-        dataSenderAsync.run();
     }
 }
 

@@ -17,11 +17,10 @@ public class CallEndTagBoxService {
 
     public static void checkShowCallPopupNew(Context ctx, String name, String number) {
         SettingsManager settingsManager = new SettingsManager(ctx);
-        NotificationManager mNotificationManager;
         String intlNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(ctx, number);
         LSContact tempContact = LSContact.getContactFromNumber(intlNumber);
         if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_SALES)) {
-            mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(CallEndNotification.NOTIFICATION_ID, CallEndNotification.createFollowUpNotification(ctx, intlNumber, tempContact));
         } else if (tempContact != null && tempContact.getContactType().equals(LSContact.CONTACT_TYPE_UNLABELED)) {
             if (settingsManager.getKeyStateCallEndDialog()) {
