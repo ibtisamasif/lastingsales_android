@@ -1,6 +1,7 @@
 package com.example.muzafarimran.lastingsales.utilscallprocessing;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
@@ -23,6 +24,7 @@ public class DeleteManager {
         //Flushing Deals Of Organization
         List<LSDeal> allDealsOfThisContact = selectedOrganization.getAllDeals();
         if (allDealsOfThisContact != null && allDealsOfThisContact.size() > 0) {
+            Toast.makeText(context, "Deleting deals...", Toast.LENGTH_SHORT).show();
             for (LSDeal oneDeal : allDealsOfThisContact) {
                 oneDeal.delete();
             }
@@ -63,6 +65,7 @@ public class DeleteManager {
         //Flushing Deals Of lead
         List<LSDeal> allDealsOfThisContact = selectedContact.getAllDeals();
         if (allDealsOfThisContact != null && allDealsOfThisContact.size() > 0) {
+            Toast.makeText(context, "Deleting deals...", Toast.LENGTH_SHORT).show();
             for (LSDeal oneDeal : allDealsOfThisContact) {
                 oneDeal.delete();
             }

@@ -260,7 +260,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 }
                 AlertDialog.Builder alert = new AlertDialog.Builder(ContactDetailsTabActivity.this);
                 alert.setTitle("Delete");
-                alert.setMessage("Are you sure to delete " + nameTextOnDialog);
+                alert.setMessage("Are you sure to delete " + nameTextOnDialog + ". This will delete associated deals as well.");
                 alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

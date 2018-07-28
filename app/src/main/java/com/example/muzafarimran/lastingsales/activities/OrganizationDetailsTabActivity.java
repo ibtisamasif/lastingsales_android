@@ -265,7 +265,7 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                 }
                 AlertDialog.Builder alert = new AlertDialog.Builder(OrganizationDetailsTabActivity.this);
                 alert.setTitle("Delete");
-                alert.setMessage("Are you sure to delete " + nameTextOnDialog);
+                alert.setMessage("Are you sure to delete " + nameTextOnDialog + ". This will delete associated deals as well.");
                 alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -329,7 +329,6 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                         nameAddOrg.setError("Please enter  Name!");
 //                    Toast.makeText(getActivity(), "Please enter  Name!", Toast.LENGTH_SHORT).show();
                     } else {
-
                         tempOrganization.setName(nameAddOrg.getText().toString());
                         tempOrganization.setEmail(emailAddOrg.getText().toString());
                         tempOrganization.setPhone(phoneAddOrg.getText().toString());

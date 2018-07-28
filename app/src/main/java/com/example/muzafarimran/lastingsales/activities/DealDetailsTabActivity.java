@@ -58,59 +58,60 @@ public class DealDetailsTabActivity extends AppCompatActivity {
                 selectedDeal = LSDeal.findById(LSDeal.class, dealIDLong);
             }
         }
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new DealDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedDeal.getId())); //TODO crash getId was null
+        if (selectedDeal != null) {
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            viewPager.setAdapter(new DealDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedDeal.getId())); //TODO crash getId was null
+            // Give the TabLayout the ViewPager
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+            tabLayout.setupWithViewPager(viewPager);
 
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setupWithViewPager(viewPager);
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        floatingActionButton.hide();
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    switch (tab.getPosition()) {
+                        case 0:
+                            floatingActionButton.hide();
 //                        tab.setIcon(R.drawable.menu_icon_details_selected);
-                        break;
-                    case 1:
-                        floatingActionButton.show();
+                            break;
+                        case 1:
+                            floatingActionButton.show();
 //                        tab.setIcon(R.drawable.menu_icon_phone_selected);
-                        break;
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    switch (tab.getPosition()) {
+                        case 0:
 //                        tab.setIcon(R.drawable.menu_icon_details);
-                        break;
-                    case 1:
+                            break;
+                        case 1:
 //                        tab.setIcon(R.drawable.menu_icon_phone);
-                        break;
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                }
+            });
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add);
-        floatingActionButton.hide();
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (selectedDeal != null) {
+            floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add);
+            floatingActionButton.hide();
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (selectedDeal != null) {
                         Intent intent = new Intent(getApplicationContext(), AddEditNoteActivity.class);
                         intent.putExtra(AddEditNoteActivity.ACTIVITY_LAUNCH_MODE, AddEditNoteActivity.LAUNCH_MODE_ADD_NEW_NOTE);
                         intent.putExtra(AddEditNoteActivity.TAG_LAUNCH_MODE_DEAL_ID, selectedDeal.getId());
                         startActivity(intent);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void onBackPressed() {

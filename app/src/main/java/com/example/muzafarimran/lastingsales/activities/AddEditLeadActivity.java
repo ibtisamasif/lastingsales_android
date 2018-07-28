@@ -145,7 +145,16 @@ public class AddEditLeadActivity extends AppCompatActivity {
                     if (launchMode.equals(LAUNCH_MODE_ADD_NEW_CONTACT)) {
                         LSContact tempContact = new LSContact();
                         tempContact.setContactName(contactName);
-                        tempContact.setPhoneOne(contactPhone);
+                        if (contactPhone != null && !contactPhone.equalsIgnoreCase("")) {
+                            String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
+                            if (intlNum != null)
+                                tempContact.setPhoneOne(intlNum);
+                            String checkContactInLocalPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), intlNum);
+                            if (checkContactInLocalPhonebook == null) {
+                                //Saving contact in native phonebook as well
+                                PhoneNumberAndCallUtils.addContactInNativePhonebook(getApplicationContext(), tempContact.getContactName(), tempContact.getPhoneOne());
+                            }
+                        }
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
                         tempContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_ADD_NOT_SYNCED);
@@ -164,7 +173,6 @@ public class AddEditLeadActivity extends AppCompatActivity {
                         LSContact tempContact = selectedContact;
 //                        String oldType = selectedContact.getContactType();
                         tempContact.setContactName(contactName);
-                        tempContact.setPhoneOne(contactPhone);
                         tempContact.setContactType(selectedContactType);
                         tempContact.setContactEmail(contactEmail);
                         tempContact.setContactAddress(contactAddress);
@@ -179,8 +187,10 @@ public class AddEditLeadActivity extends AppCompatActivity {
 //                        String newType = selectedContact.getContactType();
                         // The contact will never be saved again in the flow.
 //                        TypeManager.ConvertTo(getApplicationContext(), selectedContact, oldType, newType);
-                        if (contactPhone != null) {
+                        if (contactPhone != null && !contactPhone.equalsIgnoreCase("")) {
                             String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(AddEditLeadActivity.this, contactPhone);
+                            if (intlNum != null)
+                                tempContact.setPhoneOne(intlNum);
                             String checkContactInLocalPhonebook = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(getApplicationContext(), intlNum);
                             if (checkContactInLocalPhonebook == null) {
                                 //Saving contact in native phonebook as well
