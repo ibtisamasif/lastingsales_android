@@ -51,7 +51,7 @@ public class ContactProfileProvider {
                     fetchProfileFromServer(number, callback);
 //                fetchProfileFromServer(number);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

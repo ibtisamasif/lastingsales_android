@@ -8,7 +8,7 @@ import android.view.MotionEvent;
  * Created by ibtisam on 6/9/2017.
  */
 
-public class CustomViewPager extends android.support.v4.view.ViewPager{
+public class CustomViewPager extends android.support.v4.view.ViewPager {
     private boolean enabled;
 
     public CustomViewPager(Context context, AttributeSet attrs) {
@@ -18,12 +18,12 @@ public class CustomViewPager extends android.support.v4.view.ViewPager{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return enabled ? super.onTouchEvent(event) : false;
+        return enabled && super.onTouchEvent(event);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        return enabled ? super.onInterceptTouchEvent(event) : false;
+        return enabled && super.onInterceptTouchEvent(event);
     }
 
     public void setPagingEnabled(boolean enabled) {

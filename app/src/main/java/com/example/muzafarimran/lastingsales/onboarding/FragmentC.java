@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
 
-public class FragmentC extends Fragment{
+public class FragmentC extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 

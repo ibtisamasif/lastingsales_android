@@ -102,7 +102,7 @@ public class ViewHolderContactHeaderBottomsheetCard extends RecyclerView.ViewHol
             String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, contact.getPhoneOne());
             if (name != null) {
                 this.name.setText(name);
-            }else {
+            } else {
                 if (lsContactProfile != null) {
                     this.name.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
                 } else {

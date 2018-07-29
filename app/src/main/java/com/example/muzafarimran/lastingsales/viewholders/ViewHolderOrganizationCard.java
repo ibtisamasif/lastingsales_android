@@ -30,10 +30,10 @@ public class ViewHolderOrganizationCard extends RecyclerView.ViewHolder {
 
     public ViewHolderOrganizationCard(View v) {
         super(v);
-        cl =  v.findViewById(R.id.cl);
-        org_name =  v.findViewById(R.id.org_name);
-        org_phone =  v.findViewById(R.id.org_phone);
-        add_deal_icon =  v.findViewById(R.id.add_deal_icon);
+        cl = v.findViewById(R.id.cl);
+        org_name = v.findViewById(R.id.org_name);
+        org_phone = v.findViewById(R.id.org_phone);
+        add_deal_icon = v.findViewById(R.id.add_deal_icon);
     }
 
     public void bind(Object item, int position, Context mContext) {
@@ -53,7 +53,7 @@ public class ViewHolderOrganizationCard extends RecyclerView.ViewHolder {
         Collection<LSDeal> deals = organization.getAllDeals();
         if (deals != null && deals.size() > 0) {
             add_deal_icon.setImageResource(R.drawable.ic_monetization_on_grey_24dp);
-        }else {
+        } else {
             add_deal_icon.setImageResource(R.drawable.ic_monetization_on_24dp);
         }
         add_deal_icon.setOnClickListener(new View.OnClickListener() {

@@ -16,7 +16,7 @@ public class LSStageSpinAdapter extends ArrayAdapter<LSStage> {
     // Your sent context
     private Context context;
     // Your custom values for the spinner (LSStage)
-    List<LSStage> values ;
+    List<LSStage> values;
 //    private LSStage[] values;
 
     public LSStageSpinAdapter(Context context, int textViewResourceId, List<LSStage> values) {
@@ -26,18 +26,18 @@ public class LSStageSpinAdapter extends ArrayAdapter<LSStage> {
     }
 
     @Override
-    public int getCount(){
-       return values.size();
+    public int getCount() {
+        return values.size();
     }
 
     @Override
-    public LSStage getItem(int position){
-       return values.get(position);
+    public LSStage getItem(int position) {
+        return values.get(position);
     }
 
     @Override
-    public long getItemId(int position){
-       return position;
+    public long getItemId(int position) {
+        return position;
     }
 
 
@@ -60,7 +60,7 @@ public class LSStageSpinAdapter extends ArrayAdapter<LSStage> {
     // Normally is the same view, but you can customize it if you want
     @Override
     public View getDropDownView(int position, View convertView,
-            ViewGroup parent) {
+                                ViewGroup parent) {
         TextView label = (TextView) super.getDropDownView(position, convertView, parent);
         label.setTextColor(Color.BLACK);
         label.setText(values.get(position).getName());

@@ -36,8 +36,8 @@ public class DealDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
 //                    long contactIdlong;
 //                    if (lsContact != null) {
 //                        contactIdlong = lsContact.getId();
-                        //                fragment = IndividualDealDetailsFragment.newInstance(0, IndividualDealDetailsFragment.TAG, id);
-                        fragment = NotesInDealDetailsFragment.newInstance(1, NotesInDealDetailsFragment.TAG, lsDeal.getId());
+                    //                fragment = IndividualDealDetailsFragment.newInstance(0, IndividualDealDetailsFragment.TAG, id);
+                    fragment = NotesInDealDetailsFragment.newInstance(1, NotesInDealDetailsFragment.TAG, lsDeal.getId());
 //                    }
                 }
                 break;

@@ -12,7 +12,7 @@ public class OrganizationEventModel {
     }
 
     @Produce
-    public OrganizationEventModel geLastCallReceivedEvent(){
+    public OrganizationEventModel geLastCallReceivedEvent() {
         return this;
     }
 

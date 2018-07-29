@@ -62,7 +62,7 @@ public class CommentsInDealDetailsFragment extends TabFragment {
     private Context mContext;
     private static RequestQueue queue;
 
-//    private ProgressDialog pdLoading;
+    //    private ProgressDialog pdLoading;
     private Button buttonSend;
     private EditText chatText;
 
@@ -96,7 +96,7 @@ public class CommentsInDealDetailsFragment extends TabFragment {
         Log.d(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.fragment_comments_screen_in_lead, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
 //        linearLayoutManager.setReverseLayout(true);
@@ -107,9 +107,9 @@ public class CommentsInDealDetailsFragment extends TabFragment {
 
         mRecyclerView.setAdapter(adapter);
 
-        chatText = (EditText) view.findViewById(R.id.chatText);
+        chatText = view.findViewById(R.id.chatText);
 
-        buttonSend = (Button) view.findViewById(R.id.buttonSend);
+        buttonSend = view.findViewById(R.id.buttonSend);
 
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +133,6 @@ public class CommentsInDealDetailsFragment extends TabFragment {
         bus = TinyBus.from(mContext.getApplicationContext());
         bus.register(this);
     }
-
 
 
     @Override

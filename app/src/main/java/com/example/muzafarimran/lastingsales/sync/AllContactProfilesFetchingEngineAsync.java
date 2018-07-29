@@ -65,7 +65,7 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
         ArrayList<LSContact> contactsList = null;
         if (LSContact.count(LSContact.class) > 0) {
             contactsList = (ArrayList<LSContact>) LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_SALES);
-            contactsList.addAll((ArrayList<LSContact>) LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED));
+            contactsList.addAll(LSContact.getContactsByTypeInDescOrder(LSContact.CONTACT_TYPE_UNLABELED));
             Log.d(TAG, "getBatchContactsProfiles: count : " + contactsList.size());
             for (LSContact oneContact : contactsList) {
                 if (!oneContact.isDoNotFetchProfile()) {
@@ -76,7 +76,7 @@ public class AllContactProfilesFetchingEngineAsync extends AsyncTask<Object, Voi
                     } else {
                         Log.d(TAG, "getBatchContactsProfiles: NUMBER IS NULL CHECK STORED NUMBER");
                     }
-                }else {
+                } else {
                     Log.i(TAG, "getBatchContactsProfiles: isDoNotFetchProfile() == TRUE");
                 }
             }

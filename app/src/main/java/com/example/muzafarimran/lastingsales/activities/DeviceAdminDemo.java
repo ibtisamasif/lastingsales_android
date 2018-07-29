@@ -15,8 +15,9 @@ public class DeviceAdminDemo extends DeviceAdminReceiver {
     }
 
     public void onEnabled(Context context, Intent intent) {
-    };
+    }
 
     public void onDisabled(Context context, Intent intent) {
-    };
+    }
+
 }

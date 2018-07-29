@@ -14,7 +14,7 @@ public class MyURLs {
     public static String ADD_COMPANY_URL = server + "/api/v1/company";
     public static String IMAGE_URL = server + "/";
     public static String ADD_CONTACT = server + "/api/v1/lead";
-    public static String ADD_ORGANIZATION= server + "/api/v1/organization";
+    public static String ADD_ORGANIZATION = server + "/api/v1/organization";
     public static String ADD_DEAL = server + "/api/v1/deal";
     public static String ADD_FOLLOWUP = server + "/api/v1/lead/"; //SampleFormatComplete ADD_FOLLOWUP = "http://staging/api/v1/lead/85/followup";
     public static String ADD_NOTE = server + "/api/v1/notes"; //SampleFormatComplete ADD_NOTE = "http://staging/api/v1/lead/145/notes";
@@ -53,7 +53,6 @@ public class MyURLs {
     public static final String FILE_UPLOAD_URL = "https://api.lastingsales.com/api/v1/resource/recording";
 //    public static final String FILE_UPLOAD_URL = "http://54.91.47.130:3000/api/interviewee/img";
     //	public static final String FILE_UPLOAD_URL = "http://192.168.8.37/AndroidFileUpload/fileUpload.php";
-
 
 
     public static String GET_SYNC = server + "/api/v1/sync";

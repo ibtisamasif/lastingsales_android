@@ -6,11 +6,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-
-import java.util.List;
 
 public class DynamicColums {
 
@@ -22,29 +19,28 @@ public class DynamicColums {
     }
 
 
-    public TextView textView(String value,String  tag){
+    public TextView textView(String value, String tag) {
 
-        ViewGroup.LayoutParams layoutParams=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
-                ,ViewGroup.LayoutParams.WRAP_CONTENT);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
+                , ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        TextView textView=new TextView(this.context);
+        TextView textView = new TextView(this.context);
         textView.setLayoutParams(layoutParams);
-        textView.setText(" "+value+" ");
+        textView.setText(" " + value + " ");
         textView.setTextSize(13);
         textView.setMinWidth(200);
         textView.setTag(tag);
-        textView.setPadding(20,20,20,20);
+        textView.setPadding(20, 20, 20, 20);
 
         return textView;
 
 
-
     }
 
-    public EditText editText(String val,String tag,int type){
-        ViewGroup.LayoutParams layoutParams=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+    public EditText editText(String val, String tag, int type) {
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        EditText editText=new EditText(this.context);
+        EditText editText = new EditText(this.context);
         editText.setMinimumWidth(300);
         editText.setTag(tag);
         editText.setText(val);
@@ -53,16 +49,15 @@ public class DynamicColums {
         editText.setFocusableInTouchMode(true);
         editText.setInputType(type);
 
-        editText.setPadding(20,20,20,20);
+        editText.setPadding(20, 20, 20, 20);
         return editText;
     }
 
-    public Spinner spinner(ArrayAdapter<String> values, String tag,int position){
-        ViewGroup.LayoutParams layoutParams=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+    public Spinner spinner(ArrayAdapter<String> values, String tag, int position) {
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        Spinner spinner=new Spinner(this.context);
+        Spinner spinner = new Spinner(this.context);
         spinner.setAdapter(values);
-
 
 
         spinner.setSelection(position);
@@ -73,7 +68,6 @@ public class DynamicColums {
         spinner.setTag(tag);
         return spinner;
     }
-
 
 
 }

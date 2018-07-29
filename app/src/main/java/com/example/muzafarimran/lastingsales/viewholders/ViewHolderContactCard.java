@@ -208,7 +208,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
         Collection<LSDeal> deals = contact.getAllDeals();
         if (deals != null && deals.size() > 0) {
             this.add_deal_icon.setImageResource(R.drawable.ic_monetization_on_grey_24dp);
-        }else {
+        } else {
             this.add_deal_icon.setImageResource(R.drawable.ic_monetization_on_24dp);
         }
 
@@ -279,19 +279,17 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
         });
 
 
-
-
 //        switch (contactType) {
 //            case LSContact.CONTACT_TYPE_SALES:
-                rl_container_buttons.setVisibility(View.GONE);
-                user_profile_group_wrapper.setVisibility(View.GONE);
-                llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Success));
-                this.cl.setOnClickListener(view -> {
-                    Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
-                    long contactId = contact.getId();
-                    detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
-                    mContext.startActivity(detailsActivityIntent);
-                });
+        rl_container_buttons.setVisibility(View.GONE);
+        user_profile_group_wrapper.setVisibility(View.GONE);
+        llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Success));
+        this.cl.setOnClickListener(view -> {
+            Intent detailsActivityIntent = new Intent(mContext, ContactDetailsTabActivity.class);
+            long contactId = contact.getId();
+            detailsActivityIntent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, contactId + "");
+            mContext.startActivity(detailsActivityIntent);
+        });
 //                break;
 //            case LSContact.CONTACT_TYPE_BUSINESS:
 //                rl_container_buttons.setVisibility(View.GONE);
@@ -407,7 +405,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
 //                    this.cl.setBackground(new ColorDrawable(ContextCompat.getColor(mContext, R.color.md_blue_grey_100)));
 //                }
 //        this.cl.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorControlActivated));
-            }else if (contact.getSrc().equalsIgnoreCase("facebook")){
+            } else if (contact.getSrc().equalsIgnoreCase("facebook")) {
                 this.numberDetailTextView.setText(number + (" ( facebook )"));
                 llTypeRibbon.setBackgroundColor(mContext.getResources().getColor(R.color.Ls_Color_Info));
 

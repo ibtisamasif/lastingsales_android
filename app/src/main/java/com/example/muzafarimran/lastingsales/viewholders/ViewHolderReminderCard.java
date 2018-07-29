@@ -134,7 +134,7 @@ public class ViewHolderReminderCard extends RecyclerView.ViewHolder {
             ContentUris.appendId(builder, now - DateUtils.DAY_IN_MILLIS * 10000);
             ContentUris.appendId(builder, now + DateUtils.DAY_IN_MILLIS * 10000);
 
-            Cursor eventCursor = contentResolver.query(builder.build(), new String[]{"title", "begin", "end", "allDay"}, "Calendars._id=" + 1,null, "startDay ASC, startMinute ASC");
+            Cursor eventCursor = contentResolver.query(builder.build(), new String[]{"title", "begin", "end", "allDay"}, "Calendars._id=" + 1, null, "startDay ASC, startMinute ASC");
 
             System.out.println("eventCursor count=" + eventCursor.getCount());
             if (eventCursor.getCount() > 0) {
@@ -192,7 +192,7 @@ public class ViewHolderReminderCard extends RecyclerView.ViewHolder {
 
                         System.out.println("calendar_metting_beginyear =" + calendar_metting_beginyear);
 
-                          /* the calendar control metting-begin events Respose  sub-string (starts....ends) */
+                        /* the calendar control metting-begin events Respose  sub-string (starts....ends) */
 
                         /* the calendar control metting-end events Respose  sub-string (starts....hare) */
 
@@ -230,7 +230,7 @@ public class ViewHolderReminderCard extends RecyclerView.ViewHolder {
 
                         System.out.println("calendar_metting_beginyear =" + calendar_metting_endyear);
 
-                          /* the calendar control metting-end events Respose  sub-string (starts....ends) */
+                        /* the calendar control metting-end events Respose  sub-string (starts....ends) */
 
                         System.out.println("only date begin of events=" + begin.getDate());
                         System.out.println("only begin time of events=" + begin.getHours() + ":" + begin.getMinutes() + ":" + begin.getSeconds());

@@ -52,21 +52,34 @@ public class AccountActivity extends AppCompatActivity {
     private static Bitmap rotateImage = null;
     private static final int GALLERY = 1;
 
+    public static int getOrientation(Context context, Uri photoUri) {
+        /* it's on the external media. */
+        Cursor cursor = context.getContentResolver().query(photoUri,
+                new String[]{MediaStore.Images.ImageColumns.ORIENTATION}, null, null, null);
+
+        if (cursor.getCount() != 1) {
+            return -1;
+        }
+
+        cursor.moveToFirst();
+        return cursor.getInt(0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Account");
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        ivPic = (SimpleDraweeView) findViewById(R.id.ivPic);
-        tvName = (TextView) findViewById(R.id.tvContactName);
-        tvEmail = (TextView) findViewById(R.id.tvNumber);
-        tvRole = (TextView) findViewById(R.id.tvRole);
-        tvSupportNumber = (TextView) findViewById(R.id.tvSupportNumber);
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_about);
+        ivPic = findViewById(R.id.ivPic);
+        tvName = findViewById(R.id.tvContactName);
+        tvEmail = findViewById(R.id.tvNumber);
+        tvRole = findViewById(R.id.tvRole);
+        tvSupportNumber = findViewById(R.id.tvSupportNumber);
+        mRecyclerView = findViewById(R.id.rv_about);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         sessionManager = new SessionManager(this);
 
@@ -74,7 +87,7 @@ public class AccountActivity extends AppCompatActivity {
 
         tvName.setText(sessionManager.getKeyLoginFirstName() + " " + sessionManager.getKeyLoginLastName());
         tvEmail.setText(sessionManager.getKeyLoginEmail());
-        tvRole.setText("Account type: "+ sessionManager.getKeyLoginRoleName());
+        tvRole.setText("Account type: " + sessionManager.getKeyLoginRoleName());
         SettingItem settingItemAbout = new SettingItem("About", null, R.drawable.ic_info_outline_24dp);
         SettingItem settingItemSetting = new SettingItem("Settings", null, R.drawable.ic_settings_24dp);
         SettingItem settingItemLogout = new SettingItem("Logout", null, R.drawable.ic_power_settings_new_24dp);
@@ -122,7 +135,7 @@ public class AccountActivity extends AppCompatActivity {
                     matrix.postRotate(getOrientation(getApplicationContext(), mImageUri));
                     if (rotateImage != null)
                         rotateImage.recycle();
-                    rotateImage = Bitmap.createBitmap(Image, 0, 0, Image.getWidth(), Image.getHeight(), matrix,true);
+                    rotateImage = Bitmap.createBitmap(Image, 0, 0, Image.getWidth(), Image.getHeight(), matrix, true);
                     ivPic.setImageBitmap(rotateImage);
                 } else
                     ivPic.setImageBitmap(Image);
@@ -133,19 +146,6 @@ public class AccountActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public static int getOrientation(Context context, Uri photoUri) {
-		/* it's on the external media. */
-        Cursor cursor = context.getContentResolver().query(photoUri,
-                new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
-
-        if (cursor.getCount() != 1) {
-            return -1;
-        }
-
-        cursor.moveToFirst();
-        return cursor.getInt(0);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

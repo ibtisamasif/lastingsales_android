@@ -13,15 +13,15 @@ public class LeadManager {
     public static void convertTo(Context context, LSContact tempContact, String newtype) {
 
         // from sales to ignored
-        if(newtype.equals(LSContact.CONTACT_TYPE_IGNORED)){
-                InquiryManager.removeByContact(context,tempContact);
+        if (newtype.equals(LSContact.CONTACT_TYPE_IGNORED)) {
+            InquiryManager.removeByContact(context, tempContact);
 
             // from sales to business
-        }else if(newtype.equals(LSContact.CONTACT_TYPE_BUSINESS)){
-                InquiryManager.removeByContact(context, tempContact);
+        } else if (newtype.equals(LSContact.CONTACT_TYPE_BUSINESS)) {
+            InquiryManager.removeByContact(context, tempContact);
 
             // from sales to unlabeled
-        }else if(newtype.equals(LSContact.CONTACT_TYPE_UNLABELED)){
+        } else if (newtype.equals(LSContact.CONTACT_TYPE_UNLABELED)) {
 
         }
     }

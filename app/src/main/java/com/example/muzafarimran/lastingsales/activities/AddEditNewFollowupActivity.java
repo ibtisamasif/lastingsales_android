@@ -71,14 +71,14 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_new_followup);
 //        tvTitleFollowupPopup = (TextView) findViewById(R.id.tvTitleFollowupPopup);
-        bOneWeek = (Button) findViewById(R.id.bOneWeekFollowupPopup);
-        bThreeDays = (Button) findViewById(R.id.bThreeDaysFollowupPopup);
-        bTomorrow = (Button) findViewById(R.id.bTomorrowFollowupPopup);
-        bDate = (Button) findViewById(R.id.bDateFollowupPopup);
-        bTime = (Button) findViewById(R.id.bTimeFollowupPopup);
-        etFollowupTitleText = (EditText) findViewById(R.id.etFollowupTitleText);
-        bCancel = (Button) findViewById(R.id.bCancelFollowup);
-        bSave = (Button) findViewById(R.id.bSaveFollowup);
+        bOneWeek = findViewById(R.id.bOneWeekFollowupPopup);
+        bThreeDays = findViewById(R.id.bThreeDaysFollowupPopup);
+        bTomorrow = findViewById(R.id.bTomorrowFollowupPopup);
+        bDate = findViewById(R.id.bDateFollowupPopup);
+        bTime = findViewById(R.id.bTimeFollowupPopup);
+        etFollowupTitleText = findViewById(R.id.etFollowupTitleText);
+        bCancel = findViewById(R.id.bCancelFollowup);
+        bSave = findViewById(R.id.bSaveFollowup);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -410,7 +410,7 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
         aint.putExtra("followupid", tempFollowUp.getId() + "");
 //        aint.putExtra("message","This is message from followup");
         pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(tempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
-                         /* Retrieve a PendingIntent that will perform a broadcast */
+        /* Retrieve a PendingIntent that will perform a broadcast */
 //        Intent alarmIntent = new Intent(activity, AlarmReceiver.class);
 //        pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, 0);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {

@@ -27,7 +27,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -39,7 +38,6 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.utils.DynamicColums;
 import com.example.muzafarimran.lastingsales.listloaders.DealsOfAOrganizationLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
@@ -48,6 +46,7 @@ import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapt
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
+import com.example.muzafarimran.lastingsales.utils.DynamicColums;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -131,13 +130,13 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         Log.i(TAG, "onCreateView: ");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.organization_profile_details_fragment, container, false);
-        tvName = (TextView) view.findViewById(R.id.tvName);
-        tvNumber = (TextView) view.findViewById(R.id.tvNumber);
-        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
-        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
+        tvName = view.findViewById(R.id.tvName);
+        tvNumber = view.findViewById(R.id.tvNumber);
+        tvEmail = view.findViewById(R.id.tvEmail);
+        tvAddress = view.findViewById(R.id.tvAddress);
 
         adapter = new MyRecyclerViewAdapter(getActivity(), listLoader); //TODO potential bug getActivity can be null.
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
+        RecyclerView mRecyclerView = view.findViewById(R.id.mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -146,7 +145,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 
         save.setOnClickListener(this);
 
-        tvDefaultText = (TextView) view.findViewById(R.id.tvDefaultText);
+        tvDefaultText = view.findViewById(R.id.tvDefaultText);
 
 
         tvDefaultText.setVisibility(View.GONE);
@@ -561,7 +560,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
 
-                    EditText editText = (EditText) gridLayout.findViewWithTag("org" + list.get(i).getServerId());
+                    EditText editText = gridLayout.findViewWithTag("org" + list.get(i).getServerId());
 
                     String val = editText.getText().toString();
 
@@ -571,7 +570,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -585,7 +584,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
 
 
-                        LSOrganization lsOrganization=LSOrganization.findById(LSOrganization.class,args.getLong("someId"));
+                        LSOrganization lsOrganization = LSOrganization.findById(LSOrganization.class, args.getLong("someId"));
                         lsProperty1.setOrganizationOfProperty(lsOrganization);
                         lsProperty1.save();
 
@@ -593,11 +592,10 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                     }
 
 
-                }
-               else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
 
-                    EditText editText = (EditText) gridLayout.findViewWithTag("org" + list.get(i).getServerId());
+                    EditText editText = gridLayout.findViewWithTag("org" + list.get(i).getServerId());
 
                     String val = editText.getText().toString();
 
@@ -605,7 +603,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -617,7 +615,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-                        LSOrganization lsOrganization=LSOrganization.findById(LSOrganization.class,args.getLong("someId"));
+                        LSOrganization lsOrganization = LSOrganization.findById(LSOrganization.class, args.getLong("someId"));
                         lsProperty1.setOrganizationOfProperty(lsOrganization);
                         lsProperty1.save();
 
@@ -628,7 +626,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
 
 
-                    EditText editText = (EditText) gridLayout.findViewWithTag("org" + list.get(i).getServerId());
+                    EditText editText = gridLayout.findViewWithTag("org" + list.get(i).getServerId());
 
                     String val = editText.getText().toString();
 
@@ -636,7 +634,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -648,7 +646,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-                        LSOrganization lsOrganization=LSOrganization.findById(LSOrganization.class,args.getLong("someId"));
+                        LSOrganization lsOrganization = LSOrganization.findById(LSOrganization.class, args.getLong("someId"));
                         lsProperty1.setOrganizationOfProperty(lsOrganization);
                         lsProperty1.save();
 
@@ -659,14 +657,14 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
 
-                    Spinner spinner = (Spinner) gridLayout.findViewWithTag("org" + list.get(i).getServerId());
+                    Spinner spinner = gridLayout.findViewWithTag("org" + list.get(i).getServerId());
 
                     String val = spinner.getSelectedItem().toString();
 
-                   // Toast.makeText(mContext, "Spinner " + val, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(mContext, "Spinner " + val, Toast.LENGTH_SHORT).show();
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -678,7 +676,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-                        LSOrganization lsOrganization=LSOrganization.findById(LSOrganization.class,args.getLong("someId"));
+                        LSOrganization lsOrganization = LSOrganization.findById(LSOrganization.class, args.getLong("someId"));
                         lsProperty1.setOrganizationOfProperty(lsOrganization);
 
                         lsProperty1.save();
@@ -720,7 +718,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -736,7 +734,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -755,7 +753,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -774,7 +772,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
-                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -853,7 +851,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 
 
     public void addItemsOnSpinnerLeadStatus(View view) {
-        leadStatusSpinner = (Spinner) view.findViewById(R.id.lead_status_spinner);
+        leadStatusSpinner = view.findViewById(R.id.lead_status_spinner);
         List<String> list = new ArrayList<String>();
         list.add("InProgress");
         list.add("Close Won");
@@ -1221,7 +1219,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
                 return params;
             }

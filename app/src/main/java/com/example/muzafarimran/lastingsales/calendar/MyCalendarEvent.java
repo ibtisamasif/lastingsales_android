@@ -28,16 +28,16 @@ public class MyCalendarEvent {
         long startTime = dateStart.getTime();
         long endTime = dateEnd.getTime();
 
-        if (android.os.Build.VERSION.SDK_INT < 23){
+        if (android.os.Build.VERSION.SDK_INT < 23) {
 //            IcaCalendarHelper.initActivityObj(activity);
 //            IcaCalendarHelper.IcsMakeNewCalendarEntry(title, description, location,
 //                    startTime, endTime, 0, 1, ph, 1);
-            CalendarHelper.MakeNewCalendarEntry(activity,title, description, location,
+            CalendarHelper.MakeNewCalendarEntry(activity, title, description, location,
                     startTime, endTime, false, true, calendarID, 0);
-        }else {
+        } else {
 //            CalendarHelper.requestCalendarReadWritePermission(activity);
             CalendarHelper.listCalendarId(activity);
-            CalendarHelper.MakeNewCalendarEntry(activity,title, description, location,
+            CalendarHelper.MakeNewCalendarEntry(activity, title, description, location,
                     startTime, endTime, false, true, calendarID, 0);
         }
     }
@@ -56,14 +56,13 @@ public class MyCalendarEvent {
                     .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
                     .putExtra(Intent.EXTRA_EMAIL, "ibtisamasif@gmail.com");
             context.startActivity(intent);
-        }
-        else {
+        } else {
             Intent intent = new Intent(Intent.ACTION_EDIT);
             intent.setType("vnd.android.cursor.item/event");
             intent.putExtra("beginTime", cal.getTimeInMillis());
             intent.putExtra("allDay", true);
             intent.putExtra("rrule", "FREQ=YEARLY");
-            intent.putExtra("endTime", cal.getTimeInMillis()+60*60*1000);
+            intent.putExtra("endTime", cal.getTimeInMillis() + 60 * 60 * 1000);
             intent.putExtra("title", "LastingSales Follow-up");
             context.startActivity(intent);
         }

@@ -19,7 +19,7 @@ class BusinessProcessor {
     public static void Process(Context mContext, LSCall call) {
         Log.d(TAG, "BusinessProcessor: Process() Entered");
         LSContact contact = LSContact.getContactFromNumber(call.getContactNumber());
-        if(contact != null){
+        if (contact != null) {
             contact.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
             contact.save();
         }
@@ -30,19 +30,19 @@ class BusinessProcessor {
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
 
-        }else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING))  {
+        } else if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
             //Outgoing
             call.setInquiryHandledState(LSCall.INQUIRY_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
 
-        }else if (call.getType().equals(LSCall.CALL_TYPE_UNANSWERED)) {
+        } else if (call.getType().equals(LSCall.CALL_TYPE_UNANSWERED)) {
             //Outgoing Unanswered
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
             call.save();
 
-        } else if (call.getType().equals(LSCall.CALL_TYPE_MISSED)){
+        } else if (call.getType().equals(LSCall.CALL_TYPE_MISSED)) {
             //Missed
             call.setInquiryHandledState(LSCall.INQUIRY_NOT_HANDLED);
             call.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);

@@ -4,15 +4,10 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
-import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
-import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 /**
  * Created by ibtisam on 11/2/2017.
@@ -79,7 +74,7 @@ public class ViewHolderSocialProfileCard extends RecyclerView.ViewHolder {
 //            }
             if (lsContactProfile.getFirstName() != null && !lsContactProfile.getFirstName().equals("")) {
                 tvNameFromProfile.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
-            }else {
+            } else {
                 tvNameFromProfile.setVisibility(View.GONE);
                 tvNameFromProfileTitle.setVisibility(View.GONE);
             }

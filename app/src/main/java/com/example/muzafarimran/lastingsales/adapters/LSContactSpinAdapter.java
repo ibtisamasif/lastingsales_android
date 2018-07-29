@@ -16,7 +16,7 @@ public class LSContactSpinAdapter extends ArrayAdapter<LSContact> {
     // Your sent context
     private Context context;
     // Your custom values for the spinner (LSContact)
-    List<LSContact> values ;
+    List<LSContact> values;
 //    private LSContact[] values;
 
     public LSContactSpinAdapter(Context context, int textViewResourceId, List<LSContact> values) {
@@ -26,18 +26,18 @@ public class LSContactSpinAdapter extends ArrayAdapter<LSContact> {
     }
 
     @Override
-    public int getCount(){
-       return values.size();
+    public int getCount() {
+        return values.size();
     }
 
     @Override
-    public LSContact getItem(int position){
-       return values.get(position);
+    public LSContact getItem(int position) {
+        return values.get(position);
     }
 
     @Override
-    public long getItemId(int position){
-       return position;
+    public long getItemId(int position) {
+        return position;
     }
 
 
@@ -60,7 +60,7 @@ public class LSContactSpinAdapter extends ArrayAdapter<LSContact> {
     // Normally is the same view, but you can customize it if you want
     @Override
     public View getDropDownView(int position, View convertView,
-            ViewGroup parent) {
+                                ViewGroup parent) {
         TextView label = (TextView) super.getDropDownView(position, convertView, parent);
         label.setTextColor(Color.BLACK);
         label.setText(values.get(position).getPhoneOne());

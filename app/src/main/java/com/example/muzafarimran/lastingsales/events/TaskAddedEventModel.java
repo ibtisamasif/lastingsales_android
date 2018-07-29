@@ -12,7 +12,7 @@ public class TaskAddedEventModel {
     }
 
     @Produce
-    public TaskAddedEventModel geLastCallReceivedEvent(){
+    public TaskAddedEventModel geLastCallReceivedEvent() {
         return this;
     }
 

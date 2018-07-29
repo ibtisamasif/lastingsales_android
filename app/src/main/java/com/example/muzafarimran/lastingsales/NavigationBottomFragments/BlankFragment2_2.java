@@ -42,7 +42,7 @@ public class BlankFragment2_2 extends TabFragment implements LoaderManager.Loade
     public BlankFragment2_2() {
     }
 
-    public static BlankFragment2_2 newInstance()  {
+    public static BlankFragment2_2 newInstance() {
         BlankFragment2_2 fragment = new BlankFragment2_2();
         Bundle args = new Bundle();
 //        args.putInt("someInt", page);
@@ -67,7 +67,7 @@ public class BlankFragment2_2 extends TabFragment implements LoaderManager.Loade
             bus = TinyBus.from(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.fragment_blank2_2, container, false);
         adapter = new MyRecyclerViewAdapter(getActivity(), list); //TODO potential bug getActivity can be null.
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
+        RecyclerView mRecyclerView = view.findViewById(R.id.mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mRecyclerView.setAdapter(adapter);

@@ -29,7 +29,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,7 +40,6 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.utils.DynamicColums;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
 import com.example.muzafarimran.lastingsales.listloaders.DealsOfALeadLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -55,6 +53,7 @@ import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
+import com.example.muzafarimran.lastingsales.utils.DynamicColums;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -164,14 +163,14 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.contact_profile_details_fragment, container, false);
 //        tvName = (TextView) view.findViewById(R.id.tvName);
-        tvNumber = (TextView) view.findViewById(R.id.tvNumber);
+        tvNumber = view.findViewById(R.id.tvNumber);
 //        tvEmail = (TextView) view.findViewById(R.id.tvEmail);
-        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
+        tvAddress = view.findViewById(R.id.tvAddress);
 
         gridLayout = view.findViewById(R.id.grid);
 
         adapter = new MyRecyclerViewAdapter(getActivity(), listLoader); //TODO potential bug getActivity can be null.
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
+        RecyclerView mRecyclerView = view.findViewById(R.id.mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -202,9 +201,9 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         tvFbFromProfile = view.findViewById(R.id.tvFbFromProfile);
         tvFbFromProfileTitle = view.findViewById(R.id.tvFbFromProfileTitle);
 
-        llDynamicConnectionsContainer = (LinearLayout) view.findViewById(R.id.llDynamicConnectionsContainer);
+        llDynamicConnectionsContainer = view.findViewById(R.id.llDynamicConnectionsContainer);
 
-        tvDefaultText = (TextView) view.findViewById(R.id.tvDefaultText);
+        tvDefaultText = view.findViewById(R.id.tvDefaultText);
         tvDefaultText.setVisibility(View.GONE);
 //        bSave.setVisibility(View.GONE);
       /*  bSave.setOnClickListener(v -> {
@@ -497,7 +496,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
 
-                    EditText editText = (EditText) gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
+                    EditText editText = gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
 
                     String val = editText.getText().toString();
 
@@ -507,7 +506,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -520,7 +519,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
 
-                        LSContact lsContact=LSContact.findById(LSContact.class,args.getLong("someId"));
+                        LSContact lsContact = LSContact.findById(LSContact.class, args.getLong("someId"));
 
                         lsProperty1.setContactOfProperty(lsContact);
                         lsProperty1.save();
@@ -533,7 +532,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
 
-                    EditText editText = (EditText) gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
+                    EditText editText = gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
 
                     String val = editText.getText().toString();
 
@@ -541,7 +540,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -553,7 +552,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-                        LSContact lsContact=LSContact.findById(LSContact.class,args.getLong("someId"));
+                        LSContact lsContact = LSContact.findById(LSContact.class, args.getLong("someId"));
 
                         lsProperty1.setContactOfProperty(lsContact);
 
@@ -563,10 +562,11 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                     }
 
 
-                }   if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
+                }
+                if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
 
 
-                    EditText editText = (EditText) gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
+                    EditText editText = gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
 
                     String val = editText.getText().toString();
 
@@ -574,7 +574,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -586,7 +586,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-                        LSContact lsContact=LSContact.findById(LSContact.class,args.getLong("someId"));
+                        LSContact lsContact = LSContact.findById(LSContact.class, args.getLong("someId"));
 
                         lsProperty1.setContactOfProperty(lsContact);
 
@@ -599,14 +599,14 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
 
-                    Spinner spinner = (Spinner) gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
+                    Spinner spinner = gridLayout.findViewWithTag("lead" + list.get(i).getServerId());
 
                     String val = spinner.getSelectedItem().toString();
 
                     //Toast.makeText(mContext, "Spinner " + val, Toast.LENGTH_SHORT).show();
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -619,7 +619,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
 
-                        LSContact lsContact=LSContact.findById(LSContact.class,args.getLong("someId"));
+                        LSContact lsContact = LSContact.findById(LSContact.class, args.getLong("someId"));
 
                         lsProperty1.setContactOfProperty(lsContact);
 
@@ -648,7 +648,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
     public void dynamicColumnByAmir() {
 
-       // Toast.makeText(mContext, "ID"+args.getLong("someId"), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(mContext, "ID"+args.getLong("someId"), Toast.LENGTH_SHORT).show();
 
         dynamicColums = new DynamicColums(getContext());
 
@@ -665,7 +665,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -681,7 +681,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -697,10 +697,10 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
 
-                }else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -721,7 +721,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                     // Log.d("someId","tige tiger tiger"+args.getString("someId"));
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and contact_of_property=? ",
-                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -992,7 +992,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                     for (DynamicColumnBuilderVersion2.Column oneDynamicColumns : dynColumns) {
                         if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
-                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+                            EditText et = ll.findViewWithTag(oneDynamicColumns.id);
                             if (et != null) {
                                 et.setText(oneDynamicColumns.value);
                             } else {
@@ -1001,7 +1001,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                         } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
-                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+                            EditText et = ll.findViewWithTag(oneDynamicColumns.id);
                             if (et != null) {
                                 et.setText(oneDynamicColumns.value);
                             } else {
@@ -1010,7 +1010,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                         } else if (oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
-                            final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
+                            final Spinner s = ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
                             if (s != null) {
                                 List<String> list = (List<String>) s.getTag();
                                 Log.d(TAG, "dynamicColumns: List: " + list);
@@ -1048,7 +1048,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         //find column_type from LSDynamic column using the name of column from leads dynamic column.
                         if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
-                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+                            EditText et = ll.findViewWithTag(oneDynamicColumns.id);
                             if (et != null) {
                                 et.setText(oneDynamicColumns.value);
                             } else {
@@ -1057,7 +1057,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                         } else if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
-                            EditText et = (EditText) ll.findViewWithTag(oneDynamicColumns.id);
+                            EditText et = ll.findViewWithTag(oneDynamicColumns.id);
                             if (et != null) {
                                 et.setText(oneDynamicColumns.value);
                             } else {
@@ -1066,7 +1066,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                         } else if (oneDynamicColumns.column_type != null && oneDynamicColumns.column_type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
-                            final Spinner s = (Spinner) ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
+                            final Spinner s = ll.findViewById(Integer.parseInt(oneDynamicColumns.id));
                             if (s != null) {
                                 List<String> list = (List<String>) s.getTag();
                                 int index = -1;
@@ -1470,7 +1470,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
                 return params;
             }

@@ -7,7 +7,7 @@ public class CommentItem {
     private String created_by;
     private boolean left;
 
-    public CommentItem(String commentText, String createdAt, String updatedAt ,String created_by, boolean left) {
+    public CommentItem(String commentText, String createdAt, String updatedAt, String created_by, boolean left) {
         this.commentText = commentText;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

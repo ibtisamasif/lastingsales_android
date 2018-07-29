@@ -25,7 +25,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Switch swFlyer;
     private Switch swTagDialogPopup;
-//    private Switch swHourlyAlarmNotification;
+    //    private Switch swHourlyAlarmNotification;
 //    private Switch swDefaultLead;
     private Switch swCompanyPhone;
     private TextView tvAddToProtectedApp;
@@ -34,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -42,16 +42,16 @@ public class SettingsActivity extends AppCompatActivity {
 //        getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setTitle("Settings");
         settingsManager = new SettingsManager(this);
-        swFlyer = (Switch) findViewById(R.id.swFlyer);
-        swTagDialogPopup = (Switch) findViewById(R.id.swTagDialogPopup);
+        swFlyer = findViewById(R.id.swFlyer);
+        swTagDialogPopup = findViewById(R.id.swTagDialogPopup);
 //        swHourlyAlarmNotification = (Switch) findViewById(R.id.swHourlyAlarmNotification);
 //        swDefaultLead = (Switch) findViewById(R.id.swDefaultLead);
-        swCompanyPhone = (Switch) findViewById(R.id.swCompanyPhone);
-        TextView tvAddToProtectedApp = (TextView) findViewById(R.id.tvAddToProtectedApp);
+        swCompanyPhone = findViewById(R.id.swCompanyPhone);
+        TextView tvAddToProtectedApp = findViewById(R.id.tvAddToProtectedApp);
         tvAddToProtectedApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new HuaweiProtectedAppsModule(SettingsActivity.this).AlertIfHuaweiDevice("Huawei Protected Apps","This app requires to be enables in 'Protected Apps' to work in background","Dont show again","PROTECTED APPS","CANCEL");
+                new HuaweiProtectedAppsModule(SettingsActivity.this).AlertIfHuaweiDevice("Huawei Protected Apps", "This app requires to be enables in 'Protected Apps' to work in background", "Dont show again", "PROTECTED APPS", "CANCEL");
             }
         });
 

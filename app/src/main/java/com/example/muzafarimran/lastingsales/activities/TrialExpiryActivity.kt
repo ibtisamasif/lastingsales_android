@@ -8,25 +8,25 @@ import com.example.muzafarimran.lastingsales.R
 import kotlinx.android.synthetic.main.activity_trial_expiry.*
 
 class TrialExpiryActivity : AppCompatActivity() {
-        companion object {
-            const val KEY_MESSAGE = "message"
-        }
+    companion object {
+        const val KEY_MESSAGE = "message"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trial_expiry)
 //        supportActionBar!!.title = "About"
 
-        val intent = getIntent();
+        val intent = intent
         val ss: String = intent.getStringExtra(KEY_MESSAGE)
-        if (ss != null){
+        if (ss != null) {
 //            tvMsg.text = ss;
-        }else {
+        } else {
 //            tvMsg.text = "Calling";
         }
 
         bAction.setOnClickListener {
-//        tvMsg.text = "Calling"
+            //        tvMsg.text = "Calling"
             val number = "03111308308"
             val intent = Intent(Intent.ACTION_CALL)
             intent.data = Uri.parse("tel:$number")

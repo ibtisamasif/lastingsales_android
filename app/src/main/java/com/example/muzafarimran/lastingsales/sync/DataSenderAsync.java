@@ -13,11 +13,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
-import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
@@ -712,7 +711,7 @@ public class DataSenderAsync {
                 params.put("status", "" + deal.getStatus());
                 if (deal.getContact() != null) {
                     params.put("lead_id", "" + deal.getContact().getServerId());
-                }else {
+                } else {
                     deal.delete();
                 }
                 if (deal.getOrganization() != null) {

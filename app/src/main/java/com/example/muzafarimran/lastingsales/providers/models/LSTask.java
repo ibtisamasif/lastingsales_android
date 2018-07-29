@@ -35,7 +35,7 @@ public class LSTask extends SugarRecord {
     public LSTask() {
     }
 
-    public static List<LSTask> getAllTasksInDescendingOrderOfTime(){
+    public static List<LSTask> getAllTasksInDescendingOrderOfTime() {
         return Select.from(LSTask.class).orderBy("updated_at DESC").list();
     }
 

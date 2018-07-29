@@ -13,7 +13,7 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 
 import java.util.Date;
 
-public abstract class CallReceiver extends WakefulBroadcastReceiver{
+public abstract class CallReceiver extends WakefulBroadcastReceiver {
     private static final String TAG = "CallReceiver";
     //The receiver will be recreated whenever android feels like it.  We need a static variable to remember data between instantiations
     private static int lastState = TelephonyManager.CALL_STATE_IDLE;

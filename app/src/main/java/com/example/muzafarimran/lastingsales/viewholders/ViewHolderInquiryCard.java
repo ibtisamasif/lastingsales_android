@@ -43,7 +43,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
     private TextView number;
     //    private Button bIgnore;
     private Button bTag;
-//    private TextView inquireyCount;
+    //    private TextView inquireyCount;
     private View.OnClickListener callClickListener = null;
     private LSContactProfile lsContactProfile;
 

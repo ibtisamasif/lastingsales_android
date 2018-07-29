@@ -12,7 +12,7 @@ public class CommentEventModel {
     }
 
     @Produce
-    public CommentEventModel geLastCallReceivedEvent(){
+    public CommentEventModel geLastCallReceivedEvent() {
         return this;
     }
 

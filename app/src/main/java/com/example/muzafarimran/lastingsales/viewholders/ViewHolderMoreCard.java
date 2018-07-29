@@ -16,7 +16,6 @@ import com.example.muzafarimran.lastingsales.activities.LogInActivity;
 import com.example.muzafarimran.lastingsales.activities.SettingsActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.MoreItem;
-import com.example.muzafarimran.lastingsales.settings.Settings;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 
@@ -31,7 +30,7 @@ public class ViewHolderMoreCard extends RecyclerView.ViewHolder {
     private final TextView tvDescription;
     private final ConstraintLayout cl;
     private final ImageView ivCardBackground;
-    private  SessionManager sessionManager;
+    private SessionManager sessionManager;
 
     public ViewHolderMoreCard(View v) {
         super(v);
@@ -68,7 +67,7 @@ public class ViewHolderMoreCard extends RecyclerView.ViewHolder {
                         mixpanel.track("User Logged Out");
                         break;
                     default:
-                        if(moreItem.goAt != null){
+                        if (moreItem.goAt != null) {
                             mContext.startActivity(new Intent(mContext, moreItem.goAt));
                         }
                         break;

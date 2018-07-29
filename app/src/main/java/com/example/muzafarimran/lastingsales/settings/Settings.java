@@ -17,19 +17,14 @@ public class Settings extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
 
-
-
-
-
-
         getFragmentManager().beginTransaction().replace(
-          android.R.id.content,
+                android.R.id.content,
                 new SettingFragment()
 
         ).commit();
     }
 
-    public static class SettingFragment extends PreferenceFragment{
+    public static class SettingFragment extends PreferenceFragment {
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,22 +35,20 @@ public class Settings extends PreferenceActivity {
         }
 
 
-        private static Preference.OnPreferenceChangeListener listener=new Preference.OnPreferenceChangeListener() {
+        private static Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                if(preference instanceof SwitchPreference){
-                    SwitchPreference switchPreference=(SwitchPreference)preference;
+                if (preference instanceof SwitchPreference) {
+                    SwitchPreference switchPreference = (SwitchPreference) preference;
 
-                    if(switchPreference.getKey().equals("personalCompany")){
+                    if (switchPreference.getKey().equals("personalCompany")) {
                         //
-                        Log.d("personalcompany","click");
+                        Log.d("personalcompany", "click");
                     }
 
 
-
                 }
-
 
 
                 return true;

@@ -31,7 +31,6 @@ import com.example.muzafarimran.lastingsales.activities.ContactDetailsTabActivit
 import com.example.muzafarimran.lastingsales.adapters.LSStageSpinAdapter;
 import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.utils.DynamicColums;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
@@ -41,6 +40,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.DynamicColums;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import org.json.JSONArray;
@@ -175,7 +175,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
         save = view.findViewById(R.id.dealsave);
 
-        tvDefaultText = (TextView) view.findViewById(R.id.tvDefaultText);
+        tvDefaultText = view.findViewById(R.id.tvDefaultText);
 //        bSave = (Button) view.findViewById(R.id.bSave);
         tvDefaultText.setVisibility(View.GONE);
 //        bSave.setVisibility(View.GONE);
@@ -217,7 +217,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -233,7 +233,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -249,10 +249,10 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
 
-                }else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
-                            new String[]{list.get(i).getServerId(),String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -271,7 +271,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
-                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
 
@@ -362,7 +362,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
 
 
-                    EditText editText = (EditText) gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
+                    EditText editText = gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
 
                     String val = editText.getText().toString();
 
@@ -372,7 +372,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
-                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -384,7 +384,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-                        LSDeal lsDeal=LSDeal.findById(LSDeal.class,args.getLong("someId"));
+                        LSDeal lsDeal = LSDeal.findById(LSDeal.class, args.getLong("someId"));
                         lsProperty1.setDealOfProperty(lsDeal);
 
                         lsProperty1.save();
@@ -397,7 +397,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
 
 
-                    EditText editText = (EditText) gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
+                    EditText editText = gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
 
                     String val = editText.getText().toString();
 
@@ -405,7 +405,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
-                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -417,7 +417,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-                        LSDeal lsDeal=LSDeal.findById(LSDeal.class,args.getLong("someId"));
+                        LSDeal lsDeal = LSDeal.findById(LSDeal.class, args.getLong("someId"));
                         lsProperty1.setDealOfProperty(lsDeal);
                         lsProperty1.save();
 
@@ -425,10 +425,11 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     }
 
 
-                }  if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
+                }
+                if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
 
 
-                    EditText editText = (EditText) gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
+                    EditText editText = gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
 
                     String val = editText.getText().toString();
 
@@ -436,7 +437,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
-                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -448,7 +449,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-                        LSDeal lsDeal=LSDeal.findById(LSDeal.class,args.getLong("someId"));
+                        LSDeal lsDeal = LSDeal.findById(LSDeal.class, args.getLong("someId"));
                         lsProperty1.setDealOfProperty(lsDeal);
                         lsProperty1.save();
 
@@ -459,14 +460,14 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
 
 
-                    Spinner spinner = (Spinner) gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
+                    Spinner spinner = gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
 
                     String val = spinner.getSelectedItem().toString();
 
                     //Toast.makeText(mContext, "Spinner "+val, Toast.LENGTH_SHORT).show();
 
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
-                            new String[]{list.get(i).getServerId(), String.valueOf(args.getLong("someId"))});
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
@@ -478,7 +479,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
                         lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-                        LSDeal lsDeal=LSDeal.findById(LSDeal.class,args.getLong("someId"));
+                        LSDeal lsDeal = LSDeal.findById(LSDeal.class, args.getLong("someId"));
                         lsProperty1.setDealOfProperty(lsDeal);
                         lsProperty1.save();
 
@@ -594,7 +595,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         mContext.startActivity(detailsActivityIntent);
                     }
                 });
-            }else {
+            } else {
                 View myLayout = getView().findViewById(R.id.include);
                 myLayout.setVisibility(View.GONE);
             }
@@ -708,15 +709,15 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 //    }
 
     private void addViews(View view) {
-        valueEditText = (EditText) view.findViewById(R.id.valueEditText);
-        currencyTextView = (TextView) view.findViewById(R.id.currencyTextView);
+        valueEditText = view.findViewById(R.id.valueEditText);
+        currencyTextView = view.findViewById(R.id.currencyTextView);
 //        success_rateEditText = (EditText) view.findViewById(R.id.success_rateEditText);
 //        success_ETAEditText = (EditText) view.findViewById(R.id.success_ETAEditText);
-        created_agoTextView = (TextView) view.findViewById(R.id.created_agoTextView);
+        created_agoTextView = view.findViewById(R.id.created_agoTextView);
     }
 
     public void addItemsOnSpinnerDealIsPrivate(View view) {
-        isPrivateSpinner = (Spinner) view.findViewById(R.id.isPrivateSpinner);
+        isPrivateSpinner = view.findViewById(R.id.isPrivateSpinner);
         List<String> list = new ArrayList<String>();
         list.add("Company");
         list.add("Private");
@@ -726,7 +727,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
     }
 
     public void addItemsOnSpinnerDealStage(View view) {
-        stageSpinner = (Spinner) view.findViewById(R.id.stage_spinner);
+        stageSpinner = view.findViewById(R.id.stage_spinner);
         LSWorkflow defaultWorkFlow = LSWorkflow.getDefaultWorkflow();
         Collection<LSStage> lsStages = LSStage.getAllStagesInPositionSequenceByWorkflowServerId(defaultWorkFlow.getServerId());
         if (lsStages != null) {

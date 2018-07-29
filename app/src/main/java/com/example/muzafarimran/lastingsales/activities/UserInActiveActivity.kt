@@ -8,20 +8,20 @@ import com.example.muzafarimran.lastingsales.SessionManager
 import kotlinx.android.synthetic.main.activity_company_inactive.*
 
 class UserInActiveActivity : AppCompatActivity() {
-        companion object {
-            const val KEY_MESSAGE = "message"
-        }
+    companion object {
+        const val KEY_MESSAGE = "message"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_inactive)
 //        supportActionBar!!.title = "About"
 
-        val intent = getIntent();
+        val intent = intent
         val ss: String = intent.getStringExtra(KEY_MESSAGE)
-        if (ss != null){
+        if (ss != null) {
 //            tvMsg.text = ss
-        }else {
+        } else {
 //            tvMsg.text = "Calling"
         }
 

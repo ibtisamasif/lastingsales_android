@@ -88,7 +88,7 @@ public class SettingsManager {
     }
 
 
-    public void trashData(){
+    public void trashData() {
         setKeyStateIsCompanyPhone(false);
 
     }

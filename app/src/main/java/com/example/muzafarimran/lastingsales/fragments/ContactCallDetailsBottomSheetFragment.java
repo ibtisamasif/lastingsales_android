@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.carditems.ConnectionItem;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
@@ -46,6 +47,7 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
                 dismiss();
             }
         }
+
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
         }
@@ -81,7 +83,7 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
         list.add(contactHeaderBottomsheetItem);
 
         LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(selectedContact.getPhoneOne());
-        if (lsContactProfile != null){
+        if (lsContactProfile != null) {
             SeparatorItem separatorItemlsContactProfile = new SeparatorItem();
             separatorItemlsContactProfile.text = "Profile";
             list.add(separatorItemlsContactProfile);
@@ -111,8 +113,8 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
         list.add(connectionItem);
 
 
-        Collection<LSCall> allCallsOfThisContact = (Collection<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(selectedContact.getPhoneOne())).orderBy("begin_time DESC").list();
-        if (allCallsOfThisContact != null){
+        Collection<LSCall> allCallsOfThisContact = Select.from(LSCall.class).where(Condition.prop("contact_number").eq(selectedContact.getPhoneOne())).orderBy("begin_time DESC").list();
+        if (allCallsOfThisContact != null) {
             SeparatorItem separatorItemallCallsOfThisContact = new SeparatorItem();
             separatorItemallCallsOfThisContact.text = "Call History";
             list.add(separatorItemallCallsOfThisContact);
@@ -124,7 +126,7 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setNestedScrollingEnabled(false);
-        NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet);
+        NestedScrollView nestedScrollView = view.findViewById(R.id.bottom_sheet);
         nestedScrollView.setScrollY(0);
     }
 
@@ -138,7 +140,7 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
         list.add(contactHeaderBottomsheetItem);
 
         LSContactProfile lsContactProfile = LSContactProfile.getProfileFromNumber(selectedContact.getPhoneOne());
-        if (lsContactProfile != null){
+        if (lsContactProfile != null) {
             SeparatorItem separatorItemlsContactProfile = new SeparatorItem();
             separatorItemlsContactProfile.text = "Profile";
             list.add(separatorItemlsContactProfile);
@@ -155,8 +157,8 @@ public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFrag
         list.add(connectionItem);
 
 
-        Collection<LSCall> allCallsOfThisContact = (Collection<LSCall>) Select.from(LSCall.class).where(Condition.prop("contact_number").eq(selectedContact.getPhoneOne())).orderBy("begin_time DESC").list();
-        if (allCallsOfThisContact != null){
+        Collection<LSCall> allCallsOfThisContact = Select.from(LSCall.class).where(Condition.prop("contact_number").eq(selectedContact.getPhoneOne())).orderBy("begin_time DESC").list();
+        if (allCallsOfThisContact != null) {
             SeparatorItem separatorItemallCallsOfThisContact = new SeparatorItem();
             separatorItemallCallsOfThisContact.text = "Call History";
             list.add(separatorItemallCallsOfThisContact);

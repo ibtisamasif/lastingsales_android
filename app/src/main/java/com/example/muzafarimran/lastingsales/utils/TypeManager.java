@@ -12,7 +12,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 
 @Deprecated
 public class TypeManager {
-    public static void ConvertTo(Context context, LSContact tempContact, String oldType, String newtype ) {
+    public static void ConvertTo(Context context, LSContact tempContact, String oldType, String newtype) {
 
         if (oldType.equals(LSContact.CONTACT_TYPE_SALES)) {
             // from sales to any type

@@ -59,12 +59,12 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
             tvContactNumber.setVisibility(View.VISIBLE);
             if (contact.getContactName() != null) {
                 tvContactName.setText(contact.getContactName());
-            }else {
+            } else {
                 tvContactName.setText("");
             }
             if (contact.getPhoneOne() != null) {
                 tvContactNumber.setText(contact.getPhoneOne());
-            }else {
+            } else {
                 tvContactNumber.setText("");
             }
             if (contact.getContactProfile() != null) {
@@ -85,12 +85,12 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
             tvOrganizationNumber.setVisibility(View.VISIBLE);
             if (organization.getName() != null) {
                 tvOrganizationName.setText(organization.getName());
-            }else {
+            } else {
                 tvOrganizationName.setText("");
             }
             if (organization.getPhone() != null) {
                 tvOrganizationNumber.setText(organization.getPhone());
-            }else {
+            } else {
                 tvOrganizationNumber.setText("");
             }
 //            if(organization.getContactProfile()!=null){

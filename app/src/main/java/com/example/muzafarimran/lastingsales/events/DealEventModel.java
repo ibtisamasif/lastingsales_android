@@ -12,7 +12,7 @@ public class DealEventModel {
     }
 
     @Produce
-    public DealEventModel geLastCallReceivedEvent(){
+    public DealEventModel geLastCallReceivedEvent() {
         return this;
     }
 

@@ -23,10 +23,9 @@ public class LargeImageActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String imageUrl = bundle.getString(LargeImageActivity.IMAGE_URL);
-            SimpleDraweeView user_avatar = (SimpleDraweeView) findViewById(R.id.user_avatar);
+            SimpleDraweeView user_avatar = findViewById(R.id.user_avatar);
             imageFunc(user_avatar, imageUrl);
-        }
-        else {
+        } else {
             finish();
         }
     }

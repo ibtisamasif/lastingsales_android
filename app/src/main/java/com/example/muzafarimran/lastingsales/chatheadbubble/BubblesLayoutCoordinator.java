@@ -42,7 +42,8 @@ public final class BubblesLayoutCoordinator {
         return INSTANCE;
     }
 
-    private BubblesLayoutCoordinator() { }
+    private BubblesLayoutCoordinator() {
+    }
 
     public void notifyBubblePositionChanged(BubbleLayout bubble, int x, int y) {
         if (trashView != null) {

@@ -31,7 +31,7 @@ public class ViewHolderCommentCard extends RecyclerView.ViewHolder {
 
     public void bind(Object item, int position, Context mContext) {
         final CommentItem commentItem = (CommentItem) item;
-        singleMessageContainer.setGravity(commentItem.isLeft()  ? Gravity.LEFT : Gravity.RIGHT);
+        singleMessageContainer.setGravity(commentItem.isLeft() ? Gravity.LEFT : Gravity.RIGHT);
         tvComment.setText(commentItem.getCommentText());
         tvComment.setBackgroundResource(commentItem.isLeft() ? R.drawable.bubble_b : R.drawable.bubble_a);
 

@@ -36,7 +36,7 @@ public class DealsOfAOrganizationLoader extends AsyncTaskLoader<List<Object>> {
 
     @Override
     public List<Object> loadInBackground() {
-        LSOrganization lsOrganization  = LSOrganization.findById(LSOrganization.class, organizationIdLong);
+        LSOrganization lsOrganization = LSOrganization.findById(LSOrganization.class, organizationIdLong);
 
         if (lsOrganization != null) {
             List<Object> data = new ArrayList<Object>();

@@ -25,7 +25,6 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.CreateCompanyActivity;
 import com.example.muzafarimran.lastingsales.activities.LogInActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
-import com.example.muzafarimran.lastingsales.activities.TutorialScreenActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.customview.CustomViewPager;
 import com.example.muzafarimran.lastingsales.sync.MyURLs;
@@ -60,7 +59,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding);
-        indicator = (LinearLayout) findViewById(R.id.indicators);
+        indicator = findViewById(R.id.indicators);
         viewPager = findViewById(R.id.viewpager);
         FragmentManager fm = getSupportFragmentManager();
         tutorialsFragmentPagerAdapter = new TutorialsFragmentPagerAdapter(fm);
@@ -240,7 +239,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.SIGNUP_URL, response -> {
             Log.d(TAG, "onResponse() called with: response = [" + response + "]");
 //                pdLoading.dismiss();
-                try {
+            try {
                 JSONObject jObj = new JSONObject(response);
                 int responseCode = jObj.getInt("responseCode");
                 if (responseCode == 200) {

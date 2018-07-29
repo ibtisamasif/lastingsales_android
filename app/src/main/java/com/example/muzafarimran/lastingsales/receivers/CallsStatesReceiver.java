@@ -11,14 +11,11 @@ import com.example.muzafarimran.lastingsales.chatheadbubble.FlyerBubbleHelper;
 import com.example.muzafarimran.lastingsales.events.IncomingCallEventModel;
 import com.example.muzafarimran.lastingsales.events.MissedCallEventModel;
 import com.example.muzafarimran.lastingsales.events.OutgoingCallEventModel;
-
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.CallLogEngineIntentService;
-
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +26,7 @@ import de.halfbit.tinybus.TinyBus;
  * Created by ahmad on 08-Nov-16.
  */
 
-public class CallsStatesReceiver extends CallReceiver{
+public class CallsStatesReceiver extends CallReceiver {
     public static final String OUTGOINGCALL_CONTACT_ID = "outgoing_contact_id";
     public static final String INCOMINGCALL_CONTACT_ID = "incoming_contact_id";
     public static final String OUTGOINGCALL_CONTACT_NOTE_ID = "outgoing_contact_note_id";
@@ -287,7 +284,7 @@ public class CallsStatesReceiver extends CallReceiver{
         */
 
 
-        ctx.startService(new Intent(ctx,CallLogEngineIntentService.class));
+        ctx.startService(new Intent(ctx, CallLogEngineIntentService.class));
 
 
         IncomingCallEventModel InCallEvent = new IncomingCallEventModel(IncomingCallEventModel.CALL_TYPE_INCOMING);
@@ -404,7 +401,7 @@ public class CallsStatesReceiver extends CallReceiver{
      /*   final TheCallLogEngine theCallLogEngine = new TheCallLogEngine(ctx);
         theCallLogEngine.execute();*/
 
-        ctx.startService(new Intent(ctx,CallLogEngineIntentService.class));
+        ctx.startService(new Intent(ctx, CallLogEngineIntentService.class));
 
 
         OutgoingCallEventModel outCallEvent = new OutgoingCallEventModel(OutgoingCallEventModel.CALL_TYPE_OUTGOING);
@@ -512,7 +509,7 @@ public class CallsStatesReceiver extends CallReceiver{
         theCallLogEngine.execute();*/
 
 
-        ctx.startService(new Intent(ctx,CallLogEngineIntentService.class));
+        ctx.startService(new Intent(ctx, CallLogEngineIntentService.class));
 
 
         MissedCallEventModel mCallEvent = new MissedCallEventModel(MissedCallEventModel.CALL_TYPE_MISSED);

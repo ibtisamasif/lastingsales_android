@@ -20,6 +20,7 @@ public class SplashActivity extends Activity {
             @Override
             public void onTick(long millisUntilFinished) {
             }
+
             @Override
             public void onFinish() {
                 Intent intent = new Intent(SplashActivity.this, NavigationBottomMainActivity.class);

@@ -56,7 +56,7 @@ public class OrganizationRecyclerAdapter extends RecyclerView.Adapter<Organizati
         Collection<LSDeal> deals = organization.getAllDeals();
         if (deals != null && deals.size() > 0) {
             holder.add_deal_icon.setImageResource(R.drawable.ic_monetization_on_grey_24dp);
-        }else {
+        } else {
             holder.add_deal_icon.setImageResource(R.drawable.ic_monetization_on_24dp);
         }
         holder.add_deal_icon.setOnClickListener(new View.OnClickListener() {

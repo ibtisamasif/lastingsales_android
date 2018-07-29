@@ -1,12 +1,10 @@
 package com.example.muzafarimran.lastingsales.utils;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.Calendar;
 
@@ -17,7 +15,7 @@ import java.util.Calendar;
 public class IgnoredContact {
 
     public static void AddAsIgnoredContact(Context context, String contactPhone, String contactName) {
-        if (contactPhone != null && contactPhone != ""){
+        if (contactPhone != null && contactPhone != "") {
             String intlNum = PhoneNumberAndCallUtils.numberToInterNationalNumber(context, contactPhone);
             LSContact checkContact;
             checkContact = LSContact.getContactFromNumber(intlNum);

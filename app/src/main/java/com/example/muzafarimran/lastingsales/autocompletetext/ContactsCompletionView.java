@@ -16,8 +16,9 @@ import com.tokenautocomplete.TokenCompleteTextView;
 
 /**
  * Sample token completion view for basic contact info
- *
+ * <p>
  * Created on 9/12/13.
+ *
  * @author mgod
  */
 public class ContactsCompletionView extends TokenCompleteTextView<LSContact> {
@@ -38,7 +39,7 @@ public class ContactsCompletionView extends TokenCompleteTextView<LSContact> {
 
     @Override
     protected View getViewForObject(LSContact lsContact) {
-        LayoutInflater l = (LayoutInflater)getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         TokenTextView token = (TokenTextView) l.inflate(R.layout.contact_token, (ViewGroup) getParent(), false);
         token.setText(lsContact.getContactName());
         return token;

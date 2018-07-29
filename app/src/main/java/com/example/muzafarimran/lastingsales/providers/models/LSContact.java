@@ -74,7 +74,7 @@ public class LSContact extends SugarRecord {
 
     public LSContact(String contactName, String contactEmail, String contactType, String phoneOne,
                      String phoneTwo, String contactDescription, String contactCompany,
-                     String contactAddress,String isContactSave) {
+                     String contactAddress, String isContactSave) {
         this.contactName = contactName;
         this.contactEmail = contactEmail;
         this.contactType = contactType;
@@ -83,7 +83,7 @@ public class LSContact extends SugarRecord {
         this.contactDescription = contactDescription;
         this.contactCompany = contactCompany;
         this.contactAddress = contactAddress;
-        this.isContactSave=isContactSave;
+        this.isContactSave = isContactSave;
     }
 
     public static List<LSContact> getContactsInDescOrder() {
@@ -101,9 +101,6 @@ public class LSContact extends SugarRecord {
             return new ArrayList<LSContact>();
         }
     }
-
-
-
 
 
     public static List<LSContact> getFrequentContactsByTypeInDescOrder() {
@@ -615,8 +612,6 @@ public class LSContact extends SugarRecord {
     public String toString() {
         return contactName;
     }
-
-
 
 
 }

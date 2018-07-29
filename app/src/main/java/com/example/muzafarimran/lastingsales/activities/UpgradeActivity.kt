@@ -8,18 +8,18 @@ import com.example.muzafarimran.lastingsales.R
 import kotlinx.android.synthetic.main.activity_trial_expiry.*
 
 class UpgradeActivity : AppCompatActivity() {
-        companion object {
-            const val KEY_MESSAGE = "message"
-        }
+    companion object {
+        const val KEY_MESSAGE = "message"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upgrade)
 //        supportActionBar!!.title = "About"
 
-        val intent = getIntent();
+        val intent = intent
         val ss: String = intent.getStringExtra(KEY_MESSAGE)
-        if (ss != null){
+        if (ss != null) {
             tvMsg.text = ss
         }
 

@@ -68,9 +68,6 @@ public class SessionManager {
     public static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
 
 
-
-
-
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffs";
     // Shared Preferences
@@ -90,9 +87,8 @@ public class SessionManager {
     }
 
 
-
-    public  boolean getIsFirstTimeLaunch() {
-        return pref.getBoolean(IS_FIRST_TIME_LAUNCH,false);
+    public boolean getIsFirstTimeLaunch() {
+        return pref.getBoolean(IS_FIRST_TIME_LAUNCH, false);
 
 
     }
@@ -155,10 +151,7 @@ public class SessionManager {
         Long oldTimestamp = getLoginTimestamp();
         Long currentTimestamp = Calendar.getInstance().getTimeInMillis();
         Long oldAnd24Hours = oldTimestamp + 15552000000L; //Six months expiry
-        if (currentTimestamp > oldAnd24Hours) {
-            return false;
-        }
-        return true;
+        return currentTimestamp <= oldAnd24Hours;
     }
 
     public void loginnUser(String userId, String token, Long timeStamp, String number, String firstName, String lastName, String imagePath, String email, String company_id, String company_name, String role_id, String role_role) {
@@ -311,7 +304,6 @@ public class SessionManager {
         editor.putString(KEY_LOGIN_LASTNAME, name);
         editor.commit();
     }
-
 
 
     public String getKeyLoginImagePath() {
