@@ -23,6 +23,7 @@ import java.util.List;
 public class CallProcessor {
     public static final String TAG = "CallProcessor";
     private static final long MILLIS_10_MINUTES = 600000;
+    private static final long MILLIS_20_MINUTES = 1200000;
 
     public static void Process(Context mContext, LSCall call, boolean showNotification) {
 
@@ -48,17 +49,13 @@ public class CallProcessor {
                             return;
                         } else {
                             Log.d(TAG, call.getContactNumber());
-                            if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-                                showDialog(mContext, call, showNotification);
-                            }
+                            showDialog(mContext, call, showNotification);
                             saveCallLogs(call);
                             case3(call);
                         }
                     } else {
                         Log.d(TAG, "iscontactSave is NULL");
-                        if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-                            showDialog(mContext, call, showNotification);
-                        }
+                        showDialog(mContext, call, showNotification);
                         saveCallLogs(call);
                         case3(call);
                     }
@@ -73,9 +70,7 @@ public class CallProcessor {
 
                     if (saveContact.save() > 0) {
                         Log.d(TAG, "save contact no");
-                        if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-                            showDialog(mContext, call, showNotification);
-                        }
+                        showDialog(mContext, call, showNotification);
                         saveCallLogs(call);
                         case3(call);
                     }
@@ -93,12 +88,8 @@ public class CallProcessor {
                     saveCallLogs(call);
                     case3(call);
                 } else {
-                    if (call.getType().equals(LSCall.CALL_TYPE_OUTGOING) || call.getType().equals(LSCall.CALL_TYPE_INCOMING)) {
-                        showDialog(mContext, call, showNotification);
-                    }
+                    showDialog(mContext, call, showNotification);
                 }
-                Log.d(TAG, "personal call type" + call.getType());
-                Log.d(TAG, "personal show dialog" + String.valueOf(showNotification));
             }
         }
     }
@@ -192,16 +183,16 @@ public class CallProcessor {
     }
 
     private static void showDialog(Context mContext, LSCall call, boolean showNotification) {
-//        if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
+        if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) || call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
+            if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
 //            CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
-//        }
-        //TODO replace below code with above one in future. To use single service for flyer and for after call dialog.
-        if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
-            Intent intent = new Intent(mContext, CallService.class);
-            intent.putExtra("no", call.getContactNumber());
-            intent.putExtra("name", call.getContactName());
-            Log.d("start dialog service", "function call");
-            mContext.startService(intent);
+                //TODO replace below code with above one in future. To use single service for flyer and for after call dialog.
+                Intent intent = new Intent(mContext, CallService.class);
+                intent.putExtra("no", call.getContactNumber());
+                intent.putExtra("name", call.getContactName());
+                Log.d("start dialog service", "function call");
+                mContext.startService(intent);
+            }
         }
     }
 

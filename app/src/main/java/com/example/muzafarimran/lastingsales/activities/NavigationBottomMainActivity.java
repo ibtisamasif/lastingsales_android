@@ -692,7 +692,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     Intent intentInitService = new Intent(this, InitService.class);
                     startService(intentInitService);
 //                    progressDialog.show();
-//                    sessionManager.fetchData();
                 } else {
                     Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_SHORT).show();
                 }

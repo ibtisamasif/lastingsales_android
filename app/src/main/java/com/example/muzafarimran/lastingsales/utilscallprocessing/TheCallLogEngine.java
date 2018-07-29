@@ -14,6 +14,7 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import java.sql.Date;
 import java.util.Arrays;
 
+
 */
 /**
  * Created by ibtisam on 3/3/2017.
@@ -76,12 +77,6 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
         }
 //        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,latestCallQuery , null, "date DESC limit 10");
 //        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, "_id >= 1" , null, "date DESC limit 100");
-//        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,
-//
-//
-//
-//
-// " + LSCall.getCallHavingLatestCallLogId().getCallLogId() , null, "date DESC limit 10");
 
         try {
 
@@ -146,32 +141,31 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
                     tempCall.setContactName(callName);
                     tempCall.setBeginTime(Long.parseLong(callDate));
                     tempCall.setDuration(Long.parseLong(callDuration));
-                    tempCall.setType(callType);
-//                    if (callType.equals("1") && tempCall.getDuration() > 0L) {           //Incoming
-//
-//                        tempCall.setType(LSCall.CALL_TYPE_INCOMING);
-//
-//                    } else if (callType.equals("2") && tempCall.getDuration() == 0L) {  //Outgoing UnAnswered
-//                        tempCall.setType(LSCall.CALL_TYPE_UNANSWERED);
-//
-//                    } else if (callType.equals("2")) {      //Outgoing Answered
-//                        tempCall.setType(LSCall.CALL_TYPE_OUTGOING);
-//
-//                    } else if (callType.equals("3")) {      //Missed
-//                        tempCall.setType(LSCall.CALL_TYPE_MISSED);
-//
-//                    } else if (callType.equals("5") || callType.equals("1") || callType.equals("10") && tempCall.getDuration() == 0L) {        // Incoming Rejected
-//                        tempCall.setType(LSCall.CALL_TYPE_REJECTED);
-//                    }
+                    if (callType.equals("1") && tempCall.getDuration() > 0L) {           //Incoming
+
+                        tempCall.setType(LSCall.CALL_TYPE_INCOMING);
+
+                    } else if (callType.equals("2") && tempCall.getDuration() == 0L) {  //Outgoing UnAnswered
+                        tempCall.setType(LSCall.CALL_TYPE_UNANSWERED);
+
+                    } else if (callType.equals("2")) {      //Outgoing Answered
+                        tempCall.setType(LSCall.CALL_TYPE_OUTGOING);
+
+                    } else if (callType.equals("3")) {      //Missed
+                        tempCall.setType(LSCall.CALL_TYPE_MISSED);
+
+                    } else if (callType.equals("5") || callType.equals("1") || callType.equals("10") && tempCall.getDuration() == 0L) {        // Incoming Rejected
+                        tempCall.setType(LSCall.CALL_TYPE_REJECTED);
+                    }
                     try {
-                        //CallProcessor.Process(mContext, tempCall, showNotification);
+                        CallProcessor.Process(mContext, tempCall, showNotification);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             } while (managedCursor.moveToPrevious());
             if (reRun) {
-               //CallLogFunc();
+                CallLogFunc();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,4 +175,5 @@ public class TheCallLogEngine extends AsyncTask<Object, Void, Void> {
             }
         }
     }
-}*/
+}
+*/

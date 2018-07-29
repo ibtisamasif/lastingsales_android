@@ -111,6 +111,8 @@ public class DealDetailsTabActivity extends AppCompatActivity {
                     }
                 }
             });
+        } else {
+            finish();
         }
     }
 

@@ -31,7 +31,6 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
     private final TextView tvOrganizationName;
     private final TextView tvOrganizationNumber;
     private final TextView tvDealName;
-    private final TextView tvDealDescription;
 //    private final ImageView ivTick;
 
     public ViewHolderDealCard(View v) {
@@ -45,7 +44,6 @@ public class ViewHolderDealCard extends RecyclerView.ViewHolder {
         tvOrganizationName = v.findViewById(R.id.tvOrganizationName);
         tvOrganizationNumber = v.findViewById(R.id.tvOrganizationNumber);
         tvDealName = v.findViewById(R.id.tvDealName);
-        tvDealDescription = v.findViewById(R.id.tvDealDescription);
 //        ivTick = v.findViewById(R.id.ivTick);
 
     }

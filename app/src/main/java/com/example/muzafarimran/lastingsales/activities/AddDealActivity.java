@@ -71,6 +71,7 @@ public class AddDealActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_deal);
+        etDealName = (EditText) findViewById(R.id.etNameAddDeal);
         etLeadAddDeal = (EditText) findViewById(R.id.etLeadAddDeal);
         acLeadAddDeal = (ContactsCompletionView) findViewById(R.id.acLeadAddDeal);
         etOrganizationAddDeal = (EditText) findViewById(R.id.etOrganizationAddDeal);
@@ -123,7 +124,6 @@ public class AddDealActivity extends AppCompatActivity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
-
                     LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
                     convertView = l.inflate(R.layout.person_layout, parent, false);
                 }
@@ -170,6 +170,7 @@ public class AddDealActivity extends AppCompatActivity {
             @Override
             public void onTokenAdded(LSContact token) {
                 selectedContact = token;
+                etDealName.setText(selectedContact.getContactName() + " Deal");
             }
 
             @Override
@@ -193,28 +194,49 @@ public class AddDealActivity extends AppCompatActivity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
-
                     LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
                     convertView = l.inflate(R.layout.person_layout, parent, false);
                 }
                 LSOrganization lsOrganization = getItem(position);
-                ((TextView) convertView.findViewById(R.id.name)).setText(lsOrganization.getName());
-                ((TextView) convertView.findViewById(R.id.number)).setText(lsOrganization.getPhone());
-                return convertView;
+                if (lsOrganization != null) {
+                    if (lsOrganization.getName() != null) {
+                        ((TextView) convertView.findViewById(R.id.name)).setText(lsOrganization.getName());
+                    } else {
+                        ((TextView) convertView.findViewById(R.id.name)).setText("");
+                    }
+                    if (lsOrganization.getPhone() != null) {
+                        ((TextView) convertView.findViewById(R.id.number)).setText(lsOrganization.getPhone());
+                    } else {
+                        ((TextView) convertView.findViewById(R.id.number)).setText("");
+                    }
+                    return convertView;
+                } else {
+                    return null;
+                }
             }
 
             @Override
             protected boolean keepObject(LSOrganization lsOrganization, String mask) {
                 mask = mask.toLowerCase();
                 if (lsOrganization.getName() != null) {
-                    if (lsOrganization.getName().toLowerCase().contains(mask) || lsOrganization.getPhone().toLowerCase().contains(mask)) {
+                    if (lsOrganization.getName().toLowerCase().contains(mask)) {
                         return true;
                     } else {
                         return false;
                     }
-                } else return false;
+                } else if (lsOrganization.getPhone() != null) {
+                    if (lsOrganization.getPhone().toLowerCase().contains(mask)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             }
         };
+
+
         acOrganizationAddDeal.setAdapter(adapterOrganizations);
         acOrganizationAddDeal.setTokenListener(new TokenCompleteTextView.TokenListener<LSOrganization>() {
             @Override
@@ -238,7 +260,6 @@ public class AddDealActivity extends AppCompatActivity {
             }
         }
 
-        etDealName = (EditText) findViewById(R.id.etNameAddDeal);
         if (selectedContact != null) {
             if (selectedContact.getContactName() != null) {
                 etDealName.setText(selectedContact.getContactName() + " Deal");
@@ -264,7 +285,7 @@ public class AddDealActivity extends AppCompatActivity {
         bSaveAddDeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedContact != null || selectedOrganization != null) {
+                if (selectedContact != null) {
                     String dealName = etDealName.getText().toString();
                     String dealValue = etValueAddDeal.getText().toString();
                     if (isValid(dealName)) {
@@ -296,7 +317,7 @@ public class AddDealActivity extends AppCompatActivity {
                         dataSenderAsync.run();
                     }
                 } else {
-                    Toast.makeText(AddDealActivity.this, "Please select a contact or Organization", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddDealActivity.this, "Please select a contact", Toast.LENGTH_SHORT).show();
                 }
             }
         });

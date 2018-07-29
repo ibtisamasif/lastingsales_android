@@ -149,6 +149,8 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                     }
                 }
             }
+        }else {
+            finish();
         }
     }
 

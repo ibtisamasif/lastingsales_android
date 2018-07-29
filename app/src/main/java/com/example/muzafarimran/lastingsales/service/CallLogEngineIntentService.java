@@ -8,6 +8,7 @@ import android.provider.CallLog;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.muzafarimran.lastingsales.SettingsManager;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -16,7 +17,10 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.CallTypeManager
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+
+/**
+ * Created by amir & Modified by ibtisam on 7/29/2018.
+ */
 
 public class CallLogEngineIntentService extends IntentService {
 
@@ -59,24 +63,15 @@ public class CallLogEngineIntentService extends IntentService {
     }
 
     private void CallLogFunc() {
-/*
-
-        List<LSCall> ls = LSCall.listAll(LSCall.class);
-        List<LSInquiry> lsInquiries = LSInquiry.listAll(LSInquiry.class);
-*/
 
         boolean showNotification = false;
 
         String latestCallQuery;
         Cursor managedCursor;
 
-        List<LSCall> list = LSCall.listAll(LSCall.class);
-
         LSCall myCall = LSCall.getCallHavingLatestCallLogId();
         if (myCall != null) {
             Log.d(TAG, "getLatestCallLogId: " + myCall.getCallLogId());
-
-            //fixme id> !>= and get limiting contacts
             latestCallQuery = "_id >= " + myCall.getCallLogId();
             managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, latestCallQuery, null, "date DESC");
         } else {
@@ -84,9 +79,6 @@ public class CallLogEngineIntentService extends IntentService {
             latestCallQuery = null;
             managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, latestCallQuery, null, "date DESC limit 10");
         }
-//        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null,latestCallQuery , null, "date DESC limit 10");
-//        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, "_id >= 1" , null, "date DESC limit 100");
-//        Cursor managedCursor = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, "_id = " + LSCall.getCallHavingLatestCallLogId().getCallLogId() , null, "date DESC limit 10");
 
         try {
 
@@ -99,9 +91,6 @@ public class CallLogEngineIntentService extends IntentService {
             int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
             int name = managedCursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
 
-//            int accountId = managedCursor.getColumnIndex(CallLog.Calls.PHONE_ACCOUNT_ID); //in OPPO sim1 = 1 & sim2 = 3
-//            int subs = managedCursor.getColumnIndex(SUB_ID); //in OPPO sim1 = 1 & sim2 = 3 // in Huawei sim1 = 0 & sim2 = 1
-
             managedCursor.moveToLast();
             do {
                 if (managedCursor.isFirst()) {
@@ -110,8 +99,6 @@ public class CallLogEngineIntentService extends IntentService {
                 }
                 Log.d(TAG, "CallLogFunc: Index: " + managedCursor.getPosition());
                 if (managedCursor.getPosition() == -1) {
-
-                    // FIXME: 07/23/2018 break
                     return;
                 }
                 String callId = managedCursor.getString(id);
@@ -122,26 +109,20 @@ public class CallLogEngineIntentService extends IntentService {
                 Date callDayTime = new Date(Long.valueOf(callDate));
                 String callDuration = managedCursor.getString(duration);
 
-//                String callAccountId = managedCursor.getString(accountId);
-//                String callSubs = managedCursor.getString(subs);
-
                 if (LSCall.ifExist(callId)) {
                     Log.d(TAG, "ID: " + callId);
                     Log.d(TAG, "Exists: ");
                     reRun = false;
                     continue;
                 } else {
-//                    Log.d(TAG, "SUBSCRIBER_ID: " + callAccountId);
-//                    Log.d(TAG, "SUBSCRIBER: " + callSubs);
-
-                    Log.d(TAG, "CallId: " + callId);
-                    Log.d(TAG, "CallNumber: " + callNumber);
-                    Log.d(TAG, "CallName: " + callName);
-                    Log.d(TAG, "callType: " + callType);
-                    Log.d(TAG, "callBeginTimeLong: " + callDate);
-                    Log.d(TAG, "callDate: " + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Long.parseLong(callDate)));
-                    Log.d(TAG, "callDayTime: " + callDayTime);
-                    Log.d(TAG, "callDuration: " + callDuration);
+                    Log.v(TAG, "CallId: " + callId);
+                    Log.w(TAG, "CallNumber: " + callNumber);
+                    Log.v(TAG, "CallName: " + callName);
+                    Log.v(TAG, "callType: " + callType);
+                    Log.v(TAG, "callBeginTimeLong: " + callDate);
+                    Log.v(TAG, "callDate: " + PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Long.parseLong(callDate)));
+                    Log.v(TAG, "callDayTime: " + callDayTime);
+                    Log.v(TAG, "callDuration: " + callDuration);
 
                     String internationalNumber = PhoneNumberAndCallUtils.numberToInterNationalNumber(mContext, callNumber);
                     if (internationalNumber == null) {
@@ -156,22 +137,6 @@ public class CallLogEngineIntentService extends IntentService {
                     tempCall.setSyncStatus(SyncStatus.SYNC_STATUS_CALL_ADD_NOT_SYNCED);
                     tempCall.setType(CallTypeManager.getCallType(callType, callDuration));
 
-                  /*  if (callType.equals("1") && tempCall.getDuration() > 0L) {           //Incoming
-
-                        tempCall.setType(LSCall.CALL_TYPE_INCOMING);
-
-                    } else if (callType.equals("2") && tempCall.getDuration() == 0L) {  //Outgoing UnAnswered
-                        tempCall.setType(LSCall.CALL_TYPE_UNANSWERED);
-
-                    } else if (callType.equals("2")) {      //Outgoing Answered
-                        tempCall.setType(LSCall.CALL_TYPE_OUTGOING);
-
-                    } else if (callType.equals("3")) {      //Missed
-                        tempCall.setType(LSCall.CALL_TYPE_MISSED);
-
-                    } else if (callType.equals("5") || callType.equals("1") || callType.equals("10") && tempCall.getDuration() == 0L) {        // Incoming Rejected
-                        tempCall.setType(LSCall.CALL_TYPE_REJECTED);
-                    }*/
                     try {
                         CallProcessor.Process(mContext, tempCall, showNotification);
                     } catch (Exception e) {
@@ -179,8 +144,10 @@ public class CallLogEngineIntentService extends IntentService {
                     }
                 }
             } while (managedCursor.moveToPrevious());
-            if (reRun) {
-                CallLogFunc();
+            if (new SettingsManager(mContext).getKeyStateIsCompanyPhone()) {
+                if (reRun) {
+                    CallLogFunc();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

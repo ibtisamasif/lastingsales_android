@@ -55,14 +55,6 @@
             app:layout_constraintStart_toEndOf="@+id/imSmartBadge"
             app:layout_constraintTop_toTopOf="@+id/imSmartBadge" />
 
-        <TextView
-            android:id="@+id/tvDealDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="description"
-            app:layout_constraintStart_toStartOf="@+id/tvDealName"
-            app:layout_constraintTop_toBottomOf="@+id/tvDealName" />
-
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_avatar"
             android:layout_width="24dp"
@@ -86,8 +78,8 @@
             android:layout_marginTop="8dp"
             android:ems="9"
             android:text="@string/unknown_capital"
-            app:layout_constraintStart_toStartOf="@+id/tvDealDescription"
-            app:layout_constraintTop_toBottomOf="@+id/tvDealDescription" />
+            app:layout_constraintStart_toStartOf="@+id/tvDealName"
+            app:layout_constraintTop_toBottomOf="@+id/tvDealName" />
 
         <TextView
             android:id="@+id/tvNumber"

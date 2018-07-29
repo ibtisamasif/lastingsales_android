@@ -154,6 +154,8 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                     }
                 }
             }
+        }else {
+            finish();
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.muzafarimran.lastingsales.viewholders;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
@@ -17,12 +18,15 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.activities.LargeImageActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
+import java.net.URLEncoder;
 import java.util.Calendar;
 
 import static android.view.View.GONE;
@@ -35,14 +39,15 @@ import static android.view.View.GONE;
 public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
     public static final String TAG = "ViewHolderInquiryCard";
 
-    private CardView cv_item;
-    private SimpleDraweeView user_avatar;
-    private TextView name;
-    private TextView time;
-    private ImageView call_icon;
-    private TextView number;
-    //    private Button bIgnore;
-    private Button bTag;
+    private final CardView cv_item;
+    private final SimpleDraweeView user_avatar;
+    private final TextView name;
+    private final TextView time;
+    private final ImageView whatsapp_icon;
+    private final ImageView call_icon;
+    private final TextView number;
+    //    private final Button bIgnore;
+    private final Button bTag;
     //    private TextView inquireyCount;
     private View.OnClickListener callClickListener = null;
     private LSContactProfile lsContactProfile;
@@ -54,6 +59,7 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
         this.user_avatar = view.findViewById(R.id.user_avatar);
         this.name = view.findViewById(R.id.tvContactName);
         this.time = view.findViewById(R.id.call_time);
+        this.whatsapp_icon = view.findViewById(R.id.whatsapp_icon);
         this.call_icon = view.findViewById(R.id.call_icon);
         this.number = view.findViewById(R.id.tvNumber);
 //        this.bIgnore = view.findViewById(R.id.bIgnore);
@@ -186,6 +192,25 @@ public class ViewHolderInquiryCard extends RecyclerView.ViewHolder {
                     myIntent.putExtra(AddEditLeadActivity.MIXPANEL_SOURCE, AddEditLeadActivity.MIXPANEL_SOURCE_INQUIRY);
                     mContext.startActivity(myIntent);
                 }
+            }
+        });
+
+        this.whatsapp_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PackageManager packageManager = mContext.getPackageManager();
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                try {
+                    String url = "https://api.whatsapp.com/send?phone=" + number + "&text=" + URLEncoder.encode("", "UTF-8");
+                    i.setPackage("com.whatsapp");
+                    i.setData(Uri.parse(url));
+                    if (i.resolveActivity(packageManager) != null) {
+                        mContext.startActivity(i);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                MixpanelAPI.getInstance(mContext, MixpanelConfig.projectToken).track("Whatsapp Clicked");
             }
         });
 

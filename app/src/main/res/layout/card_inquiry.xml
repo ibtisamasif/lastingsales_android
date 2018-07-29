@@ -125,6 +125,18 @@
             app:srcCompat="@drawable/ic_call_green"
             android:layout_marginRight="8dp" />
 
+        <ImageView
+            android:id="@+id/whatsapp_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="7dp"
+            android:scaleType="fitEnd"
+            app:layout_constraintEnd_toStartOf="@+id/call_icon"
+            app:layout_constraintTop_toTopOf="@+id/call_icon"
+            app:srcCompat="@drawable/ic_whatsapp_xxxhdpi" />
+
         <!--<TextView-->
             <!--android:id="@+id/inquireyCount"-->
             <!--android:layout_width="24dp"-->
