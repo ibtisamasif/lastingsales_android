@@ -88,7 +88,7 @@ public class AccountActivity extends AppCompatActivity {
         tvEmail.setText(sessionManager.getKeyLoginEmail());
         tvRole.setText("Account type: " + sessionManager.getKeyLoginRoleName());
         SettingItem settingItemAbout = new SettingItem("About", null, R.drawable.ic_info_outline_24dp);
-        SettingItem settingItemSetting = new SettingItem("SettingsPrefActivity", null, R.drawable.ic_settings_24dp);
+        SettingItem settingItemSetting = new SettingItem("Settings", null, R.drawable.ic_settings_24dp);
         SettingItem settingItemLogout = new SettingItem("Logout", null, R.drawable.ic_power_settings_new_24dp);
         list.add(settingItemAbout);
         list.add(settingItemSetting);
