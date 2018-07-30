@@ -1,7 +1,6 @@
-package com.example.muzafarimran.lastingsales.utilscallprocessing;
+package com.example.muzafarimran.lastingsales.utils;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -10,6 +9,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
 
 import java.util.List;
 
@@ -21,14 +21,14 @@ public class DeleteManager {
 
     public static void deleteOrganization(Context context, LSOrganization selectedOrganization) {
 
-        //Flushing Deals Of Organization
-        List<LSDeal> allDealsOfThisContact = selectedOrganization.getAllDeals();
-        if (allDealsOfThisContact != null && allDealsOfThisContact.size() > 0) {
-            Toast.makeText(context, "Deleting deals...", Toast.LENGTH_SHORT).show();
-            for (LSDeal oneDeal : allDealsOfThisContact) {
-                oneDeal.delete();
-            }
-        }
+//        //Flushing Deals Of Organization
+//        List<LSDeal> allDealsOfThisContact = selectedOrganization.getAllDeals();
+//        if (allDealsOfThisContact != null && allDealsOfThisContact.size() > 0) {
+//            Toast.makeText(context, "Deleting deals...", Toast.LENGTH_SHORT).show();
+//            for (LSDeal oneDeal : allDealsOfThisContact) {
+//                oneDeal.delete();
+//            }
+//        }
         //Flushing Notes Of Organization
         List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedOrganization.getId());
         if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {
@@ -62,14 +62,14 @@ public class DeleteManager {
         //Flushing Inquiries Of lead
         InquiryManager.removeByContact(context, selectedContact);
 
-        //Flushing Deals Of lead
-        List<LSDeal> allDealsOfThisContact = selectedContact.getAllDeals();
-        if (allDealsOfThisContact != null && allDealsOfThisContact.size() > 0) {
-            Toast.makeText(context, "Deleting deals...", Toast.LENGTH_SHORT).show();
-            for (LSDeal oneDeal : allDealsOfThisContact) {
-                oneDeal.delete();
-            }
-        }
+//        //Flushing Deals Of lead
+//        List<LSDeal> allDealsOfThisContact = selectedContact.getAllDeals();
+//        if (allDealsOfThisContact != null && allDealsOfThisContact.size() > 0) {
+//            Toast.makeText(context, "Deleting deals...", Toast.LENGTH_SHORT).show();
+//            for (LSDeal oneDeal : allDealsOfThisContact) {
+//                oneDeal.delete();
+//            }
+//        }
         //Flushing Notes Of lead
         List<LSNote> allNotesOfThisContact = LSNote.getNotesByContactId(selectedContact.getId());
         if (allNotesOfThisContact != null && allNotesOfThisContact.size() > 0) {

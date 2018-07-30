@@ -187,7 +187,7 @@ public class InitService extends IntentService {
                                 tempProperty.setStorableType(property_storable_type);
                                 tempProperty.setValue(property_value);
                                 tempProperty.setContactOfProperty(LSContact.getContactFromServerId(property_storable_id));
-                                tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
+                                tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
                                 tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                                 tempProperty.save();
                             }
@@ -293,15 +293,15 @@ public class InitService extends IntentService {
                                     tempProperty.setStorableType(property_storable_type);
                                     tempProperty.setValue(property_value);
                                     tempProperty.setOrganizationOfProperty(LSOrganization.getOrganizationFromServerId(property_storable_id));
-                                    tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
+                                    tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
                                     tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                                     tempProperty.save();
                                 }
 
-                                JSONArray jsonArrayDealNotes = jsonObjectOneOrganization.getJSONArray("notes");
-                                Log.d(TAG, "onResponse: data jsonArrayOrganizationNotes length : " + jsonArrayDealNotes.length());
-                                for (int j = jsonArrayDealNotes.length() - 1; j >= 0; j--) {
-                                    JSONObject jsonObjectOneNote = jsonArrayDealNotes.getJSONObject(j);
+                                JSONArray jsonArrayOrganizationNotes = jsonObjectOneOrganization.getJSONArray("notes");
+                                Log.d(TAG, "onResponse: data jsonArrayOrganizationNotes length : " + jsonArrayOrganizationNotes.length());
+                                for (int j = jsonArrayOrganizationNotes.length() - 1; j >= 0; j--) {
+                                    JSONObject jsonObjectOneNote = jsonArrayOrganizationNotes.getJSONObject(j);
                                     String note_id = jsonObjectOneNote.getString("id");
                                     String note_user_id = jsonObjectOneNote.getString("user_id");
                                     String note_company_id = jsonObjectOneNote.getString("company_id");
@@ -410,16 +410,16 @@ public class InitService extends IntentService {
                                     JSONArray jsonArrayDealProperties = jsonObjectOneDeal.getJSONArray("properties");
                                     Log.d(TAG, "onResponse: data jsonArrayDealProperties length : " + jsonArrayDealProperties.length());
                                     for (int j = jsonArrayDealProperties.length() - 1; j >= 0; j--) {
-                                        JSONObject jsonObjectOneNote = jsonArrayDealProperties.getJSONObject(j);
-                                        String property_id = jsonObjectOneNote.getString("id");
-                                        String property_user_id = jsonObjectOneNote.getString("user_id");
-                                        String property_company_id = jsonObjectOneNote.getString("company_id");
-                                        String property_column_id = jsonObjectOneNote.getString("column_id");
-                                        String property_storable_id = jsonObjectOneNote.getString("storable_id");
-                                        String property_storable_type = jsonObjectOneNote.getString("storable_type");
-                                        String property_value = jsonObjectOneNote.getString("value");
-                                        String property_created_by = jsonObjectOneNote.getString("created_by");
-                                        String property_updated_by = jsonObjectOneNote.getString("updated_by");
+                                        JSONObject jsonObjectOneProperty = jsonArrayDealProperties.getJSONObject(j);
+                                        String property_id = jsonObjectOneProperty.getString("id");
+                                        String property_user_id = jsonObjectOneProperty.getString("user_id");
+                                        String property_company_id = jsonObjectOneProperty.getString("company_id");
+                                        String property_column_id = jsonObjectOneProperty.getString("column_id");
+                                        String property_storable_id = jsonObjectOneProperty.getString("storable_id");
+                                        String property_storable_type = jsonObjectOneProperty.getString("storable_type");
+                                        String property_value = jsonObjectOneProperty.getString("value");
+                                        String property_created_by = jsonObjectOneProperty.getString("created_by");
+                                        String property_updated_by = jsonObjectOneProperty.getString("updated_by");
 
                                         LSProperty tempProperty = new LSProperty();
                                         tempProperty.setServerId(property_id);
@@ -430,7 +430,7 @@ public class InitService extends IntentService {
                                         tempProperty.setStorableType(property_storable_type);
                                         tempProperty.setValue(property_value);
                                         tempProperty.setDealOfProperty(LSDeal.getDealFromServerId(property_storable_id));
-                                        tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
+                                        tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
                                         tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                                         tempProperty.save();
                                     }

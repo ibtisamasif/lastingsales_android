@@ -22,6 +22,7 @@ import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
+import com.example.muzafarimran.lastingsales.events.PropertyEventModel;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -29,6 +30,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
+import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -44,7 +46,7 @@ import de.halfbit.tinybus.TinyBus;
 
 public class DataSenderAsync {
     public static final String TAG = "DataSenderAsync";
-//    private static final String TAG = "AppInitializationTest";
+    //    private static final String TAG = "AppInitializationTest";
     private static final int IDLE = 1;
     private static final int PENDING = 2;
     private static DataSenderAsync instance = null;
@@ -123,6 +125,7 @@ public class DataSenderAsync {
                                 addDealToServer();
                                 updateDealsToServer();
                                 deleteDealsFromServer();
+                                addOrUpdatePropertyToServer();
                                 addCallsToServer();
                                 addInquiriesToServer();
                                 updateInquiriesToServer();
@@ -257,7 +260,9 @@ public class DataSenderAsync {
                 if (contact.getDynamic() != null) {
                     params.put("dynamic_values", "" + contact.getDynamic());
                 }
-                params.put("phone", "" + contact.getPhoneOne());
+                if (contact.getPhoneOne() != null) {
+                    params.put("phone", "" + contact.getPhoneOne());
+                }
                 params.put("status", "" + contact.getContactSalesStatus());
                 params.put("api_token", "" + sessionManager.getLoginToken());
                 params.put("lead_type", "" + contact.getContactType());
@@ -290,6 +295,7 @@ public class DataSenderAsync {
         String name = "";
         String email = "";
         String address = "";
+        String phone = "";
         if (contact.getContactName() != null) {
             name = contact.getContactName();
         }
@@ -299,13 +305,16 @@ public class DataSenderAsync {
         if (contact.getContactAddress() != null) {
             address = contact.getContactAddress();
         }
+        if (contact.getPhoneOne() != null) {
+            phone = contact.getPhoneOne();
+        }
         final String BASE_URL = MyURLs.UPDATE_CONTACT;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendPath("" + contact.getServerId())
                 .appendQueryParameter("name", "" + name)
                 .appendQueryParameter("email", "" + email)
-                .appendQueryParameter("phone", "" + contact.getPhoneOne())
+                .appendQueryParameter("phone", "" + phone)
                 .appendQueryParameter("address", "" + address)
                 .appendQueryParameter("status", "" + contact.getContactSalesStatus())
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
@@ -858,6 +867,89 @@ public class DataSenderAsync {
                 }
             }
         }) {
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void addOrUpdatePropertyToServer() {
+        List<LSProperty> propertiesList = null;
+        if (LSProperty.count(LSProperty.class) > 0) {
+            propertiesList = LSProperty.find(LSProperty.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
+            Log.d(TAG, "addOrUpdatePropertyToServer: count : " + propertiesList.size());
+            for (LSProperty oneProperty : propertiesList) {
+                Log.d(TAG, "Found Properties " + oneProperty.getValue());
+                addOrUpdatePropertyToServerSync(oneProperty);
+            }
+        }
+    }
+
+    private void addOrUpdatePropertyToServerSync(final LSProperty property) {
+        currentState = PENDING;
+        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_OR_UPDATE_PROPERTY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() AddOrUpdateProperty: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    property.setServerId(responseObject.getString("id"));
+                    Log.d(TAG, "onResponse: AddOrUpdatePropertyServerID : " + responseObject.getString("id"));
+                    property.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
+                    property.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new PropertyEventModel());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: CouldNotSyncAddOrUpdateProperty");
+                try {
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
+                            if (error.networkResponse.statusCode == 409) {
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                if (responseCode == 409) {
+                                    Log.d(TAG, "onErrorResponse: responseCode == 409");
+                                    JSONObject responseObject = jObj.getJSONObject("response");
+                                    property.setServerId(responseObject.getString("id"));
+                                    property.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
+                                    property.save();
+                                    TinyBus.from(mContext.getApplicationContext()).post(new PropertyEventModel());
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                if (property.getStorableId() != null) {
+                    params.put("id", "" + property.getStorableId()); //this is local id of COD it should be server ID. //TODO
+                } else {
+                    property.delete();
+                }
+                if (property.getStorableType() != null) {
+                    params.put("type", "" + property.getStorableType());
+                }
+                if (property.getValue() != null) {
+                    params.put("value", "" + property.getValue());
+                }
+                params.put("api_token", "" + sessionManager.getLoginToken());
+                Log.d(TAG, "getParams: addOrUpdatePropertyToServerSync " + params);
+                return params;
+            }
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_TIMEOUT_MS,

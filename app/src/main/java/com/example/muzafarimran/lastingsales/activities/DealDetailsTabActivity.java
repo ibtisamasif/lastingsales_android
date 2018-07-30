@@ -18,7 +18,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.DealDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
+import com.example.muzafarimran.lastingsales.utils.DeleteManager;
 
 import de.halfbit.tinybus.TinyBus;
 

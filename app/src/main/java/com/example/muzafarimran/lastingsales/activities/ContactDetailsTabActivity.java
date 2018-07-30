@@ -20,7 +20,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
+import com.example.muzafarimran.lastingsales.utils.DeleteManager;
 
 import de.halfbit.tinybus.TinyBus;
 

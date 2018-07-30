@@ -25,7 +25,7 @@ import com.example.muzafarimran.lastingsales.adapters.OrganizationDetailsFragmen
 import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
+import com.example.muzafarimran.lastingsales.utils.DeleteManager;
 
 import de.halfbit.tinybus.TinyBus;
 
