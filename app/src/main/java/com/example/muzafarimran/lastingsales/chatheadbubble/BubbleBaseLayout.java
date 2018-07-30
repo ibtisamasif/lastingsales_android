@@ -34,30 +34,6 @@ public class BubbleBaseLayout extends FrameLayout {
     private WindowManager.LayoutParams params;
     private BubblesLayoutCoordinator layoutCoordinator;
 
-    public void setLayoutCoordinator(BubblesLayoutCoordinator layoutCoordinator) {
-        this.layoutCoordinator = layoutCoordinator;
-    }
-
-    BubblesLayoutCoordinator getLayoutCoordinator() {
-        return layoutCoordinator;
-    }
-
-    public void setWindowManager(WindowManager windowManager) {
-        this.windowManager = windowManager;
-    }
-
-    WindowManager getWindowManager() {
-        return this.windowManager;
-    }
-
-    public void setViewParams(WindowManager.LayoutParams params) {
-        this.params = params;
-    }
-
-    public WindowManager.LayoutParams getViewParams() {
-        return this.params;
-    }
-
     public BubbleBaseLayout(Context context) {
         super(context);
     }
@@ -68,5 +44,29 @@ public class BubbleBaseLayout extends FrameLayout {
 
     public BubbleBaseLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    BubblesLayoutCoordinator getLayoutCoordinator() {
+        return layoutCoordinator;
+    }
+
+    public void setLayoutCoordinator(BubblesLayoutCoordinator layoutCoordinator) {
+        this.layoutCoordinator = layoutCoordinator;
+    }
+
+    WindowManager getWindowManager() {
+        return this.windowManager;
+    }
+
+    public void setWindowManager(WindowManager windowManager) {
+        this.windowManager = windowManager;
+    }
+
+    public WindowManager.LayoutParams getViewParams() {
+        return this.params;
+    }
+
+    public void setViewParams(WindowManager.LayoutParams params) {
+        this.params = params;
     }
 }

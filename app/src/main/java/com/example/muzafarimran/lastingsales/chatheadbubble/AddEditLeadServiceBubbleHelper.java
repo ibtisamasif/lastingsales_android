@@ -19,8 +19,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.IgnoredContact;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -32,22 +32,20 @@ import java.util.Calendar;
 public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
     private static final String TAG = "AddEditLeadServiceBubbl";
     private static AddEditLeadServiceBubbleHelper mInstance;
+    private static RequestQueue queue;
+    String selectedContactType = LSContact.CONTACT_TYPE_SALES;
+    String phoneNumberFromLastActivity;
+    String contactNameFromLastActivity;
+    String preSelectedContactType = LSContact.CONTACT_TYPE_SALES;
     private SessionManager sessionManager;
     private BubbleLayout bubbleView;
     private BubblesManager bubblesManager;
     private Context context;
-    private static RequestQueue queue;
-
     private EditText etPersonName;
     private TextView etContactPhone;
     private Button bSave;
     private ImageView bClose;
     private CheckBox cbIgnore;
-
-    String selectedContactType = LSContact.CONTACT_TYPE_SALES;
-    String phoneNumberFromLastActivity;
-    String contactNameFromLastActivity;
-    String preSelectedContactType = LSContact.CONTACT_TYPE_SALES;
 
     public AddEditLeadServiceBubbleHelper() {
 
@@ -158,7 +156,7 @@ public class AddEditLeadServiceBubbleHelper extends AppCompatActivity {
                     etContactPhone.setError(null);
                     String contactName = etPersonName.getText().toString();
                     String contactPhone = etContactPhone.getText().toString();
-                    IgnoredContact.AddAsIgnoredContact(context, contactPhone, contactName); //TODO centralize conversion in one class
+                    IgnoredContact.AddAsIgnoredContact(context, contactPhone, contactName); //TODO centralize conversion in one class modify according to dev_i6
                     String projectToken = MixpanelConfig.projectToken;
                     MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, projectToken);
                     try {

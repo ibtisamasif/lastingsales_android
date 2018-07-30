@@ -14,6 +14,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
@@ -43,27 +45,18 @@ import de.halfbit.tinybus.TinyBus;
 public class DataSenderAsync {
     public static final String TAG = "DataSenderAsync";
 //    private static final String TAG = "AppInitializationTest";
-
-    private static DataSenderAsync instance = null;
-    private static int currentState = 1;
     private static final int IDLE = 1;
     private static final int PENDING = 2;
+    private static DataSenderAsync instance = null;
+    private static int currentState = 1;
     private static boolean firstThreadIsRunning = false;
-    private Context mContext;
-    private SessionManager sessionManager;
-    private long totalSize = 0;
     private static RequestQueue queue;
     private final int MY_TIMEOUT_MS = 30000;
     private final int MY_MAX_RETRIES = 0;
+    private Context mContext;
+    private SessionManager sessionManager;
+    private long totalSize = 0;
     private PostExecuteListener DataSenderOnPostExecuteListener = null;
-
-    public PostExecuteListener getDataSenderOnPostExecuteListener() {
-        return DataSenderOnPostExecuteListener;
-    }
-
-    public void setDataSenderOnPostExecuteListener(PostExecuteListener dataSenderOnPostExecuteListener) {
-        this.DataSenderOnPostExecuteListener = dataSenderOnPostExecuteListener;
-    }
 
     protected DataSenderAsync(Context context) {
         Log.d(TAG, "DataSenderAsync: ==========================================================================================================================");
@@ -83,6 +76,14 @@ public class DataSenderAsync {
 //            }
         }
         return instance;
+    }
+
+    public PostExecuteListener getDataSenderOnPostExecuteListener() {
+        return DataSenderOnPostExecuteListener;
+    }
+
+    public void setDataSenderOnPostExecuteListener(PostExecuteListener dataSenderOnPostExecuteListener) {
+        this.DataSenderOnPostExecuteListener = dataSenderOnPostExecuteListener;
     }
 
     public void run() {

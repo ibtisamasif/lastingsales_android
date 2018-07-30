@@ -24,9 +24,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.onboarding.OnBoardingActivity;
-import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -40,6 +40,8 @@ import java.util.Map;
 public class LogInActivity extends AppCompatActivity {
 
     public static final String TAG = "LogInActivity";
+    public static Activity activity;
+    private static RequestQueue queue;
     private ProgressDialog pdLoading;
     private EditText etEmail, etPassword;
     private Button bSignup;
@@ -47,9 +49,6 @@ public class LogInActivity extends AppCompatActivity {
     private String email, password;
     private Button loginButtonLoginScreen;
     private SessionManager sessionManager;
-    private static RequestQueue queue;
-
-    public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

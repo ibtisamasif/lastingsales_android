@@ -10,8 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.events.BackPressedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.SearchCallback;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 

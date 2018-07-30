@@ -36,14 +36,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.listloaders.DealsOfAOrganizationLoader;
+import com.example.muzafarimran.lastingsales.providers.listloaders.DealsOfAOrganizationLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
-import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
-import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
 import com.example.muzafarimran.lastingsales.utils.DynamicColums;
@@ -70,30 +70,29 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
     public static final String TAG = "IndividualOrgDetailFra";
     public static final String DEALS_ORGANIZATION_ID = "deals_organization_id";
     public static final int DEALS_OF_A_ORGANIZATION = 32;
+    static DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1;
+    static DynamicColumnBuilderVersion2 dynamicColumnBuilderVersion2;
     private static Bundle args;
     TextView tvName;
     TextView tvEmail;
     TextView tvNumber;
     TextView tvAddress;
     TextView tvDefaultText;
-
     RecyclerView mRecyclerView = null;
+    Button save;
+    GridLayout gridLayout;
+    DynamicColums dynamicColums;
     private List<Object> listLoader = new ArrayList<Object>();
     private MyRecyclerViewAdapter adapter;
-
     private Long organizationIDLong;
     private Spinner leadStatusSpinner;
     private Button bSave;
     private LSOrganization mOrganization;
     private LinearLayout ll;
-    static DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1;
-    static DynamicColumnBuilderVersion2 dynamicColumnBuilderVersion2;
-
     private TextView tvError;
     private SessionManager sessionManager;
     private RequestQueue queue;
     private Context mContext;
-
 
     public static IndividualOrganizationDetailsFragment newInstance(int page, String title, Long id) {
         IndividualOrganizationDetailsFragment fragmentFirst = new IndividualOrganizationDetailsFragment();
@@ -122,8 +121,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         organizationIDLong = args.getLong("someId");
         setHasOptionsMenu(true);
     }
-
-    Button save;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -252,7 +249,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         super.onDetach();
         Log.i(TAG, "onDetach: ");
     }
-
 
     private void dynamicColumns(View view) {
      /*   ll = (LinearLayout) view.findViewById(R.id.contactDetailsDropDownLayoutinner);
@@ -697,10 +693,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 
     }
 
-
-    GridLayout gridLayout;
-    DynamicColums dynamicColums;
-
     public void dynamicColumnByAmir() {
 
         dynamicColums = new DynamicColums(getContext());
@@ -911,15 +903,17 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 //        }
 //    }
 
-    private class DynamicSpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            bSave.setVisibility(View.VISIBLE);
-        }
+    private void loadConnectionsData() {
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
+        tvError = new TextView(mContext);
+        tvError.setText("Loading...");
+        tvError.setGravity(Gravity.CENTER);
+        tvError.setVisibility(View.VISIBLE);
+
+        sessionManager = new SessionManager(mContext);
+        queue = Volley.newRequestQueue(mContext);
+        fetchCustomerHistory(mOrganization.getPhone());
+
     }
 
 //    private void loadSocialProfileData() {
@@ -1060,19 +1054,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 //            });
 //        }
 //    }
-
-    private void loadConnectionsData() {
-
-        tvError = new TextView(mContext);
-        tvError.setText("Loading...");
-        tvError.setGravity(Gravity.CENTER);
-        tvError.setVisibility(View.VISIBLE);
-
-        sessionManager = new SessionManager(mContext);
-        queue = Volley.newRequestQueue(mContext);
-        fetchCustomerHistory(mOrganization.getPhone());
-
-    }
 
     private void fetchCustomerHistory(final String number) {
 //        Log.d(TAG, "fetchCustomersHistoryFunc: Fetching Data...");
@@ -1232,7 +1213,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         queue.add(sr);
     }
 
-
     @Override
     public Loader<List<Object>> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader: ");
@@ -1269,6 +1249,17 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         listLoader.clear();
         listLoader.addAll(new ArrayList<Object>());
         adapter.notifyDataSetChanged();
+    }
+
+    private class DynamicSpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            bSave.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
     }
 
 }

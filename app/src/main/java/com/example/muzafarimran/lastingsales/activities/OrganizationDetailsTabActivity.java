@@ -22,9 +22,9 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.OrganizationDetailsFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 
 import de.halfbit.tinybus.TinyBus;
@@ -42,12 +42,12 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     FloatingActionButton floatingActionButton;
+    Toolbar toolbar;
+    ActionBar actionBar;
     private String organizationIdString = "0";
     private String selectedTab = "";
     private LSOrganization selectedOrganization;
     private TinyBus bus;
-    Toolbar toolbar;
-    ActionBar actionBar;
 
     //    private CollapsingToolbarLayout collapsingToolbarLayout = null;
     @Override
@@ -154,7 +154,7 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                     }
                 }
             }
-        }else {
+        } else {
             finish();
         }
     }

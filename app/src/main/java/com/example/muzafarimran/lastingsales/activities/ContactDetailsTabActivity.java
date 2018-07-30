@@ -37,12 +37,12 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     FloatingActionButton floatingActionButton;
+    Toolbar toolbar;
+    ActionBar actionBar;
     private String contactIdString = "0";
     private String selectedTab = "";
     private LSContact selectedContact;
     private TinyBus bus;
-    Toolbar toolbar;
-    ActionBar actionBar;
 
     //    private CollapsingToolbarLayout collapsingToolbarLayout = null;
     @Override
@@ -149,7 +149,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                     }
                 }
             }
-        }else {
+        } else {
             finish();
         }
     }

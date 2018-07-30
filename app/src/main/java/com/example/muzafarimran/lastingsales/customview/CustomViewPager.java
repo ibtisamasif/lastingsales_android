@@ -26,12 +26,12 @@ public class CustomViewPager extends android.support.v4.view.ViewPager {
         return enabled && super.onInterceptTouchEvent(event);
     }
 
-    public void setPagingEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public boolean isPagingEnabled() {
         return enabled;
+    }
+
+    public void setPagingEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
 }

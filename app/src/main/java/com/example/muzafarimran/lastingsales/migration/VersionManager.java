@@ -17,11 +17,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.service.InitService;
-import com.example.muzafarimran.lastingsales.sync.MyURLs;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 

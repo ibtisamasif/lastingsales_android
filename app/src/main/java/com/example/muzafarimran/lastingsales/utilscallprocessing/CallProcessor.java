@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SettingsManager;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.service.CallService;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.Calendar;
@@ -185,7 +185,7 @@ public class CallProcessor {
     private static void showDialog(Context mContext, LSCall call, boolean showNotification) {
         if (call.getType().equals(LSCall.CALL_TYPE_INCOMING) || call.getType().equals(LSCall.CALL_TYPE_OUTGOING)) {
             if (showNotification && call.getBeginTime() + MILLIS_10_MINUTES > Calendar.getInstance().getTimeInMillis()) {
-//            CallEndTagBoxService.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
+//            CallEndDialogBoxHelper.checkShowCallPopupNew(mContext, call.getContactName(), call.getContactNumber());
                 //TODO replace below code with above one in future. To use single service for flyer and for after call dialog.
                 Intent intent = new Intent(mContext, CallService.class);
                 intent.putExtra("no", call.getContactNumber());

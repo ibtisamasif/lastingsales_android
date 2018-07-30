@@ -36,26 +36,18 @@ import android.view.WindowManager;
 import com.example.muzafarimran.lastingsales.R;
 
 public class BubbleLayout extends BubbleBaseLayout {
+    private static final int TOUCH_TIME_THRESHOLD = 150;
     private float initialTouchX;
     private float initialTouchY;
     private int initialX;
     private int initialY;
     private OnBubbleRemoveListener onBubbleRemoveListener;
     private OnBubbleClickListener onBubbleClickListener;
-    private static final int TOUCH_TIME_THRESHOLD = 150;
     private long lastTouchDown;
     private MoveAnimator animator;
     private int width;
     private WindowManager windowManager;
     private boolean shouldStickToWall = true;
-
-    public void setOnBubbleRemoveListener(OnBubbleRemoveListener listener) {
-        onBubbleRemoveListener = listener;
-    }
-
-    public void setOnBubbleClickListener(OnBubbleClickListener listener) {
-        onBubbleClickListener = listener;
-    }
 
     public BubbleLayout(Context context) {
         super(context);
@@ -76,6 +68,14 @@ public class BubbleLayout extends BubbleBaseLayout {
         animator = new MoveAnimator();
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         initializeView();
+    }
+
+    public void setOnBubbleRemoveListener(OnBubbleRemoveListener listener) {
+        onBubbleRemoveListener = listener;
+    }
+
+    public void setOnBubbleClickListener(OnBubbleClickListener listener) {
+        onBubbleClickListener = listener;
     }
 
     public void setShouldStickToWall(boolean shouldStick) {
@@ -180,14 +180,6 @@ public class BubbleLayout extends BubbleBaseLayout {
 //
 //    }
 
-    public interface OnBubbleRemoveListener {
-        void onBubbleRemoved(BubbleLayout bubble);
-    }
-
-    public interface OnBubbleClickListener {
-        void onBubbleClick(BubbleLayout bubble);
-    }
-
     public void goToWall() {
         if (shouldStickToWall) {
             int middle = width / 2;
@@ -202,6 +194,13 @@ public class BubbleLayout extends BubbleBaseLayout {
         windowManager.updateViewLayout(this, getViewParams());
     }
 
+    public interface OnBubbleRemoveListener {
+        void onBubbleRemoved(BubbleLayout bubble);
+    }
+
+    public interface OnBubbleClickListener {
+        void onBubbleClick(BubbleLayout bubble);
+    }
 
     private class MoveAnimator implements Runnable {
         private Handler handler = new Handler(Looper.getMainLooper());

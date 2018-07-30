@@ -11,8 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -15,6 +15,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
@@ -23,8 +25,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
-import com.example.muzafarimran.lastingsales.sync.MyURLs;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
 
@@ -40,14 +40,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class InitService extends IntentService {
     public static final String TAG = "InitService";
-    private int result = Activity.RESULT_CANCELED;
     public static final String RESULT = "result";
     public static final String NOTIFICATION = "com.lastingsales.agent";
-
-    private SessionManager sessionManager;
-    private Context mContext;
     private static RequestQueue queue;
     AtomicInteger requestsCounter;
+    private int result = Activity.RESULT_CANCELED;
+    private SessionManager sessionManager;
+    private Context mContext;
 
     public InitService() {
         super("InitService");

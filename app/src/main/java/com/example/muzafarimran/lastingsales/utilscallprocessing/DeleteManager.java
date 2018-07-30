@@ -3,13 +3,13 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import java.util.List;
 

@@ -3,7 +3,6 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 

@@ -26,8 +26,8 @@ import com.example.muzafarimran.lastingsales.activities.CreateCompanyActivity;
 import com.example.muzafarimran.lastingsales.activities.LogInActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
 import com.example.muzafarimran.lastingsales.customview.CustomViewPager;
-import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -40,12 +40,12 @@ import java.util.Map;
 
 public class OnBoardingActivity extends AppCompatActivity {
     private static final String TAG = "OnBoardingActivity";
+    private static RequestQueue queue;
     private LinearLayout indicator;
     private int mDotCount;
     private LinearLayout[] mDots;
     private CustomViewPager viewPager;
     private TutorialsFragmentPagerAdapter tutorialsFragmentPagerAdapter;
-    private static RequestQueue queue;
     private SessionManager sessionManager;
     private String companyname;
     private String email;
@@ -122,72 +122,6 @@ public class OnBoardingActivity extends AppCompatActivity {
         }
     }
 
-    public class TutorialsFragmentPagerAdapter extends FragmentPagerAdapter {
-
-        final int TAB_COUNT = 6;
-
-        TutorialsFragmentPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment = null;
-            switch (position) {
-                case 0:
-                    fragment = FragmentB.newInstance("title", "page");
-                    break;
-                case 1:
-                    fragment = FragmentC.newInstance("title", "page");
-                    break;
-                case 2:
-                    fragment = FragmentD.newInstance("title", "page");
-                    break;
-//                case 3:
-//                    fragment = FragmentE.newInstance("title", "page");
-//                    break;
-                case 3:
-                    fragment = FragmentF.newInstance("title", "page");
-                    break;
-                case 4:
-                    fragment = FragmentG.newInstance("title", "page");
-                    break;
-                case 5:
-                    fragment = FragmentH.newInstance("title", "page");
-                    break;
-            }
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return TAB_COUNT;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "B";
-                case 1:
-                    return "C";
-                case 2:
-                    return "D";
-//                case 3:
-//                    return "E";
-                case 3:
-                    return "F";
-                case 4:
-                    return "G";
-                case 5:
-                    return "H";
-                default:
-                    return null;
-            }
-        }
-
-    }
-
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() == 1) {
@@ -209,14 +143,6 @@ public class OnBoardingActivity extends AppCompatActivity {
         viewPager.setCurrentItem(i);
     }
 
-//    public void dataFromFragmentE(String companyName, String email) {
-//
-//        this.companyName = companyName;
-//        this.email = email;
-//        moveToFragment(4);
-//
-//    }
-
     public void dataFromFragmentF(String firstname, String lastname, String phone, String password, String confirmpassword, String email, String companyname) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -229,6 +155,14 @@ public class OnBoardingActivity extends AppCompatActivity {
         moveToFragment(4);
         registerUserWithCompanyRequest();
     }
+
+//    public void dataFromFragmentE(String companyName, String email) {
+//
+//        this.companyName = companyName;
+//        this.email = email;
+//        moveToFragment(4);
+//
+//    }
 
     public void dataFromFragmentG() {
         registerUserWithCompanyRequest();
@@ -566,6 +500,72 @@ public class OnBoardingActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
+    }
+
+    public class TutorialsFragmentPagerAdapter extends FragmentPagerAdapter {
+
+        final int TAB_COUNT = 6;
+
+        TutorialsFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = null;
+            switch (position) {
+                case 0:
+                    fragment = FragmentB.newInstance("title", "page");
+                    break;
+                case 1:
+                    fragment = FragmentC.newInstance("title", "page");
+                    break;
+                case 2:
+                    fragment = FragmentD.newInstance("title", "page");
+                    break;
+//                case 3:
+//                    fragment = FragmentE.newInstance("title", "page");
+//                    break;
+                case 3:
+                    fragment = FragmentF.newInstance("title", "page");
+                    break;
+                case 4:
+                    fragment = FragmentG.newInstance("title", "page");
+                    break;
+                case 5:
+                    fragment = FragmentH.newInstance("title", "page");
+                    break;
+            }
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return TAB_COUNT;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "B";
+                case 1:
+                    return "C";
+                case 2:
+                    return "D";
+//                case 3:
+//                    return "E";
+                case 3:
+                    return "F";
+                case 4:
+                    return "G";
+                case 5:
+                    return "H";
+                default:
+                    return null;
+            }
+        }
+
     }
 
 //    private void registerCompanyRequest(String companyName) {

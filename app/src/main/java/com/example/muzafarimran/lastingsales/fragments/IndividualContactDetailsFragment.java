@@ -38,19 +38,19 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
-import com.example.muzafarimran.lastingsales.listloaders.DealsOfALeadLoader;
+import com.example.muzafarimran.lastingsales.providers.ContactProfileProvider;
+import com.example.muzafarimran.lastingsales.providers.listloaders.DealsOfALeadLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
-import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
-import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.MyURLs;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
 import com.example.muzafarimran.lastingsales.utils.DynamicColums;
@@ -77,25 +77,24 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
     public static final String TAG = "IndividualContDetailFra";
     public static final java.lang.String DEALS_LEAD_ID = "deals_lead_id";
     public static final int DEALS_OF_A_LEAD = 31;
+    static DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1;
+    static DynamicColumnBuilderVersion2 dynamicColumnBuilderVersion2;
     private static Bundle args;
     //    TextView tvName;
     TextView tvNumber;
     TextView tvDefaultText;
-
     //    TextView tvEmail;
     TextView tvAddress;
     RecyclerView mRecyclerView = null;
+    GridLayout gridLayout;
+    //    private Spinner leadStatusSpinner;
+    Button save;
+    DynamicColums dynamicColums;
     private List<Object> listLoader = new ArrayList<Object>();
     private MyRecyclerViewAdapter adapter;
-
     private Long contactIDLong;
-    //    private Spinner leadStatusSpinner;
-
     private LSContact mContact;
     private LinearLayout ll;
-    static DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1;
-    static DynamicColumnBuilderVersion2 dynamicColumnBuilderVersion2;
-
     private CardView cv_social_item;
     private TextView tvNameFromProfile;
     private TextView tvCityFromProfile;
@@ -114,15 +113,12 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
     private TextView tvWhatsappFromProfileTitle;
     private TextView tvTweeterFromProfileTitle;
     private TextView tvLinkdnFromProfileTitle;
-
     private TextView tvFbFromProfileTitle;
     private LinearLayout llDynamicConnectionsContainer;
-
     private TextView tvError;
     private SessionManager sessionManager;
     private RequestQueue queue;
     private Context mContext;
-
 
     public static IndividualContactDetailsFragment newInstance(int page, String title, Long id) {
         IndividualContactDetailsFragment fragmentFirst = new IndividualContactDetailsFragment();
@@ -151,11 +147,6 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         contactIDLong = args.getLong("someId");
         setHasOptionsMenu(true);
     }
-
-    GridLayout gridLayout;
-
-
-    Button save;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -392,7 +383,6 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         return view;
     }
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -480,6 +470,8 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         super.onDetach();
         Log.i(TAG, "onDetach: ");
     }
+
+    // FIXME: 7/20/2018
 
     @Override
     public void onClick(View v) {
@@ -640,11 +632,6 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
 
     }
-
-    // FIXME: 7/20/2018
-
-
-    DynamicColums dynamicColums;
 
     public void dynamicColumnByAmir() {
 
@@ -1123,54 +1110,6 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         return super.onOptionsItemSelected(item);
     }
 
-    private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
-            switch (pos) {
-                case 0:
-                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                    mContact.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-                    Toast.makeText(parent.getContext(), "Status Changed to InProgress", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-                case 1:
-                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                    mContact.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-                case 2:
-                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                    mContact.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-    }
-
-    private class DynamicSpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-    }
-
     private void loadSocialProfileData() {
         LSContactProfile lsContactProfile = mContact.getContactProfile();
 
@@ -1483,7 +1422,6 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         queue.add(sr);
     }
 
-
     @Override
     public Loader<List<Object>> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader: ");
@@ -1519,6 +1457,54 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         listLoader.clear();
         listLoader.addAll(new ArrayList<Object>());
         adapter.notifyDataSetChanged();
+    }
+
+    private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
+            switch (pos) {
+                case 0:
+                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
+                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                    mContact.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
+                    Toast.makeText(parent.getContext(), "Status Changed to InProgress", Toast.LENGTH_SHORT).show();
+                    dataSenderAsync.run();
+                    break;
+                case 1:
+                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
+                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                    mContact.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
+                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
+                    dataSenderAsync.run();
+                    break;
+                case 2:
+                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
+                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
+                    mContact.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
+                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
+                    dataSenderAsync.run();
+                    break;
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+    }
+
+    private class DynamicSpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
     }
 
 }

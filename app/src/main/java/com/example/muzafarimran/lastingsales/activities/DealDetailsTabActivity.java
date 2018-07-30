@@ -32,14 +32,13 @@ public class DealDetailsTabActivity extends AppCompatActivity {
     public static final String KEY_SET_SELECTED_TAB = "key_set_selected_tab";
 
     ViewPager viewPager;
+    Toolbar toolbar;
+    ActionBar actionBar;
+    FloatingActionButton floatingActionButton;
     private String dealIdString = "0";
     private String selectedTab = "";
     private LSDeal selectedDeal;
     private TinyBus bus;
-    Toolbar toolbar;
-    ActionBar actionBar;
-
-    FloatingActionButton floatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

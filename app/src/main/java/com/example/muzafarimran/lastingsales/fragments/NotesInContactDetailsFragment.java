@@ -9,13 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
-import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 

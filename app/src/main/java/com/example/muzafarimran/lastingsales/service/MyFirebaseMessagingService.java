@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.events.CommentEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.DealEventModel;
@@ -23,7 +24,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
 import com.example.muzafarimran.lastingsales.utils.FirebaseCustomNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;

@@ -17,15 +17,15 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.LSStageSpinAdapter;
-import com.example.muzafarimran.lastingsales.autocompletetext.ContactsCompletionView;
-import com.example.muzafarimran.lastingsales.autocompletetext.OrganizationsCompletionView;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
+import com.example.muzafarimran.lastingsales.customview.ContactsCompletionView;
+import com.example.muzafarimran.lastingsales.customview.OrganizationsCompletionView;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
@@ -41,6 +41,13 @@ import java.util.List;
 public class AddDealActivity extends AppCompatActivity {
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     public static final String TAG_LAUNCH_MODE_ORGANIZATION_ID = "organization_id";
+    //    private LinearLayout llDealType;
+    String selectedDealType = LSDeal.DEAL_STATUS_CLOSED_WON;
+    List<LSStage> stageList = new ArrayList<LSStage>();
+    ArrayAdapter<LSContact> adapterContacts;
+    long contactIdLong = -1;
+    ArrayAdapter<LSOrganization> adapterOrganizations;
+    long organizationIdLong = -1;
     private String TAG = "AddDealActivity";
     private EditText etDealName;
     private EditText etValueAddDeal;
@@ -48,23 +55,14 @@ public class AddDealActivity extends AppCompatActivity {
     private Button bCancelAddDeal;
     private Spinner stageSpinner;
     private Spinner isPrivateSpinner;
-
-    //    private LinearLayout llDealType;
-    String selectedDealType = LSDeal.DEAL_STATUS_CLOSED_WON;
     private LSContact selectedContact;
     private LSOrganization selectedOrganization;
     private LSDeal mDeal;
-    List<LSStage> stageList = new ArrayList<LSStage>();
     private String dealStatus = LSDeal.DEAL_VISIBILITY_STATUS_COMPANY;
-
     private ContactsCompletionView acLeadAddDeal;
     private EditText etLeadAddDeal;
-    ArrayAdapter<LSContact> adapterContacts;
-    long contactIdLong = -1;
-    ArrayAdapter<LSOrganization> adapterOrganizations;
     private OrganizationsCompletionView acOrganizationAddDeal;
     private EditText etOrganizationAddDeal;
-    long organizationIdLong = -1;
     private String selectedStageServerId;
 
     @Override
@@ -378,6 +376,13 @@ public class AddDealActivity extends AppCompatActivity {
         return true;
     }
 
+    private void moveToDealDetailScreenIfNeeded(LSDeal deal) {
+        Intent detailsActivityIntent = new Intent(AddDealActivity.this, DealDetailsTabActivity.class);
+        long dealId = deal.getId();
+        detailsActivityIntent.putExtra(DealDetailsTabActivity.KEY_DEAL_ID, dealId + "");
+        startActivity(detailsActivityIntent);
+    }
+
     private class CustomSpinnerDealStageOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -416,12 +421,5 @@ public class AddDealActivity extends AppCompatActivity {
         public void onNothingSelected(AdapterView<?> parent) {
         }
 
-    }
-
-    private void moveToDealDetailScreenIfNeeded(LSDeal deal) {
-        Intent detailsActivityIntent = new Intent(AddDealActivity.this, DealDetailsTabActivity.class);
-        long dealId = deal.getId();
-        detailsActivityIntent.putExtra(DealDetailsTabActivity.KEY_DEAL_ID, dealId + "");
-        startActivity(detailsActivityIntent);
     }
 }

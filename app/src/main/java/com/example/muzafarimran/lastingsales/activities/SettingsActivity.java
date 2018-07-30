@@ -40,7 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setLogo(R.drawable.ic_notification_small);
 //        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("Settings");
+        getSupportActionBar().setTitle("SettingsPrefActivity");
         settingsManager = new SettingsManager(this);
         swFlyer = findViewById(R.id.swFlyer);
         swTagDialogPopup = findViewById(R.id.swTagDialogPopup);

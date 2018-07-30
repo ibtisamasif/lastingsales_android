@@ -8,7 +8,6 @@ import android.widget.Button;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddDealActivity;
-import com.example.muzafarimran.lastingsales.activities.AddEditLeadActivity;
 import com.example.muzafarimran.lastingsales.carditems.AddDealItem;
 
 /**

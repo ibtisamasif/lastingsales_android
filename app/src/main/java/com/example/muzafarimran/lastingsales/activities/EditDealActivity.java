@@ -8,9 +8,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import java.util.Calendar;
 
@@ -21,13 +21,11 @@ import java.util.Calendar;
 public class EditDealActivity extends AppCompatActivity {
     public static final String TAG = "EditDealActivity";
     public static final String TAG_LAUNCH_MODE_DEAL_ID = "deal_id";
-
+    String selectedDealType = LSDeal.DEAL_STATUS_CLOSED_WON;
     private EditText etNameAddDeal;
     private EditText etLeadAddDeal;
     private Button bSaveAddDeal;
     private Button bCancelAddDeal;
-
-    String selectedDealType = LSDeal.DEAL_STATUS_CLOSED_WON;
     private long dealIdLong;
     private LSDeal selectedDeal;
 
