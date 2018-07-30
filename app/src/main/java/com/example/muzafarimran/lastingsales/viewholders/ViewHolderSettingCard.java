@@ -53,7 +53,7 @@ public class ViewHolderSettingCard extends RecyclerView.ViewHolder {
                     case "About":
                         mContext.startActivity(new Intent(mContext, AboutActivity.class));
                         break;
-                    case "SettingsPrefActivity":
+                    case "Settings":
                         mContext.startActivity(new Intent(mContext, SettingsActivity.class));
                         break;
                     case "Logout":

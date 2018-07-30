@@ -382,9 +382,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     startService(intentInitService);
                 }
             }
-            if (!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
-                activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
-            }
         }
     }
 
@@ -506,9 +503,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //        PowerManager pm = (PowerManager) NavigationBottomMainActivity.this.getSystemService(Context.POWER_SERVICE);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            if (pm.isIgnoringBatteryOptimizations(packageName))
-//                intentTest.setAction(SettingsPrefActivity.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+//                intentTest.setAction(SettingsActivity.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
 //            else {
-//                intentTest.setAction(SettingsPrefActivity.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+//                intentTest.setAction(SettingsActivity.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
 //                intentTest.setData(Uri.parse("package:" + packageName));
 //            }
 //            NavigationBottomMainActivity.this.startActivity(intentTest);
@@ -847,6 +844,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 TinyBus.from(this.getApplicationContext()).post(new LeadContactAddedEventModel());
                 TinyBus.from(this.getApplicationContext()).post(new OrganizationEventModel());
                 TinyBus.from(this.getApplicationContext()).post(new DealEventModel());
+                if (!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
+                    activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
+                }
             } else if (resultCode == RESULT_CANCELED) {
                 Log.d(TAG, "handleResult: CANCELED");
 //                if (progressDialog != null && progressDialog.isShowing()) {

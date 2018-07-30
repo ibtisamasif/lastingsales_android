@@ -25,8 +25,6 @@ public class SettingsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Switch swFlyer;
     private Switch swTagDialogPopup;
-    //    private Switch swHourlyAlarmNotification;
-//    private Switch swDefaultLead;
     private Switch swCompanyPhone;
     private TextView tvAddToProtectedApp;
 
@@ -40,12 +38,10 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setLogo(R.drawable.ic_notification_small);
 //        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("SettingsPrefActivity");
+        getSupportActionBar().setTitle("Settings");
         settingsManager = new SettingsManager(this);
         swFlyer = findViewById(R.id.swFlyer);
         swTagDialogPopup = findViewById(R.id.swTagDialogPopup);
-//        swHourlyAlarmNotification = (Switch) findViewById(R.id.swHourlyAlarmNotification);
-//        swDefaultLead = (Switch) findViewById(R.id.swDefaultLead);
         swCompanyPhone = findViewById(R.id.swCompanyPhone);
         TextView tvAddToProtectedApp = findViewById(R.id.tvAddToProtectedApp);
         tvAddToProtectedApp.setOnClickListener(new View.OnClickListener() {
@@ -98,70 +94,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        if (settingsManager.getKeyStateHourlyNotification()) {
-//            swHourlyAlarmNotification.setChecked(true);
-//        } else {
-//            swHourlyAlarmNotification.setChecked(false);
-//        }
-//
-////        //attach a listener to check for changes in state
-//        swHourlyAlarmNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//
-//                if (isChecked) {
-//                    settingsManager.setKeyStateHourlyNotification(true);
-//                    Calendar calendar = Calendar.getInstance();
-//                    calendar.set(Calendar.HOUR_OF_DAY, 10); // For 10am
-//                    calendar.set(Calendar.MINUTE, 0);
-//                    calendar.set(Calendar.SECOND, 0);
-//                    PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SettingsActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
-//                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-//                    if (alarmManager != null) {
-//                        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * 2, pi);
-//                    }
-//                    Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Enabled Start App for changes to take effect", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    settingsManager.setKeyStateHourlyNotification(false);
-//                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SettingsActivity.this, HourlyAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE);
-//                    if (pendingIntent != null) {
-//                        Log.d("myAlarmLog", "Hourly inquiry notification Disabled");
-//                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-////                        Intent myIntent = new Intent(SettingsActivity.this, HourlyAlarmReceiver.class);
-////                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0 , myIntent, 0);
-//                        if (alarmManager != null) {
-//                            alarmManager.cancel(pendingIntent);
-//                        }
-//                    }
-//                    Toast.makeText(SettingsActivity.this, "Hourly inquiry notification Disabled", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
-//        if (settingsManager.getKeyStateDefaultLead()) {
-//            swDefaultLead.setChecked(true);
-//        } else {
-//            swDefaultLead.setChecked(false);
-//        }
-//
-//        //attach a listener to check for changes in state
-//        swDefaultLead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//
-//                if (isChecked) {
-//                    settingsManager.setKeyStateDefaultLead(true);
-//                    Toast.makeText(SettingsActivity.this, "Default will be Lead", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    settingsManager.setKeyStateDefaultLead(false);
-//                    Toast.makeText(SettingsActivity.this, "Default will be unlabeled", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
         if (settingsManager.getKeyStateIsCompanyPhone()) {
             swCompanyPhone.setChecked(true);
         } else {

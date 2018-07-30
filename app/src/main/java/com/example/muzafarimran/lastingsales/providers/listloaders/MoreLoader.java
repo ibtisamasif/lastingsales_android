@@ -29,7 +29,7 @@ public class MoreLoader extends AsyncTaskLoader<List<Object>> {
 
 //
 
-        MoreItem moreItemSetting = new MoreItem("SettingsPrefActivity");
+        MoreItem moreItemSetting = new MoreItem("Settings");
         moreItemSetting.drawable = R.drawable.bg_setting_cardcopyxxxhdpi;
         moreItemSetting.description = "Manage your accounts and notification preferences.";
 
