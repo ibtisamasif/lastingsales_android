@@ -825,8 +825,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             cursor.addRow(temp);
             count++;
         }
-
-        // Toast.makeText(activity, "searching"+query, Toast.LENGTH_SHORT).show();
         searchView.setSuggestionsAdapter(new SearchSuggestionAdapter(this, cursor));
     }
 
@@ -843,14 +841,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
                 if (sessionManager.isFirstRunAfterLogin()) {
                     Log.d(TAG, "initFirst: isFirstRun TRUE");
-                 /*   TheCallLogEngine theCallLogEngine = new TheCallLogEngine(NavigationBottomMainActivity.this);
-                    theCallLogEngine.execute();*/
-                    //    startService(new Intent(getApplicationContext(), CallLogEngineIntentService.class));
-
+                    startService(new Intent(getApplicationContext(), CallLogEngineIntentService.class));
                 }
-
-//                Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();
-
+                Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();
                 TinyBus.from(this.getApplicationContext()).post(new LeadContactAddedEventModel());
                 TinyBus.from(this.getApplicationContext()).post(new OrganizationEventModel());
                 TinyBus.from(this.getApplicationContext()).post(new DealEventModel());
@@ -886,8 +879,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //                sessionManager.logoutUser();
 //                startActivity(new Intent(NavigationBottomMainActivity.this, LogInActivity.class));
 //                finish();
-
-//                Toast.makeText(NavigationBottomMainActivity.this, "Init failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(NavigationBottomMainActivity.this, "Init failed", Toast.LENGTH_LONG).show();
             }
         }
     }
