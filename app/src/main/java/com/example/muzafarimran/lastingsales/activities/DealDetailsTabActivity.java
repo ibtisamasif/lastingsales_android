@@ -211,7 +211,6 @@ public class DealDetailsTabActivity extends AppCompatActivity {
                 selectedDeal = LSDeal.findById(LSDeal.class, dealIDLong);
             }
         }
-
         if (selectedDeal != null) {
             if (selectedDeal.getName() == null || selectedDeal.getName().equals("")) {
 //                tvName.setVisibility(View.GONE);
@@ -225,11 +224,6 @@ public class DealDetailsTabActivity extends AppCompatActivity {
                     setSupportActionBar(toolbar);
                 }
             }
-//            if (selectedDeal.getPhoneOne() == null || selectedDeal.getPhoneOne().equals("")) {
-////                tvNumberOne.setVisibility(View.GONE);
-//            } else {
-////                tvNumberOne.setText(selectedDeal.getPhoneOne());
-//            }
         }
         setSupportActionBar(toolbar);
         if (extras != null) {

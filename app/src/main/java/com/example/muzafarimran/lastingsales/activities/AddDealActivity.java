@@ -11,12 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.LSStageSpinAdapter;
 import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.customview.ContactsCompletionView;
 import com.example.muzafarimran.lastingsales.customview.OrganizationsCompletionView;
@@ -31,7 +29,6 @@ import com.tokenautocomplete.TokenCompleteTextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -53,8 +50,6 @@ public class AddDealActivity extends AppCompatActivity {
     private EditText etValueAddDeal;
     private Button bSaveAddDeal;
     private Button bCancelAddDeal;
-    private Spinner stageSpinner;
-    private Spinner isPrivateSpinner;
     private LSContact selectedContact;
     private LSOrganization selectedOrganization;
     private LSDeal mDeal;
@@ -305,7 +300,7 @@ public class AddDealActivity extends AppCompatActivity {
                         if (selectedStageServerId != null) {
                             mDeal.setWorkflowStageId(selectedStageServerId);
                         }
-                        if (dealValue != null) {
+                        if (dealValue != null && !dealValue.equalsIgnoreCase("")) {
                             mDeal.setValue(dealValue);
                         }
                         mDeal.save();
@@ -317,51 +312,6 @@ public class AddDealActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(AddDealActivity.this, "Please select a contact", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-//        //populate stage spinner
-//        LSStage lsStage = LSStage.getStageFromServerId(mDeal.getWorkflowStageId());
-//        int index = 0;
-//        for (int i = 0; i < stageList.size(); i++) {
-//            if (lsStage != null && stageList.get(i).getName().equalsIgnoreCase(lsStage.getName())) {
-//                index = i;
-//            }
-//        }
-//        stageSpinner.setSelection(index, false);
-
-        addItemsOnSpinnerDealStage();
-
-        addItemsOnSpinnerDealIsPrivate();
-    }
-
-    public void addItemsOnSpinnerDealStage() {
-        stageSpinner = (Spinner) findViewById(R.id.stage_spinner);
-        LSWorkflow defaultWorkFlow = LSWorkflow.getDefaultWorkflow();
-        Collection<LSStage> lsStages = LSStage.getAllStagesInPositionSequenceByWorkflowServerId(defaultWorkFlow.getServerId());
-        if (lsStages != null) {
-            stageList.addAll(lsStages);
-        }
-        LSStageSpinAdapter dataAdapter = new LSStageSpinAdapter(AddDealActivity.this, R.layout.spinner_item, stageList);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        stageSpinner.setAdapter(dataAdapter);
-        stageSpinner.post(new Runnable() {
-            public void run() {
-                stageSpinner.setOnItemSelectedListener(new CustomSpinnerDealStageOnItemSelectedListener());
-            }
-        });
-    }
-
-    private void addItemsOnSpinnerDealIsPrivate() {
-        isPrivateSpinner = (Spinner) findViewById(R.id.isPrivateSpinner);
-        List<String> list = new ArrayList<String>();
-        list.add("Company");
-        list.add("Private");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(AddDealActivity.this, R.layout.spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        isPrivateSpinner.setAdapter(dataAdapter);
-        isPrivateSpinner.post(new Runnable() {
-            public void run() {
-                isPrivateSpinner.setOnItemSelectedListener(new CustomSpinnerDealStatusOnItemSelectedListener());
             }
         });
     }

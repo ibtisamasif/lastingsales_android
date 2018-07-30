@@ -302,7 +302,6 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
 
     private void editOrganizationDialogBox(LSOrganization tempOrganization) {
         if (tempOrganization != null) {
-
             Dialog addOrgDialog = new Dialog(OrganizationDetailsTabActivity.this);
             addOrgDialog.setContentView(R.layout.edit_organization);
             addOrgDialog.setCancelable(true);
