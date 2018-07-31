@@ -283,7 +283,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSContact lsContact = LSContact.findById(LSContact.class, args.getLong("someId"));
                         lsProperty1.setContactOfProperty(lsContact);
                         lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
@@ -307,7 +307,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSContact lsContact = LSContact.findById(LSContact.class, args.getLong("someId"));
                         lsProperty1.setContactOfProperty(lsContact);
                         lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
@@ -331,7 +331,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSContact lsContact = LSContact.findById(LSContact.class, args.getLong("someId"));
                         lsProperty1.setContactOfProperty(lsContact);
                         lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
@@ -353,7 +353,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSContact lsContact = LSContact.findById(LSContact.class, args.getLong("someId"));
                         lsProperty1.setContactOfProperty(lsContact);
                         lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
@@ -934,43 +934,6 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
         listLoader.clear();
         listLoader.addAll(new ArrayList<Object>());
         adapter.notifyDataSetChanged();
-    }
-
-    private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
-            switch (pos) {
-                case 0:
-                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                    mContact.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-                    Toast.makeText(parent.getContext(), "Status Changed to InProgress", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-                case 1:
-                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                    mContact.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-                case 2:
-                    mContact.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-                    mContact.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-                    mContact.save();
-                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
-                    dataSenderAsync.run();
-                    break;
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
     }
 
     private class DynamicSpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener {

@@ -73,17 +73,17 @@ public class LogInActivity extends AppCompatActivity {
         pdLoading.setTitle("Loading data");
         //this method will be running on UI thread
         pdLoading.setMessage("Please Wait...");
-        loginButtonLoginScreen = (Button) findViewById(R.id.loginButtonLoginScreen);
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
-        bSignup = (Button) findViewById(R.id.bSignup);
-        bReset = (Button) findViewById(R.id.bReset);
+        loginButtonLoginScreen = findViewById(R.id.loginButtonLoginScreen);
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.etPassword);
+        bSignup = findViewById(R.id.bSignup);
+        bReset = findViewById(R.id.bReset);
         etEmail.getBackground().clearColorFilter();
         etPassword.getBackground().clearColorFilter();
 
 //        hardcoding number and password for development speedup purposes
-        etEmail.setText("ibtialphaadmin@gmail.com");
-        etPassword.setText("123456");
+//        etEmail.setText("ibtialphaadmin@gmail.com");
+//        etPassword.setText("123456");
 
         loginButtonLoginScreen.setOnClickListener(new View.OnClickListener() {
             @Override

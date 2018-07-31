@@ -7,7 +7,9 @@ public class LSProperty extends SugarRecord {
 
     @Ignore
     public static final String STORABLE_TYPE_APP_LEAD = "App\\Lead";
+    @Ignore
     public static final String STORABLE_TYPE_APP_DEAL = "App\\Deal";
+    @Ignore
     public static final String STORABLE_TYPE_APP_ORGANIZATION = "App\\Organization";
 
     private LSContact contactOfProperty;
@@ -16,7 +18,7 @@ public class LSProperty extends SugarRecord {
     private String userId;
     private String companyId;
     private String columnId;
-    private String storableId;
+    private String storableId; // depricated do not use it
     private String storableType;
     private String value;
     private String createdBy;
@@ -41,10 +43,12 @@ public class LSProperty extends SugarRecord {
         this.columnId = columnId;
     }
 
+    @Deprecated
     public String getStorableId() {
         return storableId;
     }
 
+    @Deprecated
     public void setStorableId(String storableId) {
         this.storableId = storableId;
     }

@@ -210,20 +210,20 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         initFirst(savedInstanceState);
 
         setContentView(R.layout.activity_bottom_navigation);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Lasting Sales");
         ActionBar actionBar = getSupportActionBar();
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = findViewById(R.id.navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         initLast();
 
-        floatingActionMenuLead = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        FloatingActionButton floatingActionButtonAddOrg = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add_org);
-        FloatingActionButton floatingActionButtonAdd = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add);
-        FloatingActionButton floatingActionButtonImport = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_import);
+        floatingActionMenuLead = findViewById(R.id.material_design_android_floating_action_menu);
+        FloatingActionButton floatingActionButtonAddOrg = findViewById(R.id.material_design_floating_action_menu_add_org);
+        FloatingActionButton floatingActionButtonAdd = findViewById(R.id.material_design_floating_action_menu_add);
+        FloatingActionButton floatingActionButtonImport = findViewById(R.id.material_design_floating_action_menu_import);
         floatingActionMenuLead.setClosedOnTouchOutside(true);
 
         floatingActionButtonAddOrg.setOnClickListener(new View.OnClickListener() {
@@ -235,8 +235,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 addOrgDialog.setCancelable(true);
                 addOrgDialog.show();
 
-                Button insertOrg = (Button) addOrgDialog.findViewById(R.id.bSaveAddOrg);
-                Button cancel = (Button) addOrgDialog.findViewById(R.id.bCancelAddOrg);
+                Button insertOrg = addOrgDialog.findViewById(R.id.bSaveAddOrg);
+                Button cancel = addOrgDialog.findViewById(R.id.bCancelAddOrg);
 
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -307,7 +307,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             }
         });
 
-        floatingActionButtonDeal = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab_add);
+        floatingActionButtonDeal = findViewById(R.id.fab_add);
         floatingActionButtonDeal.hide();
         floatingActionButtonDeal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -680,8 +680,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             case R.id.action_refresh:
                 Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
                 if (NetworkAccess.isNetworkAvailable(getApplicationContext())) {
-                    Intent intentInitService = new Intent(this, InitService.class);
-                    startService(intentInitService);
+//                    Intent intentInitService = new Intent(this, InitService.class);
+//                    startService(intentInitService);
 //                    progressDialog.show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_SHORT).show();

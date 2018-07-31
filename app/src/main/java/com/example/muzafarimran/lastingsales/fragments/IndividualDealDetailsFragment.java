@@ -220,6 +220,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty.get(0).save();
                         Log.d("saved", "value saved");
                     } else {
@@ -227,9 +228,10 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSDeal lsDeal = LSDeal.findById(LSDeal.class, args.getLong("someId"));
                         lsProperty1.setDealOfProperty(lsDeal);
+                        lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty1.save();
                         Log.d("created", "created property");
                     }
@@ -243,6 +245,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty.get(0).save();
                         Log.d("saved", "value saved");
                     } else {
@@ -250,9 +253,10 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSDeal lsDeal = LSDeal.findById(LSDeal.class, args.getLong("someId"));
                         lsProperty1.setDealOfProperty(lsDeal);
+                        lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty1.save();
                         Log.d("created", "created property");
                     }
@@ -265,6 +269,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty.get(0).save();
                         Log.d("saved", "value saved");
                     } else {
@@ -272,9 +277,10 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSDeal lsDeal = LSDeal.findById(LSDeal.class, args.getLong("someId"));
                         lsProperty1.setDealOfProperty(lsDeal);
+                        lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty1.save();
                         Log.d("created", "created property");
                     }
@@ -285,6 +291,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty.get(0).save();
                         Log.d("saved", "value saved");
                     } else {
@@ -292,9 +299,10 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSDeal lsDeal = LSDeal.findById(LSDeal.class, args.getLong("someId"));
                         lsProperty1.setDealOfProperty(lsDeal);
+                        lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty1.save();
                         Log.d("created", "created property");
                     }

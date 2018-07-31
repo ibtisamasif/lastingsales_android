@@ -183,7 +183,7 @@ public class InitService extends IntentService {
                                 tempProperty.setUserId(property_user_id);
                                 tempProperty.setCompanyId(property_company_id);
                                 tempProperty.setColumnId(property_column_id);
-                                tempProperty.setStorableId(property_storable_id);
+//                                tempProperty.setStorableId(property_storable_id);
                                 tempProperty.setStorableType(property_storable_type);
                                 tempProperty.setValue(property_value);
                                 tempProperty.setContactOfProperty(LSContact.getContactFromServerId(property_storable_id));
@@ -289,7 +289,7 @@ public class InitService extends IntentService {
                                     tempProperty.setUserId(property_user_id);
                                     tempProperty.setCompanyId(property_company_id);
                                     tempProperty.setColumnId(property_column_id);
-                                    tempProperty.setStorableId(property_storable_id);
+//                                    tempProperty.setStorableId(property_storable_id);
                                     tempProperty.setStorableType(property_storable_type);
                                     tempProperty.setValue(property_value);
                                     tempProperty.setOrganizationOfProperty(LSOrganization.getOrganizationFromServerId(property_storable_id));
@@ -426,7 +426,7 @@ public class InitService extends IntentService {
                                         tempProperty.setUserId(property_user_id);
                                         tempProperty.setCompanyId(property_company_id);
                                         tempProperty.setColumnId(property_column_id);
-                                        tempProperty.setStorableId(property_storable_id);
+//                                        tempProperty.setStorableId(property_storable_id);
                                         tempProperty.setStorableType(property_storable_type);
                                         tempProperty.setValue(property_value);
                                         tempProperty.setDealOfProperty(LSDeal.getDealFromServerId(property_storable_id));

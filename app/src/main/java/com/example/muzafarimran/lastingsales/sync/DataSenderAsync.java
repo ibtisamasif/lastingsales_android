@@ -721,8 +721,6 @@ public class DataSenderAsync {
                 params.put("status", "" + deal.getStatus());
                 if (deal.getContact() != null) {
                     params.put("lead_id", "" + deal.getContact().getServerId());
-                } else {
-                    deal.delete();
                 }
                 if (deal.getOrganization() != null) {
                     params.put("organization_id", "" + deal.getOrganization().getServerId());
@@ -811,8 +809,6 @@ public class DataSenderAsync {
             dealsList = LSDeal.find(LSDeal.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_DEAL_DELETE_NOT_SYNCED);
             Log.d(TAG, "deleteDealsFromServer: count : " + dealsList.size());
             for (LSDeal oneDeal : dealsList) {
-//                Log.d(TAG, "Found Deal : " + oneDeal.getName());
-//                Log.d(TAG, "Server ID : " + oneDeal.getServerId());
                 deleteDealFromServerSync(oneDeal);
             }
         }
@@ -882,7 +878,22 @@ public class DataSenderAsync {
             Log.d(TAG, "addOrUpdatePropertyToServer: count : " + propertiesList.size());
             for (LSProperty oneProperty : propertiesList) {
                 Log.d(TAG, "Found Properties " + oneProperty.getValue());
-                addOrUpdatePropertyToServerSync(oneProperty);
+                if (oneProperty.getContactOfProperty() != null) {
+                    if (oneProperty.getContactOfProperty().getServerId() != null) {
+                        addOrUpdatePropertyToServerSync(oneProperty);
+                    }
+                } else if (oneProperty.getOrganizationOfProperty() != null) {
+                    if (oneProperty.getOrganizationOfProperty().getServerId() != null) {
+                        addOrUpdatePropertyToServerSync(oneProperty);
+                    }
+                } else if (oneProperty.getDealOfProperty() != null) {
+                    if (oneProperty.getDealOfProperty().getServerId() != null) {
+                        addOrUpdatePropertyToServerSync(oneProperty);
+                    }
+                } else {
+                    Log.d(TAG, "addPropertysToServer: Contact or Deal or Organization of note is NULL, Deleting.. " + oneProperty.getValue());
+                    oneProperty.delete();
+                }
             }
         }
     }
@@ -935,13 +946,20 @@ public class DataSenderAsync {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                if (property.getStorableId() != null) {
-                    params.put("id", "" + property.getStorableId()); //this is local id of COD it should be server ID. //TODO
-                } else {
-                    property.delete();
+                if (property.getStorableType().equalsIgnoreCase(LSProperty.STORABLE_TYPE_APP_LEAD)) {
+                    params.put("type", "" + LSProperty.STORABLE_TYPE_APP_LEAD);
+                    params.put("id", "" + property.getContactOfProperty().getServerId());
                 }
-                if (property.getStorableType() != null) {
-                    params.put("type", "" + property.getStorableType());
+                if (property.getStorableType().equalsIgnoreCase(LSProperty.STORABLE_TYPE_APP_DEAL)) {
+                    params.put("type", "" + LSProperty.STORABLE_TYPE_APP_DEAL);
+                    params.put("id", "" + property.getDealOfProperty().getServerId());
+                }
+                if (property.getStorableType().equalsIgnoreCase(LSProperty.STORABLE_TYPE_APP_ORGANIZATION)) {
+                    params.put("type", "" + LSProperty.STORABLE_TYPE_APP_ORGANIZATION);
+                    params.put("id", "" + property.getOrganizationOfProperty().getServerId());
+                }
+                if (property.getColumnId() != null) {
+                    params.put("column_id", "" + property.getColumnId());
                 }
                 if (property.getValue() != null) {
                     params.put("value", "" + property.getValue());
@@ -1318,8 +1336,18 @@ public class DataSenderAsync {
             Log.d(TAG, "addNoteToServer: count : " + notesList.size());
             for (LSNote oneNote : notesList) {
                 Log.d(TAG, "Found Notes");
-                if (oneNote.getContactOfNote() != null || oneNote.getDealOfNote() != null || oneNote.getOrganizationOfNote() != null) {
-                    addNoteToServerSync(oneNote);
+                if (oneNote.getContactOfNote() != null) {
+                    if (oneNote.getContactOfNote().getServerId() != null) {
+                        addNoteToServerSync(oneNote);
+                    }
+                } else if (oneNote.getOrganizationOfNote() != null) {
+                    if (oneNote.getOrganizationOfNote().getServerId() != null) {
+                        addNoteToServerSync(oneNote);
+                    }
+                } else if (oneNote.getDealOfNote() != null) {
+                    if (oneNote.getDealOfNote().getServerId() != null) {
+                        addNoteToServerSync(oneNote);
+                    }
                 } else {
                     Log.d(TAG, "addNotesToServer: Contact or Deal or Organization of note is NULL, Deleting.. " + oneNote.getNoteText());
                     oneNote.delete();
@@ -1382,15 +1410,15 @@ public class DataSenderAsync {
                 Map<String, String> params = new HashMap<String, String>();
                 if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_LEAD)) {
                     params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_LEAD);
-                    params.put("id", "" + note.getContactOfNote().getId());
+                    params.put("id", "" + note.getContactOfNote().getServerId());
                 }
                 if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_DEAL)) {
                     params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_DEAL);
-                    params.put("id", "" + note.getDealOfNote().getId());
+                    params.put("id", "" + note.getDealOfNote().getServerId());
                 }
                 if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_ORGANIZATION)) {
                     params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_ORGANIZATION);
-                    params.put("id", "" + note.getOrganizationOfNote().getId());
+                    params.put("id", "" + note.getOrganizationOfNote().getServerId());
                 }
                 params.put("description", "" + note.getNoteText());
                 params.put("api_token", "" + sessionManager.getLoginToken());
