@@ -844,9 +844,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 TinyBus.from(this.getApplicationContext()).post(new LeadContactAddedEventModel());
                 TinyBus.from(this.getApplicationContext()).post(new OrganizationEventModel());
                 TinyBus.from(this.getApplicationContext()).post(new DealEventModel());
-                if (!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
-                    activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
-                }
+//                if (!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
+//                    activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
+//                }
             } else if (resultCode == RESULT_CANCELED) {
                 Log.d(TAG, "handleResult: CANCELED");
 //                if (progressDialog != null && progressDialog.isShowing()) {

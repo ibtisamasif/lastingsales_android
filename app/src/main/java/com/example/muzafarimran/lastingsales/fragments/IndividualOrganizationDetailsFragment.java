@@ -45,6 +45,7 @@ import com.example.muzafarimran.lastingsales.providers.listloaders.DealsOfAOrgan
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
 import com.example.muzafarimran.lastingsales.utils.DynamicColums;
@@ -644,6 +645,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                 }
             }
         }
+        DataSenderAsync.getInstance(mContext).run();
         Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
     }
 

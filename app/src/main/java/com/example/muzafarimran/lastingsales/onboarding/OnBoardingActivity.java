@@ -25,6 +25,7 @@ import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.activities.CreateCompanyActivity;
 import com.example.muzafarimran.lastingsales.activities.LogInActivity;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
+import com.example.muzafarimran.lastingsales.activities.TutorialScreenActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.app.MyURLs;
 import com.example.muzafarimran.lastingsales.customview.CustomViewPager;
@@ -371,9 +372,14 @@ public class OnBoardingActivity extends AppCompatActivity {
                         startActivity(new Intent(OnBoardingActivity.this, CreateCompanyActivity.class));
                         finish();
                     } else {
-                        startActivity(new Intent(OnBoardingActivity.this, NavigationBottomMainActivity.class));
-                        LogInActivity.activity.finish();
-                        finish();
+                        if (!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
+                            startActivity(new Intent(OnBoardingActivity.this, TutorialScreenActivity.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(OnBoardingActivity.this, NavigationBottomMainActivity.class));
+                            LogInActivity.activity.finish();
+                            finish();
+                        }
                     }
                     Log.d(TAG, "onResponse: " + response);
                     Toast.makeText(OnBoardingActivity.this, "" + user_id, Toast.LENGTH_SHORT).show();

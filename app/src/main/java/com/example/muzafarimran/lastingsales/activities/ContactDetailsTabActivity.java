@@ -50,11 +50,11 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
         setContentView(R.layout.activity_contact_details_tab);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add);
+        floatingActionButton = findViewById(R.id.fab_add);
         floatingActionButton.hide();
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,13 +75,13 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
             }
         }
         if (selectedContact != null) {
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            viewPager = findViewById(R.id.viewpager);
             ContactDetailsFragmentPagerAdapter contactDetailsFragmentPagerAdapter = new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId());
             viewPager.setAdapter(contactDetailsFragmentPagerAdapter); //TODO crash getId was null
 //        viewPager.getAdapter().notifyDataSetChanged();
 
             // Give the TabLayout the ViewPager
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            TabLayout tabLayout = findViewById(R.id.sliding_tabs);
             tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
             tabLayout.setupWithViewPager(viewPager);
 
@@ -262,7 +262,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 }
                 AlertDialog.Builder alert = new AlertDialog.Builder(ContactDetailsTabActivity.this);
                 alert.setTitle("Delete");
-                alert.setMessage("Are you sure to delete " + nameTextOnDialog + ". This will delete associated deals as well.");
+                alert.setMessage("Are you sure to delete " + nameTextOnDialog);
                 alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

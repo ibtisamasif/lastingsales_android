@@ -82,8 +82,8 @@ public class LogInActivity extends AppCompatActivity {
         etPassword.getBackground().clearColorFilter();
 
 //        hardcoding number and password for development speedup purposes
-//        etEmail.setText("ibtialphaadmin@gmail.com");
-//        etPassword.setText("123456");
+        etEmail.setText("ibtialphaadmin@gmail.com");
+        etPassword.setText("123456");
 
         loginButtonLoginScreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,8 +243,13 @@ public class LogInActivity extends AppCompatActivity {
                             activity.startActivity(new Intent(activity, CreateCompanyActivity.class));
                             activity.finish();
                         } else {
-                            activity.startActivity(new Intent(activity, NavigationBottomMainActivity.class));
-                            activity.finish();
+                            if (!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
+                                startActivity(new Intent(LogInActivity.this, TutorialScreenActivity.class));
+                                activity.finish();
+                            } else {
+                                activity.startActivity(new Intent(activity, NavigationBottomMainActivity.class));
+                                activity.finish();
+                            }
                         }
                         Log.d(TAG, "onResponse: " + response);
 //                        Toast.makeText(activity, "" + user_id, Toast.LENGTH_SHORT).show();

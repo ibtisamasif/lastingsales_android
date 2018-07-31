@@ -309,6 +309,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 }
             }
         }
+        DataSenderAsync.getInstance(mContext).run();
         Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
     }
 
