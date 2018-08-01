@@ -17,13 +17,13 @@ class TrialExpiryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_trial_expiry)
 //        supportActionBar!!.title = "About"
 
-        val intent = intent
-        val ss: String = intent.getStringExtra(KEY_MESSAGE)
-        if (ss != null) {
-//            tvMsg.text = ss;
-        } else {
-//            tvMsg.text = "Calling";
-        }
+//        val intent = intent
+//        val ss: String = intent.getStringExtra(KEY_MESSAGE)
+//        if (ss != null) {
+////            tvMsg.text = ss;
+//        } else {
+////            tvMsg.text = "Calling";
+//        }
 
         bAction.setOnClickListener {
             //        tvMsg.text = "Calling"

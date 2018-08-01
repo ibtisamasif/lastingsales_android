@@ -17,7 +17,6 @@ import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActi
 import com.example.muzafarimran.lastingsales.activities.SettingsActivity;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.example.muzafarimran.lastingsales.carditems.SettingItem;
-import com.example.muzafarimran.lastingsales.settings.Settings;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 
@@ -26,10 +25,10 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
  */
 
 public class ViewHolderSettingCard extends RecyclerView.ViewHolder {
+    SessionManager sessionManager;
     private ConstraintLayout cl_container_setting_item;
     private TextView textView;
     private ImageView imageView;
-    SessionManager sessionManager;
 
     public ViewHolderSettingCard(View v) {
         super(v);

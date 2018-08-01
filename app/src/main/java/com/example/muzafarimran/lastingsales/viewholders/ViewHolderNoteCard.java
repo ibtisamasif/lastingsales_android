@@ -13,10 +13,10 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.AddEditNoteActivity;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -27,9 +27,9 @@ import de.halfbit.tinybus.TinyBus;
 public class ViewHolderNoteCard extends RecyclerView.ViewHolder {
 
     private final TextView tvCreatedAt;
+    private final ConstraintLayout cl;
     private TextView tvNote;
     private ImageView ivDelete;
-    private final ConstraintLayout cl;
 
     public ViewHolderNoteCard(View v) {
         super(v);

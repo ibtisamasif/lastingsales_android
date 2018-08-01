@@ -36,14 +36,16 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.carditems.LoadingItem;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
-import com.example.muzafarimran.lastingsales.listloaders.DealsOfAOrganizationLoader;
+import com.example.muzafarimran.lastingsales.providers.listloaders.DealsOfAOrganizationLoader;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
-import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
-import com.example.muzafarimran.lastingsales.sync.MyURLs;
+import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion1;
 import com.example.muzafarimran.lastingsales.utils.DynamicColumnBuilderVersion2;
 import com.example.muzafarimran.lastingsales.utils.DynamicColums;
@@ -70,30 +72,29 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
     public static final String TAG = "IndividualOrgDetailFra";
     public static final String DEALS_ORGANIZATION_ID = "deals_organization_id";
     public static final int DEALS_OF_A_ORGANIZATION = 32;
+    static DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1;
+    static DynamicColumnBuilderVersion2 dynamicColumnBuilderVersion2;
     private static Bundle args;
     TextView tvName;
     TextView tvEmail;
     TextView tvNumber;
     TextView tvAddress;
     TextView tvDefaultText;
-
     RecyclerView mRecyclerView = null;
+    Button save;
+    GridLayout gridLayout;
+    DynamicColums dynamicColums;
     private List<Object> listLoader = new ArrayList<Object>();
     private MyRecyclerViewAdapter adapter;
-
     private Long organizationIDLong;
     private Spinner leadStatusSpinner;
     private Button bSave;
     private LSOrganization mOrganization;
     private LinearLayout ll;
-    static DynamicColumnBuilderVersion1 dynamicColumnBuilderVersion1;
-    static DynamicColumnBuilderVersion2 dynamicColumnBuilderVersion2;
-
     private TextView tvError;
     private SessionManager sessionManager;
     private RequestQueue queue;
     private Context mContext;
-
 
     public static IndividualOrganizationDetailsFragment newInstance(int page, String title, Long id) {
         IndividualOrganizationDetailsFragment fragmentFirst = new IndividualOrganizationDetailsFragment();
@@ -122,8 +123,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         organizationIDLong = args.getLong("someId");
         setHasOptionsMenu(true);
     }
-
-    Button save;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -252,7 +251,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         super.onDetach();
         Log.i(TAG, "onDetach: ");
     }
-
 
     private void dynamicColumns(View view) {
      /*   ll = (LinearLayout) view.findViewById(R.id.contactDetailsDropDownLayoutinner);
@@ -547,33 +545,19 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 
     @Override
     public void onClick(View v) {
-
-
         List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class, "related_to=?", LSProperty.STORABLE_TYPE_APP_ORGANIZATION);
-
         if (list.size() > 0) {
-
             for (int i = 0; i < list.size(); i++) {
                 String type = list.get(i).getColumnType();
-
-
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
-
-
                     EditText editText = gridLayout.findViewWithTag("org" + list.get(i).getServerId());
-
                     String val = editText.getText().toString();
-
-
                     Log.d("textfield", val);
-                    //Toast.makeText(mContext, "TextField"+val, Toast.LENGTH_SHORT).show();
-
-
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty.get(0).save();
                         Log.d("saved", "value saved");
                     } else {
@@ -581,32 +565,23 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-
-
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSOrganization lsOrganization = LSOrganization.findById(LSOrganization.class, args.getLong("someId"));
                         lsProperty1.setOrganizationOfProperty(lsOrganization);
+                        lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty1.save();
-
                         Log.d("created", "created property");
                     }
-
-
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
-
-
                     EditText editText = gridLayout.findViewWithTag("org" + list.get(i).getServerId());
-
                     String val = editText.getText().toString();
-
                     Log.d("numberfield", val);
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
-
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty.get(0).save();
                         Log.d("saved", "value saved");
                     } else {
@@ -614,30 +589,23 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSOrganization lsOrganization = LSOrganization.findById(LSOrganization.class, args.getLong("someId"));
                         lsProperty1.setOrganizationOfProperty(lsOrganization);
+                        lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty1.save();
-
                         Log.d("created", "created property");
                     }
-
-
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
-
-
                     EditText editText = gridLayout.findViewWithTag("org" + list.get(i).getServerId());
-
                     String val = editText.getText().toString();
-
                     Log.d("datefield", val);
                     // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
-
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty.get(0).save();
                         Log.d("saved", "value saved");
                     } else {
@@ -645,29 +613,21 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSOrganization lsOrganization = LSOrganization.findById(LSOrganization.class, args.getLong("someId"));
                         lsProperty1.setOrganizationOfProperty(lsOrganization);
+                        lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty1.save();
-
                         Log.d("created", "created property");
                     }
-
-
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-
-
                     Spinner spinner = gridLayout.findViewWithTag("org" + list.get(i).getServerId());
-
                     String val = spinner.getSelectedItem().toString();
-
-                    // Toast.makeText(mContext, "Spinner " + val, Toast.LENGTH_SHORT).show();
-
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty.get(0).save();
                         Log.d("saved", "value saved");
                     } else {
@@ -675,177 +635,66 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSOrganization lsOrganization = LSOrganization.findById(LSOrganization.class, args.getLong("someId"));
                         lsProperty1.setOrganizationOfProperty(lsOrganization);
-
+                        lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
                         lsProperty1.save();
-
                         Log.d("created", "created property");
                     }
-<<<<<<< HEAD
-=======
-
-
-                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_MULTI)) {
-
-
-                    EditText mul = gridLayout.findViewWithTag("org" + list.get(i).getServerId());
-
-                    String val = mul.getText().toString();
-
-                    // Toast.makeText(mContext, "Spinner " + val, Toast.LENGTH_SHORT).show();
-
-                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
-                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-
-                    if (lsProperty.size() > 0) {
-                        lsProperty.get(0).setValue(val);
-                        lsProperty.get(0).save();
-                        Log.d("saved", "value saved");
-                    } else {
-                        LSProperty lsProperty1 = new LSProperty();
-                        lsProperty1.setValue(val);
-                        lsProperty1.setStorableType(list.get(i).getRelatedTo());
-                        lsProperty1.setColumnId(list.get(i).getServerId());
-                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
-                        LSOrganization lsOrganization = LSOrganization.findById(LSOrganization.class, args.getLong("someId"));
-                        lsProperty1.setOrganizationOfProperty(lsOrganization);
-
-                        lsProperty1.save();
-
-                        Log.d("created", "created property");
-                    }
-
-
->>>>>>> parent of 48481c4... fasd
                 }
-
-
             }
-
-
         }
-
+        DataSenderAsync.getInstance(mContext).run();
         Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
-
     }
 
-<<<<<<< HEAD
-=======
-
-    GridLayout gridLayout;
-    DynamicColums dynamicColums;
-
-
-
->>>>>>> parent of 48481c4... fasd
     public void dynamicColumnByAmir() {
-
         dynamicColums = new DynamicColums(getContext());
-
         List<LSDynamicColumns> list = LSDynamicColumns.find(LSDynamicColumns.class, "related_to=?", LSProperty.STORABLE_TYPE_APP_ORGANIZATION);
-
-
         if (list.size() > 0) {
-
-
             for (int i = 0; i < list.size(); i++) {
-
                 String type = list.get(i).getColumnType();
-
                 if (type.equals(LSDynamicColumns.COLUMN_TYPE_TEXT)) {
-
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-
                     if (lsProperties.size() > 0) {
-
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
                         gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "org" + list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
                     } else {
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
                         gridLayout.addView(dynamicColums.editText("", "org" + list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT));
-
-                        //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
-
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_NUMBER)) {
-
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-
                     if (lsProperties.size() > 0) {
-
-
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-
                         gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "org" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
                     } else {
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-
                         gridLayout.addView(dynamicColums.editText("", "org" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
-
-                        // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
                     }
-
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
-
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-
                     if (lsProperties.size() > 0) {
-<<<<<<< HEAD
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
                         gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "org" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
-=======
-
-                        EditText dateColumn=dynamicColums.dateEditText(lsProperties.get(0).getValue(), "org" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER);
-
-                        dateColumn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                DialogFragment dialogFragment=new SelectDateFragment(dateColumn);
-                                dialogFragment.show(getFragmentManager(),"Date Picker");
-                                Log.d("click","ondate column");
-
-                            }
-                        });
-
-                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-
-                        gridLayout.addView(dateColumn);
->>>>>>> parent of 48481c4... fasd
                     } else {
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-<<<<<<< HEAD
                         gridLayout.addView(dynamicColums.editText("", "org" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE));
-=======
-
-                        gridLayout.addView(dateColumn);
-
-                        // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
->>>>>>> parent of 48481c4... fasd
                     }
-
                 } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
-
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-
                     if (lsProperties.size() > 0) {
-
                         int position = 0;
-
                         List<String> option = new ArrayList<>();
-
-
                         String spinnerDefaultVal = list.get(i).getDefaultValueOption();
-
                         try {
                             JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
                             option.add("Select");
-
                             for (int j = 0; j < jsonarray.length(); j++) {
                                 if (lsProperties.get(0).getValue().equals(jsonarray.getString(j))) {
                                     position = j;
@@ -853,203 +702,32 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                                 }
                                 String jsonobject = jsonarray.getString(j);
                                 option.add(jsonobject);
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
                         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
-
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
                         gridLayout.addView(dynamicColums.spinner(dataAdapter, "org" + list.get(i).getServerId(), position));
-
-
                     } else {
                         List<String> option = new ArrayList<>();
-
                         int position = 0;
-
-
                         String spinnerDefaultVal = list.get(i).getDefaultValueOption();
-
                         try {
                             JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
                             option.add("Select");
-
                             for (int j = 0; j < jsonarray.length(); j++) {
-
-
                                 String jsonobject = jsonarray.getString(j);
                                 option.add(jsonobject);
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
                         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_item, option);
-
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
                         gridLayout.addView(dynamicColums.spinner(dataAdapter, "org" + list.get(i).getServerId(), position));
-
-
-                        //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-<<<<<<< HEAD
-=======
-                else if (type.equals(LSDynamicColumns.COLUMN_TYPE_MULTI)) {
-
-                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and organization_of_property=?",
-                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-
-                    if (lsProperties.size() > 0) {
-
-
-                        EditText multi=dynamicColums.dateEditText(lsProperties.get(0).getValue(), "org" + list.get(i).getServerId(),InputType.TYPE_CLASS_TEXT);
-
-                        String spinnerDefaultVal = list.get(i).getDefaultValueOption();
-
-                        List<String> option=new ArrayList<>();
-
-                        try {
-                            JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
-
-
-                            for (int j = 0; j < jsonarray.length(); j++) {
-
-
-                                String jsonobject = jsonarray.getString(j);
-                                option.add(jsonobject);
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        multi.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                showMultiDialog(option,multi);
-                            }
-                        });
-
-
-
-                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-                        gridLayout.addView(multi);
-
-
-                    } else {
-                        EditText multi=dynamicColums.dateEditText("", "org" + list.get(i).getServerId(),InputType.TYPE_CLASS_TEXT);
-
-                        String spinnerDefaultVal = list.get(i).getDefaultValueOption();
-
-                        List<String> option=new ArrayList<>();
-
-                        try {
-                            JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
-
-
-                            for (int j = 0; j < jsonarray.length(); j++) {
-
-
-                                String jsonobject = jsonarray.getString(j);
-                                option.add(jsonobject);
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        multi.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                showMultiDialog(option,multi);
-                            }
-                        });
-
-
-
-                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-                        gridLayout.addView(multi);
-
-                        //Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            }
-
-
-        }
-
-
-    }
-
-    private void showMultiDialog(List colors,EditText multi) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-        // Convert the color array to list
-        final List<String> colorsList = colors;
-
-        boolean checkedColors[]=new boolean[colors.size()];
-
-        String[] strings =(String[]) colors.toArray(new String[0]);
-        builder.setMultiChoiceItems(strings, checkedColors, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-
-                // Update the current focused item's checked status
-                checkedColors[which] = isChecked;
-
-                // Get the current focused item
-                String currentItem = colorsList.get(which);
-
-                // Notify the current action
-         /*       Toast.makeText(getContext(),
-                        currentItem + " " + isChecked, Toast.LENGTH_SHORT).show();
-         */   }
-        });
-
-        // Specify the dialog is not cancelable
-        builder.setCancelable(false);
-
-        // Set a title for alert dialog
-        builder.setTitle("Multi Select");
-
-        // Set the positive/yes button click listener
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Do something when click positive button
-                multi.setText("");
-               for (int i = 0; i<checkedColors.length; i++){
-                    boolean checked = checkedColors[i];
-                    if (checked) {
-                        multi.setText(multi.getText() + colorsList.get(i) + ",");
                     }
                 }
-            }
-        });
-
-        // Set the negative/no button click listener
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Do something when click the negative button
-            }
-        });
-
-        // Set the neutral/cancel button click listener
-        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Do something when click the neutral button
->>>>>>> parent of 48481c4... fasd
             }
         }
     }
@@ -1065,7 +743,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         leadStatusSpinner.setAdapter(dataAdapter);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -1077,211 +754,17 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         return super.onOptionsItemSelected(item);
     }
 
-
-//    private class CustomSpinnerLeadStatusOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-//
-//        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-//            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(mContext.getApplicationContext());
-//            switch (pos) {
-//                case 0:
-//                    mOrganization.setContactSalesStatus(LSContact.SALES_STATUS_INPROGRESS);
-//                    mOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-//                    mOrganization.save();
-//                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-//                    Toast.makeText(parent.getContext(), "Status Changed to InProgress", Toast.LENGTH_SHORT).show();
-//                    dataSenderAsync.run();
-//                    break;
-//                case 1:
-//                    mOrganization.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_WON);
-//                    mOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-//                    mOrganization.save();
-//                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-//                    Toast.makeText(parent.getContext(), "Status Changed to Won", Toast.LENGTH_SHORT).show();
-//                    dataSenderAsync.run();
-//                    break;
-//                case 2:
-//                    mOrganization.setContactSalesStatus(LSContact.SALES_STATUS_CLOSED_LOST);
-//                    mOrganization.setSyncStatus(SyncStatus.SYNC_STATUS_LEAD_UPDATE_NOT_SYNCED);
-//                    mOrganization.save();
-//                    TinyBus.from(mContext.getApplicationContext()).post(new LeadContactAddedEventModel());
-//                    Toast.makeText(parent.getContext(), "Status Changed to Lost", Toast.LENGTH_SHORT).show();
-//                    dataSenderAsync.run();
-//                    break;
-//            }
-//        }
-//
-//        @Override
-//        public void onNothingSelected(AdapterView<?> parent) {
-//        }
-//    }
-
-    private class DynamicSpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            bSave.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-    }
-
-//    private void loadSocialProfileData() {
-//        LSContactProfile lsContactProfile = mOrganization.getContactProfile();
-//
-//        tvTweeterFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
-//        tvLinkdnFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
-//        tvFbFromProfile.setMovementMethod(LinkMovementMethod.getInstance());
-//
-//        if (lsContactProfile != null) {
-////            if (lsContactProfile.getSocial_image() != null) {
-////                MyDateTimeStamp.setFrescoImage(user_avatar_ind, lsContactProfile.getSocial_image());
-////            }
-//            if (lsContactProfile.getFirstName() != null && !lsContactProfile.getFirstName().equals("")) {
-//                tvNameFromProfile.setText(lsContactProfile.getFirstName() + " " + lsContactProfile.getLastName());
-//            } else {
-//                tvNameFromProfile.setVisibility(View.GONE);
-//                tvNameFromProfileTitle.setVisibility(View.GONE);
-//            }
-//            if (lsContactProfile.getCity() != null && !lsContactProfile.getCity().equals("")) {
-//                tvCityFromProfile.setText(lsContactProfile.getCity());
-//            } else {
-//                tvCityFromProfile.setVisibility(View.GONE);
-//                tvCityFromProfileTitle.setVisibility(View.GONE);
-//            }
-//            if (lsContactProfile.getCountry() != null && !lsContactProfile.getCountry().equals("")) {
-//                tvCountryFromProfile.setText(lsContactProfile.getCountry());
-//            } else {
-//                tvCountryFromProfile.setVisibility(View.GONE);
-//                tvCountryFromProfileTitle.setVisibility(View.GONE);
-//            }
-//            if (lsContactProfile.getWork() != null && !lsContactProfile.getWork().equals("")) {
-//                tvWorkFromProfile.setText(lsContactProfile.getWork());
-//            } else {
-//                tvWorkFromProfile.setVisibility(View.GONE);
-//                tvWorkFromProfileTitle.setVisibility(View.GONE);
-//            }
-//            if (lsContactProfile.getCompany() != null && !lsContactProfile.getCompany().equals("")) {
-//                tvCompanyFromProfile.setText(lsContactProfile.getCompany());
-//            } else {
-//                tvCompanyFromProfile.setVisibility(View.GONE);
-//                tvCompanyFromProfileTitle.setVisibility(View.GONE);
-//            }
-//            if (lsContactProfile.getWhatsapp() != null && !lsContactProfile.getWhatsapp().equals("")) {
-//                tvWhatsappFromProfile.setText(lsContactProfile.getWhatsapp());
-//            } else {
-//                tvWhatsappFromProfile.setVisibility(View.GONE);
-//                tvWhatsappFromProfileTitle.setVisibility(View.GONE);
-//            }
-//            if (lsContactProfile.getTweet() != null && !lsContactProfile.getTweet().equals("")) {
-//                tvTweeterFromProfile.setText(lsContactProfile.getTweet());
-//            } else {
-//                tvTweeterFromProfile.setVisibility(View.GONE);
-//                tvTweeterFromProfileTitle.setVisibility(View.GONE);
-//            }
-//            if (lsContactProfile.getLinkd() != null && !lsContactProfile.getLinkd().equals("")) {
-//                tvLinkdnFromProfile.setText(lsContactProfile.getLinkd());
-//            } else {
-//                tvLinkdnFromProfile.setVisibility(View.GONE);
-//                tvLinkdnFromProfileTitle.setVisibility(View.GONE);
-//            }
-//            if (lsContactProfile.getFb() != null && !lsContactProfile.getFb().equals("")) {
-//                tvFbFromProfile.setText(lsContactProfile.getFb());
-//            } else {
-//                tvFbFromProfile.setVisibility(View.GONE);
-//                tvFbFromProfileTitle.setVisibility(View.GONE);
-//            }
-//        } else {
-//            cv_social_item.setVisibility(View.GONE);
-//            Log.d(TAG, "loadSocialProfileData: lsContactProfile == NULL " + mOrganization.getPhone());
-//            ContactProfileProvider contactProfileProvider = new ContactProfileProvider(getActivity());
-//            contactProfileProvider.getContactProfile(mOrganization.getPhone(), new LSContactProfileCallback() {
-//                @Override
-//                public void onSuccess(LSContactProfile result) {
-//                    Log.d(TAG, "onSuccess: lsContactProfile: " + result);
-//                    if (result != null) {
-//                        cv_social_item.setVisibility(View.VISIBLE);
-//                        Log.d(TAG, "onSuccess: Updating Data");
-//                        //            if (lsContactProfile.getSocial_image() != null) {
-////                MyDateTimeStamp.setFrescoImage(user_avatar_ind, lsContactProfile.getSocial_image());
-////            }
-//                        if (result.getFirstName() != null && !result.getFirstName().equals("")) {
-//                            tvNameFromProfile.setText(result.getFirstName() + " " + result.getLastName());
-//                        } else {
-//                            tvNameFromProfile.setVisibility(View.GONE);
-//                            tvNameFromProfileTitle.setVisibility(View.GONE);
-//                        }
-//                        if (result.getCity() != null && !result.getCity().equals("")) {
-//                            tvCityFromProfile.setText(result.getCity());
-//                        } else {
-//                            tvCityFromProfile.setVisibility(View.GONE);
-//                            tvCityFromProfileTitle.setVisibility(View.GONE);
-//                        }
-//                        if (result.getCountry() != null && !result.getCountry().equals("")) {
-//                            tvCountryFromProfile.setText(result.getCountry());
-//                        } else {
-//                            tvCountryFromProfile.setVisibility(View.GONE);
-//                            tvCountryFromProfileTitle.setVisibility(View.GONE);
-//                        }
-//                        if (result.getWork() != null && !result.getWork().equals("")) {
-//                            tvWorkFromProfile.setText(result.getWork());
-//                        } else {
-//                            tvWorkFromProfile.setVisibility(View.GONE);
-//                            tvWorkFromProfileTitle.setVisibility(View.GONE);
-//                        }
-//                        if (result.getCompany() != null && !result.getCompany().equals("")) {
-//                            tvCompanyFromProfile.setText(result.getCompany());
-//                        } else {
-//                            tvCompanyFromProfile.setVisibility(View.GONE);
-//                            tvCompanyFromProfileTitle.setVisibility(View.GONE);
-//                        }
-//                        if (result.getWhatsapp() != null && !result.getWhatsapp().equals("")) {
-//                            tvWhatsappFromProfile.setText(result.getWhatsapp());
-//                        } else {
-//                            tvWhatsappFromProfile.setVisibility(View.GONE);
-//                            tvWhatsappFromProfileTitle.setVisibility(View.GONE);
-//                        }
-//                        if (result.getTweet() != null && !result.getTweet().equals("")) {
-//                            tvTweeterFromProfile.setText(result.getTweet());
-//                        } else {
-//                            tvTweeterFromProfile.setVisibility(View.GONE);
-//                            tvTweeterFromProfileTitle.setVisibility(View.GONE);
-//                        }
-//                        if (result.getLinkd() != null && !result.getLinkd().equals("")) {
-//                            tvLinkdnFromProfile.setText(result.getLinkd());
-//                        } else {
-//                            tvLinkdnFromProfile.setVisibility(View.GONE);
-//                            tvLinkdnFromProfileTitle.setVisibility(View.GONE);
-//                        }
-//                        if (result.getFb() != null && !result.getFb().equals("")) {
-//                            tvFbFromProfile.setText(result.getFb());
-//                        } else {
-//                            tvFbFromProfile.setVisibility(View.GONE);
-//                            tvFbFromProfileTitle.setVisibility(View.GONE);
-//                        }
-//                    }
-//                }
-//            });
-//        }
-//    }
-
     private void loadConnectionsData() {
-
         tvError = new TextView(mContext);
         tvError.setText("Loading...");
         tvError.setGravity(Gravity.CENTER);
         tvError.setVisibility(View.VISIBLE);
-
         sessionManager = new SessionManager(mContext);
         queue = Volley.newRequestQueue(mContext);
         fetchCustomerHistory(mOrganization.getPhone());
-
     }
 
     private void fetchCustomerHistory(final String number) {
-//        Log.d(TAG, "fetchCustomersHistoryFunc: Fetching Data...");
-//        Log.d(TAG, "fetchCustomerHistory: Number: " + number);
-//        Log.d(TAG, "fetchCustomerHistory: Token: " + sessionManager.getLoginToken());
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         final String BASE_URL = MyURLs.GET_CUSTOMER_HISTORY;
         Uri builtUri = Uri.parse(BASE_URL)
@@ -1315,17 +798,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
                             String lastname = jsonobject.getString("lastname");
                             String role_id = jsonobject.getString("role_id");
                             String name = jsonobject.getString("name");
-
-//                            Log.d(TAG, "onResponse: last_call: " + last_call);
-//                            Log.d(TAG, "onResponse: user_id: " + user_id);
-//                            Log.d(TAG, "onResponse: duration: " + duration);
-//                            Log.d(TAG, "onResponse: firstname: " + firstname);
-//                            Log.d(TAG, "onResponse: lastname: " + lastname);
-//                            Log.d(TAG, "onResponse: role_id: " + role_id);
-//                            Log.d(TAG, "onResponse: name: " + name);
-
-//                            Display display = ((WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-//                            int width = display.getWidth();
 
                             if (!firstname.equalsIgnoreCase("null") && !lastname.equalsIgnoreCase("null")) {
                                 LinearLayout llParentHorizontal = new LinearLayout(mContext.getApplicationContext()); // Huawei mate
@@ -1436,7 +908,6 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         queue.add(sr);
     }
 
-
     @Override
     public Loader<List<Object>> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader: ");
@@ -1475,4 +946,14 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
         adapter.notifyDataSetChanged();
     }
 
+    private class DynamicSpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            bSave.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+    }
 }

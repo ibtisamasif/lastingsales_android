@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.muzafarimran.lastingsales.deals.DealDynamicFragment;
+import com.example.muzafarimran.lastingsales.fragments.DealDynamicFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 
 import java.util.List;

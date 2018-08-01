@@ -14,12 +14,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
+import com.example.muzafarimran.lastingsales.events.PropertyEventModel;
 import com.example.muzafarimran.lastingsales.listeners.PostExecuteListener;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
@@ -27,6 +30,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
+import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -42,28 +46,19 @@ import de.halfbit.tinybus.TinyBus;
 
 public class DataSenderAsync {
     public static final String TAG = "DataSenderAsync";
-//    private static final String TAG = "AppInitializationTest";
-
-    private static DataSenderAsync instance = null;
-    private static int currentState = 1;
+    //    private static final String TAG = "AppInitializationTest";
     private static final int IDLE = 1;
     private static final int PENDING = 2;
+    private static DataSenderAsync instance = null;
+    private static int currentState = 1;
     private static boolean firstThreadIsRunning = false;
-    private Context mContext;
-    private SessionManager sessionManager;
-    private long totalSize = 0;
     private static RequestQueue queue;
     private final int MY_TIMEOUT_MS = 30000;
     private final int MY_MAX_RETRIES = 0;
+    private Context mContext;
+    private SessionManager sessionManager;
+    private long totalSize = 0;
     private PostExecuteListener DataSenderOnPostExecuteListener = null;
-
-    public PostExecuteListener getDataSenderOnPostExecuteListener() {
-        return DataSenderOnPostExecuteListener;
-    }
-
-    public void setDataSenderOnPostExecuteListener(PostExecuteListener dataSenderOnPostExecuteListener) {
-        this.DataSenderOnPostExecuteListener = dataSenderOnPostExecuteListener;
-    }
 
     protected DataSenderAsync(Context context) {
         Log.d(TAG, "DataSenderAsync: ==========================================================================================================================");
@@ -83,6 +78,14 @@ public class DataSenderAsync {
 //            }
         }
         return instance;
+    }
+
+    public PostExecuteListener getDataSenderOnPostExecuteListener() {
+        return DataSenderOnPostExecuteListener;
+    }
+
+    public void setDataSenderOnPostExecuteListener(PostExecuteListener dataSenderOnPostExecuteListener) {
+        this.DataSenderOnPostExecuteListener = dataSenderOnPostExecuteListener;
     }
 
     public void run() {
@@ -122,6 +125,7 @@ public class DataSenderAsync {
                                 addDealToServer();
                                 updateDealsToServer();
                                 deleteDealsFromServer();
+                                addOrUpdatePropertyToServer();
                                 addCallsToServer();
                                 addInquiriesToServer();
                                 updateInquiriesToServer();
@@ -256,7 +260,9 @@ public class DataSenderAsync {
                 if (contact.getDynamic() != null) {
                     params.put("dynamic_values", "" + contact.getDynamic());
                 }
-                params.put("phone", "" + contact.getPhoneOne());
+                if (contact.getPhoneOne() != null) {
+                    params.put("phone", "" + contact.getPhoneOne());
+                }
                 params.put("status", "" + contact.getContactSalesStatus());
                 params.put("api_token", "" + sessionManager.getLoginToken());
                 params.put("lead_type", "" + contact.getContactType());
@@ -289,6 +295,7 @@ public class DataSenderAsync {
         String name = "";
         String email = "";
         String address = "";
+        String phone = "";
         if (contact.getContactName() != null) {
             name = contact.getContactName();
         }
@@ -298,13 +305,16 @@ public class DataSenderAsync {
         if (contact.getContactAddress() != null) {
             address = contact.getContactAddress();
         }
+        if (contact.getPhoneOne() != null) {
+            phone = contact.getPhoneOne();
+        }
         final String BASE_URL = MyURLs.UPDATE_CONTACT;
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendPath("" + contact.getServerId())
                 .appendQueryParameter("name", "" + name)
                 .appendQueryParameter("email", "" + email)
-                .appendQueryParameter("phone", "" + contact.getPhoneOne())
+                .appendQueryParameter("phone", "" + phone)
                 .appendQueryParameter("address", "" + address)
                 .appendQueryParameter("status", "" + contact.getContactSalesStatus())
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
@@ -711,8 +721,6 @@ public class DataSenderAsync {
                 params.put("status", "" + deal.getStatus());
                 if (deal.getContact() != null) {
                     params.put("lead_id", "" + deal.getContact().getServerId());
-                } else {
-                    deal.delete();
                 }
                 if (deal.getOrganization() != null) {
                     params.put("organization_id", "" + deal.getOrganization().getServerId());
@@ -801,8 +809,6 @@ public class DataSenderAsync {
             dealsList = LSDeal.find(LSDeal.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_DEAL_DELETE_NOT_SYNCED);
             Log.d(TAG, "deleteDealsFromServer: count : " + dealsList.size());
             for (LSDeal oneDeal : dealsList) {
-//                Log.d(TAG, "Found Deal : " + oneDeal.getName());
-//                Log.d(TAG, "Server ID : " + oneDeal.getServerId());
                 deleteDealFromServerSync(oneDeal);
             }
         }
@@ -857,6 +863,111 @@ public class DataSenderAsync {
                 }
             }
         }) {
+        };
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                MY_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
+    }
+
+    private void addOrUpdatePropertyToServer() {
+        List<LSProperty> propertiesList = null;
+        if (LSProperty.count(LSProperty.class) > 0) {
+            propertiesList = LSProperty.find(LSProperty.class, "sync_status = ? ", SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
+            Log.d(TAG, "addOrUpdatePropertyToServer: count : " + propertiesList.size());
+            for (LSProperty oneProperty : propertiesList) {
+                Log.d(TAG, "Found Properties " + oneProperty.getValue());
+                if (oneProperty.getContactOfProperty() != null) {
+                    if (oneProperty.getContactOfProperty().getServerId() != null) {
+                        addOrUpdatePropertyToServerSync(oneProperty);
+                    }
+                } else if (oneProperty.getOrganizationOfProperty() != null) {
+                    if (oneProperty.getOrganizationOfProperty().getServerId() != null) {
+                        addOrUpdatePropertyToServerSync(oneProperty);
+                    }
+                } else if (oneProperty.getDealOfProperty() != null) {
+                    if (oneProperty.getDealOfProperty().getServerId() != null) {
+                        addOrUpdatePropertyToServerSync(oneProperty);
+                    }
+                } else {
+                    Log.d(TAG, "addPropertysToServer: Contact or Deal or Organization of note is NULL, Deleting.. " + oneProperty.getValue());
+                    oneProperty.delete();
+                }
+            }
+        }
+    }
+
+    private void addOrUpdatePropertyToServerSync(final LSProperty property) {
+        currentState = PENDING;
+        StringRequest sr = new StringRequest(Request.Method.POST, MyURLs.ADD_OR_UPDATE_PROPERTY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse() AddOrUpdateProperty: response = [" + response + "]");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    JSONObject responseObject = jObj.getJSONObject("response");
+                    property.setServerId(responseObject.getString("id"));
+                    Log.d(TAG, "onResponse: AddOrUpdatePropertyServerID : " + responseObject.getString("id"));
+                    property.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
+                    property.save();
+                    TinyBus.from(mContext.getApplicationContext()).post(new PropertyEventModel());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: CouldNotSyncAddOrUpdateProperty");
+                try {
+                    if (error != null) {
+                        if (error.networkResponse != null) {
+                            Log.d(TAG, "onErrorResponse: error.networkResponse: " + error.networkResponse);
+                            if (error.networkResponse.statusCode == 409) {
+                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                int responseCode = jObj.getInt("responseCode");
+                                if (responseCode == 409) {
+                                    Log.d(TAG, "onErrorResponse: responseCode == 409");
+                                    JSONObject responseObject = jObj.getJSONObject("response");
+                                    property.setServerId(responseObject.getString("id"));
+                                    property.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
+                                    property.save();
+                                    TinyBus.from(mContext.getApplicationContext()).post(new PropertyEventModel());
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                if (property.getStorableType().equalsIgnoreCase(LSProperty.STORABLE_TYPE_APP_LEAD)) {
+                    params.put("type", "" + LSProperty.STORABLE_TYPE_APP_LEAD);
+                    params.put("id", "" + property.getContactOfProperty().getServerId());
+                }
+                if (property.getStorableType().equalsIgnoreCase(LSProperty.STORABLE_TYPE_APP_DEAL)) {
+                    params.put("type", "" + LSProperty.STORABLE_TYPE_APP_DEAL);
+                    params.put("id", "" + property.getDealOfProperty().getServerId());
+                }
+                if (property.getStorableType().equalsIgnoreCase(LSProperty.STORABLE_TYPE_APP_ORGANIZATION)) {
+                    params.put("type", "" + LSProperty.STORABLE_TYPE_APP_ORGANIZATION);
+                    params.put("id", "" + property.getOrganizationOfProperty().getServerId());
+                }
+                if (property.getColumnId() != null) {
+                    params.put("column_id", "" + property.getColumnId());
+                }
+                if (property.getValue() != null) {
+                    params.put("value", "" + property.getValue());
+                }
+                params.put("api_token", "" + sessionManager.getLoginToken());
+                Log.d(TAG, "getParams: addOrUpdatePropertyToServerSync " + params);
+                return params;
+            }
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
                 MY_TIMEOUT_MS,
@@ -1225,8 +1336,18 @@ public class DataSenderAsync {
             Log.d(TAG, "addNoteToServer: count : " + notesList.size());
             for (LSNote oneNote : notesList) {
                 Log.d(TAG, "Found Notes");
-                if (oneNote.getContactOfNote() != null || oneNote.getDealOfNote() != null || oneNote.getOrganizationOfNote() != null) {
-                    addNoteToServerSync(oneNote);
+                if (oneNote.getContactOfNote() != null) {
+                    if (oneNote.getContactOfNote().getServerId() != null) {
+                        addNoteToServerSync(oneNote);
+                    }
+                } else if (oneNote.getOrganizationOfNote() != null) {
+                    if (oneNote.getOrganizationOfNote().getServerId() != null) {
+                        addNoteToServerSync(oneNote);
+                    }
+                } else if (oneNote.getDealOfNote() != null) {
+                    if (oneNote.getDealOfNote().getServerId() != null) {
+                        addNoteToServerSync(oneNote);
+                    }
                 } else {
                     Log.d(TAG, "addNotesToServer: Contact or Deal or Organization of note is NULL, Deleting.. " + oneNote.getNoteText());
                     oneNote.delete();
@@ -1289,15 +1410,15 @@ public class DataSenderAsync {
                 Map<String, String> params = new HashMap<String, String>();
                 if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_LEAD)) {
                     params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_LEAD);
-                    params.put("id", "" + note.getContactOfNote().getId());
+                    params.put("id", "" + note.getContactOfNote().getServerId());
                 }
                 if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_DEAL)) {
                     params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_DEAL);
-                    params.put("id", "" + note.getDealOfNote().getId());
+                    params.put("id", "" + note.getDealOfNote().getServerId());
                 }
                 if (note.getNotableType().equalsIgnoreCase(LSNote.NOTEABLE_TYPE_APP_ORGANIZATION)) {
                     params.put("type", "" + LSNote.NOTEABLE_TYPE_APP_ORGANIZATION);
-                    params.put("id", "" + note.getOrganizationOfNote().getId());
+                    params.put("id", "" + note.getOrganizationOfNote().getServerId());
                 }
                 params.put("description", "" + note.getNoteText());
                 params.put("api_token", "" + sessionManager.getLoginToken());

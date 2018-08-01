@@ -19,13 +19,11 @@ class UpgradeActivity : AppCompatActivity() {
 
         val intent = intent
         val ss: String = intent.getStringExtra(KEY_MESSAGE)
-        if (ss != null) {
-            tvMsg.text = ss
-        }
+        tvMsg.text = ss
 
         bAction.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.lastingsales.agent"))
-            startActivity(intent)
+            val i = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.lastingsales.agent"))
+            startActivity(i)
         }
 //        bCancel.setOnClickListener {
 //            System.exit(0)

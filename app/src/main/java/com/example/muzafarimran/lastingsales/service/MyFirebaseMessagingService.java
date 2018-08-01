@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.events.CommentEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.DealEventModel;
@@ -23,11 +24,10 @@ import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.utils.DeleteManager;
 import com.example.muzafarimran.lastingsales.utils.FireBaseNotificationUtils;
 import com.example.muzafarimran.lastingsales.utils.FirebaseCustomNotification;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -604,6 +604,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (payload.has("name")) {
                         name = payload.getString("name");
                     }
+                    String display_name = "";
+                    if (payload.has("display_name")) {
+                        display_name = payload.getString("display_name");
+                    }
                     String default_value_options = "";
                     if (payload.has("default_value_options")) {
                         default_value_options = payload.getString("default_value_options");
@@ -639,6 +643,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         newColumn.setServerId(id);
                         newColumn.setColumnType(column_type);
                         newColumn.setName(name);
+                        newColumn.setDisplayName(display_name);
                         newColumn.setDefaultValueOption(default_value_options);
                         newColumn.setRange(range);
                         newColumn.setCreated_by(created_by);
@@ -648,7 +653,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         newColumn.setCompanyId(company_id);
                         newColumn.save();
                     }
-
                 } else if (action.equals("put")) {
                     String id = "";
                     if (payload.has("id")) {

@@ -11,19 +11,10 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tutorial screen 1"
-
-            android:layout_marginBottom="10dp"
-            android:textSize="30dp"
-            android:textStyle="bold" />
-
-       <!----> <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/first_tutorial_screen_pic" />
+        <!----> <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/first_tutorial_screen_pic" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,9 +22,9 @@
             android:layout_marginTop="20dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:text="some text heresome text heresome text heresome text heresome text heresome text heresome text heresome text heresome text heresome text here"
+            android:text="Better organize your pipeline to close more Sales deals!"
             android:textAlignment="center"
-           android:textSize="13dp" />
+            android:textSize="13dp" />
 
     </LinearLayout>
 </RelativeLayout>
