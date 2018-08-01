@@ -24,9 +24,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
-import com.example.muzafarimran.lastingsales.app.MyURLs;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
 import com.example.muzafarimran.lastingsales.onboarding.OnBoardingActivity;
+import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -40,8 +40,6 @@ import java.util.Map;
 public class LogInActivity extends AppCompatActivity {
 
     public static final String TAG = "LogInActivity";
-    public static Activity activity;
-    private static RequestQueue queue;
     private ProgressDialog pdLoading;
     private EditText etEmail, etPassword;
     private Button bSignup;
@@ -49,6 +47,9 @@ public class LogInActivity extends AppCompatActivity {
     private String email, password;
     private Button loginButtonLoginScreen;
     private SessionManager sessionManager;
+    private static RequestQueue queue;
+
+    public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +74,11 @@ public class LogInActivity extends AppCompatActivity {
         pdLoading.setTitle("Loading data");
         //this method will be running on UI thread
         pdLoading.setMessage("Please Wait...");
-        loginButtonLoginScreen = findViewById(R.id.loginButtonLoginScreen);
-        etEmail = findViewById(R.id.etEmail);
-        etPassword = findViewById(R.id.etPassword);
-        bSignup = findViewById(R.id.bSignup);
-        bReset = findViewById(R.id.bReset);
+        loginButtonLoginScreen = (Button) findViewById(R.id.loginButtonLoginScreen);
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        bSignup = (Button) findViewById(R.id.bSignup);
+        bReset = (Button) findViewById(R.id.bReset);
         etEmail.getBackground().clearColorFilter();
         etPassword.getBackground().clearColorFilter();
 
@@ -243,13 +244,8 @@ public class LogInActivity extends AppCompatActivity {
                             activity.startActivity(new Intent(activity, CreateCompanyActivity.class));
                             activity.finish();
                         } else {
-                            if (!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
-                                startActivity(new Intent(LogInActivity.this, TutorialScreenActivity.class));
-                                activity.finish();
-                            } else {
-                                activity.startActivity(new Intent(activity, NavigationBottomMainActivity.class));
-                                activity.finish();
-                            }
+                            activity.startActivity(new Intent(activity, NavigationBottomMainActivity.class));
+                            activity.finish();
                         }
                         Log.d(TAG, "onResponse: " + response);
 //                        Toast.makeText(activity, "" + user_id, Toast.LENGTH_SHORT).show();

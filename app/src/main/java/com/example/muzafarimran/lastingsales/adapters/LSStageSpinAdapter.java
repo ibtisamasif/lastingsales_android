@@ -13,10 +13,10 @@ import java.util.List;
 
 public class LSStageSpinAdapter extends ArrayAdapter<LSStage> {
 
-    // Your custom values for the spinner (LSStage)
-    List<LSStage> values;
     // Your sent context
     private Context context;
+    // Your custom values for the spinner (LSStage)
+    List<LSStage> values;
 //    private LSStage[] values;
 
     public LSStageSpinAdapter(Context context, int textViewResourceId, List<LSStage> values) {

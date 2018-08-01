@@ -18,11 +18,12 @@ import java.util.List;
 
 public class LSInquiry extends SugarRecord {
 
+    private static final String TAG = "LSInquiry";
     @Ignore
     public static final String INQUIRY_STATUS_PENDING = "pending";
     @Ignore
     public static final String INQUIRY_STATUS_ATTENDED = "attended";
-    private static final String TAG = "LSInquiry";
+
     private String contactName;
     private String contactNumber;
     private LSContact contact;

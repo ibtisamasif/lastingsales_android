@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -30,13 +30,13 @@ public class CallLogsInContactDetailsFragment extends TabFragment {
 
     public static final String TAG = "CallLogsInContactDetailsFragment";
     private static Bundle args;
-    LSContact mContact;
-    String number = "";
     private RecyclerView mRecyclerView;
     private MyRecyclerViewAdapter adapter;
     private List<Object> list = new ArrayList<Object>();
     private TinyBus bus;
     private Long contactIDLong;
+    LSContact mContact;
+    String number = "";
 
     public static CallLogsInContactDetailsFragment newInstance(int page, String title, Long id) {
         CallLogsInContactDetailsFragment fragmentFirst = new CallLogsInContactDetailsFragment();

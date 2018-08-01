@@ -20,7 +20,7 @@ import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.ContactDetailsFragmentPagerAdapter;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
-import com.example.muzafarimran.lastingsales.utils.DeleteManager;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -37,12 +37,12 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     FloatingActionButton floatingActionButton;
-    Toolbar toolbar;
-    ActionBar actionBar;
     private String contactIdString = "0";
     private String selectedTab = "";
     private LSContact selectedContact;
     private TinyBus bus;
+    Toolbar toolbar;
+    ActionBar actionBar;
 
     //    private CollapsingToolbarLayout collapsingToolbarLayout = null;
     @Override
@@ -50,11 +50,11 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
         setContentView(R.layout.activity_contact_details_tab);
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        floatingActionButton = findViewById(R.id.fab_add);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add);
         floatingActionButton.hide();
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,13 +75,13 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
             }
         }
         if (selectedContact != null) {
-            viewPager = findViewById(R.id.viewpager);
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
             ContactDetailsFragmentPagerAdapter contactDetailsFragmentPagerAdapter = new ContactDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedContact.getId());
             viewPager.setAdapter(contactDetailsFragmentPagerAdapter); //TODO crash getId was null
 //        viewPager.getAdapter().notifyDataSetChanged();
 
             // Give the TabLayout the ViewPager
-            TabLayout tabLayout = findViewById(R.id.sliding_tabs);
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
             tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
             tabLayout.setupWithViewPager(viewPager);
 
@@ -149,7 +149,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                     }
                 }
             }
-        } else {
+        }else {
             finish();
         }
     }
@@ -262,7 +262,7 @@ public class ContactDetailsTabActivity extends AppCompatActivity {
                 }
                 AlertDialog.Builder alert = new AlertDialog.Builder(ContactDetailsTabActivity.this);
                 alert.setTitle("Delete");
-                alert.setMessage("Are you sure to delete " + nameTextOnDialog);
+                alert.setMessage("Are you sure to delete " + nameTextOnDialog + ". This will delete associated deals as well.");
                 alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

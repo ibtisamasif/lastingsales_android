@@ -21,9 +21,9 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SettingsManager;
-import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSIgnoreList;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.Calendar;
@@ -32,18 +32,19 @@ public class CallService extends Service {
 
     View view;
     WindowManager manager;
-    WindowManager.LayoutParams params;
-    boolean callingMethod = false;
     private String num, name;
-
-    public CallService() {
-    }
+    WindowManager.LayoutParams params;
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+    public CallService() {
+    }
+
+    boolean callingMethod = false;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

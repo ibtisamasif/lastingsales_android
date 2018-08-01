@@ -2,9 +2,9 @@ package com.example.muzafarimran.lastingsales.utils;
 
 import android.content.Context;
 
-import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import java.util.Calendar;
 
@@ -12,8 +12,7 @@ import java.util.Calendar;
  * Created by ibtisam on 3/16/2017.
  */
 
-@Deprecated
-public class IgnoredContact { //Please try to use this class it now needs to be modified according to dev_i6
+public class IgnoredContact {
 
     public static void AddAsIgnoredContact(Context context, String contactPhone, String contactName) {
         if (contactPhone != null && contactPhone != "") {

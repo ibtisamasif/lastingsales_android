@@ -17,6 +17,8 @@ import java.util.List;
  */
 
 public class LSContact extends SugarRecord {
+    private static final String TAG = "LSContact";
+
     @Ignore
     public static final String SALES_STATUS_INPROGRESS = "InProgress";
     @Ignore
@@ -31,7 +33,15 @@ public class LSContact extends SugarRecord {
     public static final String CONTACT_TYPE_IGNORED = "type_personal";
     @Ignore
     public static final String CONTACT_TYPE_UNLABELED = "type_untagged";
-    private static final String TAG = "LSContact";
+
+    public String isContactSave() {
+        return isContactSave;
+    }
+
+    public void setContactSave(String contactSave) {
+        isContactSave = contactSave;
+    }
+
     String isContactSave;
     private String contactName;
     private String contactEmail;
@@ -57,8 +67,11 @@ public class LSContact extends SugarRecord {
     private int createdBy;
     private int userId;
     private String src;
+
+
     public LSContact() {
     }
+
     public LSContact(String contactName, String contactEmail, String contactType, String phoneOne,
                      String phoneTwo, String contactDescription, String contactCompany,
                      String contactAddress, String isContactSave) {
@@ -88,6 +101,7 @@ public class LSContact extends SugarRecord {
             return new ArrayList<LSContact>();
         }
     }
+
 
     public static List<LSContact> getFrequentContactsByTypeInDescOrder() {
         try {
@@ -168,34 +182,6 @@ public class LSContact extends SugarRecord {
             return allInactiveLeads;
         } catch (SQLiteException e) {
             return new ArrayList<LSContact>();
-        }
-    }
-
-    public static LSContact getContactFromServerId(String id) {
-        ArrayList<LSContact> list = null;
-        try {
-            list = (ArrayList<LSContact>) LSContact.find(LSContact.class, "server_id = ? ", id);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-        if (list.size() > 0) {
-            return list.get(0);
-        } else {
-            return null;
-        }
-    }
-
-    public static LSContact getContactFromId(String id) {
-        ArrayList<LSContact> list = null;
-        try {
-            list = (ArrayList<LSContact>) LSContact.find(LSContact.class, "id = ? ", id);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-        if (list.size() > 0) {
-            return list.get(0);
-        } else {
-            return null;
         }
     }
 
@@ -353,6 +339,34 @@ public class LSContact extends SugarRecord {
 //        }
 //    }
 
+    public static LSContact getContactFromServerId(String id) {
+        ArrayList<LSContact> list = null;
+        try {
+            list = (ArrayList<LSContact>) LSContact.find(LSContact.class, "server_id = ? ", id);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public static LSContact getContactFromId(String id) {
+        ArrayList<LSContact> list = null;
+        try {
+            list = (ArrayList<LSContact>) LSContact.find(LSContact.class, "id = ? ", id);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
+
     public static LSContact getContactFromNumber(String number) {
         ArrayList<LSContact> list = null;
         try {
@@ -365,14 +379,6 @@ public class LSContact extends SugarRecord {
         } else {
             return null;
         }
-    }
-
-    public String isContactSave() {
-        return isContactSave;
-    }
-
-    public void setContactSave(String contactSave) {
-        isContactSave = contactSave;
     }
 
 //    public static ArrayList<LSContact> getContactsByDynamicNameAndValue(String colName, String colVal) {

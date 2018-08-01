@@ -17,7 +17,6 @@ import java.util.List;
  * Created by ibtisam on 1/30/2018.
  */
 
-@Deprecated
 public class DynamicColumnBuilderVersion2 {
     public static final String TAG = "DynamicColumnBuilder2";
 

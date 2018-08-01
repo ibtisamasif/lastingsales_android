@@ -12,11 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,11 +31,12 @@ import de.halfbit.tinybus.TinyBus;
 
 public class ColleagueActivity extends AppCompatActivity {
     private static final String TAG = "ColleagueActivity";
-    private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
-    private static boolean sheetShowing = false;
     private MyRecyclerViewAdapter adapter;
     private List<Object> list = new ArrayList<Object>();
     private TinyBus bus;
+
+    private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
+    private static boolean sheetShowing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

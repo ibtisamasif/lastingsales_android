@@ -3,16 +3,16 @@ package com.example.muzafarimran.lastingsales.utilscallprocessing;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
-import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
-import com.example.muzafarimran.lastingsales.providers.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
+import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
+import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Calendar;
@@ -24,8 +24,8 @@ import de.halfbit.tinybus.TinyBus;
  */
 
 public class InquiryManager {
-    public static final String TAG = "InquiryManager";
     private static LSInquiry inquiry;
+    public static final String TAG = "InquiryManager";
 
     public static void removeByContact(Context context, LSContact tempContact) {
         //update inquiry as well if exists

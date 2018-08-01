@@ -24,23 +24,6 @@ import java.util.Calendar;
 
 public class SessionManager {
     public static final String TAG = "SessionManager";
-    public static final String KEY_INIT_COMPLETED = "init_completed";
-    public static final String KEY_INIT_TEAM_ADDED = "init_team_added";
-    public static final String KEY_INIT_APP_DOWNLOADED = "init_app_downloaded";
-    public static final String KEY_INIT_COMPANY_CREATED = "init_company_created";
-    public static final String KEY_INIT_ACCOUNT_TYPE_SELECTED = "init_account_type_selected";
-    public static final String MODE_NORMAL = "user_login_normal";
-    public static final String MODE_NEW_INSTALL = "user_login_new_install";
-    public static final String MODE_UPGRADE = "user_login_upgrade";
-    public static final String LAST_APP_VISIT = "last_app_visit";
-    public static final String FIRST_RUN_AFTER_LOGIN = "firstrun";
-    public static final String KEY_IS_TRIAL_VALID = "is_trial_valid";
-    public static final String KEY_IS_USER_ACTIVE = "is_user_active";
-    public static final String KEY_IS_COMPANY_ACTIVE = "is_company_active";
-    public static final String KEY_IS_COMPANY_PAYING = "is_company_paying";
-    public static final String KEY_CAN_SYNC = "can_sync";
-    public static final String KEY_UPDATE_AVAILABLE_VERSION = "update_available_version";
-    public static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
     private static final String KEY_LOGIN_ID = "user_login_id";
     private static final String KEY_LOGIN_TOKEN = "user_login_token";
     private static final String KEY_LOGIN_TIMESTAMP = "user_login_timestamp";
@@ -54,7 +37,37 @@ public class SessionManager {
     private static final String KEY_LOGIN_COMPANY_NAME = "user_login_company_name";
     private static final String KEY_LOGIN_ROLE_ID = "user_login_role_id";
     private static final String KEY_LOGIN_ROLE_NAME = "user_login_role_name";
+
+    public static final String KEY_INIT_COMPLETED = "init_completed";
+    public static final String KEY_INIT_TEAM_ADDED = "init_team_added";
+    public static final String KEY_INIT_APP_DOWNLOADED = "init_app_downloaded";
+    public static final String KEY_INIT_COMPANY_CREATED = "init_company_created";
+    public static final String KEY_INIT_ACCOUNT_TYPE_SELECTED = "init_account_type_selected";
+
     private static final String KEY_LOGIN_MODE = "user_login_mode";
+    public static final String MODE_NORMAL = "user_login_normal";
+    public static final String MODE_NEW_INSTALL = "user_login_new_install";
+    public static final String MODE_UPGRADE = "user_login_upgrade";
+
+    public static final String LAST_APP_VISIT = "last_app_visit";
+
+    public static final String FIRST_RUN_AFTER_LOGIN = "firstrun";
+
+    public static final String KEY_IS_TRIAL_VALID = "is_trial_valid";
+
+    public static final String KEY_IS_USER_ACTIVE = "is_user_active";
+
+    public static final String KEY_IS_COMPANY_ACTIVE = "is_company_active";
+
+    public static final String KEY_IS_COMPANY_PAYING = "is_company_paying";
+
+    public static final String KEY_CAN_SYNC = "can_sync";
+
+    public static final String KEY_UPDATE_AVAILABLE_VERSION = "update_available_version";
+
+    public static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
+
+
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffs";
     // Shared Preferences
@@ -76,6 +89,8 @@ public class SessionManager {
 
     public boolean getIsFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, false);
+
+
     }
 
 
@@ -157,6 +172,16 @@ public class SessionManager {
         editor.commit();
     }
 
+//    public void fetchData() {
+//        if( isUserSignedIn()){
+//            AgentDataFetchAsync agentDataFetchAsync = new AgentDataFetchAsync(_context);
+//            agentDataFetchAsync.execute();
+//        }
+//        else {
+//            Log.d(TAG, "fetchData: USER IS NOT SIGNED IN");
+//        }
+//    }
+
     private void deleteDataIfDifferentUser(String number) {
         String oldUserNumber = getLoginNumber();
         if (!oldUserNumber.equals(number)) {
@@ -215,6 +240,9 @@ public class SessionManager {
         }
     }
 
+    /**
+     * saves the data of user in the Shared preffrences which later can be accessed to perform user specific operations
+     */
     public void logoutUser() {
         deleteAllUserData();
         setLoginTimestamp(00L);
@@ -478,13 +506,13 @@ public class SessionManager {
         editor.commit();
     }
 
-    public boolean isFirstTimeLaunch() {
-        return pref.getBoolean(IS_FIRST_TIME_LAUNCH, false);
-    }
-
     public void setFirstTimeLaunch(boolean isFirstTime) {
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
         editor.commit();
+    }
+
+    public boolean isFirstTimeLaunch() {
+        return pref.getBoolean(IS_FIRST_TIME_LAUNCH, false);
     }
 
 

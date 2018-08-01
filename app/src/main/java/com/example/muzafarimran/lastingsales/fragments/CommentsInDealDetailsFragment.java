@@ -22,13 +22,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
-import com.example.muzafarimran.lastingsales.app.MyURLs;
 import com.example.muzafarimran.lastingsales.carditems.CommentItem;
 import com.example.muzafarimran.lastingsales.carditems.ErrorItem;
 import com.example.muzafarimran.lastingsales.carditems.TryAgainItem;
 import com.example.muzafarimran.lastingsales.events.CommentEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
+import com.example.muzafarimran.lastingsales.sync.MyURLs;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,15 +51,17 @@ public class CommentsInDealDetailsFragment extends TabFragment {
     public static final String TAG = "CommentsInDealDetailsFr";
     public static final String CONTACT_ID = "contact_id";
     private static Bundle args;
-    private static RequestQueue queue;
     LSContact selectedContact;
     private TinyBus bus;
     private RecyclerView mRecyclerView;
     private MyRecyclerViewAdapter adapter;
     private List<Object> list = new ArrayList<Object>();
     private Long contactIDLong;
+
     private SessionManager sessionManager;
     private Context mContext;
+    private static RequestQueue queue;
+
     //    private ProgressDialog pdLoading;
     private Button buttonSend;
     private EditText chatText;

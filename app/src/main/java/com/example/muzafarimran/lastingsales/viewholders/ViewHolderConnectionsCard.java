@@ -20,9 +20,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.app.MyURLs;
 import com.example.muzafarimran.lastingsales.carditems.ConnectionItem;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
+import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
@@ -39,10 +39,11 @@ import java.util.Map;
 
 public class ViewHolderConnectionsCard extends RecyclerView.ViewHolder {
     private static final String TAG = "ViewHolderConnectionsCa";
+
+    private LinearLayout llDynamicConnectionsContainer;
+    Context mContext;
     private static SessionManager sessionManager;
     private static RequestQueue queue;
-    Context mContext;
-    private LinearLayout llDynamicConnectionsContainer;
     private LSContact selectedContact;
     private TextView tvError;
 

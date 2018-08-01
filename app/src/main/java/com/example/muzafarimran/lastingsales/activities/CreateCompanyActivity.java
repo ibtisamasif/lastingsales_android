@@ -22,7 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.app.MyURLs;
+import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 
 import org.json.JSONException;
@@ -37,13 +37,13 @@ import java.util.Map;
 
 public class CreateCompanyActivity extends AppCompatActivity {
     private static final String TAG = "CreateCompanyActivity";
-    private static RequestQueue queue;
     private EditText etCompanyName;
     private Button bCreateCompany;
     private LinearLayout llLogin;
     private String companyName;
     private SessionManager sessionManager;
     private ProgressDialog pdLoading;
+    private static RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,9 +11,17 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tutorial screen 2"
+           android:layout_marginBottom="10dp"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
         <ImageView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:src="@drawable/second_tutorial_screen_pic" />
 
         <TextView
@@ -22,7 +30,7 @@
             android:layout_marginTop="20dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:text="Convert your Sales Team into Sales Tigers!"
+            android:text="some text heresome text heresome text heresome text heresome text heresome text heresome text heresome text heresome text heresome text here"
             android:textAlignment="center"
             android:textSize="13dp" />
 

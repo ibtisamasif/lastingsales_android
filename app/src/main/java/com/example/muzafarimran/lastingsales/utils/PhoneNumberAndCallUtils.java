@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.example.muzafarimran.lastingsales.providers.models.LSCall;
+import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -31,6 +33,21 @@ public class PhoneNumberAndCallUtils {
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
     private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
+
+//    public static String removeLeadingZeroesFromString(String inputString) {
+//        String seat;// setNullToString(recElement.getChildText("SEAT"));
+//        seat = Long.valueOf(inputString).toString();
+//        return seat;
+//    }
+//
+//    public static boolean isValidPassword(final String password) {
+//        Pattern pattern;
+//        Matcher matcher;
+//        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
+//        pattern = Pattern.compile(PASSWORD_PATTERN);
+//        matcher = pattern.matcher(password);
+//        return matcher.matches();
+//    }
 
     @Deprecated
     public static String numberToInterNationalNumber(String inputString) {
@@ -73,6 +90,17 @@ public class PhoneNumberAndCallUtils {
             return null;
         }
     }
+
+//    public static String numberToInterNationalE164FormatNumber(String inputString) { // Will review in future
+//        String s = PhoneNumberUtils.formatNumberToE164(inputString, "PK");
+//        return s;
+//    }
+
+//    public static long secondsFromStartAndEndDates(Date startDate, Date endDate) {
+//        long diffInMs = endDate.getTime() - startDate.getTime();
+//        long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
+//        return diffInSec;
+//    }
 
     public static boolean isNumeric(String str) {
         try {
@@ -154,6 +182,49 @@ public class PhoneNumberAndCallUtils {
         }
     }
 
+//    public static String getTimeDuration(long time, Context ctx) {
+//        if (time < 1000000000000L) {
+//            // if timestamp given in seconds, convert to millis
+//            time *= 1000;
+//        }
+//        long now = Calendar.getInstance().getTimeInMillis();
+//        if (time > now || time <= 0) {
+//            return null;
+//        }
+//        final long diff = now - time;
+//        if (diff < MINUTE_MILLIS) {
+//            return diff / 1000 + "s";
+//        } else if (diff < 60 * MINUTE_MILLIS) {
+//            return (diff / 1000) / 60 + "m";
+//        } else if (diff < 90 * MINUTE_MILLIS) {
+//            return "an hour ago";
+//        } else if (diff < 24 * HOUR_MILLIS) {
+//            return diff / HOUR_MILLIS + " hours ago";
+//        } else if (diff < 48 * HOUR_MILLIS) {
+//            return "yesterday";
+//        } else {
+//            return diff / DAY_MILLIS + " days ago";
+//        }
+//    }
+//
+//    public static String currentDateTime() {
+//        Date curDate = new Date();
+//        SimpleDateFormat format = new SimpleDateFormat();
+//        String DateToStr = format.format(curDate);
+//        return DateToStr;
+//    }
+//
+//    public static String generateUniqueFileName(String fname) {
+//        String filename = fname;
+//        long millis = System.currentTimeMillis();
+//        String datetime = new Date().toGMTString();
+//        datetime = datetime.replace(" ", "");
+//        datetime = datetime.replace(":", "");
+//        String rndchars = RandomStringUtils.randomAlphanumeric(16);
+//        filename = rndchars + "_" + datetime + "_" + millis;
+//        return filename;
+//    }
+
     public static String getContactNameFromLocalPhoneBook(Context context, String phoneNumber) {
         ContentResolver cr = context.getContentResolver();
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
@@ -165,6 +236,9 @@ public class PhoneNumberAndCallUtils {
         if (cursor.moveToFirst()) {
             contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
         }
+//        if (cursor != null && !cursor.isClosed()) {
+//            cursor.close();
+//        }
         cursor.close();
         return contactName;
     }
@@ -268,6 +342,20 @@ public class PhoneNumberAndCallUtils {
         }
     }
 
+    public static void updateAllCallsOfThisContact(LSContact contact) {
+        ArrayList<LSCall> allCalls = LSCall.getCallsFromNumber(contact.getPhoneOne());
+        if (allCalls != null) {
+            for (LSCall oneCall : allCalls) {
+                if (oneCall.getContact() == null) {
+
+                    oneCall.setContact(contact);
+                }
+                oneCall.setContactName(null);
+                oneCall.save();
+            }
+        }
+    }
+
     public static long getMillisFromSqlFormattedDateAndTime(String last_call1) {
         long millis1 = 0;
         if (last_call1 != null) {
@@ -288,6 +376,7 @@ public class PhoneNumberAndCallUtils {
         if (last_call1 != null) {
             String myDate1 = last_call1;
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+//            sdf1.setTimeZone(TimeZone.getTimeZone("GMT+5"));
             try {
                 Date date1 = sdf1.parse(myDate1);
                 millis1 = date1.getTime();
@@ -298,10 +387,28 @@ public class PhoneNumberAndCallUtils {
         return millis1;
     }
 
+    public static long getMillisFromSqlFormattedDate(String last_call1, String part) {
+        long millis1 = 0;
+        if (last_call1 != null) {
+            String myDate1 = last_call1;
+            SimpleDateFormat sdf1 = new SimpleDateFormat(part);
+//            sdf1.setTimeZone(TimeZone.getTimeZone("GMT+5"));
+            try {
+                Date date1 = sdf1.parse(myDate1);
+                millis1 = date1.getTime();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return millis1;
+    }
+
+
     public static boolean compareDateTimeInMillis(long milliSeconds1, long milliSeconds2) {
         // this function should compare time in milliseconds upto 10 characters ignoring last three characters i.e 1513587790755 and 1513587790000 are equal.
         milliSeconds1 = Long.parseLong(Long.toString(milliSeconds1).substring(0, 10));
         milliSeconds2 = Long.parseLong(Long.toString(milliSeconds2).substring(0, 10));
+
         if (milliSeconds1 == milliSeconds2) {
             return true;
         }

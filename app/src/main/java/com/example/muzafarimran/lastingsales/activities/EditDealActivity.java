@@ -8,9 +8,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 
 import java.util.Calendar;
 
@@ -21,12 +21,13 @@ import java.util.Calendar;
 public class EditDealActivity extends AppCompatActivity {
     public static final String TAG = "EditDealActivity";
     public static final String TAG_LAUNCH_MODE_DEAL_ID = "deal_id";
-    String selectedDealType = LSDeal.DEAL_STATUS_CLOSED_WON;
+
     private EditText etNameAddDeal;
     private EditText etLeadAddDeal;
-    private EditText etValueAddDeal;
     private Button bSaveAddDeal;
     private Button bCancelAddDeal;
+
+    String selectedDealType = LSDeal.DEAL_STATUS_CLOSED_WON;
     private long dealIdLong;
     private LSDeal selectedDeal;
 
@@ -34,9 +35,9 @@ public class EditDealActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_deal);
+
         etNameAddDeal = (EditText) findViewById(R.id.etNameAddDeal);
         etLeadAddDeal = (EditText) findViewById(R.id.etLeadAddDeal);
-        etValueAddDeal = (EditText) findViewById(R.id.etValueAddDeal);
         bSaveAddDeal = (Button) findViewById(R.id.bSaveAddDeal);
         bCancelAddDeal = (Button) findViewById(R.id.bCancelAddDeal);
         Bundle bundle = getIntent().getExtras();
@@ -53,19 +54,14 @@ public class EditDealActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String dealName = etNameAddDeal.getText().toString();
-                String dealValue = etValueAddDeal.getText().toString();
                 if (isValid(dealName)) {
                     if (selectedDeal != null) {
                         LSDeal lsDeal = selectedDeal;
                         lsDeal.setName(dealName);
+//                            lsDeal.setLeadId(Long.toString(tempContact.getId()));
                         lsDeal.setStatus(selectedDealType);
                         lsDeal.setUpdatedAt(Calendar.getInstance().getTime());
-                        if (dealValue != null && !dealValue.equalsIgnoreCase("")) {
-                            lsDeal.setValue(dealValue);
-                        }
-                        if (lsDeal.getSyncStatus().equals(SyncStatus.SYNC_STATUS_DEAL_ADD_SYNCED) || lsDeal.getSyncStatus().equals(SyncStatus.SYNC_STATUS_DEAL_UPDATE_SYNCED)) {
-                            lsDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
-                        }
+                        lsDeal.setSyncStatus(SyncStatus.SYNC_STATUS_DEAL_UPDATE_NOT_SYNCED);
                         lsDeal.save();
                         finish();
                         DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(EditDealActivity.this);

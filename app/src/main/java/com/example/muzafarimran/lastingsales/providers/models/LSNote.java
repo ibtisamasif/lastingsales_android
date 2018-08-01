@@ -14,9 +14,7 @@ public class LSNote extends SugarRecord {
 
     @Ignore
     public static final String NOTEABLE_TYPE_APP_LEAD = "App\\Lead";
-    @Ignore
     public static final String NOTEABLE_TYPE_APP_DEAL = "App\\Deal";
-    @Ignore
     public static final String NOTEABLE_TYPE_APP_ORGANIZATION = "App\\Organization";
 
     private LSContact contactOfNote;

@@ -17,12 +17,12 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
-import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -37,13 +37,17 @@ import de.halfbit.tinybus.TinyBus;
  */
 
 public class AddEditLeadActivity extends AppCompatActivity {
+    private static final String TAG = "AddEditLeadActivity";
+
     public static final String ACTIVITY_LAUNCH_MODE = "activity_launch_mode";
     public static final String LAUNCH_MODE_IMPORT_CONTACT = "launch_mode_import_contact_from_phonebook";
     public static final String LAUNCH_MODE_ADD_NEW_CONTACT = "launch_mode_add_new_contact";
     public static final String LAUNCH_MODE_EDIT_EXISTING_CONTACT = "launch_mode_edit_existing_contact";
     public static final String TAG_LAUNCH_MODE_PHONE_NUMBER = "phone_number";
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
+
     public static final String MIXPANEL_SOURCE = "mixpanel_source";
+
     public static final String MIXPANEL_SOURCE_CARD = "Card"; // Deprecated
     public static final String MIXPANEL_SOURCE_FAB = "Fab";
     public static final String MIXPANEL_SOURCE_NOTIFICATION = "Notification";
@@ -51,7 +55,7 @@ public class AddEditLeadActivity extends AppCompatActivity {
     public static final String MIXPANEL_SOURCE_IGNORE = "Ignored";
     public static final String MIXPANEL_SOURCE_COLLEAGUE = "Colleague";
     public static final String MIXPANEL_SOURCE_INQUIRY = "Inquiry";
-    private static final String TAG = "AddEditLeadActivity";
+
     private static final int REQUEST_CODE_PICK_CONTACTS = 10;
     String launchMode = LAUNCH_MODE_ADD_NEW_CONTACT;
     String selectedContactType = LSContact.CONTACT_TYPE_SALES;

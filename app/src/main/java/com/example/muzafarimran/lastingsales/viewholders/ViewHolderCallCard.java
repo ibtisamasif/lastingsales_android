@@ -32,10 +32,6 @@ public class ViewHolderCallCard extends RecyclerView.ViewHolder {
         call_icon = (ImageView) view.findViewById(R.id.ind_call_icon);
     }
 
-    public static Long roundDown5(Long d) {
-        return (Long) (d * 100000) / 100000;
-    }
-
     public void bind(Object item, int position, Context mContext) {
         LSCall call = (LSCall) item;
         if (call.getType().equals("unanswered") || call.getType().equals("outgoing") || call.getType().equals("incoming")) {
@@ -91,5 +87,9 @@ public class ViewHolderCallCard extends RecyclerView.ViewHolder {
                 call_icon.setImageResource(R.drawable.call_icon_out_going_ind);
                 break;
         }
+    }
+
+    public static Long roundDown5(Long d) {
+        return (Long) (d * 100000) / 100000;
     }
 }

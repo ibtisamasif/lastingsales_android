@@ -133,6 +133,65 @@ public class FirebaseCustomNotification {
         return notificationBuilder.build();
     }
 
+    public static Notification createFirebaseHomescreenNotification(Context context, String message) {
+
+        Intent homescreenIntent = new Intent(context, NavigationBottomMainActivity.class);
+        PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), homescreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.Builder notificationBuilder = new Notification.Builder(context)
+                .setContentIntent(pContentIntent)
+                .setSmallIcon(R.drawable.ic_notification_small)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification_small))
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle("Lasting Sales")
+                .setTicker("Lasting Sales")
+                .setStyle(new Notification.BigTextStyle().bigText(message))
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setContentText(message);
+        return notificationBuilder.build();
+    }
+
+    public static Notification createFirebaseLeadAssignedNotification(Context context, String user_name, String message, String type, String lead_id, String lead_name) {
+        Intent intent = new Intent(context, NavigationBottomMainActivity.class);
+        PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        switch (type) {
+            case NOTIFICATION_TYPE_COMMENT: {
+                LSContact lsContact = LSContact.getContactFromServerId(lead_id);
+                if (lsContact != null) {
+                    intent = new Intent(context, ClassManager.getClass(ClassManager.CONTACT_DETAILS_TAB_ACTIVITY));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SOURCE, ContactDetailsTabActivity.KEY_SOURCE_NOTIFICATION);
+                    intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
+                    intent.putExtra(ContactDetailsTabActivity.KEY_SET_SELECTED_TAB, "3");
+                    pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                }
+            }
+            break;
+            default:
+                intent = new Intent(context, NavigationBottomMainActivity.class);
+                pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                break;
+        }
+        Notification.Builder notificationBuilder = new Notification.Builder(context)
+                .setContentIntent(pContentIntent)
+                .setSmallIcon(R.drawable.ic_notification_small)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification_small))
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle("Message on " + lead_name)
+                .setTicker("one new comment")
+                .setStyle(new Notification.BigTextStyle().bigText(message))
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setContentText(user_name + " : " + message);
+        return notificationBuilder.build();
+    }
+
     public static Notification createFirebaseCommentNotification(Context context, String user_name, String message, String type, String lead_id, String lead_name) {
         Intent intent = new Intent(context, NavigationBottomMainActivity.class);
         PendingIntent pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -198,6 +257,12 @@ public class FirebaseCustomNotification {
                         intent.putExtra(ContactDetailsTabActivity.KEY_CONTACT_ID, lsContact.getId() + "");
                         pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     }
+//                    else {
+//                        intent = new Intent(context, NavigationBottomMainActivity.class);
+//                        intent.putExtra(NavigationBottomMainActivity.KEY_SELECTED_TAB, "3");
+//                        intent.putExtra(NavigationBottomMainActivity.KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID, lsContact.getId() + "");
+//                        pContentIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                    }
                 }
             }
             break;

@@ -1,5 +1,9 @@
 package com.example.muzafarimran.lastingsales.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,11 +13,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
-import com.example.muzafarimran.lastingsales.app.SyncStatus;
+import com.example.muzafarimran.lastingsales.calendar.MyCalendarEvent;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.TempFollowUp;
+import com.example.muzafarimran.lastingsales.receivers.AlarmReceiver;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.utils.MyCalendarEvent;
+import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -25,12 +30,12 @@ import java.util.Calendar;
  */
 
 public class AddEditNewFollowupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+    private static final String TAG = "AddEditFollowUps";
     public static final String ACTIVITY_LAUNCH_MODE = "activity_launch_mode";
     public static final String LAUNCH_MODE_EDIT_EXISTING_FOLLOWUP = "launch_mode_edit_existing_followup";
     public static final String LAUNCH_MODE_ADD_NEW_FOLLOWUP = "launch_mode_add_new_followup";
     public static final String TAG_LAUNCH_MODE_CONTACT_ID = "contact_id";
     public static final String TAG_LAUNCH_MODE_FOLLOWUP_ID = "followup_id";
-    private static final String TAG = "AddEditFollowUps";
     private static final String TITLE_ADD_FOLLOWUP = "Add Reminder";
     private static final String TITLE_EDIT_FOLLOWUP = "Edit Reminder";
 
@@ -53,13 +58,13 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
     int mDay;
     int mHour;
     int mMinute;
-    long myCurrentDateTime;
     private LSContact selectedContact = null;
     private TempFollowUp selectedFollowup = null;
     //    private TextView tvTitleFollowupPopup;
     private String lastDayOfMonth;
     private String lastDayOfYear;
     private String otherEditText;
+    long myCurrentDateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -384,5 +389,38 @@ public class AddEditNewFollowupActivity extends AppCompatActivity implements Tim
             this.mMonth = monthOfYear;
             this.mDay = dayOfMonth;
         }
+    }
+
+    public void setAlarm(Context context, TempFollowUp tempFollowUp) {
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent;
+        int interval = 8000;
+//        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+        Calendar dateAndTimeForAlarm = Calendar.getInstance();
+        /*int mYear = dateForFollowUp.get(Calendar.YEAR);
+        int mMonth = dateForFollowUp.get(Calendar.MONTH);
+        int mDay = dateForFollowUp.get(Calendar.DAY_OF_MONTH);
+        int mHour = timeForFollowUp.get(Calendar.HOUR_OF_DAY);
+        int mMinute = timeForFollowUp.get(Calendar.MINUTE);
+        int seconds = 0;*/
+        dateAndTimeForAlarm.set(mYear, mMonth, mDay, mHour, mMinute, 0);
+        Log.d(TAG, "Set Alarm func: Year=" + mYear + " Month=" + mMonth + " DAY=" + mDay + " Hour=" + mHour + " Minute=" + mMinute);
+        Intent aint = new Intent(context, AlarmReceiver.class);
+
+        aint.putExtra("followupid", tempFollowUp.getId() + "");
+//        aint.putExtra("message","This is message from followup");
+        pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(tempFollowUp.getId().toString()), aint, PendingIntent.FLAG_UPDATE_CURRENT);
+        /* Retrieve a PendingIntent that will perform a broadcast */
+//        Intent alarmIntent = new Intent(activity, AlarmReceiver.class);
+//        pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, 0);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            // Do something for KITKAT and above versions
+            manager.set(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
+//            manager.setExact(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
+        } else {
+            // do something for phones running an SDK before KITKAT
+            manager.set(AlarmManager.RTC_WAKEUP, dateAndTimeForAlarm.getTimeInMillis(), pendingIntent);
+        }
+        Toast.makeText(context, "Alarm Set", Toast.LENGTH_SHORT).show();
     }
 }

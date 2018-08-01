@@ -1,6 +1,5 @@
 package com.example.muzafarimran.lastingsales.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -63,7 +62,6 @@ public class TutorialScreenActivity extends AppCompatActivity {
                         settingsManager.setKeyStateIsCompanyPhone(false);
                         Log.d("tutorial", "set to personal phone");
                     }
-                    startActivity(new Intent(getApplicationContext(), NavigationBottomMainActivity.class));
                     finish();
                 }
             }
@@ -102,4 +100,6 @@ public class TutorialScreenActivity extends AppCompatActivity {
             return view == object;
         }
     }
+
+
 }

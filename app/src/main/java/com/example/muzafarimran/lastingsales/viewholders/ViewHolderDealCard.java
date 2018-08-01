@@ -13,7 +13,7 @@ import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
-import com.example.muzafarimran.lastingsales.utils.DeleteManager;
+import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 /**

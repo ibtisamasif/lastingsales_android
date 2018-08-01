@@ -30,13 +30,13 @@ import java.util.regex.Pattern;
 
 public class ViewHolderReminderCard extends RecyclerView.ViewHolder {
 
-    static Cursor cursor;
     private ConstraintLayout claddButton;
     private ConstraintLayout clReminderData;
     private CardView cardView;
     private TextView followupNoteText;
     private TextView followupDateTimeText;
     private Button bAddFollowupContactDetailsScreen;
+
 
     public ViewHolderReminderCard(View v) {
         super(v);
@@ -47,6 +47,52 @@ public class ViewHolderReminderCard extends RecyclerView.ViewHolder {
         followupDateTimeText = v.findViewById(R.id.followupDateTimeText);
         bAddFollowupContactDetailsScreen = v.findViewById(R.id.bAddFollowupContactDetailsScreen);
     }
+
+    public void bind(Object item, int position, Context mContext) {
+        final TempFollowUp tempFollowUp = (TempFollowUp) item;
+
+        if (tempFollowUp.getTitle().equals("#-1")) {
+            claddButton.setVisibility(View.VISIBLE);
+            clReminderData.setVisibility(View.GONE);
+            bAddFollowupContactDetailsScreen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent myIntent = new Intent(mContext, AddEditNewFollowupActivity.class);
+                    myIntent.putExtra(AddEditNewFollowupActivity.ACTIVITY_LAUNCH_MODE, AddEditNewFollowupActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
+                    myIntent.putExtra(AddEditNewFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, tempFollowUp.getContact().getId() + "");
+                    mContext.startActivity(myIntent);
+                }
+            });
+        } else {
+            claddButton.setVisibility(View.GONE);
+            clReminderData.setVisibility(View.VISIBLE);
+            followupNoteText.setText(tempFollowUp.getTitle());
+            Calendar followupTimeDate = Calendar.getInstance();
+            followupTimeDate.setTimeInMillis(tempFollowUp.getDateTimeForFollowup());
+            String dateTimeForFollowupString;
+            dateTimeForFollowupString = followupTimeDate.get(Calendar.DAY_OF_MONTH) + "-"
+                    + (followupTimeDate.get(Calendar.MONTH) + 1) + "-" + followupTimeDate.get(Calendar.YEAR)
+                    + " at " + followupTimeDate.get(Calendar.HOUR_OF_DAY) + " : " + followupTimeDate.get(Calendar.MINUTE);
+            followupDateTimeText.setText(dateTimeForFollowupString);
+        }
+
+        clReminderData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                // Android 2.2+
+                i.setData(Uri.parse("content://com.android.calendar/time"));
+                // Before Android 2.2+
+                //i.setData(Uri.parse("content://calendar/time"));
+                mContext.startActivity(i);
+            }
+        });
+
+//        readCalendar(mContext);
+
+    }
+
+    static Cursor cursor;
 
     public static void readCalendar(Context context) {
 
@@ -217,50 +263,6 @@ public class ViewHolderReminderCard extends RecyclerView.ViewHolder {
             }
             break;
         }
-    }
-
-    public void bind(Object item, int position, Context mContext) {
-        final TempFollowUp tempFollowUp = (TempFollowUp) item;
-
-        if (tempFollowUp.getTitle().equals("#-1")) {
-            claddButton.setVisibility(View.VISIBLE);
-            clReminderData.setVisibility(View.GONE);
-            bAddFollowupContactDetailsScreen.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent myIntent = new Intent(mContext, AddEditNewFollowupActivity.class);
-                    myIntent.putExtra(AddEditNewFollowupActivity.ACTIVITY_LAUNCH_MODE, AddEditNewFollowupActivity.LAUNCH_MODE_ADD_NEW_FOLLOWUP);
-                    myIntent.putExtra(AddEditNewFollowupActivity.TAG_LAUNCH_MODE_CONTACT_ID, tempFollowUp.getContact().getId() + "");
-                    mContext.startActivity(myIntent);
-                }
-            });
-        } else {
-            claddButton.setVisibility(View.GONE);
-            clReminderData.setVisibility(View.VISIBLE);
-            followupNoteText.setText(tempFollowUp.getTitle());
-            Calendar followupTimeDate = Calendar.getInstance();
-            followupTimeDate.setTimeInMillis(tempFollowUp.getDateTimeForFollowup());
-            String dateTimeForFollowupString;
-            dateTimeForFollowupString = followupTimeDate.get(Calendar.DAY_OF_MONTH) + "-"
-                    + (followupTimeDate.get(Calendar.MONTH) + 1) + "-" + followupTimeDate.get(Calendar.YEAR)
-                    + " at " + followupTimeDate.get(Calendar.HOUR_OF_DAY) + " : " + followupTimeDate.get(Calendar.MINUTE);
-            followupDateTimeText.setText(dateTimeForFollowupString);
-        }
-
-        clReminderData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                // Android 2.2+
-                i.setData(Uri.parse("content://com.android.calendar/time"));
-                // Before Android 2.2+
-                //i.setData(Uri.parse("content://calendar/time"));
-                mContext.startActivity(i);
-            }
-        });
-
-//        readCalendar(mContext);
-
     }
 
 }

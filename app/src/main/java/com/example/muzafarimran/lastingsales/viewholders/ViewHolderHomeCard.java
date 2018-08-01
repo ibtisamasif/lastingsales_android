@@ -15,9 +15,9 @@ import com.example.muzafarimran.lastingsales.carditems.HomeItem;
 
 public class ViewHolderHomeCard extends RecyclerView.ViewHolder {
 
-    private final ImageView ivDrawable;
     private TextView tvValue;
     private TextView tvHome;
+    private final ImageView ivDrawable;
 
 
     public ViewHolderHomeCard(View v) {

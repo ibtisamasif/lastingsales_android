@@ -17,9 +17,9 @@ import com.example.muzafarimran.lastingsales.carditems.CommentItem;
 public class ViewHolderCommentCard extends RecyclerView.ViewHolder {
 
     private final TextView tvCreatedAt;
+    private TextView tvComment;
     //    private ImageView ivDelete;
     private final LinearLayout singleMessageContainer;
-    private TextView tvComment;
 
     public ViewHolderCommentCard(View v) {
         super(v);

@@ -11,10 +11,6 @@ public class LSIgnoreList extends SugarRecord {
     public LSIgnoreList() {
     }
 
-    public LSIgnoreList(String number) {
-        this.number = number;
-    }
-
     public static LSIgnoreList getContactFromNumber(String number) {
         ArrayList<LSIgnoreList> list = null;
         try {
@@ -27,6 +23,10 @@ public class LSIgnoreList extends SugarRecord {
         } else {
             return null;
         }
+    }
+
+    public LSIgnoreList(String number) {
+        this.number = number;
     }
 
     public String getNumber() {

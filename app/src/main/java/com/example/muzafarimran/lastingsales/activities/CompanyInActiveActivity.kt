@@ -17,13 +17,13 @@ class CompanyInActiveActivity : AppCompatActivity() {
         setContentView(R.layout.activity_company_inactive)
 //        supportActionBar!!.title = "About"
 
-//        val intent = intent
-//        val ss: String = intent.getStringExtra(KEY_MESSAGE)
-////        if (ss != null) {
-//////            tvMsg.text = ss;
-////        } else {
-//////            tvMsg.text = "Calling";
-////        }
+        val intent = intent
+        val ss: String = intent.getStringExtra(KEY_MESSAGE)
+        if (ss != null) {
+//            tvMsg.text = ss;
+        } else {
+//            tvMsg.text = "Calling";
+        }
 
         bAction.setOnClickListener {
             var sessionManager = SessionManager(baseContext)

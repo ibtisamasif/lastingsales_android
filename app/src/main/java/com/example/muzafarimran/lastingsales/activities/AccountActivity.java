@@ -21,8 +21,8 @@ import android.widget.TextView;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
-import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.carditems.SettingItem;
+import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -37,19 +37,20 @@ import java.util.List;
  */
 
 public class AccountActivity extends AppCompatActivity {
-    private static final int GALLERY = 1;
-    private static Bitmap Image = null;
-    private static Bitmap rotateImage = null;
-    SessionManager sessionManager;
     private Toolbar toolbar;
     private RecyclerView mRecyclerView;
     private MyRecyclerViewAdapter adapter;
     private List<Object> list = new ArrayList<Object>();
+    SessionManager sessionManager;
     private SimpleDraweeView ivPic;
     private TextView tvEmail;
     private TextView tvName;
     private TextView tvRole;
     private TextView tvSupportNumber;
+
+    private static Bitmap Image = null;
+    private static Bitmap rotateImage = null;
+    private static final int GALLERY = 1;
 
     public static int getOrientation(Context context, Uri photoUri) {
         /* it's on the external media. */
