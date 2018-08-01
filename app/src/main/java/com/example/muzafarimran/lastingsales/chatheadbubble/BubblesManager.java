@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
+import com.example.muzafarimran.lastingsales.listeners.OnInitializedCallback;
 import com.example.muzafarimran.lastingsales.service.BubblesService;
 
 public class BubblesManager {
@@ -42,14 +43,6 @@ public class BubblesManager {
     private BubbleLayout mpending;
     private int x;
     private int y;
-
-    private static BubblesManager getInstance(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = new BubblesManager(context);
-        }
-        return INSTANCE;
-    }
-
     private ServiceConnection bubbleServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -73,6 +66,13 @@ public class BubblesManager {
 
     private BubblesManager(Context context) {
         this.context = context;
+    }
+
+    private static BubblesManager getInstance(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = new BubblesManager(context);
+        }
+        return INSTANCE;
     }
 
 //    private void configureBubblesService() {

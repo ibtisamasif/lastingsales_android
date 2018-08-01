@@ -14,15 +14,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.muzafarimran.lastingsales.R;
+import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.carditems.ConnectionItem;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
+import com.example.muzafarimran.lastingsales.providers.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
-import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
-import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -36,8 +36,8 @@ import java.util.List;
 
 public class ContactCallDetailsBottomSheetFragment extends BottomSheetDialogFragment {
 
-    private static final String TAG = "ContactCallDetailsBotto";
     public static final String CONTACT_ID = "contact_id";
+    private static final String TAG = "ContactCallDetailsBotto";
     private List<Object> list = new ArrayList<Object>();
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {

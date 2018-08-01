@@ -9,8 +9,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.muzafarimran.lastingsales.SettingsManager;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.CallProcessor;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.CallTypeManager;

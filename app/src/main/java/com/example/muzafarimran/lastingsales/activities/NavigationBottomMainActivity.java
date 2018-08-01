@@ -37,21 +37,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment1;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment2;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment4;
-import com.example.muzafarimran.lastingsales.NavigationBottomFragments.BlankFragment5;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
+import com.example.muzafarimran.lastingsales.adapters.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.app.ClassManager;
 import com.example.muzafarimran.lastingsales.app.MixpanelConfig;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.customview.BottomNavigationViewHelper;
 import com.example.muzafarimran.lastingsales.events.DealEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
 import com.example.muzafarimran.lastingsales.fragments.ContactCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.ContactsAndOrganizationViewPagerFragment;
+import com.example.muzafarimran.lastingsales.fragments.DealsFragment;
+import com.example.muzafarimran.lastingsales.fragments.InquiriesFragment;
 import com.example.muzafarimran.lastingsales.fragments.InquiryCallDetailsBottomSheetFragment;
+import com.example.muzafarimran.lastingsales.fragments.MoreFragment;
 import com.example.muzafarimran.lastingsales.listeners.CloseContactBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.migration.VersionManager;
@@ -60,12 +62,10 @@ import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
-import com.example.muzafarimran.lastingsales.recycleradapter.SearchSuggestionAdapter;
 import com.example.muzafarimran.lastingsales.service.CallDetectionService;
 import com.example.muzafarimran.lastingsales.service.CallLogEngineIntentService;
 import com.example.muzafarimran.lastingsales.service.InitService;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.sync.SyncUser;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.github.clans.fab.FloatingActionButton;
@@ -88,7 +88,7 @@ import io.fabric.sdk.android.Fabric;
 public class NavigationBottomMainActivity extends AppCompatActivity implements CloseContactBottomSheetEvent, CloseInquiryBottomSheetEvent {
     public static final String TAG = "NavigationBottomMain";
     private static final String FRAGMENT_TAG_INQUIRIES = "fragment_tag_inquiries";
-    private static final String FRAGMENT_TAG_UNLABELED = "fragment_tag_unlabeled";
+    private static final String FRAGMENT_TAG_CONTACTS = "fragment_tag_unlabeled";
     private static final String FRAGMENT_TAG_DEALS = "fragment_tag_deals";
     private static final String FRAGMENT_TAG_MORE = "fragment_tag_more";
 
@@ -97,19 +97,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
     public static String BOTTOMSHEET_TAB = "bottomsheet_tab";
     public static String KEY_SELECTED_TAB_BOTTOMSHEET_CONTACT_ID = "bottomsheet_contact_id";
     public static String KEY_SELECTED_TAB_NO_TAB = "no_tab";
-
+    public static Activity activity;
+    private static InquiryCallDetailsBottomSheetFragment inquiryCallDetailsBottomSheetFragment;
+    private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
+    private static boolean sheetShowing = false;
+    Bundle bundle = new Bundle();
     private FirebaseAnalytics mFirebaseAnalytics;
     private SessionManager sessionManager;
     private SettingsManager settingsManager;
-    Bundle bundle = new Bundle();
     private SearchView searchView;
     private android.support.design.widget.FloatingActionButton floatingActionButtonDeal;
     private FloatingActionMenu floatingActionMenuLead;
     private BottomNavigationView navigation;
-    private static InquiryCallDetailsBottomSheetFragment inquiryCallDetailsBottomSheetFragment;
-    private static ContactCallDetailsBottomSheetFragment contactCallDetailsBottomSheetFragment;
-    public static Activity activity;
-    private static boolean sheetShowing = false;
     //    private ProgressDialog progressDialog;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -124,25 +123,25 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_inquiries:
-                    switchToFragment1();
+                    switchToFragmentInquiries();
                     floatingActionButtonDeal.hide();
                     floatingActionMenuLead.hideMenu(true);
                     changeColorOfStatusAndActionBar(FRAGMENT_TAG_INQUIRIES);
                     return true;
                 case R.id.navigation_home:
-                    switchToFragment2();
+                    switchToFragmentContacts();
                     floatingActionButtonDeal.hide();
                     floatingActionMenuLead.showMenu(true);
-                    changeColorOfStatusAndActionBar(FRAGMENT_TAG_UNLABELED);
+                    changeColorOfStatusAndActionBar(FRAGMENT_TAG_CONTACTS);
                     return true;
                 case R.id.navigation_deals:
-                    switchToFragment4();
+                    switchToFragmentDeals();
                     floatingActionButtonDeal.show();
                     floatingActionMenuLead.hideMenu(true);
                     changeColorOfStatusAndActionBar(FRAGMENT_TAG_DEALS);
                     return true;
                 case R.id.navigation_more:
-                    switchToFragment5();
+                    switchToFragmentMore();
                     floatingActionButtonDeal.hide();
                     floatingActionMenuLead.hideMenu(true);
                     changeColorOfStatusAndActionBar(FRAGMENT_TAG_MORE);
@@ -163,7 +162,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
                     break;
-                case FRAGMENT_TAG_UNLABELED:
+                case FRAGMENT_TAG_CONTACTS:
                     toolbar.setBackgroundColor(getResources().getColor(R.color.Ls_Color_Primary));
                     window.setStatusBarColor(getResources().getColor(R.color.Ls_Color_PrimaryDark));
                     break;
@@ -183,29 +182,24 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         }
     }
 
-    public void switchToFragment1() {
+    public void switchToFragmentInquiries() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment1(), FRAGMENT_TAG_INQUIRIES).commitAllowingStateLoss();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new InquiriesFragment(), FRAGMENT_TAG_INQUIRIES).commitAllowingStateLoss();
     }
 
-    public void switchToFragment2() {
+    public void switchToFragmentContacts() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment2(), FRAGMENT_TAG_UNLABELED).commitAllowingStateLoss();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new ContactsAndOrganizationViewPagerFragment(), FRAGMENT_TAG_CONTACTS).commitAllowingStateLoss();
     }
 
-//    public void switchToFragment3() {
-//        FragmentManager manager = getSupportFragmentManager();
-//        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment3(), FRAGMENT_TAG_LEADS).commitAllowingStateLoss();
-//    }
-
-    public void switchToFragment4() {
+    public void switchToFragmentDeals() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment4(), FRAGMENT_TAG_DEALS).commitAllowingStateLoss();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new DealsFragment(), FRAGMENT_TAG_DEALS).commitAllowingStateLoss();
     }
 
-    public void switchToFragment5() {
+    public void switchToFragmentMore() {
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.llFragmentContainer, new BlankFragment5(), FRAGMENT_TAG_MORE).commitAllowingStateLoss();
+        manager.beginTransaction().replace(R.id.llFragmentContainer, new MoreFragment(), FRAGMENT_TAG_MORE).commitAllowingStateLoss();
     }
 
     @Override
@@ -216,20 +210,20 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         initFirst(savedInstanceState);
 
         setContentView(R.layout.activity_bottom_navigation);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Lasting Sales");
         ActionBar actionBar = getSupportActionBar();
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = findViewById(R.id.navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         initLast();
 
-        floatingActionMenuLead = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        FloatingActionButton floatingActionButtonAddOrg = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add_org);
-        FloatingActionButton floatingActionButtonAdd = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_add);
-        FloatingActionButton floatingActionButtonImport = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_import);
+        floatingActionMenuLead = findViewById(R.id.material_design_android_floating_action_menu);
+        FloatingActionButton floatingActionButtonAddOrg = findViewById(R.id.material_design_floating_action_menu_add_org);
+        FloatingActionButton floatingActionButtonAdd = findViewById(R.id.material_design_floating_action_menu_add);
+        FloatingActionButton floatingActionButtonImport = findViewById(R.id.material_design_floating_action_menu_import);
         floatingActionMenuLead.setClosedOnTouchOutside(true);
 
         floatingActionButtonAddOrg.setOnClickListener(new View.OnClickListener() {
@@ -241,8 +235,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 addOrgDialog.setCancelable(true);
                 addOrgDialog.show();
 
-                Button insertOrg = (Button) addOrgDialog.findViewById(R.id.bSaveAddOrg);
-                Button cancel = (Button) addOrgDialog.findViewById(R.id.bCancelAddOrg);
+                Button insertOrg = addOrgDialog.findViewById(R.id.bSaveAddOrg);
+                Button cancel = addOrgDialog.findViewById(R.id.bCancelAddOrg);
 
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -313,7 +307,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             }
         });
 
-        floatingActionButtonDeal = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab_add);
+        floatingActionButtonDeal = findViewById(R.id.fab_add);
         floatingActionButtonDeal.hide();
         floatingActionButtonDeal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -387,9 +381,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                     Intent intentInitService = new Intent(this, InitService.class);
                     startService(intentInitService);
                 }
-            }
-            if (!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
-                activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
             }
         }
     }
@@ -512,9 +503,9 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //        PowerManager pm = (PowerManager) NavigationBottomMainActivity.this.getSystemService(Context.POWER_SERVICE);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            if (pm.isIgnoringBatteryOptimizations(packageName))
-//                intentTest.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+//                intentTest.setAction(SettingsActivity.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
 //            else {
-//                intentTest.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+//                intentTest.setAction(SettingsActivity.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
 //                intentTest.setData(Uri.parse("package:" + packageName));
 //            }
 //            NavigationBottomMainActivity.this.startActivity(intentTest);
@@ -653,7 +644,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             searchView.setIconified(true);
         } else {
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.llFragmentContainer); //TODO NPE
-            if (f instanceof BlankFragment2) {
+            if (f instanceof ContactsAndOrganizationViewPagerFragment) {
                 super.onBackPressed();
             } else {
                 navigation.setSelectedItemId(R.id.navigation_home);
@@ -689,8 +680,8 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             case R.id.action_refresh:
                 Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
                 if (NetworkAccess.isNetworkAvailable(getApplicationContext())) {
-                    Intent intentInitService = new Intent(this, InitService.class);
-                    startService(intentInitService);
+//                    Intent intentInitService = new Intent(this, InitService.class);
+//                    startService(intentInitService);
 //                    progressDialog.show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Turn on wifi or Mobile Data", Toast.LENGTH_SHORT).show();
@@ -831,8 +822,6 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             cursor.addRow(temp);
             count++;
         }
-
-        // Toast.makeText(activity, "searching"+query, Toast.LENGTH_SHORT).show();
         searchView.setSuggestionsAdapter(new SearchSuggestionAdapter(this, cursor));
     }
 
@@ -849,17 +838,15 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 
                 if (sessionManager.isFirstRunAfterLogin()) {
                     Log.d(TAG, "initFirst: isFirstRun TRUE");
-                 /*   TheCallLogEngine theCallLogEngine = new TheCallLogEngine(NavigationBottomMainActivity.this);
-                    theCallLogEngine.execute();*/
-                    //    startService(new Intent(getApplicationContext(), CallLogEngineIntentService.class));
-
+                    startService(new Intent(getApplicationContext(), CallLogEngineIntentService.class));
                 }
-
-//                Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();
-
+                Toast.makeText(NavigationBottomMainActivity.this, "Init complete", Toast.LENGTH_LONG).show();
                 TinyBus.from(this.getApplicationContext()).post(new LeadContactAddedEventModel());
                 TinyBus.from(this.getApplicationContext()).post(new OrganizationEventModel());
                 TinyBus.from(this.getApplicationContext()).post(new DealEventModel());
+//                if (!new SessionManager(getApplicationContext()).getIsFirstTimeLaunch()) {
+//                    activity.startActivity(new Intent(activity, TutorialScreenActivity.class));
+//                }
             } else if (resultCode == RESULT_CANCELED) {
                 Log.d(TAG, "handleResult: CANCELED");
 //                if (progressDialog != null && progressDialog.isShowing()) {
@@ -892,8 +879,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
 //                sessionManager.logoutUser();
 //                startActivity(new Intent(NavigationBottomMainActivity.this, LogInActivity.class));
 //                finish();
-
-//                Toast.makeText(NavigationBottomMainActivity.this, "Init failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(NavigationBottomMainActivity.this, "Init failed", Toast.LENGTH_LONG).show();
             }
         }
     }

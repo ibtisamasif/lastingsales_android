@@ -22,10 +22,10 @@ import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.adapters.OrganizationDetailsFragmentPagerAdapter;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
-import com.example.muzafarimran.lastingsales.utilscallprocessing.DeleteManager;
+import com.example.muzafarimran.lastingsales.utils.DeleteManager;
 
 import de.halfbit.tinybus.TinyBus;
 
@@ -42,12 +42,12 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     FloatingActionButton floatingActionButton;
+    Toolbar toolbar;
+    ActionBar actionBar;
     private String organizationIdString = "0";
     private String selectedTab = "";
     private LSOrganization selectedOrganization;
     private TinyBus bus;
-    Toolbar toolbar;
-    ActionBar actionBar;
 
     //    private CollapsingToolbarLayout collapsingToolbarLayout = null;
     @Override
@@ -55,11 +55,11 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
         setContentView(R.layout.activity_contact_details_tab);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add);
+        floatingActionButton = findViewById(R.id.fab_add);
         floatingActionButton.hide();
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,13 +81,13 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
         }
 
         if (selectedOrganization != null) {
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            viewPager = findViewById(R.id.viewpager);
             OrganizationDetailsFragmentPagerAdapter organizationDetailsFragmentPagerAdapter = new OrganizationDetailsFragmentPagerAdapter(getSupportFragmentManager(), selectedOrganization.getId());
             viewPager.setAdapter(organizationDetailsFragmentPagerAdapter);
 //        viewPager.getAdapter().notifyDataSetChanged();
 
             // Give the TabLayout the ViewPager
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            TabLayout tabLayout = findViewById(R.id.sliding_tabs);
             tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
             tabLayout.setupWithViewPager(viewPager);
 
@@ -154,7 +154,7 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                     }
                 }
             }
-        }else {
+        } else {
             finish();
         }
     }
@@ -267,7 +267,7 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
                 }
                 AlertDialog.Builder alert = new AlertDialog.Builder(OrganizationDetailsTabActivity.this);
                 alert.setTitle("Delete");
-                alert.setMessage("Are you sure to delete " + nameTextOnDialog + ". This will delete associated deals as well.");
+                alert.setMessage("Are you sure to delete " + nameTextOnDialog);
                 alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -302,14 +302,13 @@ public class OrganizationDetailsTabActivity extends AppCompatActivity {
 
     private void editOrganizationDialogBox(LSOrganization tempOrganization) {
         if (tempOrganization != null) {
-
             Dialog addOrgDialog = new Dialog(OrganizationDetailsTabActivity.this);
             addOrgDialog.setContentView(R.layout.edit_organization);
             addOrgDialog.setCancelable(true);
             addOrgDialog.show();
 
-            Button bSave = (Button) addOrgDialog.findViewById(R.id.bSaveAddOrg);
-            Button bCancel = (Button) addOrgDialog.findViewById(R.id.bCancelAddOrg);
+            Button bSave = addOrgDialog.findViewById(R.id.bSaveAddOrg);
+            Button bCancel = addOrgDialog.findViewById(R.id.bCancelAddOrg);
             EditText nameAddOrg = addOrgDialog.findViewById(R.id.etNameAddOrg);
             EditText emailAddOrg = addOrgDialog.findViewById(R.id.etEmailAddOrg);
             EditText phoneAddOrg = addOrgDialog.findViewById(R.id.etPhoneAddOrg);

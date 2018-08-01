@@ -19,12 +19,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
+import com.example.muzafarimran.lastingsales.providers.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
-import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
-import com.example.muzafarimran.lastingsales.sync.MyURLs;
 import com.example.muzafarimran.lastingsales.utils.MyDateTimeStamp;
 import com.example.muzafarimran.lastingsales.utils.NetworkAccess;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -40,6 +40,7 @@ import java.util.Map;
 public class FlyerBubbleHelper extends AppCompatActivity {
     private static final String TAG = "FlyerBubbleHelper";
     private static FlyerBubbleHelper mInstance;
+    private static RequestQueue queue;
     private SessionManager sessionManager;
     private BubbleLayout bubbleView;
     private TextView tvNoteTextUIOCallPopup;
@@ -55,7 +56,6 @@ public class FlyerBubbleHelper extends AppCompatActivity {
     private TextView tvCallerHistoryLastCallTimeAgo1;
     private TextView tvMore;
     private SimpleDraweeView user_avatar;
-    private static RequestQueue queue;
     private TextView tvError;
 
     public FlyerBubbleHelper() {

@@ -15,6 +15,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.muzafarimran.lastingsales.SessionManager;
+import com.example.muzafarimran.lastingsales.app.MyURLs;
+import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
@@ -23,8 +25,6 @@ import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
-import com.example.muzafarimran.lastingsales.sync.MyURLs;
-import com.example.muzafarimran.lastingsales.sync.SyncStatus;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
 
@@ -40,14 +40,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class InitService extends IntentService {
     public static final String TAG = "InitService";
-    private int result = Activity.RESULT_CANCELED;
     public static final String RESULT = "result";
     public static final String NOTIFICATION = "com.lastingsales.agent";
-
-    private SessionManager sessionManager;
-    private Context mContext;
     private static RequestQueue queue;
     AtomicInteger requestsCounter;
+    private int result = Activity.RESULT_CANCELED;
+    private SessionManager sessionManager;
+    private Context mContext;
 
     public InitService() {
         super("InitService");
@@ -184,11 +183,11 @@ public class InitService extends IntentService {
                                 tempProperty.setUserId(property_user_id);
                                 tempProperty.setCompanyId(property_company_id);
                                 tempProperty.setColumnId(property_column_id);
-                                tempProperty.setStorableId(property_storable_id);
+//                                tempProperty.setStorableId(property_storable_id);
                                 tempProperty.setStorableType(property_storable_type);
                                 tempProperty.setValue(property_value);
                                 tempProperty.setContactOfProperty(LSContact.getContactFromServerId(property_storable_id));
-                                tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
+                                tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
                                 tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                                 tempProperty.save();
                             }
@@ -290,19 +289,19 @@ public class InitService extends IntentService {
                                     tempProperty.setUserId(property_user_id);
                                     tempProperty.setCompanyId(property_company_id);
                                     tempProperty.setColumnId(property_column_id);
-                                    tempProperty.setStorableId(property_storable_id);
+//                                    tempProperty.setStorableId(property_storable_id);
                                     tempProperty.setStorableType(property_storable_type);
                                     tempProperty.setValue(property_value);
                                     tempProperty.setOrganizationOfProperty(LSOrganization.getOrganizationFromServerId(property_storable_id));
-                                    tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
+                                    tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
                                     tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                                     tempProperty.save();
                                 }
 
-                                JSONArray jsonArrayDealNotes = jsonObjectOneOrganization.getJSONArray("notes");
-                                Log.d(TAG, "onResponse: data jsonArrayOrganizationNotes length : " + jsonArrayDealNotes.length());
-                                for (int j = jsonArrayDealNotes.length() - 1; j >= 0; j--) {
-                                    JSONObject jsonObjectOneNote = jsonArrayDealNotes.getJSONObject(j);
+                                JSONArray jsonArrayOrganizationNotes = jsonObjectOneOrganization.getJSONArray("notes");
+                                Log.d(TAG, "onResponse: data jsonArrayOrganizationNotes length : " + jsonArrayOrganizationNotes.length());
+                                for (int j = jsonArrayOrganizationNotes.length() - 1; j >= 0; j--) {
+                                    JSONObject jsonObjectOneNote = jsonArrayOrganizationNotes.getJSONObject(j);
                                     String note_id = jsonObjectOneNote.getString("id");
                                     String note_user_id = jsonObjectOneNote.getString("user_id");
                                     String note_company_id = jsonObjectOneNote.getString("company_id");
@@ -411,27 +410,27 @@ public class InitService extends IntentService {
                                     JSONArray jsonArrayDealProperties = jsonObjectOneDeal.getJSONArray("properties");
                                     Log.d(TAG, "onResponse: data jsonArrayDealProperties length : " + jsonArrayDealProperties.length());
                                     for (int j = jsonArrayDealProperties.length() - 1; j >= 0; j--) {
-                                        JSONObject jsonObjectOneNote = jsonArrayDealProperties.getJSONObject(j);
-                                        String property_id = jsonObjectOneNote.getString("id");
-                                        String property_user_id = jsonObjectOneNote.getString("user_id");
-                                        String property_company_id = jsonObjectOneNote.getString("company_id");
-                                        String property_column_id = jsonObjectOneNote.getString("column_id");
-                                        String property_storable_id = jsonObjectOneNote.getString("storable_id");
-                                        String property_storable_type = jsonObjectOneNote.getString("storable_type");
-                                        String property_value = jsonObjectOneNote.getString("value");
-                                        String property_created_by = jsonObjectOneNote.getString("created_by");
-                                        String property_updated_by = jsonObjectOneNote.getString("updated_by");
+                                        JSONObject jsonObjectOneProperty = jsonArrayDealProperties.getJSONObject(j);
+                                        String property_id = jsonObjectOneProperty.getString("id");
+                                        String property_user_id = jsonObjectOneProperty.getString("user_id");
+                                        String property_company_id = jsonObjectOneProperty.getString("company_id");
+                                        String property_column_id = jsonObjectOneProperty.getString("column_id");
+                                        String property_storable_id = jsonObjectOneProperty.getString("storable_id");
+                                        String property_storable_type = jsonObjectOneProperty.getString("storable_type");
+                                        String property_value = jsonObjectOneProperty.getString("value");
+                                        String property_created_by = jsonObjectOneProperty.getString("created_by");
+                                        String property_updated_by = jsonObjectOneProperty.getString("updated_by");
 
                                         LSProperty tempProperty = new LSProperty();
                                         tempProperty.setServerId(property_id);
                                         tempProperty.setUserId(property_user_id);
                                         tempProperty.setCompanyId(property_company_id);
                                         tempProperty.setColumnId(property_column_id);
-                                        tempProperty.setStorableId(property_storable_id);
+//                                        tempProperty.setStorableId(property_storable_id);
                                         tempProperty.setStorableType(property_storable_type);
                                         tempProperty.setValue(property_value);
                                         tempProperty.setDealOfProperty(LSDeal.getDealFromServerId(property_storable_id));
-                                        tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_SYNCED);
+                                        tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
                                         tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
                                         tempProperty.save();
                                     }
@@ -534,18 +533,6 @@ public class InitService extends IntentService {
                         Log.d(TAG, "onResponse: created_at: " + created_at);
                         Log.d(TAG, "onResponse: updated_at: " + updated_at);
                         Log.d(TAG, "onResponse: company_id: " + company_id);
-
-//                        LSContact lsContact = new LSContact();
-//                        lsContact.setContactName("name");
-//                        lsContact.setDynamicValues("dynVal");
-//                        lsContact.save();
-//                        lsContact.delete();
-//
-//                        LSDynamicColumns lsDynamicColumns = new LSDynamicColumns();
-//                        lsDynamicColumns.setName("Name");
-//                        lsDynamicColumns.save();
-//                        Log.d(TAG, "CHECKKKKKKKKKKKKKKKKKKKKkkonResponse: "+lsDynamicColumns.getName());
-//                        lsDynamicColumns.delete();
 
                         LSDynamicColumns checkColumn = LSDynamicColumns.getColumnFromServerId(id);
                         if (checkColumn == null) {
@@ -762,25 +749,6 @@ public class InitService extends IntentService {
                                 String company_id_of_inquiry = jsonobject.getString("company_id");
                                 String avg_response_time = jsonobject.getString("avg_response_time");
 
-//                        JSONObject leadObj = jsonobject.getJSONObject("lead");
-//                        String lead_id = leadObj.getString("id");
-//                        String name = leadObj.getString("name");
-////                        String email = leadObj.getString("email");
-//                        String phone = leadObj.getString("phone");
-////                        String address = leadObj.getString("address");
-//                        String lead_created_by = leadObj.getString("created_by");
-////                        String updated_by = leadObj.getString("updated_by");
-//                        String created_at = leadObj.getString("created_at");
-//                        String updated_at = leadObj.getString("updated_at");
-//                        String status_of_lead = leadObj.getString("status");
-//                        String follow_up_date = leadObj.getString("follow_up_date");
-//                        String follow_up_description = leadObj.getString("follow_up_description");
-//                        String dynamic_values = leadObj.getString("dynamic_values");
-//                        String company_id_of_lead = leadObj.getString("company_id");
-//                        String image = leadObj.getString("image");
-//                        String image_path = leadObj.getString("image_path");
-//                        String lead_type = leadObj.getString("lead_type");
-
                                 Log.d(TAG, "onResponse: inquiry_id: " + inquiry_id);
                                 Log.d(TAG, "onResponse: agent_id: " + agent_id);
                                 Log.d(TAG, "onResponse: date: " + date);
@@ -796,31 +764,8 @@ public class InitService extends IntentService {
                                 long beginTimeFromServer = PhoneNumberAndCallUtils.getMillisFromSqlFormattedDateAndTime(date + " " + time);
                                 Log.d(TAG, "onResponse: date + time in Millis: " + beginTimeFromServer);
 
-//                        Log.d(TAG, "onResponse: lead_id: " + lead_id);
-//                        Log.d(TAG, "onResponse: name: " + name);
-//                        Log.d(TAG, "onResponse: phone: " + phone);
-//                        Log.d(TAG, "onResponse: lead_created_by: " + lead_created_by);
-//                        Log.d(TAG, "onResponse: created_at: " + created_at);
-//                        Log.d(TAG, "onResponse: updated_at: " + updated_at);
-//                        Log.d(TAG, "onResponse: status_of_lead: " + status_of_lead);
-//                        Log.d(TAG, "onResponse: follow_up_date: " + follow_up_date);
-//                        Log.d(TAG, "onResponse: follow_up_description: " + follow_up_description);
-//                        Log.d(TAG, "onResponse: dynamic_values: " + dynamic_values);
-//                        Log.d(TAG, "onResponse: company_id_of_lead: " + company_id_of_lead);
-//                        Log.d(TAG, "onResponse: image: " + image);
-//                        Log.d(TAG, "onResponse: image_path: " + image_path);
-//                        Log.d(TAG, "onResponse: lead_type: " + lead_type);
-//                        Log.d(TAG, "onResponse: lead_type: " + lead_type);
-
                                 InquiryManager.createOrUpdate(mContext, inquiry_id, status_of_inquiry, beginTimeFromServer, contactNumber);
-
                             }
-
-//                    if (sessionManager.isFirstRunAfterLogin()) {
-//                        Log.d(TAG, "initFirst: isFirstRun TRUE");
-//                        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(mContext);
-//                        theCallLogEngine.execute();
-//                    }
                         }
                     } else {
                         Log.d(TAG, "onResponse: No Inquiries");

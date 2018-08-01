@@ -16,16 +16,16 @@ import android.view.View;
 import com.crashlytics.android.Crashlytics;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
+import com.example.muzafarimran.lastingsales.adapters.MyRecyclerViewAdapter;
 import com.example.muzafarimran.lastingsales.carditems.ConnectionItem;
 import com.example.muzafarimran.lastingsales.carditems.ContactHeaderBottomsheetItem;
 import com.example.muzafarimran.lastingsales.carditems.SeparatorItem;
 import com.example.muzafarimran.lastingsales.listeners.CloseInquiryBottomSheetEvent;
 import com.example.muzafarimran.lastingsales.listeners.LSContactProfileCallback;
+import com.example.muzafarimran.lastingsales.providers.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSContactProfile;
-import com.example.muzafarimran.lastingsales.recycleradapter.MyRecyclerViewAdapter;
-import com.example.muzafarimran.lastingsales.sync.ContactProfileProvider;
 import com.example.muzafarimran.lastingsales.utilscallprocessing.InquiryManager;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -36,8 +36,8 @@ import java.util.List;
 
 public class InquiryCallDetailsBottomSheetFragment extends BottomSheetDialogFragment {
 
-    private static final String TAG = "InquiryCallDetailsBotto";
     public static final String CONTACT_NUM = "contact_num";
+    private static final String TAG = "InquiryCallDetailsBotto";
     private List<Object> list = new ArrayList<Object>();
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
