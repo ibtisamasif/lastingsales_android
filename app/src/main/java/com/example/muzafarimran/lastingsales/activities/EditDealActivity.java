@@ -90,7 +90,7 @@ public class EditDealActivity extends AppCompatActivity {
         } else {
             etNameAddDeal.setText("");
         }
-        if (selectedDeal.getContact() != null && !selectedDeal.getContact().getContactName().equalsIgnoreCase(null)) {
+        if (selectedDeal.getContact() != null && !selectedDeal.getContact().getContactName().equalsIgnoreCase(null)) { // FIXME: 8/2/2018 NPE
             etLeadAddDeal.setText(selectedDeal.getContact().getContactName());
         } else {
             etLeadAddDeal.setText("");
