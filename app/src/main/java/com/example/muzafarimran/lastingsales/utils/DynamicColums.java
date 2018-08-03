@@ -53,6 +53,23 @@ public class DynamicColums {
         return editText;
     }
 
+    public EditText dateEditText(String val, String tag, int type) {
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        EditText editText = new EditText(this.context);
+        editText.setMinimumWidth(300);
+        editText.setTag(tag);
+        editText.setText(val);
+        editText.setTextSize(15);
+        editText.setFocusable(false);
+        editText.setFocusableInTouchMode(false);
+
+        editText.setInputType(type);
+
+        editText.setPadding(20, 20, 20, 20);
+        return editText;
+    }
+
     public Spinner spinner(ArrayAdapter<String> values, String tag, int position) {
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
