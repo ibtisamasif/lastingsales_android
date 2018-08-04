@@ -4,22 +4,19 @@
     android:layout_height="match_parent"
     android:background="@color/Ls.Color.Success">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/main_screen"
-
         android:gravity="center">
 
-
         <TextView
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:text="Please choose your phone type"
             android:textColor="#fff"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <RadioGroup
@@ -32,20 +29,20 @@
                 android:id="@+id/radio_company_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="26dp"
                 android:text="Company Phone"
                 android:textColor="#fff"
-                android:textSize="12dp" />
+                android:textSize="16dp" />
 
             <RadioButton
-                android:checked="true"
                 android:id="@+id/radio_personal_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="22dp"
+                android:checked="true"
                 android:text="Personal Phone"
                 android:textColor="#fff"
-                android:textSize="12dp" />
+                android:textSize="16dp" />
 
         </RadioGroup>
 

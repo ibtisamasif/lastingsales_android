@@ -51,7 +51,7 @@ public class TutorialScreenActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(current);
                 } else {
                     Log.d("tutorial", "jump to nav screen");
-                    int checkId = radioGroup.getCheckedRadioButtonId();
+                    int checkId = radioGroup.getCheckedRadioButtonId(); // FIXME: 8/4/2018 Crashed here
                     isCompanyORPersonalRadio = findViewById(checkId);
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     sessionManager.setFirstTimeLaunch(true);

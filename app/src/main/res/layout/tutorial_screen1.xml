@@ -13,7 +13,7 @@
 
         <!----> <ImageView
         android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_height="350dp"
         android:src="@drawable/first_tutorial_screen_pic" />
 
         <TextView
@@ -24,7 +24,7 @@
             android:paddingRight="5dp"
             android:text="Better organize your pipeline to close more Sales deals!"
             android:textAlignment="center"
-            android:textSize="13dp" />
+            android:textSize="24sp" />
 
     </LinearLayout>
 </RelativeLayout>
