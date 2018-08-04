@@ -1,12 +1,17 @@
 package com.example.muzafarimran.lastingsales.fragments;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
 import android.util.Log;
@@ -17,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -48,6 +54,7 @@ import org.json.JSONException;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -148,17 +155,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
                         gridLayout.addView(dynamicColums.editText("", "deal" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
                     }
-                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
-                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
-                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
-                    if (lsProperties.size() > 0) {
-                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-                        gridLayout.addView(dynamicColums.editText(lsProperties.get(0).getValue(), "deal" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
-                    } else {
-                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
-                        gridLayout.addView(dynamicColums.editText("", "deal" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE));
-                    }
-                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+                }  else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
                     if (lsProperties.size() > 0) {
@@ -201,6 +198,129 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         gridLayout.addView(dynamicColums.spinner(dataAdapter, "deal" + list.get(i).getServerId(), position));
                     }
                 }
+
+                else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
+
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
+
+                    if (lsProperties.size() > 0) {
+                        EditText dateColumn=dynamicColums.dateEditText(lsProperties.get(0).getValue(), "deal" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE);
+
+                        dateColumn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                DialogFragment dialogFragment=new SelectDateFragment(dateColumn);
+                                dialogFragment.show(getFragmentManager(),"Date Picker");
+                                Log.d("click","ondate column");
+                                Toast.makeText(mContext, "click", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+
+                        gridLayout.addView(dateColumn);
+                    } else {
+
+                        EditText dateColumn=dynamicColums.dateEditText("date", "deal" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE);
+
+                        dateColumn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                DialogFragment dialogFragment=new SelectDateFragment(dateColumn);
+                                dialogFragment.show(getFragmentManager(),"Date Picker");
+                                Log.d("click","ondate column");
+
+                            }
+                        });
+
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+
+                        gridLayout.addView(dateColumn);
+
+                        // Toast.makeText(mContext, "Can't compare colummnId & serverID", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_MULTI)) {
+
+                    List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
+
+                    if (lsProperties.size() > 0) {
+                        EditText multi=dynamicColums.dateEditText(lsProperties.get(0).getValue(), "deal" + list.get(i).getServerId(),InputType.TYPE_CLASS_TEXT);
+
+                        String spinnerDefaultVal = list.get(i).getDefaultValueOption();
+
+                        List<String> option=new ArrayList<>();
+
+                        try {
+                            JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
+
+
+                            for (int j = 0; j < jsonarray.length(); j++) {
+
+
+                                String jsonobject = jsonarray.getString(j);
+                                option.add(jsonobject);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        multi.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                showMultiDialog(option,multi);
+                            }
+                        });
+
+
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                        gridLayout.addView(multi);
+
+                    } else {
+
+                        EditText multi=dynamicColums.dateEditText("", "deal" + list.get(i).getServerId(),InputType.TYPE_CLASS_TEXT);
+
+                        String spinnerDefaultVal = list.get(i).getDefaultValueOption();
+
+                        List<String> option=new ArrayList<>();
+
+                        try {
+                            JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
+
+
+                            for (int j = 0; j < jsonarray.length(); j++) {
+
+
+                                String jsonobject = jsonarray.getString(j);
+                                option.add(jsonobject);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        multi.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                showMultiDialog(option,multi);
+                            }
+                        });
+
+
+
+                        gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
+                        gridLayout.addView(multi);
+                    }
+
+                }
+
             }
         }
     }
@@ -261,15 +381,23 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         Log.d("created", "created property");
                     }
                 }
-                if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
+                else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
+
+
                     EditText editText = gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
+
                     String val = editText.getText().toString();
+
                     Log.d("numberfield", val);
+                    // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
+
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
+
                     if (lsProperty.size() > 0) {
                         lsProperty.get(0).setValue(val);
                         lsProperty.get(0).setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
+
                         lsProperty.get(0).save();
                         Log.d("saved", "value saved");
                     } else {
@@ -277,14 +405,53 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.setValue(val);
                         lsProperty1.setStorableType(list.get(i).getRelatedTo());
                         lsProperty1.setColumnId(list.get(i).getServerId());
-//                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+                        lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
+
+                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
+                        LSDeal lsDeal = LSDeal.findById(LSDeal.class, args.getLong("someId"));
+                        lsProperty1.setDealOfProperty(lsDeal);
+                        lsProperty1.save();
+
+                        Log.d("created", "created property");
+                    }
+
+
+                }  else if (type.equals(LSDynamicColumns.COLUMN_TYPE_MULTI)) {
+
+
+                    EditText editText = gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
+
+                    String val = editText.getText().toString();
+
+                    Log.d("numberfield", val);
+                    // Toast.makeText(mContext,"Number field"+ val, Toast.LENGTH_SHORT).show();
+
+                    List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
+                            list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
+
+                    if (lsProperty.size() > 0) {
+                        lsProperty.get(0).setValue(val);
+                        lsProperty.get(0).setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
+
+                        lsProperty.get(0).save();
+                        Log.d("saved", "value saved");
+                    } else {
+                        LSProperty lsProperty1 = new LSProperty();
+                        lsProperty1.setValue(val);
+                        lsProperty1.setStorableType(list.get(i).getRelatedTo());
+                        lsProperty1.setColumnId(list.get(i).getServerId());
+                        lsProperty1.setStorableId(String.valueOf(args.getLong("someId")));
                         LSDeal lsDeal = LSDeal.findById(LSDeal.class, args.getLong("someId"));
                         lsProperty1.setDealOfProperty(lsDeal);
                         lsProperty1.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_NOT_SYNCED);
+
                         lsProperty1.save();
+
                         Log.d("created", "created property");
                     }
-                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+
+
+                }else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
                     Spinner spinner = gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
                     String val = spinner.getSelectedItem().toString();
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
@@ -311,6 +478,108 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         }
         DataSenderAsync.getInstance(mContext).run();
         Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
+    }
+
+    private void showMultiDialog(List colors,EditText multi) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        // Convert the color array to list
+        final List<String> colorsList = colors;
+
+        boolean checkedColors[]=new boolean[colors.size()];
+
+        String[] strings =(String[]) colors.toArray(new String[0]);
+        builder.setMultiChoiceItems(strings, checkedColors, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                // Update the current focused item's checked status
+                checkedColors[which] = isChecked;
+
+                // Get the current focused item
+                String currentItem = colorsList.get(which);
+
+                // Notify the current action
+            /*    Toast.makeText(getContext(),
+                        currentItem + " " + isChecked, Toast.LENGTH_SHORT).show();
+           */ }
+        });
+
+        // Specify the dialog is not cancelable
+        builder.setCancelable(false);
+
+        // Set a title for alert dialog
+        builder.setTitle("Multi Select");
+
+        // Set the positive/yes button click listener
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something when click positive button
+                multi.setText("");
+                for (int i = 0; i<checkedColors.length; i++){
+                    boolean checked = checkedColors[i];
+                    if (checked) {
+                        multi.setText(multi.getText() + colorsList.get(i) + ",");
+                    }
+                }
+            }
+        });
+
+        // Set the negative/no button click listener
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something when click the negative button
+            }
+        });
+
+        // Set the neutral/cancel button click listener
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something when click the neutral button
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        // Display the alert dialog on interface
+        dialog.show();
+
+    }
+    private  static int year_x,month_x,day_x;
+    public static   class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+        EditText dateColumn;
+
+        public SelectDateFragment() {
+        }
+
+        public SelectDateFragment(EditText dateColumn) {
+
+            this.dateColumn = dateColumn;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int yy = calendar.get(Calendar.YEAR);
+            int mm = calendar.get(Calendar.MONTH);
+            int dd = calendar.get(Calendar.DAY_OF_MONTH);
+            return new DatePickerDialog(getActivity(), this, yy, mm, dd);
+        }
+
+        public void onDateSet(DatePicker view, int yy, int mm, int dd) {
+            populateSetDate(yy, mm+1, dd);
+
+            year_x=yy;
+            month_x=mm;
+            day_x=dd;
+        }
+        public void populateSetDate(int year, int month, int day) {
+            dateColumn.setText(year+"-"+month+"-"+day);
+        }
+
     }
 
     @Override
