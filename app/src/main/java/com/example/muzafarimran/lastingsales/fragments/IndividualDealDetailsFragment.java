@@ -155,7 +155,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
                         gridLayout.addView(dynamicColums.editText("", "deal" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER));
                     }
-                }  else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
                     if (lsProperties.size() > 0) {
@@ -197,22 +197,20 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
                         gridLayout.addView(dynamicColums.spinner(dataAdapter, "deal" + list.get(i).getServerId(), position));
                     }
-                }
-
-                else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
 
                     List<LSProperty> lsProperties = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
-                        EditText dateColumn=dynamicColums.dateEditText(lsProperties.get(0).getValue(), "deal" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE);
+                        EditText dateColumn = dynamicColums.dateEditText(lsProperties.get(0).getValue(), "deal" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE);
 
                         dateColumn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                DialogFragment dialogFragment=new SelectDateFragment(dateColumn);
-                                dialogFragment.show(getFragmentManager(),"Date Picker");
-                                Log.d("click","ondate column");
+                                DialogFragment dialogFragment = new SelectDateFragment(dateColumn);
+                                dialogFragment.show(getFragmentManager(), "Date Picker");
+                                Log.d("click", "ondate column");
                                 Toast.makeText(mContext, "click", Toast.LENGTH_SHORT).show();
 
                             }
@@ -224,14 +222,14 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         gridLayout.addView(dateColumn);
                     } else {
 
-                        EditText dateColumn=dynamicColums.dateEditText("date", "deal" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE);
+                        EditText dateColumn = dynamicColums.dateEditText("date", "deal" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE);
 
                         dateColumn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                DialogFragment dialogFragment=new SelectDateFragment(dateColumn);
-                                dialogFragment.show(getFragmentManager(),"Date Picker");
-                                Log.d("click","ondate column");
+                                DialogFragment dialogFragment = new SelectDateFragment(dateColumn);
+                                dialogFragment.show(getFragmentManager(), "Date Picker");
+                                Log.d("click", "ondate column");
 
                             }
                         });
@@ -250,11 +248,11 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                             list.get(i).getServerId(), String.valueOf(args.getLong("someId")));
 
                     if (lsProperties.size() > 0) {
-                        EditText multi=dynamicColums.dateEditText(lsProperties.get(0).getValue(), "deal" + list.get(i).getServerId(),InputType.TYPE_CLASS_TEXT);
+                        EditText multi = dynamicColums.dateEditText(lsProperties.get(0).getValue(), "deal" + list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT);
 
                         String spinnerDefaultVal = list.get(i).getDefaultValueOption();
 
-                        List<String> option=new ArrayList<>();
+                        List<String> option = new ArrayList<>();
 
                         try {
                             JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
@@ -274,10 +272,9 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         multi.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                showMultiDialog(option,multi);
+                                showMultiDialog(option, multi);
                             }
                         });
-
 
 
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
@@ -285,11 +282,11 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
 
                     } else {
 
-                        EditText multi=dynamicColums.dateEditText("", "deal" + list.get(i).getServerId(),InputType.TYPE_CLASS_TEXT);
+                        EditText multi = dynamicColums.dateEditText("", "deal" + list.get(i).getServerId(), InputType.TYPE_CLASS_TEXT);
 
                         String spinnerDefaultVal = list.get(i).getDefaultValueOption();
 
-                        List<String> option=new ArrayList<>();
+                        List<String> option = new ArrayList<>();
 
                         try {
                             JSONArray jsonarray = new JSONArray(spinnerDefaultVal);
@@ -309,10 +306,9 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         multi.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                showMultiDialog(option,multi);
+                                showMultiDialog(option, multi);
                             }
                         });
-
 
 
                         gridLayout.addView(dynamicColums.textView(list.get(i).getName(), "tag"));
@@ -380,8 +376,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         lsProperty1.save();
                         Log.d("created", "created property");
                     }
-                }
-                else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_DATE)) {
 
 
                     EditText editText = gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
@@ -416,7 +411,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     }
 
 
-                }  else if (type.equals(LSDynamicColumns.COLUMN_TYPE_MULTI)) {
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_MULTI)) {
 
 
                     EditText editText = gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
@@ -451,7 +446,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     }
 
 
-                }else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
+                } else if (type.equals(LSDynamicColumns.COLUMN_TYPE_SINGLE)) {
                     Spinner spinner = gridLayout.findViewWithTag("deal" + list.get(i).getServerId());
                     String val = spinner.getSelectedItem().toString();
                     List<LSProperty> lsProperty = LSProperty.find(LSProperty.class, "column_id=? and deal_of_property=?",
@@ -480,15 +475,15 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
     }
 
-    private void showMultiDialog(List colors,EditText multi) {
+    private void showMultiDialog(List colors, EditText multi) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         // Convert the color array to list
         final List<String> colorsList = colors;
 
-        boolean checkedColors[]=new boolean[colors.size()];
+        boolean checkedColors[] = new boolean[colors.size()];
 
-        String[] strings =(String[]) colors.toArray(new String[0]);
+        String[] strings = (String[]) colors.toArray(new String[0]);
         builder.setMultiChoiceItems(strings, checkedColors, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -502,7 +497,8 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 // Notify the current action
             /*    Toast.makeText(getContext(),
                         currentItem + " " + isChecked, Toast.LENGTH_SHORT).show();
-           */ }
+           */
+            }
         });
 
         // Specify the dialog is not cancelable
@@ -517,7 +513,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
             public void onClick(DialogInterface dialog, int which) {
                 // Do something when click positive button
                 multi.setText("");
-                for (int i = 0; i<checkedColors.length; i++){
+                for (int i = 0; i < checkedColors.length; i++) {
                     boolean checked = checkedColors[i];
                     if (checked) {
                         multi.setText(multi.getText() + colorsList.get(i) + ",");
@@ -547,8 +543,10 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         dialog.show();
 
     }
-    private  static int year_x,month_x,day_x;
-    public static   class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+    private static int year_x, month_x, day_x;
+
+    public static class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         EditText dateColumn;
 
@@ -570,14 +568,15 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         }
 
         public void onDateSet(DatePicker view, int yy, int mm, int dd) {
-            populateSetDate(yy, mm+1, dd);
+            populateSetDate(yy, mm + 1, dd);
 
-            year_x=yy;
-            month_x=mm;
-            day_x=dd;
+            year_x = yy;
+            month_x = mm;
+            day_x = dd;
         }
+
         public void populateSetDate(int year, int month, int day) {
-            dateColumn.setText(year+"-"+month+"-"+day);
+            dateColumn.setText(year + "-" + month + "-" + day);
         }
 
     }
@@ -627,7 +626,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 if (mContact.getContactName() != null) {
                     if (mContact.getContactName().equals("null")) {
                         tvContactName.setText("");
-                    } else if (mContact.getContactName().equals("Unlabeled Contact") || mContact.getContactName().equals("Ignored Contact")) {
+                    } else if (mContact.getContactName().equals("Unlabeled Contact") || mContact.getContactName().equals("Ignored Contact")) { //TODO bilal isko khatm karwao aur aesi line app ma jidr b ha
                         String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, mContact.getPhoneOne());
                         if (name != null) {
                             tvContactName.setText(name);
@@ -647,6 +646,11 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                     } else {
                         tvContactName.setText(mContact.getPhoneOne());
                     }
+                }
+                if (mContact.getPhoneOne() != null) {
+                    tvNumber.setText(mContact.getPhoneOne());
+                } else {
+                    tvNumber.setText("");
                 }
                 whatsapp_icon.setOnClickListener(new View.OnClickListener() {
                     @Override

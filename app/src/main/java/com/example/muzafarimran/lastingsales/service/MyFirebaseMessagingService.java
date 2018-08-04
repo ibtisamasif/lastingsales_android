@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.app.FireBaseConfig;
 import com.example.muzafarimran.lastingsales.app.SyncStatus;
+import com.example.muzafarimran.lastingsales.events.ColumnEventModel;
 import com.example.muzafarimran.lastingsales.events.CommentEventModel;
 import com.example.muzafarimran.lastingsales.events.ContactDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.DealEventModel;
@@ -16,12 +17,14 @@ import com.example.muzafarimran.lastingsales.events.InquiryDeletedEventModel;
 import com.example.muzafarimran.lastingsales.events.LeadContactAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.NoteAddedEventModel;
 import com.example.muzafarimran.lastingsales.events.OrganizationEventModel;
+import com.example.muzafarimran.lastingsales.events.PropertyEventModel;
 import com.example.muzafarimran.lastingsales.providers.models.LSContact;
 import com.example.muzafarimran.lastingsales.providers.models.LSDeal;
 import com.example.muzafarimran.lastingsales.providers.models.LSDynamicColumns;
 import com.example.muzafarimran.lastingsales.providers.models.LSInquiry;
 import com.example.muzafarimran.lastingsales.providers.models.LSNote;
 import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
+import com.example.muzafarimran.lastingsales.providers.models.LSProperty;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.utils.DeleteManager;
@@ -590,6 +593,66 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             }
 
+            if (tag.equals("Property")) {
+                if (action.equals("post")) {
+                    String property_id = payload.getString("id");
+                    String property_user_id = payload.getString("user_id");
+                    String property_company_id = payload.getString("company_id");
+                    String property_column_id = payload.getString("column_id");
+                    String property_storable_id = payload.getString("storable_id");
+                    String property_storable_type = payload.getString("storable_type");
+                    String property_value = payload.getString("value");
+//                    String property_created_by = payload.getString("created_by");
+//                    String property_updated_by = payload.getString("updated_by");
+
+                    mMsg = property_value;
+
+                    LSProperty tempProperty = new LSProperty();
+                    tempProperty.setServerId(property_id);
+                    tempProperty.setUserId(property_user_id);
+                    tempProperty.setCompanyId(property_company_id);
+                    tempProperty.setColumnId(property_column_id);
+                    tempProperty.setStorableType(property_storable_type);
+                    tempProperty.setValue(property_value);
+                    tempProperty.setContactOfProperty(LSContact.getContactFromServerId(property_storable_id));
+                    tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
+                    tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
+                    tempProperty.save();
+                    TinyBus.from(getApplicationContext()).post(new PropertyEventModel());
+
+                } else if (action.equals("put")) {
+                    String property_id = payload.getString("id");
+                    String property_user_id = payload.getString("user_id");
+                    String property_company_id = payload.getString("company_id");
+                    String property_column_id = payload.getString("column_id");
+                    String property_storable_id = payload.getString("storable_id");
+                    String property_storable_type = payload.getString("storable_type");
+                    String property_value = payload.getString("value");
+//                    String property_created_by = payload.getString("created_by");
+//                    String property_updated_by = payload.getString("updated_by");
+
+                    LSProperty tempProperty = LSProperty.getPropertyByServerId(property_id);
+                    tempProperty.setServerId(property_id);
+                    tempProperty.setUserId(property_user_id);
+                    tempProperty.setCompanyId(property_company_id);
+                    tempProperty.setColumnId(property_column_id);
+                    tempProperty.setStorableType(property_storable_type);
+                    tempProperty.setValue(property_value);
+                    tempProperty.setContactOfProperty(LSContact.getContactFromServerId(property_storable_id));
+                    tempProperty.setSyncStatus(SyncStatus.SYNC_STATUS_PROPERTY_ADD_OR_UPDATE_SYNCED);
+                    tempProperty.setUpdatedAt(PhoneNumberAndCallUtils.getDateTimeStringFromMiliseconds(Calendar.getInstance().getTimeInMillis()));
+                    tempProperty.save();
+                    TinyBus.from(getApplicationContext()).post(new PropertyEventModel());
+
+                } else if (action.equals("delete")) {
+                    Log.d(TAG, "handleDataMessage: Property delete");
+                    String property_id = payload.getString("id");
+                    LSProperty tempProperty = LSProperty.getPropertyByServerId(property_id);
+                    tempProperty.delete();
+                    TinyBus.from(getApplicationContext()).post(new PropertyEventModel());
+                }
+            }
+
             if (tag.equals("Column")) {
                 if (action.equals("post")) {
                     String id = "";
@@ -599,6 +662,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String column_type = "";
                     if (payload.has("column_type")) {
                         column_type = payload.getString("column_type");
+                    }
+                    String related_to = "";
+                    if (payload.has("related_to")) {
+                        related_to = payload.getString("related_to");
                     }
                     String name = "";
                     if (payload.has("name")) {
@@ -642,6 +709,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         LSDynamicColumns newColumn = new LSDynamicColumns();
                         newColumn.setServerId(id);
                         newColumn.setColumnType(column_type);
+                        newColumn.setRelatedTo(related_to);
                         newColumn.setName(name);
                         newColumn.setDisplayName(display_name);
                         newColumn.setDefaultValueOption(default_value_options);
@@ -652,6 +720,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         newColumn.setUpdated_at(updated_at);
                         newColumn.setCompanyId(company_id);
                         newColumn.save();
+                        TinyBus.from(getApplicationContext()).post(new ColumnEventModel());
                     }
                 } else if (action.equals("put")) {
                     String id = "";
@@ -662,9 +731,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (payload.has("column_type")) {
                         column_type = payload.getString("column_type");
                     }
+                    String related_to = "";
+                    if (payload.has("related_to")) {
+                        related_to = payload.getString("related_to");
+                    }
                     String name = "";
                     if (payload.has("name")) {
                         name = payload.getString("name");
+                    }
+                    String display_name = "";
+                    if (payload.has("display_name")) {
+                        display_name = payload.getString("display_name");
                     }
                     String default_value_options = "";
                     if (payload.has("default_value_options")) {
@@ -698,7 +775,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     LSDynamicColumns tempColumn = LSDynamicColumns.getColumnFromServerId(id);
                     if (tempColumn != null) {
                         tempColumn.setColumnType(column_type);
+                        tempColumn.setRelatedTo(related_to);
                         tempColumn.setName(name);
+                        tempColumn.setDisplayName(display_name);
                         tempColumn.setDefaultValueOption(default_value_options);
                         tempColumn.setRange(range);
                         tempColumn.setCreated_by(created_by);
@@ -707,6 +786,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         tempColumn.setUpdated_at(updated_at);
                         tempColumn.setCompanyId(company_id);
                         tempColumn.save();
+                        TinyBus.from(getApplicationContext()).post(new ColumnEventModel());
                     }
 
                 } else if (action.equals("delete")) {
@@ -714,6 +794,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     LSDynamicColumns tempColumn = LSDynamicColumns.getColumnFromServerId(id);
                     if (tempColumn != null) {
                         tempColumn.delete();
+                        TinyBus.from(getApplicationContext()).post(new ColumnEventModel());
                     }
                 }
             }

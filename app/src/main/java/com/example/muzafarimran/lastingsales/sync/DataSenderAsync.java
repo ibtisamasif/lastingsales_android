@@ -728,6 +728,7 @@ public class DataSenderAsync {
                 params.put("workflow_id", "" + deal.getWorkflowId());
                 params.put("workflow_stage_id", "" + deal.getWorkflowStageId());
                 params.put("is_private", "" + deal.getIsPrivate());
+                params.put("value", "" + deal.getValue());
                 params.put("api_token", "" + sessionManager.getLoginToken());
                 Log.d(TAG, "getParams: addDealToServerSync " + params);
                 return params;
@@ -766,6 +767,7 @@ public class DataSenderAsync {
                 .appendQueryParameter("workflow_stage_id", "" + deal.getWorkflowStageId())
                 .appendQueryParameter("dynamic_values", "" + deal.getDynamic())
                 .appendQueryParameter("is_private", "" + deal.getIsPrivate())
+                .appendQueryParameter("value", "" + deal.getValue())
                 .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
                 .build();
         final String myUrl = builtUri.toString();

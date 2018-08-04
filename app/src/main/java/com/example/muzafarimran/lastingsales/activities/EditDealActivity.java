@@ -85,15 +85,30 @@ public class EditDealActivity extends AppCompatActivity {
             dealIdLong = Long.parseLong(id);
             selectedDeal = LSDeal.findById(LSDeal.class, dealIdLong);
         }
-        if (selectedDeal.getName() != null) {
-            etNameAddDeal.setText(selectedDeal.getName());
-        } else {
-            etNameAddDeal.setText("");
-        }
-        if (selectedDeal.getContact() != null && !selectedDeal.getContact().getContactName().equalsIgnoreCase(null)) { // FIXME: 8/2/2018 NPE
-            etLeadAddDeal.setText(selectedDeal.getContact().getContactName());
-        } else {
-            etLeadAddDeal.setText("");
+        if (selectedDeal != null) {
+            if (selectedDeal.getName() != null) {
+                etNameAddDeal.setText(selectedDeal.getName());
+            } else {
+                etNameAddDeal.setText("");
+            }
+            if (selectedDeal.getValue() != null) {
+                etValueAddDeal.setText(selectedDeal.getValue());
+            } else {
+                etValueAddDeal.setText("");
+            }
+            if (selectedDeal.getContact() != null) {
+                if (selectedDeal.getContact().getContactName() != null) {
+                    if (!selectedDeal.getContact().getContactName().equalsIgnoreCase(null)) {
+                        etLeadAddDeal.setText(selectedDeal.getContact().getContactName());
+                    } else {
+                        etLeadAddDeal.setText("");
+                    }
+                } else {
+                    etLeadAddDeal.setText("");
+                }
+            } else {
+                etLeadAddDeal.setText("");
+            }
         }
     }
 

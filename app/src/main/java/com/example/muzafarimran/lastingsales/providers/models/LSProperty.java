@@ -3,6 +3,8 @@ package com.example.muzafarimran.lastingsales.providers.models;
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 
+import java.util.ArrayList;
+
 public class LSProperty extends SugarRecord {
 
     @Ignore
@@ -26,6 +28,20 @@ public class LSProperty extends SugarRecord {
     private String updatedAt;
     private String serverId;
     private String syncStatus;
+
+    public static LSProperty getPropertyByServerId(String id) {
+        ArrayList<LSProperty> list = null;
+        try {
+            list = (ArrayList<LSProperty>) LSProperty.find(LSProperty.class, "server_id = ? ", id);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
 
     public String getCompanyId() {
         return companyId;
