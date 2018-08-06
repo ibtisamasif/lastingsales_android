@@ -23,8 +23,8 @@ android {
         applicationId "com.lastingsales.crm"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 8
-        versionName "1.0.7" //1.0.0 in production. Change mixpanel key and urls (staging to production) / migration test
+        versionCode 9
+        versionName "1.0.8" //1.0.0 in production. Change mixpanel key and urls (staging to production) / migration test
 //        jackOptions {
 //            enabled false
 //        }
