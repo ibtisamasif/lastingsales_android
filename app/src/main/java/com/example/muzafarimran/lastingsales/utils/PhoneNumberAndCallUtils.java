@@ -36,6 +36,28 @@ public class PhoneNumberAndCallUtils {
     public static String numberToInterNationalNumber(String inputString) {
         if (inputString != null) {
             PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+            // these numbers are for VPBX numbers filtering
+            // Do not remove
+            inputString = inputString.replaceAll("\\s","");
+            if(inputString.startsWith("+92770")){
+                inputString = inputString.replace("+92770", "+92");
+            }else
+            if(inputString.startsWith("770")){
+                inputString = inputString.replaceFirst("^(770)", "+92");
+            }else
+            if(inputString.startsWith("+92550")){
+                inputString = inputString.replace("+9255", "+92");
+            }else
+            if(inputString.startsWith("550")){
+                inputString = inputString.replaceFirst("^(550)", "+92");
+            }else
+            if(inputString.startsWith("+92440")){
+                inputString = inputString.replace("+9244", "+92");
+            }else
+            if(inputString.startsWith("440")){
+                inputString = inputString.replaceFirst("^(440)", "+92");
+            }
+            //////
             String s = null;
             try {
                 Phonenumber.PhoneNumber pkNumberProto = phoneNumberUtil.parse(inputString, "PK");
@@ -54,14 +76,24 @@ public class PhoneNumberAndCallUtils {
             PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
             // these numbers are for VPBX numbers filtering
             // Do not remove
-            if(inputString.trim().startsWith("+9277")){
-                inputString = inputString.replace("+9277", "+92");
-            }
-            if(inputString.trim().startsWith("+9255")){
+            inputString = inputString.replaceAll("\\s","");
+            if(inputString.startsWith("+92770")){
+                inputString = inputString.replace("+92770", "+92");
+            }else
+            if(inputString.startsWith("770")){
+                inputString = inputString.replaceFirst("^(770)", "+92");
+            }else
+            if(inputString.startsWith("+92550")){
                 inputString = inputString.replace("+9255", "+92");
-            }
-            if(inputString.trim().startsWith("+9244")){
+            }else
+            if(inputString.startsWith("550")){
+                inputString = inputString.replaceFirst("^(550)", "+92");
+            }else
+            if(inputString.startsWith("+92440")){
                 inputString = inputString.replace("+9244", "+92");
+            }else
+            if(inputString.startsWith("440")){
+                inputString = inputString.replaceFirst("^(440)", "+92");
             }
             //////
             String s = null;
