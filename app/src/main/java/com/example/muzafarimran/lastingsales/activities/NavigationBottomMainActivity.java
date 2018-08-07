@@ -560,26 +560,26 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 SyncUser.updateUserLastSeenToServer(this);
                 SyncUser.getUserDataFromServer(this);
                 SyncUser.getLastestAppVersionCodeFromServer(this);
-                if (!sessionManager.getKeyIsUserActive()) {
-                    Intent i = new Intent(NavigationBottomMainActivity.this, UserInActiveActivity.class);
-                    i.putExtra(TrialExpiryActivity.KEY_MESSAGE, "User is deactivated");
-                    startActivity(i);
-                    finish();
-                }
-                if (!sessionManager.getKeyIsCompanyActive()) {
-                    sessionManager.logoutUser();
-                    Intent i = new Intent(NavigationBottomMainActivity.this, CompanyInActiveActivity.class);
-                    i.putExtra(TrialExpiryActivity.KEY_MESSAGE, "Company is deactivated");
-                    startActivity(i);
-                    finish();
-                }
-                if (!sessionManager.getKeyIsCompanyPaying()) {
-                    if (!sessionManager.getKeyIsTrialValid()) {
-                        Intent i = new Intent(NavigationBottomMainActivity.this, TrialExpiryActivity.class);
-                        i.putExtra("message", "During your free trial period LastingSales created 500 contacts for you, processed 5000 calls");
-                        startActivity(i);
-                    }
-                }
+//                if (!sessionManager.getKeyIsUserActive()) {
+//                    Intent i = new Intent(NavigationBottomMainActivity.this, UserInActiveActivity.class);
+//                    i.putExtra(TrialExpiryActivity.KEY_MESSAGE, "User is deactivated");
+//                    startActivity(i);
+//                    finish();
+//                }
+//                if (!sessionManager.getKeyIsCompanyActive()) {
+//                    sessionManager.logoutUser();
+//                    Intent i = new Intent(NavigationBottomMainActivity.this, CompanyInActiveActivity.class);
+//                    i.putExtra(TrialExpiryActivity.KEY_MESSAGE, "Company is deactivated");
+//                    startActivity(i);
+//                    finish();
+//                }
+//                if (!sessionManager.getKeyIsCompanyPaying()) {
+//                    if (!sessionManager.getKeyIsTrialValid()) {
+//                        Intent i = new Intent(NavigationBottomMainActivity.this, TrialExpiryActivity.class);
+//                        i.putExtra("message", "During your free trial period LastingSales created 500 contacts for you, processed 5000 calls");
+//                        startActivity(i);
+//                    }
+//                }
             }
 
             if (!sessionManager.getCanSync()) {
