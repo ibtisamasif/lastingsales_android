@@ -52,6 +52,18 @@ public class PhoneNumberAndCallUtils {
     public static String numberToInterNationalNumber(Context context, String inputString) {
         if (inputString != null) {
             PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+            // these numbers are for VPBX numbers filtering
+            // Do not remove
+            if(inputString.trim().startsWith("+9277")){
+                inputString = inputString.replace("+9277", "+92");
+            }
+            if(inputString.trim().startsWith("+9255")){
+                inputString = inputString.replace("+9255", "+92");
+            }
+            if(inputString.trim().startsWith("+9244")){
+                inputString = inputString.replace("+9244", "+92");
+            }
+            //////
             String s = null;
             try {
                 TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);

@@ -561,22 +561,19 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 SyncUser.getUserDataFromServer(this);
                 SyncUser.getLastestAppVersionCodeFromServer(this);
                 if (!sessionManager.getKeyIsUserActive()) {
-                    Intent i = new Intent(NavigationBottomMainActivity.this, UserInActiveActivity.class);
-                    i.putExtra(TrialExpiryActivity.KEY_MESSAGE, "User is deactivated");
+                    Intent i = new Intent(NavigationBottomMainActivity.this, UserInActiveActivityJava.class);
                     startActivity(i);
                     finish();
                 }
                 if (!sessionManager.getKeyIsCompanyActive()) {
                     sessionManager.logoutUser();
-                    Intent i = new Intent(NavigationBottomMainActivity.this, CompanyInActiveActivity.class);
-                    i.putExtra(TrialExpiryActivity.KEY_MESSAGE, "Company is deactivated");
+                    Intent i = new Intent(NavigationBottomMainActivity.this, CompanyInActiveActivityJava.class);
                     startActivity(i);
                     finish();
                 }
                 if (!sessionManager.getKeyIsCompanyPaying()) {
                     if (!sessionManager.getKeyIsTrialValid()) {
-                        Intent i = new Intent(NavigationBottomMainActivity.this, TrialExpiryActivity.class);
-                        i.putExtra("message", "During your free trial period LastingSales created 500 contacts for you, processed 5000 calls");
+                        Intent i = new Intent(NavigationBottomMainActivity.this, TrialExpiryActivityJava.class);
                         startActivity(i);
                     }
                 }

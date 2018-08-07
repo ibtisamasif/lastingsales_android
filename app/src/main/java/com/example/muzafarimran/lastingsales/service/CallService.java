@@ -95,6 +95,7 @@ public class CallService extends Service {
         });
         EditText addContactField = view.findViewById(R.id.afterCallAddContactField);
         TextView showNumber = view.findViewById(R.id.afterCallContactNumber);
+        TextView tvName = view.findViewById(R.id.tvName);
         TextView showNumber1 = view.findViewById(R.id.tvContactName);
         Button addBtn = view.findViewById(R.id.afterCallAddContactAddBtn);
         CheckBox ignoreCB = view.findViewById(R.id.afterCallAddContactCb);
@@ -112,9 +113,11 @@ public class CallService extends Service {
                 if (ignoreCB.isChecked()) {
                     addBtn.setText("OK");
                     addContactField.setVisibility(View.GONE);
+                    tvName.setVisibility(View.GONE);
                 } else {
-                    addContactField.setVisibility(View.VISIBLE);
                     addBtn.setText("Save Contact");
+                    addContactField.setVisibility(View.VISIBLE);
+                    tvName.setVisibility(View.VISIBLE);
                 }
             }
         });
