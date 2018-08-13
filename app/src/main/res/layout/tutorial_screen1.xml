@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#5C6BC0">
+    android:background="@color/tutorial1BlueColor">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_centerHorizontal="true"
         android:src="@drawable/login_logo"
-        android:layout_width="152dp"
-        android:layout_height="112dp" />
+        android:layout_width="@dimen/tutoriallogoWidth"
+        android:layout_height="@dimen/tutoriallogoHeight" />
 
 
     <LinearLayout
@@ -29,7 +29,7 @@
             android:textStyle="italic"
             android:text="Better organize your pipeline to close more Sales deals!"
             android:textAlignment="center"
-            android:textSize="17sp" />
+            android:textSize="@dimen/tutorialText" />
 
 
         <!----> <ImageView
