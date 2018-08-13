@@ -466,7 +466,7 @@ public class IndividualContactDetailsFragment extends TabFragment implements Loa
 
                         gridLayout.addView(dateColumn);
                     } else {
-                        EditText dateColumn=dynamicColums.dateEditText("date", "lead" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE);
+                        EditText dateColumn=dynamicColums.dateEditText("", "lead" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE);
 
                         dateColumn.setOnClickListener(new View.OnClickListener() {
                             @Override

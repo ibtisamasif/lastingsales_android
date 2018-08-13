@@ -781,7 +781,7 @@ public class IndividualOrganizationDetailsFragment extends TabFragment implement
 
                         gridLayout.addView(dateColumn);
                     } else {
-                        EditText dateColumn=dynamicColums.dateEditText("date", "org" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER);
+                        EditText dateColumn=dynamicColums.dateEditText("", "org" + list.get(i).getServerId(), InputType.TYPE_CLASS_NUMBER);
 
                         dateColumn.setOnClickListener(new View.OnClickListener() {
                             @Override

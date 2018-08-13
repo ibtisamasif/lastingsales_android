@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Ls.Color.Success">
+    android:background="#7C4DFF">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:text="Please choose your phone type"
             android:textColor="#fff"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="italic" />
 
         <RadioGroup
             android:id="@+id/radio_company_personal_info"

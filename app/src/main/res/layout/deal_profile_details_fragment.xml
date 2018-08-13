@@ -654,7 +654,7 @@
             app:layout_constraintTop_toTopOf="@+id/created_ago_label"
             tools:layout_conversion_absoluteHeight="24dp"
             tools:layout_conversion_absoluteWidth="131dp" />
-
+<!--
         <ImageView
             android:id="@+id/private_icon"
             android:layout_width="24dp"
@@ -692,7 +692,7 @@
             tools:layout_conversion_absoluteHeight="24dp"
             tools:layout_conversion_absoluteWidth="131dp" />
 
-        <TextView
+      -->  <TextView
             android:id="@+id/textView6"
             style="@style/Base.TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
@@ -700,7 +700,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/deal_details"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/isPrivateSpinner"
+            app:layout_constraintTop_toBottomOf="@+id/created_agoTextView"
             tools:layout_conversion_absoluteHeight="21dp"
             tools:layout_conversion_absoluteWidth="91dp" />
 

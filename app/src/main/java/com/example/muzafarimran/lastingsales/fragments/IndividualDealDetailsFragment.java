@@ -53,9 +53,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import de.halfbit.tinybus.TinyBus;
@@ -73,7 +76,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
     GridLayout gridLayout;
     DynamicColums dynamicColums;
     Button save;
-    private Spinner isPrivateSpinner;
+    // private Spinner isPrivateSpinner;
     private Spinner stageSpinner;
     private Long dealIDLong;
     private Context mContext;
@@ -112,11 +115,15 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         setHasOptionsMenu(true);
     }
 
+    ImageView addDealIcon;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.deal_profile_details_fragment, container, false);
         save = view.findViewById(R.id.dealsave);
+        addDealIcon = view.findViewById(R.id.add_deal_icon);
+        addDealIcon.setVisibility(View.GONE);
         tvDefaultText = view.findViewById(R.id.tvDefaultText);
         tvDefaultText.setVisibility(View.GONE);
         gridLayout = view.findViewById(R.id.griddeal);
@@ -124,7 +131,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         save.setOnClickListener(this);
         addItemsOnSpinnerDealStage(view);
         addViews(view);
-        addItemsOnSpinnerDealIsPrivate(view);
+        // addItemsOnSpinnerDealIsPrivate(view);
         setHasOptionsMenu(true);
         return view;
     }
@@ -222,7 +229,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                         gridLayout.addView(dateColumn);
                     } else {
 
-                        EditText dateColumn = dynamicColums.dateEditText("date", "deal" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE);
+                        EditText dateColumn = dynamicColums.dateEditText("", "deal" + list.get(i).getServerId(), InputType.TYPE_DATETIME_VARIATION_DATE);
 
                         dateColumn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -693,14 +700,40 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
                 currencyTextView.setText(mDeal.getCurrency());
             }
             if (mDeal.getCreatedAt() != null) {
-                created_agoTextView.setText(mDeal.getCreatedAt());
+
+                Log.d("date deal", "deal date " + mDeal.getCreatedAt());
+
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat format2 = new SimpleDateFormat("dd-MMM-yyyy");
+                Date date = null;
+
+                boolean b = true;
+                try {
+                    if (mDeal.getCreatedAt().contains(" ")) {
+                        String[] temp = mDeal.getCreatedAt().split(" ");
+                        date = format1.parse(temp[0]);
+                    } else {
+                        date = format1.parse(mDeal.getCreatedAt());
+                    }
+
+                    // new Date(date.toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    b = false;
+                }
+                //System.out.println(format2.format(date));
+
+                if (b)
+                    created_agoTextView.setText(format2.format(date));
+                else
+                    created_agoTextView.setText(mDeal.getCreatedAt());
             }
             switch (mDeal.getIsPrivate()) {
                 case LSDeal.DEAL_VISIBILITY_STATUS_COMPANY:
-                    isPrivateSpinner.setSelection(0, false);
+                    // isPrivateSpinner.setSelection(0, false);
                     break;
                 case LSDeal.DEAL_VISIBILITY_STATUS_PRIVATE:
-                    isPrivateSpinner.setSelection(1, false);
+                    //isPrivateSpinner.setSelection(1, false);
                     break;
             }
             LSStage lsStage = LSStage.getStageFromServerId(mDeal.getWorkflowStageId());
@@ -712,11 +745,11 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
             }
             stageSpinner.setSelection(index, false);
         }
-        isPrivateSpinner.post(new Runnable() {
+      /*  isPrivateSpinner.post(new Runnable() {
             public void run() {
                 isPrivateSpinner.setOnItemSelectedListener(new CustomSpinnerDealIsPrivateOnItemSelectedListener());
             }
-        });
+        });*/
         stageSpinner.post(new Runnable() {
             public void run() {
                 stageSpinner.setOnItemSelectedListener(new CustomSpinnerDealStageOnItemSelectedListener());
@@ -760,6 +793,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         currencyTextView = view.findViewById(R.id.currencyTextView);
         created_agoTextView = view.findViewById(R.id.created_agoTextView);
     }
+/*
 
     public void addItemsOnSpinnerDealIsPrivate(View view) {
         isPrivateSpinner = view.findViewById(R.id.isPrivateSpinner);
@@ -770,6 +804,7 @@ public class IndividualDealDetailsFragment extends TabFragment implements View.O
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         isPrivateSpinner.setAdapter(dataAdapter);
     }
+*/
 
     public void addItemsOnSpinnerDealStage(View view) {
         stageSpinner = view.findViewById(R.id.stage_spinner);

@@ -24,11 +24,16 @@ import com.example.muzafarimran.lastingsales.providers.models.LSOrganization;
 import com.example.muzafarimran.lastingsales.providers.models.LSStage;
 import com.example.muzafarimran.lastingsales.providers.models.LSWorkflow;
 import com.example.muzafarimran.lastingsales.sync.DataSenderAsync;
+import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -297,6 +302,10 @@ public class AddDealActivity extends AppCompatActivity {
                         mDeal.setWorkflowStageId(LSStage.getStageByWorkflowServerIdAndPosition(defaultWorkflowServerId, "100").getServerId()); //TODO add null check
                         mDeal.setIsPrivate(dealStatus);
                         mDeal.setUpdatedAt(Calendar.getInstance().getTime());
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date date = new Date();
+                        mDeal.setCreatedAt(dateFormat.format(date));
+
                         if (selectedStageServerId != null) {
                             mDeal.setWorkflowStageId(selectedStageServerId);
                         }

@@ -79,7 +79,7 @@ public class SettingsManager {
     }
 
     public Boolean getKeyStateIsCompanyPhone() {
-        return pref.getBoolean(KEY_STATE_IS_COMPANY_PHONE, true);
+        return pref.getBoolean(KEY_STATE_IS_COMPANY_PHONE, false);
     }
 
     public void setKeyStateIsCompanyPhone(Boolean state) {

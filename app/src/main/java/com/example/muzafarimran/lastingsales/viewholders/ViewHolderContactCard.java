@@ -105,7 +105,8 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
     }
 
     public void bind(Object item, int position, Context mContext) {
-        final LSContact contact = (LSContact) item;
+        final LSContact
+                contact = (LSContact) item;
         final String number = contact.getPhoneOne();
 //        final String contactType = contact.getContactType();
         lsContactProfile = contact.getContactProfile();
@@ -118,8 +119,8 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
             Log.d(TAG, "createOrUpdate: Found in contact Table: " + contact);
         }
         if (contact.getContactName() != null) {
-            if (contact.getContactName().equals("null")) {
-                this.name.setText("");
+            if (contact.getContactName().equals("null") || contact.getContactName().isEmpty()) {
+                this.name.setText("Unknown");
             } else if (contact.getContactName().equals("Unlabeled Contact") || contact.getContactName().equals("Ignored Contact")) {
                 String name = PhoneNumberAndCallUtils.getContactNameFromLocalPhoneBook(mContext, contact.getPhoneOne());
                 if (name != null) {
@@ -253,18 +254,40 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
         this.whatsapp_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PackageManager packageManager = mContext.getPackageManager();
+                Toast.makeText(mContext, "click on whatsapp icon", Toast.LENGTH_SHORT).show();
+               /* PackageManager packageManager = mContext.getPackageManager();
                 Intent i = new Intent(Intent.ACTION_VIEW);
+                String tempNumber=number.replace(" ","");
                 try {
-                    String url = "https://api.whatsapp.com/send?phone=" + number + "&text=" + URLEncoder.encode("", "UTF-8");
+                    String url = "https://api.whatsapp.com/send?phone=" + tempNumber + "&text=" + URLEncoder.encode("", "UTF-8");
                     i.setPackage("com.whatsapp");
                     i.setData(Uri.parse(url));
+                    mContext.startActivity(i);
                     if (i.resolveActivity(packageManager) != null) {
+                        mContext.startActivity(i);
+                    }else{
                         mContext.startActivity(i);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
+
+                PackageManager pm=mContext.getPackageManager();
+                try {
+
+
+                    String toNumber = number; // Replace with mobile phone number without +Sign or leading zeros.
+                    Intent sendIntent = new Intent(Intent.ACTION_SENDTO,Uri.parse("smsto:" + "" + toNumber + "?body=" + ""));
+            sendIntent.setPackage("com.whatsapp");
+            mContext.startActivity(sendIntent);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(mContext,"it may be you dont have whats app",Toast.LENGTH_LONG).show();
+
+        }
+
+
                 MixpanelAPI.getInstance(mContext, MixpanelConfig.projectToken).track("Whatsapp Clicked");
             }
         });
