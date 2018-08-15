@@ -11,7 +11,7 @@ import android.widget.Button;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 
-class TrialExpiryActivityJava extends AppCompatActivity{
+public class TrialExpiryActivityJava extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

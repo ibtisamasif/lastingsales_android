@@ -229,22 +229,23 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
-            android:name=".activities.TrialExpiryActivity"
+            android:name=".activities.TrialExpiryActivityJava"
             android:enabled="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
             <!--android:theme="@style/Theme.AppCompat.Light.Dialog"-->
         </activity>
         <activity
-            android:name=".activities.CompanyInActiveActivity"
+            android:name=".activities.CompanyInActiveActivityJava"
             android:enabled="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".activities.UpgradeActivity"
+            android:name=".activities.UserInActiveActivityJava"
             android:enabled="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"></activity>
+
 
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>

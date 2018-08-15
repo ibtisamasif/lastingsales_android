@@ -69,7 +69,8 @@ public class CallDetectionService extends Service {
                 return;
             }
 
-            if(!checkPermission()){
+
+            if (!checkPermission()) {
                 Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show();
                 return;
             }
