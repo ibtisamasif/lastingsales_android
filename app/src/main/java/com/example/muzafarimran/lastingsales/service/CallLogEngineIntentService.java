@@ -3,12 +3,16 @@ package com.example.muzafarimran.lastingsales.service;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.CallLog;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.muzafarimran.lastingsales.SettingsManager;
+import com.example.muzafarimran.lastingsales.activities.NavigationBottomMainActivity;
 import com.example.muzafarimran.lastingsales.app.SyncStatus;
 import com.example.muzafarimran.lastingsales.providers.models.LSCall;
 import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
@@ -17,6 +21,12 @@ import com.example.muzafarimran.lastingsales.utilscallprocessing.CallTypeManager
 
 import java.util.Arrays;
 import java.util.Date;
+
+import static android.Manifest.permission.READ_CALL_LOG;
+import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.WRITE_CALENDAR;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * Created by amir & Modified by ibtisam on 7/29/2018.
@@ -54,7 +64,17 @@ public class CallLogEngineIntentService extends IntentService {
             e.printStackTrace();
         }
         mContext = getApplicationContext();
+
+        if(!checkPermission()){
+            Log.d("engine service calllogs","permission denied");
+            return;
+        }
+        else{
+            Log.d("engine service calllogs","permission granted");
         CallLogFunc();
+
+        }
+
     }
 
     @Override
@@ -157,4 +177,22 @@ public class CallLogEngineIntentService extends IntentService {
             }
         }
     }
+    public boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_CALENDAR);
+        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_CONTACTS);
+        int result3 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_PHONE_STATE);
+        int result4 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_CALL_LOG);
+        return result == PackageManager.PERMISSION_GRANTED &&
+                result1 == PackageManager.PERMISSION_GRANTED &&
+                result2 == PackageManager.PERMISSION_GRANTED &&
+                result3 == PackageManager.PERMISSION_GRANTED &&
+                result4 == PackageManager.PERMISSION_GRANTED;
+    }
+
 }

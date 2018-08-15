@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.muzafarimran.lastingsales">
 
     <permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
         android:protectionLevel="signature" />
+
 
     <uses-permission android:name="android.permission.REAL_GET_TASKS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
@@ -25,8 +27,12 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:remove="android:maxSdkVersion" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        tools:node="replace" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.example.muzafarimran.lastingsales.permission.C2D_MESSAGE" />
@@ -88,6 +94,7 @@
                 <category android:name="com.example.muzafarimran.lastingsales" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
             android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme" />
@@ -119,17 +126,17 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:windowSoftInputMode="stateHidden"
             android:name=".activities.ContactDetailsTabActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
-            android:windowSoftInputMode="stateHidden"
             android:name=".activities.OrganizationDetailsTabActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.DealDetailsTabActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.AccountActivity"
             android:screenOrientation="portrait" />
@@ -147,17 +154,16 @@
             android:label="@string/title_activity_splash"
             android:screenOrientation="portrait">
 
-             <!--<intent-filter>-->
-             <!--<action android:name="android.intent.action.MAIN" />-->
-             <!--<category android:name="android.intent.category.LAUNCHER" />-->
-             <!--</intent-filter>-->
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".activities.SplashActivity"
             android:label="@string/title_activity_splash"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
         <activity
             android:name=".activities.NavigationBottomMainActivity"
             android:launchMode="singleInstance"
@@ -196,8 +202,7 @@
         <activity
             android:name=".onboarding.OnBoardingActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".activities.FrameActivity"
             android:screenOrientation="portrait" />
@@ -234,14 +239,12 @@
             android:name=".activities.CompanyInActiveActivity"
             android:enabled="true"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.UpgradeActivity"
             android:enabled="true"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
 
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
@@ -262,8 +265,7 @@
             android:enabled="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:stopWithTask="false">
-        </service>
+            android:stopWithTask="false"></service>
         <service android:name=".service.InitService">
             <!-- android:process=":testing"> -->
         </service>

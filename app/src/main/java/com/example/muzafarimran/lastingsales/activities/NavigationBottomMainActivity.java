@@ -16,10 +16,13 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.example.muzafarimran.lastingsales.Manifest;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 import com.example.muzafarimran.lastingsales.SettingsManager;
@@ -80,6 +84,16 @@ import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 import de.halfbit.tinybus.wires.ShakeEventWire;
 import io.fabric.sdk.android.Fabric;
+
+import static android.Manifest.permission.READ_CALENDAR;
+import static android.Manifest.permission.READ_CALL_LOG;
+import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.READ_PHONE_STATE;
+
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_CALENDAR;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * Created by ibtisam on 11/6/2017.
@@ -150,6 +164,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
             return false;
         }
     };
+    private static final int RequestPermissionCode=22647;
 
     private void changeColorOfStatusAndActionBar(String selectedFragment) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -207,6 +222,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: called");
 
+
+
+
+
         initFirst(savedInstanceState);
 
         setContentView(R.layout.activity_bottom_navigation);
@@ -217,6 +236,18 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
         navigation = findViewById(R.id.navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            if(checkPermission()){
+                //permission granted
+              //  Toast.makeText(activity, "Permission Granted", Toast.LENGTH_SHORT).show();
+            }else{
+                requestPermission();
+            }
+        }
+
+
 
         initLast();
 
@@ -560,6 +591,10 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 SyncUser.updateUserLastSeenToServer(this);
                 SyncUser.getUserDataFromServer(this);
                 SyncUser.getLastestAppVersionCodeFromServer(this);
+
+
+
+
                 if (!sessionManager.getKeyIsUserActive()) {
                     Intent i = new Intent(NavigationBottomMainActivity.this, UserInActiveActivityJava.class);
                     startActivity(i);
@@ -577,6 +612,7 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                         startActivity(i);
                     }
                 }
+
             }
 
             if (!sessionManager.getCanSync()) {
@@ -937,5 +973,77 @@ public class NavigationBottomMainActivity extends AppCompatActivity implements C
                 Log.d(TAG, "inquiryCallDetailsBottomSheetFragment: is NULL");
             }
         }
+    }
+
+
+
+    public  void requestPermission() {
+        ActivityCompat.requestPermissions(this, new
+                String[]{WRITE_EXTERNAL_STORAGE, WRITE_CALENDAR,READ_CONTACTS,READ_PHONE_STATE,READ_CALL_LOG}, RequestPermissionCode);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case RequestPermissionCode:
+                if (grantResults.length> 0) {
+                    boolean StoragePermission = grantResults[0] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    boolean RecordPermission = grantResults[1] ==
+                            PackageManager.PERMISSION_GRANTED;
+
+                    boolean ReadContact=grantResults[2]==PackageManager.PERMISSION_GRANTED;
+                    boolean ReadPhoneState=grantResults[3]==PackageManager.PERMISSION_GRANTED;
+                    boolean ReadCallLogs=grantResults[4]==PackageManager.PERMISSION_GRANTED;
+
+                    if (ReadCallLogs && StoragePermission && RecordPermission && ReadContact && ReadPhoneState) {
+                        /*Toast.makeText(this, "Permission Granted",
+                                Toast.LENGTH_LONG).show();*/
+
+
+                    } else {
+                        //  Toast.makeText(this,"Permission Denied",Toast.LENGTH_LONG).show();
+                        showPermissionDialog();
+                    }
+                }
+                break;
+        }
+    }
+
+    public boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_CALENDAR);
+        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_CONTACTS);
+        int result3 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_PHONE_STATE);
+        int result4 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_CALL_LOG);
+        return result == PackageManager.PERMISSION_GRANTED &&
+                result1 == PackageManager.PERMISSION_GRANTED &&
+                result2 == PackageManager.PERMISSION_GRANTED &&
+                result3 == PackageManager.PERMISSION_GRANTED &&
+                result4 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public void showPermissionDialog(){
+        android.app.AlertDialog.Builder builder=new android.app.AlertDialog.Builder(this)
+                .setTitle("Attention")
+                .setMessage("IF you don't give permission then our application will not work properly")
+                .setCancelable(false)
+
+                .setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                    }
+                });
+        builder.show();
     }
 }

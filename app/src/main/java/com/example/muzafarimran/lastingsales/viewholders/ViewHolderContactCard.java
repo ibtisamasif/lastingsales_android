@@ -254,7 +254,7 @@ public class ViewHolderContactCard extends RecyclerView.ViewHolder {
         this.whatsapp_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "click on whatsapp icon", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(mContext, "click on whatsapp icon", Toast.LENGTH_SHORT).show();
                /* PackageManager packageManager = mContext.getPackageManager();
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 String tempNumber=number.replace(" ","");

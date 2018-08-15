@@ -8,11 +8,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -29,6 +31,12 @@ import com.example.muzafarimran.lastingsales.utils.PhoneNumberAndCallUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import static android.Manifest.permission.READ_CALL_LOG;
+import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.WRITE_CALENDAR;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * Created by ibtisam on 7/12/2017.
@@ -58,6 +66,11 @@ public class CallDetectionService extends Service {
             }
             sessionManager = new SessionManager(context);
             if (!sessionManager.isUserSignedIn()) {
+                return;
+            }
+
+            if(!checkPermission()){
+                Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -278,4 +291,24 @@ public class CallDetectionService extends Service {
         //actually run the notification
         startForeground(NOTIFICATION_ID, notification);
     }
+
+
+    public boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_CALENDAR);
+        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_CONTACTS);
+        int result3 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_PHONE_STATE);
+        int result4 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_CALL_LOG);
+        return result == PackageManager.PERMISSION_GRANTED &&
+                result1 == PackageManager.PERMISSION_GRANTED &&
+                result2 == PackageManager.PERMISSION_GRANTED &&
+                result3 == PackageManager.PERMISSION_GRANTED &&
+                result4 == PackageManager.PERMISSION_GRANTED;
+    }
+
 }

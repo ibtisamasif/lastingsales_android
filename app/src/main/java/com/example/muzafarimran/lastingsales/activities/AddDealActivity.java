@@ -2,6 +2,8 @@ package com.example.muzafarimran.lastingsales.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -67,7 +69,9 @@ public class AddDealActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_deal);
         etDealName = (EditText) findViewById(R.id.etNameAddDeal);
         etLeadAddDeal = (EditText) findViewById(R.id.etLeadAddDeal);
