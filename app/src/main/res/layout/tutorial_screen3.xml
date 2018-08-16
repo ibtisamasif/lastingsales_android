@@ -1,38 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_light_blue_800">
-
+   >
+<LinearLayout
+    android:layout_gravity="center"
+    android:background="@color/md_light_blue_800"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
     <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/main_screen"
+        android:layout_centerInParent="true"
         android:gravity="center">
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="30dp"
+            android:gravity="center"
             android:text="Please choose your phone type"
             android:textColor="#fff"
             android:textSize="@dimen/tutorialText"
             android:textStyle="italic" />
 
+
         <RadioGroup
             android:id="@+id/radio_company_personal_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="30dp">
 
             <RadioButton
+
                 android:id="@+id/radio_company_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity=""
                 android:layout_marginTop="26dp"
                 android:text="Company Phone"
                 android:textColor="#fff"
                 android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/radio_company_phone"
+                android:layout_marginLeft="25dp"
+                android:justificationMode="inter_word"
+                android:text="Automatically save contact after the call ends and synchronizes with Lastingsales. This will save you time and effort."
+                android:textColor="@color/md_grey_400" />
 
             <RadioButton
                 android:id="@+id/radio_personal_phone"
@@ -43,6 +71,14 @@
                 android:text="Personal Phone"
                 android:textColor="#fff"
                 android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/radio_personal_phone"
+                android:layout_marginLeft="25dp"
+                android:text="Add contacts manually, giving you the option to select which contacts you want to save and synchronize with Lastingsales."
+                android:textColor="@color/md_grey_400" />
 
         </RadioGroup>
 
@@ -57,4 +93,5 @@
         android:orientation="vertical">
 
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
+</android.support.constraint.ConstraintLayout>
