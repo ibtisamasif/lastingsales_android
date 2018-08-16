@@ -6,7 +6,7 @@
     <dimen name="Ls.Dimen.space">8dp</dimen>
 
 
-    <dimen name="tutoriallogoWidth">152dp</dimen>
+
     <dimen name="tutoriallogoHeight">112dp</dimen>
 
     <dimen name="tutorialText">17sp</dimen>

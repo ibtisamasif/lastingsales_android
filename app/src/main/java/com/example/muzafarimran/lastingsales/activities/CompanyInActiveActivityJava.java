@@ -10,7 +10,7 @@ import android.widget.Button;
 import com.example.muzafarimran.lastingsales.R;
 import com.example.muzafarimran.lastingsales.SessionManager;
 
-class CompanyInActiveActivityJava extends AppCompatActivity{
+public class CompanyInActiveActivityJava extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

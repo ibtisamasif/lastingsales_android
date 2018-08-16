@@ -5,9 +5,7 @@
     <color name="colorPrimaryDark">@color/md_teal_800</color>
     <color name="colorAccent">@color/md_light_blue_600</color>
 
-    <color name="tutorial3BlueColor">#7C4DFF</color>
-    <color name="tutorial1BlueColor">#5C6BC0</color>
-    <color name="tutorial2OrangeColor">#EF6C00</color>
+
 
     <color name="Ls.Color.Primary">@color/md_light_blue_600</color>
     <color name="Ls.Color.PrimaryDark">@color/md_light_blue_800</color>
