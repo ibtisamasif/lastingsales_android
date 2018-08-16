@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_deep_orange_500">
+    android:background="@color/cpb_blue_dark">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,6 +37,8 @@
 
         <ImageView
 
+            android:foregroundGravity="center"
+            android:layout_gravity="center"
             android:layout_weight="20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
