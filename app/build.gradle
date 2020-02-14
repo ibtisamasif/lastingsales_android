@@ -17,10 +17,10 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('C:/work/lastingsales-app_new2/configuration data/lskey.jks')
-            storePassword "J7Z/}aB*6'r7q+A~"
-            keyAlias "lastingSales"
-            keyPassword "J7Z/}aB*6'r7q+A~"
+//            storeFile file('C:/work/lastingsales-app_new2/configuration data/lskey.jks')
+//            storePassword "J7Z/}aB*6'r7q+A~"
+//            keyAlias "lastingSales"
+//            keyPassword "J7Z/}aB*6'r7q+A~"
         }
     }
     buildTypes {
@@ -108,7 +108,7 @@ dependencies {
     compile 'com.mixpanel.android:mixpanel-android:5.0.1'
     compile project(':volley-master')
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'
-    compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
+    compile 'com.github.deano2390:MaterialShowcaseView:1.3.4'
     compile 'me.leolin:ShortcutBadger:1.1.18@aar'
     //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
