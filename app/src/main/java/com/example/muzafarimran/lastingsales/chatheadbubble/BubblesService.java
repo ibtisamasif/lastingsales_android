@@ -22,7 +22,7 @@
  *
  * Contact: Txus Ballesteros <txus.ballesteros@gmail.com>
  */
-package com.example.muzafarimran.lastingsales.service;
+package com.example.muzafarimran.lastingsales.chatheadbubble;
 
 import android.app.Service;
 import android.content.Intent;
@@ -33,10 +33,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.view.Gravity;
 import android.view.WindowManager;
-
-import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleBaseLayout;
-import com.example.muzafarimran.lastingsales.chatheadbubble.BubbleLayout;
-import com.example.muzafarimran.lastingsales.chatheadbubble.BubblesLayoutCoordinator;
 
 public class BubblesService extends Service {
     private BubblesServiceBinder binder = new BubblesServiceBinder();

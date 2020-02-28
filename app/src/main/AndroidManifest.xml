@@ -254,7 +254,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".service.BubblesService"
+            android:name=".chatheadbubble.BubblesService"
             android:enabled="true"
             android:exported="false" />
         <service
